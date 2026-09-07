@@ -10,6 +10,23 @@ let nationality = [];
 let nationalityYearly = [];
 let nationalityFiscalYear = 2026;
 let nationalitySource = null;
+const detailSummaryMessages = {
+  en: { title: '{judge} Immigration Judge Approval Rate | AsylumJudge', judge: 'Immigration judge', source: 'Source: {source}', range: 'Data range: {start} to {end}', insufficient: 'Only {count} adjudicated decisions; fewer than 50, so the approval rate is not shown.', limited: '{count} adjudicated decisions meet the display threshold, but the sample remains limited and the percentage may change with a small number of cases.', sufficient: '{count} adjudicated decisions; historical statistics do not predict an individual case.' },
+  es: { title: '{judge}: tasa de aprobación del juez de inmigración | AsylumJudge', judge: 'Juez de inmigración', source: 'Fuente: {source}', range: 'Período de datos: del {start} al {end}', insufficient: 'Solo {count} decisiones resueltas; al ser menos de 50, no se muestra la tasa de aprobación.', limited: '{count} decisiones resueltas alcanzan el mínimo, pero la muestra sigue siendo limitada y el porcentaje puede cambiar con pocos casos.', sufficient: '{count} decisiones resueltas; las estadísticas históricas no predicen un caso individual.' },
+  fr: { title: '{judge} : taux d’approbation du juge | AsylumJudge', judge: 'Juge de l’immigration', source: 'Source : {source}', range: 'Période des données : du {start} au {end}', insufficient: 'Seulement {count} décisions au fond ; moins de 50, le taux d’approbation n’est donc pas affiché.', limited: '{count} décisions au fond atteignent le seuil, mais l’échantillon reste limité et quelques dossiers peuvent modifier le pourcentage.', sufficient: '{count} décisions au fond ; les statistiques historiques ne prédisent pas l’issue d’un dossier.' },
+  'pt-BR': { title: '{judge}: taxa de aprovação do juiz | AsylumJudge', judge: 'Juiz de imigração', source: 'Fonte: {source}', range: 'Período dos dados: de {start} a {end}', insufficient: 'Apenas {count} decisões julgadas; como são menos de 50, a taxa de aprovação não é exibida.', limited: '{count} decisões julgadas atingem o limite, mas a amostra ainda é limitada e poucos casos podem alterar a porcentagem.', sufficient: '{count} decisões julgadas; estatísticas históricas não preveem um caso individual.' },
+  hi: { title: '{judge} इमिग्रेशन जज अनुमोदन दर | AsylumJudge', judge: 'इमिग्रेशन जज', source: 'स्रोत: {source}', range: 'डेटा अवधि: {start} से {end}', insufficient: 'केवल {count} निर्णीत मामले; 50 से कम होने के कारण स्वीकृति दर नहीं दिखाई गई है।', limited: '{count} निर्णीत मामले सीमा पूरी करते हैं, लेकिन नमूना अभी सीमित है और कुछ मामलों से प्रतिशत बदल सकता है।', sufficient: '{count} निर्णीत मामले; ऐतिहासिक आँकड़े किसी व्यक्तिगत मामले के परिणाम की भविष्यवाणी नहीं करते।' },
+  'zh-Hans': { title: '{judge}移民法官通过率｜AsylumJudge', judge: '移民法官', source: '数据来源：{source}', range: '数据范围 {start} 至 {end}', insufficient: '仅 {count} 件有效裁决，少于 50 件，因此不展示通过率。', limited: '{count} 件有效裁决，已达到展示标准；数量仍不大，百分比可能随少量案件变化。', sufficient: '{count} 件有效裁决；历史统计不代表个案结果。' },
+  'zh-Hant': { title: '{judge}移民法官批准率｜AsylumJudge', judge: '移民法官', source: '資料來源：{source}', range: '資料範圍 {start} 至 {end}', insufficient: '僅 {count} 件有效裁決，少於 50 件，因此不顯示批准率。', limited: '{count} 件有效裁決，已達到顯示標準；樣本仍有限，少量案件可能改變百分比。', sufficient: '{count} 件有效裁決；歷史統計不代表個案結果。' },
+  ru: { title: '{judge}: одобрение убежища иммиграционным судьёй | AsylumJudge', judge: 'Иммиграционный судья', source: 'Источник: {source}', range: 'Период данных: с {start} по {end}', insufficient: 'Всего решений по существу: {count}; поскольку их меньше 50, доля одобрений не показана.', limited: 'Решений по существу: {count}; порог достигнут, но выборка ограничена, и несколько дел могут изменить процент.', sufficient: 'Решений по существу: {count}; историческая статистика не предсказывает исход отдельного дела.' },
+  ar: { title: '{judge}: نسبة موافقة قاضي الهجرة | AsylumJudge', judge: 'قاضي هجرة', source: 'المصدر: {source}', range: 'نطاق البيانات: من {start} إلى {end}', insufficient: '{count} قرارات مفصول فيها فقط؛ ولأنها أقل من 50، لا تُعرض نسبة الموافقة.', limited: '{count} قرارات مفصول فيها تستوفي الحد، لكن العينة ما زالت محدودة وقد تغيّر بضعة قضايا النسبة.', sufficient: '{count} قرارات مفصول فيها؛ لا تتنبأ الإحصاءات التاريخية بنتيجة قضية فردية.' },
+  tr: { title: '{judge} göçmenlik hâkimi onay oranı | AsylumJudge', judge: 'Göçmenlik hâkimi', source: 'Kaynak: {source}', range: 'Veri aralığı: {start}–{end}', insufficient: 'Yalnızca {count} dosya karara bağlandı; 50’den az olduğu için onay oranı gösterilmiyor.', limited: '{count} dosya gösterim eşiğini karşılıyor, ancak örneklem sınırlı ve birkaç dosya yüzdelik oranı değiştirebilir.', sufficient: '{count} dosya karara bağlandı; geçmiş istatistikler tek bir davanın sonucunu öngörmez.' }
+};
+const detailSummaryCopy = () => {
+  const locale = window.AsylumI18n?.locale || 'zh-Hans';
+  return detailSummaryMessages[locale] || detailSummaryMessages['zh-Hans'];
+};
+const fill = (template, values) => Object.entries(values).reduce((result, [key, value]) => result.replaceAll(`{${key}}`, String(value)), template);
 const detailLoadMessages = {
   en: { missing: 'Judge ID is missing.', unavailable: 'This judge profile is temporarily unavailable.', retryLater: 'Please try again later.', retry: 'Try again' },
   es: { missing: 'Falta el identificador del juez.', unavailable: 'El perfil de este juez no está disponible temporalmente.', retryLater: 'Inténtalo de nuevo más tarde.', retry: 'Volver a intentar' },
@@ -95,11 +112,11 @@ const nationalityEmptyMessage = () => {
   const locale = window.AsylumI18n?.locale || 'zh-Hans';
   return nationalityEmptyMessages[locale] || nationalityEmptyMessages['zh-Hans'];
 };
-const sampleText = (level, count) => level === 'insufficient' || level === 'small'
-  ? `仅 ${fmt(count)} 件有效裁决，少于 50 件，因此不展示通过率。`
-  : Number(count) < 200
-    ? `${fmt(count)} 件有效裁决，已达到展示标准；数量仍不大，百分比可能随少量案件变化。`
-    : `${fmt(count)} 件有效裁决；历史统计不代表个案结果。`;
+const sampleText = (level, count) => {
+  const messages = detailSummaryCopy();
+  const template = level === 'insufficient' || level === 'small' ? messages.insufficient : Number(count) < 200 ? messages.limited : messages.sufficient;
+  return fill(template, { count: fmt(count) });
+};
 const sampleDescription = (row) => {
   const count = Number(row.adjudicated_decisions ?? row.decision_count ?? 0);
   if (count < 50) return `仅 ${fmt(count)} 件有效裁决，少于 50 件，不显示通过率`;
@@ -277,17 +294,21 @@ async function load() {
     const data = await requestJson(apiUrl(localUrl), { cache: 'no-store' });
     if (!data.judge) throw new Error('Judge detail missing');
     const judge = data.judge;
+    const summary = detailSummaryCopy();
     if (data.background || document.body.dataset.seoPrerendered !== 'true') renderBackground(data.background);
     renderWebex(judge.webex);
-    document.title = `${judge.judge_name} 庇护通过率｜唐人日报`;
-    $('#judge-name').textContent = judge.judge_name || '移民法官';
+    document.title = fill(summary.title, { judge: judge.judge_name || summary.judge });
+    $('#judge-name').textContent = judge.judge_name || summary.judge;
     $('#judge-court').textContent = [judge.court_name, [judge.court_city, judge.court_state].filter(Boolean).join(', ')].filter(Boolean).join(' · ');
-    $('#judge-source').textContent = `数据来源：${judge.source || 'EOIR'}${judge.data_start_date || judge.data_end_date ? ` · 数据范围 ${judge.data_start_date || '—'} 至 ${judge.data_end_date || '—'}` : ''}`;
+    $('#judge-source').textContent = `${fill(summary.source, { source: judge.source || 'EOIR' })}${judge.data_start_date || judge.data_end_date ? ` · ${fill(summary.range, { start: judge.data_start_date || '—', end: judge.data_end_date || '—' })}` : ''}`;
     $('#m-rate').textContent = pct(judge.adjudicated_approval_rate);
     $('#m-all-rate').textContent = pct(judge.grant_share_all);
     $('#m-total').textContent = fmt(judge.total_asylum_decisions);
-    $('#m-adjudicated').innerHTML = `<span class="verdict-pass">批准 ${fmt(judge.grants)}</span> · <span class="verdict-deny">拒绝 ${fmt(judge.denials)}</span> · <span class="verdict-other">其他 ${fmt(judge.other_decisions)}</span>`;
-    $('#m-grant-deny').previousElementSibling.textContent = '批准 / 拒绝 / 其他';
+    const grantLabel = window.AsylumI18n?.t?.('批准') || '批准';
+    const denialLabel = window.AsylumI18n?.t?.('拒绝') || '拒绝';
+    const otherLabel = window.AsylumI18n?.t?.('其他') || '其他';
+    $('#m-adjudicated').innerHTML = `<span class="verdict-pass">${esc(grantLabel)} ${fmt(judge.grants)}</span> · <span class="verdict-deny">${esc(denialLabel)} ${fmt(judge.denials)}</span> · <span class="verdict-other">${esc(otherLabel)} ${fmt(judge.other_decisions)}</span>`;
+    $('#m-grant-deny').previousElementSibling.textContent = `${grantLabel} / ${denialLabel} / ${otherLabel}`;
     $('#m-grant-deny').innerHTML = `<span class="verdict-pass">${fmt(judge.grants)}</span> / <span class="verdict-deny">${fmt(judge.denials)}</span> / <span class="verdict-other">${fmt(judge.other_decisions)}</span>`;
     const warning = $('#sample-warning');
     warning.textContent = sampleText(judge.sample_level, judge.adjudicated_decisions);

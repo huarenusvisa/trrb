@@ -25,11 +25,25 @@ test('preserves server errors and rejects malformed success responses', async ()
   await assert.rejects(claimPushToken({
     platform: 'android', expoPushToken: 'ExpoPushToken[abcdefghijklmnop]', accessToken: 'token',
     fetchImpl: async () => new Response(JSON.stringify({ error: '登录状态已失效' }), { status: 401 })
-  }), /登录状态已失效/);
+  }), (error: unknown) => error instanceof PushRegistrationError
+    && error.pushRegistrationErrorKind === 'auth'
+    && /重新登录/.test(error.message));
   await assert.rejects(claimPushToken({
     platform: 'android', expoPushToken: 'ExpoPushToken[abcdefghijklmnop]', accessToken: 'token',
     fetchImpl: async () => new Response(JSON.stringify({ ok: true }), { status: 200 })
   }), /登记失败/);
+});
+
+test('treats forbidden token claims as expired authentication without scheduling a server retry', async () => {
+  await assert.rejects(claimPushToken({
+    platform: 'ios', expoPushToken: 'ExpoPushToken[abcdefghijklmnop]', accessToken: 'expired-token',
+    fetchImpl: async () => new Response(JSON.stringify({ error: 'forbidden' }), {
+      status: 403,
+      headers: { 'Retry-After': '120' }
+    })
+  }), (error: unknown) => error instanceof PushRegistrationError
+    && error.pushRegistrationErrorKind === 'auth'
+    && error.pushRegistrationRetryAfterMs === null);
 });
 
 test('converts request timeout to a user-facing error', async () => {

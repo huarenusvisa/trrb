@@ -34,7 +34,7 @@ let tokenMutationQueue: Promise<void> = Promise.resolve();
 let pendingRetryTimer: ReturnType<typeof setTimeout> | null = null;
 let pendingRetryInFlight: Promise<string | null> | null = null;
 export type PendingPushRegistrationStatus = { attempts: number; retryAt: number; errorKind: 'network' | 'server' | 'unknown' };
-type PendingPushRegistrationEvent = { status: PendingPushRegistrationStatus | null; reason: 'pending' | 'synced' | 'cleared' };
+type PendingPushRegistrationEvent = { status: PendingPushRegistrationStatus | null; reason: 'pending' | 'synced' | 'cleared' | 'auth_required' };
 const pendingRegistrationListeners = new Set<(event: PendingPushRegistrationEvent) => void>();
 
 function publishPendingRegistration(event: PendingPushRegistrationEvent) {
@@ -65,7 +65,7 @@ function schedulePendingRetry(delayMs: number) {
   }, Math.max(0, Math.min(MAX_PENDING_PUSH_RETRY_DELAY_MS, delayMs)));
 }
 
-async function clearPendingRegistration(reason: 'synced' | 'cleared' = 'cleared') {
+async function clearPendingRegistration(reason: 'synced' | 'cleared' | 'auth_required' = 'cleared') {
   clearPendingRetryTimer();
   await AsyncStorage.removeItem(PENDING_REGISTRATION_KEY);
   publishPendingRegistration({ status: null, reason });
@@ -192,13 +192,18 @@ async function performRegisterPushToken(options: { requestPermission?: boolean; 
     ]);
     return expoPushToken;
   } catch (error) {
+    const errorKind = classifyPushRegistrationError(error);
+    if (errorKind === 'auth') {
+      await clearPendingRegistration('auth_required');
+      throw error;
+    }
     const nextPendingRaw = nextPendingPushRegistration(
       pendingRaw,
       userId,
       Platform.OS as 'ios' | 'android',
       expoPushToken,
       Date.now(),
-      classifyPushRegistrationError(error),
+      errorKind,
       pushRegistrationRetryAfterMs(error)
     );
     await AsyncStorage.setItem(PENDING_REGISTRATION_KEY, nextPendingRaw);
@@ -230,6 +235,10 @@ function retryPendingPushRegistrationForTrigger(trigger: 'manual' | 'foreground'
 
 export function retryPendingPushRegistration() {
   return retryPendingPushRegistrationForTrigger('manual');
+}
+
+export function isPushRegistrationAuthError(error: unknown) {
+  return classifyPushRegistrationError(error) === 'auth';
 }
 
 async function performDisableCurrentDevicePushToken(rememberDeviceChoice: boolean) {

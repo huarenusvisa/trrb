@@ -4,7 +4,7 @@ import { router } from 'expo-router';
 import { useI18n } from '../src/i18n/I18nProvider';
 import type { MessageKey } from '../src/i18n/i18n-core';
 import { getPushPreferences, PushPreferences, updatePushPreferences } from '../src/push/preferences';
-import { disableCurrentDevicePushToken, getPendingPushRegistrationStatus, getPushPermissionStatus, hasCurrentDevicePushToken, PendingPushRegistrationStatus, registerPushToken, retryPendingPushRegistration, subscribeToPendingPushRegistration } from '../src/push/registration';
+import { disableCurrentDevicePushToken, getPendingPushRegistrationStatus, getPushPermissionStatus, hasCurrentDevicePushToken, isPushRegistrationAuthError, PendingPushRegistrationStatus, registerPushToken, retryPendingPushRegistration, subscribeToPendingPushRegistration } from '../src/push/registration';
 
 const OPTIONS: { key: keyof PushPreferences; title: MessageKey; description: MessageKey }[] = [
   { key: 'breaking_news', title: 'push.breakingNews', description: 'push.breakingNewsMeta' },
@@ -27,6 +27,7 @@ export default function PushSettingsScreen() {
   const [busy, setBusy] = useState(true);
   const [retrying, setRetrying] = useState(false);
   const [pendingSync, setPendingSync] = useState<PendingPushRegistrationStatus | null>(null);
+  const [authRequired, setAuthRequired] = useState(false);
   const [savingKey, setSavingKey] = useState<keyof PushPreferences | null>(null);
   const pendingSyncRef = useRef<PendingPushRegistrationStatus | null>(null);
   const completionAnnouncementPending = useRef(false);
@@ -70,6 +71,7 @@ export default function PushSettingsScreen() {
       refreshGeneration.current += 1;
       const completedPendingSync = event.reason === 'synced' && Boolean(pendingSyncRef.current);
       updatePendingSync(event.status);
+      setAuthRequired(event.reason === 'auth_required');
       if (completedPendingSync) {
         setEnabled(true);
         if (AppState.currentState === 'active') {
@@ -102,13 +104,16 @@ export default function PushSettingsScreen() {
       setPermission(nextPermission.status);
       setCanAskAgain(nextPermission.canAskAgain);
       setEnabled(Boolean(token));
+      setAuthRequired(false);
       updatePendingSync(await getPendingPushRegistrationStatus());
       if (!token) {
         Alert.alert(t('push.pendingTitle'), nextPermission.canAskAgain ? t('push.allowPrompt') : t('push.systemPrompt'));
       }
     } catch (error) {
       updatePendingSync(await getPendingPushRegistrationStatus().catch(() => null));
-      Alert.alert(t('push.enableFailed'), error instanceof Error ? error.message : t('push.networkRetry'));
+      const needsAuth = isPushRegistrationAuthError(error);
+      setAuthRequired(needsAuth);
+      Alert.alert(needsAuth ? t('push.signInRequired') : t('push.enableFailed'), needsAuth ? t('push.signInRequiredBody') : error instanceof Error ? error.message : t('push.networkRetry'));
     } finally {
       setBusy(false);
     }
@@ -141,9 +146,12 @@ export default function PushSettingsScreen() {
         throw new Error(nextPermission.canAskAgain ? t('push.allowPrompt') : t('push.systemPrompt'));
       }
       setEnabled(true);
+      setAuthRequired(false);
     } catch (error) {
       updatePendingSync(await getPendingPushRegistrationStatus().catch(() => null));
-      Alert.alert(t('push.retryFailed'), error instanceof Error ? error.message : t('push.networkRetry'));
+      const needsAuth = isPushRegistrationAuthError(error);
+      setAuthRequired(needsAuth);
+      Alert.alert(needsAuth ? t('push.signInRequired') : t('push.retryFailed'), needsAuth ? t('push.signInRequiredBody') : error instanceof Error ? error.message : t('push.networkRetry'));
     } finally {
       setRetrying(false);
     }
@@ -195,6 +203,15 @@ export default function PushSettingsScreen() {
           </Pressable>
         </View>
       ) : null}
+      {authRequired ? (
+        <View testID="push-registration-auth-required" accessibilityLiveRegion="polite" style={styles.authCard}>
+          <Text style={styles.authTitle}>{t('push.signInRequired')}</Text>
+          <Text style={styles.authBody}>{t('push.signInRequiredBody')}</Text>
+          <Pressable accessibilityRole="button" accessibilityLabel={t('push.signInAgain')} testID="push-registration-sign-in" style={styles.retryButton} onPress={() => router.push('/auth')}>
+            <Text style={styles.retryButtonText}>{t('push.signInAgain')}</Text>
+          </Pressable>
+        </View>
+      ) : null}
       {!enabled && permission === 'denied' && !canAskAgain ? <Pressable accessibilityRole="button" accessibilityLabel={t('push.openSystemSettings')} testID="open-system-settings" style={styles.settingsButton} onPress={() => void Linking.openSettings()}><Text style={styles.settingsButtonText}>{t('push.openSystemSettings')}</Text></Pressable> : null}
       <Text style={styles.section}>{t('push.types')}</Text>
       {preferences ? OPTIONS.map((option) => (
@@ -209,5 +226,5 @@ export default function PushSettingsScreen() {
 }
 
 const styles = StyleSheet.create({
-  page:{flex:1,backgroundColor:'#f5f6f8'},content:{padding:18,paddingTop:58,paddingBottom:40},back:{color:'#c8211e',fontSize:17,fontWeight:'700',marginBottom:18},h1:{fontSize:30,fontWeight:'900',color:'#101828'},sub:{color:'#667085',marginTop:8,marginBottom:22,lineHeight:21},section:{fontWeight:'800',color:'#475467',marginTop:18,marginBottom:10},card:{backgroundColor:'#fff',borderRadius:14,padding:17,marginBottom:12,flexDirection:'row',alignItems:'center',gap:14},rowText:{flex:1},title:{fontSize:17,fontWeight:'800',color:'#101828'},meta:{color:'#667085',marginTop:5,lineHeight:19},pendingCard:{backgroundColor:'#fff7ed',borderWidth:1,borderColor:'#fed7aa',borderRadius:14,padding:15,marginBottom:12},pendingText:{color:'#9a3412',lineHeight:21},pendingMeta:{color:'#9a3412',lineHeight:20,marginTop:4},retryButton:{alignSelf:'flex-start',minHeight:44,justifyContent:'center',borderRadius:10,backgroundColor:'#c8211e',paddingHorizontal:16,marginTop:12},retryButtonPressed:{opacity:0.55},retryButtonText:{color:'#fff',fontWeight:'800'},settingsButton:{borderWidth:1,borderColor:'#c8211e',borderRadius:12,padding:13,alignItems:'center',marginBottom:8},settingsButtonText:{color:'#c8211e',fontWeight:'800'},footnote:{color:'#98a2b3',lineHeight:20,marginTop:10}
+  page:{flex:1,backgroundColor:'#f5f6f8'},content:{padding:18,paddingTop:58,paddingBottom:40},back:{color:'#c8211e',fontSize:17,fontWeight:'700',marginBottom:18},h1:{fontSize:30,fontWeight:'900',color:'#101828'},sub:{color:'#667085',marginTop:8,marginBottom:22,lineHeight:21},section:{fontWeight:'800',color:'#475467',marginTop:18,marginBottom:10},card:{backgroundColor:'#fff',borderRadius:14,padding:17,marginBottom:12,flexDirection:'row',alignItems:'center',gap:14},rowText:{flex:1},title:{fontSize:17,fontWeight:'800',color:'#101828'},meta:{color:'#667085',marginTop:5,lineHeight:19},pendingCard:{backgroundColor:'#fff7ed',borderWidth:1,borderColor:'#fed7aa',borderRadius:14,padding:15,marginBottom:12},pendingText:{color:'#9a3412',lineHeight:21},pendingMeta:{color:'#9a3412',lineHeight:20,marginTop:4},authCard:{backgroundColor:'#fff4e5',borderWidth:1,borderColor:'#fdb022',borderRadius:14,padding:15,marginBottom:12},authTitle:{color:'#7a2e0e',fontWeight:'900',fontSize:16},authBody:{color:'#7a2e0e',lineHeight:20,marginTop:5},retryButton:{alignSelf:'flex-start',minHeight:44,justifyContent:'center',borderRadius:10,backgroundColor:'#c8211e',paddingHorizontal:16,marginTop:12},retryButtonPressed:{opacity:0.55},retryButtonText:{color:'#fff',fontWeight:'800'},settingsButton:{borderWidth:1,borderColor:'#c8211e',borderRadius:12,padding:13,alignItems:'center',marginBottom:8},settingsButtonText:{color:'#c8211e',fontWeight:'800'},footnote:{color:'#98a2b3',lineHeight:20,marginTop:10}
 });

@@ -9,6 +9,7 @@ import { PushResponseGate, pushDestination, shouldRequestPushPermission } from '
 import {
   MAX_PENDING_PUSH_RETRY_DELAY_MS,
   PendingPushRetryTrigger,
+  PushAuthRecoveryGate,
   PushConnectivityGate,
   classifyPushRegistrationError,
   nextPendingPushRegistration,
@@ -29,12 +30,13 @@ const DEVICE_PUSH_DISABLED_KEY = '@trrb/push-device-disabled/v1';
 const PENDING_REGISTRATION_KEY = '@trrb/push-registration-pending/v1';
 const isNative = Platform.OS === 'ios' || Platform.OS === 'android';
 const pushResponseGate = new PushResponseGate();
+const authRecoveryGate = new PushAuthRecoveryGate();
 let registrationSuspended = false;
 let tokenMutationQueue: Promise<void> = Promise.resolve();
 let pendingRetryTimer: ReturnType<typeof setTimeout> | null = null;
 let pendingRetryInFlight: Promise<string | null> | null = null;
 export type PendingPushRegistrationStatus = { attempts: number; retryAt: number; errorKind: 'network' | 'server' | 'unknown' };
-type PendingPushRegistrationEvent = { status: PendingPushRegistrationStatus | null; reason: 'pending' | 'synced' | 'cleared' | 'auth_required' };
+type PendingPushRegistrationEvent = { status: PendingPushRegistrationStatus | null; reason: 'pending' | 'synced' | 'cleared' | 'auth_required' | 'auth_recovered' };
 const pendingRegistrationListeners = new Set<(event: PendingPushRegistrationEvent) => void>();
 
 function publishPendingRegistration(event: PendingPushRegistrationEvent) {
@@ -65,7 +67,7 @@ function schedulePendingRetry(delayMs: number) {
   }, Math.max(0, Math.min(MAX_PENDING_PUSH_RETRY_DELAY_MS, delayMs)));
 }
 
-async function clearPendingRegistration(reason: 'synced' | 'cleared' | 'auth_required' = 'cleared') {
+async function clearPendingRegistration(reason: 'synced' | 'cleared' | 'auth_required' | 'auth_recovered' = 'cleared') {
   clearPendingRetryTimer();
   await AsyncStorage.removeItem(PENDING_REGISTRATION_KEY);
   publishPendingRegistration({ status: null, reason });
@@ -121,7 +123,7 @@ export async function getPendingPushRegistrationStatus() {
   return { attempts: pending.attempts, retryAt: pending.retryAt, errorKind: pending.errorKind };
 }
 
-async function performRegisterPushToken(options: { requestPermission?: boolean; devicePushToken?: Notifications.DevicePushToken; retryTrigger?: PendingPushRetryTrigger } = {}) {
+async function performRegisterPushToken(options: { requestPermission?: boolean; devicePushToken?: Notifications.DevicePushToken; retryTrigger?: PendingPushRetryTrigger; authenticationRecovery?: boolean } = {}) {
   if (!isNative) return null;
 
   const deviceDisabled = await AsyncStorage.getItem(DEVICE_PUSH_DISABLED_KEY) === 'true';
@@ -188,12 +190,14 @@ async function performRegisterPushToken(options: { requestPermission?: boolean; 
     ]);
     await Promise.all([
       AsyncStorage.removeItem(LEGACY_DEVICE_TOKEN_KEY),
-      clearPendingRegistration('synced')
+      clearPendingRegistration(options.authenticationRecovery ? 'auth_recovered' : 'synced')
     ]);
     return expoPushToken;
   } catch (error) {
     const errorKind = classifyPushRegistrationError(error);
     if (errorKind === 'auth') {
+      authRecoveryGate.requireAuthentication();
+      registrationSuspended = true;
       await clearPendingRegistration('auth_required');
       throw error;
     }
@@ -217,7 +221,7 @@ async function performRegisterPushToken(options: { requestPermission?: boolean; 
   }
 }
 
-export function registerPushToken(options: { requestPermission?: boolean; devicePushToken?: Notifications.DevicePushToken } = {}) {
+export function registerPushToken(options: { requestPermission?: boolean; devicePushToken?: Notifications.DevicePushToken; authenticationRecovery?: boolean } = {}) {
   if (options.requestPermission === true) registrationSuspended = false;
   return enqueueTokenMutation(() => performRegisterPushToken(options));
 }
@@ -278,13 +282,14 @@ async function performDisableCurrentDevicePushToken(rememberDeviceChoice: boolea
 }
 
 export function disableCurrentDevicePushToken(options: { rememberDeviceChoice?: boolean } = {}) {
+  authRecoveryGate.clear();
   registrationSuspended = true;
   clearPendingRetryTimer();
   return enqueueTokenMutation(() => performDisableCurrentDevicePushToken(options.rememberDeviceChoice === true));
 }
 
 export function installPushRegistrationLifecycle() {
-  const sync = (devicePushToken?: Notifications.DevicePushToken) => void registerPushToken({ devicePushToken }).catch((error) => console.warn('push token sync failed', error));
+  const sync = (devicePushToken?: Notifications.DevicePushToken, authenticationRecovery = false) => void registerPushToken({ devicePushToken, authenticationRecovery }).catch((error) => console.warn('push token sync failed', error));
   const retryPending = async (trigger: 'foreground' | 'network') => {
     if (registrationSuspended || !await AsyncStorage.getItem(PENDING_REGISTRATION_KEY)) return;
     await retryPendingPushRegistrationForTrigger(trigger);
@@ -293,8 +298,9 @@ export function installPushRegistrationLifecycle() {
   sync();
   const { data } = supabase.auth.onAuthStateChange((event, session) => {
     if (event === 'SIGNED_IN' && session) {
+      const authenticationRecovery = authRecoveryGate.resumeAfterSignIn();
       registrationSuspended = false;
-      setTimeout(sync, 0);
+      setTimeout(() => sync(undefined, authenticationRecovery), 0);
     }
   });
   const tokenSubscription = isNative ? Notifications.addPushTokenListener((token) => {

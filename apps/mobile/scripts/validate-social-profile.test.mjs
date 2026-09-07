@@ -187,6 +187,11 @@ test('push settings expose account-scoped pending registration and accessible re
   assert.match(settings, /push-registration-auth-required/);
   assert.match(settings, /push-registration-sign-in/);
   assert.match(settings, /router\.push\('\/auth'\)/);
+  assert.match(registration, /authRecoveryGate\.requireAuthentication\(\)/);
+  assert.match(registration, /registrationSuspended = true;[\s\S]*clearPendingRegistration\('auth_required'\)/);
+  assert.match(registration, /authRecoveryGate\.resumeAfterSignIn\(\)/);
+  assert.match(registration, /authenticationRecovery \? 'auth_recovered' : 'synced'/);
+  assert.match(settings, /event\.reason === 'auth_recovered'/);
 });
 
 test('push settings follow background token synchronization without stale state', () => {
@@ -195,7 +200,7 @@ test('push settings follow background token synchronization without stale state'
 
   assert.match(registration, /subscribeToPendingPushRegistration/);
   assert.match(registration, /reason: 'pending'/);
-  assert.match(registration, /clearPendingRegistration\('synced'\)/);
+  assert.match(registration, /clearPendingRegistration\(options\.authenticationRecovery \? 'auth_recovered' : 'synced'\)/);
   assert.match(settings, /AppState\.addEventListener\('change'/);
   assert.match(settings, /refreshDeviceState\(true\)/);
   assert.match(settings, /refreshGeneration\.current \+= 1/);

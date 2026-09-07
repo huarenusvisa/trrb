@@ -125,6 +125,24 @@ export class PushConnectivityGate {
   }
 }
 
+export class PushAuthRecoveryGate {
+  private required = false;
+
+  requireAuthentication() {
+    this.required = true;
+  }
+
+  resumeAfterSignIn() {
+    const shouldResume = this.required;
+    this.required = false;
+    return shouldResume;
+  }
+
+  clear() {
+    this.required = false;
+  }
+}
+
 export function pendingPushRetryDelay(
   raw: string | null,
   userId: string,

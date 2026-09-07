@@ -1,3 +1,6 @@
+Warning: truncated output (original token count: 42043)
+Total output lines: 496
+
 (() => {
   const locales = ['en', 'es', 'fr', 'pt-BR', 'hi', 'zh-Hans', 'zh-Hant', 'ru', 'ar', 'tr'];
   const aliases = { zh: 'zh-Hans', 'zh-CN': 'zh-Hans', 'zh-SG': 'zh-Hans', 'zh-TW': 'zh-Hant', 'zh-HK': 'zh-Hant', pt: 'pt-BR', 'pt-PT': 'pt-BR' };
@@ -199,13 +202,7 @@
     ['至今','year to date','hasta la fecha','à ce jour','até o momento','अब तक','至今','с начала года','حتى الآن','bugüne kadar'],
     ['查看该州法院','View courts in this state','Ver tribunales de este estado','Voir les tribunaux de cet État','Ver tribunais deste estado','इस राज्य की अदालतें देखें','查看該州法院','Суды этого штата','عرض محاكم هذه الولاية','Bu eyaletteki mahkemeleri görüntüle'],
     ['移民法院','Immigration courts','Tribunales de inmigración','Tribunaux de l’immigration','Tribunais de imigração','इमिग्रेशन कोर्ट','移民法院','Иммиграционные суды','محاكم الهجرة','Göçmenlik mahkemeleri'],
-    ['少于50件，不显示','Fewer than 50; rate hidden','Menos de 50; tasa oculta','Moins de 50 ; taux masqué','Menos de 50; taxa oculta','50 से कम; दर छिपी','少於50件，不顯示','Менее 50; доля скрыта','أقل من 50؛ النسبة مخفية','50’den az; oran gizli'],
-    ['查看统计口径与来源说明','View methodology and source notes','Ver metodología y fuentes','Voir la méthodologie et les sources','Ver metodologia e fontes','कार्यप्रणाली और स्रोत देखें','查看統計口徑與來源說明','Методика и источники','عرض المنهجية والمصادر','Yöntem ve kaynakları görüntüle'],
-    ['法院指标由数据库中归属于该法院的法官庇护裁决记录汇总。','Court metrics aggregate asylum decision records for judges assigned to this court in the database.','Las métricas agregan decisiones de asilo de los jueces asignados a este tribunal en la base.','Les indicateurs agrègent les décisions d’asile des juges rattachés à ce tribunal dans la base.','As métricas agregam decisões de asilo dos juízes vinculados a este tribunal na base.','अदालत के आँकड़े डेटाबेस में इस अदालत से जुड़े न्यायाधीशों के शरण निर्णयों का योग हैं।','法院指標由資料庫中歸屬該法院的法官庇護裁決記錄彙總。','Показатели суда суммируют решения судей, отнесённых к этому суду в базе.','تجمع مؤشرات المحكمة قرارات اللجوء للقضاة المنسوبين إليها في قاعدة البيانات.','Mahkeme ölçümleri, veri tabanında bu mahkemeye bağlı hâkimlerin sığınma kararlarını toplar.'],
-    ['法院数据怎么计算','How court data is calculated','Cómo se calculan los datos del tribunal','Calcul des données du tribunal','Como os dados do tribunal são calculados','अदालत डेटा की गणना कैसे होती है','法院資料怎麼計算','Как рассчитываются данные суда','كيفية حساب بيانات المحكمة','Mahkeme verileri nasıl hesaplanır'],
-    ['法院通过率按该法院数据库样本中的批准 ÷（批准 + 拒绝）计算。不同法官任职时间和样本范围可能不同，因此法院汇总用于数据观察，不用于预测具体案件。','Court approval rate is approved ÷ (approved + denied) in this court’s database sample. Judge tenures and sample ranges vary, so court totals are for observation, not predicting a case.','La tasa del tribunal es aprobadas ÷ (aprobadas + denegadas) en la muestra. Los períodos y muestras varían; el total sirve para observar datos, no predecir casos.','Le taux du tribunal est approuvées ÷ (approuvées + refusées) dans l’échantillon. Les périodes varient ; l’agrégat sert à l’observation, pas à la prédiction.','A taxa do tribunal é aprovados ÷ (aprovados + negados) na amostra. Períodos e amostras variam; o total serve à observação, não à previsão.','अदालत की दर नमूने में अनुमोदित ÷ (अनुमोदित + अस्वीकृत) है। कार्यकाल और नमूने अलग हो सकते हैं; योग केवल अवलोकन के लिए है, भविष्यवाणी के लिए नहीं।','法院批准率按該法院資料庫樣本中的批准 ÷（批准 + 拒絕）計算。法官任期與樣本範圍可能不同，法院彙總僅供資料觀察，不用於預測個案。','Доля суда: одобрено ÷ (одобрено + отказано) в выборке. Сроки работы и выборки различаются; итог предназначен для наблюдения, а не прогноза.','نسبة المحكمة = الموافق عليها ÷ (الموافق عليها + المرفوضة) في العينة. تختلف فترات القضاة والعينات؛ ويُستخدم الإجمالي للملاحظة لا للتنبؤ.','Mahkeme oranı örneklemde onay ÷ (onay + ret) olarak hesaplanır. Görev süreleri ve örnekler değişir; toplamlar gözlem içindir, tahmin için değil.'],
-    ['查看完整统计口径','View full methodology','Ver metodología completa','Voir la méthodologie complète','Ver metodologia completa','पूरी कार्यप्रणाली देखें','查看完整統計口徑','Полная методика','عرض المنهجية الكاملة','Tam yöntemi görüntüle'],
-    ['绿色为庇护批准，红色为庇护拒绝；蓝色“其他”包括 EOIR 原始字段可识别的暂缓/CAT保护、取消递解或调整身份、自愿离境、撤回/终止/驳回及行政结案。没有可核验最终结果的待裁案件不计入。FY 2026 是截至数据快照日的财年至今数据；FY 2025、FY 2024 是完整财政年度。州归属按案件裁决当时的法院。','Green is approved, red denied, and blue “Other” covers identifiable withholding/CAT protection, cancellation or adjustment, voluntary departure, withdrawal, termination, dismissal, and administrative closure. Pending cases without a verifiable final outcome are excluded. FY 2026 is year to date through the snapshot; FY 2025 and FY 2024 are complete fiscal years. State is based on the court at decision time.','Verde indica aprobación, rojo denegación y azul “Otros” incluye protección CAT, cancelación o ajuste, salida voluntaria, retiro, terminación, desestimación y cierre administrativo. Se excluyen pendientes sin resultado final verificable. FY 2026 va hasta la fecha de corte; FY 2025 y FY 2024 son años completos. El estado corresponde al tribunal al decidirse.','Vert indique l’approbation, rouge le refus et bleu « Autres » comprend CAT, annulation ou ajustement, départ volontaire, retrait, clôture et classement administratif. Les dossiers sans résultat final vérifiable sont exclus. FY 2026 est en cours ; FY 2025 et FY 2024 sont complets. L’État est celui du tribunal lors de la décision.','Verde é aprovação, vermelho negativa e azul “Outros” inclui proteção CAT, cancelamento ou ajuste, saída voluntária, retirada, encerramento, arquivamento e fechamento administrativo. Pendentes sem resultado final verificável são excluídos. FY 2026 está em andamento; FY 2025 e FY 2024 são completos. O estado é o do tribunal na decisão.','हरा अनुमोदन, लाल अस्वीकृति और नीला “अन्य” CAT संरक्षण, रद्दीकरण/समायोजन, स्वैच्छिक प्रस्थान, वापसी, समाप्ति, खारिज और प्रशासनिक बंद दिखाता है। सत्यापन योग्य अंतिम परिणाम बिना लंबित मामले शामिल नहीं हैं। FY 2026 अब तक है; FY 2025 और FY 2024 पूर्ण वर्ष हैं। राज्य निर्णय के समय की अदालत से तय होता है।','綠色為庇護批准，紅色為拒絕；藍色「其他」包括可識別的暫緩/CAT 保護、取消遞解或調整身分、自願離境、撤回、終止、駁回及行政結案。沒有可核驗最終結果的待裁案件不計入。FY 2026 為截至快照日的財年至今資料；FY 2025、FY 2024 為完整財年。州歸屬按裁決時所在法院。','Зелёный — одобрение, красный — отказ, синий — другие исходы, включая CAT-защиту, отмену или изменение статуса, добровольный выезд, отзыв, прекращение, отклонение и административное закрытие. Незавершённые дела без проверяемого исхода исключены. FY 2026 — с начала года; FY 2025 и FY 2024 полные. Штат определяется судом на момент решения.','الأخضر للموافقة والأحمر للرفض والأزرق للنتائج الأخرى، ومنها حماية CAT والإلغاء أو تعديل الوضع والمغادرة الطوعية والسحب والإنهاء والرفض والإغلاق الإداري. تُستبعد القضايا المعلقة بلا نتيجة نهائية قابلة للتحقق. FY 2026 حتى تاريخ اللقطة؛ وFY 2025 وFY 2024 كاملتان. الولاية هي ولاية المحكمة وقت القرار.','Yeşil onay, kırmızı ret, mavi “Diğer” sonuçlardır; CAT koruması, iptal/statü ayarı, gönüllü ayrılış, geri çekme, sonlandırma, ret ve idari kapatma dahildir. Doğrulanabilir sonucu olmayan bekleyen davalar hariçtir. FY 2026 yıl içidir; FY 2025 ve FY 2024 tam yıldır. Eyalet karar anındaki mahkemeye göre belirlenir.'],
+    ['少于50件，不显示','Fewer than 50; rate hidden','Menos de 50; tasa oculta','Moins de 50 ; taux masqué',…2043 tokens truncated…года; FY 2025 и FY 2024 полные. Штат определяется судом на момент решения.','الأخضر للموافقة والأحمر للرفض والأزرق للنتائج الأخرى، ومنها حماية CAT والإلغاء أو تعديل الوضع والمغادرة الطوعية والسحب والإنهاء والرفض والإغلاق الإداري. تُستبعد القضايا المعلقة بلا نتيجة نهائية قابلة للتحقق. FY 2026 حتى تاريخ اللقطة؛ وFY 2025 وFY 2024 كاملتان. الولاية هي ولاية المحكمة وقت القرار.','Yeşil onay, kırmızı ret, mavi “Diğer” sonuçlardır; CAT koruması, iptal/statü ayarı, gönüllü ayrılış, geri çekme, sonlandırma, ret ve idari kapatma dahildir. Doğrulanabilir sonucu olmayan bekleyen davalar hariçtir. FY 2026 yıl içidir; FY 2025 ve FY 2024 tam yıldır. Eyalet karar anındaki mahkemeye göre belirlenir.'],
     ['绿色为庇护批准，红色为庇护拒绝，蓝色为可识别的其他结案结果；没有可核验最终结果的待裁案件不计入。数据按个案裁决记录中的法院代码归州，不把法官全部历史案件归到其最新任职法院。','Green is approved, red denied, and blue other identifiable outcomes. Pending cases without a verifiable final outcome are excluded. State comes from the court code on each decision, not the judge’s latest court.','Verde indica aprobación, rojo denegación y azul otros resultados identificables. Se excluyen pendientes sin resultado final verificable. El estado proviene del código del tribunal de cada decisión, no del tribunal más reciente del juez.','Vert indique l’approbation, rouge le refus et bleu les autres résultats identifiables. Les dossiers sans résultat final vérifiable sont exclus. L’État vient du code du tribunal de chaque décision, pas du dernier tribunal du juge.','Verde é aprovação, vermelho negativa e azul outros resultados identificáveis. Pendentes sem resultado final verificável são excluídos. O estado vem do código do tribunal em cada decisão, não do tribunal mais recente do juiz.','हरा अनुमोदन, लाल अस्वीकृति और नीला अन्य पहचाने गए परिणाम हैं। सत्यापन योग्य अंतिम परिणाम बिना लंबित मामले शामिल नहीं हैं। राज्य हर निर्णय के अदालत कोड से आता है, न्यायाधीश की नवीनतम अदालत से नहीं।','綠色為批准，紅色為拒絕，藍色為可識別的其他結案結果；沒有可核驗最終結果的待裁案件不計入。州別取自每件裁決的法院代碼，不把法官全部歷史案件歸到最新任職法院。','Зелёный — одобрение, красный — отказ, синий — другие распознаваемые исходы. Незавершённые дела без проверяемого исхода исключены. Штат берётся из кода суда каждого решения, а не последнего места работы судьи.','الأخضر للموافقة والأحمر للرفض والأزرق للنتائج الأخرى القابلة للتحديد. تُستبعد القضايا المعلقة بلا نتيجة نهائية قابلة للتحقق. تُحدد الولاية من رمز المحكمة لكل قرار، لا من أحدث محكمة للقاضي.','Yeşil onay, kırmızı ret, mavi diğer tanımlanabilir sonuçlardır. Doğrulanabilir sonucu olmayan bekleyen davalar hariçtir. Eyalet, hâkimin son mahkemesinden değil her kararın mahkeme kodundan alınır.'],
     ['财政年度','Fiscal year','Año fiscal','Exercice','Ano fiscal','वित्त वर्ष','財政年度','Финансовый год','السنة المالية','Mali yıl'],
     ['裁决总数','Total decisions','Decisiones totales','Total des décisions','Total de decisões','कुल निर्णय','裁決總數','Всего решений','إجمالي القرارات','Toplam karar'],
@@ -430,7 +427,58 @@
     if (locale === 'zh-Hant') return stateTraditional[normalized] || fallback || code;
     return stateEnglish[normalized] || fallback || code;
   };
-  window.AsylumI18n = { get locale() { return locale; }, supported: locales, t: (key, vars) => interpolate(translate(key), vars), translate, setLocale, formatNumber, stateName, dictionarySize: rows.length };
+  const nationalityRegionAliases = new Map(Object.entries({
+    'turkey': 'TR', 'kirghizia kyrgyzstan': 'KG', 'democratic republic of congo': 'CD',
+    'people s republic of the congo': 'CG', 'tajikistan tadzhik': 'TJ', 'moldavia moldova': 'MD',
+    'ivory coast cote d ivoire': 'CI', 'burma myanmar': 'MM', 'palestinian': 'PS',
+    'bosnia herzegovina': 'BA', 'macedonia': 'MK', 'federated states of micronesia': 'FM',
+    'slovak republic': 'SK', 'czech republic': 'CZ', 'hong kong': 'HK',
+    'byelorussia belarus': 'BY', 'holland': 'NL', 'st vincent and the grenadines': 'VC',
+    'east timor': 'TL', 'macau': 'MO', 'republic of the marshall islands': 'MH',
+    'kampuchea': 'KH', 'st kiitts west indies': 'KN', 'western samoa': 'WS',
+    'swaziland': 'SZ', 'cocos island': 'CC', 'faeroe island': 'FO',
+    'the republic of palau': 'PW', 'people s republic of benin': 'BJ',
+    'upper volta': 'BF', 'christmas islands': 'CX'
+  }));
+  const normalizeCountryName = (value) => String(value || '')
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/&/g, 'and')
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim();
+  let isoRegionByEnglishName;
+  const regionCodeForNationality = (row) => {
+    const key = normalizeCountryName(row?.nationality);
+    if (!key) return null;
+    if (nationalityRegionAliases.has(key)) return nationalityRegionAliases.get(key);
+    if (!isoRegionByEnglishName) {
+      isoRegionByEnglishName = new Map();
+      try {
+        const englishRegions = new Intl.DisplayNames(['en'], { type: 'region' });
+        for (let first = 65; first <= 90; first += 1) {
+          for (let second = 65; second <= 90; second += 1) {
+            const code = String.fromCharCode(first, second);
+            const name = englishRegions.of(code);
+            if (name && name !== code) isoRegionByEnglishName.set(normalizeCountryName(name), code);
+          }
+        }
+      } catch {}
+    }
+    return isoRegionByEnglishName.get(key) || null;
+  };
+  const countryName = (row) => {
+    if (locale.startsWith('zh') && row?.nationality_zh) return row.nationality_zh;
+    const regionCode = regionCodeForNationality(row);
+    if (regionCode) {
+      try {
+        const name = new Intl.DisplayNames([locale], { type: 'region' }).of(regionCode);
+        if (name && name !== regionCode) return name;
+      } catch {}
+    }
+    return locale.startsWith('zh') ? (row?.nationality_zh || row?.nationality || '') : (row?.nationality || row?.nationality_zh || '');
+  };
+  window.AsylumI18n = { get locale() { return locale; }, supported: locales, t: (key, vars) => interpolate(translate(key), vars), translate, setLocale, formatNumber, stateName, countryName, regionCodeForNationality, dictionarySize: rows.length };
   const observer = new MutationObserver((records) => records.forEach((record) => record.addedNodes.forEach((node) => {
     if (node.nodeType === 3) translateTextNode(node);
     else if (node.nodeType === 1) translateElement(node);

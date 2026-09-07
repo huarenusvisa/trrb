@@ -18,6 +18,8 @@ on:
       - 'scripts/ice-candidate-gate.mjs'
       - 'scripts/ice-high-recall-discovery.mjs'
       - 'scripts/ice-high-recall-production.test.mjs'
+      - 'scripts/ice-news-quality-gate.mjs'
+      - 'scripts/ice-news-quality-gate.test.mjs'
       - 'topic/ice/index.html'
       - 'topic/ice/ice.js'
       - 'scripts/ice-history-list.test.mjs'

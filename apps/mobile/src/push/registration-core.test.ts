@@ -1,6 +1,10 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import {
+  MAX_PENDING_PUSH_RETRY_DELAY_MS,
+  nextPendingPushRegistration,
+  parsePendingPushRegistration,
+  pendingPushRetryDelay,
   parseStoredPushRegistration,
   serializePushRegistration,
   shouldSynchronizePushRegistration,
@@ -50,4 +54,51 @@ test('silent lifecycle sync honors an explicit device opt-out', () => {
   assert.equal(shouldSynchronizePushRegistration(false, false), true);
   assert.equal(shouldSynchronizePushRegistration(true, false), false);
   assert.equal(shouldSynchronizePushRegistration(true, true), true);
+});
+
+test('persists bounded pending sync metadata without session credentials', () => {
+  const now = 1_800_000_000_000;
+  const raw = nextPendingPushRegistration(null, 'user-1', 'ios', 'ExpoPushToken[current-token]', now);
+  assert.deepEqual(parsePendingPushRegistration(raw, now), {
+    version: 1,
+    userId: 'user-1',
+    platform: 'ios',
+    expoPushToken: 'ExpoPushToken[current-token]',
+    attempts: 1,
+    createdAt: now,
+    retryAt: now + 15_000
+  });
+  assert.equal(raw.includes('access_token'), false);
+  assert.equal(raw.includes('refresh_token'), false);
+});
+
+test('backs off repeated pending sync while keeping delay bounded', () => {
+  const now = 1_800_000_000_000;
+  let currentNow = now;
+  let raw = nextPendingPushRegistration(null, 'user-1', 'android', null, now);
+  assert.equal(pendingPushRetryDelay(raw, 'user-1', now), 15_000);
+  for (let attempt = 1; attempt < 10; attempt += 1) {
+    currentNow = parsePendingPushRegistration(raw, currentNow)?.retryAt ?? currentNow;
+    raw = nextPendingPushRegistration(raw, 'user-1', 'android', null, currentNow);
+  }
+  const pending = parsePendingPushRegistration(raw, currentNow);
+  assert.equal(pending?.attempts, 10);
+  assert.equal(pendingPushRetryDelay(raw, 'user-1', currentNow), MAX_PENDING_PUSH_RETRY_DELAY_MS);
+  assert.ok((pending?.retryAt ?? 0) - JSON.parse(raw).createdAt <= 7 * 24 * 60 * 60 * 1_000);
+  const cappedNow = pending?.retryAt ?? currentNow;
+  const capped = nextPendingPushRegistration(raw, 'user-1', 'android', null, cappedNow);
+  const cappedValue = parsePendingPushRegistration(capped, cappedNow);
+  assert.equal((cappedValue?.retryAt ?? 0) - cappedNow, MAX_PENDING_PUSH_RETRY_DELAY_MS);
+});
+
+test('isolates pending retries by account and rejects stale or malformed records', () => {
+  const now = 1_800_000_000_000;
+  const raw = nextPendingPushRegistration(null, 'user-1', 'ios', null, now);
+  assert.equal(pendingPushRetryDelay(raw, 'user-2', now), null);
+  assert.equal(parsePendingPushRegistration(raw, now + 8 * 24 * 60 * 60 * 1_000), null);
+  assert.equal(parsePendingPushRegistration('{broken', now), null);
+  assert.equal(parsePendingPushRegistration(JSON.stringify({ ...JSON.parse(raw), retryAt: now + 24 * 60 * 60 * 1_000 }), now), null);
+  const switched = parsePendingPushRegistration(nextPendingPushRegistration(raw, 'user-2', 'ios', null, now), now);
+  assert.equal(switched?.attempts, 1);
+  assert.equal(switched?.userId, 'user-2');
 });

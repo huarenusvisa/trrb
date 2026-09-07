@@ -7,8 +7,23 @@ export type StoredPushRegistration = {
   expoPushToken: string;
 };
 
+export type PendingPushRegistration = {
+  version: 1;
+  userId: string;
+  platform: PushPlatform;
+  expoPushToken: string | null;
+  attempts: number;
+  createdAt: number;
+  retryAt: number;
+};
+
 const MAX_USER_ID_LENGTH = 128;
 const MAX_PUSH_TOKEN_LENGTH = 2_048;
+const MAX_PENDING_AGE_MS = 7 * 24 * 60 * 60 * 1_000;
+const MAX_FUTURE_SKEW_MS = 5 * 60 * 1_000;
+const BASE_PENDING_RETRY_DELAY_MS = 15_000;
+export const MAX_PENDING_PUSH_RETRY_DELAY_MS = 15 * 60 * 1_000;
+const MAX_PENDING_ATTEMPTS = 10;
 
 function safeString(value: unknown, maxLength: number) {
   if (typeof value !== 'string') return null;
@@ -33,6 +48,49 @@ export function serializePushRegistration(userId: string, platform: PushPlatform
   const registration = parseStoredPushRegistration(JSON.stringify({ version: 2, userId, platform, expoPushToken }));
   if (!registration) throw new Error('Invalid push registration metadata');
   return JSON.stringify(registration);
+}
+
+export function parsePendingPushRegistration(raw: string | null, now = Date.now()): PendingPushRegistration | null {
+  if (!raw || raw.length > 4_096 || !Number.isFinite(now)) return null;
+  try {
+    const value = JSON.parse(raw) as Partial<PendingPushRegistration>;
+    const userId = safeString(value.userId, MAX_USER_ID_LENGTH);
+    const token = value.expoPushToken === null ? null : safeString(value.expoPushToken, MAX_PUSH_TOKEN_LENGTH);
+    const attempts = Number(value.attempts);
+    const createdAt = Number(value.createdAt);
+    const retryAt = Number(value.retryAt);
+    if (value.version !== 1 || !userId || (value.platform !== 'ios' && value.platform !== 'android')) return null;
+    if (value.expoPushToken !== null && !token) return null;
+    if (!Number.isInteger(attempts) || attempts < 1 || attempts > MAX_PENDING_ATTEMPTS) return null;
+    if (!Number.isFinite(createdAt) || createdAt <= 0 || createdAt > now + MAX_FUTURE_SKEW_MS || now - createdAt > MAX_PENDING_AGE_MS) return null;
+    if (!Number.isFinite(retryAt) || retryAt < createdAt || retryAt > now + MAX_PENDING_PUSH_RETRY_DELAY_MS + MAX_FUTURE_SKEW_MS) return null;
+    return { version: 1, userId, platform: value.platform, expoPushToken: token, attempts, createdAt, retryAt };
+  } catch {
+    return null;
+  }
+}
+
+export function nextPendingPushRegistration(
+  raw: string | null,
+  userId: string,
+  platform: PushPlatform,
+  expoPushToken: string | null,
+  now = Date.now()
+) {
+  const previous = parsePendingPushRegistration(raw, now);
+  const nextToken = safeString(expoPushToken, MAX_PUSH_TOKEN_LENGTH) ?? previous?.expoPushToken ?? null;
+  const sameAttempt = previous?.userId === userId && previous.platform === platform && previous.expoPushToken === nextToken;
+  const attempts = sameAttempt ? Math.min(MAX_PENDING_ATTEMPTS, previous.attempts + 1) : 1;
+  const createdAt = sameAttempt ? previous.createdAt : now;
+  const delay = Math.min(MAX_PENDING_PUSH_RETRY_DELAY_MS, BASE_PENDING_RETRY_DELAY_MS * (2 ** (attempts - 1)));
+  const pending: PendingPushRegistration = { version: 1, userId, platform, expoPushToken: nextToken, attempts, createdAt, retryAt: now + delay };
+  return JSON.stringify(pending);
+}
+
+export function pendingPushRetryDelay(raw: string | null, userId: string, now = Date.now()) {
+  const pending = parsePendingPushRegistration(raw, now);
+  if (!pending || pending.userId !== userId) return null;
+  return Math.max(0, Math.min(MAX_PENDING_PUSH_RETRY_DELAY_MS, pending.retryAt - now));
 }
 
 export function stalePushTokensForCurrentUser(

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { AccessibilityInfo, Pressable, RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { router, Stack } from 'expo-router';
+import { router, Stack, useLocalSearchParams } from 'expo-router';
 import { AsyncStatePanel } from '../src/components/AsyncStatePanel';
 import { PageRequestGate } from '../src/components/news-page-request-core';
 import { NotificationActionGate } from '../src/notifications/notification-action-core';
@@ -27,6 +27,7 @@ const NOTICE_KEYS: Record<NotificationType, MessageKey> = {
 
 export default function NotificationsScreen() {
   const { locale, t } = useI18n();
+  const { pushTarget } = useLocalSearchParams<{ pushTarget?: string }>();
   const unread = useUnreadCounts();
   const [items, setItems] = useState<UserNotification[]>([]);
   const [loading, setLoading] = useState(true);
@@ -229,6 +230,7 @@ export default function NotificationsScreen() {
       <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.filters} accessibilityRole="tablist">
         {notificationCategories.map((item) => <Pressable key={item.key} disabled={markingRead} testID={`notification-filter-${item.key}`} accessibilityRole="tab" accessibilityState={{ selected: category === item.key, disabled: markingRead }} accessibilityLabel={t('inbox.filterA11y', { category: t(CATEGORY_KEYS[item.key]) })} style={[styles.filter, category === item.key && styles.filterSelected, markingRead && styles.disabled]} onPress={() => selectCategory(item.key)}><Text style={[styles.filterText, category === item.key && styles.filterTextSelected]}>{t(CATEGORY_KEYS[item.key])}</Text></Pressable>)}
       </ScrollView>
+      {pushTarget === 'unavailable' ? <AsyncStatePanel testID="notifications-push-target-unavailable" tone="error" title={t('inbox.pushTargetUnavailableTitle')} message={t('inbox.pushTargetUnavailableBody')} /> : null}
       {cachedStatus ? <View testID="notifications-offline-cache" accessibilityRole="alert" accessibilityLiveRegion="polite" style={styles.cacheNotice}>
         <Text style={styles.cacheNoticeText}>{t('inbox.cacheDetails', { count: cachedStatus.count, savedAt: new Date(cachedStatus.savedAt).toLocaleString(localeDateTag(locale)) })}</Text>
         {cachedStatus.truncated ? <Text testID="notifications-cache-truncated" style={styles.cacheTruncatedText}>{t('inbox.cacheTruncated')}</Text> : null}

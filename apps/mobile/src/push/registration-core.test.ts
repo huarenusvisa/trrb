@@ -7,6 +7,7 @@ import {
   nextPendingPushRegistration,
   parsePendingPushRegistration,
   pendingPushRetryDelay,
+  pushRegistrationRetryAfterMs,
   parseStoredPushRegistration,
   serializePushRegistration,
   shouldSynchronizePushRegistration,
@@ -128,6 +129,29 @@ test('only manual retries and recovered network failures bypass the pending back
   assert.equal(pendingPushRetryDelay(network, 'user-1', now, 'foreground'), 15_000);
   assert.equal(pendingPushRetryDelay(server, 'user-1', now, 'manual'), 0);
   assert.equal(pendingPushRetryDelay(network, 'user-2', now, 'manual'), null);
+});
+
+test('honors a bounded server Retry-After without weakening exponential backoff', () => {
+  const now = 1_800_000_000_000;
+  const serverError = Object.assign(new Error('private server response'), {
+    pushRegistrationErrorKind: 'server',
+    pushRegistrationRetryAfterMs: 120_000
+  });
+  const delayed = nextPendingPushRegistration(
+    null,
+    'user-1',
+    'ios',
+    null,
+    now,
+    classifyPushRegistrationError(serverError),
+    pushRegistrationRetryAfterMs(serverError)
+  );
+  assert.equal(pendingPushRetryDelay(delayed, 'user-1', now), 120_000);
+  assert.equal(delayed.includes('private server response'), false);
+
+  const shorter = nextPendingPushRegistration(null, 'user-1', 'ios', null, now, 'server', 1_000);
+  assert.equal(pendingPushRetryDelay(shorter, 'user-1', now), 15_000);
+  assert.equal(pushRegistrationRetryAfterMs({ pushRegistrationRetryAfterMs: Number.POSITIVE_INFINITY }), null);
 });
 
 test('isolates pending retries by account and rejects stale or malformed records', () => {

@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import {
   createBoundedJobsSnapshot,
+  inspectJobsCache,
   JOBS_CACHE_MAX_AGE_MS,
   JOBS_CACHE_MAX_ITEMS,
   parseJobsCache,
@@ -35,6 +36,16 @@ test('parses a fresh validated cache envelope', () => {
 
   assert.equal(payload?.savedAt, now - 1_000);
   assert.deepEqual(payload?.items, [job('1')]);
+});
+
+test('classifies expired cache separately from malformed content', () => {
+  const now = 20_000_000_000;
+  const expired = inspectJobsCache(JSON.stringify({ savedAt: now - JOBS_CACHE_MAX_AGE_MS - 1, items: [job('1')] }), now);
+  const future = inspectJobsCache(JSON.stringify({ savedAt: now + 10 * 60 * 1000, items: [job('1')] }), now);
+
+  assert.deepEqual(expired, { payload: null, discardReason: 'expired' });
+  assert.deepEqual(future, { payload: null, discardReason: 'invalid' });
+  assert.deepEqual(inspectJobsCache(null, now), { payload: null, discardReason: null });
 });
 
 test('rejects expired, malformed, oversized, and unsafe contact caches', () => {

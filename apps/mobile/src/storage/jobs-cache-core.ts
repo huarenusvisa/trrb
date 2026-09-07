@@ -1,5 +1,6 @@
 export const JOBS_CACHE_MAX_ITEMS = 40;
 export const JOBS_CACHE_MAX_AGE_MS = 7 * 24 * 60 * 60 * 1000;
+const JOBS_CACHE_FUTURE_TOLERANCE_MS = 5 * 60 * 1000;
 
 export type CachedJobContact = {
   type: 'phone' | 'email' | 'official_apply';
@@ -22,6 +23,11 @@ export type CachedJob = {
 export type JobsCacheEnvelope = {
   savedAt: number;
   items: CachedJob[];
+};
+
+export type JobsCacheInspection = {
+  payload: JobsCacheEnvelope | null;
+  discardReason: 'expired' | 'invalid' | null;
 };
 
 function validOptionalText(value: unknown) {
@@ -66,15 +72,24 @@ export function createBoundedJobsSnapshot(items: CachedJob[], maxItems = JOBS_CA
   }).slice(0, limit);
 }
 
-export function parseJobsCache(raw: string | null, now = Date.now()): JobsCacheEnvelope | null {
-  if (!raw) return null;
+export function inspectJobsCache(raw: string | null, now = Date.now()): JobsCacheInspection {
+  if (!raw) return { payload: null, discardReason: null };
   try {
     const payload = JSON.parse(raw) as JobsCacheEnvelope;
     const savedAt = Number(payload?.savedAt);
-    if (!Number.isFinite(savedAt) || savedAt <= 0 || now - savedAt > JOBS_CACHE_MAX_AGE_MS) return null;
-    if (!Array.isArray(payload?.items) || payload.items.length > JOBS_CACHE_MAX_ITEMS || !payload.items.every(validJob)) return null;
-    return { savedAt, items: payload.items };
+    if (!Number.isFinite(savedAt) || savedAt <= 0 || savedAt > now + JOBS_CACHE_FUTURE_TOLERANCE_MS) {
+      return { payload: null, discardReason: 'invalid' };
+    }
+    if (now - savedAt > JOBS_CACHE_MAX_AGE_MS) return { payload: null, discardReason: 'expired' };
+    if (!Array.isArray(payload?.items) || payload.items.length > JOBS_CACHE_MAX_ITEMS || !payload.items.every(validJob)) {
+      return { payload: null, discardReason: 'invalid' };
+    }
+    return { payload: { savedAt, items: payload.items }, discardReason: null };
   } catch {
-    return null;
+    return { payload: null, discardReason: 'invalid' };
   }
+}
+
+export function parseJobsCache(raw: string | null, now = Date.now()): JobsCacheEnvelope | null {
+  return inspectJobsCache(raw, now).payload;
 }

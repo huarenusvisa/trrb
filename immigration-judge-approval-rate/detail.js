@@ -91,6 +91,22 @@ const nationalityTableLabels = {
   ar: { first: 'السنة المالية / الجنسية', total: 'إجمالي القرارات', grants: 'الموافقات', denials: 'الرفض', other: 'أخرى', otherTitle: 'يشمل إسقاط القضايا وA10 وإلغاء الإبعاد ووقف الإبعاد والمغادرة الطوعية والنتائج الأخرى', rate: 'معدل الموافقة في القضايا المفصول فيها' },
   tr: { first: 'Mali yıl / Uyruk', total: 'Toplam karar', grants: 'Kabuller', denials: 'Retler', other: 'Diğer', otherTitle: 'Düşürülen davalar, A10, sınır dışı kararının iptali veya ertelenmesi, gönüllü ayrılış ve diğer sonuçları içerir', rate: 'Karara bağlanan dosyalarda kabul oranı' }
 };
+const yearlyMessages = {
+  en: { first: 'Fiscal year', empty: 'No yearly trend data for 2024–2026.', chartLabel: 'Annual grants, denials, and other decisions for this judge', chartTitle: 'Decision outcomes for 2026, 2025, and 2024', chartAria: 'Horizontal comparison of annual decision outcomes' },
+  es: { first: 'Año fiscal', empty: 'No hay datos de tendencias anuales para 2024–2026.', chartLabel: 'Aprobaciones, denegaciones y otras decisiones anuales de este juez', chartTitle: 'Resultados de decisiones de 2026, 2025 y 2024', chartAria: 'Comparación horizontal de resultados de decisiones anuales' },
+  fr: { first: 'Exercice', empty: 'Aucune tendance annuelle disponible pour 2024–2026.', chartLabel: 'Accords, refus et autres décisions annuelles de ce juge', chartTitle: 'Décisions rendues en 2026, 2025 et 2024', chartAria: 'Comparaison horizontale des décisions annuelles' },
+  'pt-BR': { first: 'Ano fiscal', empty: 'Não há dados de tendência anual para 2024–2026.', chartLabel: 'Aprovações, negações e outras decisões anuais deste juiz', chartTitle: 'Resultados das decisões de 2026, 2025 e 2024', chartAria: 'Comparação horizontal dos resultados anuais das decisões' },
+  hi: { first: 'वित्त वर्ष', empty: '2024–2026 के लिए वार्षिक रुझान डेटा उपलब्ध नहीं है।', chartLabel: 'इस न्यायाधीश के वार्षिक स्वीकृत, अस्वीकृत और अन्य निर्णय', chartTitle: '2026, 2025 और 2024 के निर्णय परिणाम', chartAria: 'वार्षिक निर्णय परिणामों की क्षैतिज तुलना' },
+  'zh-Hans': { first: '财政年度', empty: '2024–2026 暂无年度趋势数据。', chartLabel: '该法官年度批准、拒绝与其他裁决', chartTitle: '2026、2025、2024 年裁决结果', chartAria: '横向年度裁决结果对比图' },
+  'zh-Hant': { first: '財政年度', empty: '2024–2026 暫無年度趨勢資料。', chartLabel: '該法官年度批准、拒絕與其他裁決', chartTitle: '2026、2025、2024 年裁決結果', chartAria: '橫向年度裁決結果比較圖' },
+  ru: { first: 'Финансовый год', empty: 'Нет данных о годовой динамике за 2024–2026 годы.', chartLabel: 'Годовые одобрения, отказы и другие решения этого судьи', chartTitle: 'Решения за 2026, 2025 и 2024 годы', chartAria: 'Горизонтальное сравнение ежегодных решений' },
+  ar: { first: 'السنة المالية', empty: 'لا تتوفر بيانات الاتجاه السنوي للأعوام 2024–2026.', chartLabel: 'الموافقات والرفض والقرارات الأخرى السنوية لهذا القاضي', chartTitle: 'نتائج القرارات للأعوام 2026 و2025 و2024', chartAria: 'مقارنة أفقية لنتائج القرارات السنوية' },
+  tr: { first: 'Mali yıl', empty: '2024–2026 için yıllık eğilim verisi yok.', chartLabel: 'Bu hâkimin yıllık kabul, ret ve diğer kararları', chartTitle: '2026, 2025 ve 2024 karar sonuçları', chartAria: 'Yıllık karar sonuçlarının yatay karşılaştırması' }
+};
+const yearlyCopy = () => {
+  const locale = window.AsylumI18n?.locale || 'zh-Hans';
+  return yearlyMessages[locale] || yearlyMessages['zh-Hans'];
+};
 const nationalityRowMessages = {
   en: { insufficient: 'Only {count} adjudicated decisions; fewer than 50, so the approval rate is not shown.', limited: '{count} adjudicated decisions meet the display threshold, but the sample remains limited.', sufficient: '{count} adjudicated decisions.', dates: 'Record dates: {start} to {end}' },
   es: { insufficient: 'Solo {count} decisiones resueltas; al ser menos de 50, no se muestra la tasa de aprobación.', limited: '{count} decisiones resueltas alcanzan el mínimo de visualización, pero la muestra sigue siendo limitada.', sufficient: '{count} decisiones resueltas.', dates: 'Fechas de registro: del {start} al {end}' },
@@ -118,12 +134,18 @@ const sampleText = (level, count) => {
   return fill(template, { count: fmt(count) });
 };
 const sampleDescription = (row) => {
+  const locale = window.AsylumI18n?.locale || 'zh-Hans';
+  const messages = nationalityRowMessages[locale] || nationalityRowMessages['zh-Hans'];
   const count = Number(row.adjudicated_decisions ?? row.decision_count ?? 0);
-  if (count < 50) return `仅 ${fmt(count)} 件有效裁决，少于 50 件，不显示通过率`;
-  if (count < 200) return `${fmt(count)} 件有效裁决，已达到展示标准，但波动可能较大`;
-  return `${fmt(count)} 件有效裁决`;
+  const template = count < 50 ? messages.insufficient : count < 200 ? messages.limited : messages.sufficient;
+  return fill(template, { count: fmt(count) });
 };
-const dateRange = (row) => row.data_start_date || row.data_end_date ? `记录日期 ${row.data_start_date || '—'} 至 ${row.data_end_date || '—'}` : '';
+const dateRange = (row) => {
+  if (!row.data_start_date && !row.data_end_date) return '';
+  const locale = window.AsylumI18n?.locale || 'zh-Hans';
+  const template = (nationalityRowMessages[locale] || nationalityRowMessages['zh-Hans']).dates;
+  return fill(template, { start: row.data_start_date || '—', end: row.data_end_date || '—' });
+};
 const nationalityRowMessage = (row) => {
   const locale = window.AsylumI18n?.locale || 'zh-Hans';
   const messages = nationalityRowMessages[locale] || nationalityRowMessages['zh-Hans'];
@@ -186,7 +208,9 @@ function renderWebex(webex) {
 }
 
 function outcomeHeader(firstLabel) {
-  return `<div class="trow thead outcome-row"><span>${firstLabel}</span><span>裁决总数</span><span class="verdict-pass">批准</span><span class="verdict-deny">拒绝</span><span class="verdict-other" title="包括撤案、A10、十年绿卡、暂缓递解、自愿递解等其他裁决">其他</span><span>裁决批准率</span></div>`;
+  const locale = window.AsylumI18n?.locale || 'zh-Hans';
+  const labels = nationalityTableLabels[locale] || nationalityTableLabels['zh-Hans'];
+  return `<div class="trow thead outcome-row"><span>${esc(firstLabel)}</span><span>${esc(labels.total)}</span><span class="verdict-pass">${esc(labels.grants)}</span><span class="verdict-deny">${esc(labels.denials)}</span><span class="verdict-other" title="${esc(labels.otherTitle)}">${esc(labels.other)}</span><span>${esc(labels.rate)}</span></div>`;
 }
 
 function nationalityOutcomeHeader() {
@@ -200,11 +224,15 @@ function outcomeRow(firstCell, row) {
 }
 
 function renderYearlyChart(rows) {
+  const copy = yearlyCopy();
+  const locale = window.AsylumI18n?.locale || 'zh-Hans';
+  const labels = nationalityTableLabels[locale] || nationalityTableLabels['zh-Hans'];
   let chart = $('#yearly-chart');
   if (!chart) {
-    $('#yearly').insertAdjacentHTML('beforebegin', '<div id="yearly-chart" class="yearly-chart" aria-label="法官年度批准、拒绝与其他裁决对比图"></div>');
+    $('#yearly').insertAdjacentHTML('beforebegin', '<div id="yearly-chart" class="yearly-chart"></div>');
     chart = $('#yearly-chart');
   }
+  chart.setAttribute('aria-label', copy.chartLabel);
   if (!rows.length) { chart.hidden = true; return; }
   chart.hidden = false;
   const width = 920;
@@ -227,17 +255,17 @@ function renderYearlyChart(rows) {
   const bars = rows.map((row, index) => {
     const center = top + groupHeight * (index + .5);
     const series = [
-      { value: Number(row.grants || 0), className: 'approval', label: '批准', offset: -barHeight * 1.3 },
-      { value: Number(row.denials || 0), className: 'denial', label: '拒绝', offset: 0 },
-      { value: Number(row.other_decisions || 0), className: 'other', label: '其他', offset: barHeight * 1.3 }
+      { value: Number(row.grants || 0), className: 'approval', label: labels.grants, offset: -barHeight * 1.3 },
+      { value: Number(row.denials || 0), className: 'denial', label: labels.denials, offset: 0 },
+      { value: Number(row.other_decisions || 0), className: 'other', label: labels.other, offset: barHeight * 1.3 }
     ];
     const columns = series.map((item) => {
       const barWidth = Math.max(item.value > 0 ? 3 : 0, x(item.value) - left);
-      return `<rect class="year-bar ${item.className}" x="${left}" y="${center + item.offset - barHeight / 2}" width="${barWidth}" height="${barHeight}" rx="${barHeight / 2}"><title>FY ${esc(row.fiscal_year)} ${item.label} ${fmt(item.value)} 件</title></rect>`;
+      return `<rect class="year-bar ${item.className}" x="${left}" y="${center + item.offset - barHeight / 2}" width="${barWidth}" height="${barHeight}" rx="${barHeight / 2}"><title>FY ${esc(row.fiscal_year)} · ${esc(item.label)}: ${fmt(item.value)}</title></rect>`;
     }).join('');
     return `<text class="year-label" x="4" y="${center + 5}">FY ${esc(row.fiscal_year)}</text>${columns}`;
   }).join('');
-  chart.innerHTML = `<div class="year-chart-head"><b>2026、2025、2024 年裁决结果</b><span><i class="approval"></i>批准 <i class="denial"></i>拒绝 <i class="other"></i>其他</span></div><div class="year-chart-scroll"><svg viewBox="0 0 ${width} ${height}" role="img" aria-label="横向年度裁决对比图">${grid}${bars}</svg></div>`;
+  chart.innerHTML = `<div class="year-chart-head"><b>${esc(copy.chartTitle)}</b><span><i class="approval"></i>${esc(labels.grants)} <i class="denial"></i>${esc(labels.denials)} <i class="other"></i>${esc(labels.other)}</span></div><div class="year-chart-scroll"><svg viewBox="0 0 ${width} ${height}" role="img" aria-label="${esc(copy.chartAria)}">${grid}${bars}</svg></div>`;
 }
 
 function enrichNationalityRow(row) {
@@ -318,7 +346,8 @@ async function load() {
       .filter((row) => ['2026', '2025', '2024'].includes(String(row.fiscal_year)))
       .sort((a, b) => Number(b.fiscal_year) - Number(a.fiscal_year));
     renderYearlyChart(yearly);
-    $('#yearly').innerHTML = yearly.length ? `${outcomeHeader('财政年度')}${yearly.map((row) => outcomeRow(`<b>FY ${esc(row.fiscal_year)}</b><small class="sample-explain">${esc(sampleDescription(row))}</small>`, row)).join('')}` : '<div class="empty">2024–2026 暂无年度趋势数据</div>';
+    const yearlyMessages = yearlyCopy();
+    $('#yearly').innerHTML = yearly.length ? `${outcomeHeader(yearlyMessages.first)}${yearly.map((row) => outcomeRow(`<b>FY ${esc(row.fiscal_year)}</b><small class="sample-explain">${esc(sampleDescription(row))}</small>${dateRange(row) ? `<small class="decision-range">${esc(dateRange(row))}</small>` : ''}`, row)).join('')}` : `<div class="empty">${esc(yearlyMessages.empty)}</div>`;
     nationality = data.nationality || [];
     nationalityYearly = data.nationality_yearly || [];
     nationalitySource = data.nationality_yearly_source || null;

@@ -210,7 +210,7 @@ assert.match(detailPage, /id="country-filter"[^>]*name="nationality"[^>]*type="s
 assert.match(detailPage, /id="nationality-results-status"[^>]*class="sr-only"[^>]*role="status"[^>]*aria-live="polite"[^>]*aria-atomic="true"/, 'filtered nationality counts must be announced without exposing the full table as a live region');
 assert.match(detailPage, /class="nationality-fy"[^>]*role="group"[^>]*aria-label="选择国籍数据财政年度"[\s\S]*data-nationality-fy="2026"[^>]*aria-pressed="true"[\s\S]*data-nationality-fy="2025"[^>]*aria-pressed="false"/, 'judge nationality year filters must expose their group and initial selected state');
 assert.match(detailClient, /data-nationality-fy[\s\S]*const selected = Number\(button\.dataset\.nationalityFy\) === nationalityFiscalYear;[\s\S]*button\.setAttribute\('aria-pressed', String\(selected\)\)/, 'judge nationality year filters must keep the announced selected state in sync');
-assert.match(detailPage, /detail\.css\?v=7[\s\S]*detail\.js\?v=17/, 'judge detail page must load the current asset versions');
+assert.match(detailPage, /detail\.css\?v=7[\s\S]*detail\.js\?v=18/, 'judge detail page must load the current asset versions');
 const detailSummaryMessages = detailClient.match(/const detailSummaryMessages = \{[\s\S]*?\n\};/)?.[0] || '';
 for (const locale of ['en', 'es', 'fr', 'pt-BR', 'hi', 'zh-Hans', 'zh-Hant', 'ru', 'ar', 'tr']) {
   assert.match(detailSummaryMessages, new RegExp(`['"]?${locale}['"]?\\s*:`), `judge detail summary messages must support ${locale}`);
@@ -252,6 +252,15 @@ assert.match(detailClient, /const labels = nationalityTableLabels\[locale\] \|\|
 assert.match(detailClient, /function nationalityOutcomeHeader\(\)[\s\S]*esc\(labels\.first\)[\s\S]*esc\(labels\.total\)[\s\S]*esc\(labels\.otherTitle\)[\s\S]*esc\(labels\.rate\)/, 'localized nationality table headers must escape translated text');
 assert.match(detailClient, /nationality'\)\.innerHTML = rows\.length \? `\$\{nationalityOutcomeHeader\(\)\}/, 'nationality results must render the localized header');
 assert.doesNotMatch(detailClient, /outcomeHeader\('财年 \/ 国籍'\)/, 'nationality results must not render the Simplified Chinese header directly');
+const yearlyMessages = detailClient.match(/const yearlyMessages = \{[\s\S]*?\n\};/)?.[0] || '';
+for (const locale of ['en', 'es', 'fr', 'pt-BR', 'hi', 'zh-Hans', 'zh-Hant', 'ru', 'ar', 'tr']) {
+  assert.match(yearlyMessages, new RegExp(`['"]?${locale}['"]?\\s*:`), `yearly trend messages must support ${locale}`);
+}
+assert.match(detailClient, /return yearlyMessages\[locale\] \|\| yearlyMessages\['zh-Hans'\]/, 'yearly trends must use the active locale with a safe fallback');
+assert.match(detailClient, /function outcomeHeader\(firstLabel\)[\s\S]*esc\(firstLabel\)[\s\S]*esc\(labels\.total\)[\s\S]*esc\(labels\.otherTitle\)[\s\S]*esc\(labels\.rate\)/, 'yearly table headers must render escaped active-locale labels');
+assert.match(detailClient, /chart\.setAttribute\('aria-label', copy\.chartLabel\)[\s\S]*label: labels\.grants[\s\S]*esc\(copy\.chartTitle\)[\s\S]*esc\(copy\.chartAria\)/, 'yearly charts must localize visible and assistive labels');
+assert.match(detailClient, /outcomeHeader\(yearlyMessages\.first\)[\s\S]*esc\(sampleDescription\(row\)\)[\s\S]*esc\(dateRange\(row\)\)[\s\S]*esc\(yearlyMessages\.empty\)/, 'yearly rows and empty states must safely render localized guidance');
+assert.doesNotMatch(detailClient, /outcomeHeader\('财政年度'\)|<b>2026、2025、2024 年裁决结果<\/b>|aria-label="横向年度裁决对比图"|2024–2026 暂无年度趋势数据<\/div>/, 'yearly trend rendering must not remain hard-coded in Simplified Chinese');
 const nationalityRowMessages = detailClient.match(/const nationalityRowMessages = \{[\s\S]*?\n\};/)?.[0] || '';
 for (const locale of ['en', 'es', 'fr', 'pt-BR', 'hi', 'zh-Hans', 'zh-Hant', 'ru', 'ar', 'tr']) {
   assert.match(nationalityRowMessages, new RegExp(`['"]?${locale}['"]?\\s*:`), `nationality row guidance must support ${locale}`);
@@ -262,7 +271,7 @@ assert.match(detailClient, /const template = \(nationalityRowMessages\[locale\] 
 assert.match(detailClient, /nationalityOutcomeHeader\(\)[\s\S]*esc\(nationalityRowMessage\(row\)\)[\s\S]*esc\(nationalityDateRange\(row\)\)/, 'nationality rows must render localized sample and date guidance safely');
 assert.doesNotMatch(detailClient, /nationality'\)\.innerHTML[^\n]*sampleDescription\(row\)/, 'nationality rows must not reuse the Simplified Chinese yearly sample guidance');
 assert.match(detailClient, /function nationalityName\(row\) \{[\s\S]*window\.AsylumI18n\?\.countryName\?\.\(row\) \|\| row\.nationality \|\| '—'/, 'judge nationality rows must use the shared localized country name with safe fallbacks');
-assert.match(detailPage, /app-i18n\.js\?v=8[\s\S]*detail\.js\?v=17/, 'judge details must load the shared country-name capability before the current detail client');
+assert.match(detailPage, /app-i18n\.js\?v=8[\s\S]*detail\.js\?v=18/, 'judge details must load the shared country-name capability before the current detail client');
 const sharedCountryHelpers = sharedI18nClient.match(/const nationalityRegionAliases = [\s\S]*?(?=\n  window\.AsylumI18n =)/)?.[0];
 assert.ok(sharedCountryHelpers, 'shared i18n country-name helpers must remain testable');
 const sharedCountrySandbox = { Intl, locale: 'zh-Hans' };
@@ -396,7 +405,7 @@ assert.match(detailPage, /法官背景与任命信息/);
 assert.match(detailPage, /未发现离任或被辞退记录，不等于确认仍在任/);
 assert.match(detailClient, /EOIR Webex 网上上庭入口/);
 assert.match(detailClient, /\['2026', '2025', '2024'\]/, 'judge years must display in 2026, 2025, 2024 order');
-assert.match(detailClient, /横向年度裁决对比图/);
+assert.match(detailClient, /chart\.setAttribute\('aria-label', copy\.chartLabel\)/, 'yearly chart container must use its localized accessible name');
 assert.doesNotMatch(detailClient, /中等样本/);
 assert.match(homepageClient, /Webex 网上上庭/);
 assert.match(homepageClient, /少于 50 件，不显示/);

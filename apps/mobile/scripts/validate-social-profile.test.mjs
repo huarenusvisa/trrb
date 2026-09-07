@@ -136,6 +136,20 @@ test('notification center filters categories and marks only the active category 
   assert.match(provider, /markNotificationsReadLocally/);
 });
 
+test('notification actions reject duplicate taps and retry failures in place', () => {
+  const screen = read('app/notifications.tsx');
+  const gate = read('src/notifications/notification-action-core.ts');
+
+  assert.match(screen, /new NotificationActionGate\(\)/);
+  assert.match(screen, /withUiTimeout\(markNotificationRead\(item\.id\)/);
+  assert.match(screen, /if \(!gate\.isCurrent\(token\)\) return/);
+  assert.match(screen, /notifications-action-error/);
+  assert.match(screen, /actionError\.kind === 'open'/);
+  assert.match(screen, /actionGate\.current\.reset\(\)/);
+  assert.match(gate, /if \(!normalizedItemId \|\| this\.activeItemId\) return null/);
+  assert.match(gate, /token\.generation === this\.generation/);
+});
+
 test('notification center pages older messages and restores account-scoped offline cache', () => {
   const screen = read('app/notifications.tsx');
   const api = read('src/community/notifications.ts');

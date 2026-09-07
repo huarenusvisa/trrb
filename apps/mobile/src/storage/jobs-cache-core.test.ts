@@ -43,5 +43,5 @@ test('rejects expired, malformed, oversized, and unsafe contact caches', () => {
   assert.equal(parseJobsCache('{not-json', now), null);
   assert.equal(parseJobsCache(JSON.stringify({ savedAt: now, items: Array.from({ length: JOBS_CACHE_MAX_ITEMS + 1 }, (_, index) => job(String(index))) }), now), null);
   assert.equal(parseJobsCache(JSON.stringify({ savedAt: now, items: [{ ...job('1'), contact: { type: 'sms', value: '123' } }] }), now), null);
-  assert.equal(parseJobsCache(JSON.stringify({ savedAt: now, items: [{ ...job('1'), salary_min: Number.POSITIVE_INFINITY }] }), now), null);
+  assert.equal(parseJobsCache(JSON.stringify({ savedAt: now, items: [{ ...job('1'), salary_min: 'Infinity' }] }), now), null);
 });

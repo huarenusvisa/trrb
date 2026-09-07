@@ -36,7 +36,7 @@ export default function CommunityScreen() {
   const [nextOffset, setNextOffset] = useState<number | null>(null);
   const [loadingMore, setLoadingMore] = useState(false);
   const [pageError, setPageError] = useState('');
-  const [showingCached, setShowingCached] = useState(false);
+  const [cachedStatus, setCachedStatus] = useState<{ savedAt: number; count: number; truncated: boolean } | null>(null);
   const [busyLikeId, setBusyLikeId] = useState('');
   const [likeError, setLikeError] = useState<{ postId: string; message: string } | null>(null);
   const hydratedCaches = useRef(new Set<string>());
@@ -51,7 +51,7 @@ export default function CommunityScreen() {
       setItems(page.posts);
       setNextOffset(page.nextOffset);
       setPageError('');
-      setShowingCached(false);
+      setCachedStatus(null);
       setError('');
       void cacheCommunityFeed(page.posts, page.nextOffset, category).catch(() => undefined);
       if (announceSuccess) AccessibilityInfo.announceForAccessibility(t('community.refreshSucceeded'));
@@ -78,11 +78,11 @@ export default function CommunityScreen() {
           AccessibilityInfo.announceForAccessibility(t('community.cacheExpired'));
         }
         const cached = cachedResult?.snapshot;
-        if (active && cached?.posts.length) {
+        if (active && cached?.posts.length && cachedResult?.savedAt) {
           announceRefresh = true;
           setItems((current) => current.length ? current : cached.posts);
           setNextOffset(cached.nextOffset);
-          setShowingCached(true);
+          setCachedStatus({ savedAt: cachedResult.savedAt, count: cached.posts.length, truncated: cached.truncated === true });
           setLoading(false);
         }
       }
@@ -126,7 +126,7 @@ export default function CommunityScreen() {
     setNextOffset(null);
     setError('');
     setPageError('');
-    setShowingCached(false);
+    setCachedStatus(null);
     setLoading(true);
     setRefreshing(false);
   };
@@ -166,7 +166,10 @@ export default function CommunityScreen() {
     </ScrollView>
     {loading ? <View style={styles.stateWrap}><AsyncStatePanel testID="community-loading" title={t('community.loadingTitle')} message={t('community.loadingBody')} busy /></View> :
       <ScrollView contentContainerStyle={styles.list} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => { setRefreshing(true); void load(true); }} />}>
-        {showingCached ? <View testID="community-offline-cache" accessibilityRole="alert" accessibilityLiveRegion="polite" style={styles.cacheNotice}><Text style={styles.cacheNoticeText}>{t('community.cacheNotice')}</Text></View> : null}
+        {cachedStatus ? <View testID="community-offline-cache" accessibilityRole="alert" accessibilityLiveRegion="polite" style={styles.cacheNotice}>
+          <Text style={styles.cacheNoticeText}>{t('community.cacheDetails', { count: cachedStatus.count, savedAt: new Date(cachedStatus.savedAt).toLocaleString(localeDateTag(locale)) })}</Text>
+          {cachedStatus.truncated ? <Text testID="community-cache-truncated" style={styles.cacheNoticeText}>{t('community.cacheTruncated')}</Text> : null}
+        </View> : null}
         {error ? <AsyncStatePanel testID="community-error" tone="error" title={t('community.errorTitle')} message={error} actionLabel={t('community.reload')} onAction={retryCommunity} busy={refreshing} /> : null}
         {!error && items.length === 0 ? <AsyncStatePanel testID="community-empty" title={category ? t('community.emptyCategory', { category: t(categoryKeys[category]) }) : t('community.emptyAll')} message={t('community.emptyBody')} actionLabel={signedIn ? t('community.publishFirst') : t('community.signInToPost')} onAction={compose} /> : null}
         {items.map((post) => <Pressable testID={`community-post-${post.id}`} accessibilityRole="button" accessibilityLabel={t('community.openPostA11y', { title: post.title })} key={post.id} style={styles.card} onPress={() => router.push(`/community/${post.id}`)}>

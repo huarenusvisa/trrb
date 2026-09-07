@@ -82,6 +82,8 @@ test('translates notification categories, fallback labels and push preferences',
   assert.equal(translate('en', 'inbox.emptyCategoryTitle', { category: 'Likes' }), 'No Likes notifications');
   assert.equal(translate('zh-TW', 'push.deviceTitle'), '允許本裝置接收通知');
   assert.equal(translate('en', 'push.commentsMeta'), 'New replies to news and community comments');
+  assert.equal(translate('zh-CN', 'push.pendingSync', { count: 2 }), '推送登记尚未同步（已尝试 2 次）。恢复网络后会自动重试。');
+  assert.equal(translate('en', 'push.retryNow'), 'Retry now');
 });
 
 test('translates community categories and comment actions without changing user text', () => {

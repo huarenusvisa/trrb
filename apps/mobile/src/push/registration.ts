@@ -8,6 +8,7 @@ import { PushResponseGate, pushDestination, shouldRequestPushPermission } from '
 import {
   MAX_PENDING_PUSH_RETRY_DELAY_MS,
   nextPendingPushRegistration,
+  parsePendingPushRegistration,
   pendingPushRetryDelay,
   parseStoredPushRegistration,
   serializePushRegistration,
@@ -84,7 +85,17 @@ export async function hasCurrentDevicePushToken() {
   return disabled !== 'true' && Boolean(parseStoredPushRegistration(registration) || legacyToken?.trim());
 }
 
-async function performRegisterPushToken(options: { requestPermission?: boolean; devicePushToken?: Notifications.DevicePushToken } = {}) {
+export async function getPendingPushRegistrationStatus() {
+  if (!isNative) return null;
+  const pendingRaw = await AsyncStorage.getItem(PENDING_REGISTRATION_KEY);
+  if (!pendingRaw) return null;
+  const { data: auth } = await supabase.auth.getUser();
+  const pending = parsePendingPushRegistration(pendingRaw);
+  if (!auth.user?.id || !pending || pending.userId !== auth.user.id) return null;
+  return { attempts: pending.attempts, retryAt: pending.retryAt };
+}
+
+async function performRegisterPushToken(options: { requestPermission?: boolean; devicePushToken?: Notifications.DevicePushToken; retryPending?: boolean } = {}) {
   if (!isNative) return null;
 
   const deviceDisabled = await AsyncStorage.getItem(DEVICE_PUSH_DISABLED_KEY) === 'true';
@@ -98,7 +109,7 @@ async function performRegisterPushToken(options: { requestPermission?: boolean; 
 
   const pendingRaw = await AsyncStorage.getItem(PENDING_REGISTRATION_KEY);
   const pendingDelay = pendingPushRetryDelay(pendingRaw, auth.user.id);
-  if (options.requestPermission !== true && !options.devicePushToken && pendingDelay !== null && pendingDelay > 0) {
+  if (options.requestPermission !== true && !options.devicePushToken && options.retryPending !== true && pendingDelay !== null && pendingDelay > 0) {
     schedulePendingRetry(pendingDelay);
     return null;
   }
@@ -170,6 +181,11 @@ async function performRegisterPushToken(options: { requestPermission?: boolean; 
 export function registerPushToken(options: { requestPermission?: boolean; devicePushToken?: Notifications.DevicePushToken } = {}) {
   if (options.requestPermission === true) registrationSuspended = false;
   return enqueueTokenMutation(() => performRegisterPushToken(options));
+}
+
+export function retryPendingPushRegistration() {
+  registrationSuspended = false;
+  return enqueueTokenMutation(() => performRegisterPushToken({ retryPending: true }));
 }
 
 async function performDisableCurrentDevicePushToken(rememberDeviceChoice: boolean) {

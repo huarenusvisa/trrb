@@ -165,6 +165,20 @@ test('push responses deduplicate cold-start delivery and recover invalid targets
   assert.match(inbox, /'inbox\.pushTargetUnavailableBody'/);
 });
 
+test('push settings expose account-scoped pending registration and accessible retry', () => {
+  const registration = read('src/push/registration.ts');
+  const settings = read('app/push-settings.tsx');
+
+  assert.match(registration, /getPendingPushRegistrationStatus/);
+  assert.match(registration, /pending\.userId !== auth\.user\.id/);
+  assert.match(registration, /performRegisterPushToken\(\{ retryPending: true \}\)/);
+  assert.match(settings, /push-registration-pending/);
+  assert.match(settings, /push-registration-retry/);
+  assert.match(settings, /accessibilityLiveRegion="polite"/);
+  assert.match(settings, /AccessibilityInfo\.announceForAccessibility/);
+  assert.match(settings, /t\('push\.retryPendingA11y'\)/);
+});
+
 test('notification center pages older messages and restores account-scoped offline cache', () => {
   const screen = read('app/notifications.tsx');
   const api = read('src/community/notifications.ts');

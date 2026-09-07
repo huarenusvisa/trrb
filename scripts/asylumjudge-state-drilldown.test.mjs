@@ -134,6 +134,8 @@ assert.match(statesClient, /#state-results-status'\)\.textContent = `\$\{fmt\(li
 assert.match(courtsClient, /#court-results-status'\)\.textContent = `\$\{fmt\(list\.length\)\} \$\{window\.AsylumI18n/, 'court loading must announce only the localized result count');
 assert.match(courtsHtml, /data-fy="2026"[^>]*aria-pressed="true"[\s\S]*data-fy="2025"[^>]*aria-pressed="false"/, 'court year controls must have initial accessible selection state');
 assert.match(statesHtml, /data-state-year="2026"[^>]*aria-pressed="true"[\s\S]*data-state-year="2025"[^>]*aria-pressed="false"/, 'state year controls must have initial accessible selection state');
+assert.match(courtsHtml, /class="state-year-tabs"[^>]*role="group"[^>]*aria-label="选择财政年度"/, 'court year controls must expose a named group');
+assert.match(statesHtml, /class="state-year-tabs"[^>]*role="group"[^>]*aria-label="选择财政年度"/, 'state year controls must expose a named group');
 assert.match(courtsHtml, /courts\.js\?v=13/, 'court page must load the request-timeout client');
 assert.match(statesHtml, /courts\.css\?v=6[\s\S]*app-i18n\.js\?v=8[\s\S]*states\.js\?v=12/, 'state page must load the request-timeout client');
 assert.match(courtsHtml, /courts\.css\?v=6[\s\S]*app-i18n\.js\?v=8[\s\S]*courts\.js\?v=13/, 'court page must load the request-timeout client');

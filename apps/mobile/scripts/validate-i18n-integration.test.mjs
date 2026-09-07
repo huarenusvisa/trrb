@@ -256,7 +256,7 @@ test('localizes news comment interactions while preserving reader content', () =
 
 test('localizes job discovery and keeps long text usable on narrow screens', () => {
   const jobs = read('app/jobs.tsx');
-  for (const key of ['jobs.title', 'jobs.subtitle', 'jobs.timeout', 'jobs.refreshFailed', 'jobs.empty', 'jobs.contactA11y']) {
+  for (const key of ['jobs.title', 'jobs.subtitle', 'jobs.timeout', 'jobs.refreshFailed', 'jobs.empty', 'jobs.contactA11y', 'jobs.cacheExpired', 'jobs.refreshSucceeded']) {
     assert.ok(jobs.includes(`'${key}'`), `jobs screen must translate ${key}`);
   }
   assert.match(jobs, /useWindowDimensions\(\)/);
@@ -275,6 +275,9 @@ test('localizes job discovery and keeps long text usable on narrow screens', () 
   assert.match(jobs, /useForegroundRetry/);
   assert.match(jobs, /withUiTimeout/);
   assert.match(jobs, /readCachedJobs\(\)/);
+  assert.match(jobs, /discardReason === 'expired'/);
+  assert.match(jobs, /load\(Boolean\(items\.length\), true\)/);
+  assert.ok(jobs.includes("announceForAccessibility(t('jobs.refreshSucceeded'))"));
   assert.match(jobs, /cacheJobs\(nextItems\)/);
   assert.match(jobs, /createBoundedJobsSnapshot/);
   assert.match(jobs, /testID="jobs-cache-notice"/);

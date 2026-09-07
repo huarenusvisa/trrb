@@ -13,9 +13,16 @@ const AGENCY_PHRASE = /immigration and customs enforcement|enforcement and remov
 const STRONG_AGENCY_ACTION = /\bice\s+(?:agents?|officers?|officials?|raid|arrest|detention|operation|deportation|director)\b|\bero\b|\bhsi\b|immigration and customs enforcement|homeland security investigations/i;
 const LOWERCASE_ICE_WITH_IMMIGRATION = /\bice\b/i;
 const IMMIGRATION = /immigration|immigrant|migrant|undocumented|illegal alien|illegal immigrant|deport|removal|asylum|border|visa|green card|移民|非法入境|无证|庇护|边境|遣返|递解|驱逐/i;
+
+const AGENCY_ACTOR = /(?:\bICE\b|\bERO\b|\bHSI\b|immigration and customs enforcement|enforcement and removal operations|homeland security investigations|immigration agents?|immigration officers?|deportation officers?|移民与海关执法局|移民和海关执法局|移民局特工|移民执法人员|国土安全调查局).{0,100}\b(?:arrested|arrests|has arrested|have arrested|is arresting|are arresting|detained|detains|has detained|have detained|is detaining|are detaining|raided|raids|has raided|have raided|is raiding|are raiding|deported|deports|has deported|have deported|removed|removes|has removed|have removed|repatriated|repatriates|apprehended|apprehends|took into custody|takes into custody|placed in custody|executed|is executing|are executing|served|is serving|are serving|launched|is conducting|are conducting|conducted|rescued|recovered)\b/i;
+const ACTION_BY_AGENCY = /\b(?:arrested|detained|raided|deported|removed|repatriated|apprehended|taken into custody|held|rescued|recovered)\b.{0,100}\b(?:by|with)\s+(?:ICE|ERO|HSI|immigration agents?|immigration officers?|deportation officers?|移民与海关执法局|移民局特工|移民执法人员|国土安全调查局)\b/i;
+const ACTUAL_ICE_CUSTODY = /\b(?:is|are|was|were|remains?|remained|being|now)\s+(?:held\s+)?in\s+(?:ICE|ERO)\s+(?:custody|detention)\b|\b(?:taken|transferred|placed)\s+into\s+(?:ICE|ERO)\s+custody\b|\b(?:ICE|ERO)\s+custody\s+(?:in|at|since|after)\b/i;
+const CURRENT_OPERATION = /(?:\bICE\b|\bERO\b|\bHSI\b|immigration agents?|immigration officers?).{0,80}\b(?:operation|raid|search warrant|worksite enforcement|removal flight)\b.{0,80}\b(?:underway|launched|executed|executing|conducted|conducting|today|currently|now)\b|\b(?:operation|raid|search warrant|worksite enforcement|removal flight)\b.{0,80}\b(?:by|with)\s+(?:ICE|ERO|HSI|immigration agents?|immigration officers?)\b/i;
+
 const CONCRETE_ACTION = /arrest(?:ed|s|ing)?|apprehend(?:ed|s|ing)?|detain(?:ed|s|ing)?|detention|taken into custody|raid(?:ed|s|ing)?|execut(?:e|ed|ing)|operation (?:is )?(?:underway|launched)|deport(?:ed|s|ing)?|removal flight|repatriat(?:e|ed|ion)|warrant|fugitive|custody|charged|indicted|sentenced|convicted|released|rescued|recovered|traffick|smuggl|shooting|shot by|killed by|fatal|death|use of force|vehicle stop|worksite enforcement|抓捕|抓获|拘捕|逮捕|拘留|拘押|羁押|带走|抓走|遣返|递解|驱逐|突袭|搜捕|扫荡|执法行动|查获|起诉|判刑|释放|枪击|开枪|死亡|身亡|营救|人口贩卖|走私/i;
-const JUDICIAL_UPDATE = /judge|court|ruling|ruled|motion to dismiss|lawsuit|indictment|indicted|charged|sentenced|order(?:ed)?|hearing|appeal|法院|法官|裁定|判决|诉讼|起诉|判刑|上诉/i;
-const HYPOTHETICAL_OR_OPINION = /\bshould\b|\bcould\b|\bwould\b|\bhope\b|\bwant\b|\bneeds? to\b|perfect location for an ice raid|good job ice|ice hasn'?t been|abolish ice|defund ice|support ice|oppose ice|fuck ice|fuck trump|why are .* mad|badge does not make/i;
+const JUDICIAL_ACTION = /\b(?:ruled|ruling|dismissed|dismisses|granted|denied|ordered|filed|indicted|charged|sentenced|convicted|hearing scheduled|appeal filed|appealed|blocked|upheld|struck down)\b|裁定|判决|驳回|批准|拒绝|下令|起诉|判刑|开庭|上诉/i;
+const JUDICIAL_CONTEXT = /judge|court|lawsuit|motion|indictment|hearing|appeal|法院|法官|诉讼|动议|听证|上诉/i;
+const HYPOTHETICAL_OR_OPINION = /\bshould\b|\bcould\b|\bwould\b|\bhope\b|\bwant\b|\bneeds? to\b|perfect location for an ice raid|good job ice|ice hasn'?t been|abolish ice|defund ice|support ice|oppose ice|fuck ice|fuck trump|why are .* mad|badge does not make|lock (?:him|her|them|people|everyone) up|send (?:him|her|them|people) to (?:an )?ice detention/i;
 const ANTI_ICE_PROTEST = /anti[- ]ice|ice watch|protest(?:er|ers|ing)? against ice|anti ice/i;
 const FRESH_UPDATE = /breaking|just in|today|tonight|this morning|this afternoon|currently|right now|now underway|announced|new charges|new arrest|new raid|new operation|new ruling|just arrested|just detained|正在|刚刚|今天|今日|最新|宣布|新一轮|新行动|新逮捕|新裁定/i;
 
@@ -53,10 +60,16 @@ function staleRecap(text) {
     const unit = String(match[2]).toLowerCase();
     if ((unit.startsWith("day") && n >= 3) || (unit.startsWith("week") && n >= 2) || unit.startsWith("month") || unit.startsWith("year")) return true;
   }
-  return /\blast year\b|\bin 2025\b|\b2025 arrest\b|\bmonths later\b|\b60 days later\b|\b90 days later\b|几个月前|数月前|去年|2025年/i.test(value);
+  return /\blast year\b|\bin 2025\b|\b2025 arrest\b|\bmonths later\b|\b60 days later\b|\b90 days later\b|\barrested in (?:january|february|march|april|may|june|july)\b|几个月前|数月前|去年|2025年/i.test(value);
 }
 function hasAgencyContext(text) {
   return ACRONYM_AGENCY.test(text) || AGENCY_PHRASE.test(text) || (LOWERCASE_ICE_WITH_IMMIGRATION.test(text) && IMMIGRATION.test(text));
+}
+function hasAgencyRoleEvent(text) {
+  return AGENCY_ACTOR.test(text) || ACTION_BY_AGENCY.test(text) || ACTUAL_ICE_CUSTODY.test(text) || CURRENT_OPERATION.test(text);
+}
+function hasJudicialUpdate(text) {
+  return JUDICIAL_CONTEXT.test(text) && JUDICIAL_ACTION.test(text);
 }
 
 export function classifyNewsQuality(row) {
@@ -66,21 +79,26 @@ export function classifyNewsQuality(row) {
   const native = NATIVE_HANDLE.test(username) || /^(official|government|agency)$/i.test(type);
   const agency = hasAgencyContext(text);
   const concrete = CONCRETE_ACTION.test(text);
-  const judicial = JUDICIAL_UPDATE.test(text);
+  const judicial = hasJudicialUpdate(text);
+  const agencyRoleEvent = hasAgencyRoleEvent(text);
 
   if (NOISE.test(text) && !STRONG_AGENCY_ACTION.test(text)) return { keep: false, reason: "ice_lexical_noise_filtered" };
   if (!agency && !native) return { keep: false, reason: "missing_ice_agency_context" };
 
-  if (ANTI_ICE_PROTEST.test(text) && !/\bice\b.{0,80}(arrest|detain|raid|deport|agent|officer)|(?:arrest|detain|raid|deport).{0,80}\bice\b/i.test(text)) {
+  if (ANTI_ICE_PROTEST.test(text) && !agencyRoleEvent && !judicial) {
     return { keep: false, reason: "anti_ice_protest_without_enforcement_event" };
   }
 
   if (HYPOTHETICAL_OR_OPINION.test(text) && !FRESH_UPDATE.test(text) && !judicial) return { keep: false, reason: "ice_opinion_without_new_event" };
   if (!concrete && !judicial) return { keep: false, reason: "ice_low_news_value_filtered" };
 
+  // Non-official reports must show ICE/ERO/HSI as the actual enforcement actor/custodian,
+  // or contain a concrete new judicial action about ICE. Merely mentioning ICE is not enough.
+  if (!native && !agencyRoleEvent && !judicial) return { keep: false, reason: "ice_mentioned_but_not_actor" };
+
   if (staleRecap(text) && !FRESH_UPDATE.test(text) && !judicial) return { keep: false, reason: "ice_stale_recap_filtered" };
 
-  return { keep: true, reason: native ? "native_or_official_current_event" : "current_ice_news_event" };
+  return { keep: true, reason: native ? "native_or_official_current_event" : judicial ? "current_ice_judicial_update" : "current_ice_actor_event" };
 }
 
 function chunks(values, size) {
@@ -125,7 +143,7 @@ async function main() {
   }
   await reject(rejected);
   console.log(JSON.stringify({
-    stage: "ice-news-quality-gate-v2",
+    stage: "ice-news-quality-gate-v3",
     scanned: active.length,
     kept,
     rejected: active.length - kept,

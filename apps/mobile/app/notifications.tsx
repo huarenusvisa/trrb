@@ -104,10 +104,9 @@ export default function NotificationsScreen() {
   }, [category, load]);
   useForegroundRetry(Boolean(error), () => void load(true, viewerId, true));
 
-  const cacheVisibleItems = (nextItems: UserNotification[]) => {
+  const cacheVisibleItems = (nextItems: UserNotification[], nextPageOffset = nextOffset) => {
     if (!viewerId) return;
-    const cachedNextOffset = nextItems.length > PAGE_SIZE ? PAGE_SIZE : nextOffset;
-    void cacheNotifications(nextItems, cachedNextOffset, viewerId, category).catch(() => undefined);
+    void cacheNotifications(nextItems, nextPageOffset, viewerId, category).catch(() => undefined);
   };
 
   const selectCategory = (nextCategory: NotificationCategory) => {
@@ -132,11 +131,11 @@ export default function NotificationsScreen() {
     try {
       const page = await withUiTimeout(listNotifications(nextOffset, PAGE_SIZE, category), t('inbox.pageTimeout'));
       if (currentRequest !== requestId.current) return;
-      setItems((current) => {
-        const known = new Set(current.map((item) => item.id));
-        return [...current, ...page.notifications.filter((item) => !known.has(item.id))];
-      });
+      const known = new Set(items.map((item) => item.id));
+      const nextItems = [...items, ...page.notifications.filter((item) => !known.has(item.id))];
+      setItems(nextItems);
       setNextOffset(page.nextOffset);
+      cacheVisibleItems(nextItems, page.nextOffset);
     } catch (e) {
       if (currentRequest === requestId.current) setPageError(errorMessage(e, 'inbox.pageFailed'));
     } finally {

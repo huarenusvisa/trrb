@@ -57,7 +57,7 @@ export default function PushSettingsScreen() {
   const disablePush = async () => {
     setBusy(true);
     try {
-      await disableCurrentDevicePushToken();
+      await disableCurrentDevicePushToken({ rememberDeviceChoice: true });
       setEnabled(false);
     } catch (error) {
       Alert.alert(t('push.disableFailed'), error instanceof Error ? error.message : t('push.networkRetry'));

@@ -25,6 +25,8 @@ check('iOS and Android package identities exist', Boolean(app.ios?.bundleIdentif
 check('device permission and Expo token registration implemented', registration.includes('requestPermissionsAsync') && registration.includes('getExpoPushTokenAsync'));
 check('EAS projectId resolution implemented', registration.includes('easConfig?.projectId') && registration.includes('expoConfig?.extra?.eas?.projectId'));
 check('token stored only in authenticated Supabase user scope', registration.includes("supabase.from('push_tokens').upsert") && registration.includes('auth.user.id'));
+check('runtime token rotation replaces only current-device registration', registration.includes('addPushTokenListener') && registration.includes(".in('expo_push_token', staleTokens)") && registration.includes(".eq('user_id', auth.user.id)"));
+check('device opt-out survives silent lifecycle sync', registration.includes('DEVICE_PUSH_DISABLED_KEY') && registration.includes('shouldSynchronizePushRegistration') && settings.includes('rememberDeviceChoice: true'));
 check('push response handles cold and warm starts', registration.includes('getLastNotificationResponse()') && registration.includes('addNotificationResponseReceivedListener'));
 check('runtime installs handlers and silent authenticated token sync', layout.includes('installPushRuntimeHandlers') && layout.includes('installPushRegistrationLifecycle'));
 check('permission prompt requires an explicit settings action', registration.includes('options.requestPermission === true') && settings.includes('requestPermission: true') && !layout.includes('registerPushToken()'));

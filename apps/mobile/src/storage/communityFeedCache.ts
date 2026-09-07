@@ -9,6 +9,7 @@ export async function readCachedCommunityFeed(category = '') {
   if (result.discardReason && raw) await AsyncStorage.removeItem(key);
   return {
     snapshot: result.payload?.snapshot ?? null,
+    savedAt: result.payload?.savedAt ?? null,
     discardReason: result.discardReason,
   };
 }

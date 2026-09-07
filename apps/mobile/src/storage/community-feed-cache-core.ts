@@ -63,6 +63,6 @@ export function parseCommunityFeedCache(raw: string | null, now = Date.now()): C
 export function publicCommunityFeedSnapshot(posts: CommunityPost[], nextOffset: number | null): CommunityFeedSnapshot {
   return {
     posts: posts.filter(validPublicPost).slice(0, COMMUNITY_FEED_CACHE_MAX_POSTS),
-    nextOffset,
+    nextOffset: nextOffset !== null && Number.isInteger(nextOffset) && nextOffset >= 0 ? nextOffset : null,
   };
 }

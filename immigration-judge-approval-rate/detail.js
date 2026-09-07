@@ -10,6 +10,23 @@ let nationality = [];
 let nationalityYearly = [];
 let nationalityFiscalYear = 2026;
 let nationalitySource = null;
+const nationalityResultMessages = {
+  en: 'FY {year}: {count} nationality results.',
+  es: 'Año fiscal {year}: {count} resultados de nacionalidad.',
+  fr: 'Exercice {year} : {count} résultats par nationalité.',
+  'pt-BR': 'Ano fiscal {year}: {count} resultados de nacionalidade.',
+  hi: 'वित्त वर्ष {year}: {count} राष्ट्रीयता परिणाम।',
+  'zh-Hans': 'FY {year}：显示 {count} 个国籍结果。',
+  'zh-Hant': 'FY {year}：顯示 {count} 個國籍結果。',
+  ru: 'Финансовый год {year}: результатов по гражданству — {count}.',
+  ar: 'السنة المالية {year}: عدد نتائج الجنسية {count}.',
+  tr: 'Mali yıl {year}: {count} uyruk sonucu.'
+};
+const nationalityResultStatus = (count, year) => {
+  const locale = window.AsylumI18n?.locale || 'zh-Hans';
+  const template = nationalityResultMessages[locale] || nationalityResultMessages['zh-Hans'];
+  return template.replace('{year}', String(year)).replace('{count}', fmt(count));
+};
 const sampleText = (level, count) => level === 'insufficient' || level === 'small'
   ? `仅 ${fmt(count)} 件有效裁决，少于 50 件，因此不展示通过率。`
   : Number(count) < 200
@@ -149,6 +166,7 @@ function renderCountries() {
     button.setAttribute('aria-pressed', String(selected));
   });
   $('#nationality').innerHTML = rows.length ? `${outcomeHeader('财年 / 国籍')}${rows.map((row) => outcomeRow(`<b>FY ${esc(row.fiscal_year)} · ${esc(row.nationality)}</b><small class="sample-explain">${esc(sampleDescription(row))}</small>${dateRange(row) ? `<small class="decision-range">${esc(dateRange(row))}</small>` : ''}`, row)).join('')}` : '<div class="empty">该财年暂无匹配国籍数据</div>';
+  $('#nationality-results-status').textContent = nationalityResultStatus(rows.length, nationalityFiscalYear);
 }
 
 async function load() {

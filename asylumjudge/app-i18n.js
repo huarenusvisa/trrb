@@ -430,7 +430,58 @@
     if (locale === 'zh-Hant') return stateTraditional[normalized] || fallback || code;
     return stateEnglish[normalized] || fallback || code;
   };
-  window.AsylumI18n = { get locale() { return locale; }, supported: locales, t: (key, vars) => interpolate(translate(key), vars), translate, setLocale, formatNumber, stateName, dictionarySize: rows.length };
+  const nationalityRegionAliases = new Map(Object.entries({
+    'turkey': 'TR', 'kirghizia kyrgyzstan': 'KG', 'democratic republic of congo': 'CD',
+    'people s republic of the congo': 'CG', 'tajikistan tadzhik': 'TJ', 'moldavia moldova': 'MD',
+    'ivory coast cote d ivoire': 'CI', 'burma myanmar': 'MM', 'palestinian': 'PS',
+    'bosnia herzegovina': 'BA', 'macedonia': 'MK', 'federated states of micronesia': 'FM',
+    'slovak republic': 'SK', 'czech republic': 'CZ', 'hong kong': 'HK',
+    'byelorussia belarus': 'BY', 'holland': 'NL', 'st vincent and the grenadines': 'VC',
+    'east timor': 'TL', 'macau': 'MO', 'republic of the marshall islands': 'MH',
+    'kampuchea': 'KH', 'st kiitts west indies': 'KN', 'western samoa': 'WS',
+    'swaziland': 'SZ', 'cocos island': 'CC', 'faeroe island': 'FO',
+    'the republic of palau': 'PW', 'people s republic of benin': 'BJ',
+    'upper volta': 'BF', 'christmas islands': 'CX'
+  }));
+  const normalizeCountryName = (value) => String(value || '')
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/&/g, 'and')
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim();
+  let isoRegionByEnglishName;
+  const regionCodeForNationality = (row) => {
+    const key = normalizeCountryName(row?.nationality);
+    if (!key) return null;
+    if (nationalityRegionAliases.has(key)) return nationalityRegionAliases.get(key);
+    if (!isoRegionByEnglishName) {
+      isoRegionByEnglishName = new Map();
+      try {
+        const englishRegions = new Intl.DisplayNames(['en'], { type: 'region' });
+        for (let first = 65; first <= 90; first += 1) {
+          for (let second = 65; second <= 90; second += 1) {
+            const code = String.fromCharCode(first, second);
+            const name = englishRegions.of(code);
+            if (name && name !== code) isoRegionByEnglishName.set(normalizeCountryName(name), code);
+          }
+        }
+      } catch {}
+    }
+    return isoRegionByEnglishName.get(key) || null;
+  };
+  const countryName = (row) => {
+    if (locale.startsWith('zh') && row?.nationality_zh) return row.nationality_zh;
+    const regionCode = regionCodeForNationality(row);
+    if (regionCode) {
+      try {
+        const name = new Intl.DisplayNames([locale], { type: 'region' }).of(regionCode);
+        if (name && name !== regionCode) return name;
+      } catch {}
+    }
+    return locale.startsWith('zh') ? (row?.nationality_zh || row?.nationality || '') : (row?.nationality || row?.nationality_zh || '');
+  };
+  window.AsylumI18n = { get locale() { return locale; }, supported: locales, t: (key, vars) => interpolate(translate(key), vars), translate, setLocale, formatNumber, stateName, countryName, regionCodeForNationality, dictionarySize: rows.length };
   const observer = new MutationObserver((records) => records.forEach((record) => record.addedNodes.forEach((node) => {
     if (node.nodeType === 3) translateTextNode(node);
     else if (node.nodeType === 1) translateElement(node);

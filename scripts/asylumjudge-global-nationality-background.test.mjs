@@ -199,6 +199,7 @@ assert.equal(i18nSandbox.window.AsylumI18n.regionCodeForNationality({ nationalit
 const standaloneProxy = readFileSync('asylumjudge/immigration-judges-proxy.js', 'utf8');
 const detailPage = readFileSync('immigration-judge-approval-rate/detail.html', 'utf8');
 const detailClient = readFileSync('immigration-judge-approval-rate/detail.js', 'utf8');
+const sharedI18nClient = readFileSync('asylumjudge/app-i18n.js', 'utf8');
 const detailStyles = readFileSync('immigration-judge-approval-rate/detail.css', 'utf8');
 // Detail recovery assertions keep transient API failures from becoming dead ends.
 const routes = readFileSync('scripts/finalize-redirects.mjs', 'utf8');
@@ -245,6 +246,20 @@ assert.match(detailClient, /const template = \(nationalityRowMessages\[locale\] 
 assert.match(detailClient, /nationalityOutcomeHeader\(\)[\s\S]*esc\(nationalityRowMessage\(row\)\)[\s\S]*esc\(nationalityDateRange\(row\)\)/, 'nationality rows must render localized sample and date guidance safely');
 assert.doesNotMatch(detailClient, /nationality'\)\.innerHTML[^\n]*sampleDescription\(row\)/, 'nationality rows must not reuse the Simplified Chinese yearly sample guidance');
 assert.match(detailClient, /function nationalityName\(row\) \{[\s\S]*window\.AsylumI18n\?\.countryName\?\.\(row\) \|\| row\.nationality \|\| '—'/, 'judge nationality rows must use the shared localized country name with safe fallbacks');
+assert.match(detailPage, /app-i18n\.js\?v=8[\s\S]*detail\.js\?v=15/, 'judge details must load the shared country-name capability before the current detail client');
+const sharedCountryHelpers = sharedI18nClient.match(/const nationalityRegionAliases = [\s\S]*?(?=\n  window\.AsylumI18n =)/)?.[0];
+assert.ok(sharedCountryHelpers, 'shared i18n country-name helpers must remain testable');
+const sharedCountrySandbox = { Intl, locale: 'zh-Hans' };
+runInNewContext(`${sharedCountryHelpers};
+  zhChina = countryName({ nationality: 'China', nationality_code: 'CH' });
+  locale = 'ar';
+  arChina = countryName({ nationality: 'China', nationality_code: 'CH' });
+  locale = 'en';
+  enSwitzerland = countryName({ nationality: 'Switzerland', nationality_code: 'SZ' });`, sharedCountrySandbox);
+assert.equal(sharedCountrySandbox.zhChina, '中国', 'shared judge i18n must localize China without confusing its EOIR CH code with Switzerland');
+assert.equal(sharedCountrySandbox.arChina, 'الصين', 'shared judge i18n must localize nationality names outside Chinese locales');
+assert.equal(sharedCountrySandbox.enSwitzerland, 'Switzerland', 'shared judge i18n must preserve the English country name');
+assert.match(sharedI18nClient, /stateName, countryName, regionCodeForNationality, dictionarySize/, 'shared i18n must export country-name localization to judge detail pages');
 assert.match(detailClient, /\[nationalityName\(row\), row\.nationality, row\.nationality_code\]/, 'judge nationality search must match localized names while preserving English names and EOIR codes');
 assert.match(detailClient, /FY \$\{esc\(row\.fiscal_year\)\} · \$\{esc\(nationalityName\(row\)\)\}/, 'judge nationality results must safely render the localized country name');
 assert.doesNotMatch(detailClient, /FY \$\{esc\(row\.fiscal_year\)\} · \$\{esc\(row\.nationality\)\}/, 'judge nationality results must not render the raw English country name directly');

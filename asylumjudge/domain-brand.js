@@ -41,16 +41,16 @@
     tr: { judges: 'Hâkim ara', courts: 'Mahkeme ara', states: 'Eyalet verileri', nationality: 'Uyruğa göre onay oranı', community: 'Topluluk', language: 'Dil' }
   };
   const brandLabels = {
-    en: { descriptor: 'U.S. immigration judge and court data', nav: 'Immigration judge data navigation', footer: 'Shared EOIR database · continuously updated' },
-    es: { descriptor: 'Datos de jueces y tribunales de inmigración de EE. UU.', nav: 'Navegación de datos de jueces', footer: 'Base EOIR compartida · actualización continua' },
-    fr: { descriptor: 'Données des juges et tribunaux de l’immigration aux États-Unis', nav: 'Navigation des données des juges', footer: 'Base EOIR partagée · mise à jour continue' },
-    'pt-BR': { descriptor: 'Dados de juízes e tribunais de imigração dos EUA', nav: 'Navegação de dados de juízes', footer: 'Base EOIR compartilhada · atualização contínua' },
-    hi: { descriptor: 'अमेरिकी इमिग्रेशन जज और अदालत डेटा', nav: 'इमिग्रेशन जज डेटा नेविगेशन', footer: 'साझा EOIR डेटाबेस · लगातार अपडेट' },
-    'zh-Hans': { descriptor: '美国移民法官与法院数据', nav: '移民法官数据导航', footer: '共用 EOIR 数据库 · 持续更新' },
-    'zh-Hant': { descriptor: '美國移民法官與法院資料', nav: '移民法官資料導覽', footer: '共用 EOIR 資料庫 · 持續更新' },
-    ru: { descriptor: 'Данные иммиграционных судей и судов США', nav: 'Навигация по данным судей', footer: 'Общая база EOIR · постоянно обновляется' },
-    ar: { descriptor: 'بيانات قضاة ومحاكم الهجرة الأمريكية', nav: 'التنقل في بيانات القضاة', footer: 'قاعدة EOIR مشتركة · تحديث مستمر' },
-    tr: { descriptor: 'ABD göçmenlik hâkimi ve mahkeme verileri', nav: 'Hâkim verisi gezinmesi', footer: 'Ortak EOIR veri tabanı · sürekli güncellenir' }
+    en: { descriptor: 'U.S. immigration judge and court data', nav: 'Immigration judge data navigation', skip: 'Skip to main content', footer: 'Shared EOIR database · continuously updated' },
+    es: { descriptor: 'Datos de jueces y tribunales de inmigración de EE. UU.', nav: 'Navegación de datos de jueces', skip: 'Saltar al contenido principal', footer: 'Base EOIR compartida · actualización continua' },
+    fr: { descriptor: 'Données des juges et tribunaux de l’immigration aux États-Unis', nav: 'Navigation des données des juges', skip: 'Aller au contenu principal', footer: 'Base EOIR partagée · mise à jour continue' },
+    'pt-BR': { descriptor: 'Dados de juízes e tribunais de imigração dos EUA', nav: 'Navegação de dados de juízes', skip: 'Ir para o conteúdo principal', footer: 'Base EOIR compartilhada · atualização contínua' },
+    hi: { descriptor: 'अमेरिकी इमिग्रेशन जज और अदालत डेटा', nav: 'इमिग्रेशन जज डेटा नेविगेशन', skip: 'मुख्य सामग्री पर जाएँ', footer: 'साझा EOIR डेटाबेस · लगातार अपडेट' },
+    'zh-Hans': { descriptor: '美国移民法官与法院数据', nav: '移民法官数据导航', skip: '跳到主要内容', footer: '共用 EOIR 数据库 · 持续更新' },
+    'zh-Hant': { descriptor: '美國移民法官與法院資料', nav: '移民法官資料導覽', skip: '跳到主要內容', footer: '共用 EOIR 資料庫 · 持續更新' },
+    ru: { descriptor: 'Данные иммиграционных судей и судов США', nav: 'Навигация по данным судей', skip: 'Перейти к основному содержанию', footer: 'Общая база EOIR · постоянно обновляется' },
+    ar: { descriptor: 'بيانات قضاة ومحاكم الهجرة الأمريكية', nav: 'التنقل في بيانات القضاة', skip: 'انتقل إلى المحتوى الرئيسي', footer: 'قاعدة EOIR مشتركة · تحديث مستمر' },
+    tr: { descriptor: 'ABD göçmenlik hâkimi ve mahkeme verileri', nav: 'Hâkim verisi gezinmesi', skip: 'Ana içeriğe geç', footer: 'Ortak EOIR veri tabanı · sürekli güncellenir' }
   };
   const options = '<option value="en">EN</option><option value="es">ES</option><option value="fr">FR</option><option value="pt-BR">PT-BR</option><option value="hi">HI</option><option value="zh-Hans">简中</option><option value="zh-Hant">繁中</option><option value="ru">RU</option><option value="ar">AR</option><option value="tr">TR</option>';
   const normalizeLocale = (value) => {
@@ -89,6 +89,8 @@
     if (descriptor) descriptor.innerHTML = `<b>${brandSet.descriptor}</b><span>EOIR Immigration Court Data</span>`;
     const primaryNav = document.querySelector('.asylumjudge-primary-nav');
     if (primaryNav) primaryNav.setAttribute('aria-label', brandSet.nav);
+    const skipLink = document.querySelector('.domain-skip-link');
+    if (skipLink) skipLink.textContent = brandSet.skip;
     const footer = document.querySelector('.judge-footer .judge-shell');
     if (footer) footer.innerHTML = `<b>${standaloneHost ? 'AsylumJudge.com' : 'Tang Ren Daily · AsylumJudge'}</b><span>${brandSet.footer}</span>`;
     if (!window.AsylumI18n) {
@@ -131,6 +133,16 @@
   window.judgePagePath = (file) => brandHost ? (routes.get(`/immigration-judge-approval-rate/${file}`) || `/immigration-judge-approval-rate/${file}`) : `/immigration-judge-approval-rate/${file}`;
   if (!brandHost) return;
   document.documentElement.classList.add('asylumjudge-domain');
+  const main = document.querySelector('main');
+  if (main && !document.querySelector('.skip-link[href^="#"],.domain-skip-link[href^="#"]')) {
+    if (!main.id) main.id = 'main-content';
+    if (!main.hasAttribute('tabindex')) main.setAttribute('tabindex', '-1');
+    const skipLink = document.createElement('a');
+    skipLink.className = 'domain-skip-link';
+    skipLink.href = `#${main.id}`;
+    skipLink.textContent = brandLabels[locale].skip;
+    document.body.prepend(skipLink);
+  }
   const canonicalPath = routes.get(location.pathname) || location.pathname;
   let canonical = document.querySelector('link[rel="canonical"]');
   if (!canonical) {

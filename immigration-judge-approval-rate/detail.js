@@ -229,11 +229,15 @@ function nationalityPeriodLabel(year) {
     .replace('{end}', end);
 }
 
+function nationalityName(row) {
+  return window.AsylumI18n?.countryName?.(row) || row.nationality || '—';
+}
+
 function renderCountries() {
   const query = String($('#country-filter').value || '').trim().toLowerCase();
   const rows = nationalityYearly
     .filter((row) => Number(row.fiscal_year) === nationalityFiscalYear)
-    .filter((row) => !query || [row.nationality, row.nationality_code].filter(Boolean).some((value) => String(value).toLowerCase().includes(query)))
+    .filter((row) => !query || [nationalityName(row), row.nationality, row.nationality_code].filter(Boolean).some((value) => String(value).toLowerCase().includes(query)))
     .map(enrichNationalityRow)
     .sort((a, b) => Number(b.total_asylum_decisions || 0) - Number(a.total_asylum_decisions || 0));
   $('#nationality-period-label').textContent = nationalityPeriodLabel(nationalityFiscalYear);
@@ -242,7 +246,7 @@ function renderCountries() {
     button.classList.toggle('active', selected);
     button.setAttribute('aria-pressed', String(selected));
   });
-  $('#nationality').innerHTML = rows.length ? `${nationalityOutcomeHeader()}${rows.map((row) => outcomeRow(`<b>FY ${esc(row.fiscal_year)} · ${esc(row.nationality)}</b><small class="sample-explain">${esc(nationalityRowMessage(row))}</small>${nationalityDateRange(row) ? `<small class="decision-range">${esc(nationalityDateRange(row))}</small>` : ''}`, row)).join('')}` : `<div class="empty">${esc(nationalityEmptyMessage())}</div>`;
+  $('#nationality').innerHTML = rows.length ? `${nationalityOutcomeHeader()}${rows.map((row) => outcomeRow(`<b>FY ${esc(row.fiscal_year)} · ${esc(nationalityName(row))}</b><small class="sample-explain">${esc(nationalityRowMessage(row))}</small>${nationalityDateRange(row) ? `<small class="decision-range">${esc(nationalityDateRange(row))}</small>` : ''}`, row)).join('')}` : `<div class="empty">${esc(nationalityEmptyMessage())}</div>`;
   $('#nationality-results-status').textContent = nationalityResultStatus(rows.length, nationalityFiscalYear);
 }
 

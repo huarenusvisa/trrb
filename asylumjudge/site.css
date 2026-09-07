@@ -129,3 +129,6 @@
 
 /* Honor the user's reduced-motion preference across every shared homepage surface. */
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.skeleton,.state-market-loading,.featured-loading,.knowledge-loading,.knowledge-empty,.directory-loading{animation:none}.entry-grid>a,.lookup-grid>a,.featured-judge,.knowledge-item,.judge-directory-row,.background-directory-card{transition:none}.entry-grid>a:hover,.lookup-grid>a:hover,.featured-judge:hover,.knowledge-item:hover,.judge-directory-row:hover,.background-directory-card:hover{transform:none}}
+
+/* Make the active keyboard position visible across the full trend hit target. */
+.market-hit:focus-visible .market-hit-area{fill:rgba(16,24,40,.08);stroke:#101828;stroke-width:2}

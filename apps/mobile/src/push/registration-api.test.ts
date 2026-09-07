@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { claimPushToken, PUSH_TOKEN_REGISTRATION_ENDPOINT } from './registration-api.ts';
+import { claimPushToken, PushRegistrationError, PUSH_TOKEN_REGISTRATION_ENDPOINT } from './registration-api.ts';
 
 test('claims a token through the authenticated server endpoint', async () => {
   const result = await claimPushToken({
@@ -38,5 +38,12 @@ test('converts request timeout to a user-facing error', async () => {
     fetchImpl: async (_url, init) => new Promise((_resolve, reject) => {
       init.signal?.addEventListener('abort', () => reject(new DOMException('Aborted', 'AbortError')));
     })
-  }), /推送服务超时/);
+  }), (error: unknown) => error instanceof PushRegistrationError && error.pushRegistrationErrorKind === 'network' && /推送服务超时/.test(error.message));
+});
+
+test('marks HTTP and malformed responses as server failures', async () => {
+  await assert.rejects(claimPushToken({
+    platform: 'ios', expoPushToken: 'ExpoPushToken[abcdefghijklmnop]', accessToken: 'token',
+    fetchImpl: async () => new Response('not-json', { status: 502 })
+  }), (error: unknown) => error instanceof PushRegistrationError && error.pushRegistrationErrorKind === 'server');
 });

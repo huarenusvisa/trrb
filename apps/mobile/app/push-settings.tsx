@@ -19,7 +19,7 @@ const OPTIONS: { key: keyof PushPreferences; title: MessageKey; description: Mes
 ];
 
 export default function PushSettingsScreen() {
-  const { t } = useI18n();
+  const { locale, t } = useI18n();
   const [preferences, setPreferences] = useState<PushPreferences | null>(null);
   const [permission, setPermission] = useState<'granted' | 'denied' | 'undetermined'>('undetermined');
   const [canAskAgain, setCanAskAgain] = useState(true);
@@ -179,6 +179,10 @@ export default function PushSettingsScreen() {
       {pendingSync ? (
         <View testID="push-registration-pending" accessibilityLiveRegion="polite" style={styles.pendingCard}>
           <Text style={styles.pendingText}>{t('push.pendingSync', { count: pendingSync.attempts })}</Text>
+          <Text testID="push-registration-error-kind" style={styles.pendingMeta}>{t(`push.syncError.${pendingSync.errorKind}` as MessageKey)}</Text>
+          <Text testID="push-registration-next-retry" style={styles.pendingMeta}>{t('push.nextRetry', {
+            time: new Intl.DateTimeFormat(locale, { hour: 'numeric', minute: '2-digit' }).format(new Date(pendingSync.retryAt))
+          })}</Text>
           <Pressable
             accessibilityRole="button"
             accessibilityLabel={t('push.retryPendingA11y')}
@@ -205,5 +209,5 @@ export default function PushSettingsScreen() {
 }
 
 const styles = StyleSheet.create({
-  page:{flex:1,backgroundColor:'#f5f6f8'},content:{padding:18,paddingTop:58,paddingBottom:40},back:{color:'#c8211e',fontSize:17,fontWeight:'700',marginBottom:18},h1:{fontSize:30,fontWeight:'900',color:'#101828'},sub:{color:'#667085',marginTop:8,marginBottom:22,lineHeight:21},section:{fontWeight:'800',color:'#475467',marginTop:18,marginBottom:10},card:{backgroundColor:'#fff',borderRadius:14,padding:17,marginBottom:12,flexDirection:'row',alignItems:'center',gap:14},rowText:{flex:1},title:{fontSize:17,fontWeight:'800',color:'#101828'},meta:{color:'#667085',marginTop:5,lineHeight:19},pendingCard:{backgroundColor:'#fff7ed',borderWidth:1,borderColor:'#fed7aa',borderRadius:14,padding:15,marginBottom:12},pendingText:{color:'#9a3412',lineHeight:21},retryButton:{alignSelf:'flex-start',minHeight:44,justifyContent:'center',borderRadius:10,backgroundColor:'#c8211e',paddingHorizontal:16,marginTop:12},retryButtonPressed:{opacity:0.55},retryButtonText:{color:'#fff',fontWeight:'800'},settingsButton:{borderWidth:1,borderColor:'#c8211e',borderRadius:12,padding:13,alignItems:'center',marginBottom:8},settingsButtonText:{color:'#c8211e',fontWeight:'800'},footnote:{color:'#98a2b3',lineHeight:20,marginTop:10}
+  page:{flex:1,backgroundColor:'#f5f6f8'},content:{padding:18,paddingTop:58,paddingBottom:40},back:{color:'#c8211e',fontSize:17,fontWeight:'700',marginBottom:18},h1:{fontSize:30,fontWeight:'900',color:'#101828'},sub:{color:'#667085',marginTop:8,marginBottom:22,lineHeight:21},section:{fontWeight:'800',color:'#475467',marginTop:18,marginBottom:10},card:{backgroundColor:'#fff',borderRadius:14,padding:17,marginBottom:12,flexDirection:'row',alignItems:'center',gap:14},rowText:{flex:1},title:{fontSize:17,fontWeight:'800',color:'#101828'},meta:{color:'#667085',marginTop:5,lineHeight:19},pendingCard:{backgroundColor:'#fff7ed',borderWidth:1,borderColor:'#fed7aa',borderRadius:14,padding:15,marginBottom:12},pendingText:{color:'#9a3412',lineHeight:21},pendingMeta:{color:'#9a3412',lineHeight:20,marginTop:4},retryButton:{alignSelf:'flex-start',minHeight:44,justifyContent:'center',borderRadius:10,backgroundColor:'#c8211e',paddingHorizontal:16,marginTop:12},retryButtonPressed:{opacity:0.55},retryButtonText:{color:'#fff',fontWeight:'800'},settingsButton:{borderWidth:1,borderColor:'#c8211e',borderRadius:12,padding:13,alignItems:'center',marginBottom:8},settingsButtonText:{color:'#c8211e',fontWeight:'800'},footnote:{color:'#98a2b3',lineHeight:20,marginTop:10}
 });

@@ -7,6 +7,7 @@ import { supabase } from '../auth/supabase';
 import { PushResponseGate, pushDestination, shouldRequestPushPermission } from './push-core';
 import {
   MAX_PENDING_PUSH_RETRY_DELAY_MS,
+  classifyPushRegistrationError,
   nextPendingPushRegistration,
   parsePendingPushRegistration,
   pendingPushRetryDelay,
@@ -27,7 +28,7 @@ const pushResponseGate = new PushResponseGate();
 let registrationSuspended = false;
 let tokenMutationQueue: Promise<void> = Promise.resolve();
 let pendingRetryTimer: ReturnType<typeof setTimeout> | null = null;
-export type PendingPushRegistrationStatus = { attempts: number; retryAt: number };
+export type PendingPushRegistrationStatus = { attempts: number; retryAt: number; errorKind: 'network' | 'server' | 'unknown' };
 type PendingPushRegistrationEvent = { status: PendingPushRegistrationStatus | null; reason: 'pending' | 'synced' | 'cleared' };
 const pendingRegistrationListeners = new Set<(event: PendingPushRegistrationEvent) => void>();
 
@@ -108,10 +109,11 @@ export async function getPendingPushRegistrationStatus() {
   if (!isNative) return null;
   const pendingRaw = await AsyncStorage.getItem(PENDING_REGISTRATION_KEY);
   if (!pendingRaw) return null;
-  const { data: auth } = await supabase.auth.getUser();
+  const { data: sessionData } = await supabase.auth.getSession();
   const pending = parsePendingPushRegistration(pendingRaw);
-  if (!auth.user?.id || !pending || pending.userId !== auth.user.id) return null;
-  return { attempts: pending.attempts, retryAt: pending.retryAt };
+  const userId = sessionData.session?.user.id;
+  if (!userId || !pending || pending.userId !== userId) return null;
+  return { attempts: pending.attempts, retryAt: pending.retryAt, errorKind: pending.errorKind };
 }
 
 async function performRegisterPushToken(options: { requestPermission?: boolean; devicePushToken?: Notifications.DevicePushToken; retryPending?: boolean } = {}) {
@@ -122,12 +124,11 @@ async function performRegisterPushToken(options: { requestPermission?: boolean; 
 
   const { data: sessionData } = await supabase.auth.getSession();
   const accessToken = sessionData.session?.access_token;
-  if (!accessToken) return null;
-  const { data: auth } = await supabase.auth.getUser(accessToken);
-  if (!auth.user?.id) return null;
+  const userId = sessionData.session?.user.id;
+  if (!accessToken || !userId) return null;
 
   const pendingRaw = await AsyncStorage.getItem(PENDING_REGISTRATION_KEY);
-  const pendingDelay = pendingPushRetryDelay(pendingRaw, auth.user.id);
+  const pendingDelay = pendingPushRetryDelay(pendingRaw, userId);
   if (options.requestPermission !== true && !options.devicePushToken && options.retryPending !== true && pendingDelay !== null && pendingDelay > 0) {
     schedulePendingRetry(pendingDelay);
     return null;
@@ -164,19 +165,19 @@ async function performRegisterPushToken(options: { requestPermission?: boolean; 
       platform: Platform.OS as 'ios' | 'android',
       expoPushToken
     });
-    if (claim.userId !== auth.user.id) throw new Error('推送令牌账号校验失败');
+    if (claim.userId !== userId) throw new Error('推送令牌账号校验失败');
 
-    const staleTokens = stalePushTokensForCurrentUser(auth.user.id, expoPushToken, storedRegistration, legacyToken);
+    const staleTokens = stalePushTokensForCurrentUser(userId, expoPushToken, storedRegistration, legacyToken);
     if (staleTokens.length) {
       const cleanup = await supabase.from('push_tokens').update({
         enabled: false,
         updated_at: new Date().toISOString()
-      }).eq('user_id', auth.user.id).in('expo_push_token', staleTokens);
+      }).eq('user_id', userId).in('expo_push_token', staleTokens);
       if (cleanup.error) throw cleanup.error;
     }
 
     await AsyncStorage.multiSet([
-      [DEVICE_REGISTRATION_KEY, serializePushRegistration(auth.user.id, Platform.OS as 'ios' | 'android', expoPushToken)],
+      [DEVICE_REGISTRATION_KEY, serializePushRegistration(userId, Platform.OS as 'ios' | 'android', expoPushToken)],
       [DEVICE_PUSH_DISABLED_KEY, 'false']
     ]);
     await Promise.all([
@@ -187,17 +188,19 @@ async function performRegisterPushToken(options: { requestPermission?: boolean; 
   } catch (error) {
     const nextPendingRaw = nextPendingPushRegistration(
       pendingRaw,
-      auth.user.id,
+      userId,
       Platform.OS as 'ios' | 'android',
-      expoPushToken
+      expoPushToken,
+      Date.now(),
+      classifyPushRegistrationError(error)
     );
     await AsyncStorage.setItem(PENDING_REGISTRATION_KEY, nextPendingRaw);
     const nextPending = parsePendingPushRegistration(nextPendingRaw);
     if (nextPending) publishPendingRegistration({
-      status: { attempts: nextPending.attempts, retryAt: nextPending.retryAt },
+      status: { attempts: nextPending.attempts, retryAt: nextPending.retryAt, errorKind: nextPending.errorKind },
       reason: 'pending'
     });
-    schedulePendingRetry(pendingPushRetryDelay(nextPendingRaw, auth.user.id) ?? MAX_PENDING_PUSH_RETRY_DELAY_MS);
+    schedulePendingRetry(pendingPushRetryDelay(nextPendingRaw, userId) ?? MAX_PENDING_PUSH_RETRY_DELAY_MS);
     throw error;
   }
 }

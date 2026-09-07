@@ -85,6 +85,7 @@ test('classifies retry failures without persisting sensitive error details', () 
   assert.equal(raw.includes('private diagnostic text'), false);
   assert.equal(classifyPushRegistrationError(Object.assign(new Error('down'), { pushRegistrationErrorKind: 'server' })), 'server');
   assert.equal(classifyPushRegistrationError(Object.assign(new Error('expired'), { pushRegistrationErrorKind: 'auth' })), 'auth');
+  assert.equal(classifyPushRegistrationError(Object.assign(new Error('invalid token'), { pushRegistrationErrorKind: 'device' })), 'device');
   assert.equal(classifyPushRegistrationError(new TypeError('offline')), 'network');
   assert.equal(classifyPushRegistrationError(new Error('other')), 'unknown');
 

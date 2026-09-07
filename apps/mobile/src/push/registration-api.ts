@@ -18,10 +18,10 @@ export function parsePushRegistrationRetryAfter(value: string | null, now = Date
 }
 
 export class PushRegistrationError extends Error {
-  readonly pushRegistrationErrorKind: 'network' | 'server' | 'auth';
+  readonly pushRegistrationErrorKind: 'network' | 'server' | 'auth' | 'device';
   readonly pushRegistrationRetryAfterMs: number | null;
 
-  constructor(kind: 'network' | 'server' | 'auth', message: string, retryAfterMs: number | null = null) {
+  constructor(kind: 'network' | 'server' | 'auth' | 'device', message: string, retryAfterMs: number | null = null) {
     super(message);
     this.name = 'PushRegistrationError';
     this.pushRegistrationErrorKind = kind;
@@ -64,6 +64,9 @@ export async function claimPushToken(options: {
     }
     if (response.status === 401 || response.status === 403) {
       throw new PushRegistrationError('auth', '登录状态已失效，请重新登录。');
+    }
+    if (response.status === 400) {
+      throw new PushRegistrationError('device', '本设备的推送登记已失效，请重新启用推送。');
     }
     if (!response.ok || payload.ok !== true || typeof payload.user_id !== 'string') {
       throw new PushRegistrationError('server', typeof payload.error === 'string' ? payload.error : `推送令牌登记失败（${response.status}）`, retryAfterMs);

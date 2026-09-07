@@ -4,7 +4,7 @@ import { router } from 'expo-router';
 import { useI18n } from '../src/i18n/I18nProvider';
 import type { MessageKey } from '../src/i18n/i18n-core';
 import { getPushPreferences, PushPreferences, updatePushPreferences } from '../src/push/preferences';
-import { disableCurrentDevicePushToken, getPendingPushRegistrationStatus, getPushPermissionStatus, hasCurrentDevicePushToken, isPushRegistrationAuthError, PendingPushRegistrationStatus, registerPushToken, retryPendingPushRegistration, subscribeToPendingPushRegistration } from '../src/push/registration';
+import { disableCurrentDevicePushToken, getPendingPushRegistrationStatus, getPushPermissionStatus, hasCurrentDevicePushToken, hasPushRegistrationDeviceError, isPushRegistrationAuthError, PendingPushRegistrationStatus, registerPushToken, retryPendingPushRegistration, subscribeToPendingPushRegistration } from '../src/push/registration';
 
 const OPTIONS: { key: keyof PushPreferences; title: MessageKey; description: MessageKey }[] = [
   { key: 'breaking_news', title: 'push.breakingNews', description: 'push.breakingNewsMeta' },
@@ -28,6 +28,7 @@ export default function PushSettingsScreen() {
   const [retrying, setRetrying] = useState(false);
   const [pendingSync, setPendingSync] = useState<PendingPushRegistrationStatus | null>(null);
   const [authRequired, setAuthRequired] = useState(false);
+  const [deviceRegistrationInvalid, setDeviceRegistrationInvalid] = useState(false);
   const [savingKey, setSavingKey] = useState<keyof PushPreferences | null>(null);
   const pendingSyncRef = useRef<PendingPushRegistrationStatus | null>(null);
   const completionAnnouncementPending = useRef(false);
@@ -40,16 +41,18 @@ export default function PushSettingsScreen() {
 
   const refreshDeviceState = useCallback(async (announceCompletion: boolean) => {
     const generation = refreshGeneration.current;
-    const [nextPermission, hasToken, nextPendingSync] = await Promise.all([
+    const [nextPermission, hasToken, nextPendingSync, hasDeviceError] = await Promise.all([
       getPushPermissionStatus(),
       hasCurrentDevicePushToken(),
-      getPendingPushRegistrationStatus()
+      getPendingPushRegistrationStatus(),
+      hasPushRegistrationDeviceError()
     ]);
     if (generation !== refreshGeneration.current) return;
     const completedPendingSync = (Boolean(pendingSyncRef.current) && !nextPendingSync || completionAnnouncementPending.current) && nextPermission.status === 'granted' && hasToken;
     setPermission(nextPermission.status);
     setCanAskAgain(nextPermission.canAskAgain);
     setEnabled(nextPermission.status === 'granted' && hasToken);
+    setDeviceRegistrationInvalid(hasDeviceError);
     updatePendingSync(nextPendingSync);
     if (announceCompletion && completedPendingSync) {
       completionAnnouncementPending.current = false;
@@ -72,6 +75,8 @@ export default function PushSettingsScreen() {
       const completedPendingSync = event.reason === 'auth_recovered' || event.reason === 'synced' && Boolean(pendingSyncRef.current);
       updatePendingSync(event.status);
       setAuthRequired(event.reason === 'auth_required');
+      if (event.reason === 'device_invalid') setDeviceRegistrationInvalid(true);
+      if (event.reason === 'synced' || event.reason === 'auth_recovered' || event.reason === 'cleared') setDeviceRegistrationInvalid(false);
       if (completedPendingSync) {
         setEnabled(true);
         if (AppState.currentState === 'active') {
@@ -105,6 +110,7 @@ export default function PushSettingsScreen() {
       setCanAskAgain(nextPermission.canAskAgain);
       setEnabled(Boolean(token));
       setAuthRequired(false);
+      setDeviceRegistrationInvalid(false);
       updatePendingSync(await getPendingPushRegistrationStatus());
       if (!token) {
         Alert.alert(t('push.pendingTitle'), nextPermission.canAskAgain ? t('push.allowPrompt') : t('push.systemPrompt'));
@@ -124,6 +130,7 @@ export default function PushSettingsScreen() {
     try {
       await disableCurrentDevicePushToken({ rememberDeviceChoice: true });
       setEnabled(false);
+      setDeviceRegistrationInvalid(false);
       updatePendingSync(null);
     } catch (error) {
       Alert.alert(t('push.disableFailed'), error instanceof Error ? error.message : t('push.networkRetry'));
@@ -209,6 +216,15 @@ export default function PushSettingsScreen() {
           <Text style={styles.authBody}>{t('push.signInRequiredBody')}</Text>
           <Pressable accessibilityRole="button" accessibilityLabel={t('push.signInAgain')} testID="push-registration-sign-in" style={styles.retryButton} onPress={() => router.push('/auth')}>
             <Text style={styles.retryButtonText}>{t('push.signInAgain')}</Text>
+          </Pressable>
+        </View>
+      ) : null}
+      {deviceRegistrationInvalid ? (
+        <View testID="push-registration-device-invalid" accessibilityLiveRegion="polite" style={styles.authCard}>
+          <Text style={styles.authTitle}>{t('push.deviceRegistrationInvalid')}</Text>
+          <Text style={styles.authBody}>{t('push.deviceRegistrationInvalidBody')}</Text>
+          <Pressable accessibilityRole="button" accessibilityLabel={t('push.enableAgain')} disabled={busy} testID="push-registration-enable-again" style={({ pressed }) => [styles.retryButton, (pressed || busy) && styles.retryButtonPressed]} onPress={() => void enablePush()}>
+            <Text style={styles.retryButtonText}>{t('push.enableAgain')}</Text>
           </Pressable>
         </View>
       ) : null}

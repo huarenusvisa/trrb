@@ -76,7 +76,9 @@ assert.match(styles, /\.judge-directory-row\{[^}]*content-visibility:auto[^}]*co
 assert.match(styles, /@media\(max-width:760px\)\{\.judge-directory-row\{[^}]*contain-intrinsic-block-size:auto 196px/, 'offscreen judge cards must reserve their mobile card height');
 assert.match(standalone, /site\.css\?v=35/, 'standalone homepage must load the skip-link stylesheet');
 assert.match(trrb, /site\.css\?v=34/, 'embedded homepage must load the skip-link stylesheet');
-assert.match(backgroundDirectory, /site\.css\?v=17/, 'background directory must load the chart-focus stylesheet');
+assert.match(backgroundDirectory, /site\.css\?v=35/, 'background directory must load the current skip-link and chart-focus stylesheet');
+assert.match(backgroundDirectory, /<body>\s*<a class="skip-link" href="#main-content">跳到主要内容<\/a>/, 'background directory must let keyboard users bypass its sticky header');
+assert.match(backgroundDirectory, /<main id="main-content" class="shell background-directory-page" tabindex="-1">/, 'background directory skip target must accept programmatic focus');
 assert.match(styles, /@media\(prefers-reduced-motion:reduce\)\{html\{scroll-behavior:auto\}[^}]*\.skeleton,[^{]+\{animation:none\}[^}]*\.entry-grid>a,[^{]+\{transition:none\}[^}]*\.entry-grid>a:hover,[^{]+\{transform:none\}/, 'shared pages must disable smooth scrolling, loading motion, transitions, and hover displacement when reduced motion is requested');
 assert.match(styles, /\.market-hit:focus-visible \.market-hit-area\{[^}]*fill:rgba\(16,24,40,\.08\)[^}]*stroke:#101828[^}]*stroke-width:2/, 'keyboard-focused trend points must expose a high-contrast visible indicator');
 assert.match(styles, /\.skip-link\{[^}]*position:fixed[^}]*z-index:100[^}]*transform:translateY\(calc\(-100% - 24px\)\)[^}]*border:3px solid #101828/, 'skip link must remain hidden until focused and render above the sticky header');

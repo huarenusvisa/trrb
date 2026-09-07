@@ -380,8 +380,14 @@ test('community feed paginates and restores only public cached posts', () => {
   assert.match(cacheCore, /snapshot\.posts\.length > COMMUNITY_FEED_CACHE_MAX_POSTS/);
   assert.match(cacheCore, /const truncated = publicPosts\.length > COMMUNITY_FEED_CACHE_MAX_POSTS/);
   assert.match(cacheCore, /nextOffset: !truncated/);
+  assert.match(cacheCore, /truncated,/);
+  assert.match(cache, /savedAt: result\.payload\?\.savedAt/);
   assert.match(cache, /result\.discardReason/);
   assert.match(list, /discardReason === 'expired'/);
+  assert.match(list, /cachedResult\?\.savedAt/);
+  assert.match(list, /community-cache-truncated/);
+  assert.match(list, /'community\.cacheDetails'/);
+  assert.match(list, /'community\.cacheTruncated'/);
   assert.match(list, /load\(true\)/);
   assert.match(server, /page\.limit \+ 1/);
   assert.match(server, /order: 'created_at\.desc,id\.desc'/);

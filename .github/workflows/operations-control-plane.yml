@@ -13,6 +13,11 @@ on:
       - 'netlify/functions/_shared/china-hot-headlines.js'
       - 'scripts/china-hot-li-teacher-ingest.mjs'
       - 'scripts/china-hot-li-teacher-ingest.test.mjs'
+      # ICE production coverage fixes must wake the collector immediately.
+      - '.github/workflows/ice-unified-pipeline.yml'
+      - 'scripts/ice-candidate-gate.mjs'
+      - 'scripts/ice-high-recall-discovery.mjs'
+      - 'scripts/ice-high-recall-production.test.mjs'
       - 'topic/ice/index.html'
       - 'topic/ice/ice.js'
       - 'scripts/ice-history-list.test.mjs'

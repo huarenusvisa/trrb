@@ -64,6 +64,7 @@ assert.ok(cityTrendBody.periods.length >= 3, 'every city/court trend must expose
 
 const standalone = readFileSync('asylumjudge/index.html', 'utf8');
 const trrb = readFileSync('asylumjudge/trrb.html', 'utf8');
+const backgroundDirectory = readFileSync('asylumjudge/judge-backgrounds.html', 'utf8');
 const client = readFileSync('asylumjudge/site.js', 'utf8');
 const i18n = readFileSync('asylumjudge/app-i18n.js', 'utf8');
 const styles = readFileSync('asylumjudge/site.css', 'utf8');
@@ -73,8 +74,10 @@ const bundleBuilder = readFileSync('scripts/build-asylumjudge-site.mjs', 'utf8')
 
 assert.match(styles, /\.judge-directory-row\{[^}]*content-visibility:auto[^}]*contain-intrinsic-block-size:auto 150px/, 'offscreen judge cards must defer layout and paint with a stable desktop placeholder');
 assert.match(styles, /@media\(max-width:760px\)\{\.judge-directory-row\{[^}]*contain-intrinsic-block-size:auto 196px/, 'offscreen judge cards must reserve their mobile card height');
-assert.match(standalone, /site\.css\?v=32/, 'standalone homepage must load the header-focus stylesheet');
-assert.match(trrb, /site\.css\?v=31/, 'embedded homepage must load the header-focus stylesheet');
+assert.match(standalone, /site\.css\?v=33/, 'standalone homepage must load the reduced-motion stylesheet');
+assert.match(trrb, /site\.css\?v=32/, 'embedded homepage must load the reduced-motion stylesheet');
+assert.match(backgroundDirectory, /site\.css\?v=16/, 'background directory must load the reduced-motion stylesheet');
+assert.match(styles, /@media\(prefers-reduced-motion:reduce\)\{html\{scroll-behavior:auto\}[^}]*\.skeleton,[^{]+\{animation:none\}[^}]*\.entry-grid>a,[^{]+\{transition:none\}[^}]*\.entry-grid>a:hover,[^{]+\{transform:none\}/, 'shared pages must disable smooth scrolling, loading motion, transitions, and hover displacement when reduced motion is requested');
 assert.match(styles, /\.header-inner \.home-nav a\{[^}]*min-height:44px[^}]*touch-action:manipulation/, 'mobile homepage navigation must provide responsive 44px touch targets');
 assert.match(styles, /\.home-language-control select\{[^}]*height:44px[^}]*touch-action:manipulation/, 'homepage language selector must provide a 44px touch target');
 assert.match(styles, /@media\(max-width:480px\)\{.*?\.home-language-control select\{[^}]*height:44px/, 'narrow screens must preserve the homepage language selector touch target');

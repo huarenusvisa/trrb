@@ -4,6 +4,7 @@ import { readBuildEvidence } from './store-build-evidence-core.mjs';
 import { readDistributionEvidence } from './store-distribution-evidence-core.mjs';
 import { readDeviceAcceptance } from './store-device-acceptance-core.mjs';
 import { readReviewSubmission } from './store-review-submission-core.mjs';
+import { readScreenshotEvidence } from './store-screenshot-evidence-core.mjs';
 import { inspectReleaseReadiness } from './store-release-preflight-core.mjs';
 
 const CONFIRMED = '1';
@@ -58,6 +59,10 @@ export function inspectSubmissionPlan({ mobileRoot, env = {}, expectedSourceComm
   expect(JSON.stringify(stages[3]?.acceptanceCases) === JSON.stringify(EXPECTED_ACCEPTANCE_CASES), 'Real-device acceptance coverage is incomplete');
   expect(stages[3]?.testContentPolicy === 'marked-test-content-only-and-clean-up-after-acceptance', 'Acceptance must protect real user content');
   expect(stages[4]?.manualOnly === true && (stages[4]?.commands ?? []).length === 0, 'Store review submission must remain an explicit manual console action');
+  const screenshotEvidence = stages[0]?.evidence;
+  expect(screenshotEvidence?.environmentVariable === 'TRRB_STORE_SCREENSHOT_EVIDENCE_FILE', 'Release preflight must require a local screenshot evidence file');
+  expect(screenshotEvidence?.command === 'npm run store:screenshot-evidence-check -- store/screenshot-evidence.local.json', 'Screenshot evidence command is missing or unsafe');
+  expect(!/[;&|`$]/.test(screenshotEvidence?.command ?? ''), 'Screenshot evidence command must remain a single auditable command');
   const buildEvidence = stages[1]?.evidence;
   expect(buildEvidence?.environmentVariable === 'TRRB_STORE_BUILD_EVIDENCE_FILE', 'Production builds must require a local evidence file');
   expect(buildEvidence?.command === 'npm run store:build-evidence-check -- store/build-evidence.local.json', 'Production build evidence command is missing or unsafe');
@@ -86,6 +91,20 @@ export function inspectSubmissionPlan({ mobileRoot, env = {}, expectedSourceComm
       ? release.missing.map(({ id, label, confirmationEnvironmentVariable }) => ({ id, label, environmentVariable: confirmationEnvironmentVariable }))
       : (stage.confirmations ?? []).filter(({ environmentVariable }) => env[environmentVariable] !== CONFIRMED);
     const commands = [...(stage.commands ?? [])];
+    if (stage.id === 'release-preflight') {
+      const evidencePath = env[screenshotEvidence?.environmentVariable];
+      const evidence = evidencePath
+        ? readScreenshotEvidence({ mobileRoot, evidencePath, expectedSourceCommit, verifyFiles: false })
+        : { valid: false };
+      if (!evidence.valid) {
+        missing = [...missing, {
+          id: 'store-screenshot-evidence',
+          label: screenshotEvidence?.label,
+          environmentVariable: screenshotEvidence?.environmentVariable
+        }];
+      }
+      if (screenshotEvidence?.command) commands.push(screenshotEvidence.command);
+    }
     if (stage.id === 'production-builds') {
       const evidencePath = env[buildEvidence?.environmentVariable];
       const evidence = evidencePath ? readBuildEvidence({ mobileRoot, evidencePath, expectedSourceCommit }) : { valid: false };

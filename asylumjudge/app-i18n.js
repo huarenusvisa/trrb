@@ -436,6 +436,17 @@
     if (locale === 'zh-Hant') return stateTraditional[normalized] || fallback || code;
     return stateEnglish[normalized] || fallback || code;
   };
+  const stateSearchNames = (code, fallback = '') => {
+    const normalized = String(code || '').toUpperCase();
+    return [...new Set([
+      stateName(normalized, fallback),
+      stateEnglish[normalized],
+      stateSimplified[normalized],
+      stateTraditional[normalized],
+      fallback,
+      normalized
+    ].filter(Boolean))];
+  };
   const nationalityRegionAliases = new Map(Object.entries({
     'turkey': 'TR', 'kirghizia kyrgyzstan': 'KG', 'democratic republic of congo': 'CD',
     'people s republic of the congo': 'CG', 'tajikistan tadzhik': 'TJ', 'moldavia moldova': 'MD',
@@ -487,7 +498,7 @@
     }
     return locale.startsWith('zh') ? (row?.nationality_zh || row?.nationality || '') : (row?.nationality || row?.nationality_zh || '');
   };
-  window.AsylumI18n = { get locale() { return locale; }, supported: locales, t: (key, vars) => interpolate(translate(key), vars), translate, setLocale, formatNumber, stateName, countryName, regionCodeForNationality, dictionarySize: rows.length };
+  window.AsylumI18n = { get locale() { return locale; }, supported: locales, t: (key, vars) => interpolate(translate(key), vars), translate, setLocale, formatNumber, stateName, stateSearchNames, countryName, regionCodeForNationality, dictionarySize: rows.length };
   const observer = new MutationObserver((records) => records.forEach((record) => record.addedNodes.forEach((node) => {
     if (node.nodeType === 3) translateTextNode(node);
     else if (node.nodeType === 1) translateElement(node);

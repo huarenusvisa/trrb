@@ -1,6 +1,7 @@
 {
   "schemaVersion": 1,
   "sourceCommit": "REPLACE_WITH_FULL_40_CHARACTER_GIT_COMMIT_SHA",
+  "releaseCandidateSha256": "REPLACE_WITH_RELEASE_CANDIDATE_FILE_SHA256",
   "application": {
     "slug": "trrb",
     "projectId": "cc29573d-d20c-4c3b-a7d6-1bc74838127a",

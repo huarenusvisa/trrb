@@ -1,9 +1,12 @@
+import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
+import { readReleaseCandidate } from './store-release-candidate-core.mjs';
 
 const BUILD_ID = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const COMMIT_SHA = /^[0-9a-f]{40}$/i;
-const ALLOWED_ROOT_KEYS = ['schemaVersion', 'sourceCommit', 'application', 'builds'];
+const DIGEST = /^[0-9a-f]{64}$/i;
+const ALLOWED_ROOT_KEYS = ['schemaVersion', 'sourceCommit', 'releaseCandidateSha256', 'application', 'builds'];
 const ALLOWED_APPLICATION_KEYS = ['slug', 'projectId', 'version', 'runtimeVersion', 'ios', 'android'];
 const ALLOWED_IOS_KEYS = ['bundleIdentifier'];
 const ALLOWED_ANDROID_KEYS = ['package'];
@@ -22,7 +25,17 @@ function validIsoDate(value) {
   return typeof value === 'string' && /^\d{4}-\d{2}-\d{2}T/.test(value) && Number.isFinite(Date.parse(value));
 }
 
-export function inspectBuildEvidence({ mobileRoot, evidence, expectedSourceCommit }) {
+function resolveLocalFile(mobileRoot, filePath) {
+  return path.isAbsolute(filePath) ? filePath : path.resolve(mobileRoot, filePath);
+}
+
+function fileDigest(filePath) {
+  return crypto.createHash('sha256').update(fs.readFileSync(filePath)).digest('hex');
+}
+
+export function inspectBuildEvidence({
+  mobileRoot, evidence, expectedSourceCommit, expectedReleaseCandidateSha256
+}) {
   const app = JSON.parse(fs.readFileSync(path.join(mobileRoot, 'app.json'), 'utf8')).expo;
   const failures = [];
   const expect = (condition, message) => { if (!condition) failures.push(message); };
@@ -32,6 +45,10 @@ export function inspectBuildEvidence({ mobileRoot, evidence, expectedSourceCommi
   expect(COMMIT_SHA.test(evidence?.sourceCommit ?? ''), 'Build evidence sourceCommit must be a full Git commit SHA');
   if (expectedSourceCommit) {
     expect(evidence?.sourceCommit === expectedSourceCommit, 'Build evidence does not belong to the checked-out Git commit');
+  }
+  expect(DIGEST.test(evidence?.releaseCandidateSha256 ?? ''), 'Build evidence must include the frozen release candidate SHA-256');
+  if (expectedReleaseCandidateSha256) {
+    expect(evidence?.releaseCandidateSha256 === expectedReleaseCandidateSha256, 'Build evidence does not belong to the verified frozen release candidate');
   }
 
   const application = evidence?.application;
@@ -75,11 +92,37 @@ export function inspectBuildEvidence({ mobileRoot, evidence, expectedSourceCommi
   return { valid: failures.length === 0, failures };
 }
 
-export function readBuildEvidence({ mobileRoot, evidencePath, expectedSourceCommit }) {
+export function readBuildEvidence({
+  mobileRoot, evidencePath, expectedSourceCommit, releaseCandidatePath, screenshotEvidencePath,
+  verifyCandidateFiles = true
+}) {
   try {
-    const absolutePath = path.isAbsolute(evidencePath) ? evidencePath : path.resolve(mobileRoot, evidencePath);
+    const absolutePath = resolveLocalFile(mobileRoot, evidencePath);
     const evidence = JSON.parse(fs.readFileSync(absolutePath, 'utf8'));
-    return inspectBuildEvidence({ mobileRoot, evidence, expectedSourceCommit });
+    let expectedReleaseCandidateSha256;
+    const candidateFailures = [];
+    if (releaseCandidatePath || screenshotEvidencePath) {
+      if (!releaseCandidatePath || !screenshotEvidencePath) {
+        candidateFailures.push('Build evidence verification requires both release candidate and screenshot evidence files');
+      } else {
+        const candidate = readReleaseCandidate({
+          mobileRoot, candidatePath: releaseCandidatePath, screenshotEvidencePath,
+          expectedSourceCommit, verifyFiles: verifyCandidateFiles
+        });
+        if (!candidate.valid) {
+          candidateFailures.push(...candidate.failures.map((failure) => `Release candidate: ${failure}`));
+        } else {
+          expectedReleaseCandidateSha256 = fileDigest(resolveLocalFile(mobileRoot, releaseCandidatePath));
+        }
+      }
+    }
+    const inspected = inspectBuildEvidence({
+      mobileRoot, evidence, expectedSourceCommit, expectedReleaseCandidateSha256
+    });
+    return {
+      valid: candidateFailures.length === 0 && inspected.valid,
+      failures: [...candidateFailures, ...inspected.failures]
+    };
   } catch {
     return { valid: false, failures: ['Unable to read or parse the local build evidence file'] };
   }

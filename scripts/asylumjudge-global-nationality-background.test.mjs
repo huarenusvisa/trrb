@@ -210,7 +210,7 @@ assert.match(detailPage, /id="country-filter"[^>]*name="nationality"[^>]*type="s
 assert.match(detailPage, /id="nationality-results-status"[^>]*class="sr-only"[^>]*role="status"[^>]*aria-live="polite"[^>]*aria-atomic="true"/, 'filtered nationality counts must be announced without exposing the full table as a live region');
 assert.match(detailPage, /class="nationality-fy"[^>]*role="group"[^>]*aria-label="选择国籍数据财政年度"[\s\S]*data-nationality-fy="2026"[^>]*aria-pressed="true"[\s\S]*data-nationality-fy="2025"[^>]*aria-pressed="false"/, 'judge nationality year filters must expose their group and initial selected state');
 assert.match(detailClient, /data-nationality-fy[\s\S]*const selected = Number\(button\.dataset\.nationalityFy\) === nationalityFiscalYear;[\s\S]*button\.setAttribute\('aria-pressed', String\(selected\)\)/, 'judge nationality year filters must keep the announced selected state in sync');
-assert.match(detailPage, /detail\.css\?v=7[\s\S]*detail\.js\?v=19/, 'judge detail page must load the current asset versions');
+assert.match(detailPage, /detail\.css\?v=7[\s\S]*detail\.js\?v=20/, 'judge detail page must load the current asset versions');
 const detailSummaryMessages = detailClient.match(/const detailSummaryMessages = \{[\s\S]*?\n\};/)?.[0] || '';
 for (const locale of ['en', 'es', 'fr', 'pt-BR', 'hi', 'zh-Hans', 'zh-Hant', 'ru', 'ar', 'tr']) {
   assert.match(detailSummaryMessages, new RegExp(`['"]?${locale}['"]?\\s*:`), `judge detail summary messages must support ${locale}`);
@@ -271,7 +271,7 @@ assert.match(detailClient, /const template = \(nationalityRowMessages\[locale\] 
 assert.match(detailClient, /nationalityOutcomeHeader\(\)[\s\S]*esc\(nationalityRowMessage\(row\)\)[\s\S]*esc\(nationalityDateRange\(row\)\)/, 'nationality rows must render localized sample and date guidance safely');
 assert.doesNotMatch(detailClient, /nationality'\)\.innerHTML[^\n]*sampleDescription\(row\)/, 'nationality rows must not reuse the Simplified Chinese yearly sample guidance');
 assert.match(detailClient, /function nationalityName\(row\) \{[\s\S]*window\.AsylumI18n\?\.countryName\?\.\(row\) \|\| row\.nationality \|\| '—'/, 'judge nationality rows must use the shared localized country name with safe fallbacks');
-assert.match(detailPage, /app-i18n\.js\?v=8[\s\S]*detail\.js\?v=19/, 'judge details must load the shared country-name capability before the current detail client');
+assert.match(detailPage, /app-i18n\.js\?v=8[\s\S]*detail\.js\?v=20/, 'judge details must load the shared country-name capability before the current detail client');
 const sharedCountryHelpers = sharedI18nClient.match(/const nationalityRegionAliases = [\s\S]*?(?=\n  window\.AsylumI18n =)/)?.[0];
 assert.ok(sharedCountryHelpers, 'shared i18n country-name helpers must remain testable');
 const sharedCountrySandbox = { Intl, locale: 'zh-Hans' };
@@ -403,6 +403,13 @@ assert.doesNotMatch(detailClient, /https:\/\/trrb\.net/, 'AsylumJudge detail pag
 assert.doesNotMatch(page, /EOIR 尚未提供可核验的按月国籍裁决序列/);
 assert.match(detailPage, /法官背景与任命信息/);
 assert.match(detailPage, /未发现离任或被辞退记录，不等于确认仍在任/);
+const backgroundMessages = detailClient.match(/const backgroundMessages = \{[\s\S]*?\n\};/)?.[0] || '';
+for (const locale of ['en', 'es', 'fr', 'pt-BR', 'hi', 'zh-Hans', 'zh-Hant', 'ru', 'ar', 'tr']) {
+  assert.match(backgroundMessages, new RegExp(`['"]?${locale}['"]?\\s*:`), `official judge background guidance must support ${locale}`);
+}
+assert.match(detailClient, /return backgroundMessages\[locale\] \|\| backgroundMessages\['zh-Hans'\]/, 'official judge backgrounds must use the active locale with a safe fallback');
+assert.match(detailClient, /function renderBackground\(background\)[\s\S]*const copy = backgroundCopy\(\)[\s\S]*copy\.unavailable[\s\S]*copy\.statusTitle[\s\S]*copy\.statusBody[\s\S]*copy\.biographyTitle[\s\S]*copy\.unspecified[\s\S]*copy\.missingBiography[\s\S]*fill\(copy\.education[\s\S]*fill\(copy\.bar[\s\S]*copy\.source/, 'official judge backgrounds must render all active-locale labels and fallbacks');
+assert.doesNotMatch(detailClient, /textContent = '暂未匹配到官方资料'|textContent = '官方履历核验状态'|textContent = '当前数据库尚未匹配到|textContent = '官方履历原文'|\|\| '官方资料未注明'|`教育经历：\$\{background\.education\}`|`执业资格：\$\{background\.bar_membership\}`/, 'dynamic official judge backgrounds must not remain hard-coded in Simplified Chinese');
 const webexMessages = detailClient.match(/const webexMessages = \{[\s\S]*?\n\};/)?.[0] || '';
 for (const locale of ['en', 'es', 'fr', 'pt-BR', 'hi', 'zh-Hans', 'zh-Hant', 'ru', 'ar', 'tr']) {
   assert.match(webexMessages, new RegExp(`['"]?${locale}['"]?\\s*:`), `Webex hearing guidance must support ${locale}`);

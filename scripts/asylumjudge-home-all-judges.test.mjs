@@ -162,11 +162,18 @@ for (const html of [standalone, trrb]) {
   assert.match(html, /其他占比/, 'trend legend must expose the blue other-outcome series');
   assert.match(html, /class="brand-lockup"[^>]+logo\.svg/, 'both homepage variants must render the final AsylumJudge logo');
 }
-assert.match(standalone, /site\.js\?v=40/, 'the standalone homepage must load the accessible directory client');
-assert.match(trrb, /site\.js\?v=39/, 'the embedded homepage must load the accessible directory client');
+assert.match(standalone, /app-i18n\.js\?v=13[\s\S]*site\.js\?v=41/, 'the standalone homepage must load the contextual link-label clients');
+assert.match(trrb, /app-i18n\.js\?v=12[\s\S]*site\.js\?v=40/, 'the embedded homepage must load the contextual link-label clients');
 assert.match(client, /class="judge-directory-row" role="listitem"/, 'each judge card must expose its position in the result list without overriding nested link semantics');
 assert.equal((client.match(/class="(?:directory-loading|empty)" role="listitem"/g) || []).length, 3, 'loading, empty, and error directory states must remain valid list items');
 assert.doesNotMatch(client, /<a[^>]*role="listitem"/, 'judge directory links must keep their native link role');
+assert.match(client, /class="judge-background-link"[^>]+aria-label="\$\{esc\(t\('查看 \{judge\} 的法官背景', \{ judge: judgeName \}\)\)\}"/, 'repeated background links must identify their judge');
+assert.match(client, /class="directory-detail-link"[^>]+aria-label="\$\{esc\(t\('查看 \{judge\} 的详情', \{ judge: judgeName \}\)\)\}"/, 'repeated detail links must identify their judge');
+assert.match(client, /class="judge-webex"[\s\S]{0,300}aria-label="\$\{esc\(t\('打开 \{judge\} 的官方 Webex 出庭链接', \{ judge: judgeName \}\)\)\}"/, 'repeated Webex links must identify their judge');
+for (const source of ['查看 {judge} 的法官背景', '查看 {judge} 的详情', '打开 {judge} 的官方 Webex 出庭链接']) {
+  const rowPattern = new RegExp(`\\['${source.replace(/[.*+?^\\${}()|[\\]\\\\]/g, '\\\\$&')}'(?:,'[^']*\\{judge\\}[^']*'){9}\\]`);
+  assert.match(i18n, rowPattern, `${source} must preserve the judge placeholder in all nine translations`);
+}
 assert.match(i18n, /\['跳到主要内容','Skip to main content'[^\n]+انتقل إلى المحتوى الرئيسي[^\n]+Ana içeriğe geç'/, 'skip-link text must be localized across all supported languages');
 assert.match(client, /mode=all/, 'homepage must request the complete judge dataset');
 assert.match(client, /state-list-status[\s\S]{0,160}selected\.length/, 'state overview must announce only the rendered result count');
@@ -242,8 +249,8 @@ assert.match(styles, /\.directory-metric\.verdict-other b[^}]*var\(--other\)/);
 assert.match(standalone, /rel="icon"[^>]+favicon\.ico/, 'homepage must declare a search and browser favicon');
 assert.match(standalone, /rel="apple-touch-icon"/, 'homepage must declare an iOS home-screen icon');
 assert.match(standalone, /rel="manifest"/, 'homepage must expose an installable site manifest');
-assert.match(standalone, /app-i18n\.js\?v=12[\s\S]*site\.js\?v=40/, 'standalone homepage must load the accessible directory client');
-assert.match(trrb, /app-i18n\.js\?v=11[\s\S]*site\.js\?v=39/, 'embedded homepage must load the accessible directory client');
+assert.match(standalone, /app-i18n\.js\?v=13[\s\S]*site\.js\?v=41/, 'standalone homepage must load the contextual link-label clients');
+assert.match(trrb, /app-i18n\.js\?v=12[\s\S]*site\.js\?v=40/, 'embedded homepage must load the contextual link-label clients');
 for (const source of ['正在读取全部法官资料…', '稍后重试', '读取失败', '全部法官资料暂时无法读取', '无需刷新页面，可以直接重新尝试。']) {
   const rowPattern = new RegExp(`\\['${source.replace(/[.*+?^${}()|[\\]\\]/g, '\\\\$&')}'(?:,'[^']+'){9}\\]`);
   assert.match(i18n, rowPattern, `${source} must provide all nine non-source translations`);

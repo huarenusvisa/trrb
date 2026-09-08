@@ -170,6 +170,7 @@ jobs:
         run: |
           npm run config:check
           npm run test:store-assets
+          npm run test:store-support
       - name: Export Expo web bundle
         working-directory: apps/mobile
         run: npm run export:web

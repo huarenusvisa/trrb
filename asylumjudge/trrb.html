@@ -12,7 +12,7 @@
   <meta property="og:description" content="按法官、法院、城市和州查询美国庇护裁决历史数据。">
   <meta property="og:url" content="https://trrb.net/asylumjudge">
   <meta name="theme-color" content="#14804a">
-  <link rel="stylesheet" href="/asylumjudge/site.css?v=38">
+  <link rel="stylesheet" href="/asylumjudge/site.css?v=39">
 </head>
 <body>
   <a class="skip-link" href="#main-content">跳到主要内容</a>
@@ -52,7 +52,8 @@
           <form id="judge-search" class="search-box" role="search" aria-labelledby="judge-search-label">
             <label id="judge-search-label" class="sr-only" for="judge-q">法官、法院或城市</label>
             <input id="judge-q" type="search" autocomplete="off" enterkeyhint="search" spellcheck="false" aria-controls="judge-directory-list" aria-describedby="judge-search-note" placeholder="例如：法官姓名、New York、Houston">
-            <button type="submit">筛选法官</button>
+            <button id="judge-search-clear" class="search-clear" type="button" aria-label="清除搜索" hidden><span aria-hidden="true">×</span></button>
+            <button class="search-submit" type="submit">筛选法官</button>
           </form>
           <div class="quick" role="group" aria-label="热门查询">
             <button type="button" data-q="New York">纽约</button>
@@ -154,8 +155,8 @@
   <footer>
     <div class="shell footer-inner"><div><b>唐人日报 · 移民法官通过率</b><span>TRRB.net/asylumjudge</span></div><p>与 AsylumJudge.com 共用 EOIR 数据库 · 持续更新</p></div>
   </footer>
-  <script src="/asylumjudge/app-i18n.js?v=15"></script>
+  <script src="/asylumjudge/app-i18n.js?v=16"></script>
   <script src="/asylumjudge/domain-brand.js?v=9"></script>
-  <script src="/asylumjudge/site.js?v=49" defer></script>
+  <script src="/asylumjudge/site.js?v=50" defer></script>
 </body>
 </html>

@@ -85,6 +85,22 @@ function deviceAcceptanceFile(t) {
   return evidencePath;
 }
 
+function reviewSubmissionFile(t) {
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'trrb-review-submission-'));
+  t.after(() => fs.rmSync(directory, { recursive: true, force: true }));
+  const evidencePath = path.join(directory, 'evidence.json');
+  fs.writeFileSync(evidencePath, JSON.stringify({
+    schemaVersion: 1, sourceCommit: '1234567890abcdef1234567890abcdef12345678', appVersion: '0.2.0',
+    submissions: ['ios', 'android'].map((platform, index) => ({
+      platform,
+      easBuildId: index === 0 ? '11111111-1111-4111-8111-111111111111' : '22222222-2222-4222-8222-222222222222',
+      target: platform === 'ios' ? 'app-store-review' : 'google-play-production-review', nativeBuildVersion: '3',
+      status: 'submitted-for-review', automaticPublicRelease: false, submittedAt: '2026-09-08T01:00:00.000Z'
+    }))
+  }));
+  return evidencePath;
+}
+
 test('runbook is valid, ordered and begins with release access', () => {
   const result = inspectSubmissionPlan({ mobileRoot, env: {} });
   assert.equal(result.valid, true, result.failures.join('\n'));
@@ -132,6 +148,11 @@ test('plan advances only after both platform confirmations and valid paired buil
 
   const submitted = { ...devices, TRRB_APPLE_REVIEW_SUBMITTED: '1', TRRB_GOOGLE_REVIEW_SUBMITTED: '1' };
   result = inspectSubmissionPlan({ mobileRoot, env: submitted, expectedSourceCommit: '1234567890abcdef1234567890abcdef12345678' });
+  assert.equal(result.nextStage.id, 'store-review-submission');
+  assert.deepEqual(result.nextStage.missing.map(({ id }) => id), ['store-review-submission-evidence']);
+
+  submitted.TRRB_STORE_REVIEW_SUBMISSION_FILE = reviewSubmissionFile(t);
+  result = inspectSubmissionPlan({ mobileRoot, env: submitted, expectedSourceCommit: '1234567890abcdef1234567890abcdef12345678' });
   assert.equal(result.complete, true);
   assert.equal(result.nextStage, null);
 });
@@ -152,5 +173,7 @@ test('build and upload commands are explicit while public review submission rema
   assert.deepEqual(stages['real-device-acceptance'].commands, [
     'npm run store:device-acceptance-check -- store/device-acceptance.local.json store/distribution-evidence.local.json store/build-evidence.local.json'
   ]);
-  assert.deepEqual(stages['store-review-submission'].commands, []);
+  assert.deepEqual(stages['store-review-submission'].commands, [
+    'npm run store:review-submission-check -- store/review-submission.local.json store/device-acceptance.local.json store/distribution-evidence.local.json store/build-evidence.local.json'
+  ]);
 });

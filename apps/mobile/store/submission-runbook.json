@@ -109,6 +109,14 @@
       "dependsOn": ["real-device-acceptance"],
       "commands": [],
       "manualOnly": true,
+      "evidence": {
+        "label": "Validated manual App Store and Google Play review submission evidence",
+        "environmentVariable": "TRRB_STORE_REVIEW_SUBMISSION_FILE",
+        "deviceEvidenceEnvironmentVariable": "TRRB_STORE_DEVICE_ACCEPTANCE_FILE",
+        "distributionEvidenceEnvironmentVariable": "TRRB_STORE_DISTRIBUTION_EVIDENCE_FILE",
+        "buildEvidenceEnvironmentVariable": "TRRB_STORE_BUILD_EVIDENCE_FILE",
+        "command": "npm run store:review-submission-check -- store/review-submission.local.json store/device-acceptance.local.json store/distribution-evidence.local.json store/build-evidence.local.json"
+      },
       "confirmations": [
         {
           "id": "apple-review-submitted",

@@ -3,6 +3,7 @@ import path from 'node:path';
 import { readBuildEvidence } from './store-build-evidence-core.mjs';
 import { readDistributionEvidence } from './store-distribution-evidence-core.mjs';
 import { readDeviceAcceptance } from './store-device-acceptance-core.mjs';
+import { readReviewSubmission } from './store-review-submission-core.mjs';
 import { inspectReleaseReadiness } from './store-release-preflight-core.mjs';
 
 const CONFIRMED = '1';
@@ -72,6 +73,13 @@ export function inspectSubmissionPlan({ mobileRoot, env = {}, expectedSourceComm
   expect(deviceEvidence?.buildEvidenceEnvironmentVariable === 'TRRB_STORE_BUILD_EVIDENCE_FILE', 'Real-device acceptance must reference validated build evidence');
   expect(deviceEvidence?.command === 'npm run store:device-acceptance-check -- store/device-acceptance.local.json store/distribution-evidence.local.json store/build-evidence.local.json', 'Real-device acceptance evidence command is missing or unsafe');
   expect(!/[;&|`$]/.test(deviceEvidence?.command ?? ''), 'Real-device acceptance evidence command must remain a single auditable command');
+  const reviewEvidence = stages[4]?.evidence;
+  expect(reviewEvidence?.environmentVariable === 'TRRB_STORE_REVIEW_SUBMISSION_FILE', 'Store review submission must require a local evidence file');
+  expect(reviewEvidence?.deviceEvidenceEnvironmentVariable === 'TRRB_STORE_DEVICE_ACCEPTANCE_FILE', 'Store review submission must reference validated device acceptance');
+  expect(reviewEvidence?.distributionEvidenceEnvironmentVariable === 'TRRB_STORE_DISTRIBUTION_EVIDENCE_FILE', 'Store review submission must reference validated distribution evidence');
+  expect(reviewEvidence?.buildEvidenceEnvironmentVariable === 'TRRB_STORE_BUILD_EVIDENCE_FILE', 'Store review submission must reference validated build evidence');
+  expect(reviewEvidence?.command === 'npm run store:review-submission-check -- store/review-submission.local.json store/device-acceptance.local.json store/distribution-evidence.local.json store/build-evidence.local.json', 'Store review submission evidence command is missing or unsafe');
+  expect(!/[;&|`$]/.test(reviewEvidence?.command ?? ''), 'Store review submission evidence command must remain a single auditable command');
 
   const state = stages.map((stage) => {
     let missing = stage.id === 'release-preflight'
@@ -120,6 +128,23 @@ export function inspectSubmissionPlan({ mobileRoot, env = {}, expectedSourceComm
         }];
       }
       if (deviceEvidence?.command) commands.push(deviceEvidence.command);
+    }
+    if (stage.id === 'store-review-submission') {
+      const evidencePath = env[reviewEvidence?.environmentVariable];
+      const deviceEvidencePath = env[reviewEvidence?.deviceEvidenceEnvironmentVariable];
+      const distributionEvidencePath = env[reviewEvidence?.distributionEvidenceEnvironmentVariable];
+      const buildEvidencePath = env[reviewEvidence?.buildEvidenceEnvironmentVariable];
+      const evidence = evidencePath && deviceEvidencePath && distributionEvidencePath && buildEvidencePath
+        ? readReviewSubmission({ mobileRoot, evidencePath, deviceEvidencePath, distributionEvidencePath, buildEvidencePath, expectedSourceCommit })
+        : { valid: false };
+      if (!evidence.valid) {
+        missing = [...missing, {
+          id: 'store-review-submission-evidence',
+          label: reviewEvidence?.label,
+          environmentVariable: reviewEvidence?.environmentVariable
+        }];
+      }
+      if (reviewEvidence?.command) commands.push(reviewEvidence.command);
     }
     return { id: stage.id, title: stage.title, complete: missing.length === 0, missing, commands };
   });

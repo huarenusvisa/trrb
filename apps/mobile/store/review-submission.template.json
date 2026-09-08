@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "REPLACE_WITH_FULL_40_CHARACTER_GIT_COMMIT",
+  "appVersion": "0.2.0",
+  "submissions": [
+    {
+      "platform": "ios",
+      "easBuildId": "REPLACE_WITH_IOS_EAS_BUILD_ID",
+      "target": "app-store-review",
+      "nativeBuildVersion": "REPLACE_WITH_IOS_BUILD_NUMBER",
+      "status": "submitted-for-review",
+      "automaticPublicRelease": false,
+      "submittedAt": "2026-09-08T01:15:00.000Z"
+    },
+    {
+      "platform": "android",
+      "easBuildId": "REPLACE_WITH_ANDROID_EAS_BUILD_ID",
+      "target": "google-play-production-review",
+      "nativeBuildVersion": "REPLACE_WITH_ANDROID_VERSION_CODE",
+      "status": "submitted-for-review",
+      "automaticPublicRelease": false,
+      "submittedAt": "2026-09-08T01:20:00.000Z"
+    }
+  ]
+}

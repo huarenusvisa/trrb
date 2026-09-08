@@ -39,6 +39,7 @@
         "environmentVariable": "TRRB_STORE_BUILD_EVIDENCE_FILE",
         "releaseCandidateEnvironmentVariable": "TRRB_STORE_RELEASE_CANDIDATE_FILE",
         "screenshotEvidenceEnvironmentVariable": "TRRB_STORE_SCREENSHOT_EVIDENCE_FILE",
+        "generationCommand": "npm run store:build-evidence-generate",
         "command": "npm run store:build-evidence-check -- store/build-evidence.local.json store/release-candidate.local.json store/screenshot-evidence.local.json"
       },
       "confirmations": [

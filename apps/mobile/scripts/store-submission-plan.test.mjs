@@ -218,6 +218,7 @@ test('build and upload commands are explicit while public review submission rema
   assert.deepEqual(stages['production-builds'].commands, [
     'eas build --platform ios --profile production',
     'eas build --platform android --profile production',
+    'npm run store:build-evidence-generate',
     'npm run store:build-evidence-check -- store/build-evidence.local.json store/release-candidate.local.json store/screenshot-evidence.local.json'
   ]);
   assert.deepEqual(stages['internal-distribution'].commands, [

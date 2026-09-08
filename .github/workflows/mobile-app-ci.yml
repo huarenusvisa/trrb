@@ -178,6 +178,7 @@ jobs:
           npm run test:store-release
           npm run test:store-runbook
           npm run test:store-build-evidence
+          npm run test:store-build-evidence-generate
           npm run test:store-distribution-evidence
           npm run test:store-device-acceptance
           npm run test:store-review-submission

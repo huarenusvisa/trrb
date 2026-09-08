@@ -9,6 +9,7 @@ type Props = {
   profile: SocialProfile;
   followers: number;
   following: number;
+  account?: string;
   own?: boolean;
   onEdit?: () => void;
   onFollowers?: () => void;
@@ -16,17 +17,18 @@ type Props = {
   actions?: React.ReactNode;
 };
 
-export function ProfileHero({ profile, followers, following, own, onEdit, onFollowers, onFollowing, actions }: Props) {
+export function ProfileHero({ profile, followers, following, account, own, onEdit, onFollowers, onFollowing, actions }: Props) {
   const { t } = useI18n();
   const cover = publicProfileMediaUrl(profile.cover_path);
   return <View style={styles.card}>
-    <View style={styles.cover}>
+    <Pressable testID={own ? 'profile-edit-cover' : undefined} accessibilityRole={own ? 'button' : undefined} accessibilityLabel={own ? t('profileSettings.changeCoverA11y') : undefined} disabled={!own || !onEdit} onPress={onEdit} style={styles.cover}>
       {cover ? <Image source={{ uri: cover }} contentFit="cover" transition={160} style={StyleSheet.absoluteFill} /> : <View style={styles.coverFallback}><View style={styles.glowOne} /><View style={styles.glowTwo} /></View>}
-    </View>
+      {own && onEdit ? <View style={styles.coverEdit}><Text style={styles.coverEditText}>{t('profileSettings.changeCover')}</Text></View> : null}
+    </Pressable>
     <View style={styles.body}>
-      <View style={styles.avatarWrap}><TrRbAvatar avatarKey={profile.avatar_key} avatarPath={profile.avatar_path} size={88} label={t('userProfile.avatarA11y', { name: profile.display_name || t('userProfile.readerFallback') })} /></View>
+      <Pressable testID={own ? 'profile-edit-avatar' : undefined} accessibilityRole={own ? 'button' : undefined} accessibilityLabel={own ? t('profileSettings.customAvatarA11y') : undefined} disabled={!own || !onEdit} onPress={onEdit} style={styles.avatarWrap}><TrRbAvatar avatarKey={profile.avatar_key} avatarPath={profile.avatar_path} size={88} label={t('userProfile.avatarA11y', { name: profile.display_name || t('userProfile.readerFallback') })} />{own && onEdit ? <View style={styles.avatarEdit}><Text style={styles.avatarEditText}>＋</Text></View> : null}</Pressable>
       <View style={styles.nameRow}>
-        <View style={styles.nameCopy}><Text style={styles.name}>{profile.display_name || t('userProfile.readerFallback')}</Text><Text style={styles.privacy}>{profile.is_private ? t('userProfile.privateAccount') : t('userProfile.publicAccount')}</Text></View>
+        <View style={styles.nameCopy}><Text style={styles.name}>{profile.display_name || t('userProfile.readerFallback')}</Text>{account ? <Text testID="profile-account-label" style={styles.account}>{account}</Text> : null}<Text style={styles.privacy}>{profile.is_private ? t('userProfile.privateAccount') : t('userProfile.publicAccount')}</Text></View>
         {own && onEdit ? <Pressable accessibilityRole="button" accessibilityLabel={t('userProfile.edit')} style={styles.edit} onPress={onEdit}><Text style={styles.editText}>{t('userProfile.edit')}</Text></Pressable> : null}
       </View>
       <Text style={styles.bio}>{profile.bio?.trim() || t('userProfile.bioFallback')}</Text>
@@ -40,5 +42,5 @@ export function ProfileHero({ profile, followers, following, own, onEdit, onFoll
 }
 
 const styles = StyleSheet.create({
-  card:{backgroundColor:'#fff',borderRadius:22,overflow:'hidden',borderWidth:1,borderColor:'#e4e7ec'},cover:{height:154,backgroundColor:'#dbeafe'},coverFallback:{flex:1,backgroundColor:'#0f4c81',overflow:'hidden'},glowOne:{position:'absolute',width:240,height:240,borderRadius:120,backgroundColor:'#5dd6dd',opacity:.38,right:-55,top:-100},glowTwo:{position:'absolute',width:220,height:220,borderRadius:110,backgroundColor:'#8b5cf6',opacity:.28,left:-70,bottom:-130},body:{paddingHorizontal:18,paddingBottom:18},avatarWrap:{width:98,height:98,borderRadius:49,backgroundColor:'#fff',padding:5,marginTop:-49},nameRow:{flexDirection:'row',alignItems:'center',gap:12,marginTop:10},nameCopy:{flex:1},name:{fontSize:25,fontWeight:'900',color:'#101828'},privacy:{fontSize:12,color:'#667085',marginTop:4,fontWeight:'700'},edit:{borderWidth:1,borderColor:'#d0d5dd',borderRadius:10,paddingHorizontal:14,paddingVertical:10},editText:{fontWeight:'800',color:'#344054'},bio:{color:'#475467',lineHeight:21,marginTop:12},stats:{flexDirection:'row',gap:26,marginTop:16},stat:{flexDirection:'row',alignItems:'baseline',gap:5},statNumber:{fontWeight:'900',fontSize:19,color:'#101828'},statLabel:{color:'#667085'},actions:{flexDirection:'row',gap:10,marginTop:16}
+  card:{backgroundColor:'#fff',borderRadius:22,overflow:'hidden',borderWidth:1,borderColor:'#e4e7ec'},cover:{height:154,backgroundColor:'#dbeafe'},coverFallback:{flex:1,backgroundColor:'#0f4c81',overflow:'hidden'},glowOne:{position:'absolute',width:240,height:240,borderRadius:120,backgroundColor:'#5dd6dd',opacity:.38,right:-55,top:-100},glowTwo:{position:'absolute',width:220,height:220,borderRadius:110,backgroundColor:'#8b5cf6',opacity:.28,left:-70,bottom:-130},coverEdit:{position:'absolute',right:12,bottom:12,backgroundColor:'rgba(16,24,40,.72)',borderRadius:999,paddingHorizontal:12,paddingVertical:7},coverEditText:{color:'#fff',fontSize:12,fontWeight:'900'},body:{paddingHorizontal:18,paddingBottom:18},avatarWrap:{width:98,height:98,borderRadius:49,backgroundColor:'#fff',padding:5,marginTop:-49},avatarEdit:{position:'absolute',right:1,bottom:2,width:27,height:27,borderRadius:14,backgroundColor:'#c8211e',borderWidth:2,borderColor:'#fff',alignItems:'center',justifyContent:'center'},avatarEditText:{color:'#fff',fontWeight:'900',fontSize:18,lineHeight:20},nameRow:{flexDirection:'row',alignItems:'center',gap:12,marginTop:10},nameCopy:{flex:1},name:{fontSize:25,fontWeight:'900',color:'#101828'},account:{fontSize:12,color:'#667085',marginTop:4},privacy:{fontSize:12,color:'#667085',marginTop:4,fontWeight:'700'},edit:{borderWidth:1,borderColor:'#d0d5dd',borderRadius:10,paddingHorizontal:14,paddingVertical:10},editText:{fontWeight:'800',color:'#344054'},bio:{color:'#475467',lineHeight:21,marginTop:12},stats:{flexDirection:'row',gap:26,marginTop:16},stat:{flexDirection:'row',alignItems:'baseline',gap:5},statNumber:{fontWeight:'900',fontSize:19,color:'#101828'},statLabel:{color:'#667085'},actions:{flexDirection:'row',gap:10,marginTop:16}
 });

@@ -32,9 +32,14 @@ export async function currentUserId() {
 }
 
 export async function listComments(articleId: string, cursor: CommentCursor = null) {
-  let query = supabase.from('comments').select('id,article_id,user_id,parent_id,content,status,is_pinned,created_at,updated_at,profiles!comments_user_id_fkey(display_name,avatar_key),comment_likes(count)').eq('article_id', articleId).eq('status', 'published').order('created_at', { ascending: false }).order('id', { ascending: false }).limit(PAGE_SIZE + 1);
+  const { data: sessionData } = await supabase.auth.getSession();
+  let query = supabase.from('comments').select('id,article_id,user_id,parent_id,content,status,is_pinned,created_at,updated_at,profiles!comments_user_id_fkey(display_name,avatar_key),comment_likes(count)').eq('article_id', articleId);
+  query = sessionData.session
+    ? query.or(`status.eq.published,and(user_id.eq.${sessionData.session.user.id},status.eq.pending)`)
+    : query.eq('status', 'published');
+  query = query.order('created_at', { ascending: false }).order('id', { ascending: false }).limit(PAGE_SIZE + 1);
   if (cursor) query = query.or(`created_at.lt.${cursor.created_at},and(created_at.eq.${cursor.created_at},id.lt.${cursor.id})`);
-  const [{ data, error }, { data: sessionData }] = await Promise.all([query, supabase.auth.getSession()]);
+  const { data, error } = await query;
   if (error) throw error;
   const rows = data || [];
   const hasMore = rows.length > PAGE_SIZE;

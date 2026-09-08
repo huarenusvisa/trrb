@@ -39,15 +39,21 @@ test('uses the shared language context across news discovery surfaces', () => {
     assert.match(source, /useI18n\(\)/, `${path} must use the shared language context`);
   }
 
+  const home = read('app/(tabs)/index.tsx');
   const america = read('app/(tabs)/america.tsx');
   const legal = read('app/(tabs)/legal.tsx');
   const search = read('app/search.tsx');
   const list = read('src/components/PaginatedNewsList.tsx');
-  assert.ok(america.includes("t('america.heading')"));
-  assert.ok(legal.includes("t('legal.searchPlaceholder')"));
+  assert.ok(america.includes("t('tab.america')"));
+  assert.ok(legal.includes("t('home.portalJudgesTitle')"));
   assert.ok(search.includes("t('search.placeholder')"));
   assert.ok(list.includes("t('news.loading')"));
-  assert.doesNotMatch(america, /toLocaleString\('zh-CN'\)/);
+  assert.match(home, /useReviewedNewsTranslations\(translationCandidates, locale\)/);
+  assert.match(home, /reviewedNewsTitle\(article, reviewedTranslations\)/);
+  assert.match(list, /useReviewedNewsTranslations\(items, locale\)/);
+  assert.match(list, /reviewedNewsTitle\(item, reviewedTranslations\)/);
+  assert.match(america, /<CommunityScreen embedded \/>/);
+  assert.match(legal, /https:\/\/asylumjudge\.com\//);
   assert.doesNotMatch(list, /toLocaleString\('zh-CN'\)/);
 });
 
@@ -188,6 +194,15 @@ test('localizes follower and following lists while preserving profile content', 
   assert.doesNotMatch(connections, />关注<\/Text>/);
 });
 
+test('localizes user discovery without exposing account contact identifiers', () => {
+  const discovery = read('app/user-search.tsx');
+  for (const key of ['userSearch.screenTitle', 'userSearch.placeholder', 'userSearch.minimumQuery', 'userSearch.resultsBody', 'userSearch.openProfileA11y']) {
+    assert.ok(discovery.includes(`'${key}'`), `user discovery must translate ${key}`);
+  }
+  assert.match(discovery, /router\.push\(`\/user\/\$\{profile\.id\}`\)/);
+  assert.doesNotMatch(discovery, /profile\.(email|phone)/);
+});
+
 test('localizes protected messaging while preserving names and message bodies', () => {
   const inbox = read('app/messages.tsx');
   const chat = read('app/chat/[id].tsx');
@@ -319,7 +334,7 @@ test('localizes homepage topic entries and legal detail chrome while preserving 
   for (const key of ['legal.detailLoading', 'legal.detailDocket', 'legal.detailChineseAnalysis', 'legal.detailAnalysisUnavailable', 'legal.detailOpenOfficial', 'legal.detailShare']) {
     assert.ok(legal.includes(`t('${key}'`), `legal detail must translate ${key}`);
   }
-  assert.match(home, /latest\?\.title \|\| t\('home\.topicLoading'\)/);
+  assert.match(home, /latest \? titleFor\(latest\) : t\('home\.topicLoading'\)/);
   assert.match(legal, /record\.title \|\| record\.citation/);
   assert.match(legal, /analysis\.summary/);
   assert.match(legal, /analysis\.disclaimer/);

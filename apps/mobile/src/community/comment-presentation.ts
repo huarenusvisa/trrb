@@ -3,6 +3,10 @@ import type { CommentRow } from '../api/comments';
 export type CommentNode = CommentRow & { replies: CommentRow[] };
 export type CommentDisplayRow = { item: CommentRow; depth: number; replyToLabel: string | null };
 
+export function prependCreatedComment(rows: CommentRow[], created: CommentRow) {
+  return [created, ...rows.filter((row) => row.id !== created.id)];
+}
+
 export function buildCommentThreads(rows: CommentRow[]): CommentNode[] {
   const roots: CommentNode[] = [];
   const byId = new Map<string, CommentNode>();

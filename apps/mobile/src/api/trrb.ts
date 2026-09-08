@@ -50,6 +50,10 @@ export type ArticleTranslation = {
   source_article_updated_at: string;
 };
 
+export type ArticleHeadlineTranslation = Pick<ArticleTranslation,
+  'article_id' | 'locale' | 'title' | 'translation_source' | 'reviewed_at' | 'source_article_updated_at'
+>;
+
 const HOMEPAGE_SUPPLEMENT_RULES = [
   { category: '热门头条', minimum: 8, aliases: ['热门头条', '中国热门头条'] },
   { category: '美国时政', minimum: 6, aliases: ['美国时政'] },
@@ -179,6 +183,15 @@ export async function fetchArticleTranslation(id: string | number, locale: strin
   const params = new URLSearchParams({ id: String(id), locale });
   const payload = await requestJson(`${API_BASE}/public-article-translation?${params.toString()}`);
   return (payload?.translation || null) as ArticleTranslation | null;
+}
+
+export async function fetchArticleTranslations(ids: Array<string | number>, locale: string) {
+  if (locale !== 'en' && locale !== 'zh-TW') return [] as ArticleHeadlineTranslation[];
+  const uniqueIds = [...new Set(ids.map(String).filter(Boolean))].slice(0, 40);
+  if (!uniqueIds.length) return [] as ArticleHeadlineTranslation[];
+  const params = new URLSearchParams({ ids: uniqueIds.join(','), locale });
+  const payload = await requestJson(`${API_BASE}/public-article-translation?${params.toString()}`);
+  return (Array.isArray(payload?.translations) ? payload.translations : []) as ArticleHeadlineTranslation[];
 }
 
 export async function fetchRelatedArticles(article: NewsArticle, limit = 4) {

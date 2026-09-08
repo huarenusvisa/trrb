@@ -1,7 +1,7 @@
 (() => {
   if (!/^(www\.)?huarengongzuo\.com$/i.test(location.hostname)) return;
   document.documentElement.classList.add('huarengongzuo-domain');
-  const canonicalPath = location.pathname === '/jobs/' || location.pathname === '/jobs/index.html' ? '/' : location.pathname;
+  const canonicalPath = location.pathname === '/jobs/index.html' ? '/jobs/' : location.pathname;
   let canonical = document.querySelector('link[rel="canonical"]');
   if (!canonical) { canonical = document.createElement('link'); canonical.rel = 'canonical'; document.head.appendChild(canonical); }
   canonical.href = `https://huarengongzuo.com${canonicalPath}${location.search}`;
@@ -14,7 +14,7 @@
     node.href = href;
     if (type) node.type = type;
   };
-  headLink('icon', '/favicon.svg?v=20260826', 'image/svg+xml');
+  headLink('icon', '/icon-192.png', 'image/png');
   headLink('shortcut icon', '/favicon.ico?v=20260826');
   headLink('manifest', '/site.webmanifest');
 

@@ -143,6 +143,24 @@ export class PushAuthRecoveryGate {
   }
 }
 
+export class PushSystemSettingsRecoveryGate {
+  private awaitingPermissionGrant = false;
+
+  recordSettingsOpen(permission: 'granted' | 'denied' | 'undetermined') {
+    this.awaitingPermissionGrant = permission !== 'granted';
+  }
+
+  resumeAfterPermissionGrant(permission: 'granted' | 'denied' | 'undetermined') {
+    if (!this.awaitingPermissionGrant || permission !== 'granted') return false;
+    this.awaitingPermissionGrant = false;
+    return true;
+  }
+
+  clear() {
+    this.awaitingPermissionGrant = false;
+  }
+}
+
 export function pendingPushRetryDelay(
   raw: string | null,
   userId: string,

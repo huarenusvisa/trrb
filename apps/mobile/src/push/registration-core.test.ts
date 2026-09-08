@@ -4,6 +4,7 @@ import {
   MAX_PENDING_PUSH_RETRY_DELAY_MS,
   PushAuthRecoveryGate,
   PushConnectivityGate,
+  PushSystemSettingsRecoveryGate,
   classifyPushRegistrationError,
   nextPendingPushRegistration,
   parsePendingPushRegistration,
@@ -112,6 +113,21 @@ test('resumes an authentication-blocked registration exactly once after sign-in'
   gate.requireAuthentication();
   gate.clear();
   assert.equal(gate.resumeAfterSignIn(), false);
+});
+
+test('restores push exactly once after system settings grants permission', () => {
+  const gate = new PushSystemSettingsRecoveryGate();
+  assert.equal(gate.resumeAfterPermissionGrant('granted'), false);
+  gate.recordSettingsOpen('denied');
+  assert.equal(gate.resumeAfterPermissionGrant('denied'), false);
+  assert.equal(gate.resumeAfterPermissionGrant('undetermined'), false);
+  assert.equal(gate.resumeAfterPermissionGrant('granted'), true);
+  assert.equal(gate.resumeAfterPermissionGrant('granted'), false);
+  gate.recordSettingsOpen('denied');
+  gate.clear();
+  assert.equal(gate.resumeAfterPermissionGrant('granted'), false);
+  gate.recordSettingsOpen('granted');
+  assert.equal(gate.resumeAfterPermissionGrant('granted'), false);
 });
 
 test('backs off repeated pending sync while keeping delay bounded', () => {

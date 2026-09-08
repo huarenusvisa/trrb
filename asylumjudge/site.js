@@ -16,6 +16,11 @@ const reportableTrendRates = (row) => {
 const stateNames = { AZ: '亚利桑那州', CA: '加州', CO: '科罗拉多州', CT: '康涅狄格州', FL: '佛州', GA: '乔治亚州', GU: '关岛', HI: '夏威夷州', IL: '伊利诺伊州', IN: '印第安纳州', LA: '路易斯安那州', MA: '马萨诸塞州', MD: '马里兰州', MI: '密歇根州', MN: '明尼苏达州', MO: '密苏里州', MP: '北马里亚纳群岛', NC: '北卡罗来纳州', NE: '内布拉斯加州', NJ: '新泽西州', NM: '新墨西哥州', NV: '内华达州', NY: '纽约州', OH: '俄亥俄州', OR: '俄勒冈州', PA: '宾州', PR: '波多黎各', TN: '田纳西州', TX: '德州', UT: '犹他州', VA: '弗吉尼亚州', WA: '华盛顿州' };
 const stateName = (code) => window.AsylumI18n?.stateName?.(code, stateNames[String(code || '').toUpperCase()]) || stateNames[String(code || '').toUpperCase()] || code;
 const stateSearchNames = (code) => window.AsylumI18n?.stateSearchNames?.(code, stateNames[String(code || '').toUpperCase()]) || [stateName(code), code].filter(Boolean);
+const normalizeSearchText = (value) => String(value || '')
+  .normalize('NFKD')
+  .replace(/[\u0300-\u036f]/g, '')
+  .toLocaleLowerCase()
+  .replace(/[’'.,-]/g, '');
 let allJudges = [];
 let searchTimer = null;
 let directoryVisibleCount = 100;
@@ -381,10 +386,10 @@ function judgePeriod(row) {
 }
 
 function filterJudges(query) {
-  const terms = String(query || '').trim().toLocaleLowerCase().split(/\s+/).filter(Boolean);
+  const terms = normalizeSearchText(query).trim().split(/\s+/).filter(Boolean);
   if (!terms.length) return allJudges;
   return allJudges.filter((row) => {
-    const searchable = [row.judge_name, row.court_name, row.court_city, row.court_state, ...stateSearchNames(row.court_state)].filter(Boolean).join(' ').toLocaleLowerCase();
+    const searchable = normalizeSearchText([row.judge_name, row.court_name, row.court_city, row.court_state, ...stateSearchNames(row.court_state)].filter(Boolean).join(' '));
     return terms.every((term) => searchable.includes(term));
   });
 }

@@ -73,6 +73,8 @@ export function inspectSubmissionPlan({ mobileRoot, env = {}, expectedSourceComm
   expect(buildEvidence?.environmentVariable === 'TRRB_STORE_BUILD_EVIDENCE_FILE', 'Production builds must require a local evidence file');
   expect(buildEvidence?.releaseCandidateEnvironmentVariable === 'TRRB_STORE_RELEASE_CANDIDATE_FILE', 'Production builds must reference the frozen release candidate');
   expect(buildEvidence?.screenshotEvidenceEnvironmentVariable === 'TRRB_STORE_SCREENSHOT_EVIDENCE_FILE', 'Production builds must reference the candidate screenshot evidence');
+  expect(buildEvidence?.generationCommand === 'npm run store:build-evidence-generate', 'Production build evidence generator command is missing or unsafe');
+  expect(!/[;&|`$]/.test(buildEvidence?.generationCommand ?? ''), 'Production build evidence generator must remain a single auditable command');
   expect(buildEvidence?.command === 'npm run store:build-evidence-check -- store/build-evidence.local.json store/release-candidate.local.json store/screenshot-evidence.local.json', 'Production build evidence command is missing or unsafe');
   expect(!/[;&|`$]/.test(buildEvidence?.command ?? ''), 'Production build evidence command must remain a single auditable command');
   const distributionEvidence = stages[2]?.evidence;
@@ -147,6 +149,7 @@ export function inspectSubmissionPlan({ mobileRoot, env = {}, expectedSourceComm
           environmentVariable: buildEvidence?.environmentVariable
         }];
       }
+      if (buildEvidence?.generationCommand) commands.push(buildEvidence.generationCommand);
       if (buildEvidence?.command) commands.push(buildEvidence.command);
     }
     if (stage.id === 'internal-distribution') {

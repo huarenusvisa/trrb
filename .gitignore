@@ -8,6 +8,8 @@ apps/mobile/**/*.p8
 apps/mobile/**/*service-account*.json
 apps/mobile/**/*review-credentials*
 apps/mobile/store/build-evidence.local.json
+apps/mobile/store/eas-ios-build.local.json
+apps/mobile/store/eas-android-build.local.json
 apps/mobile/store/distribution-evidence.local.json
 apps/mobile/store/device-acceptance.local.json
 apps/mobile/store/review-submission.local.json

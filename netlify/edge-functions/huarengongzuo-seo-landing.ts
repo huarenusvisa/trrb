@@ -74,8 +74,8 @@ const CATEGORIES: Record<string, Landing> = {
 };
 
 async function loadJobs() {
-  const base = clean(Deno.env.get("SUPABASE_URL")).replace(/\/+$/, "");
-  const key = clean(Deno.env.get("SUPABASE_SERVICE_ROLE_KEY"));
+  const base = clean(Netlify.env.get("SUPABASE_URL")).replace(/\/+$/, "");
+  const key = clean(Netlify.env.get("SUPABASE_SERVICE_ROLE_KEY"));
   if (!base || !key) return [];
   const url = new URL(`${base}/rest/v1/job_listings`);
   url.searchParams.set("select", "id,title,company_name,city,state_code,county,borough,neighborhood,category_slug,employment_type,updated_at");

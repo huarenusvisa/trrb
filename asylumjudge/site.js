@@ -408,8 +408,8 @@ function renderJudgeDirectory(rows, query = '') {
       ? [background.appointment_date ? `${background.appointment_date}任命` : '', background.appointment_court || '', background.biography_excerpt || ''].filter(Boolean).join(' · ')
       : '暂未匹配到 DOJ/EOIR 官方任命简介';
     const detailUrl = window.asylumJudgeProfileUrl ? window.asylumJudgeProfileUrl(row) : `${appPath('judge')}?id=${encodeURIComponent(row.id)}`;
-    return `<div class="judge-directory-row" data-href="${esc(detailUrl)}"><span class="judge-directory-identity"><a class="judge-profile-link" href="${esc(detailUrl)}"><strong>${esc(row.judge_name || '未命名法官')}</strong></a><small>${esc(court)}${place && court !== place ? ` · ${esc(place)}` : ''}</small><small>${esc(judgePeriod(row))}</small><small class="judge-background-summary"><b>法官背景</b>${esc(backgroundText)}</small><a class="judge-background-link" href="${esc(detailUrl)}#judge-background">查看法官背景 →</a>${webexAction}</span><span class="directory-metric"><label>裁决</label><b>${fmt(row.total_asylum_decisions)}</b></span><span class="directory-metric verdict-pass"><label>批准</label><b>${fmt(row.grants)}</b></span><span class="directory-metric verdict-deny"><label>拒绝</label><b>${fmt(row.denials)}</b></span><span class="directory-metric verdict-other"><label>其他</label><b>${fmt(row.other_decisions)}</b></span><span class="directory-metric directory-rate-cell"><label>批准率</label>${rate}<small>${fmt(adjudicated)} 件有效裁决</small><a class="directory-detail-link" href="${esc(detailUrl)}">查看详情 →</a></span></div>`;
-  }).join('') : `<div class="empty"><b>没有找到匹配法官</b><p>请尝试英文姓名、法院、城市或州代码。</p></div>`;
+    return `<div class="judge-directory-row" role="listitem" data-href="${esc(detailUrl)}"><span class="judge-directory-identity"><a class="judge-profile-link" href="${esc(detailUrl)}"><strong>${esc(row.judge_name || '未命名法官')}</strong></a><small>${esc(court)}${place && court !== place ? ` · ${esc(place)}` : ''}</small><small>${esc(judgePeriod(row))}</small><small class="judge-background-summary"><b>法官背景</b>${esc(backgroundText)}</small><a class="judge-background-link" href="${esc(detailUrl)}#judge-background">查看法官背景 →</a>${webexAction}</span><span class="directory-metric"><label>裁决</label><b>${fmt(row.total_asylum_decisions)}</b></span><span class="directory-metric verdict-pass"><label>批准</label><b>${fmt(row.grants)}</b></span><span class="directory-metric verdict-deny"><label>拒绝</label><b>${fmt(row.denials)}</b></span><span class="directory-metric verdict-other"><label>其他</label><b>${fmt(row.other_decisions)}</b></span><span class="directory-metric directory-rate-cell"><label>批准率</label>${rate}<small>${fmt(adjudicated)} 件有效裁决</small><a class="directory-detail-link" href="${esc(detailUrl)}">查看详情 →</a></span></div>`;
+  }).join('') : `<div class="empty" role="listitem"><b>没有找到匹配法官</b><p>请尝试英文姓名、法院、城市或州代码。</p></div>`;
   container.querySelectorAll('.judge-directory-row[data-href]').forEach((card) => {
     const open = (event) => {
       if (event.target.closest('a,button')) return;
@@ -486,7 +486,7 @@ async function loadAllJudges() {
   if (!container) return;
   container.setAttribute('aria-busy', 'true');
   $('#judge-directory-count').textContent = t('正在读取全部法官…');
-  container.innerHTML = `<div class="directory-loading">${esc(t('正在读取全部法官资料…'))}</div>`;
+  container.innerHTML = `<div class="directory-loading" role="listitem">${esc(t('正在读取全部法官资料…'))}</div>`;
   try {
     const data = await json('/.netlify/functions/immigration-judges?mode=all');
     allJudges = data.results || [];
@@ -499,7 +499,7 @@ async function loadAllJudges() {
   } catch (error) {
     $('#freshness-badge').textContent = t('稍后重试');
     $('#judge-directory-count').textContent = t('读取失败');
-    container.innerHTML = `<div class="empty"><b>${esc(t('全部法官资料暂时无法读取'))}</b><p>${esc(t('无需刷新页面，可以直接重新尝试。'))}</p><button id="judge-directory-retry" class="directory-retry" type="button">${esc(t('重新尝试'))}</button></div>`;
+    container.innerHTML = `<div class="empty" role="listitem"><b>${esc(t('全部法官资料暂时无法读取'))}</b><p>${esc(t('无需刷新页面，可以直接重新尝试。'))}</p><button id="judge-directory-retry" class="directory-retry" type="button">${esc(t('重新尝试'))}</button></div>`;
     $('#judge-directory-retry').addEventListener('click', loadAllJudges);
   } finally {
     container.setAttribute('aria-busy', 'false');

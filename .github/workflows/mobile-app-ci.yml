@@ -171,6 +171,7 @@ jobs:
           npm run config:check
           npm run test:store-assets
           npm run test:store-screenshot-evidence
+          npm run test:store-release-candidate
           npm run test:store-support
           npm run test:store-data
           npm run test:store-review

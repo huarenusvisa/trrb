@@ -17,6 +17,7 @@
     "test:push": "node --experimental-strip-types --test src/push/push-core.test.ts src/push/registration-core.test.ts src/push/registration-api.test.ts src/notifications/unread-core.test.ts src/notifications/notification-action-core.test.ts",
     "test:store-assets": "node --test scripts/store-submission-assets-core.test.mjs",
     "test:store-screenshot-evidence": "node --test scripts/store-screenshot-evidence.test.mjs",
+    "test:store-release-candidate": "node --test scripts/store-release-candidate.test.mjs",
     "test:store-support": "node --test scripts/validate-store-support.test.mjs",
     "test:store-data": "node --test scripts/validate-store-data-practices.test.mjs",
     "test:store-review": "node --test scripts/validate-store-review-access.test.mjs",
@@ -40,6 +41,8 @@
     "store:submission-check": "node scripts/validate-store-submission-assets.mjs",
     "store:screenshot-evidence-generate": "node scripts/store-screenshot-evidence-generate.mjs",
     "store:screenshot-evidence-check": "node scripts/store-screenshot-evidence.mjs",
+    "store:release-candidate-freeze": "node scripts/store-release-candidate-freeze.mjs",
+    "store:release-candidate-check": "node scripts/store-release-candidate.mjs",
     "export:web": "expo export --platform web --output-dir .expo-export --clear"
   },
   "dependencies": {

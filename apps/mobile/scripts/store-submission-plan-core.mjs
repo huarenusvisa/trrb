@@ -5,6 +5,7 @@ import { readDistributionEvidence } from './store-distribution-evidence-core.mjs
 import { readDeviceAcceptance } from './store-device-acceptance-core.mjs';
 import { readReviewSubmission } from './store-review-submission-core.mjs';
 import { readScreenshotEvidence } from './store-screenshot-evidence-core.mjs';
+import { readReleaseCandidate } from './store-release-candidate-core.mjs';
 import { inspectReleaseReadiness } from './store-release-preflight-core.mjs';
 
 const CONFIRMED = '1';
@@ -63,6 +64,11 @@ export function inspectSubmissionPlan({ mobileRoot, env = {}, expectedSourceComm
   expect(screenshotEvidence?.environmentVariable === 'TRRB_STORE_SCREENSHOT_EVIDENCE_FILE', 'Release preflight must require a local screenshot evidence file');
   expect(screenshotEvidence?.command === 'npm run store:screenshot-evidence-check -- store/screenshot-evidence.local.json', 'Screenshot evidence command is missing or unsafe');
   expect(!/[;&|`$]/.test(screenshotEvidence?.command ?? ''), 'Screenshot evidence command must remain a single auditable command');
+  const candidateEvidence = stages[0]?.candidateEvidence;
+  expect(candidateEvidence?.environmentVariable === 'TRRB_STORE_RELEASE_CANDIDATE_FILE', 'Release preflight must require a frozen candidate file');
+  expect(candidateEvidence?.screenshotEvidenceEnvironmentVariable === 'TRRB_STORE_SCREENSHOT_EVIDENCE_FILE', 'Release candidate must reference the validated screenshot evidence');
+  expect(candidateEvidence?.command === 'npm run store:release-candidate-check -- store/release-candidate.local.json store/screenshot-evidence.local.json', 'Release candidate command is missing or unsafe');
+  expect(!/[;&|`$]/.test(candidateEvidence?.command ?? ''), 'Release candidate command must remain a single auditable command');
   const buildEvidence = stages[1]?.evidence;
   expect(buildEvidence?.environmentVariable === 'TRRB_STORE_BUILD_EVIDENCE_FILE', 'Production builds must require a local evidence file');
   expect(buildEvidence?.command === 'npm run store:build-evidence-check -- store/build-evidence.local.json', 'Production build evidence command is missing or unsafe');
@@ -104,6 +110,22 @@ export function inspectSubmissionPlan({ mobileRoot, env = {}, expectedSourceComm
         }];
       }
       if (screenshotEvidence?.command) commands.push(screenshotEvidence.command);
+      const candidatePath = env[candidateEvidence?.environmentVariable];
+      const candidateScreenshotPath = env[candidateEvidence?.screenshotEvidenceEnvironmentVariable];
+      const candidate = candidatePath && candidateScreenshotPath
+        ? readReleaseCandidate({
+            mobileRoot, candidatePath, screenshotEvidencePath: candidateScreenshotPath,
+            expectedSourceCommit, verifyFiles: false
+          })
+        : { valid: false };
+      if (!candidate.valid) {
+        missing = [...missing, {
+          id: 'store-release-candidate',
+          label: candidateEvidence?.label,
+          environmentVariable: candidateEvidence?.environmentVariable
+        }];
+      }
+      if (candidateEvidence?.command) commands.push(candidateEvidence.command);
     }
     if (stage.id === 'production-builds') {
       const evidencePath = env[buildEvidence?.environmentVariable];

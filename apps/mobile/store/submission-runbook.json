@@ -49,6 +49,12 @@
         "eas submit --platform ios --profile production",
         "eas submit --platform android --profile production"
       ],
+      "evidence": {
+        "label": "Validated TestFlight and Google Play internal distribution evidence",
+        "environmentVariable": "TRRB_STORE_DISTRIBUTION_EVIDENCE_FILE",
+        "buildEvidenceEnvironmentVariable": "TRRB_STORE_BUILD_EVIDENCE_FILE",
+        "command": "npm run store:distribution-evidence-check -- store/distribution-evidence.local.json store/build-evidence.local.json"
+      },
       "confirmations": [
         {
           "id": "testflight-processing",

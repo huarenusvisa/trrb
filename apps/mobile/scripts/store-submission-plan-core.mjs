@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { readBuildEvidence } from './store-build-evidence-core.mjs';
+import { readDistributionEvidence } from './store-distribution-evidence-core.mjs';
 import { inspectReleaseReadiness } from './store-release-preflight-core.mjs';
 
 const CONFIRMED = '1';
@@ -59,6 +60,11 @@ export function inspectSubmissionPlan({ mobileRoot, env = {}, expectedSourceComm
   expect(buildEvidence?.environmentVariable === 'TRRB_STORE_BUILD_EVIDENCE_FILE', 'Production builds must require a local evidence file');
   expect(buildEvidence?.command === 'npm run store:build-evidence-check -- store/build-evidence.local.json', 'Production build evidence command is missing or unsafe');
   expect(!/[;&|`$]/.test(buildEvidence?.command ?? ''), 'Production build evidence command must remain a single auditable command');
+  const distributionEvidence = stages[2]?.evidence;
+  expect(distributionEvidence?.environmentVariable === 'TRRB_STORE_DISTRIBUTION_EVIDENCE_FILE', 'Internal distribution must require a local evidence file');
+  expect(distributionEvidence?.buildEvidenceEnvironmentVariable === 'TRRB_STORE_BUILD_EVIDENCE_FILE', 'Internal distribution must reference the validated build evidence');
+  expect(distributionEvidence?.command === 'npm run store:distribution-evidence-check -- store/distribution-evidence.local.json store/build-evidence.local.json', 'Internal distribution evidence command is missing or unsafe');
+  expect(!/[;&|`$]/.test(distributionEvidence?.command ?? ''), 'Internal distribution evidence command must remain a single auditable command');
 
   const state = stages.map((stage) => {
     let missing = stage.id === 'release-preflight'
@@ -76,6 +82,21 @@ export function inspectSubmissionPlan({ mobileRoot, env = {}, expectedSourceComm
         }];
       }
       if (buildEvidence?.command) commands.push(buildEvidence.command);
+    }
+    if (stage.id === 'internal-distribution') {
+      const evidencePath = env[distributionEvidence?.environmentVariable];
+      const buildEvidencePath = env[distributionEvidence?.buildEvidenceEnvironmentVariable];
+      const evidence = evidencePath && buildEvidencePath
+        ? readDistributionEvidence({ mobileRoot, evidencePath, buildEvidencePath, expectedSourceCommit })
+        : { valid: false };
+      if (!evidence.valid) {
+        missing = [...missing, {
+          id: 'internal-distribution-evidence',
+          label: distributionEvidence?.label,
+          environmentVariable: distributionEvidence?.environmentVariable
+        }];
+      }
+      if (distributionEvidence?.command) commands.push(distributionEvidence.command);
     }
     return { id: stage.id, title: stage.title, complete: missing.length === 0, missing, commands };
   });

@@ -7,6 +7,14 @@
   path = "/sitemap.xml"
 
 [[edge_functions]]
+  function = "huarengongzuo-seo-landing"
+  path = "/jobs/locations/*"
+
+[[edge_functions]]
+  function = "huarengongzuo-seo-landing"
+  path = "/jobs/categories/*"
+
+[[edge_functions]]
   function = "huarengongzuo-robots"
   path = "/robots.txt"
 

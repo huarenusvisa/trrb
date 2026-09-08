@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 
 const read = (path) => readFile(path, "utf8");
-const [page, sitemap, netlify, listing, robots, indexNowKey, submitter, workflow] = await Promise.all([
+const [page, sitemap, netlify, listing, robots, indexNowKey, submitter, workflow, landing, jobsPage, publishPage, seekerPage] = await Promise.all([
   read("netlify/edge-functions/huarengongzuo-job-prerender.ts"),
   read("netlify/edge-functions/huarengongzuo-jobs-sitemap.ts"),
   read("netlify.toml"),
@@ -10,7 +10,11 @@ const [page, sitemap, netlify, listing, robots, indexNowKey, submitter, workflow
   read("netlify/edge-functions/huarengongzuo-robots.ts"),
   read("netlify/edge-functions/huarengongzuo-indexnow-key.ts"),
   read("scripts/huarengongzuo-google-jobs-submit.mjs"),
-  read(".github/workflows/huarengongzuo-google-jobs-submit.yml")
+  read(".github/workflows/huarengongzuo-google-jobs-submit.yml"),
+  read("netlify/edge-functions/huarengongzuo-seo-landing.ts"),
+  read("jobs/index.html"),
+  read("jobs/publish.html"),
+  read("jobs/seeker.html")
 ]);
 const home = await read("huarengongzuo/index.html");
 
@@ -44,11 +48,23 @@ assert.match(sitemap, /google-jobs-quality-gated-v1/, "quality-gated jobs sitema
 assert.match(sitemap, /\.filter\(eligible\)/, "jobs sitemap does not share the eligibility boundary");
 assert.match(sitemap, /listing\.html\?id=/, "jobs sitemap missing canonical detail URLs");
 assert.match(sitemap, /expires\s*>\s*Date\.now\(\)/, "sitemap future-expiry gate missing");
+assert.match(sitemap, /\/jobs\/locations\/flushing\//, "evergreen location pages missing from sitemap");
+assert.match(sitemap, /\/jobs\/categories\/restaurant\//, "evergreen category pages missing from sitemap");
+assert.doesNotMatch(sitemap, /block\(`\$\{SITE\}\/jobs\/(?:publish|seeker)\.html/, "transaction forms must not be emitted in sitemap");
 
 assert.match(netlify, /function\s*=\s*"huarengongzuo-job-prerender"[\s\S]*path\s*=\s*"\/jobs\/listing\.html"/, "job prerender edge route missing");
 assert.match(netlify, /function\s*=\s*"huarengongzuo-jobs-sitemap"[\s\S]*path\s*=\s*"\/sitemap\.xml"/, "jobs sitemap edge route missing");
 assert.match(netlify, /function\s*=\s*"huarengongzuo-robots"[\s\S]*path\s*=\s*"\/robots\.txt"/, "Huaren Gongzuo robots edge route missing");
 assert.match(netlify, /function\s*=\s*"huarengongzuo-indexnow-key"[\s\S]*path\s*=\s*"\/55d15283c33385e09b4f3fae7562a9cc\.txt"/, "Huaren Gongzuo IndexNow key route missing");
+assert.match(netlify, /function\s*=\s*"huarengongzuo-seo-landing"[\s\S]*path\s*=\s*"\/jobs\/locations\/\*"/, "location SEO landing route missing");
+assert.match(netlify, /function\s*=\s*"huarengongzuo-seo-landing"[\s\S]*path\s*=\s*"\/jobs\/categories\/\*"/, "category SEO landing route missing");
+assert.match(landing, /CollectionPage/, "SEO landing page structured data missing");
+assert.match(landing, /BreadcrumbList/, "SEO landing breadcrumb structured data missing");
+assert.match(landing, /icon-192\.png/, "SEO landing logo/favicon missing");
+assert.match(jobsPage, /canonical" href="https:\/\/huarengongzuo\.com\/jobs\//, "jobs page canonical is not owned by 华人工作网");
+assert.match(jobsPage, /华人工作网 Logo/, "visible jobs page logo missing");
+assert.match(publishPage, /noindex,follow/, "publish form should not compete in search results");
+assert.match(seekerPage, /noindex,follow/, "seeker form should not compete in search results");
 assert.match(listing, /noindex,follow,noarchive/, "base job template must stay noindex until a real open job passes the edge gate");
 assert.match(robots, /Sitemap: https:\/\/huarengongzuo\.com\/sitemap\.xml/, "host robots does not advertise jobs sitemap");
 assert.match(indexNowKey, /55d15283c33385e09b4f3fae7562a9cc/, "IndexNow verification key response missing");

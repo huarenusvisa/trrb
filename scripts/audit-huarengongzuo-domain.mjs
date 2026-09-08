@@ -6,6 +6,7 @@ const app = read('huarengongzuo/site.js');
 const brand = read('huarengongzuo/domain-brand.js');
 const redirects = read('_redirects');
 const trrbJobs = read('jobs/index.html');
+const redirectBuilder = read('scripts/finalize-redirects.mjs');
 
 const checks = [
   ['standalone page uses 华人工作网 brand', /<h1>找工作，<em>更直接<\/em><\/h1>/.test(page) && /华人工作网/.test(page)],
@@ -16,7 +17,8 @@ const checks = [
   ['employer and seeker publishing stay on canonical jobs routes', /\/jobs\/publish\.html/.test(page) && /\/jobs\/seeker\.html/.test(page)],
   ['domain root, robots and sitemap rewrites exist', ['/', '/robots.txt', '/sitemap.xml'].every((path) => redirects.includes(`https://huarengongzuo.com${path}`))],
   ['www and HTTP permanently canonicalize to HTTPS apex', /http:\/\/www\.huarengongzuo\.com\/\*/.test(redirects) && /https:\/\/www\.huarengongzuo\.com\/\*/.test(redirects)],
-  ['唐人日报 jobs entry links directly to independent site', /href="https:\/\/huarengongzuo\.com\/">招聘求职<\/a>/.test(read('index.html')) && /美国招聘求职｜唐人日报/.test(trrbJobs)],
+  ['唐人日报 jobs entry redirects to the independent canonical site', /href="https:\/\/huarengongzuo\.com\/">招聘求职<\/a>/.test(read('index.html')) && /trrb\.net\/jobs\/ https:\/\/huarengongzuo\.com\/ 301!/.test(redirectBuilder)],
+  ['jobs search page is server-declared as 华人工作网', /美国华人招聘求职｜华人工作网/.test(trrbJobs) && /canonical" href="https:\/\/huarengongzuo\.com\/jobs\//.test(trrbJobs)],
   ['independent site owns its browser and search icon', /\/favicon\.svg/.test(page) && /huarengongzuo\/logo-mark\.svg/.test(redirects)],
   ['Google-compatible 192px PNG is the first stable favicon', /<link rel="icon" href="\/icon-192\.png" type="image\/png" sizes="192x192">[\s\S]*<link rel="icon" href="\/favicon\.svg/.test(page)],
   ['share metadata uses a public PNG card', /property="og:image" content="https:\/\/huarengongzuo\.com\/og-share\.png/.test(page) && /rel="apple-touch-icon"/.test(page)],

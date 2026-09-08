@@ -3,14 +3,20 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>美国招聘求职｜唐人日报</title>
-  <meta name="description" content="唐人日报美国招聘求职：直接查看美国华人常用招聘岗位，按工作、地区、薪资和距离筛选，并在岗位卡片中查看公开联系方式或官方申请入口。" />
-  <meta name="robots" content="index,follow" />
-  <link rel="canonical" href="https://trrb.net/jobs/" />
+  <title>美国华人招聘求职｜华人工作网</title>
+  <meta name="description" content="华人工作网提供美国华人招聘与求职信息，可按城市、社区、工作类别、薪资和距离查找有效岗位并直接联系招聘方。" />
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1" />
+  <link rel="canonical" href="https://huarengongzuo.com/jobs/" />
+  <link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192" />
+  <link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32" />
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="美国招聘求职｜唐人日报" />
+  <meta property="og:site_name" content="华人工作网" />
+  <meta property="og:title" content="美国华人招聘求职｜华人工作网" />
   <meta property="og:description" content="按地区、薪资和距离查看美国华人常用招聘岗位，并直接联系招聘方。" />
-  <meta property="og:url" content="https://trrb.net/jobs/" />
+  <meta property="og:url" content="https://huarengongzuo.com/jobs/" />
+  <meta property="og:image" content="https://huarengongzuo.com/og-share.png" />
   <link rel="stylesheet" href="/styles.css?v=29.9" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <style>
@@ -18,7 +24,7 @@
     body{background:#f6f9fd;color:var(--jobs-ink)}
     .shell{max-width:1180px;margin:0 auto;padding:24px 18px 80px}
     .head{display:flex;align-items:end;justify-content:space-between;gap:18px;margin-bottom:18px}
-    .head a{color:var(--jobs-blue);text-decoration:none;font-weight:700}
+    .head a{color:var(--jobs-blue);text-decoration:none;font-weight:700}.jobs-brand{display:inline-flex;align-items:center;gap:9px}.jobs-brand img{width:40px;height:40px;filter:drop-shadow(0 4px 8px rgba(23,104,213,.2))}
     .head h1{margin:10px 0 5px;font-size:clamp(30px,4vw,44px);letter-spacing:-.02em}
     .head p{margin:0;color:var(--jobs-muted);max-width:780px;line-height:1.65}
     .jobs-kicker{display:inline-flex;align-items:center;gap:7px;background:var(--jobs-blue-soft);color:var(--jobs-blue-dark);border:1px solid var(--jobs-blue-border);border-radius:999px;padding:6px 10px;font-size:13px;font-weight:800;margin-top:13px}
@@ -50,8 +56,8 @@
   <main class="shell">
     <header class="head">
       <div>
-        <a href="/">← 返回唐人日报</a>
-        <h1>美国招聘求职</h1>
+        <a class="jobs-brand" href="/"><img src="/icon-192.png" width="40" height="40" alt="华人工作网 Logo"><span>华人工作网</span></a>
+        <h1>美国华人招聘求职</h1>
         <p>直接看岗位，不再绕中间页面。职位、地区、薪资、工作类型和公开联系方式尽量在同一张岗位卡里看清楚。</p>
         <span class="jobs-kicker">实时岗位 · 华人常用工作优先</span>
       </div>

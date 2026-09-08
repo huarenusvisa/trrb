@@ -191,6 +191,22 @@ const backgroundCopy = () => {
   const locale = window.AsylumI18n?.locale || 'zh-Hans';
   return backgroundMessages[locale] || backgroundMessages['zh-Hans'];
 };
+const appointmentDateLocales = {
+  en: 'en-US', es: 'es', fr: 'fr', 'pt-BR': 'pt-BR', hi: 'hi',
+  'zh-Hans': 'zh-CN', 'zh-Hant': 'zh-TW', ru: 'ru', ar: 'ar', tr: 'tr'
+};
+const appointmentMonths = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
+function formatAppointmentDate(value) {
+  const original = String(value || '').trim();
+  const match = original.match(/^([A-Za-z]+)(?:\s+of)?\s+(\d{4})$/);
+  const month = match ? appointmentMonths.indexOf(match[1].toLowerCase()) : -1;
+  if (!match || month < 0) return original;
+  const locale = window.AsylumI18n?.locale || 'zh-Hans';
+  const date = new Date(Date.UTC(Number(match[2]), month, 1));
+  return new Intl.DateTimeFormat(appointmentDateLocales[locale] || appointmentDateLocales['zh-Hans'], {
+    month: 'long', year: 'numeric', timeZone: 'UTC'
+  }).format(date);
+}
 
 async function requestJson(url, options = {}) {
   const controller = new AbortController();
@@ -221,7 +237,7 @@ function renderBackground(background) {
   }
   $('#background-copy-title').textContent = copy.biographyTitle;
   $('#background-source-wrap').hidden = false;
-  $('#background-date').textContent = background.appointment_date || copy.unspecified;
+  $('#background-date').textContent = background.appointment_date ? formatAppointmentDate(background.appointment_date) : copy.unspecified;
   $('#background-court').textContent = background.appointment_court || copy.unspecified;
   $('#background-type').textContent = background.appointment_type || copy.type;
   $('#background-bio').textContent = background.biography || copy.missingBiography;

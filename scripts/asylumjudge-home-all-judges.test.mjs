@@ -186,8 +186,8 @@ for (const html of [standalone, trrb]) {
   assert.match(html, /其他占比/, 'trend legend must expose the blue other-outcome series');
   assert.match(html, /class="brand-lockup"[^>]+logo\.svg/, 'both homepage variants must render the final AsylumJudge logo');
 }
-assert.match(standalone, /app-i18n\.js\?v=15[\s\S]*site\.js\?v=48/, 'the standalone homepage must load the cross-language state-search client');
-assert.match(trrb, /app-i18n\.js\?v=15[\s\S]*site\.js\?v=48/, 'the embedded homepage must load the cross-language state-search client');
+assert.match(standalone, /app-i18n\.js\?v=15[\s\S]*site\.js\?v=49/, 'the standalone homepage must load the punctuation-tolerant search client');
+assert.match(trrb, /app-i18n\.js\?v=15[\s\S]*site\.js\?v=49/, 'the embedded homepage must load the punctuation-tolerant search client');
 assert.match(client, /<li class="state-entry"><a class="state-row"/, 'each state result must be a list item while retaining native link semantics');
 assert.match(client, /container\.innerHTML = '<li class="skeleton"><\/li><li class="skeleton"><\/li><li class="skeleton"><\/li>'/, 'dynamic state loading placeholders must preserve valid list structure');
 assert.match(client, /container\.innerHTML = '<li class="empty">[\s\S]{0,300}id="overview-retry"/, 'state overview errors must preserve valid list structure and retry controls');
@@ -232,6 +232,8 @@ assert.match(client, /stateName = \(code\)[\s\S]{0,220}window\.AsylumI18n\?\.sta
 assert.match(client, /stateSearchNames = \(code\)[\s\S]{0,260}window\.AsylumI18n\?\.stateSearchNames/, 'homepage search must request cross-language state aliases');
 assert.match(i18n, /const stateSearchNames = \(code, fallback = ''\)[\s\S]{0,400}stateEnglish\[normalized\][\s\S]{0,180}stateSimplified\[normalized\][\s\S]{0,180}stateTraditional\[normalized\]/, 'state search aliases must include English, simplified Chinese, and traditional Chinese names');
 assert.match(i18n, /stateName, stateSearchNames, countryName/, 'shared i18n must export cross-language state aliases');
+assert.match(client, /const normalizeSearchText = \(value\)[\s\S]{0,220}normalize\('NFKD'\)[\s\S]{0,120}replace\(\/\[’'\.,-\]\/g, ''\)/, 'judge search must ignore common omitted name punctuation');
+assert.match(client, /const terms = normalizeSearchText\(query\)[\s\S]{0,300}const searchable = normalizeSearchText\(/, 'judge search must normalize both the query and directory values');
 assert.match(client, /addEventListener\('input'/, 'judge search must update directly while typing');
 assert.match(client, /addEventListener\('input'[\s\S]*applyJudgeFilter\(\$\('#judge-q'\)\.value, \{ updateUrl: false \}\)/, 'typing must preview results without overwriting browser history');
 assert.match(client, /judge-search[\s\S]*pushHistory: true/, 'submitting a judge search must create a navigable history entry');
@@ -304,8 +306,8 @@ assert.match(styles, /\.directory-metric\.verdict-other b[^}]*var\(--other\)/);
 assert.match(standalone, /rel="icon"[^>]+favicon\.ico/, 'homepage must declare a search and browser favicon');
 assert.match(standalone, /rel="apple-touch-icon"/, 'homepage must declare an iOS home-screen icon');
 assert.match(standalone, /rel="manifest"/, 'homepage must expose an installable site manifest');
-assert.match(standalone, /app-i18n\.js\?v=15[\s\S]*site\.js\?v=48/, 'standalone homepage must load the cross-language state-search client');
-assert.match(trrb, /app-i18n\.js\?v=15[\s\S]*site\.js\?v=48/, 'embedded homepage must load the cross-language state-search client');
+assert.match(standalone, /app-i18n\.js\?v=15[\s\S]*site\.js\?v=49/, 'standalone homepage must load the punctuation-tolerant search client');
+assert.match(trrb, /app-i18n\.js\?v=15[\s\S]*site\.js\?v=49/, 'embedded homepage must load the punctuation-tolerant search client');
 for (const source of ['正在读取全部法官资料…', '稍后重试', '读取失败', '全部法官资料暂时无法读取', '无需刷新页面，可以直接重新尝试。']) {
   const rowPattern = new RegExp(`\\['${source.replace(/[.*+?^${}()|[\\]\\]/g, '\\\\$&')}'(?:,'[^']+'){9}\\]`);
   assert.match(i18n, rowPattern, `${source} must provide all nine non-source translations`);

@@ -52,6 +52,12 @@ npm run export:web
 
 `config:check` 会验证 App 标识、版本号、EAS 项目、更新通道、商店图标尺寸和正式构建自动递增设置，不读取或输出任何签名凭据。
 
+生产签名统一由 EAS 远程管理，Android 正式构建明确产出 AAB，首次提交固定进入 Google Play 内部测试轨道并保持草稿，不会直接公开发布。运行 `npm run store:release-preflight` 可检查仓库内的构建和提交安全配置；账号持有人准备好 Expo 权限、Apple 数字 App ID、Apple／Google 远程凭据、三套截图及后台表单后，再运行 `npm run store:release-preflight:strict`。严格预检只显示缺少的资料名称，不读取、保存或输出密钥内容。
+
+iOS 的 `submit.production.ios.ascAppId` 不能使用包名或占位符，必须等账号持有人提供 App Store Connect 中的纯数字 App ID 后再写入。Google Play 服务账号和 Apple App Store Connect API Key 应通过 EAS 凭据管理上传，禁止提交到 Git；本仓库已忽略常见本地凭据文件。预检全部通过后，按平台执行 `eas build --platform ios --profile production`、`eas build --platform android --profile production`，验收包后再执行 `eas submit --platform <ios|android> --profile production`。
+
+`.eas/workflows/store-production-builds.yml` 提供等价的手动双平台构建入口。它没有 `push` 触发器，也不包含自动提交步骤，避免普通代码合并消耗原生构建额度或把未经真机验收的包上传商店。
+
 App Store 中文标题、简介、关键词、隐私政策和账户删除地址维护在 `store.config.json`。iOS Privacy Manifest 的 required-reason API 声明维护在 `app.json`，内容来自当前锁定版本依赖随附的 `PrivacyInfo.xcprivacy`。首次二进制上传并在 App Store Connect 建立版本后，才可使用 `eas metadata:push`；该操作需要 Apple 权限，不属于本地预检。
 
 Apple 与 Google 的支持地址统一使用 `https://trrb.net/app-support.html`。该页面提供中英双语故障排查、公开客服邮箱以及隐私、账户删除和使用条款入口；`config:check` 与 `test:store-support` 会防止商店资料重新指向普通首页或缺失必要支持信息。

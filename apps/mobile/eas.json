@@ -31,12 +31,22 @@
     "production": {
       "channel": "production",
       "environment": "production",
+      "credentialsSource": "remote",
       "autoIncrement": true,
       "android": {
+        "buildType": "app-bundle",
         "image": "latest"
       },
       "ios": {
         "image": "latest"
+      }
+    }
+  },
+  "submit": {
+    "production": {
+      "android": {
+        "track": "internal",
+        "releaseStatus": "draft"
       }
     }
   }

@@ -231,7 +231,9 @@ function renderBackground(background) {
     $('#background-court').textContent = copy.unavailable;
     $('#background-type').textContent = copy.type;
     $('#background-copy-title').textContent = copy.statusTitle;
-    $('#background-bio').textContent = copy.statusBody;
+    const biography = $('#background-bio');
+    biography.textContent = copy.statusBody;
+    biography.removeAttribute('lang');
     $('#background-source-wrap').hidden = true;
     return;
   }
@@ -240,7 +242,10 @@ function renderBackground(background) {
   $('#background-date').textContent = background.appointment_date ? formatAppointmentDate(background.appointment_date) : copy.unspecified;
   $('#background-court').textContent = background.appointment_court || copy.unspecified;
   $('#background-type').textContent = background.appointment_type || copy.type;
-  $('#background-bio').textContent = background.biography || copy.missingBiography;
+  const biography = $('#background-bio');
+  biography.textContent = background.biography || copy.missingBiography;
+  if (background.biography && (window.AsylumI18n?.locale || 'zh-Hans') !== 'en') biography.setAttribute('lang', 'en');
+  else biography.removeAttribute('lang');
   $('#background-education').textContent = background.education ? fill(copy.education, { value: background.education }) : '';
   $('#background-bar').textContent = background.bar_membership ? fill(copy.bar, { value: background.bar_membership }) : '';
   const source = $('#background-source');

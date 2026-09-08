@@ -381,7 +381,7 @@ function filterJudges(query) {
   const terms = String(query || '').trim().toLocaleLowerCase().split(/\s+/).filter(Boolean);
   if (!terms.length) return allJudges;
   return allJudges.filter((row) => {
-    const searchable = [row.judge_name, row.court_name, row.court_city, row.court_state].filter(Boolean).join(' ').toLocaleLowerCase();
+    const searchable = [row.judge_name, row.court_name, row.court_city, row.court_state, stateName(row.court_state)].filter(Boolean).join(' ').toLocaleLowerCase();
     return terms.every((term) => searchable.includes(term));
   });
 }

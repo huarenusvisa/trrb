@@ -68,6 +68,8 @@ Apple 审核说明与 Google App Access 可复制文本分别维护在 `store/re
 
 完整发布顺序维护在 `store/submission-runbook.json`：资料与权限预检 → 双平台 Production 构建 → TestFlight／Google Play 内部测试 → iOS／Android 真机验收 → 人工提交审核。运行 `npm run store:submission-plan` 只会显示当前尚未完成的第一阶段、所需确认项和该阶段的单条安全命令，不读取凭据，也不会执行构建、上传或公开发布。每完成一个阶段后，通过清单列出的 `TRRB_*_CONFIRMED=1` 本地确认变量推进；`npm run test:store-runbook` 会阻止跳过依赖、减少真机测试项、加入自动提交或将 Android 改到公开轨道。
 
+Production 构建完成后，不能只设置两个确认变量。复制 `store/build-evidence.template.json` 为被 Git 忽略的 `store/build-evidence.local.json`，从 EAS 构建详情填写 iOS／Android build ID、源提交、App／runtime 版本、原生构建号和时间，再运行 `npm run store:build-evidence-check`。校验器要求两个包来自当前检出的同一提交，且分别为完成状态的 Production IPA 和 AAB；它拒绝产物下载 URL、凭据及任何额外字段，证据文件也不会提交仓库。发布清单只有在 `TRRB_STORE_BUILD_EVIDENCE_FILE=store/build-evidence.local.json` 指向有效文件时才允许进入内部测试阶段。
+
 商店与启动器统一使用 `assets/app-icon-1024.png`。该文件必须保持 1024×1024、sRGB/RGB 且不含 Alpha 或透明色块；`config:check` 会阻止不合规图标进入正式构建。
 
 Google Play 中文标题、短描述和完整描述维护在 `store/google-play/zh-CN/`，分类、联系方式、隐私地址和截图清单维护在 `store/google-play/listing.json`。文案长度遵循 Google Play 的 30/80/4000 字符限制。

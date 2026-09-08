@@ -23,6 +23,11 @@
         "eas build --platform ios --profile production",
         "eas build --platform android --profile production"
       ],
+      "evidence": {
+        "label": "Validated paired iOS and Android production build evidence",
+        "environmentVariable": "TRRB_STORE_BUILD_EVIDENCE_FILE",
+        "command": "npm run store:build-evidence-check -- store/build-evidence.local.json"
+      },
       "confirmations": [
         {
           "id": "ios-production-build",

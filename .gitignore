@@ -7,3 +7,4 @@ apps/mobile/credentials.json
 apps/mobile/**/*.p8
 apps/mobile/**/*service-account*.json
 apps/mobile/**/*review-credentials*
+apps/mobile/store/build-evidence.local.json

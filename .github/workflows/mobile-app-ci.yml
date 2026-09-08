@@ -175,6 +175,7 @@ jobs:
           npm run test:store-review
           npm run test:store-release
           npm run test:store-runbook
+          npm run test:store-build-evidence
           npm run store:release-preflight
       - name: Export Expo web bundle
         working-directory: apps/mobile

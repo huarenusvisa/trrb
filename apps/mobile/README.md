@@ -56,6 +56,8 @@ App Store 中文标题、简介、关键词、隐私政策和账户删除地址�
 
 Apple 与 Google 的支持地址统一使用 `https://trrb.net/app-support.html`。该页面提供中英双语故障排查、公开客服邮箱以及隐私、账户删除和使用条款入口；`config:check` 与 `test:store-support` 会防止商店资料重新指向普通首页或缺失必要支持信息。
 
+Apple App Privacy 与 Google Play Data Safety 的逐项申报草案维护在 `store/data-practices.json`。它把邮箱／手机号账号、个人资料、社区和评论、私信、媒体、收藏／历史及推送令牌映射到两个商店的数据类型，并记录代码证据。运行 `npm run test:store-data` 会核对 App 的追踪设置、第三方 SDK、隐私政策、删除入口和实际功能；提交前仍须由账号持有人在后台确认 Supabase、Netlify、Expo 的生产日志、备份及服务提供商用途。
+
 商店与启动器统一使用 `assets/app-icon-1024.png`。该文件必须保持 1024×1024、sRGB/RGB 且不含 Alpha 或透明色块；`config:check` 会阻止不合规图标进入正式构建。
 
 Google Play 中文标题、短描述和完整描述维护在 `store/google-play/zh-CN/`，分类、联系方式、隐私地址和截图清单维护在 `store/google-play/listing.json`。文案长度遵循 Google Play 的 30/80/4000 字符限制。

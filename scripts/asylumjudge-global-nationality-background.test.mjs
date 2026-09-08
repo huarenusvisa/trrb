@@ -210,7 +210,7 @@ assert.match(detailPage, /id="country-filter"[^>]*name="nationality"[^>]*type="s
 assert.match(detailPage, /id="nationality-results-status"[^>]*class="sr-only"[^>]*role="status"[^>]*aria-live="polite"[^>]*aria-atomic="true"/, 'filtered nationality counts must be announced without exposing the full table as a live region');
 assert.match(detailPage, /class="nationality-fy"[^>]*role="group"[^>]*aria-label="选择国籍数据财政年度"[\s\S]*data-nationality-fy="2026"[^>]*aria-pressed="true"[\s\S]*data-nationality-fy="2025"[^>]*aria-pressed="false"/, 'judge nationality year filters must expose their group and initial selected state');
 assert.match(detailClient, /data-nationality-fy[\s\S]*const selected = Number\(button\.dataset\.nationalityFy\) === nationalityFiscalYear;[\s\S]*button\.setAttribute\('aria-pressed', String\(selected\)\)/, 'judge nationality year filters must keep the announced selected state in sync');
-assert.match(detailPage, /detail\.css\?v=7[\s\S]*detail\.js\?v=23/, 'judge detail page must load the current asset versions');
+assert.match(detailPage, /detail\.css\?v=8[\s\S]*detail\.js\?v=24/, 'judge detail page must load the current asset versions');
 const detailSummaryMessages = detailClient.match(/const detailSummaryMessages = \{[\s\S]*?\n\};/)?.[0] || '';
 for (const locale of ['en', 'es', 'fr', 'pt-BR', 'hi', 'zh-Hans', 'zh-Hant', 'ru', 'ar', 'tr']) {
   assert.match(detailSummaryMessages, new RegExp(`['"]?${locale}['"]?\\s*:`), `judge detail summary messages must support ${locale}`);
@@ -235,7 +235,7 @@ const nationalityEmptyMessages = detailClient.match(/const nationalityEmptyMessa
 for (const locale of ['en', 'es', 'fr', 'pt-BR', 'hi', 'zh-Hans', 'zh-Hant', 'ru', 'ar', 'tr']) {
   assert.match(nationalityEmptyMessages, new RegExp(`['"]?${locale}['"]?\\s*:`), `nationality empty states must support ${locale}`);
 }
-assert.match(detailClient, /`<div class="empty">\$\{esc\(nationalityEmptyMessage\(\)\)\}<\/div>`/, 'empty nationality filters must render the active locale message safely');
+assert.match(detailClient, /emptyTableRow\(nationalityEmptyMessage\(\)\)/, 'empty nationality filters must render the active locale message safely');
 assert.doesNotMatch(detailClient, /<div class="empty">该财年暂无匹配国籍数据<\/div>/, 'the dynamic empty state must not remain hard-coded in Simplified Chinese');
 const nationalityPeriodMessages = detailClient.match(/const nationalityPeriodMessages = \{[\s\S]*?\n\};/)?.[0] || '';
 for (const locale of ['en', 'es', 'fr', 'pt-BR', 'hi', 'zh-Hans', 'zh-Hant', 'ru', 'ar', 'tr']) {
@@ -259,7 +259,7 @@ for (const locale of ['en', 'es', 'fr', 'pt-BR', 'hi', 'zh-Hans', 'zh-Hant', 'ru
 assert.match(detailClient, /return yearlyMessages\[locale\] \|\| yearlyMessages\['zh-Hans'\]/, 'yearly trends must use the active locale with a safe fallback');
 assert.match(detailClient, /function outcomeHeader\(firstLabel\)[\s\S]*esc\(firstLabel\)[\s\S]*esc\(labels\.total\)[\s\S]*esc\(labels\.otherTitle\)[\s\S]*esc\(labels\.rate\)/, 'yearly table headers must render escaped active-locale labels');
 assert.match(detailClient, /chart\.setAttribute\('aria-label', copy\.chartLabel\)[\s\S]*label: labels\.grants[\s\S]*esc\(copy\.chartTitle\)[\s\S]*esc\(copy\.chartAria\)/, 'yearly charts must localize visible and assistive labels');
-assert.match(detailClient, /outcomeHeader\(yearlyMessages\.first\)[\s\S]*esc\(sampleDescription\(row\)\)[\s\S]*esc\(dateRange\(row\)\)[\s\S]*esc\(yearlyMessages\.empty\)/, 'yearly rows and empty states must safely render localized guidance');
+assert.match(detailClient, /outcomeHeader\(yearlyMessages\.first\)[\s\S]*esc\(sampleDescription\(row\)\)[\s\S]*esc\(dateRange\(row\)\)[\s\S]*emptyTableRow\(yearlyMessages\.empty\)/, 'yearly rows and empty states must safely render localized guidance');
 assert.doesNotMatch(detailClient, /outcomeHeader\('财政年度'\)|<b>2026、2025、2024 年裁决结果<\/b>|aria-label="横向年度裁决对比图"|2024–2026 暂无年度趋势数据<\/div>/, 'yearly trend rendering must not remain hard-coded in Simplified Chinese');
 const nationalityRowMessages = detailClient.match(/const nationalityRowMessages = \{[\s\S]*?\n\};/)?.[0] || '';
 for (const locale of ['en', 'es', 'fr', 'pt-BR', 'hi', 'zh-Hans', 'zh-Hant', 'ru', 'ar', 'tr']) {
@@ -271,7 +271,15 @@ assert.match(detailClient, /const template = \(nationalityRowMessages\[locale\] 
 assert.match(detailClient, /nationalityOutcomeHeader\(\)[\s\S]*esc\(nationalityRowMessage\(row\)\)[\s\S]*esc\(nationalityDateRange\(row\)\)/, 'nationality rows must render localized sample and date guidance safely');
 assert.doesNotMatch(detailClient, /nationality'\)\.innerHTML[^\n]*sampleDescription\(row\)/, 'nationality rows must not reuse the Simplified Chinese yearly sample guidance');
 assert.match(detailClient, /function nationalityName\(row\) \{[\s\S]*window\.AsylumI18n\?\.countryName\?\.\(row\) \|\| row\.nationality \|\| '—'/, 'judge nationality rows must use the shared localized country name with safe fallbacks');
-assert.match(detailPage, /app-i18n\.js\?v=8[\s\S]*detail\.js\?v=23/, 'judge details must load the shared country-name capability before the current detail client');
+assert.match(detailPage, /app-i18n\.js\?v=8[\s\S]*detail\.js\?v=24/, 'judge details must load the shared country-name capability before the current detail client');
+assert.match(detailPage, /id="yearly-title"[\s\S]*id="yearly"[^>]*role="table"[^>]*aria-labelledby="yearly-title"/, 'yearly outcomes must expose a table named by the localized section heading');
+assert.match(detailPage, /id="nationality-title"[\s\S]*id="nationality"[^>]*role="table"[^>]*aria-labelledby="nationality-title"/, 'nationality outcomes must expose a table named by the localized section heading');
+assert.match(detailClient, /class="trow thead outcome-row" role="row"[\s\S]*role="columnheader"/, 'outcome table headers must expose row and column-header semantics');
+assert.match(detailClient, /class="trow outcome-row" role="row"[\s\S]*role="cell"/, 'outcome table data must expose row and cell semantics');
+assert.match(detailClient, /const emptyTableRow = \(message\) => `<div class="empty" role="row"><span role="cell">\$\{esc\(message\)\}<\/span><\/div>`/, 'empty outcome tables must preserve valid row and cell semantics');
+assert.match(detailStyles, /\.outcome-row>\.mobile-sr-only\{[^}]*position:absolute[^}]*clip-path:inset\(50%\)[^}]*white-space:nowrap/, 'mobile-hidden outcome columns must remain available to assistive technology');
+assert.doesNotMatch(detailStyles, /\.outcome-row>span:nth-child\(2\),\.outcome-row>span:nth-child\(5\)\{display:none\}/, 'mobile outcome columns must not be removed from the accessibility tree');
+assert.match(detailPage, /detail\.css\?v=8/, 'judge details must load the accessible mobile table styles');
 const sharedCountryHelpers = sharedI18nClient.match(/const nationalityRegionAliases = [\s\S]*?(?=\n  window\.AsylumI18n =)/)?.[0];
 assert.ok(sharedCountryHelpers, 'shared i18n country-name helpers must remain testable');
 const sharedCountrySandbox = { Intl, locale: 'zh-Hans' };

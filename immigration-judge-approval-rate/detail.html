@@ -7,7 +7,7 @@
   <meta name="description" content="查看美国移民法官庇护批准率、拒绝率、年度趋势、申请人国籍和官方任命履历。">
   <link rel="stylesheet" href="/styles.css?v=29.9">
   <link rel="stylesheet" href="/immigration-judge-approval-rate/judges.css?v=2">
-  <link rel="stylesheet" href="/immigration-judge-approval-rate/detail.css?v=7">
+  <link rel="stylesheet" href="/immigration-judge-approval-rate/detail.css?v=8">
   <link rel="stylesheet" href="/asylumjudge/domain-brand.css?v=8">
 </head>
 <body>
@@ -20,8 +20,8 @@
         <div><div class="eyebrow">TRRB · EOIR JUDGE PROFILE</div><h1 id="judge-name">—</h1><p id="judge-court" class="lead">—</p><p id="judge-source" class="source">数据来源：EOIR</p><div id="judge-webex" class="detail-webex" hidden></div><div id="sample-warning" class="sample-warning" hidden></div></div>
         <div class="metric-grid"><article><span>裁决批准率</span><strong id="m-rate">—</strong><small>批准 ÷（批准 + 拒绝）</small></article><article><span>全部结案中批准占比</span><strong id="m-all-rate">—</strong><small>批准 ÷ 全部结案结果</small></article><article><span>庇护裁决</span><strong id="m-total">—</strong><small id="m-adjudicated">—</small></article><article><span>批准 / 拒绝</span><strong id="m-grant-deny">—</strong><small>仅显示数据库记录</small></article></div>
       </section>
-      <section class="detail-section"><div class="section-head"><div><span>年度变化</span><h2>庇护裁决年度趋势</h2></div></div><div id="yearly" class="data-table"></div></section>
-      <section class="detail-section"><div class="section-head"><div><span>申请人来源</span><h2>按财年和国籍查看庇护裁决</h2></div></div><div class="country-tools"><input id="country-filter" name="nationality" type="search" inputmode="search" autocomplete="off" aria-label="输入中文或英文国籍，例如：古巴、Cuba、中国、China" aria-controls="nationality" aria-describedby="nationality-period-label nationality-results-status" placeholder="输入中文或英文国籍，例如：古巴、Cuba、中国、China"><div class="nationality-fy" role="group" aria-label="选择国籍数据财政年度"><button type="button" class="active" data-nationality-fy="2026" aria-pressed="true">FY 2026</button><button type="button" data-nationality-fy="2025" aria-pressed="false">FY 2025</button><button type="button" data-nationality-fy="2024" aria-pressed="false">FY 2024</button></div></div><p id="nationality-period-label" class="nationality-period-label">每行明确显示财政年度、国籍、有效裁决数和批准率。</p><p id="nationality-results-status" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></p><div id="nationality" class="data-table"></div></section>
+      <section class="detail-section"><div class="section-head"><div><span>年度变化</span><h2 id="yearly-title">庇护裁决年度趋势</h2></div></div><div id="yearly" class="data-table" role="table" aria-labelledby="yearly-title"></div></section>
+      <section class="detail-section"><div class="section-head"><div><span>申请人来源</span><h2 id="nationality-title">按财年和国籍查看庇护裁决</h2></div></div><div class="country-tools"><input id="country-filter" name="nationality" type="search" inputmode="search" autocomplete="off" aria-label="输入中文或英文国籍，例如：古巴、Cuba、中国、China" aria-controls="nationality" aria-describedby="nationality-period-label nationality-results-status" placeholder="输入中文或英文国籍，例如：古巴、Cuba、中国、China"><div class="nationality-fy" role="group" aria-label="选择国籍数据财政年度"><button type="button" class="active" data-nationality-fy="2026" aria-pressed="true">FY 2026</button><button type="button" data-nationality-fy="2025" aria-pressed="false">FY 2025</button><button type="button" data-nationality-fy="2024" aria-pressed="false">FY 2024</button></div></div><p id="nationality-period-label" class="nationality-period-label">每行明确显示财政年度、国籍、有效裁决数和批准率。</p><p id="nationality-results-status" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></p><div id="nationality" class="data-table" role="table" aria-labelledby="nationality-title"></div></section>
       <section id="judge-background" class="detail-section judge-background" hidden>
         <div class="section-head"><div><span>官方任命资料</span><h2>法官背景与任命信息</h2></div></div>
         <div class="background-grid"><article><span>任命时间</span><strong id="background-date">—</strong></article><article><span>任命法院</span><strong id="background-court">—</strong></article><article><span>任命类型</span><strong id="background-type">—</strong></article></div>
@@ -33,6 +33,6 @@
   <footer class="judge-footer"><div class="judge-shell"><b>唐人日报 Tang Ren Daily</b><span>EOIR公开数据 · 持续更新</span></div></footer>
   <script src="/asylumjudge/app-i18n.js?v=8"></script>
   <script src="/asylumjudge/domain-brand.js?v=11"></script>
-  <script src="/immigration-judge-approval-rate/detail.js?v=23"></script>
+  <script src="/immigration-judge-approval-rate/detail.js?v=24"></script>
 </body>
 </html>

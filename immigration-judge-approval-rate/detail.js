@@ -294,18 +294,20 @@ function renderWebex(webex) {
 function outcomeHeader(firstLabel) {
   const locale = window.AsylumI18n?.locale || 'zh-Hans';
   const labels = nationalityTableLabels[locale] || nationalityTableLabels['zh-Hans'];
-  return `<div class="trow thead outcome-row"><span>${esc(firstLabel)}</span><span>${esc(labels.total)}</span><span class="verdict-pass">${esc(labels.grants)}</span><span class="verdict-deny">${esc(labels.denials)}</span><span class="verdict-other" title="${esc(labels.otherTitle)}">${esc(labels.other)}</span><span>${esc(labels.rate)}</span></div>`;
+  return `<div class="trow thead outcome-row" role="row"><span role="columnheader">${esc(firstLabel)}</span><span class="mobile-sr-only" role="columnheader">${esc(labels.total)}</span><span class="verdict-pass" role="columnheader">${esc(labels.grants)}</span><span class="verdict-deny" role="columnheader">${esc(labels.denials)}</span><span class="verdict-other mobile-sr-only" role="columnheader" title="${esc(labels.otherTitle)}">${esc(labels.other)}</span><span role="columnheader">${esc(labels.rate)}</span></div>`;
 }
 
 function nationalityOutcomeHeader() {
   const locale = window.AsylumI18n?.locale || 'zh-Hans';
   const labels = nationalityTableLabels[locale] || nationalityTableLabels['zh-Hans'];
-  return `<div class="trow thead outcome-row"><span>${esc(labels.first)}</span><span>${esc(labels.total)}</span><span class="verdict-pass">${esc(labels.grants)}</span><span class="verdict-deny">${esc(labels.denials)}</span><span class="verdict-other" title="${esc(labels.otherTitle)}">${esc(labels.other)}</span><span>${esc(labels.rate)}</span></div>`;
+  return `<div class="trow thead outcome-row" role="row"><span role="columnheader">${esc(labels.first)}</span><span class="mobile-sr-only" role="columnheader">${esc(labels.total)}</span><span class="verdict-pass" role="columnheader">${esc(labels.grants)}</span><span class="verdict-deny" role="columnheader">${esc(labels.denials)}</span><span class="verdict-other mobile-sr-only" role="columnheader" title="${esc(labels.otherTitle)}">${esc(labels.other)}</span><span role="columnheader">${esc(labels.rate)}</span></div>`;
 }
 
 function outcomeRow(firstCell, row) {
-  return `<div class="trow outcome-row"><span>${firstCell}</span><span>${fmt(row.total_asylum_decisions)}</span><span class="verdict-pass">${fmt(row.grants)}</span><span class="verdict-deny">${fmt(row.denials)}</span><span class="verdict-other">${fmt(row.other_decisions)}</span><span class="red">${pct(row.adjudicated_approval_rate)}</span></div>`;
+  return `<div class="trow outcome-row" role="row"><span role="cell">${firstCell}</span><span class="mobile-sr-only" role="cell">${fmt(row.total_asylum_decisions)}</span><span class="verdict-pass" role="cell">${fmt(row.grants)}</span><span class="verdict-deny" role="cell">${fmt(row.denials)}</span><span class="verdict-other mobile-sr-only" role="cell">${fmt(row.other_decisions)}</span><span class="red" role="cell">${pct(row.adjudicated_approval_rate)}</span></div>`;
 }
+
+const emptyTableRow = (message) => `<div class="empty" role="row"><span role="cell">${esc(message)}</span></div>`;
 
 function renderYearlyChart(rows) {
   const copy = yearlyCopy();
@@ -391,7 +393,7 @@ function renderCountries() {
     button.classList.toggle('active', selected);
     button.setAttribute('aria-pressed', String(selected));
   });
-  $('#nationality').innerHTML = rows.length ? `${nationalityOutcomeHeader()}${rows.map((row) => outcomeRow(`<b>FY ${esc(row.fiscal_year)} · ${esc(nationalityName(row))}</b><small class="sample-explain">${esc(nationalityRowMessage(row))}</small>${nationalityDateRange(row) ? `<small class="decision-range">${esc(nationalityDateRange(row))}</small>` : ''}`, row)).join('')}` : `<div class="empty">${esc(nationalityEmptyMessage())}</div>`;
+  $('#nationality').innerHTML = rows.length ? `${nationalityOutcomeHeader()}${rows.map((row) => outcomeRow(`<b>FY ${esc(row.fiscal_year)} · ${esc(nationalityName(row))}</b><small class="sample-explain">${esc(nationalityRowMessage(row))}</small>${nationalityDateRange(row) ? `<small class="decision-range">${esc(nationalityDateRange(row))}</small>` : ''}`, row)).join('')}` : emptyTableRow(nationalityEmptyMessage());
   $('#nationality-results-status').textContent = nationalityResultStatus(rows.length, nationalityFiscalYear);
 }
 
@@ -431,7 +433,7 @@ async function load() {
       .sort((a, b) => Number(b.fiscal_year) - Number(a.fiscal_year));
     renderYearlyChart(yearly);
     const yearlyMessages = yearlyCopy();
-    $('#yearly').innerHTML = yearly.length ? `${outcomeHeader(yearlyMessages.first)}${yearly.map((row) => outcomeRow(`<b>FY ${esc(row.fiscal_year)}</b><small class="sample-explain">${esc(sampleDescription(row))}</small>${dateRange(row) ? `<small class="decision-range">${esc(dateRange(row))}</small>` : ''}`, row)).join('')}` : `<div class="empty">${esc(yearlyMessages.empty)}</div>`;
+    $('#yearly').innerHTML = yearly.length ? `${outcomeHeader(yearlyMessages.first)}${yearly.map((row) => outcomeRow(`<b>FY ${esc(row.fiscal_year)}</b><small class="sample-explain">${esc(sampleDescription(row))}</small>${dateRange(row) ? `<small class="decision-range">${esc(dateRange(row))}</small>` : ''}`, row)).join('')}` : emptyTableRow(yearlyMessages.empty);
     nationality = data.nationality || [];
     nationalityYearly = data.nationality_yearly || [];
     nationalitySource = data.nationality_yearly_source || null;

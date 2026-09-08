@@ -31,7 +31,7 @@ assert.match(html, /id="compare-trend"/);
 assert.match(html, /id="compare-nationalities"/);
 assert.match(html, /id="compare-backgrounds"/);
 assert.match(html, /app-i18n\.js\?v=8/);
-assert.match(html, /compare\.js\?v=9/);
+assert.match(html, /compare\.js\?v=10/);
 assert.match(html, /site\.css\?v=35/, 'comparison page must load the skip-link style under the current cache key');
 assert.match(html, /compare\.css\?v=5/);
 assert.match(html, /compare-focus\.css\?v=1/);
@@ -44,7 +44,8 @@ for (const locale of ['es', 'fr', 'pt-BR', 'hi', 'ru', 'ar', 'tr']) {
 }
 assert.match(js, /selected\.length >= 4/, 'comparison must cap selection at four judges');
 assert.match(js, /selected\.length < 2/, 'comparison must require at least two judges');
-assert.match(js, /immigration-judges\?mode=all/, 'picker must use the complete judge dataset');
+assert.match(js, /immigration-judges\?mode=directory/, 'picker must use the lightweight complete judge directory');
+assert.doesNotMatch(js, /immigration-judges\?mode=all/, 'picker must not download full judge biographies');
 assert.match(js, /immigration-judges\?mode=detail/, 'comparison must load each judge detail dataset');
 assert.match(js, /const REQUEST_TIMEOUT_MS = 15000/, 'comparison requests must use a finite timeout');
 assert.match(js, /new DOMException\('Request timed out', 'TimeoutError'\)/, 'timed-out requests must reach the recoverable error state');
@@ -53,7 +54,7 @@ assert.match(js, /options\.signal\?\.addEventListener\('abort', forwardAbort, \{
 assert.match(js, /clearTimeout\(timeoutId\)/, 'completed comparison requests must release their timeout');
 assert.match(js, /options\.signal\?\.removeEventListener\('abort', forwardAbort\)/, 'completed comparison requests must release their abort listener');
 assert.match(js, /requestJson\(`\/\.netlify\/functions\/immigration-judges\?mode=detail/, 'judge details must use the timeout-aware request helper');
-assert.match(js, /requestJson\('\/\.netlify\/functions\/immigration-judges\?mode=all'\)/, 'the judge picker must use the timeout-aware request helper');
+assert.match(js, /requestJson\('\/\.netlify\/functions\/immigration-judges\?mode=directory'\)/, 'the judge picker must use the timeout-aware request helper');
 assert.match(js, /detailRequestController\?\.abort\(\)/, 'superseded detail requests must be cancelled');
 assert.match(js, /signal: controller\.signal/, 'judge detail requests must use the active abort signal');
 assert.match(js, /requestId !== detailRequestId/, 'stale detail responses must not update the comparison');

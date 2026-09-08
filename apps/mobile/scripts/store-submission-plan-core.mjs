@@ -71,7 +71,9 @@ export function inspectSubmissionPlan({ mobileRoot, env = {}, expectedSourceComm
   expect(!/[;&|`$]/.test(candidateEvidence?.command ?? ''), 'Release candidate command must remain a single auditable command');
   const buildEvidence = stages[1]?.evidence;
   expect(buildEvidence?.environmentVariable === 'TRRB_STORE_BUILD_EVIDENCE_FILE', 'Production builds must require a local evidence file');
-  expect(buildEvidence?.command === 'npm run store:build-evidence-check -- store/build-evidence.local.json', 'Production build evidence command is missing or unsafe');
+  expect(buildEvidence?.releaseCandidateEnvironmentVariable === 'TRRB_STORE_RELEASE_CANDIDATE_FILE', 'Production builds must reference the frozen release candidate');
+  expect(buildEvidence?.screenshotEvidenceEnvironmentVariable === 'TRRB_STORE_SCREENSHOT_EVIDENCE_FILE', 'Production builds must reference the candidate screenshot evidence');
+  expect(buildEvidence?.command === 'npm run store:build-evidence-check -- store/build-evidence.local.json store/release-candidate.local.json store/screenshot-evidence.local.json', 'Production build evidence command is missing or unsafe');
   expect(!/[;&|`$]/.test(buildEvidence?.command ?? ''), 'Production build evidence command must remain a single auditable command');
   const distributionEvidence = stages[2]?.evidence;
   expect(distributionEvidence?.environmentVariable === 'TRRB_STORE_DISTRIBUTION_EVIDENCE_FILE', 'Internal distribution must require a local evidence file');
@@ -129,7 +131,15 @@ export function inspectSubmissionPlan({ mobileRoot, env = {}, expectedSourceComm
     }
     if (stage.id === 'production-builds') {
       const evidencePath = env[buildEvidence?.environmentVariable];
-      const evidence = evidencePath ? readBuildEvidence({ mobileRoot, evidencePath, expectedSourceCommit }) : { valid: false };
+      const releaseCandidatePath = env[buildEvidence?.releaseCandidateEnvironmentVariable];
+      const buildScreenshotPath = env[buildEvidence?.screenshotEvidenceEnvironmentVariable];
+      const evidence = evidencePath && releaseCandidatePath && buildScreenshotPath
+        ? readBuildEvidence({
+            mobileRoot, evidencePath, expectedSourceCommit,
+            releaseCandidatePath, screenshotEvidencePath: buildScreenshotPath,
+            verifyCandidateFiles: false
+          })
+        : { valid: false };
       if (!evidence.valid) {
         missing = [...missing, {
           id: 'production-build-evidence',

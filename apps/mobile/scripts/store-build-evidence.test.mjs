@@ -5,11 +5,13 @@ import { inspectBuildEvidence } from './store-build-evidence-core.mjs';
 
 const mobileRoot = path.resolve(import.meta.dirname, '..');
 const sourceCommit = '1234567890abcdef1234567890abcdef12345678';
+const releaseCandidateSha256 = 'a'.repeat(64);
 
 function validEvidence() {
   return {
     schemaVersion: 1,
     sourceCommit,
+    releaseCandidateSha256,
     application: {
       slug: 'trrb',
       projectId: 'cc29573d-d20c-4c3b-a7d6-1bc74838127a',
@@ -36,8 +38,11 @@ function validEvidence() {
   };
 }
 
-test('accepts matching finished iOS IPA and Android AAB evidence', () => {
-  const result = inspectBuildEvidence({ mobileRoot, evidence: validEvidence(), expectedSourceCommit: sourceCommit });
+test('accepts matching finished iOS IPA and Android AAB evidence bound to the frozen candidate', () => {
+  const result = inspectBuildEvidence({
+    mobileRoot, evidence: validEvidence(), expectedSourceCommit: sourceCommit,
+    expectedReleaseCandidateSha256: releaseCandidateSha256
+  });
   assert.equal(result.valid, true, result.failures.join('\n'));
 });
 
@@ -48,6 +53,15 @@ test('rejects evidence from another release commit or app version', () => {
   assert.equal(result.valid, false);
   assert.match(result.failures.join('\n'), /checked-out Git commit/);
   assert.match(result.failures.join('\n'), /app version/);
+});
+
+test('rejects builds associated with another frozen release candidate', () => {
+  const result = inspectBuildEvidence({
+    mobileRoot, evidence: validEvidence(), expectedSourceCommit: sourceCommit,
+    expectedReleaseCandidateSha256: 'b'.repeat(64)
+  });
+  assert.equal(result.valid, false);
+  assert.match(result.failures.join('\n'), /verified frozen release candidate/);
 });
 
 test('rejects unfinished, duplicated or wrong store artifacts', () => {

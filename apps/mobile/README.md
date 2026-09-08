@@ -68,7 +68,7 @@ Apple 审核说明与 Google App Access 可复制文本分别维护在 `store/re
 
 完整发布顺序维护在 `store/submission-runbook.json`：资料与权限预检 → 双平台 Production 构建 → TestFlight／Google Play 内部测试 → iOS／Android 真机验收 → 人工提交审核。运行 `npm run store:submission-plan` 只会显示当前尚未完成的第一阶段、所需确认项和该阶段的单条安全命令，不读取凭据，也不会执行构建、上传或公开发布。每完成一个阶段后，通过清单列出的 `TRRB_*_CONFIRMED=1` 本地确认变量推进；`npm run test:store-runbook` 会阻止跳过依赖、减少真机测试项、加入自动提交或将 Android 改到公开轨道。
 
-Production 构建完成后，不能只设置两个确认变量。复制 `store/build-evidence.template.json` 为被 Git 忽略的 `store/build-evidence.local.json`，从 EAS 构建详情填写 iOS／Android build ID、源提交、App／runtime 版本、原生构建号和时间，再运行 `npm run store:build-evidence-check`。校验器要求两个包来自当前检出的同一提交，且分别为完成状态的 Production IPA 和 AAB；它拒绝产物下载 URL、凭据及任何额外字段，证据文件也不会提交仓库。发布清单只有在 `TRRB_STORE_BUILD_EVIDENCE_FILE=store/build-evidence.local.json` 指向有效文件时才允许进入内部测试阶段。
+Production 构建完成后，不能只设置两个确认变量。复制 `store/build-evidence.template.json` 为被 Git 忽略的 `store/build-evidence.local.json`，从 EAS 构建详情填写 iOS／Android build ID、源提交、App／runtime 版本、原生构建号和时间，并把 macOS 的 `shasum -a 256 store/release-candidate.local.json`（Linux 使用 `sha256sum`）所得摘要填入 `releaseCandidateSha256`，再运行 `npm run store:build-evidence-check`。校验器会同时回读候选版本及截图证据，要求两个包来自当前检出的同一冻结候选，且分别为完成状态的 Production IPA 和 AAB；候选文件被替换、截图变化、摘要不一致、产物下载 URL、凭据及任何额外字段都会被拒绝，证据文件也不会提交仓库。发布清单只有在 `TRRB_STORE_BUILD_EVIDENCE_FILE=store/build-evidence.local.json` 指向有效文件时才允许进入内部测试阶段。
 
 TestFlight 和 Google Play 内部测试上传完成后，复制 `store/distribution-evidence.template.json` 为被 Git 忽略的 `store/distribution-evidence.local.json`，记录两个商店的处理状态和时间，再运行 `npm run store:distribution-evidence-check`。该校验会回读正式构建证据，要求 TestFlight 与 Google Play 内部轨道引用完全相同的 EAS build ID、Git 提交、App 版本及原生构建号，并强制 Android 保持 `draft`；下载地址、公开轨道、未处理完成状态或凭据字段都会被拒绝。只有再设置 `TRRB_STORE_DISTRIBUTION_EVIDENCE_FILE=store/distribution-evidence.local.json`，发布清单才会进入真机验收阶段。
 

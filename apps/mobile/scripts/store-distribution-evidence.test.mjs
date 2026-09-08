@@ -10,6 +10,7 @@ function fixtures() {
   const buildEvidence = {
     schemaVersion: 1,
     sourceCommit,
+    releaseCandidateSha256: 'a'.repeat(64),
     application: {
       slug: 'trrb', projectId: 'cc29573d-d20c-4c3b-a7d6-1bc74838127a', version: '0.2.0', runtimeVersion: '0.2.0',
       ios: { bundleIdentifier: 'net.trrb.mobile' }, android: { package: 'net.trrb.mobile' }

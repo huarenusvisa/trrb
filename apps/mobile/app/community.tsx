@@ -25,7 +25,7 @@ const categoryKeys: Record<CommunityCategory, MessageKey> = {
 
 const categoryFilters: Array<CommunityCategory | ''> = ['', ...Object.keys(categoryKeys) as CommunityCategory[]];
 
-export default function CommunityScreen() {
+export default function CommunityScreen({ embedded = false }: { embedded?: boolean } = {}) {
   const { locale, t } = useI18n();
   const [items, setItems] = useState<CommunityPost[]>([]);
   const [category, setCategory] = useState<CommunityCategory | ''>('');
@@ -150,7 +150,7 @@ export default function CommunityScreen() {
   };
 
   return <View testID="community-screen" style={styles.page}>
-    <Stack.Screen options={{ headerShown: true, title: t('community.screenTitle'), headerBackTitle: t('common.back') }} />
+    {!embedded ? <Stack.Screen options={{ headerShown: true, title: t('community.screenTitle'), headerBackTitle: t('common.back') }} /> : null}
     <View style={styles.header}>
       <View style={styles.headerCopy}><Text style={styles.eyebrow}>TANG REN COMMUNITY</Text><Text style={styles.title}>{t('community.heading')}</Text></View>
       <Pressable testID="community-compose" accessibilityRole="button" style={styles.publish} onPress={compose}>

@@ -19,7 +19,7 @@ function contactUrl(contact: Contact): string {
   return contact.type === 'phone' ? `tel:${contact.value}` : contact.type === 'email' ? `mailto:${contact.value}` : contact.value;
 }
 
-export default function JobsScreen() {
+export default function JobsScreen({ embedded = false }: { embedded?: boolean } = {}) {
   const { locale, t } = useI18n();
   const { width } = useWindowDimensions();
   const compact = width < 360;
@@ -105,7 +105,7 @@ export default function JobsScreen() {
   }, [t]);
 
   return <SafeAreaView style={styles.page}>
-    <Stack.Screen options={{ title: t('jobs.screenTitle') }} />
+    {!embedded ? <Stack.Screen options={{ title: t('jobs.screenTitle') }} /> : null}
     <FlatList
       contentContainerStyle={[styles.list, compact && styles.compactList]}
       data={items}

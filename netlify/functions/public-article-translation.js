@@ -1,12 +1,21 @@
 const { rest } = require('./_shared/supabase-admin');
 
 const SUPPORTED_LOCALES = new Set(['en', 'zh-TW']);
+const MAX_BATCH_IDS = 40;
+const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
 function normalizeLocale(value) {
   const raw = String(value || '').trim();
   if (/^en(?:[-_].*)?$/i.test(raw)) return 'en';
   if (/^zh[-_](?:TW|HK|Hant)$/i.test(raw)) return 'zh-TW';
   return SUPPORTED_LOCALES.has(raw) ? raw : '';
+}
+
+function normalizeIds(value) {
+  if (!value) return [];
+  const ids = String(value).split(',').map((id) => id.trim()).filter(Boolean);
+  if (!ids.length || ids.length > MAX_BATCH_IDS || ids.some((id) => !UUID_PATTERN.test(id))) return null;
+  return [...new Set(ids)];
 }
 
 function json(statusCode, body) {
@@ -27,8 +36,40 @@ exports.handler = async (event) => {
 
   try {
     const id = String(event.queryStringParameters?.id || '').trim().slice(0, 120);
+    const ids = normalizeIds(event.queryStringParameters?.ids);
     const locale = normalizeLocale(event.queryStringParameters?.locale);
-    if (!id || !locale) return json(400, { error: 'A valid id and locale are required' });
+    if (!locale || ids === null || (!id && !ids.length)) return json(400, { error: 'A valid id or ids list and locale are required' });
+
+    if (ids.length) {
+      const articles = await rest('articles', {
+        query: {
+          select: 'id,updated_at',
+          id: `in.(${ids.join(',')})`,
+          status: 'eq.published',
+          visibility: 'eq.public',
+          limit: String(MAX_BATCH_IDS)
+        }
+      });
+      const revisions = new Map((Array.isArray(articles) ? articles : []).map((article) => [String(article.id), String(article.updated_at)]));
+      if (!revisions.size) return json(200, { translations: [] });
+
+      const articleIds = [...revisions.keys()];
+      const rows = await rest('article_translations', {
+        query: {
+          select: 'article_id,locale,title,translation_source,reviewed_at,source_article_updated_at',
+          article_id: `in.(${articleIds.join(',')})`,
+          locale: `eq.${locale}`,
+          status: 'eq.published',
+          reviewed_by: 'not.is.null',
+          reviewed_at: 'not.is.null',
+          limit: String(MAX_BATCH_IDS)
+        }
+      });
+      const translations = (Array.isArray(rows) ? rows : []).filter((row) => (
+        revisions.get(String(row.article_id)) === String(row.source_article_updated_at)
+      ));
+      return json(200, { translations });
+    }
 
     const articles = await rest('articles', {
       query: {
@@ -60,4 +101,4 @@ exports.handler = async (event) => {
   }
 };
 
-exports._test = { normalizeLocale };
+exports._test = { normalizeLocale, normalizeIds, MAX_BATCH_IDS };

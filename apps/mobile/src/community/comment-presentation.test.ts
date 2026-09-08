@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import type { CommentRow } from '../api/comments';
-import { buildCommentDisplayRows, buildCommentThreads, commentDisplayName, isOwnComment } from './comment-presentation.ts';
+import { buildCommentDisplayRows, buildCommentThreads, commentDisplayName, isOwnComment, prependCreatedComment } from './comment-presentation.ts';
 
 const row = (overrides: Partial<CommentRow> = {}): CommentRow => ({
   id: 'root', article_id: 'article-1', user_id: 'user-1', parent_id: null,
@@ -40,4 +40,11 @@ test('keeps an unloaded-parent reply visible with its hydrated target name', () 
   const display = buildCommentDisplayRows([row({ id: 'reply', parent_id: 'older-root', parent_author_name: '较早用户' })]);
   assert.equal(display[0].depth, 1);
   assert.equal(display[0].replyToLabel, '较早用户');
+});
+
+test('a created comment is immediately visible once and precedes older comments', () => {
+  const created = row({ id: 'created', content: '刚刚发布' });
+  const merged = prependCreatedComment([row(), created], created);
+
+  assert.deepEqual(merged.map((item) => item.id), ['created', 'root']);
 });

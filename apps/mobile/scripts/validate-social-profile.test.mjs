@@ -32,10 +32,17 @@ test('block removes follows and freezes conversations', () => {
 
 test('mobile screens expose refined profile, custom media and protected messaging', () => {
   const profile = read('app/(tabs)/profile.tsx');
+  const hero = read('src/components/ProfileHero.tsx');
   const settings = read('app/profile-settings.tsx');
   const chat = read('app/chat/[id].tsx');
   const compose = read('app/profile-compose.tsx');
   assert.match(profile, /<ProfileHero/);
+  assert.match(profile, /account=\{t\('profile\.loggedIn'/);
+  assert.match(profile, /profile-find-people/);
+  assert.match(hero, /profile-edit-cover/);
+  assert.match(hero, /profile-edit-avatar/);
+  assert.match(hero, /profileSettings\.changeCoverA11y/);
+  assert.match(hero, /profileSettings\.customAvatarA11y/);
   assert.match(profile, /profile-compose/);
   assert.match(settings, /t\('profileSettings\.customAvatar'\)/);
   assert.match(settings, /t\('profileSettings\.privateAccount'\)/);
@@ -43,6 +50,29 @@ test('mobile screens expose refined profile, custom media and protected messagin
   assert.match(chat, /t\('chat\.accept'\)/);
   assert.match(chat, /t\('chat\.incomingBody'\)/);
   assert.match(compose, /mediaTypes: \['images', 'videos'\]/);
+});
+
+test('user discovery searches public display names and opens existing profile actions', () => {
+  const screen = read('app/user-search.tsx');
+  const profiles = read('src/social/profiles.ts');
+  const userProfile = read('app/user/[id].tsx');
+
+  assert.match(screen, /searchSocialProfiles/);
+  assert.match(screen, /listDiscoverableProfiles/);
+  assert.match(screen, /user-search-input/);
+  assert.match(screen, /user-search-submit/);
+  assert.match(screen, /router\.push\(`\/user\/\$\{profile\.id\}`\)/);
+  assert.match(screen, /Email addresses and phone numbers are never shown|userSearch\.resultsBody/);
+  assert.match(screen, /AsyncStatePanel/);
+  assert.match(screen, /withUiTimeout/);
+  assert.match(screen, /useForegroundRetry/);
+  assert.match(profiles, /\.eq\('status', 'active'\)/);
+  assert.match(profiles, /\.ilike\('display_name', `%\$\{normalized\}%`\)/);
+  assert.ok(profiles.includes("replace(/[%_]/g, '')"), 'profile search must remove wildcard operators');
+  assert.doesNotMatch(profiles, /email|phone/i, 'profile discovery must not query private account identifiers');
+  assert.match(userProfile, /followUser\(userId\)/);
+  assert.match(userProfile, /blockUser\(userId\)/);
+  assert.match(userProfile, /findConversationWith\(userId\)/);
 });
 
 test('account, message and community states remain actionable on weak networks', () => {
@@ -372,6 +402,21 @@ test('news and community comments preserve scoped drafts and failed submissions'
   assert.match(community, /t\('community\.commentSubmitFailed'\)/);
   assert.match(drafts, /scope: CommentDraftScope/);
   assert.match(drafts, /AsyncStorage\.setItem/);
+});
+
+test('news comment composer stays keyboard-safe and preserves successful inserts', () => {
+  const article = read('app/article/[id].tsx');
+  const comments = read('src/components/CommentThread.tsx');
+  const api = read('src/api/comments.ts');
+
+  assert.match(article, /automaticallyAdjustKeyboardInsets/);
+  assert.match(article, /keyboardDismissMode="on-drag"/);
+  assert.match(article, /keyboardShouldPersistTaps="handled"/);
+  assert.match(comments, /Keyboard\.dismiss\(\)/);
+  assert.match(comments, /prependCreatedComment\(current, created\)/);
+  assert.doesNotMatch(comments, /setDraftRestored\(false\); await load\(false\)/);
+  assert.match(api, /status\.eq\.published,and\(user_id\.eq\.\$\{sessionData\.session\.user\.id\},status\.eq\.pending\)/);
+  assert.match(comments, /news-comment-pending-/);
 });
 
 test('news comment lists distinguish empty, failed and pagination states', () => {

@@ -5,8 +5,10 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { fetchArticles, fetchHomepageFocus, homepageSupplementGaps, NewsArticle, sortNewestFirst } from '../../src/api/trrb';
 import { NewsImage, prefetchNewsImages } from '../../src/components/NewsImage';
 import { useForegroundRetry } from '../../src/hooks/useForegroundRetry';
+import { useReviewedNewsTranslations } from '../../src/hooks/useReviewedNewsTranslations';
 import { useI18n } from '../../src/i18n/I18nProvider';
 import { localeDateTag, MessageKey } from '../../src/i18n/i18n-core';
+import { reviewedNewsTitle } from '../../src/news/reviewed-translations-core';
 import { cacheHomeFeed, readCachedHomeFeedEnvelope } from '../../src/storage/newsFeedCache';
 import { isNewsFeedCacheStale } from '../../src/storage/news-feed-cache-core';
 
@@ -330,6 +332,15 @@ export default function HomeScreen() {
     election: articles.find((item) => item.title.includes('中期选举') || item.title.includes('选举')),
     finance: articles.find((item) => /财经|股市|美股|基金|ETF/i.test(item.title)),
   }), [articles]);
+  const translationCandidates = useMemo(() => [
+    ...importantCarousel,
+    ...(activeHot ? [activeHot] : []),
+    ...rankItems,
+    ...Object.values(topicLatest).filter((item): item is NewsArticle => Boolean(item)),
+    ...categoryGroups.flatMap((section) => section.items),
+  ], [activeHot, categoryGroups, importantCarousel, rankItems, topicLatest]);
+  const reviewedTranslations = useReviewedNewsTranslations(translationCandidates, locale);
+  const titleFor = (article: NewsArticle) => reviewedNewsTitle(article, reviewedTranslations);
   const weatherInfo = weatherLabel(weather.code, weather.isDay);
   const dateLabel = useMemo(() => new Intl.DateTimeFormat(localeDateTag(locale), { month: 'numeric', day: 'numeric', weekday: 'short', timeZone: 'America/New_York' }).format(new Date()), [locale]);
 
@@ -430,7 +441,7 @@ export default function HomeScreen() {
           <Pressable style={styles.breakingRow} onPress={() => openArticle(activeHot)}>
             <View style={styles.liveDot} />
             <Text style={styles.breakingLabel}>{t('home.hot')}</Text>
-            <Text style={styles.breakingTitle} numberOfLines={1}>{activeHot.title}</Text>
+            <Text style={styles.breakingTitle} numberOfLines={1}>{titleFor(activeHot)}</Text>
             <Text style={styles.chevron}>›</Text>
           </Pressable>
         ) : null}
@@ -499,7 +510,7 @@ export default function HomeScreen() {
                   <View style={styles.heroOverlay} />
                   <View style={styles.heroCopy}>
                     <Text style={styles.heroCategory}>{t('home.importantNews')}</Text>
-                    <Text style={styles.heroTitle} numberOfLines={3}>{item.title}</Text>
+                    <Text style={styles.heroTitle} numberOfLines={3}>{titleFor(item)}</Text>
                   </View>
                 </Pressable>
               ))}
@@ -518,7 +529,7 @@ export default function HomeScreen() {
           {rankItems.map((item, index) => (
             <Pressable key={String(item.id)} style={styles.rankRow} onPress={() => openArticle(item)}>
               <Text style={[styles.rankNo, index < 3 && styles.rankNoHot]}>{String(index + 1).padStart(2, '0')}</Text>
-              <Text style={styles.rankTitle} numberOfLines={2}>{item.title}</Text>
+              <Text style={styles.rankTitle} numberOfLines={2}>{titleFor(item)}</Text>
             </Pressable>
           ))}
         </View>
@@ -537,7 +548,7 @@ export default function HomeScreen() {
                   <Text style={styles.focusTitle}>{t(topic.titleKey)}</Text>
                   <Text style={styles.focusSub}>{t(topic.subtitleKey)}</Text>
                   <View style={styles.focusStatusRow}><View style={styles.focusStatusDot} /><Text style={styles.focusStatus}>{t(topic.statusKey)}</Text></View>
-                  <Text style={styles.focusLatest} numberOfLines={1}>{latest?.title || t('home.topicLoading')}</Text>
+                  <Text style={styles.focusLatest} numberOfLines={1}>{latest ? titleFor(latest) : t('home.topicLoading')}</Text>
                 </View>
                 <Text style={styles.focusArrow}>›</Text>
               </Pressable>
@@ -557,12 +568,12 @@ export default function HomeScreen() {
               </View>
               <Pressable style={styles.categoryLead} onPress={() => openArticle(first)}>
                 <NewsImage uri={showDeferredImages ? first.cover_image : undefined} style={styles.categoryLeadImage} testID={`home-category-image-${key}`} priority="low" />
-                <Text style={styles.categoryLeadTitle} numberOfLines={3}>{first.title}</Text>
+                <Text style={styles.categoryLeadTitle} numberOfLines={3}>{titleFor(first)}</Text>
               </Pressable>
               {rest.map((item) => (
                 <Pressable key={String(item.id)} style={styles.textNewsRow} onPress={() => openArticle(item)}>
                   <View style={styles.newsDot} />
-                  <Text style={styles.textNewsTitle} numberOfLines={2}>{item.title}</Text>
+                  <Text style={styles.textNewsTitle} numberOfLines={2}>{titleFor(item)}</Text>
                   <Text style={styles.textNewsDate}>{articleDate(item, localeDateTag(locale))}</Text>
                 </Pressable>
               ))}

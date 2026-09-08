@@ -21,7 +21,9 @@ test('keeps valid persisted choices and safely resets invalid storage values', (
 
 test('translates navigation and interpolates dynamic profile values', () => {
   assert.equal(translate('zh-TW', 'tab.home'), '首頁');
-  assert.equal(translate('en', 'tab.legal'), 'Legal');
+  assert.equal(translate('zh-CN', 'tab.america'), '社区');
+  assert.equal(translate('zh-CN', 'tab.immigration'), '工作');
+  assert.equal(translate('en', 'tab.legal'), 'Judges');
   assert.equal(translate('en', 'profile.unread', { count: 3 }), ' · 3 unread');
   assert.equal(translate('zh-CN', 'profile.loggedIn', { account: 'reader@example.com' }), '已登录 · reader@example.com');
 });

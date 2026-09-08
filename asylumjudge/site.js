@@ -493,7 +493,7 @@ async function loadAllJudges() {
   $('#judge-directory-count').textContent = t('正在读取全部法官…');
   container.innerHTML = `<div class="directory-loading" role="listitem">${esc(t('正在读取全部法官资料…'))}</div>`;
   try {
-    const data = await json('/.netlify/functions/immigration-judges?mode=all');
+    const data = await json('/.netlify/functions/immigration-judges?mode=directory');
     allJudges = data.results || [];
     applyJudgeFilter($('#judge-q').value, { updateUrl: false });
     const latest = data.latest_import;

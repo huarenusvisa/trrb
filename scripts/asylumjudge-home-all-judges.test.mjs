@@ -39,6 +39,17 @@ require.cache[sharedPath] = {
 delete require.cache[apiPath];
 
 const { handler } = require(apiPath);
+const directoryResponse = await handler({ httpMethod: 'GET', queryStringParameters: { mode: 'directory' } });
+const directoryBody = JSON.parse(directoryResponse.body);
+
+assert.equal(directoryResponse.statusCode, 200);
+assert.equal(directoryBody.count, 1150, 'directory API must return every judge in the current database batch');
+assert.equal(directoryBody.results.length, 1150);
+assert.deepEqual(offsets, [0, 1000], 'directory endpoint must cross the Supabase 1,000-row response cap');
+assert.equal(directoryBody.results[0].adjudicated_approval_rate, 40 / 90 * 100);
+assert.equal(Object.hasOwn(directoryBody.results[0], 'background'), false, 'directory results must omit full biographies');
+
+offsets.length = 0;
 const response = await handler({ httpMethod: 'GET', queryStringParameters: { mode: 'all' } });
 const body = JSON.parse(response.body);
 
@@ -47,6 +58,7 @@ assert.equal(body.count, 1150, 'homepage API must return every judge in the curr
 assert.equal(body.results.length, 1150);
 assert.deepEqual(offsets, [0, 1000], 'all-judge endpoint must cross the Supabase 1,000-row response cap');
 assert.equal(body.results[0].adjudicated_approval_rate, 40 / 90 * 100);
+assert.equal(Object.hasOwn(body.results[0], 'background'), true, 'all mode must retain its background field');
 
 const trendResponse = await handler({ httpMethod: 'GET', queryStringParameters: { mode: 'state-trend', state: 'NY', interval: 'month' } });
 const trendBody = JSON.parse(trendResponse.body);
@@ -164,8 +176,8 @@ for (const html of [standalone, trrb]) {
   assert.match(html, /其他占比/, 'trend legend must expose the blue other-outcome series');
   assert.match(html, /class="brand-lockup"[^>]+logo\.svg/, 'both homepage variants must render the final AsylumJudge logo');
 }
-assert.match(standalone, /app-i18n\.js\?v=13[\s\S]*site\.js\?v=44/, 'the standalone homepage must load the current state-list accessibility client');
-assert.match(trrb, /app-i18n\.js\?v=12[\s\S]*site\.js\?v=44/, 'the embedded homepage must load the current state-list accessibility client');
+assert.match(standalone, /app-i18n\.js\?v=13[\s\S]*site\.js\?v=45/, 'the standalone homepage must load the lightweight-directory client');
+assert.match(trrb, /app-i18n\.js\?v=12[\s\S]*site\.js\?v=45/, 'the embedded homepage must load the lightweight-directory client');
 assert.match(client, /<li class="state-entry"><a class="state-row"/, 'each state result must be a list item while retaining native link semantics');
 assert.match(client, /container\.innerHTML = '<li class="skeleton"><\/li><li class="skeleton"><\/li><li class="skeleton"><\/li>'/, 'dynamic state loading placeholders must preserve valid list structure');
 assert.match(client, /container\.innerHTML = '<li class="empty">[\s\S]{0,300}id="overview-retry"/, 'state overview errors must preserve valid list structure and retry controls');
@@ -188,7 +200,8 @@ for (const source of ['查看 {judge} 的法官背景', '查看 {judge} 的详�
   assert.match(i18n, rowPattern, `${source} must preserve the judge placeholder in all nine translations`);
 }
 assert.match(i18n, /\['跳到主要内容','Skip to main content'[^\n]+انتقل إلى المحتوى الرئيسي[^\n]+Ana içeriğe geç'/, 'skip-link text must be localized across all supported languages');
-assert.match(client, /mode=all/, 'homepage must request the complete judge dataset');
+assert.match(client, /mode=directory/, 'homepage must request the lightweight complete judge directory');
+assert.doesNotMatch(client, /mode=all/, 'homepage must not download full judge biographies');
 assert.match(client, /state-list-status[\s\S]{0,160}selected\.length/, 'state overview must announce only the rendered result count');
 assert.match(client, /state-list-status[\s\S]{0,500}正在汇总州级样本/, 'state overview must announce its loading state');
 assert.match(client, /status\.textContent = window\.AsylumI18n\?\.t\?\.\('数据库暂时无法读取'\)/, 'state overview failures must update the concise status');
@@ -268,8 +281,8 @@ assert.match(styles, /\.directory-metric\.verdict-other b[^}]*var\(--other\)/);
 assert.match(standalone, /rel="icon"[^>]+favicon\.ico/, 'homepage must declare a search and browser favicon');
 assert.match(standalone, /rel="apple-touch-icon"/, 'homepage must declare an iOS home-screen icon');
 assert.match(standalone, /rel="manifest"/, 'homepage must expose an installable site manifest');
-assert.match(standalone, /app-i18n\.js\?v=13[\s\S]*site\.js\?v=44/, 'standalone homepage must load the current state-list accessibility client');
-assert.match(trrb, /app-i18n\.js\?v=12[\s\S]*site\.js\?v=44/, 'embedded homepage must load the current state-list accessibility client');
+assert.match(standalone, /app-i18n\.js\?v=13[\s\S]*site\.js\?v=45/, 'standalone homepage must load the lightweight-directory client');
+assert.match(trrb, /app-i18n\.js\?v=12[\s\S]*site\.js\?v=45/, 'embedded homepage must load the lightweight-directory client');
 for (const source of ['正在读取全部法官资料…', '稍后重试', '读取失败', '全部法官资料暂时无法读取', '无需刷新页面，可以直接重新尝试。']) {
   const rowPattern = new RegExp(`\\['${source.replace(/[.*+?^${}()|[\\]\\]/g, '\\\\$&')}'(?:,'[^']+'){9}\\]`);
   assert.match(i18n, rowPattern, `${source} must provide all nine non-source translations`);

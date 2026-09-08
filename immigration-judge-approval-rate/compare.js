@@ -290,7 +290,7 @@ async function load() {
   $('.compare-results').setAttribute('aria-busy', 'true');
   $('#compare-status').textContent = words().loading;
   try {
-    judges = (await requestJson('/.netlify/functions/immigration-judges?mode=all')).results || [];
+    judges = (await requestJson('/.netlify/functions/immigration-judges?mode=directory')).results || [];
     const requested = (new URLSearchParams(location.search).get('judges') || '').split(',').filter(Boolean).slice(0,4);
     selected = requested.map((id) => judges.find((row) => row.id === id)).filter(Boolean);
     renderSelected();

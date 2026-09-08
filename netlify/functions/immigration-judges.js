@@ -305,7 +305,7 @@ exports.handler = async (event) => {
       });
     }
 
-    if (mode === 'all') {
+    if (mode === 'all' || mode === 'directory') {
       const rows = await restAll('immigration_judges', {
         query: {
           select: 'id,judge_name,court_name,court_city,court_state,total_asylum_decisions,grants,denials,other_decisions,data_start_date,data_end_date,source,source_updated_at',
@@ -314,6 +314,7 @@ exports.handler = async (event) => {
       });
       const results = (rows || []).filter((row) => row.judge_name).map((row) => {
         const result = derived(withOfficialOutcomes(row));
+        if (mode === 'directory') return result;
         return { ...result, background: backgroundByName.get(judgeNameKey(row.judge_name)) || null };
       });
       return out(200, { count: results.length, results, ...(await provenance()) });

@@ -55,7 +55,11 @@ expect(/^https:\/\/u\.expo\.dev\/[0-9a-f-]{36}$/.test(app.updates?.url ?? ''), '
 expect(/^[0-9a-f-]{36}$/.test(app.extra?.eas?.projectId ?? ''), 'EAS projectId is invalid');
 expect(eas.cli?.appVersionSource === 'local', 'EAS appVersionSource must be local');
 expect(eas.build?.production?.channel === 'production', 'Production build must use the production update channel');
+expect(eas.build?.production?.credentialsSource === 'remote', 'Production credentials must be managed remotely by EAS');
 expect(eas.build?.production?.autoIncrement === true, 'Production build must auto-increment native build versions');
+expect(eas.build?.production?.android?.buildType === 'app-bundle', 'Android production build must produce an AAB');
+expect(eas.submit?.production?.android?.track === 'internal', 'First Android submission must target internal testing');
+expect(eas.submit?.production?.android?.releaseStatus === 'draft', 'First Android submission must remain draft');
 
 const privacy = app.ios?.privacyManifests;
 expect(privacy?.NSPrivacyTracking === false, 'iOS privacy manifest must explicitly disable tracking');

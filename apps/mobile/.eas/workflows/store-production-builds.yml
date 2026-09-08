@@ -1,0 +1,23 @@
+name: Build store production binaries
+
+on:
+  workflow_dispatch: {}
+
+concurrency:
+  cancel_in_progress: false
+  group: store-production-builds
+
+jobs:
+  build_ios:
+    name: Build iOS App Store archive
+    type: build
+    params:
+      platform: ios
+      profile: production
+
+  build_android:
+    name: Build Android Play Store bundle
+    type: build
+    params:
+      platform: android
+      profile: production

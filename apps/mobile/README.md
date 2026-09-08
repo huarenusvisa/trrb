@@ -66,6 +66,8 @@ Apple App Privacy 与 Google Play Data Safety 的逐项申报草案维护在 `st
 
 Apple 审核说明与 Google App Access 可复制文本分别维护在 `store/review/apple-review-notes-en.txt` 和 `store/review/google-app-access-en.txt`，功能入口及代码证据集中在 `store/review-access.json`。审核账号必须提前创建、保持不过期且关闭 OTP／MFA，只能填写在 App Store Connect 和 Google Play Console 的受保护字段，严禁写入仓库、公开发行说明或 CI 日志。`npm run test:store-review` 会校验访客入口、受限功能覆盖、操作路径和常见密钥格式；严格上架预检还要求账号持有人通过 `TRRB_REVIEW_ACCOUNT_CONFIRMED=1` 确认两边后台已保存审核账号。
 
+完整发布顺序维护在 `store/submission-runbook.json`：资料与权限预检 → 双平台 Production 构建 → TestFlight／Google Play 内部测试 → iOS／Android 真机验收 → 人工提交审核。运行 `npm run store:submission-plan` 只会显示当前尚未完成的第一阶段、所需确认项和该阶段的单条安全命令，不读取凭据，也不会执行构建、上传或公开发布。每完成一个阶段后，通过清单列出的 `TRRB_*_CONFIRMED=1` 本地确认变量推进；`npm run test:store-runbook` 会阻止跳过依赖、减少真机测试项、加入自动提交或将 Android 改到公开轨道。
+
 商店与启动器统一使用 `assets/app-icon-1024.png`。该文件必须保持 1024×1024、sRGB/RGB 且不含 Alpha 或透明色块；`config:check` 会阻止不合规图标进入正式构建。
 
 Google Play 中文标题、短描述和完整描述维护在 `store/google-play/zh-CN/`，分类、联系方式、隐私地址和截图清单维护在 `store/google-play/listing.json`。文案长度遵循 Google Play 的 30/80/4000 字符限制。

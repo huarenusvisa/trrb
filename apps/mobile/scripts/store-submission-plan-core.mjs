@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { readBuildEvidence } from './store-build-evidence-core.mjs';
 import { readDistributionEvidence } from './store-distribution-evidence-core.mjs';
+import { readDeviceAcceptance } from './store-device-acceptance-core.mjs';
 import { inspectReleaseReadiness } from './store-release-preflight-core.mjs';
 
 const CONFIRMED = '1';
@@ -65,6 +66,12 @@ export function inspectSubmissionPlan({ mobileRoot, env = {}, expectedSourceComm
   expect(distributionEvidence?.buildEvidenceEnvironmentVariable === 'TRRB_STORE_BUILD_EVIDENCE_FILE', 'Internal distribution must reference the validated build evidence');
   expect(distributionEvidence?.command === 'npm run store:distribution-evidence-check -- store/distribution-evidence.local.json store/build-evidence.local.json', 'Internal distribution evidence command is missing or unsafe');
   expect(!/[;&|`$]/.test(distributionEvidence?.command ?? ''), 'Internal distribution evidence command must remain a single auditable command');
+  const deviceEvidence = stages[3]?.evidence;
+  expect(deviceEvidence?.environmentVariable === 'TRRB_STORE_DEVICE_ACCEPTANCE_FILE', 'Real-device acceptance must require a local evidence file');
+  expect(deviceEvidence?.distributionEvidenceEnvironmentVariable === 'TRRB_STORE_DISTRIBUTION_EVIDENCE_FILE', 'Real-device acceptance must reference validated distribution evidence');
+  expect(deviceEvidence?.buildEvidenceEnvironmentVariable === 'TRRB_STORE_BUILD_EVIDENCE_FILE', 'Real-device acceptance must reference validated build evidence');
+  expect(deviceEvidence?.command === 'npm run store:device-acceptance-check -- store/device-acceptance.local.json store/distribution-evidence.local.json store/build-evidence.local.json', 'Real-device acceptance evidence command is missing or unsafe');
+  expect(!/[;&|`$]/.test(deviceEvidence?.command ?? ''), 'Real-device acceptance evidence command must remain a single auditable command');
 
   const state = stages.map((stage) => {
     let missing = stage.id === 'release-preflight'
@@ -97,6 +104,22 @@ export function inspectSubmissionPlan({ mobileRoot, env = {}, expectedSourceComm
         }];
       }
       if (distributionEvidence?.command) commands.push(distributionEvidence.command);
+    }
+    if (stage.id === 'real-device-acceptance') {
+      const evidencePath = env[deviceEvidence?.environmentVariable];
+      const distributionEvidencePath = env[deviceEvidence?.distributionEvidenceEnvironmentVariable];
+      const buildEvidencePath = env[deviceEvidence?.buildEvidenceEnvironmentVariable];
+      const evidence = evidencePath && distributionEvidencePath && buildEvidencePath
+        ? readDeviceAcceptance({ mobileRoot, evidencePath, distributionEvidencePath, buildEvidencePath, expectedSourceCommit })
+        : { valid: false };
+      if (!evidence.valid) {
+        missing = [...missing, {
+          id: 'real-device-acceptance-evidence',
+          label: deviceEvidence?.label,
+          environmentVariable: deviceEvidence?.environmentVariable
+        }];
+      }
+      if (deviceEvidence?.command) commands.push(deviceEvidence.command);
     }
     return { id: stage.id, title: stage.title, complete: missing.length === 0, missing, commands };
   });

@@ -73,6 +73,13 @@
       "title": "Final real-device acceptance",
       "dependsOn": ["internal-distribution"],
       "commands": [],
+      "evidence": {
+        "label": "Validated iOS and Android physical-device acceptance evidence",
+        "environmentVariable": "TRRB_STORE_DEVICE_ACCEPTANCE_FILE",
+        "distributionEvidenceEnvironmentVariable": "TRRB_STORE_DISTRIBUTION_EVIDENCE_FILE",
+        "buildEvidenceEnvironmentVariable": "TRRB_STORE_BUILD_EVIDENCE_FILE",
+        "command": "npm run store:device-acceptance-check -- store/device-acceptance.local.json store/distribution-evidence.local.json store/build-evidence.local.json"
+      },
       "acceptanceCases": [
         "guest-news-browsing",
         "unified-account-sign-in-and-sign-out",

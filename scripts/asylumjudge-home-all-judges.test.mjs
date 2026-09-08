@@ -96,8 +96,8 @@ const bundleBuilder = readFileSync('scripts/build-asylumjudge-site.mjs', 'utf8')
 
 assert.match(styles, /\.judge-directory-row\{[^}]*content-visibility:auto[^}]*contain-intrinsic-block-size:auto 150px/, 'offscreen judge cards must defer layout and paint with a stable desktop placeholder');
 assert.match(styles, /@media\(max-width:760px\)\{\.judge-directory-row\{[^}]*contain-intrinsic-block-size:auto 196px/, 'offscreen judge cards must reserve their mobile card height');
-assert.match(standalone, /site\.css\?v=37/, 'standalone homepage must load the current state-list stylesheet');
-assert.match(trrb, /site\.css\?v=37/, 'embedded homepage must load the current state-list stylesheet');
+assert.match(standalone, /site\.css\?v=38/, 'standalone homepage must load the current directory stylesheet');
+assert.match(trrb, /site\.css\?v=38/, 'embedded homepage must load the current directory stylesheet');
 assert.match(backgroundDirectory, /site\.css\?v=35/, 'background directory must load the current skip-link and chart-focus stylesheet');
 assert.match(backgroundDirectory, /<body>\s*<a class="skip-link" href="#main-content">跳到主要内容<\/a>/, 'background directory must let keyboard users bypass its sticky header');
 assert.match(backgroundDirectory, /<main id="main-content" class="shell background-directory-page" tabindex="-1">/, 'background directory skip target must accept programmatic focus');
@@ -186,8 +186,8 @@ for (const html of [standalone, trrb]) {
   assert.match(html, /其他占比/, 'trend legend must expose the blue other-outcome series');
   assert.match(html, /class="brand-lockup"[^>]+logo\.svg/, 'both homepage variants must render the final AsylumJudge logo');
 }
-assert.match(standalone, /app-i18n\.js\?v=13[\s\S]*site\.js\?v=46/, 'the standalone homepage must load the localized-state search client');
-assert.match(trrb, /app-i18n\.js\?v=12[\s\S]*site\.js\?v=46/, 'the embedded homepage must load the localized-state search client');
+assert.match(standalone, /app-i18n\.js\?v=14[\s\S]*site\.js\?v=47/, 'the standalone homepage must load the batched-directory client');
+assert.match(trrb, /app-i18n\.js\?v=13[\s\S]*site\.js\?v=47/, 'the embedded homepage must load the batched-directory client');
 assert.match(client, /<li class="state-entry"><a class="state-row"/, 'each state result must be a list item while retaining native link semantics');
 assert.match(client, /container\.innerHTML = '<li class="skeleton"><\/li><li class="skeleton"><\/li><li class="skeleton"><\/li>'/, 'dynamic state loading placeholders must preserve valid list structure');
 assert.match(client, /container\.innerHTML = '<li class="empty">[\s\S]{0,300}id="overview-retry"/, 'state overview errors must preserve valid list structure and retry controls');
@@ -219,6 +219,14 @@ assert.match(client, /status\.textContent = window\.AsylumI18n\?\.t\?\.\('趋势
 assert.match(client, /status\.textContent = window\.AsylumI18n\?\.t\?\.\('正在读取州趋势数据…'\)/, 'trend loading must update the concise status');
 assert.match(client, /status\.textContent = window\.AsylumI18n\?\.t\?\.\('州趋势数据暂时无法读取'\)/, 'trend failures must update the concise status');
 assert.match(client, /filterJudges\(query\)/, 'homepage search must filter the complete in-memory directory');
+assert.match(client, /const DIRECTORY_BATCH_SIZE = 100;/, 'the initial directory DOM must use a bounded batch size');
+assert.match(client, /const visibleRows = rows\.slice\(0, directoryVisibleCount\)/, 'directory rendering must limit DOM creation without truncating search data');
+assert.match(client, /directoryVisibleCount \+= DIRECTORY_BATCH_SIZE[\s\S]*renderJudgeDirectory\(filterJudges\(query\), query\)/, 'the show-more control must append another filtered batch');
+for (const html of [standalone, trrb]) assert.match(html, /id="judge-directory-more"[^>]+type="button"[^>]+hidden/, 'each homepage must provide a progressive directory control outside the result list');
+for (const source of ['匹配 {shown} 位／全部 {total} 位，当前显示 {visible} 位', '共 {total} 位法官，当前显示 {visible} 位', '显示更多法官（剩余 {count} 位）']) {
+  const rowPattern = new RegExp(`\\['${source.replace(/[.*+?^\\${}()|[\\]\\\\]/g, '\\\\$&')}'(?:,'[^']*'){9}\\]`);
+  assert.match(i18n, rowPattern, `${source} must be available in all ten languages`);
+}
 assert.match(client, /\[row\.judge_name, row\.court_name, row\.court_city, row\.court_state, stateName\(row\.court_state\)\]/, 'homepage search must include the current-language state name');
 assert.match(client, /stateName = \(code\)[\s\S]{0,220}window\.AsylumI18n\?\.stateName/, 'homepage search must derive state names from the active locale');
 assert.match(client, /addEventListener\('input'/, 'judge search must update directly while typing');
@@ -293,8 +301,8 @@ assert.match(styles, /\.directory-metric\.verdict-other b[^}]*var\(--other\)/);
 assert.match(standalone, /rel="icon"[^>]+favicon\.ico/, 'homepage must declare a search and browser favicon');
 assert.match(standalone, /rel="apple-touch-icon"/, 'homepage must declare an iOS home-screen icon');
 assert.match(standalone, /rel="manifest"/, 'homepage must expose an installable site manifest');
-assert.match(standalone, /app-i18n\.js\?v=13[\s\S]*site\.js\?v=46/, 'standalone homepage must load the localized-state search client');
-assert.match(trrb, /app-i18n\.js\?v=12[\s\S]*site\.js\?v=46/, 'embedded homepage must load the localized-state search client');
+assert.match(standalone, /app-i18n\.js\?v=14[\s\S]*site\.js\?v=47/, 'standalone homepage must load the batched-directory client');
+assert.match(trrb, /app-i18n\.js\?v=13[\s\S]*site\.js\?v=47/, 'embedded homepage must load the batched-directory client');
 for (const source of ['正在读取全部法官资料…', '稍后重试', '读取失败', '全部法官资料暂时无法读取', '无需刷新页面，可以直接重新尝试。']) {
   const rowPattern = new RegExp(`\\['${source.replace(/[.*+?^${}()|[\\]\\]/g, '\\\\$&')}'(?:,'[^']+'){9}\\]`);
   assert.match(i18n, rowPattern, `${source} must provide all nine non-source translations`);

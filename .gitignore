@@ -12,3 +12,4 @@ apps/mobile/store/distribution-evidence.local.json
 apps/mobile/store/device-acceptance.local.json
 apps/mobile/store/review-submission.local.json
 apps/mobile/store/screenshot-evidence.local.json
+apps/mobile/store/release-candidate.local.json

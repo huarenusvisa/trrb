@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import crypto from 'node:crypto';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
@@ -56,6 +57,24 @@ function screenshotEvidenceFile(t) {
       id, deviceClass, directory: screenshotDirectory,
       screenshots: screens.map((name) => ({ name, width, height, sha256: (++digest).toString(16).padStart(64, '0') }))
     }))
+  }));
+  return evidencePath;
+}
+
+function releaseCandidateFile(t, screenshotEvidencePath) {
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'trrb-release-candidate-plan-'));
+  t.after(() => fs.rmSync(directory, { recursive: true, force: true }));
+  const evidencePath = path.join(directory, 'evidence.json');
+  const screenshotEvidenceSha256 = crypto.createHash('sha256').update(fs.readFileSync(screenshotEvidencePath)).digest('hex');
+  fs.writeFileSync(evidencePath, JSON.stringify({
+    schemaVersion: 1,
+    sourceCommit: '1234567890abcdef1234567890abcdef12345678',
+    appVersion: '0.2.0',
+    runtimeVersion: '0.2.0',
+    profile: 'production',
+    channel: 'production',
+    screenshotEvidenceSha256,
+    frozenAt: '2026-09-08T00:05:00.000Z'
   }));
   return evidencePath;
 }
@@ -127,12 +146,17 @@ test('runbook is valid, ordered and begins with release access', () => {
   assert.equal(result.valid, true, result.failures.join('\n'));
   assert.equal(result.complete, false);
   assert.equal(result.nextStage.id, 'release-preflight');
-  assert.equal(result.nextStage.missing.length, 8);
+  assert.equal(result.nextStage.missing.length, 9);
 });
 
 test('plan advances only after both platform confirmations and valid paired build evidence', (t) => {
   const sourceCommit = '1234567890abcdef1234567890abcdef12345678';
-  const access = { ...releaseAccess, TRRB_STORE_SCREENSHOT_EVIDENCE_FILE: screenshotEvidenceFile(t) };
+  const screenshotEvidencePath = screenshotEvidenceFile(t);
+  const access = {
+    ...releaseAccess,
+    TRRB_STORE_SCREENSHOT_EVIDENCE_FILE: screenshotEvidencePath,
+    TRRB_STORE_RELEASE_CANDIDATE_FILE: releaseCandidateFile(t, screenshotEvidencePath)
+  };
   let result = inspectSubmissionPlan({ mobileRoot, env: access, expectedSourceCommit: sourceCommit });
   assert.equal(result.nextStage.id, 'production-builds');
   assert.equal(result.nextStage.missing.length, 3);
@@ -186,7 +210,8 @@ test('build and upload commands are explicit while public review submission rema
   const stages = Object.fromEntries(result.stages.map((stage) => [stage.id, stage]));
   assert.deepEqual(stages['release-preflight'].commands, [
     'npm run store:release-preflight:strict',
-    'npm run store:screenshot-evidence-check -- store/screenshot-evidence.local.json'
+    'npm run store:screenshot-evidence-check -- store/screenshot-evidence.local.json',
+    'npm run store:release-candidate-check -- store/release-candidate.local.json store/screenshot-evidence.local.json'
   ]);
   assert.deepEqual(stages['production-builds'].commands, [
     'eas build --platform ios --profile production',

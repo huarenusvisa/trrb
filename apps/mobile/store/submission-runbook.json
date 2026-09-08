@@ -18,6 +18,12 @@
         "environmentVariable": "TRRB_STORE_SCREENSHOT_EVIDENCE_FILE",
         "command": "npm run store:screenshot-evidence-check -- store/screenshot-evidence.local.json"
       },
+      "candidateEvidence": {
+        "label": "Frozen production candidate bound to the validated screenshot evidence",
+        "environmentVariable": "TRRB_STORE_RELEASE_CANDIDATE_FILE",
+        "screenshotEvidenceEnvironmentVariable": "TRRB_STORE_SCREENSHOT_EVIDENCE_FILE",
+        "command": "npm run store:release-candidate-check -- store/release-candidate.local.json store/screenshot-evidence.local.json"
+      },
       "confirmations": []
     },
     {

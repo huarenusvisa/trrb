@@ -65,12 +65,17 @@ test('shows the U.S. section once instead of repeating it on every card', () => 
 test('keeps category labels at the page level and rotates important news on the homepage', () => {
   const home = read('app/(tabs)/index.tsx');
   const list = read('src/components/PaginatedNewsList.tsx');
+  const categoryFlow = read('.maestro/home-category-article.yml');
   assert.match(list, /testID="category-screen-title"/);
   assert.doesNotMatch(list, /newsCategoryName|styles\.category/);
   assert.match(home, /testID="home-important-carousel"/);
   assert.match(home, /pagingEnabled/);
   assert.match(home, /importantCarousel\.map/);
   assert.match(home, /setInterval[\s\S]*carouselRef\.current\?\.scrollTo/);
+  assert.match(home, /testID=\{item\.category === '重要新闻' \? 'home-nav-important' : undefined\}/);
+  assert.match(categoryFlow, /id: "home-nav-important"/);
+  assert.match(categoryFlow, /id: "category-screen-title"/);
+  assert.doesNotMatch(categoryFlow, /visible: "重要新闻"|text: "重要新闻"/);
   for (const category of ['重要新闻', '热门头条', '美国时政', '美国警情', '招聘求职', 'ICE执法动态']) {
     assert.match(home, new RegExp(`category: '${category}'`));
   }

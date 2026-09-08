@@ -60,6 +60,7 @@ test('uses the shared language context across news discovery surfaces', () => {
 test('localizes unified account chrome and keeps Maestro language-neutral', () => {
   const auth = read('app/auth.tsx');
   const home = read('app/(tabs)/index.tsx');
+  const homeCategoryFlow = read('.maestro/home-category-article.yml');
   const searchFlow = read('.maestro/search.yml');
   const authFlow = read('.maestro/auth-login.yml');
 
@@ -68,6 +69,8 @@ test('localizes unified account chrome and keeps Maestro language-neutral', () =
     assert.ok(auth.includes(`t('${key}')`), `auth screen must translate ${key}`);
   }
   assert.match(home, /testID="home-search-button"/);
+  assert.match(homeCategoryFlow, /id: "home-nav-important"/);
+  assert.doesNotMatch(homeCategoryFlow, /visible: "重要新闻"|text: "重要新闻"/);
   assert.match(searchFlow, /id: "home-search-button"/);
   assert.match(searchFlow, /id: "category-screen-title"/);
   assert.doesNotMatch(searchFlow, /visible: "搜索：特朗普"/);

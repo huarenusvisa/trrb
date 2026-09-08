@@ -175,6 +175,22 @@ const webexCopy = () => {
   const locale = window.AsylumI18n?.locale || 'zh-Hans';
   return webexMessages[locale] || webexMessages['zh-Hans'];
 };
+const backgroundMessages = {
+  en: { unavailable: 'No matching official record', type: 'Immigration Judge', statusTitle: 'Official biography verification status', statusBody: 'The database does not yet have a matching, verifiable DOJ/EOIR appointment biography for this judge. Decision statistics remain available; an official background will appear here when matched.', biographyTitle: 'Official biography', unspecified: 'Not specified in the official record', missingBiography: 'The official biography text is unavailable.', education: 'Education: {value}', bar: 'Bar admission: {value}', source: 'Official DOJ/EOIR source' },
+  es: { unavailable: 'No se encontró un registro oficial', type: 'Juez de inmigración', statusTitle: 'Estado de verificación de la biografía oficial', statusBody: 'La base de datos aún no contiene una biografía oficial de nombramiento de DOJ/EOIR que coincida con este juez y pueda verificarse. Las estadísticas de decisiones siguen disponibles; los antecedentes oficiales aparecerán aquí cuando se encuentren.', biographyTitle: 'Biografía oficial', unspecified: 'No indicado en el registro oficial', missingBiography: 'El texto de la biografía oficial no está disponible.', education: 'Formación: {value}', bar: 'Colegiación: {value}', source: 'Fuente oficial de DOJ/EOIR' },
+  fr: { unavailable: 'Aucun dossier officiel correspondant', type: 'Juge de l’immigration', statusTitle: 'État de vérification de la biographie officielle', statusBody: 'La base de données ne contient pas encore de biographie de nomination DOJ/EOIR vérifiable correspondant à ce juge. Les statistiques de décisions restent disponibles ; les antécédents officiels apparaîtront ici lorsqu’ils seront associés.', biographyTitle: 'Biographie officielle', unspecified: 'Non indiqué dans le dossier officiel', missingBiography: 'Le texte de la biographie officielle n’est pas disponible.', education: 'Formation : {value}', bar: 'Admission au barreau : {value}', source: 'Source officielle DOJ/EOIR' },
+  'pt-BR': { unavailable: 'Nenhum registro oficial correspondente', type: 'Juiz de imigração', statusTitle: 'Status de verificação da biografia oficial', statusBody: 'O banco de dados ainda não contém uma biografia oficial de nomeação do DOJ/EOIR verificável e correspondente a este juiz. As estatísticas de decisões continuam disponíveis; o histórico oficial aparecerá aqui quando for encontrado.', biographyTitle: 'Biografia oficial', unspecified: 'Não informado no registro oficial', missingBiography: 'O texto da biografia oficial não está disponível.', education: 'Formação: {value}', bar: 'Inscrição na ordem: {value}', source: 'Fonte oficial do DOJ/EOIR' },
+  hi: { unavailable: 'मेल खाता आधिकारिक रिकॉर्ड नहीं मिला', type: 'इमिग्रेशन जज', statusTitle: 'आधिकारिक परिचय सत्यापन स्थिति', statusBody: 'डेटाबेस में अभी इस न्यायाधीश से मेल खाता सत्यापन योग्य DOJ/EOIR नियुक्ति परिचय नहीं है। निर्णय आँकड़े उपलब्ध हैं; आधिकारिक पृष्ठभूमि का मिलान होने पर वह यहाँ दिखाई देगी।', biographyTitle: 'आधिकारिक परिचय', unspecified: 'आधिकारिक रिकॉर्ड में उल्लेख नहीं है', missingBiography: 'आधिकारिक परिचय का पाठ उपलब्ध नहीं है।', education: 'शिक्षा: {value}', bar: 'बार सदस्यता: {value}', source: 'आधिकारिक DOJ/EOIR स्रोत' },
+  'zh-Hans': { unavailable: '暂未匹配到官方资料', type: '移民法官', statusTitle: '官方履历核验状态', statusBody: '当前数据库尚未匹配到该法官可核验的 DOJ/EOIR 官方任命履历。裁决统计仍可正常查看；背景资料补齐后会在这里同步显示。', biographyTitle: '官方履历原文', unspecified: '官方资料未注明', missingBiography: '官方履历原文暂缺。', education: '教育经历：{value}', bar: '执业资格：{value}', source: 'DOJ/EOIR 官方来源' },
+  'zh-Hant': { unavailable: '暫未配對到官方資料', type: '移民法官', statusTitle: '官方履歷核驗狀態', statusBody: '目前資料庫尚未配對到該法官可核驗的 DOJ/EOIR 官方任命履歷。裁決統計仍可正常查看；背景資料補齊後會在此同步顯示。', biographyTitle: '官方履歷原文', unspecified: '官方資料未註明', missingBiography: '官方履歷原文暫缺。', education: '教育經歷：{value}', bar: '執業資格：{value}', source: 'DOJ/EOIR 官方來源' },
+  ru: { unavailable: 'Соответствующая официальная запись не найдена', type: 'Иммиграционный судья', statusTitle: 'Статус проверки официальной биографии', statusBody: 'В базе данных пока нет соответствующей этому судье проверяемой биографии о назначении от DOJ/EOIR. Статистика решений по-прежнему доступна; официальные сведения появятся здесь после сопоставления.', biographyTitle: 'Официальная биография', unspecified: 'Не указано в официальной записи', missingBiography: 'Текст официальной биографии недоступен.', education: 'Образование: {value}', bar: 'Членство в коллегии адвокатов: {value}', source: 'Официальный источник DOJ/EOIR' },
+  ar: { unavailable: 'لم يُعثر على سجل رسمي مطابق', type: 'قاضي هجرة', statusTitle: 'حالة التحقق من السيرة الرسمية', statusBody: 'لا تحتوي قاعدة البيانات حتى الآن على سيرة تعيين رسمية قابلة للتحقق من DOJ/EOIR ومطابقة لهذا القاضي. تظل إحصاءات القرارات متاحة، وستظهر الخلفية الرسمية هنا عند مطابقتها.', biographyTitle: 'السيرة الرسمية', unspecified: 'غير مذكور في السجل الرسمي', missingBiography: 'نص السيرة الرسمية غير متاح.', education: 'التعليم: {value}', bar: 'عضوية نقابة المحامين: {value}', source: 'مصدر DOJ/EOIR الرسمي' },
+  tr: { unavailable: 'Eşleşen resmî kayıt bulunamadı', type: 'Göçmenlik hâkimi', statusTitle: 'Resmî özgeçmiş doğrulama durumu', statusBody: 'Veritabanında henüz bu hâkimle eşleşen, doğrulanabilir bir DOJ/EOIR atama özgeçmişi yoktur. Karar istatistikleri kullanılabilir durumdadır; resmî özgeçmiş eşleştirildiğinde burada gösterilecektir.', biographyTitle: 'Resmî özgeçmiş', unspecified: 'Resmî kayıtta belirtilmemiş', missingBiography: 'Resmî özgeçmiş metni mevcut değil.', education: 'Eğitim: {value}', bar: 'Baro üyeliği: {value}', source: 'Resmî DOJ/EOIR kaynağı' }
+};
+const backgroundCopy = () => {
+  const locale = window.AsylumI18n?.locale || 'zh-Hans';
+  return backgroundMessages[locale] || backgroundMessages['zh-Hans'];
+};
 
 async function requestJson(url, options = {}) {
   const controller = new AbortController();
@@ -192,27 +208,28 @@ async function requestJson(url, options = {}) {
 }
 
 function renderBackground(background) {
+  const copy = backgroundCopy();
   $('#judge-background').hidden = false;
   if (!background) {
-    $('#background-date').textContent = '暂未匹配到官方资料';
-    $('#background-court').textContent = '暂未匹配到官方资料';
-    $('#background-type').textContent = 'Immigration Judge';
-    $('#background-copy-title').textContent = '官方履历核验状态';
-    $('#background-bio').textContent = '当前数据库尚未匹配到该法官可核验的 DOJ/EOIR 官方任命履历。裁决统计仍可正常查看；背景资料补齐后会在这里同步显示。';
+    $('#background-date').textContent = copy.unavailable;
+    $('#background-court').textContent = copy.unavailable;
+    $('#background-type').textContent = copy.type;
+    $('#background-copy-title').textContent = copy.statusTitle;
+    $('#background-bio').textContent = copy.statusBody;
     $('#background-source-wrap').hidden = true;
     return;
   }
-  $('#background-copy-title').textContent = '官方履历原文';
+  $('#background-copy-title').textContent = copy.biographyTitle;
   $('#background-source-wrap').hidden = false;
-  $('#background-date').textContent = background.appointment_date || '官方资料未注明';
-  $('#background-court').textContent = background.appointment_court || '官方资料未注明';
-  $('#background-type').textContent = background.appointment_type || 'Immigration Judge';
-  $('#background-bio').textContent = background.biography || '官方履历原文暂缺。';
-  $('#background-education').textContent = background.education ? `教育经历：${background.education}` : '';
-  $('#background-bar').textContent = background.bar_membership ? `执业资格：${background.bar_membership}` : '';
+  $('#background-date').textContent = background.appointment_date || copy.unspecified;
+  $('#background-court').textContent = background.appointment_court || copy.unspecified;
+  $('#background-type').textContent = background.appointment_type || copy.type;
+  $('#background-bio').textContent = background.biography || copy.missingBiography;
+  $('#background-education').textContent = background.education ? fill(copy.education, { value: background.education }) : '';
+  $('#background-bar').textContent = background.bar_membership ? fill(copy.bar, { value: background.bar_membership }) : '';
   const source = $('#background-source');
   source.href = background.source_url || 'https://www.justice.gov/eoir/office-of-the-chief-immigration-judge';
-  source.textContent = `${background.source_title || 'DOJ/EOIR 官方来源'}${background.source_date ? `（${background.source_date}）` : ''} →`;
+  source.textContent = `${background.source_title || copy.source}${background.source_date ? ` (${background.source_date})` : ''} →`;
 }
 
 function renderWebex(webex) {

@@ -110,7 +110,12 @@ function schemaFor(job: any, canonical: string) {
     datePosted: iso(job.source_published_at || job.published_at),
     validThrough: iso(job.expires_at),
     directApply: true,
-    hiringOrganization: { "@type": "Organization", name: clean(job.company_name) },
+    hiringOrganization: {
+      "@type": "Organization",
+      name: clean(job.company_name),
+      sameAs: SITE,
+      logo: `${SITE}/icon-512.png`
+    },
     jobLocation: {
       "@type": "Place",
       address: {

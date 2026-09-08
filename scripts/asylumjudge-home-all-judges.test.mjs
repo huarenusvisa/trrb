@@ -48,6 +48,16 @@ assert.equal(directoryBody.results.length, 1150);
 assert.deepEqual(offsets, [0, 1000], 'directory endpoint must cross the Supabase 1,000-row response cap');
 assert.equal(directoryBody.results[0].adjudicated_approval_rate, 40 / 90 * 100);
 assert.equal(Object.hasOwn(directoryBody.results[0], 'background'), false, 'directory results must omit full biographies');
+assert.deepEqual(
+  Object.keys(directoryBody.results[0]).sort(),
+  [
+    'adjudicated_approval_rate', 'background_summary', 'court_city', 'court_name', 'court_state',
+    'data_end_date', 'data_start_date', 'denials', 'grants', 'id', 'judge_name', 'other_decisions',
+    'total_asylum_decisions', 'webex'
+  ].sort(),
+  'directory results must expose only fields used by the homepage and comparison picker',
+);
+assert.equal(directoryBody.results[0].webex, null, 'directory results should retain a stable nullable Webex field');
 
 offsets.length = 0;
 const response = await handler({ httpMethod: 'GET', queryStringParameters: { mode: 'all' } });

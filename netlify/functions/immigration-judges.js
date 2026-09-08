@@ -234,6 +234,25 @@ function derived(row) {
   };
 }
 
+function directoryEntry(row) {
+  return {
+    id: row.id,
+    judge_name: row.judge_name,
+    court_name: row.court_name,
+    court_city: row.court_city,
+    court_state: row.court_state,
+    total_asylum_decisions: row.total_asylum_decisions,
+    grants: row.grants,
+    denials: row.denials,
+    other_decisions: row.other_decisions,
+    data_start_date: row.data_start_date,
+    data_end_date: row.data_end_date,
+    adjudicated_approval_rate: row.adjudicated_approval_rate,
+    background_summary: row.background_summary,
+    webex: row.webex?.links?.length ? { links: row.webex.links } : null
+  };
+}
+
 function aggregate(rows) {
   const x = { judges: 0, total_asylum_decisions: 0, grants: 0, denials: 0, other_decisions: 0 };
   for (const r of rows || []) {
@@ -314,7 +333,7 @@ exports.handler = async (event) => {
       });
       const results = (rows || []).filter((row) => row.judge_name).map((row) => {
         const result = derived(withOfficialOutcomes(row));
-        if (mode === 'directory') return result;
+        if (mode === 'directory') return directoryEntry(result);
         return { ...result, background: backgroundByName.get(judgeNameKey(row.judge_name)) || null };
       });
       return out(200, { count: results.length, results, ...(await provenance()) });

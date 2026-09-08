@@ -217,6 +217,19 @@ test('push settings follow background token synchronization without stale state'
   assert.match(settings, /completionAnnouncementPending\.current = false/);
 });
 
+test('push settings restore device registration after permission is granted in system settings', () => {
+  const settings = read('app/push-settings.tsx');
+  const core = read('src/push/registration-core.ts');
+
+  assert.match(settings, /new PushSystemSettingsRecoveryGate\(\)/);
+  assert.match(settings, /recordSettingsOpen\(permission\)/);
+  assert.match(settings, /resumeAfterPermissionGrant\(nextPermission\.status\)/);
+  assert.match(settings, /const token = await registerPushToken\(\)/);
+  assert.match(settings, /if \(token\) AccessibilityInfo\.announceForAccessibility/);
+  assert.match(settings, /systemSettingsRecoveryGate\.current\.clear\(\)/);
+  assert.match(core, /class PushSystemSettingsRecoveryGate/);
+});
+
 test('pending push registration retries immediately after network recovery without duplicate mutations', () => {
   const registration = read('src/push/registration.ts');
   const core = read('src/push/registration-core.ts');

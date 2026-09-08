@@ -5,6 +5,7 @@ import { useI18n } from '../src/i18n/I18nProvider';
 import type { MessageKey } from '../src/i18n/i18n-core';
 import { getPushPreferences, PushPreferences, updatePushPreferences } from '../src/push/preferences';
 import { disableCurrentDevicePushToken, getPendingPushRegistrationStatus, getPushPermissionStatus, hasCurrentDevicePushToken, hasPushRegistrationDeviceError, isPushRegistrationAuthError, PendingPushRegistrationStatus, registerPushToken, retryPendingPushRegistration, subscribeToPendingPushRegistration } from '../src/push/registration';
+import { PushSystemSettingsRecoveryGate } from '../src/push/registration-core';
 
 const OPTIONS: { key: keyof PushPreferences; title: MessageKey; description: MessageKey }[] = [
   { key: 'breaking_news', title: 'push.breakingNews', description: 'push.breakingNewsMeta' },
@@ -33,6 +34,7 @@ export default function PushSettingsScreen() {
   const pendingSyncRef = useRef<PendingPushRegistrationStatus | null>(null);
   const completionAnnouncementPending = useRef(false);
   const refreshGeneration = useRef(0);
+  const systemSettingsRecoveryGate = useRef(new PushSystemSettingsRecoveryGate());
 
   const updatePendingSync = useCallback((nextPendingSync: PendingPushRegistrationStatus | null) => {
     pendingSyncRef.current = nextPendingSync;
@@ -59,6 +61,28 @@ export default function PushSettingsScreen() {
       AccessibilityInfo.announceForAccessibility(t('push.retrySucceeded'));
     }
   }, [t, updatePendingSync]);
+
+  const recoverAfterSystemSettings = useCallback(async () => {
+    const nextPermission = await getPushPermissionStatus();
+    if (!systemSettingsRecoveryGate.current.resumeAfterPermissionGrant(nextPermission.status)) {
+      await refreshDeviceState(true);
+      return;
+    }
+
+    setBusy(true);
+    try {
+      const token = await registerPushToken();
+      await refreshDeviceState(false);
+      if (token) AccessibilityInfo.announceForAccessibility(t('push.retrySucceeded'));
+    } catch (error) {
+      updatePendingSync(await getPendingPushRegistrationStatus().catch(() => null));
+      const needsAuth = isPushRegistrationAuthError(error);
+      setAuthRequired(needsAuth);
+      Alert.alert(needsAuth ? t('push.signInRequired') : t('push.enableFailed'), needsAuth ? t('push.signInRequiredBody') : error instanceof Error ? error.message : t('push.networkRetry'));
+    } finally {
+      setBusy(false);
+    }
+  }, [refreshDeviceState, t, updatePendingSync]);
 
   useEffect(() => {
     let mounted = true;
@@ -91,7 +115,7 @@ export default function PushSettingsScreen() {
     });
     const appStateSubscription = AppState.addEventListener('change', (state) => {
       if (state !== 'active') return;
-      void refreshDeviceState(true).catch((error) => console.warn('push settings refresh failed', error));
+      void recoverAfterSystemSettings().catch((error) => console.warn('push settings refresh failed', error));
     });
     return () => {
       mounted = false;
@@ -99,9 +123,20 @@ export default function PushSettingsScreen() {
       unsubscribeStatus();
       appStateSubscription.remove();
     };
-  }, [refreshDeviceState, t, updatePendingSync]);
+  }, [recoverAfterSystemSettings, refreshDeviceState, t, updatePendingSync]);
+
+  const openSystemSettings = async () => {
+    systemSettingsRecoveryGate.current.recordSettingsOpen(permission);
+    try {
+      await Linking.openSettings();
+    } catch (error) {
+      systemSettingsRecoveryGate.current.clear();
+      Alert.alert(t('push.enableFailed'), error instanceof Error ? error.message : t('push.retryLater'));
+    }
+  };
 
   const enablePush = async () => {
+    systemSettingsRecoveryGate.current.clear();
     setBusy(true);
     try {
       const token = await registerPushToken({ requestPermission: true });
@@ -126,6 +161,7 @@ export default function PushSettingsScreen() {
   };
 
   const disablePush = async () => {
+    systemSettingsRecoveryGate.current.clear();
     setBusy(true);
     try {
       await disableCurrentDevicePushToken({ rememberDeviceChoice: true });
@@ -228,7 +264,7 @@ export default function PushSettingsScreen() {
           </Pressable>
         </View>
       ) : null}
-      {!enabled && permission === 'denied' && !canAskAgain ? <Pressable accessibilityRole="button" accessibilityLabel={t('push.openSystemSettings')} testID="open-system-settings" style={styles.settingsButton} onPress={() => void Linking.openSettings()}><Text style={styles.settingsButtonText}>{t('push.openSystemSettings')}</Text></Pressable> : null}
+      {!enabled && permission === 'denied' && !canAskAgain ? <Pressable accessibilityRole="button" accessibilityLabel={t('push.openSystemSettings')} testID="open-system-settings" style={styles.settingsButton} onPress={() => void openSystemSettings()}><Text style={styles.settingsButtonText}>{t('push.openSystemSettings')}</Text></Pressable> : null}
       <Text style={styles.section}>{t('push.types')}</Text>
       {preferences ? OPTIONS.map((option) => (
         <View key={option.key} style={styles.card}>

@@ -210,7 +210,7 @@ assert.match(detailPage, /id="country-filter"[^>]*name="nationality"[^>]*type="s
 assert.match(detailPage, /id="nationality-results-status"[^>]*class="sr-only"[^>]*role="status"[^>]*aria-live="polite"[^>]*aria-atomic="true"/, 'filtered nationality counts must be announced without exposing the full table as a live region');
 assert.match(detailPage, /class="nationality-fy"[^>]*role="group"[^>]*aria-label="选择国籍数据财政年度"[\s\S]*data-nationality-fy="2026"[^>]*aria-pressed="true"[\s\S]*data-nationality-fy="2025"[^>]*aria-pressed="false"/, 'judge nationality year filters must expose their group and initial selected state');
 assert.match(detailClient, /data-nationality-fy[\s\S]*const selected = Number\(button\.dataset\.nationalityFy\) === nationalityFiscalYear;[\s\S]*button\.setAttribute\('aria-pressed', String\(selected\)\)/, 'judge nationality year filters must keep the announced selected state in sync');
-assert.match(detailPage, /detail\.css\?v=7[\s\S]*detail\.js\?v=21/, 'judge detail page must load the current asset versions');
+assert.match(detailPage, /detail\.css\?v=7[\s\S]*detail\.js\?v=22/, 'judge detail page must load the current asset versions');
 const detailSummaryMessages = detailClient.match(/const detailSummaryMessages = \{[\s\S]*?\n\};/)?.[0] || '';
 for (const locale of ['en', 'es', 'fr', 'pt-BR', 'hi', 'zh-Hans', 'zh-Hant', 'ru', 'ar', 'tr']) {
   assert.match(detailSummaryMessages, new RegExp(`['"]?${locale}['"]?\\s*:`), `judge detail summary messages must support ${locale}`);
@@ -271,7 +271,7 @@ assert.match(detailClient, /const template = \(nationalityRowMessages\[locale\] 
 assert.match(detailClient, /nationalityOutcomeHeader\(\)[\s\S]*esc\(nationalityRowMessage\(row\)\)[\s\S]*esc\(nationalityDateRange\(row\)\)/, 'nationality rows must render localized sample and date guidance safely');
 assert.doesNotMatch(detailClient, /nationality'\)\.innerHTML[^\n]*sampleDescription\(row\)/, 'nationality rows must not reuse the Simplified Chinese yearly sample guidance');
 assert.match(detailClient, /function nationalityName\(row\) \{[\s\S]*window\.AsylumI18n\?\.countryName\?\.\(row\) \|\| row\.nationality \|\| '—'/, 'judge nationality rows must use the shared localized country name with safe fallbacks');
-assert.match(detailPage, /app-i18n\.js\?v=8[\s\S]*detail\.js\?v=21/, 'judge details must load the shared country-name capability before the current detail client');
+assert.match(detailPage, /app-i18n\.js\?v=8[\s\S]*detail\.js\?v=22/, 'judge details must load the shared country-name capability before the current detail client');
 const sharedCountryHelpers = sharedI18nClient.match(/const nationalityRegionAliases = [\s\S]*?(?=\n  window\.AsylumI18n =)/)?.[0];
 assert.ok(sharedCountryHelpers, 'shared i18n country-name helpers must remain testable');
 const sharedCountrySandbox = { Intl, locale: 'zh-Hans' };
@@ -417,6 +417,8 @@ assert.equal(appointmentDateSandbox.spanishDate, 'julio de 2017', 'English appoi
 assert.equal(appointmentDateSandbox.chineseDate, '2026年4月', 'appointment dates containing “of” must be localized for Chinese readers');
 assert.equal(appointmentDateSandbox.rawDate, 'Spring 2020', 'unrecognized official date text must be preserved rather than guessed');
 assert.match(detailClient, /background\.appointment_date \? formatAppointmentDate\(background\.appointment_date\) : copy\.unspecified/, 'official appointment dates must use the active page locale');
+assert.match(detailClient, /biography\.textContent = background\.biography \|\| copy\.missingBiography;[\s\S]*background\.biography && \(window\.AsylumI18n\?\.locale \|\| 'zh-Hans'\) !== 'en'\) biography\.setAttribute\('lang', 'en'\);[\s\S]*else biography\.removeAttribute\('lang'\)/, 'official English biographies must expose their source language on non-English pages');
+assert.match(detailClient, /biography\.textContent = copy\.statusBody;[\s\S]*biography\.removeAttribute\('lang'\)/, 'localized verification status must not retain the official English language marker');
 const webexMessages = detailClient.match(/const webexMessages = \{[\s\S]*?\n\};/)?.[0] || '';
 for (const locale of ['en', 'es', 'fr', 'pt-BR', 'hi', 'zh-Hans', 'zh-Hant', 'ru', 'ar', 'tr']) {
   assert.match(webexMessages, new RegExp(`['"]?${locale}['"]?\\s*:`), `Webex hearing guidance must support ${locale}`);

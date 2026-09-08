@@ -17,6 +17,14 @@ function validIsoDate(value) {
   return typeof value === 'string' && /^\d{4}-\d{2}-\d{2}T/.test(value) && Number.isFinite(Date.parse(value));
 }
 
+export function resolveScreenshotEvidenceOutput({ mobileRoot, output = 'store/screenshot-evidence.local.json' }) {
+  const absolutePath = path.resolve(mobileRoot, output);
+  const storeRoot = path.join(mobileRoot, 'store');
+  const relativePath = path.relative(storeRoot, absolutePath);
+  const valid = !relativePath.startsWith('..') && !path.isAbsolute(relativePath) && absolutePath.endsWith('.local.json');
+  return { valid, absolutePath, relativePath };
+}
+
 function expectedSets(manifest) {
   return [
     ['app-store-iphone69', 'iphone-6.9', manifest.appStore?.iphone69],
@@ -33,6 +41,29 @@ function dimensionsAccepted(config, width, height) {
   const maximum = Math.max(width, height);
   return width < height && minimum >= config.minimumDimension && maximum <= config.maximumDimension
     && maximum / minimum <= config.maximumAspectRatio;
+}
+
+export function createScreenshotEvidence({ mobileRoot, sourceCommit, capturedAt = new Date().toISOString(), locale = 'zh-CN' }) {
+  const failures = [...validateStoreSubmissionAssets(mobileRoot)];
+  if (!COMMIT_SHA.test(sourceCommit ?? '')) failures.push('Screenshot evidence sourceCommit must be a full Git commit SHA');
+  if (!validIsoDate(capturedAt)) failures.push('Screenshot evidence capturedAt must be an ISO timestamp');
+  if (locale !== 'zh-CN') failures.push('Screenshot evidence locale must be zh-CN for the first store listing');
+  if (failures.length > 0) return { valid: false, failures, evidence: null };
+
+  const app = JSON.parse(fs.readFileSync(path.join(mobileRoot, 'app.json'), 'utf8')).expo;
+  const manifest = JSON.parse(fs.readFileSync(path.join(mobileRoot, 'store/submission-assets.json'), 'utf8'));
+  const sets = expectedSets(manifest).map(({ id, deviceClass, config }) => ({
+    id,
+    deviceClass,
+    directory: config.directory,
+    screenshots: manifest.screens.map((name) => {
+      const info = readPngInfo(path.join(mobileRoot, config.directory, `${name}.png`));
+      return { name, width: info.width, height: info.height, sha256: info.digest };
+    })
+  }));
+  const evidence = { schemaVersion: 1, sourceCommit, appVersion: app.version, locale, capturedAt, sets };
+  const inspected = inspectScreenshotEvidence({ mobileRoot, evidence, expectedSourceCommit: sourceCommit, verifyFiles: true });
+  return { ...inspected, evidence: inspected.valid ? evidence : null };
 }
 
 export function inspectScreenshotEvidence({ mobileRoot, evidence, expectedSourceCommit, verifyFiles = true }) {

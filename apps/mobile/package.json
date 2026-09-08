@@ -38,6 +38,7 @@
     "typecheck": "tsc --noEmit",
     "config:check": "node ../../scripts/validate-mobile-store-config.mjs",
     "store:submission-check": "node scripts/validate-store-submission-assets.mjs",
+    "store:screenshot-evidence-generate": "node scripts/store-screenshot-evidence-generate.mjs",
     "store:screenshot-evidence-check": "node scripts/store-screenshot-evidence.mjs",
     "export:web": "expo export --platform web --output-dir .expo-export --clear"
   },

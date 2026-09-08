@@ -4,7 +4,11 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
-import { inspectScreenshotEvidence } from './store-screenshot-evidence-core.mjs';
+import {
+  createScreenshotEvidence,
+  inspectScreenshotEvidence,
+  resolveScreenshotEvidenceOutput
+} from './store-screenshot-evidence-core.mjs';
 
 const sourceCommit = '1234567890abcdef1234567890abcdef12345678';
 const screens = ['01-home', '02-america', '03-immigration', '04-legal', '05-community'];
@@ -56,6 +60,41 @@ test('accepts 15 version-bound screenshots matching the physical files', () => {
     const result = inspectScreenshotEvidence({ mobileRoot: root, evidence, expectedSourceCommit: sourceCommit });
     assert.equal(result.valid, true, result.failures.join('\n'));
   } finally { fs.rmSync(root, { recursive: true, force: true }); }
+});
+
+test('generates complete evidence directly from all 15 physical screenshots', () => {
+  const { root, evidence } = fixture();
+  try {
+    const result = createScreenshotEvidence({
+      mobileRoot: root,
+      sourceCommit,
+      capturedAt: evidence.capturedAt
+    });
+    assert.equal(result.valid, true, result.failures.join('\n'));
+    assert.deepEqual(result.evidence, evidence);
+    assert.equal(result.evidence.sets.flatMap(({ screenshots }) => screenshots).length, 15);
+  } finally { fs.rmSync(root, { recursive: true, force: true }); }
+});
+
+test('does not generate evidence from incomplete or uncommitted inputs', () => {
+  const { root, evidence } = fixture();
+  try {
+    fs.rmSync(path.join(root, evidence.sets[0].directory, '01-home.png'));
+    const result = createScreenshotEvidence({ mobileRoot: root, sourceCommit: 'not-a-commit' });
+    assert.equal(result.valid, false);
+    assert.equal(result.evidence, null);
+    assert.match(result.failures.join('\n'), /screenshot is missing/);
+    assert.match(result.failures.join('\n'), /full Git commit SHA/);
+  } finally { fs.rmSync(root, { recursive: true, force: true }); }
+});
+
+test('limits generated evidence to ignored local JSON files in the store directory', () => {
+  const mobileRoot = path.join(path.sep, 'workspace', 'apps', 'mobile');
+  assert.equal(resolveScreenshotEvidenceOutput({ mobileRoot }).valid, true);
+  assert.equal(resolveScreenshotEvidenceOutput({ mobileRoot, output: 'store/release.local.json' }).valid, true);
+  assert.equal(resolveScreenshotEvidenceOutput({ mobileRoot, output: 'store/release.json' }).valid, false);
+  assert.equal(resolveScreenshotEvidenceOutput({ mobileRoot, output: '../release.local.json' }).valid, false);
+  assert.equal(resolveScreenshotEvidenceOutput({ mobileRoot, output: '/tmp/release.local.json' }).valid, false);
 });
 
 test('rejects another release commit, app version or listing locale', () => {

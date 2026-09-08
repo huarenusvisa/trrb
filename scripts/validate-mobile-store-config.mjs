@@ -10,6 +10,7 @@ const store = JSON.parse(fs.readFileSync(path.join(mobileRoot, 'store.config.jso
 const googlePlayRoot = path.join(mobileRoot, 'store/google-play');
 const googlePlay = JSON.parse(fs.readFileSync(path.join(googlePlayRoot, 'listing.json'), 'utf8'));
 const submissionAssets = JSON.parse(fs.readFileSync(path.join(mobileRoot, 'store/submission-assets.json'), 'utf8'));
+const dataPractices = JSON.parse(fs.readFileSync(path.join(mobileRoot, 'store/data-practices.json'), 'utf8'));
 const failures = [];
 
 function expect(condition, message) {
@@ -88,6 +89,11 @@ for (const field of ['marketingUrl', 'supportUrl', 'privacyPolicyUrl', 'privacyC
 expect(listing?.privacyPolicyUrl === 'https://trrb.net/privacy.html', 'Store privacy policy must use the published TRRB policy');
 expect(listing?.privacyChoicesUrl === 'https://trrb.net/delete-account.html', 'Store privacy choices must point to account deletion instructions');
 expect(listing?.supportUrl === 'https://trrb.net/app-support.html', 'App Store support URL must use the dedicated App support page');
+expect(dataPractices.schemaVersion === 1, 'Store data-practices schemaVersion must be 1');
+expect(dataPractices.status === 'ready_for_console_confirmation', 'Store data-practices worksheet must be ready for console confirmation');
+expect(dataPractices.tracking === privacy?.NSPrivacyTracking, 'Store tracking answer must match the iOS privacy manifest');
+expect(dataPractices.privacyPolicyUrl === listing?.privacyPolicyUrl, 'Store data practices must use the App Store privacy policy URL');
+expect(dataPractices.accountDeletion?.webUrl === listing?.privacyChoicesUrl, 'Store data practices must use the App Store deletion URL');
 
 const googleTitle = readListingText('zh-CN/title.txt');
 const googleShortDescription = readListingText('zh-CN/short-description.txt');
@@ -102,6 +108,8 @@ for (const field of ['website', 'privacyPolicyUrl', 'accountDeletionUrl']) {
 expect(googlePlay.privacyPolicyUrl === listing?.privacyPolicyUrl, 'Google Play and App Store must use the same privacy policy');
 expect(googlePlay.accountDeletionUrl === listing?.privacyChoicesUrl, 'Google Play and App Store must use the same account deletion instructions');
 expect(googlePlay.supportUrl === listing?.supportUrl, 'Google Play and App Store must use the same dedicated support page');
+expect(dataPractices.privacyPolicyUrl === googlePlay.privacyPolicyUrl, 'Google Play and data practices must use the same privacy policy');
+expect(dataPractices.accountDeletion?.webUrl === googlePlay.accountDeletionUrl, 'Google Play and data practices must use the same deletion URL');
 expect(googleTitle === app.name, 'Google Play title must match the installed app name');
 expect(googleTitle.length >= 2 && googleTitle.length <= 30, 'Google Play title must contain 2-30 characters');
 expect(googleShortDescription.length >= 10 && googleShortDescription.length <= 80, 'Google Play short description must contain 10-80 characters');

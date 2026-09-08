@@ -1,0 +1,131 @@
+{
+  "schemaVersion": 1,
+  "lastReviewed": "2026-09-08",
+  "status": "ready_for_console_confirmation",
+  "privacyPolicyUrl": "https://trrb.net/privacy.html",
+  "tracking": false,
+  "thirdPartyAdvertising": false,
+  "analyticsSdk": false,
+  "dataShared": false,
+  "dataSharingRationale": "Supabase, Netlify and Expo are declared as processors acting on behalf of Tang Ren Daily; public posts and direct messages are delivered only through user-initiated app actions.",
+  "dataEncryptedInTransit": true,
+  "accountDeletion": {
+    "availableInApp": true,
+    "webUrl": "https://trrb.net/delete-account.html"
+  },
+  "dataTypes": [
+    {
+      "id": "email_address",
+      "optional": true,
+      "linkedToUser": true,
+      "usedForTracking": false,
+      "apple": { "category": "Contact Info", "type": "Email Address", "purposes": ["APP_FUNCTIONALITY"] },
+      "googlePlay": { "category": "Personal info", "type": "Email address", "purposes": ["ACCOUNT_MANAGEMENT", "APP_FUNCTIONALITY"] },
+      "evidence": ["src/auth/unified-account.ts"]
+    },
+    {
+      "id": "phone_number",
+      "optional": true,
+      "linkedToUser": true,
+      "usedForTracking": false,
+      "apple": { "category": "Contact Info", "type": "Phone Number", "purposes": ["APP_FUNCTIONALITY"] },
+      "googlePlay": { "category": "Personal info", "type": "Phone number", "purposes": ["ACCOUNT_MANAGEMENT", "APP_FUNCTIONALITY"] },
+      "evidence": ["src/auth/unified-account.ts"]
+    },
+    {
+      "id": "user_id",
+      "optional": true,
+      "linkedToUser": true,
+      "usedForTracking": false,
+      "apple": { "category": "Identifiers", "type": "User ID", "purposes": ["APP_FUNCTIONALITY"] },
+      "googlePlay": { "category": "Personal info", "type": "User IDs", "purposes": ["ACCOUNT_MANAGEMENT", "APP_FUNCTIONALITY"] },
+      "evidence": ["src/social/profiles.ts"]
+    },
+    {
+      "id": "name",
+      "optional": true,
+      "linkedToUser": true,
+      "usedForTracking": false,
+      "apple": { "category": "Contact Info", "type": "Name", "purposes": ["APP_FUNCTIONALITY"] },
+      "googlePlay": { "category": "Personal info", "type": "Name", "purposes": ["ACCOUNT_MANAGEMENT", "APP_FUNCTIONALITY"] },
+      "evidence": ["app/profile-settings.tsx", "src/social/profiles.ts"]
+    },
+    {
+      "id": "other_user_content",
+      "optional": true,
+      "linkedToUser": true,
+      "usedForTracking": false,
+      "apple": { "category": "User Content", "type": "Other User Content", "purposes": ["APP_FUNCTIONALITY"] },
+      "googlePlay": { "category": "App activity", "type": "User-generated content", "purposes": ["APP_FUNCTIONALITY"] },
+      "evidence": ["app/community-compose.tsx", "src/components/CommentThread.tsx", "src/social/posts.ts"]
+    },
+    {
+      "id": "photos",
+      "optional": true,
+      "linkedToUser": true,
+      "usedForTracking": false,
+      "apple": { "category": "User Content", "type": "Photos or Videos", "purposes": ["APP_FUNCTIONALITY"] },
+      "googlePlay": { "category": "Photos and videos", "type": "Photos", "purposes": ["APP_FUNCTIONALITY"] },
+      "evidence": ["app/profile-compose.tsx", "app/profile-settings.tsx"]
+    },
+    {
+      "id": "videos",
+      "optional": true,
+      "linkedToUser": true,
+      "usedForTracking": false,
+      "apple": { "category": "User Content", "type": "Photos or Videos", "purposes": ["APP_FUNCTIONALITY"] },
+      "googlePlay": { "category": "Photos and videos", "type": "Videos", "purposes": ["APP_FUNCTIONALITY"] },
+      "evidence": ["app/profile-compose.tsx", "src/social/posts.ts"]
+    },
+    {
+      "id": "direct_messages",
+      "optional": true,
+      "linkedToUser": true,
+      "usedForTracking": false,
+      "apple": { "category": "User Content", "type": "Emails or Text Messages", "purposes": ["APP_FUNCTIONALITY"] },
+      "googlePlay": { "category": "Messages", "type": "Other in-app messages", "purposes": ["APP_FUNCTIONALITY"] },
+      "evidence": ["src/social/messages.ts"]
+    },
+    {
+      "id": "app_interactions",
+      "optional": false,
+      "linkedToUser": true,
+      "usedForTracking": false,
+      "apple": { "category": "Usage Data", "type": "Product Interaction", "purposes": ["APP_FUNCTIONALITY"] },
+      "googlePlay": { "category": "App activity", "type": "App interactions", "purposes": ["APP_FUNCTIONALITY"] },
+      "evidence": ["src/storage/library.ts", "src/community/follows.ts", "src/social/blocks.ts"]
+    },
+    {
+      "id": "device_identifier",
+      "optional": true,
+      "linkedToUser": true,
+      "usedForTracking": false,
+      "apple": { "category": "Identifiers", "type": "Device ID", "purposes": ["APP_FUNCTIONALITY"] },
+      "googlePlay": { "category": "Device or other IDs", "type": "Device or other IDs", "purposes": ["APP_FUNCTIONALITY"] },
+      "evidence": ["src/push/registration-api.ts", "src/push/registration.ts"]
+    },
+    {
+      "id": "network_identifier",
+      "optional": false,
+      "linkedToUser": true,
+      "usedForTracking": false,
+      "apple": { "category": "Other Data", "type": "Other Data Types", "purposes": ["APP_FUNCTIONALITY"] },
+      "googlePlay": { "category": "Device or other IDs", "type": "Device or other IDs", "purposes": ["APP_FUNCTIONALITY"] },
+      "evidence": ["src/api/trrb.ts", "../../netlify.toml"]
+    },
+    {
+      "id": "diagnostics",
+      "optional": false,
+      "linkedToUser": true,
+      "usedForTracking": false,
+      "apple": { "category": "Diagnostics", "type": "Other Diagnostic Data", "purposes": ["APP_FUNCTIONALITY"] },
+      "googlePlay": { "category": "App info and performance", "type": "Other app performance data", "purposes": ["APP_FUNCTIONALITY"] },
+      "evidence": ["src/api/trrb.ts", "../../netlify.toml"]
+    }
+  ],
+  "consoleConfirmation": [
+    "Confirm Supabase, Netlify and Expo are configured only as service providers and do not use app data for their own purposes.",
+    "Confirm production logs and backups follow the retention and deletion statements in the published privacy policy.",
+    "Recheck all SDK data practices after the production binary is generated and before submitting either store form."
+  ]
+}

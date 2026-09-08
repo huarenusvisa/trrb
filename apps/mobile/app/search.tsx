@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, TextInput, useWindowDimensions, View } from 'react-native';
+import { ActivityIndicator, Keyboard, Pressable, ScrollView, StyleSheet, Text, TextInput, useWindowDimensions, View } from 'react-native';
 import { PaginatedNewsList } from '../src/components/PaginatedNewsList';
 import { fetchTrendingSearches, TrendingSearch } from '../src/api/trrb';
 import { addSearchHistory, clearSearchHistory, getSearchHistory } from '../src/storage/searchHistory';
@@ -40,6 +40,7 @@ export default function SearchScreen() {
   useForegroundRetry(trendingError, () => void loadTrending());
 
   async function submit(value = input, selectedCategory = category) {
+    Keyboard.dismiss();
     const next = value.trim();
     setQuery(next);
     setCategory(selectedCategory);
@@ -87,7 +88,13 @@ export default function SearchScreen() {
           />
         </View>
       ) : (
-        <ScrollView contentContainerStyle={[styles.discovery, compact && styles.compactDiscovery]} testID="search-discovery">
+        <ScrollView
+          contentContainerStyle={[styles.discovery, compact && styles.compactDiscovery]}
+          testID="search-discovery"
+          automaticallyAdjustKeyboardInsets
+          keyboardDismissMode="on-drag"
+          keyboardShouldPersistTaps="handled"
+        >
           <View style={styles.sectionHeader}><Text style={styles.sectionTitle}>{t('search.trending')}</Text><Text style={styles.audit}>{t('search.trendingSource')}</Text></View>
           <View style={styles.chips}>
             {trending.map((item) => (

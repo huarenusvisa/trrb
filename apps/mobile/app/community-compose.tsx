@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { ActivityIndicator, Keyboard, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { router, Stack } from 'expo-router';
 import { CommunityCategory, createCommunityPost } from '../src/api/community';
 import { AsyncStatePanel } from '../src/components/AsyncStatePanel';
@@ -55,6 +55,7 @@ export default function CommunityComposeScreen() {
 
   const submit = async () => {
     if (busy) return;
+    Keyboard.dismiss();
     if (title.trim().length < 4) return setMessage(t('communityCompose.titleTooShort'));
     if (content.trim().length < 20) return setMessage(t('communityCompose.contentTooShort'));
     if (!privacyConfirmed) return setMessage(t('communityCompose.privacyRequired'));
@@ -100,7 +101,7 @@ export default function CommunityComposeScreen() {
     await clearCommunityPostDraft().catch(() => undefined);
   };
 
-  return <ScrollView style={styles.page} contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
+  return <ScrollView style={styles.page} contentContainerStyle={styles.content} automaticallyAdjustKeyboardInsets keyboardDismissMode="on-drag" keyboardShouldPersistTaps="handled">
     <Stack.Screen options={{ headerShown: true, title: t('communityCompose.screenTitle'), headerBackTitle: t('common.back') }} />
     <Text style={styles.title}>{t('communityCompose.heading')}</Text>
     <Text style={styles.hint}>{t('communityCompose.privacyHint')}</Text>

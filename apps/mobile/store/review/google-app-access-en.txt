@@ -1,0 +1,15 @@
+Tang Ren Daily is partly restricted by sign-in. News browsing in Home, U.S., Immigration and Legal Updates is available without signing in.
+
+For all restricted features, use the non-expiring review account stored in the Google Play App access credential fields. Open My > Sign in, enter the supplied email or phone identifier and password, and tap Sign in / Register. The account is already provisioned. No OTP, MFA, subscription, location restriction, invitation, external hardware, QR code, or separate organization account is required.
+
+After sign-in, reviewers can access every restricted area:
+1. Community posting and interactions: Community > Create post, or open a post to comment, reply, like, report, or unpublish your own post.
+2. News comments: open any article and scroll to Comments.
+3. Synced content: save an article, then open My > Favorites or My > Reading history.
+4. Push settings: My > Push notifications. Permission is requested only after the reviewer explicitly enables the device.
+5. Account deletion: My > Account and privacy > Delete account. Type DELETE only if permanent deletion is intended.
+
+These instructions remain valid regardless of location. If Google Play presents separate username and password fields, enter the credentials there; do not place them in the public release notes.
+
+Review username: [ENTER ONLY IN GOOGLE PLAY CONSOLE]
+Review password: [ENTER ONLY IN GOOGLE PLAY CONSOLE]

@@ -39,6 +39,11 @@
       "id": "store_console_forms",
       "label": "Apple privacy and Google Data Safety forms confirmed by the account owner",
       "confirmationEnvironmentVariable": "TRRB_STORE_FORMS_CONFIRMED"
+    },
+    {
+      "id": "store_review_account",
+      "label": "Non-expiring review account stored only in Apple and Google store consoles",
+      "confirmationEnvironmentVariable": "TRRB_REVIEW_ACCOUNT_CONFIRMED"
     }
   ]
 }

@@ -64,6 +64,8 @@ Apple 与 Google 的支持地址统一使用 `https://trrb.net/app-support.html`
 
 Apple App Privacy 与 Google Play Data Safety 的逐项申报草案维护在 `store/data-practices.json`。它把邮箱／手机号账号、个人资料、社区和评论、私信、媒体、收藏／历史及推送令牌映射到两个商店的数据类型，并记录代码证据。运行 `npm run test:store-data` 会核对 App 的追踪设置、第三方 SDK、隐私政策、删除入口和实际功能；提交前仍须由账号持有人在后台确认 Supabase、Netlify、Expo 的生产日志、备份及服务提供商用途。
 
+Apple 审核说明与 Google App Access 可复制文本分别维护在 `store/review/apple-review-notes-en.txt` 和 `store/review/google-app-access-en.txt`，功能入口及代码证据集中在 `store/review-access.json`。审核账号必须提前创建、保持不过期且关闭 OTP／MFA，只能填写在 App Store Connect 和 Google Play Console 的受保护字段，严禁写入仓库、公开发行说明或 CI 日志。`npm run test:store-review` 会校验访客入口、受限功能覆盖、操作路径和常见密钥格式；严格上架预检还要求账号持有人通过 `TRRB_REVIEW_ACCOUNT_CONFIRMED=1` 确认两边后台已保存审核账号。
+
 商店与启动器统一使用 `assets/app-icon-1024.png`。该文件必须保持 1024×1024、sRGB/RGB 且不含 Alpha 或透明色块；`config:check` 会阻止不合规图标进入正式构建。
 
 Google Play 中文标题、短描述和完整描述维护在 `store/google-play/zh-CN/`，分类、联系方式、隐私地址和截图清单维护在 `store/google-play/listing.json`。文案长度遵循 Google Play 的 30/80/4000 字符限制。

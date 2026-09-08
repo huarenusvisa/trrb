@@ -1,0 +1,17 @@
+Tang Ren Daily is a news and community app. All news sections can be reviewed without signing in. From the My tab, choose Continue as guest or return to the news tabs.
+
+To review authenticated features, use the non-expiring review account entered in App Review Information > Sign-in information. Open My > Sign in, enter that identifier and password, and tap Sign in / Register. This account is pre-created. No OTP, MFA, subscription, location restriction, invitation, or external hardware is required.
+
+Authenticated review paths:
+1. Community: open Community to create a post; open a post to comment, reply, like, report, or unpublish your own post.
+2. News comments: open any news article and scroll to Comments to comment, reply, like, or report.
+3. Cloud library: save an article, then open My > Favorites or My > Reading history.
+4. Push: open My > Push notifications and explicitly enable this device. The app does not request notification permission on first launch.
+5. Account deletion: open My > Account and privacy > Delete account. The final action requires typing DELETE and permanently removes the signed-in account.
+
+Support: https://trrb.net/app-support.html
+Privacy policy: https://trrb.net/privacy.html
+Account deletion information: https://trrb.net/delete-account.html
+
+Review username: [ENTER ONLY IN APP STORE CONNECT]
+Review password: [ENTER ONLY IN APP STORE CONNECT]

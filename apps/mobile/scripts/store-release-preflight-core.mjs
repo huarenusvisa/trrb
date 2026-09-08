@@ -41,7 +41,8 @@ export function inspectReleaseReadiness({ mobileRoot, env = {} }) {
     'apple_distribution_credentials',
     'google_play_service_account',
     'store_screenshots',
-    'store_console_forms'
+    'store_console_forms',
+    'store_review_account'
   ];
   expect(JSON.stringify(ids) === JSON.stringify(expectedIds), 'External release requirements are incomplete or out of order');
 

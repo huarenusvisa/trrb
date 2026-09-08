@@ -27,7 +27,8 @@ test('strict external readiness requires every named confirmation', () => {
     TRRB_APPLE_CREDENTIALS_CONFIRMED: '1',
     TRRB_GOOGLE_PLAY_CREDENTIALS_CONFIRMED: '1',
     TRRB_STORE_SCREENSHOTS_CONFIRMED: '1',
-    TRRB_STORE_FORMS_CONFIRMED: '1'
+    TRRB_STORE_FORMS_CONFIRMED: '1',
+    TRRB_REVIEW_ACCOUNT_CONFIRMED: '1'
   } });
   assert.equal(complete.externalReady, true);
   assert.deepEqual(complete.missing, []);
@@ -40,7 +41,8 @@ test('repository ignores local signing credential files', () => {
     'apps/mobile/.credentials/',
     'apps/mobile/credentials.json',
     'apps/mobile/**/*.p8',
-    'apps/mobile/**/*service-account*.json'
+    'apps/mobile/**/*service-account*.json',
+    'apps/mobile/**/*review-credentials*'
   ]) assert.ok(ignore.includes(pattern), `Missing credential ignore rule: ${pattern}`);
 });
 

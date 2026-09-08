@@ -22,7 +22,7 @@ const permissionsMigration = read('supabase/migrations/20260903155224_push_data_
 const tokenClaimEndpoint = read('netlify/functions/push-token-registration.js');
 const tokenClaimMigration = read('supabase/migrations/20260907122247_claim_mobile_push_token.sql');
 
-check('expo-notifications dependency matches SDK 57', pkg.dependencies?.['expo-notifications'] === '~57.0.6');
+check('expo-notifications dependency matches SDK 57', pkg.dependencies?.['expo-notifications'] === '~57.0.17');
 check('native notification config plugin enabled', app.plugins?.includes('expo-notifications'));
 check('iOS and Android package identities exist', Boolean(app.ios?.bundleIdentifier && app.android?.package));
 check('device permission and Expo token registration implemented', registration.includes('requestPermissionsAsync') && registration.includes('getExpoPushTokenAsync'));

@@ -74,8 +74,8 @@ const bundleBuilder = readFileSync('scripts/build-asylumjudge-site.mjs', 'utf8')
 
 assert.match(styles, /\.judge-directory-row\{[^}]*content-visibility:auto[^}]*contain-intrinsic-block-size:auto 150px/, 'offscreen judge cards must defer layout and paint with a stable desktop placeholder');
 assert.match(styles, /@media\(max-width:760px\)\{\.judge-directory-row\{[^}]*contain-intrinsic-block-size:auto 196px/, 'offscreen judge cards must reserve their mobile card height');
-assert.match(standalone, /site\.css\?v=35/, 'standalone homepage must load the skip-link stylesheet');
-assert.match(trrb, /site\.css\?v=34/, 'embedded homepage must load the skip-link stylesheet');
+assert.match(standalone, /site\.css\?v=36/, 'standalone homepage must load the current knowledge-list stylesheet');
+assert.match(trrb, /site\.css\?v=36/, 'embedded homepage must load the current knowledge-list stylesheet');
 assert.match(backgroundDirectory, /site\.css\?v=35/, 'background directory must load the current skip-link and chart-focus stylesheet');
 assert.match(backgroundDirectory, /<body>\s*<a class="skip-link" href="#main-content">跳到主要内容<\/a>/, 'background directory must let keyboard users bypass its sticky header');
 assert.match(backgroundDirectory, /<main id="main-content" class="shell background-directory-page" tabindex="-1">/, 'background directory skip target must accept programmatic focus');
@@ -133,7 +133,8 @@ for (const html of [standalone, trrb]) {
   assert.match(html, /class="directory-loading"[^>]+role="listitem"/, 'the initial judge loading state must preserve valid list structure');
   assert.doesNotMatch(html, /id="judge-directory-list"[^>]+aria-live=/, 'judge cards must not be announced as one oversized live region');
   assert.match(html, /id="daily-knowledge-status"[^>]+role="status"[^>]+aria-live="polite"[^>]+aria-atomic="true"/, 'daily knowledge must announce a concise atomic status');
-  assert.match(html, /id="daily-knowledge-items"[^>]+aria-busy="true"/, 'daily knowledge must expose its initial loading state');
+  assert.match(html, /<ul id="daily-knowledge-items"[^>]+aria-labelledby="daily-knowledge-title"[^>]+aria-busy="true"/, 'daily knowledge must expose a named semantic list and its initial loading state');
+  assert.match(html, /<li class="knowledge-loading">/, 'the initial knowledge loading state must preserve valid list structure');
   assert.doesNotMatch(html, /id="daily-knowledge-items"[^>]+aria-live=/, 'daily knowledge cards must not be announced as one oversized live region');
   assert.match(html, /id="state-list-status"[^>]+role="status"[^>]+aria-live="polite"[^>]+aria-atomic="true"/, 'state overview must announce a concise atomic status');
   assert.match(html, /id="state-list"[^>]+aria-busy="true"/, 'state overview must expose its initial loading state');
@@ -162,8 +163,14 @@ for (const html of [standalone, trrb]) {
   assert.match(html, /其他占比/, 'trend legend must expose the blue other-outcome series');
   assert.match(html, /class="brand-lockup"[^>]+logo\.svg/, 'both homepage variants must render the final AsylumJudge logo');
 }
-assert.match(standalone, /app-i18n\.js\?v=13[\s\S]*site\.js\?v=42/, 'the standalone homepage must load the current judge-directory accessibility client');
-assert.match(trrb, /app-i18n\.js\?v=12[\s\S]*site\.js\?v=42/, 'the embedded homepage must load the current judge-directory accessibility client');
+assert.match(standalone, /app-i18n\.js\?v=13[\s\S]*site\.js\?v=43/, 'the standalone homepage must load the current knowledge-list accessibility client');
+assert.match(trrb, /app-i18n\.js\?v=12[\s\S]*site\.js\?v=43/, 'the embedded homepage must load the current knowledge-list accessibility client');
+assert.match(client, /<li class="knowledge-entry"><a class="knowledge-item/, 'each knowledge article must be a list item while retaining native link semantics');
+assert.equal((client.match(/<li class="knowledge-(?:loading|empty)"/g) || []).length, 3, 'knowledge loading, empty, and error states must remain valid list items');
+assert.doesNotMatch(client, /<a[^>]*role="listitem"/, 'knowledge article links must not override their native link role');
+assert.match(styles, /\.knowledge-items\{[^}]*margin:0[^}]*padding:0[^}]*list-style:none/, 'the semantic knowledge list must reset browser list spacing without changing its grid layout');
+assert.match(styles, /\.knowledge-entry:nth-child\(n\+4\)\{display:none\}/, 'desktop knowledge visibility must apply to list items');
+assert.match(styles, /@media\(max-width:650px\)[\s\S]*?\.knowledge-entry:nth-child\(n\+3\)\{display:none\}/, 'mobile knowledge visibility must apply to list items');
 assert.match(client, /class="judge-directory-row" role="listitem"/, 'each judge card must expose its position in the result list without overriding nested link semantics');
 assert.equal((client.match(/class="(?:directory-loading|empty)" role="listitem"/g) || []).length, 3, 'loading, empty, and error directory states must remain valid list items');
 assert.doesNotMatch(client, /<a[^>]*role="listitem"/, 'judge directory links must keep their native link role');
@@ -255,8 +262,8 @@ assert.match(styles, /\.directory-metric\.verdict-other b[^}]*var\(--other\)/);
 assert.match(standalone, /rel="icon"[^>]+favicon\.ico/, 'homepage must declare a search and browser favicon');
 assert.match(standalone, /rel="apple-touch-icon"/, 'homepage must declare an iOS home-screen icon');
 assert.match(standalone, /rel="manifest"/, 'homepage must expose an installable site manifest');
-assert.match(standalone, /app-i18n\.js\?v=13[\s\S]*site\.js\?v=42/, 'standalone homepage must load the current judge-directory accessibility client');
-assert.match(trrb, /app-i18n\.js\?v=12[\s\S]*site\.js\?v=42/, 'embedded homepage must load the current judge-directory accessibility client');
+assert.match(standalone, /app-i18n\.js\?v=13[\s\S]*site\.js\?v=43/, 'standalone homepage must load the current knowledge-list accessibility client');
+assert.match(trrb, /app-i18n\.js\?v=12[\s\S]*site\.js\?v=43/, 'embedded homepage must load the current knowledge-list accessibility client');
 for (const source of ['正在读取全部法官资料…', '稍后重试', '读取失败', '全部法官资料暂时无法读取', '无需刷新页面，可以直接重新尝试。']) {
   const rowPattern = new RegExp(`\\['${source.replace(/[.*+?^${}()|[\\]\\]/g, '\\\\$&')}'(?:,'[^']+'){9}\\]`);
   assert.match(i18n, rowPattern, `${source} must provide all nine non-source translations`);

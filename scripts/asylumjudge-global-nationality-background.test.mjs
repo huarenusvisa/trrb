@@ -210,7 +210,7 @@ assert.match(detailPage, /id="country-filter"[^>]*name="nationality"[^>]*type="s
 assert.match(detailPage, /id="nationality-results-status"[^>]*class="sr-only"[^>]*role="status"[^>]*aria-live="polite"[^>]*aria-atomic="true"/, 'filtered nationality counts must be announced without exposing the full table as a live region');
 assert.match(detailPage, /class="nationality-fy"[^>]*role="group"[^>]*aria-label="选择国籍数据财政年度"[\s\S]*data-nationality-fy="2026"[^>]*aria-pressed="true"[\s\S]*data-nationality-fy="2025"[^>]*aria-pressed="false"/, 'judge nationality year filters must expose their group and initial selected state');
 assert.match(detailClient, /data-nationality-fy[\s\S]*const selected = Number\(button\.dataset\.nationalityFy\) === nationalityFiscalYear;[\s\S]*button\.setAttribute\('aria-pressed', String\(selected\)\)/, 'judge nationality year filters must keep the announced selected state in sync');
-assert.match(detailPage, /detail\.css\?v=7[\s\S]*detail\.js\?v=22/, 'judge detail page must load the current asset versions');
+assert.match(detailPage, /detail\.css\?v=7[\s\S]*detail\.js\?v=23/, 'judge detail page must load the current asset versions');
 const detailSummaryMessages = detailClient.match(/const detailSummaryMessages = \{[\s\S]*?\n\};/)?.[0] || '';
 for (const locale of ['en', 'es', 'fr', 'pt-BR', 'hi', 'zh-Hans', 'zh-Hant', 'ru', 'ar', 'tr']) {
   assert.match(detailSummaryMessages, new RegExp(`['"]?${locale}['"]?\\s*:`), `judge detail summary messages must support ${locale}`);
@@ -271,7 +271,7 @@ assert.match(detailClient, /const template = \(nationalityRowMessages\[locale\] 
 assert.match(detailClient, /nationalityOutcomeHeader\(\)[\s\S]*esc\(nationalityRowMessage\(row\)\)[\s\S]*esc\(nationalityDateRange\(row\)\)/, 'nationality rows must render localized sample and date guidance safely');
 assert.doesNotMatch(detailClient, /nationality'\)\.innerHTML[^\n]*sampleDescription\(row\)/, 'nationality rows must not reuse the Simplified Chinese yearly sample guidance');
 assert.match(detailClient, /function nationalityName\(row\) \{[\s\S]*window\.AsylumI18n\?\.countryName\?\.\(row\) \|\| row\.nationality \|\| '—'/, 'judge nationality rows must use the shared localized country name with safe fallbacks');
-assert.match(detailPage, /app-i18n\.js\?v=8[\s\S]*detail\.js\?v=22/, 'judge details must load the shared country-name capability before the current detail client');
+assert.match(detailPage, /app-i18n\.js\?v=8[\s\S]*detail\.js\?v=23/, 'judge details must load the shared country-name capability before the current detail client');
 const sharedCountryHelpers = sharedI18nClient.match(/const nationalityRegionAliases = [\s\S]*?(?=\n  window\.AsylumI18n =)/)?.[0];
 assert.ok(sharedCountryHelpers, 'shared i18n country-name helpers must remain testable');
 const sharedCountrySandbox = { Intl, locale: 'zh-Hans' };
@@ -408,7 +408,7 @@ for (const locale of ['en', 'es', 'fr', 'pt-BR', 'hi', 'zh-Hans', 'zh-Hant', 'ru
   assert.match(backgroundMessages, new RegExp(`['"]?${locale}['"]?\\s*:`), `official judge background guidance must support ${locale}`);
 }
 assert.match(detailClient, /return backgroundMessages\[locale\] \|\| backgroundMessages\['zh-Hans'\]/, 'official judge backgrounds must use the active locale with a safe fallback');
-assert.match(detailClient, /function renderBackground\(background\)[\s\S]*const copy = backgroundCopy\(\)[\s\S]*copy\.unavailable[\s\S]*copy\.statusTitle[\s\S]*copy\.statusBody[\s\S]*copy\.biographyTitle[\s\S]*copy\.unspecified[\s\S]*copy\.missingBiography[\s\S]*fill\(copy\.education[\s\S]*fill\(copy\.bar[\s\S]*copy\.source/, 'official judge backgrounds must render all active-locale labels and fallbacks');
+assert.match(detailClient, /function renderBackground\(background\)[\s\S]*const copy = backgroundCopy\(\)[\s\S]*copy\.unavailable[\s\S]*copy\.statusTitle[\s\S]*copy\.statusBody[\s\S]*copy\.biographyTitle[\s\S]*copy\.unspecified[\s\S]*copy\.missingBiography[\s\S]*renderOfficialLabeledValue\(\$\('#background-education'\), copy\.education[\s\S]*renderOfficialLabeledValue\(\$\('#background-bar'\), copy\.bar[\s\S]*copy\.source/, 'official judge backgrounds must render all active-locale labels and fallbacks');
 assert.doesNotMatch(detailClient, /textContent = '暂未匹配到官方资料'|textContent = '官方履历核验状态'|textContent = '当前数据库尚未匹配到|textContent = '官方履历原文'|\|\| '官方资料未注明'|`教育经历：\$\{background\.education\}`|`执业资格：\$\{background\.bar_membership\}`/, 'dynamic official judge backgrounds must not remain hard-coded in Simplified Chinese');
 const appointmentDateHelpers = detailClient.match(/const appointmentDateLocales = \{[\s\S]*?\n\}/)?.[0] + '\n' + detailClient.match(/const appointmentMonths = [^;]+;/)?.[0] + '\n' + detailClient.match(/function formatAppointmentDate\(value\) \{[\s\S]*?\n\}/)?.[0];
 const appointmentDateSandbox = { Intl, Date, window: { AsylumI18n: { locale: 'es' } } };
@@ -417,8 +417,10 @@ assert.equal(appointmentDateSandbox.spanishDate, 'julio de 2017', 'English appoi
 assert.equal(appointmentDateSandbox.chineseDate, '2026年4月', 'appointment dates containing “of” must be localized for Chinese readers');
 assert.equal(appointmentDateSandbox.rawDate, 'Spring 2020', 'unrecognized official date text must be preserved rather than guessed');
 assert.match(detailClient, /background\.appointment_date \? formatAppointmentDate\(background\.appointment_date\) : copy\.unspecified/, 'official appointment dates must use the active page locale');
-assert.match(detailClient, /biography\.textContent = background\.biography \|\| copy\.missingBiography;[\s\S]*background\.biography && \(window\.AsylumI18n\?\.locale \|\| 'zh-Hans'\) !== 'en'\) biography\.setAttribute\('lang', 'en'\);[\s\S]*else biography\.removeAttribute\('lang'\)/, 'official English biographies must expose their source language on non-English pages');
-assert.match(detailClient, /biography\.textContent = copy\.statusBody;[\s\S]*biography\.removeAttribute\('lang'\)/, 'localized verification status must not retain the official English language marker');
+assert.match(detailClient, /function markOfficialEnglish\(element, hasOfficialValue\)[\s\S]*hasOfficialValue && \(window\.AsylumI18n\?\.locale \|\| 'zh-Hans'\) !== 'en'[\s\S]*element\.setAttribute\('lang', 'en'\)[\s\S]*element\.removeAttribute\('lang'\)/, 'official English values must expose their source language only on non-English pages');
+assert.match(detailClient, /function renderOfficialLabeledValue\(element, template, value\)[\s\S]*document\.createElement\('span'\)[\s\S]*officialValue\.textContent = value[\s\S]*markOfficialEnglish\(officialValue, true\)/, 'localized labels must keep official English values in a separate language span without HTML injection');
+assert.match(detailClient, /markOfficialEnglish\(court, Boolean\(background\.appointment_court\)\)[\s\S]*markOfficialEnglish\(type, Boolean\(background\.appointment_type\)\)[\s\S]*markOfficialEnglish\(biography, Boolean\(background\.biography\)\)[\s\S]*renderOfficialLabeledValue\(\$\('#background-education'\), copy\.education, background\.education\)[\s\S]*renderOfficialLabeledValue\(\$\('#background-bar'\), copy\.bar, background\.bar_membership\)[\s\S]*markOfficialEnglish\(source, Boolean\(background\.source_title\)\)/, 'all official English background values must carry source-language semantics');
+assert.match(detailClient, /biography\.textContent = copy\.statusBody;[\s\S]*markOfficialEnglish\(biography, false\)[\s\S]*markOfficialEnglish\(\$\('#background-source'\), false\)/, 'localized verification status must clear stale official English language markers');
 const webexMessages = detailClient.match(/const webexMessages = \{[\s\S]*?\n\};/)?.[0] || '';
 for (const locale of ['en', 'es', 'fr', 'pt-BR', 'hi', 'zh-Hans', 'zh-Hant', 'ru', 'ar', 'tr']) {
   assert.match(webexMessages, new RegExp(`['"]?${locale}['"]?\\s*:`), `Webex hearing guidance must support ${locale}`);

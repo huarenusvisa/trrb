@@ -208,6 +208,24 @@ function formatAppointmentDate(value) {
   }).format(date);
 }
 
+function markOfficialEnglish(element, hasOfficialValue) {
+  if (hasOfficialValue && (window.AsylumI18n?.locale || 'zh-Hans') !== 'en') element.setAttribute('lang', 'en');
+  else element.removeAttribute('lang');
+}
+
+function renderOfficialLabeledValue(element, template, value) {
+  element.replaceChildren();
+  if (!value) return;
+  const marker = '{value}';
+  const markerIndex = template.indexOf(marker);
+  element.append(markerIndex >= 0 ? template.slice(0, markerIndex) : `${template} `);
+  const officialValue = document.createElement('span');
+  officialValue.textContent = value;
+  markOfficialEnglish(officialValue, true);
+  element.append(officialValue);
+  if (markerIndex >= 0) element.append(template.slice(markerIndex + marker.length));
+}
+
 async function requestJson(url, options = {}) {
   const controller = new AbortController();
   const timeoutId = setTimeout(
@@ -228,29 +246,40 @@ function renderBackground(background) {
   $('#judge-background').hidden = false;
   if (!background) {
     $('#background-date').textContent = copy.unavailable;
-    $('#background-court').textContent = copy.unavailable;
-    $('#background-type').textContent = copy.type;
+    const court = $('#background-court');
+    court.textContent = copy.unavailable;
+    markOfficialEnglish(court, false);
+    const type = $('#background-type');
+    type.textContent = copy.type;
+    markOfficialEnglish(type, false);
     $('#background-copy-title').textContent = copy.statusTitle;
     const biography = $('#background-bio');
     biography.textContent = copy.statusBody;
-    biography.removeAttribute('lang');
+    markOfficialEnglish(biography, false);
+    renderOfficialLabeledValue($('#background-education'), copy.education, '');
+    renderOfficialLabeledValue($('#background-bar'), copy.bar, '');
+    markOfficialEnglish($('#background-source'), false);
     $('#background-source-wrap').hidden = true;
     return;
   }
   $('#background-copy-title').textContent = copy.biographyTitle;
   $('#background-source-wrap').hidden = false;
   $('#background-date').textContent = background.appointment_date ? formatAppointmentDate(background.appointment_date) : copy.unspecified;
-  $('#background-court').textContent = background.appointment_court || copy.unspecified;
-  $('#background-type').textContent = background.appointment_type || copy.type;
+  const court = $('#background-court');
+  court.textContent = background.appointment_court || copy.unspecified;
+  markOfficialEnglish(court, Boolean(background.appointment_court));
+  const type = $('#background-type');
+  type.textContent = background.appointment_type || copy.type;
+  markOfficialEnglish(type, Boolean(background.appointment_type));
   const biography = $('#background-bio');
   biography.textContent = background.biography || copy.missingBiography;
-  if (background.biography && (window.AsylumI18n?.locale || 'zh-Hans') !== 'en') biography.setAttribute('lang', 'en');
-  else biography.removeAttribute('lang');
-  $('#background-education').textContent = background.education ? fill(copy.education, { value: background.education }) : '';
-  $('#background-bar').textContent = background.bar_membership ? fill(copy.bar, { value: background.bar_membership }) : '';
+  markOfficialEnglish(biography, Boolean(background.biography));
+  renderOfficialLabeledValue($('#background-education'), copy.education, background.education);
+  renderOfficialLabeledValue($('#background-bar'), copy.bar, background.bar_membership);
   const source = $('#background-source');
   source.href = background.source_url || 'https://www.justice.gov/eoir/office-of-the-chief-immigration-judge';
   source.textContent = `${background.source_title || copy.source}${background.source_date ? ` (${background.source_date})` : ''} →`;
+  markOfficialEnglish(source, Boolean(background.source_title));
 }
 
 function renderWebex(webex) {

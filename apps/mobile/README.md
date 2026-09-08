@@ -72,6 +72,8 @@ Production 构建完成后，不能只设置两个确认变量。复制 `store/b
 
 TestFlight 和 Google Play 内部测试上传完成后，复制 `store/distribution-evidence.template.json` 为被 Git 忽略的 `store/distribution-evidence.local.json`，记录两个商店的处理状态和时间，再运行 `npm run store:distribution-evidence-check`。该校验会回读正式构建证据，要求 TestFlight 与 Google Play 内部轨道引用完全相同的 EAS build ID、Git 提交、App 版本及原生构建号，并强制 Android 保持 `draft`；下载地址、公开轨道、未处理完成状态或凭据字段都会被拒绝。只有再设置 `TRRB_STORE_DISTRIBUTION_EVIDENCE_FILE=store/distribution-evidence.local.json`，发布清单才会进入真机验收阶段。
 
+双平台真机验收后，复制 `store/device-acceptance.template.json` 为被 Git 忽略的 `store/device-acceptance.local.json`。每个平台都必须在实体设备上对同一批内测构建完成清单中的七项验收，并确认所有明确标记的测试帖子和评论已清理；账号删除项只检查入口和最终警告，不删除长期审核账号。运行 `npm run store:device-acceptance-check` 会逐级回读内测与正式构建证据，核对 Git 提交、App 版本、EAS build ID、原生构建号、内测目的地及时间顺序。模拟器、漏测/失败项、未清理测试内容、下载地址或凭据字段都会被拒绝。只有设置 `TRRB_STORE_DEVICE_ACCEPTANCE_FILE=store/device-acceptance.local.json` 后，发布清单才允许进入人工商店审核提交阶段。
+
 商店与启动器统一使用 `assets/app-icon-1024.png`。该文件必须保持 1024×1024、sRGB/RGB 且不含 Alpha 或透明色块；`config:check` 会阻止不合规图标进入正式构建。
 
 Google Play 中文标题、短描述和完整描述维护在 `store/google-play/zh-CN/`，分类、联系方式、隐私地址和截图清单维护在 `store/google-play/listing.json`。文案长度遵循 Google Play 的 30/80/4000 字符限制。

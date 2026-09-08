@@ -61,6 +61,30 @@ function distributionEvidenceFile(t) {
   return evidencePath;
 }
 
+function deviceAcceptanceFile(t) {
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'trrb-device-acceptance-'));
+  t.after(() => fs.rmSync(directory, { recursive: true, force: true }));
+  const evidencePath = path.join(directory, 'evidence.json');
+  const cases = [
+    'guest-news-browsing', 'unified-account-sign-in-and-sign-out',
+    'community-post-comment-and-cleanup', 'news-comment-reply-and-cleanup',
+    'favorites-and-history-cloud-sync', 'push-registration-delivery-and-deep-link',
+    'account-deletion-entry-and-final-warning'
+  ];
+  fs.writeFileSync(evidencePath, JSON.stringify({
+    schemaVersion: 1, sourceCommit: '1234567890abcdef1234567890abcdef12345678', appVersion: '0.2.0',
+    acceptanceRuns: ['ios', 'android'].map((platform, index) => ({
+      platform,
+      easBuildId: index === 0 ? '11111111-1111-4111-8111-111111111111' : '22222222-2222-4222-8222-222222222222',
+      destination: platform === 'ios' ? 'testflight' : 'google-play-internal', nativeBuildVersion: '3',
+      device: { kind: 'physical', os: platform, osVersion: '18.6', model: platform === 'ios' ? 'iPhone 16' : 'Pixel 9' },
+      startedAt: '2026-09-08T00:30:00.000Z', completedAt: '2026-09-08T00:45:00.000Z',
+      cases: cases.map((id) => ({ id, status: 'passed' })), testContentCleanedUp: true
+    }))
+  }));
+  return evidencePath;
+}
+
 test('runbook is valid, ordered and begins with release access', () => {
   const result = inspectSubmissionPlan({ mobileRoot, env: {} });
   assert.equal(result.valid, true, result.failures.join('\n'));
@@ -95,13 +119,19 @@ test('plan advances only after both platform confirmations and valid paired buil
   distribution.TRRB_STORE_DISTRIBUTION_EVIDENCE_FILE = distributionEvidenceFile(t);
   result = inspectSubmissionPlan({ mobileRoot, env: distribution, expectedSourceCommit: '1234567890abcdef1234567890abcdef12345678' });
   assert.equal(result.nextStage.id, 'real-device-acceptance');
+  assert.equal(result.nextStage.missing.length, 3);
 
   const devices = { ...distribution, TRRB_IOS_DEVICE_ACCEPTANCE_CONFIRMED: '1', TRRB_ANDROID_DEVICE_ACCEPTANCE_CONFIRMED: '1' };
-  result = inspectSubmissionPlan({ mobileRoot, env: devices });
+  result = inspectSubmissionPlan({ mobileRoot, env: devices, expectedSourceCommit: '1234567890abcdef1234567890abcdef12345678' });
+  assert.equal(result.nextStage.id, 'real-device-acceptance');
+  assert.deepEqual(result.nextStage.missing.map(({ id }) => id), ['real-device-acceptance-evidence']);
+
+  devices.TRRB_STORE_DEVICE_ACCEPTANCE_FILE = deviceAcceptanceFile(t);
+  result = inspectSubmissionPlan({ mobileRoot, env: devices, expectedSourceCommit: '1234567890abcdef1234567890abcdef12345678' });
   assert.equal(result.nextStage.id, 'store-review-submission');
 
   const submitted = { ...devices, TRRB_APPLE_REVIEW_SUBMITTED: '1', TRRB_GOOGLE_REVIEW_SUBMITTED: '1' };
-  result = inspectSubmissionPlan({ mobileRoot, env: submitted });
+  result = inspectSubmissionPlan({ mobileRoot, env: submitted, expectedSourceCommit: '1234567890abcdef1234567890abcdef12345678' });
   assert.equal(result.complete, true);
   assert.equal(result.nextStage, null);
 });
@@ -118,6 +148,9 @@ test('build and upload commands are explicit while public review submission rema
     'eas submit --platform ios --profile production',
     'eas submit --platform android --profile production',
     'npm run store:distribution-evidence-check -- store/distribution-evidence.local.json store/build-evidence.local.json'
+  ]);
+  assert.deepEqual(stages['real-device-acceptance'].commands, [
+    'npm run store:device-acceptance-check -- store/device-acceptance.local.json store/distribution-evidence.local.json store/build-evidence.local.json'
   ]);
   assert.deepEqual(stages['store-review-submission'].commands, []);
 });

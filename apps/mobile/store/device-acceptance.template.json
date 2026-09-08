@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "REPLACE_WITH_FULL_40_CHARACTER_GIT_COMMIT",
+  "appVersion": "0.2.0",
+  "acceptanceRuns": [
+    {
+      "platform": "ios",
+      "easBuildId": "REPLACE_WITH_IOS_EAS_BUILD_ID",
+      "destination": "testflight",
+      "nativeBuildVersion": "REPLACE_WITH_IOS_BUILD_NUMBER",
+      "device": { "kind": "physical", "os": "ios", "osVersion": "REPLACE", "model": "REPLACE" },
+      "startedAt": "2026-09-08T00:30:00.000Z",
+      "completedAt": "2026-09-08T00:45:00.000Z",
+      "cases": [
+        { "id": "guest-news-browsing", "status": "passed" },
+        { "id": "unified-account-sign-in-and-sign-out", "status": "passed" },
+        { "id": "community-post-comment-and-cleanup", "status": "passed" },
+        { "id": "news-comment-reply-and-cleanup", "status": "passed" },
+        { "id": "favorites-and-history-cloud-sync", "status": "passed" },
+        { "id": "push-registration-delivery-and-deep-link", "status": "passed" },
+        { "id": "account-deletion-entry-and-final-warning", "status": "passed" }
+      ],
+      "testContentCleanedUp": true
+    },
+    {
+      "platform": "android",
+      "easBuildId": "REPLACE_WITH_ANDROID_EAS_BUILD_ID",
+      "destination": "google-play-internal",
+      "nativeBuildVersion": "REPLACE_WITH_ANDROID_VERSION_CODE",
+      "device": { "kind": "physical", "os": "android", "osVersion": "REPLACE", "model": "REPLACE" },
+      "startedAt": "2026-09-08T00:50:00.000Z",
+      "completedAt": "2026-09-08T01:05:00.000Z",
+      "cases": [
+        { "id": "guest-news-browsing", "status": "passed" },
+        { "id": "unified-account-sign-in-and-sign-out", "status": "passed" },
+        { "id": "community-post-comment-and-cleanup", "status": "passed" },
+        { "id": "news-comment-reply-and-cleanup", "status": "passed" },
+        { "id": "favorites-and-history-cloud-sync", "status": "passed" },
+        { "id": "push-registration-delivery-and-deep-link", "status": "passed" },
+        { "id": "account-deletion-entry-and-final-warning", "status": "passed" }
+      ],
+      "testContentCleanedUp": true
+    }
+  ]
+}

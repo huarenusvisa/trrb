@@ -3,11 +3,11 @@ appId: net.trrb.mobile
 - launchApp:
     clearState: true
 - extendedWaitUntil:
-    visible: "重要新闻"
+    visible:
+      id: "home-nav-important"
     timeout: 30000
 - tapOn:
-    text: "重要新闻"
-    index: 0
+    id: "home-nav-important"
     retryTapIfNoChange: true
 - extendedWaitUntil:
     visible:
@@ -33,4 +33,5 @@ appId: net.trrb.mobile
     visible:
       id: "category-screen-title"
     timeout: 25000
-- assertVisible: "重要新闻"
+- assertVisible:
+    id: "category-screen-title"

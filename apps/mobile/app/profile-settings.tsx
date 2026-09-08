@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { ActivityIndicator, Alert, Pressable, ScrollView, StyleSheet, Switch, Text, TextInput, View } from 'react-native';
+import { ActivityIndicator, Alert, Keyboard, Pressable, ScrollView, StyleSheet, Switch, Text, TextInput, View } from 'react-native';
 import { Image } from 'expo-image';
 import * as ImagePicker from 'expo-image-picker';
 import { router } from 'expo-router';
@@ -95,6 +95,7 @@ export default function ProfileSettingsScreen() {
   };
 
   const save = async () => {
+    Keyboard.dismiss();
     const trimmedName = name.trim(); const trimmedBio = bio.trim();
     if (trimmedName.length < 2 || trimmedName.length > 32) return Alert.alert(t('profileSettings.invalidName'), t('profileSettings.invalidNameBody'));
     if (trimmedBio.length > 240) return Alert.alert(t('profileSettings.bioTooLong'), t('profileSettings.bioTooLongBody'));
@@ -149,7 +150,7 @@ export default function ProfileSettingsScreen() {
   const currentAvatar = avatarNumber(avatar);
   const coverUri = coverAsset?.uri || publicProfileMediaUrl(coverPath);
 
-  return <ScrollView contentContainerStyle={styles.page} keyboardShouldPersistTaps="handled">
+  return <ScrollView contentContainerStyle={styles.page} automaticallyAdjustKeyboardInsets keyboardDismissMode="on-drag" keyboardShouldPersistTaps="handled">
     <Text style={styles.h1}>{t('profileSettings.heading')}</Text><Text style={styles.sub}>{t('profileSettings.description')}</Text>
     <View style={styles.visualCard}>
       <View style={styles.cover}>{coverUri ? <Image source={{ uri: coverUri }} contentFit="cover" style={StyleSheet.absoluteFill} /> : <View style={styles.coverFallback} />}</View>

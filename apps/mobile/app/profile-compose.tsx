@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, Alert, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { ActivityIndicator, Alert, Keyboard, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { Image } from 'expo-image';
 import * as ImagePicker from 'expo-image-picker';
 import { router, Stack } from 'expo-router';
@@ -57,6 +57,7 @@ export default function ProfileComposeScreen() {
 
   const submit = async () => {
     if (!assets.length || busy) return;
+    Keyboard.dismiss();
     setBusy(true); setFailure(''); setProgress(t('profileCompose.preparing'));
     try {
       await createProfilePost(caption, assets, ({ completed, total }) => {
@@ -80,7 +81,7 @@ export default function ProfileComposeScreen() {
     await clearProfilePostDraft().catch(() => undefined);
   };
 
-  return <ScrollView style={styles.page} contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
+  return <ScrollView style={styles.page} contentContainerStyle={styles.content} automaticallyAdjustKeyboardInsets keyboardDismissMode="on-drag" keyboardShouldPersistTaps="handled">
     <Stack.Screen options={{ headerShown: true, title: t('profileCompose.screenTitle'), headerBackTitle: t('common.back') }} />
     <Text style={styles.title}>{t('profileCompose.heading')}</Text><Text style={styles.hint}>{t('profileCompose.mediaLimits')}</Text>
     {draftRestored ? <View testID="profile-compose-draft-restored" accessibilityLiveRegion="polite" style={styles.draftNotice}><Text style={styles.draftNoticeTitle}>{t('profileCompose.draftRestored')}</Text><Text style={styles.draftNoticeText}>{t('profileCompose.draftRestoredBody')}</Text></View> : null}

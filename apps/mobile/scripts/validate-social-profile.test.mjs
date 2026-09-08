@@ -338,6 +338,21 @@ test('community composer restores drafts and keeps failed submissions retryable'
   assert.match(drafts, /AsyncStorage\.removeItem/);
 });
 
+test('long-form editors stay usable while the software keyboard is open', () => {
+  const editors = [
+    read('app/community-compose.tsx'),
+    read('app/profile-compose.tsx'),
+    read('app/profile-settings.tsx'),
+  ];
+
+  for (const editor of editors) {
+    assert.match(editor, /Keyboard\.dismiss\(\)/);
+    assert.match(editor, /automaticallyAdjustKeyboardInsets/);
+    assert.match(editor, /keyboardDismissMode="on-drag"/);
+    assert.match(editor, /keyboardShouldPersistTaps="handled"/);
+  }
+});
+
 test('news and community comments preserve scoped drafts and failed submissions', () => {
   const news = read('src/components/CommentThread.tsx');
   const community = read('app/community/[id].tsx');

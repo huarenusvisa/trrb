@@ -15,9 +15,15 @@ test('keeps search and category discovery recoverable with narrow screens and la
   assert.match(search, /width < 360/);
   assert.match(search, /minHeight:44/);
   assert.match(search, /flexWrap:'wrap'/);
+  assert.match(search, /Keyboard\.dismiss\(\)/);
+  assert.match(search, /automaticallyAdjustKeyboardInsets/);
+  assert.match(search, /keyboardDismissMode="on-drag"/);
+  assert.match(search, /keyboardShouldPersistTaps="handled"/);
   assert.match(list, /fontScale >= 1\.3/);
   assert.match(list, /numberOfLines=\{largeText \? undefined : 3\}/);
   assert.match(list, /removeClippedSubviews=\{!largeText\}/);
+  assert.match(list, /keyboardDismissMode="on-drag"/);
+  assert.match(list, /keyboardShouldPersistTaps="handled"/);
   assert.doesNotMatch(list, /getItemLayout=/);
   assert.doesNotMatch(list, /card:\{height:118/);
 });

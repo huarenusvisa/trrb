@@ -174,6 +174,8 @@ export function PaginatedNewsList({ title, category, q, emptyText }: Props) {
       testID="category-news-list"
       style={styles.page}
       contentContainerStyle={[styles.content, compact && styles.compactContent]}
+      keyboardDismissMode="on-drag"
+      keyboardShouldPersistTaps="handled"
       data={items}
       keyExtractor={(item) => String(item.id)}
       renderItem={renderArticle}

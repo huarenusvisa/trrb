@@ -3,6 +3,15 @@ const MIN_DESCRIPTION = 100;
 const MAX_JOBS = 1000;
 const OFFICIAL_APPLY_SOURCE = /^(greenhouse_|jazzhr_|lever_|workday_|ashby_)/i;
 const UNKNOWN_COMPANY = /^(?:未公开雇主|招聘方未公开名称|未公开|不详|未知|unknown|confidential)$/i;
+const EVERGREEN_URLS = [
+  ["/", "1.0"], ["/jobs/", "0.9"],
+  ["/jobs/locations/new-york/", "0.8"], ["/jobs/locations/flushing/", "0.8"],
+  ["/jobs/locations/los-angeles/", "0.8"], ["/jobs/locations/boston/", "0.8"],
+  ["/jobs/locations/houston/", "0.8"], ["/jobs/categories/restaurant/", "0.8"],
+  ["/jobs/categories/driver/", "0.8"], ["/jobs/categories/warehouse/", "0.8"],
+  ["/jobs/categories/beauty-nail/", "0.8"], ["/jobs/categories/home-care/", "0.8"],
+  ["/ershou/", "0.7"]
+] as const;
 
 export const config = { path: "/sitemap.xml" };
 
@@ -43,20 +52,17 @@ async function jobs() {
   const rows = await response.json();
   return (Array.isArray(rows) ? rows : []).filter(eligible);
 }
-function block(loc: string, lastmod: string, priority: string) {
-  return `  <url>\n    <loc>${esc(loc)}</loc>\n    <lastmod>${esc(lastmod)}</lastmod>\n    <changefreq>daily</changefreq>\n    <priority>${priority}</priority>\n  </url>`;
+function block(loc: string, lastmod: string | null, priority: string) {
+  const modified = lastmod ? `\n    <lastmod>${esc(lastmod)}</lastmod>` : "";
+  return `  <url>\n    <loc>${esc(loc)}</loc>${modified}\n    <changefreq>daily</changefreq>\n    <priority>${priority}</priority>\n  </url>`;
 }
 export default async (request: Request, context: any) => {
   if (request.method !== "GET" && request.method !== "HEAD") return context.next();
   if (new URL(request.url).hostname.toLowerCase() !== "huarengongzuo.com") return context.next();
   try {
     const rows = await jobs();
-    const today = new Date().toISOString().slice(0,10);
     const blocks = [
-      block(`${SITE}/`, today, "1.0"),
-      block(`${SITE}/ershou/`, today, "0.7"),
-      block(`${SITE}/jobs/publish.html`, today, "0.6"),
-      block(`${SITE}/jobs/seeker.html`, today, "0.5"),
+      ...EVERGREEN_URLS.map(([path, priority]) => block(`${SITE}${path}`, null, priority)),
       ...rows.map((job: any) => block(
         `${SITE}/jobs/listing.html?id=${encodeURIComponent(job.id)}`,
         new Date(job.updated_at || job.published_at).toISOString().slice(0,10),

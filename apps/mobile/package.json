@@ -18,6 +18,7 @@
     "test:store-assets": "node --test scripts/store-submission-assets-core.test.mjs",
     "test:store-support": "node --test scripts/validate-store-support.test.mjs",
     "test:store-data": "node --test scripts/validate-store-data-practices.test.mjs",
+    "test:store-review": "node --test scripts/validate-store-review-access.test.mjs",
     "test:store-release": "node --test scripts/store-release-preflight.test.mjs",
     "store:release-preflight": "node scripts/store-release-preflight.mjs",
     "store:release-preflight:strict": "node scripts/store-release-preflight.mjs --strict",

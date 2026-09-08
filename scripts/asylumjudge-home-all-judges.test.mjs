@@ -162,8 +162,8 @@ for (const html of [standalone, trrb]) {
   assert.match(html, /其他占比/, 'trend legend must expose the blue other-outcome series');
   assert.match(html, /class="brand-lockup"[^>]+logo\.svg/, 'both homepage variants must render the final AsylumJudge logo');
 }
-assert.match(standalone, /app-i18n\.js\?v=13[\s\S]*site\.js\?v=41/, 'the standalone homepage must load the contextual link-label clients');
-assert.match(trrb, /app-i18n\.js\?v=12[\s\S]*site\.js\?v=40/, 'the embedded homepage must load the contextual link-label clients');
+assert.match(standalone, /app-i18n\.js\?v=13[\s\S]*site\.js\?v=42/, 'the standalone homepage must load the current judge-directory accessibility client');
+assert.match(trrb, /app-i18n\.js\?v=12[\s\S]*site\.js\?v=42/, 'the embedded homepage must load the current judge-directory accessibility client');
 assert.match(client, /class="judge-directory-row" role="listitem"/, 'each judge card must expose its position in the result list without overriding nested link semantics');
 assert.equal((client.match(/class="(?:directory-loading|empty)" role="listitem"/g) || []).length, 3, 'loading, empty, and error directory states must remain valid list items');
 assert.doesNotMatch(client, /<a[^>]*role="listitem"/, 'judge directory links must keep their native link role');
@@ -193,6 +193,12 @@ assert.doesNotMatch(client, /role="link" tabindex="0"/, 'judge cards must not cr
 assert.doesNotMatch(client, /card\.addEventListener\('keydown'/, 'judge cards must not add a redundant keyboard stop');
 assert.match(client, /class="judge-profile-link" href=/, 'each judge card must keep a semantic profile link');
 assert.match(client, /class="directory-detail-link" href=/, 'each judge card must keep a semantic detail link');
+assert.match(client, /class="judge-profile-link"[^>]*><strong lang="en">/, 'official EOIR judge names must expose their English source language');
+assert.match(client, /<small lang="en">\$\{esc\(court\)\}/, 'official court and location values must expose their English source language');
+assert.match(client, /background\.appointment_date \? `<span lang="en">\$\{esc\(background\.appointment_date\)\}<\/span>任命`/, 'official appointment dates must expose English source language without changing the localized label');
+assert.match(client, /background\.appointment_court \? `<span lang="en">\$\{esc\(background\.appointment_court\)\}<\/span>`/, 'official appointment courts must expose their English source language');
+assert.match(client, /background\.biography_excerpt \? `<span lang="en">\$\{esc\(background\.biography_excerpt\)\}<\/span>`/, 'official biography excerpts must expose their English source language');
+assert.doesNotMatch(client, /judge-background-summary[^\n]+\$\{esc\(backgroundText\)\}/, 'pre-escaped official background spans must not be flattened or double-escaped');
 assert.match(client, /verdict-pass/);
 assert.match(client, /verdict-deny/);
 assert.match(client, /verdict-other/);
@@ -249,8 +255,8 @@ assert.match(styles, /\.directory-metric\.verdict-other b[^}]*var\(--other\)/);
 assert.match(standalone, /rel="icon"[^>]+favicon\.ico/, 'homepage must declare a search and browser favicon');
 assert.match(standalone, /rel="apple-touch-icon"/, 'homepage must declare an iOS home-screen icon');
 assert.match(standalone, /rel="manifest"/, 'homepage must expose an installable site manifest');
-assert.match(standalone, /app-i18n\.js\?v=13[\s\S]*site\.js\?v=41/, 'standalone homepage must load the contextual link-label clients');
-assert.match(trrb, /app-i18n\.js\?v=12[\s\S]*site\.js\?v=40/, 'embedded homepage must load the contextual link-label clients');
+assert.match(standalone, /app-i18n\.js\?v=13[\s\S]*site\.js\?v=42/, 'standalone homepage must load the current judge-directory accessibility client');
+assert.match(trrb, /app-i18n\.js\?v=12[\s\S]*site\.js\?v=42/, 'embedded homepage must load the current judge-directory accessibility client');
 for (const source of ['正在读取全部法官资料…', '稍后重试', '读取失败', '全部法官资料暂时无法读取', '无需刷新页面，可以直接重新尝试。']) {
   const rowPattern = new RegExp(`\\['${source.replace(/[.*+?^${}()|[\\]\\]/g, '\\\\$&')}'(?:,'[^']+'){9}\\]`);
   assert.match(i18n, rowPattern, `${source} must provide all nine non-source translations`);

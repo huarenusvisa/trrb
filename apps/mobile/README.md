@@ -54,6 +54,8 @@ npm run export:web
 
 App Store 中文标题、简介、关键词、隐私政策和账户删除地址维护在 `store.config.json`。iOS Privacy Manifest 的 required-reason API 声明维护在 `app.json`，内容来自当前锁定版本依赖随附的 `PrivacyInfo.xcprivacy`。首次二进制上传并在 App Store Connect 建立版本后，才可使用 `eas metadata:push`；该操作需要 Apple 权限，不属于本地预检。
 
+Apple 与 Google 的支持地址统一使用 `https://trrb.net/app-support.html`。该页面提供中英双语故障排查、公开客服邮箱以及隐私、账户删除和使用条款入口；`config:check` 与 `test:store-support` 会防止商店资料重新指向普通首页或缺失必要支持信息。
+
 商店与启动器统一使用 `assets/app-icon-1024.png`。该文件必须保持 1024×1024、sRGB/RGB 且不含 Alpha 或透明色块；`config:check` 会阻止不合规图标进入正式构建。
 
 Google Play 中文标题、短描述和完整描述维护在 `store/google-play/zh-CN/`，分类、联系方式、隐私地址和截图清单维护在 `store/google-play/listing.json`。文案长度遵循 Google Play 的 30/80/4000 字符限制。

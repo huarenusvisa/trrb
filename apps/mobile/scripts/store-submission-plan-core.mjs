@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { readBuildEvidence } from './store-build-evidence-core.mjs';
 import { inspectReleaseReadiness } from './store-release-preflight-core.mjs';
 
 const CONFIRMED = '1';
@@ -20,7 +21,7 @@ const EXPECTED_ACCEPTANCE_CASES = [
   'account-deletion-entry-and-final-warning'
 ];
 
-export function inspectSubmissionPlan({ mobileRoot, env = {} }) {
+export function inspectSubmissionPlan({ mobileRoot, env = {}, expectedSourceCommit }) {
   const runbook = JSON.parse(fs.readFileSync(path.join(mobileRoot, 'store/submission-runbook.json'), 'utf8'));
   const release = inspectReleaseReadiness({ mobileRoot, env });
   const failures = [];
@@ -54,12 +55,29 @@ export function inspectSubmissionPlan({ mobileRoot, env = {} }) {
   expect(JSON.stringify(stages[3]?.acceptanceCases) === JSON.stringify(EXPECTED_ACCEPTANCE_CASES), 'Real-device acceptance coverage is incomplete');
   expect(stages[3]?.testContentPolicy === 'marked-test-content-only-and-clean-up-after-acceptance', 'Acceptance must protect real user content');
   expect(stages[4]?.manualOnly === true && (stages[4]?.commands ?? []).length === 0, 'Store review submission must remain an explicit manual console action');
+  const buildEvidence = stages[1]?.evidence;
+  expect(buildEvidence?.environmentVariable === 'TRRB_STORE_BUILD_EVIDENCE_FILE', 'Production builds must require a local evidence file');
+  expect(buildEvidence?.command === 'npm run store:build-evidence-check -- store/build-evidence.local.json', 'Production build evidence command is missing or unsafe');
+  expect(!/[;&|`$]/.test(buildEvidence?.command ?? ''), 'Production build evidence command must remain a single auditable command');
 
   const state = stages.map((stage) => {
-    const missing = stage.id === 'release-preflight'
+    let missing = stage.id === 'release-preflight'
       ? release.missing.map(({ id, label, confirmationEnvironmentVariable }) => ({ id, label, environmentVariable: confirmationEnvironmentVariable }))
       : (stage.confirmations ?? []).filter(({ environmentVariable }) => env[environmentVariable] !== CONFIRMED);
-    return { id: stage.id, title: stage.title, complete: missing.length === 0, missing, commands: stage.commands ?? [] };
+    const commands = [...(stage.commands ?? [])];
+    if (stage.id === 'production-builds') {
+      const evidencePath = env[buildEvidence?.environmentVariable];
+      const evidence = evidencePath ? readBuildEvidence({ mobileRoot, evidencePath, expectedSourceCommit }) : { valid: false };
+      if (!evidence.valid) {
+        missing = [...missing, {
+          id: 'production-build-evidence',
+          label: buildEvidence?.label,
+          environmentVariable: buildEvidence?.environmentVariable
+        }];
+      }
+      if (buildEvidence?.command) commands.push(buildEvidence.command);
+    }
+    return { id: stage.id, title: stage.title, complete: missing.length === 0, missing, commands };
   });
   const nextStage = state.find((stage) => !stage.complete) ?? null;
 

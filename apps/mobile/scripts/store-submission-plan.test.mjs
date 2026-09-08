@@ -1,4 +1,6 @@
 import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import os from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
 import { inspectSubmissionPlan } from './store-submission-plan-core.mjs';
@@ -14,6 +16,29 @@ const releaseAccess = {
   TRRB_REVIEW_ACCOUNT_CONFIRMED: '1'
 };
 
+function buildEvidenceFile(t) {
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'trrb-build-evidence-'));
+  t.after(() => fs.rmSync(directory, { recursive: true, force: true }));
+  const sourceCommit = '1234567890abcdef1234567890abcdef12345678';
+  const evidencePath = path.join(directory, 'evidence.json');
+  fs.writeFileSync(evidencePath, JSON.stringify({
+    schemaVersion: 1,
+    sourceCommit,
+    application: {
+      slug: 'trrb', projectId: 'cc29573d-d20c-4c3b-a7d6-1bc74838127a', version: '0.2.0', runtimeVersion: '0.2.0',
+      ios: { bundleIdentifier: 'net.trrb.mobile' }, android: { package: 'net.trrb.mobile' }
+    },
+    builds: ['ios', 'android'].map((platform, index) => ({
+      platform,
+      easBuildId: index === 0 ? '11111111-1111-4111-8111-111111111111' : '22222222-2222-4222-8222-222222222222',
+      profile: 'production', status: 'finished', distribution: 'store', channel: 'production',
+      artifactType: platform === 'ios' ? 'ipa' : 'aab', sourceCommit, appVersion: '0.2.0', runtimeVersion: '0.2.0',
+      nativeBuildVersion: '3', createdAt: '2026-09-08T00:00:00.000Z', completedAt: '2026-09-08T00:10:00.000Z'
+    }))
+  }));
+  return evidencePath;
+}
+
 test('runbook is valid, ordered and begins with release access', () => {
   const result = inspectSubmissionPlan({ mobileRoot, env: {} });
   assert.equal(result.valid, true, result.failures.join('\n'));
@@ -22,13 +47,21 @@ test('runbook is valid, ordered and begins with release access', () => {
   assert.equal(result.nextStage.missing.length, 7);
 });
 
-test('plan advances only after both platform confirmations at each stage', () => {
+test('plan advances only after both platform confirmations and valid paired build evidence', (t) => {
   let result = inspectSubmissionPlan({ mobileRoot, env: releaseAccess });
   assert.equal(result.nextStage.id, 'production-builds');
-  assert.equal(result.nextStage.missing.length, 2);
+  assert.equal(result.nextStage.missing.length, 3);
 
   const builds = { ...releaseAccess, TRRB_IOS_PRODUCTION_BUILD_CONFIRMED: '1', TRRB_ANDROID_PRODUCTION_BUILD_CONFIRMED: '1' };
   result = inspectSubmissionPlan({ mobileRoot, env: builds });
+  assert.equal(result.nextStage.id, 'production-builds');
+  assert.deepEqual(result.nextStage.missing.map(({ id }) => id), ['production-build-evidence']);
+
+  builds.TRRB_STORE_BUILD_EVIDENCE_FILE = buildEvidenceFile(t);
+  result = inspectSubmissionPlan({ mobileRoot, env: builds, expectedSourceCommit: 'a'.repeat(40) });
+  assert.equal(result.nextStage.id, 'production-builds');
+
+  result = inspectSubmissionPlan({ mobileRoot, env: builds, expectedSourceCommit: '1234567890abcdef1234567890abcdef12345678' });
   assert.equal(result.nextStage.id, 'internal-distribution');
 
   const distribution = { ...builds, TRRB_TESTFLIGHT_BUILD_CONFIRMED: '1', TRRB_PLAY_INTERNAL_BUILD_CONFIRMED: '1' };
@@ -50,7 +83,8 @@ test('build and upload commands are explicit while public review submission rema
   const stages = Object.fromEntries(result.stages.map((stage) => [stage.id, stage]));
   assert.deepEqual(stages['production-builds'].commands, [
     'eas build --platform ios --profile production',
-    'eas build --platform android --profile production'
+    'eas build --platform android --profile production',
+    'npm run store:build-evidence-check -- store/build-evidence.local.json'
   ]);
   assert.deepEqual(stages['internal-distribution'].commands, [
     'eas submit --platform ios --profile production',

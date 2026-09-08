@@ -426,6 +426,7 @@ export default function HomeScreen() {
           {HOME_NAV_ITEMS.map((item) => (
             <Pressable
               key={item.category}
+              testID={item.category === '重要新闻' ? 'home-nav-important' : undefined}
               style={styles.navItem}
               onPress={() => {
                 if ('route' in item) router.push(item.route);

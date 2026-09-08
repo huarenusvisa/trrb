@@ -16,10 +16,9 @@ const releaseAccess = {
   TRRB_REVIEW_ACCOUNT_CONFIRMED: '1'
 };
 
-function buildEvidenceFile(t) {
+function buildEvidenceFile(t, sourceCommit = '1234567890abcdef1234567890abcdef12345678') {
   const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'trrb-build-evidence-'));
   t.after(() => fs.rmSync(directory, { recursive: true, force: true }));
-  const sourceCommit = '1234567890abcdef1234567890abcdef12345678';
   const evidencePath = path.join(directory, 'evidence.json');
   fs.writeFileSync(evidencePath, JSON.stringify({
     schemaVersion: 1,
@@ -34,6 +33,28 @@ function buildEvidenceFile(t) {
       profile: 'production', status: 'finished', distribution: 'store', channel: 'production',
       artifactType: platform === 'ios' ? 'ipa' : 'aab', sourceCommit, appVersion: '0.2.0', runtimeVersion: '0.2.0',
       nativeBuildVersion: '3', createdAt: '2026-09-08T00:00:00.000Z', completedAt: '2026-09-08T00:10:00.000Z'
+    }))
+  }));
+  return evidencePath;
+}
+
+function screenshotEvidenceFile(t) {
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'trrb-screenshot-evidence-plan-'));
+  t.after(() => fs.rmSync(directory, { recursive: true, force: true }));
+  const evidencePath = path.join(directory, 'evidence.json');
+  const screens = ['01-home', '02-america', '03-immigration', '04-legal', '05-community'];
+  const configs = [
+    ['app-store-iphone69', 'iphone-6.9', 'store/app-store/screenshots/iphone-6.9', 1290, 2796],
+    ['app-store-ipad13', 'ipad-13', 'store/app-store/screenshots/ipad-13', 2048, 2732],
+    ['google-play-phone', 'android-phone', 'store/google-play/screenshots/phone', 1080, 1920]
+  ];
+  let digest = 0;
+  fs.writeFileSync(evidencePath, JSON.stringify({
+    schemaVersion: 1, sourceCommit: '1234567890abcdef1234567890abcdef12345678', appVersion: '0.2.0',
+    locale: 'zh-CN', capturedAt: '2026-09-08T00:00:00.000Z',
+    sets: configs.map(([id, deviceClass, screenshotDirectory, width, height]) => ({
+      id, deviceClass, directory: screenshotDirectory,
+      screenshots: screens.map((name) => ({ name, width, height, sha256: (++digest).toString(16).padStart(64, '0') }))
     }))
   }));
   return evidencePath;
@@ -106,24 +127,27 @@ test('runbook is valid, ordered and begins with release access', () => {
   assert.equal(result.valid, true, result.failures.join('\n'));
   assert.equal(result.complete, false);
   assert.equal(result.nextStage.id, 'release-preflight');
-  assert.equal(result.nextStage.missing.length, 7);
+  assert.equal(result.nextStage.missing.length, 8);
 });
 
 test('plan advances only after both platform confirmations and valid paired build evidence', (t) => {
-  let result = inspectSubmissionPlan({ mobileRoot, env: releaseAccess });
+  const sourceCommit = '1234567890abcdef1234567890abcdef12345678';
+  const access = { ...releaseAccess, TRRB_STORE_SCREENSHOT_EVIDENCE_FILE: screenshotEvidenceFile(t) };
+  let result = inspectSubmissionPlan({ mobileRoot, env: access, expectedSourceCommit: sourceCommit });
   assert.equal(result.nextStage.id, 'production-builds');
   assert.equal(result.nextStage.missing.length, 3);
 
-  const builds = { ...releaseAccess, TRRB_IOS_PRODUCTION_BUILD_CONFIRMED: '1', TRRB_ANDROID_PRODUCTION_BUILD_CONFIRMED: '1' };
+  const builds = { ...access, TRRB_IOS_PRODUCTION_BUILD_CONFIRMED: '1', TRRB_ANDROID_PRODUCTION_BUILD_CONFIRMED: '1' };
   result = inspectSubmissionPlan({ mobileRoot, env: builds });
   assert.equal(result.nextStage.id, 'production-builds');
   assert.deepEqual(result.nextStage.missing.map(({ id }) => id), ['production-build-evidence']);
 
-  builds.TRRB_STORE_BUILD_EVIDENCE_FILE = buildEvidenceFile(t);
-  result = inspectSubmissionPlan({ mobileRoot, env: builds, expectedSourceCommit: 'a'.repeat(40) });
+  builds.TRRB_STORE_BUILD_EVIDENCE_FILE = buildEvidenceFile(t, 'a'.repeat(40));
+  result = inspectSubmissionPlan({ mobileRoot, env: builds, expectedSourceCommit: sourceCommit });
   assert.equal(result.nextStage.id, 'production-builds');
 
-  result = inspectSubmissionPlan({ mobileRoot, env: builds, expectedSourceCommit: '1234567890abcdef1234567890abcdef12345678' });
+  builds.TRRB_STORE_BUILD_EVIDENCE_FILE = buildEvidenceFile(t);
+  result = inspectSubmissionPlan({ mobileRoot, env: builds, expectedSourceCommit: sourceCommit });
   assert.equal(result.nextStage.id, 'internal-distribution');
   assert.equal(result.nextStage.missing.length, 3);
 
@@ -133,12 +157,12 @@ test('plan advances only after both platform confirmations and valid paired buil
   assert.deepEqual(result.nextStage.missing.map(({ id }) => id), ['internal-distribution-evidence']);
 
   distribution.TRRB_STORE_DISTRIBUTION_EVIDENCE_FILE = distributionEvidenceFile(t);
-  result = inspectSubmissionPlan({ mobileRoot, env: distribution, expectedSourceCommit: '1234567890abcdef1234567890abcdef12345678' });
+  result = inspectSubmissionPlan({ mobileRoot, env: distribution, expectedSourceCommit: sourceCommit });
   assert.equal(result.nextStage.id, 'real-device-acceptance');
   assert.equal(result.nextStage.missing.length, 3);
 
   const devices = { ...distribution, TRRB_IOS_DEVICE_ACCEPTANCE_CONFIRMED: '1', TRRB_ANDROID_DEVICE_ACCEPTANCE_CONFIRMED: '1' };
-  result = inspectSubmissionPlan({ mobileRoot, env: devices, expectedSourceCommit: '1234567890abcdef1234567890abcdef12345678' });
+  result = inspectSubmissionPlan({ mobileRoot, env: devices, expectedSourceCommit: sourceCommit });
   assert.equal(result.nextStage.id, 'real-device-acceptance');
   assert.deepEqual(result.nextStage.missing.map(({ id }) => id), ['real-device-acceptance-evidence']);
 
@@ -147,7 +171,7 @@ test('plan advances only after both platform confirmations and valid paired buil
   assert.equal(result.nextStage.id, 'store-review-submission');
 
   const submitted = { ...devices, TRRB_APPLE_REVIEW_SUBMITTED: '1', TRRB_GOOGLE_REVIEW_SUBMITTED: '1' };
-  result = inspectSubmissionPlan({ mobileRoot, env: submitted, expectedSourceCommit: '1234567890abcdef1234567890abcdef12345678' });
+  result = inspectSubmissionPlan({ mobileRoot, env: submitted, expectedSourceCommit: sourceCommit });
   assert.equal(result.nextStage.id, 'store-review-submission');
   assert.deepEqual(result.nextStage.missing.map(({ id }) => id), ['store-review-submission-evidence']);
 
@@ -160,6 +184,10 @@ test('plan advances only after both platform confirmations and valid paired buil
 test('build and upload commands are explicit while public review submission remains manual', () => {
   const result = inspectSubmissionPlan({ mobileRoot, env: releaseAccess });
   const stages = Object.fromEntries(result.stages.map((stage) => [stage.id, stage]));
+  assert.deepEqual(stages['release-preflight'].commands, [
+    'npm run store:release-preflight:strict',
+    'npm run store:screenshot-evidence-check -- store/screenshot-evidence.local.json'
+  ]);
   assert.deepEqual(stages['production-builds'].commands, [
     'eas build --platform ios --profile production',
     'eas build --platform android --profile production',

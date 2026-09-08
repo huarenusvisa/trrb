@@ -13,6 +13,11 @@
       "title": "Release access and metadata preflight",
       "dependsOn": [],
       "commands": ["npm run store:release-preflight:strict"],
+      "evidence": {
+        "label": "Validated version-bound iPhone, iPad and Android store screenshot evidence",
+        "environmentVariable": "TRRB_STORE_SCREENSHOT_EVIDENCE_FILE",
+        "command": "npm run store:screenshot-evidence-check -- store/screenshot-evidence.local.json"
+      },
       "confirmations": []
     },
     {

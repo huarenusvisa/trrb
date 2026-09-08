@@ -16,6 +16,7 @@
     "test:social": "node --test scripts/validate-social-profile.test.mjs",
     "test:push": "node --experimental-strip-types --test src/push/push-core.test.ts src/push/registration-core.test.ts src/push/registration-api.test.ts src/notifications/unread-core.test.ts src/notifications/notification-action-core.test.ts",
     "test:store-assets": "node --test scripts/store-submission-assets-core.test.mjs",
+    "test:store-screenshot-evidence": "node --test scripts/store-screenshot-evidence.test.mjs",
     "test:store-support": "node --test scripts/validate-store-support.test.mjs",
     "test:store-data": "node --test scripts/validate-store-data-practices.test.mjs",
     "test:store-review": "node --test scripts/validate-store-review-access.test.mjs",
@@ -37,6 +38,7 @@
     "typecheck": "tsc --noEmit",
     "config:check": "node ../../scripts/validate-mobile-store-config.mjs",
     "store:submission-check": "node scripts/validate-store-submission-assets.mjs",
+    "store:screenshot-evidence-check": "node scripts/store-screenshot-evidence.mjs",
     "export:web": "expo export --platform web --output-dir .expo-export --clear"
   },
   "dependencies": {

@@ -97,6 +97,8 @@ maestro test .maestro/store-screenshots-ios-ipad.yml
 
 三套截图生成后，运行 `npm run store:submission-check`。该严格预检会阻止截图缺失、顺序不一致、尺寸不受支持、横屏、透明通道或重复图片进入人工上传阶段；截图规格集中维护在 `store/submission-assets.json`。由于截图本身不提交到 Git，常规 CI 只验证预检器、截图清单和生成流程，严格预检必须在提交商店的工作站执行。
 
+预检通过后，复制 `store/screenshot-evidence.template.json` 为被 Git 忽略的 `store/screenshot-evidence.local.json`，填写当前完整 Git 提交、App 版本、截图时间以及15张图片的 SHA-256。运行 `npm run store:screenshot-evidence-check` 会再次读取真实 PNG，核对简体中文首发语言、iPhone 6.9英寸、iPad 13英寸、Android 手机三套目录、固定页面顺序、尺寸与摘要。旧版本、错语言、错目录、重复或被替换的图片不能通过；发布清单还要求 `TRRB_STORE_SCREENSHOT_EVIDENCE_FILE=store/screenshot-evidence.local.json`，因此仅设置“截图已完成”确认值不能跳过证据闸门。
+
 ## 统一账号真机回归
 
 `.eas/workflows/auth-e2e.yml` 会复用最近一次 `e2e-test` 的 Android 和 iOS 模拟器构建，先验证“打开登录页 → 登录或自动注册 → 保存 Supabase 会话 → 个人页显示账号 → 退出登录”，再在两个平台分别完成社区发帖闭环和新闻评论闭环。

@@ -167,7 +167,9 @@ jobs:
         run: node scripts/audit-app-batch2-node7.mjs
       - name: Validate store build configuration
         working-directory: apps/mobile
-        run: npm run config:check
+        run: |
+          npm run config:check
+          npm run test:store-assets
       - name: Export Expo web bundle
         working-directory: apps/mobile
         run: npm run export:web

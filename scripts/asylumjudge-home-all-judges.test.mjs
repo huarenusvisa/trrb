@@ -74,8 +74,8 @@ const bundleBuilder = readFileSync('scripts/build-asylumjudge-site.mjs', 'utf8')
 
 assert.match(styles, /\.judge-directory-row\{[^}]*content-visibility:auto[^}]*contain-intrinsic-block-size:auto 150px/, 'offscreen judge cards must defer layout and paint with a stable desktop placeholder');
 assert.match(styles, /@media\(max-width:760px\)\{\.judge-directory-row\{[^}]*contain-intrinsic-block-size:auto 196px/, 'offscreen judge cards must reserve their mobile card height');
-assert.match(standalone, /site\.css\?v=36/, 'standalone homepage must load the current knowledge-list stylesheet');
-assert.match(trrb, /site\.css\?v=36/, 'embedded homepage must load the current knowledge-list stylesheet');
+assert.match(standalone, /site\.css\?v=37/, 'standalone homepage must load the current state-list stylesheet');
+assert.match(trrb, /site\.css\?v=37/, 'embedded homepage must load the current state-list stylesheet');
 assert.match(backgroundDirectory, /site\.css\?v=35/, 'background directory must load the current skip-link and chart-focus stylesheet');
 assert.match(backgroundDirectory, /<body>\s*<a class="skip-link" href="#main-content">跳到主要内容<\/a>/, 'background directory must let keyboard users bypass its sticky header');
 assert.match(backgroundDirectory, /<main id="main-content" class="shell background-directory-page" tabindex="-1">/, 'background directory skip target must accept programmatic focus');
@@ -137,7 +137,8 @@ for (const html of [standalone, trrb]) {
   assert.match(html, /<li class="knowledge-loading">/, 'the initial knowledge loading state must preserve valid list structure');
   assert.doesNotMatch(html, /id="daily-knowledge-items"[^>]+aria-live=/, 'daily knowledge cards must not be announced as one oversized live region');
   assert.match(html, /id="state-list-status"[^>]+role="status"[^>]+aria-live="polite"[^>]+aria-atomic="true"/, 'state overview must announce a concise atomic status');
-  assert.match(html, /id="state-list"[^>]+aria-busy="true"/, 'state overview must expose its initial loading state');
+  assert.match(html, /<ul id="state-list"[^>]+aria-labelledby="state-list-title"[^>]+aria-busy="true"/, 'state overview must expose a named semantic list and its initial loading state');
+  assert.equal((html.match(/<li class="skeleton"><\/li>/g) || []).length, 3, 'initial state loading placeholders must preserve valid list structure');
   assert.doesNotMatch(html, /id="state-list"[^>]+aria-live=/, 'state cards must not be announced as one oversized live region');
   assert.doesNotMatch(html, /id="featured-judges"/, 'the old top-12-only section must be removed');
   assert.match(html, /data-state-interval="month"/, 'homepage must offer a monthly trend');
@@ -163,8 +164,13 @@ for (const html of [standalone, trrb]) {
   assert.match(html, /其他占比/, 'trend legend must expose the blue other-outcome series');
   assert.match(html, /class="brand-lockup"[^>]+logo\.svg/, 'both homepage variants must render the final AsylumJudge logo');
 }
-assert.match(standalone, /app-i18n\.js\?v=13[\s\S]*site\.js\?v=43/, 'the standalone homepage must load the current knowledge-list accessibility client');
-assert.match(trrb, /app-i18n\.js\?v=12[\s\S]*site\.js\?v=43/, 'the embedded homepage must load the current knowledge-list accessibility client');
+assert.match(standalone, /app-i18n\.js\?v=13[\s\S]*site\.js\?v=44/, 'the standalone homepage must load the current state-list accessibility client');
+assert.match(trrb, /app-i18n\.js\?v=12[\s\S]*site\.js\?v=44/, 'the embedded homepage must load the current state-list accessibility client');
+assert.match(client, /<li class="state-entry"><a class="state-row"/, 'each state result must be a list item while retaining native link semantics');
+assert.match(client, /container\.innerHTML = '<li class="skeleton"><\/li><li class="skeleton"><\/li><li class="skeleton"><\/li>'/, 'dynamic state loading placeholders must preserve valid list structure');
+assert.match(client, /container\.innerHTML = '<li class="empty">[\s\S]{0,300}id="overview-retry"/, 'state overview errors must preserve valid list structure and retry controls');
+assert.doesNotMatch(client, /<a class="state-row"[^>]*role="listitem"/, 'state result links must keep their native link role');
+assert.match(styles, /\.state-list\{margin:0;padding:0;list-style:none\}/, 'the semantic state list must reset browser list spacing without changing its layout');
 assert.match(client, /<li class="knowledge-entry"><a class="knowledge-item/, 'each knowledge article must be a list item while retaining native link semantics');
 assert.equal((client.match(/<li class="knowledge-(?:loading|empty)"/g) || []).length, 3, 'knowledge loading, empty, and error states must remain valid list items');
 assert.doesNotMatch(client, /<a[^>]*role="listitem"/, 'knowledge article links must not override their native link role');
@@ -262,8 +268,8 @@ assert.match(styles, /\.directory-metric\.verdict-other b[^}]*var\(--other\)/);
 assert.match(standalone, /rel="icon"[^>]+favicon\.ico/, 'homepage must declare a search and browser favicon');
 assert.match(standalone, /rel="apple-touch-icon"/, 'homepage must declare an iOS home-screen icon');
 assert.match(standalone, /rel="manifest"/, 'homepage must expose an installable site manifest');
-assert.match(standalone, /app-i18n\.js\?v=13[\s\S]*site\.js\?v=43/, 'standalone homepage must load the current knowledge-list accessibility client');
-assert.match(trrb, /app-i18n\.js\?v=12[\s\S]*site\.js\?v=43/, 'embedded homepage must load the current knowledge-list accessibility client');
+assert.match(standalone, /app-i18n\.js\?v=13[\s\S]*site\.js\?v=44/, 'standalone homepage must load the current state-list accessibility client');
+assert.match(trrb, /app-i18n\.js\?v=12[\s\S]*site\.js\?v=44/, 'embedded homepage must load the current state-list accessibility client');
 for (const source of ['正在读取全部法官资料…', '稍后重试', '读取失败', '全部法官资料暂时无法读取', '无需刷新页面，可以直接重新尝试。']) {
   const rowPattern = new RegExp(`\\['${source.replace(/[.*+?^${}()|[\\]\\]/g, '\\\\$&')}'(?:,'[^']+'){9}\\]`);
   assert.match(i18n, rowPattern, `${source} must provide all nine non-source translations`);

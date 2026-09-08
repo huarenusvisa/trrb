@@ -88,7 +88,7 @@ function renderStates(rows, data = {}) {
   const normalized = [...rows].sort((a, b) => Number(b.total_asylum_decisions || 0) - Number(a.total_asylum_decisions || 0));
   const selected = preferred.map((code) => normalized.find((row) => String(row.state || '').toUpperCase() === code)).filter(Boolean);
   for (const row of normalized) if (selected.length < 6 && !selected.includes(row)) selected.push(row);
-  $('#state-list').innerHTML = selected.map((row) => `<a class="state-row" href="${appPath('courts')}?state=${encodeURIComponent(row.state || '')}&fy=${encodeURIComponent(data.fiscal_year || '')}"><span><b>${esc(stateName(row.state) || row.state || '未标注')}</b> · ${fmt(row.total_asylum_decisions)} 件</span><b>${pct(row.adjudicated_approval_rate)}</b></a>`).join('');
+  $('#state-list').innerHTML = selected.map((row) => `<li class="state-entry"><a class="state-row" href="${appPath('courts')}?state=${encodeURIComponent(row.state || '')}&fy=${encodeURIComponent(data.fiscal_year || '')}"><span><b>${esc(stateName(row.state) || row.state || '未标注')}</b> · ${fmt(row.total_asylum_decisions)} 件</span><b>${pct(row.adjudicated_approval_rate)}</b></a></li>`).join('');
   const status = $('#state-list-status');
   if (status) status.textContent = `${fmt(selected.length)} ${window.AsylumI18n?.t?.('州') || '州'}`;
 
@@ -338,7 +338,7 @@ async function loadOverview(fiscalYear = 2026) {
   const status = $('#state-list-status');
   container.setAttribute('aria-busy', 'true');
   if (status) status.textContent = window.AsylumI18n?.t?.('正在汇总州级样本') || '正在汇总州级样本';
-  container.innerHTML = '<div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>';
+  container.innerHTML = '<li class="skeleton"></li><li class="skeleton"></li><li class="skeleton"></li>';
   $('#snapshot-period-label').textContent = `FY ${fiscalYear}（读取中）`;
   $('#national-rate').textContent = '—';
   $('#national-sample').textContent = '正在读取';
@@ -359,7 +359,7 @@ async function loadOverview(fiscalYear = 2026) {
     $('#snapshot-period-label').textContent = `FY ${fiscalYear}`;
     $('#national-sample').textContent = '数据库暂时无法读取';
     if (status) status.textContent = window.AsylumI18n?.t?.('数据库暂时无法读取') || '数据库暂时无法读取';
-    container.innerHTML = '<div class="empty"><b>数据库暂时无法读取</b><p>无需刷新页面，可以直接重新尝试。</p><button id="overview-retry" class="directory-retry" type="button">重新尝试</button></div>';
+    container.innerHTML = '<li class="empty"><b>数据库暂时无法读取</b><p>无需刷新页面，可以直接重新尝试。</p><button id="overview-retry" class="directory-retry" type="button">重新尝试</button></li>';
     $('#overview-retry').addEventListener('click', () => loadOverview(fiscalYear));
   } finally {
     if (overviewController === controller) {

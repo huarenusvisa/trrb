@@ -132,3 +132,6 @@
 
 /* Make the active keyboard position visible across the full trend hit target. */
 .market-hit:focus-visible .market-hit-area{fill:rgba(16,24,40,.08);stroke:#101828;stroke-width:2}
+
+/* Preserve the snapshot layout while exposing its state links as a semantic list. */
+.state-list{margin:0;padding:0;list-style:none}

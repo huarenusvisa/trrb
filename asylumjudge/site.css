@@ -20,6 +20,7 @@
 .national-rate>div:first-child{background:var(--pass-soft);border:1px solid #ccebd8}
 .search-box:focus-within{border-color:var(--pass);box-shadow:0 0 0 4px rgba(20,128,74,.12)}
 .search-box button{background:var(--pass)}.search-box button:hover{background:var(--pass-dark)}
+.search-box .search-clear{display:grid;place-items:center;align-self:center;width:44px;min-width:44px;height:44px;padding:0;border-radius:50%;background:transparent;color:var(--muted);font-size:25px;line-height:1;touch-action:manipulation}.search-box .search-clear:hover{background:var(--soft);color:var(--ink)}.search-box .search-clear[hidden]{display:none}
 .quick button:hover{border-color:var(--pass);color:var(--pass-dark)}
 .quick button{min-height:44px;touch-action:manipulation}
 .state-more,.state-market-more,.featured-judge>i,.entry-grid i{color:var(--pass)}

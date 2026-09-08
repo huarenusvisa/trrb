@@ -441,6 +441,7 @@ function renderJudgeDirectory(rows, query = '') {
 
 function applyJudgeFilter(query, { scroll = false, updateUrl = true, pushHistory = false } = {}) {
   query = String(query || '').trim();
+  $('#judge-search-clear').hidden = !query;
   directoryVisibleCount = DIRECTORY_BATCH_SIZE;
   renderJudgeDirectory(filterJudges(query), query);
   if (updateUrl) {
@@ -539,9 +540,22 @@ $('#judge-search').addEventListener('submit', (event) => {
 });
 $('#judge-q').addEventListener('input', () => {
   clearTimeout(searchTimer);
+  $('#judge-search-clear').hidden = !String($('#judge-q').value || '').trim();
   searchTimer = setTimeout(() => {
     if (allJudges.length) applyJudgeFilter($('#judge-q').value, { updateUrl: false });
   }, 120);
+});
+$('#judge-search-clear').addEventListener('click', () => {
+  clearTimeout(searchTimer);
+  $('#judge-q').value = '';
+  if (allJudges.length) applyJudgeFilter('', { pushHistory: true });
+  else {
+    $('#judge-search-clear').hidden = true;
+    const url = new URL(location.href);
+    url.searchParams.delete('q');
+    history.pushState(null, '', `${url.pathname}${url.search}${url.hash}`);
+  }
+  $('#judge-q').focus();
 });
 document.querySelectorAll('.quick button').forEach((button) => button.addEventListener('click', () => {
   $('#judge-q').value = button.dataset.q;
@@ -550,6 +564,7 @@ document.querySelectorAll('.quick button').forEach((button) => button.addEventLi
 window.addEventListener('popstate', () => {
   const query = new URLSearchParams(location.search).get('q') || '';
   $('#judge-q').value = query;
+  $('#judge-search-clear').hidden = !query.trim();
   if (allJudges.length) applyJudgeFilter(query, { updateUrl: false });
 });
 document.querySelectorAll('[data-state-fy]').forEach((button) => button.addEventListener('click', () => loadOverview(Number(button.dataset.stateFy))));
@@ -565,7 +580,10 @@ $('#trend-court-select').addEventListener('change', (event) => {
 
 useCleanDomainRoutes();
 const initial = new URLSearchParams(location.search).get('q') || '';
-if (initial) $('#judge-q').value = initial;
+if (initial) {
+  $('#judge-q').value = initial;
+  $('#judge-search-clear').hidden = false;
+}
 loadOverview();
 loadTrendLocations().then(() => loadStateTrend());
 loadDailyKnowledge();

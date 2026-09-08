@@ -394,6 +394,7 @@ function renderJudgeDirectory(rows, query = '') {
     ? `匹配 ${fmt(rows.length)} 位／全部 ${fmt(allJudges.length)} 位`
     : `共 ${fmt(allJudges.length)} 位法官`;
   container.innerHTML = rows.length ? rows.map((row) => {
+    const judgeName = row.judge_name || '未命名法官';
     const place = [row.court_city, row.court_state].filter(Boolean).join(', ');
     const court = row.court_name || place || '法院信息待更新';
     const adjudicated = Number(row.grants || 0) + Number(row.denials || 0);
@@ -402,13 +403,13 @@ function renderJudgeDirectory(rows, query = '') {
       : `<b class="directory-rate">${pct(row.adjudicated_approval_rate)}</b>`;
     const links = row.webex?.links || [];
     const webex = links.find((item) => String(item.court_name || '').toLowerCase() === String(row.court_name || '').toLowerCase()) || links[0];
-    const webexAction = webex ? `<small class="judge-webex"><a href="${esc(webex.webex_url)}" target="_blank" rel="noopener"><i aria-hidden="true">W</i> Webex 网上上庭 ↗</a><code>${esc(webex.webex_url)}</code><span>电话接入码 ${esc(webex.access_code || '见官方页')}</span></small>` : '';
+    const webexAction = webex ? `<small class="judge-webex"><a href="${esc(webex.webex_url)}" target="_blank" rel="noopener" aria-label="${esc(t('打开 {judge} 的官方 Webex 出庭链接', { judge: judgeName }))}"><i aria-hidden="true">W</i> Webex 网上上庭 ↗</a><code>${esc(webex.webex_url)}</code><span>电话接入码 ${esc(webex.access_code || '见官方页')}</span></small>` : '';
     const background = row.background_summary;
     const backgroundText = background
       ? [background.appointment_date ? `${background.appointment_date}任命` : '', background.appointment_court || '', background.biography_excerpt || ''].filter(Boolean).join(' · ')
       : '暂未匹配到 DOJ/EOIR 官方任命简介';
     const detailUrl = window.asylumJudgeProfileUrl ? window.asylumJudgeProfileUrl(row) : `${appPath('judge')}?id=${encodeURIComponent(row.id)}`;
-    return `<div class="judge-directory-row" role="listitem" data-href="${esc(detailUrl)}"><span class="judge-directory-identity"><a class="judge-profile-link" href="${esc(detailUrl)}"><strong>${esc(row.judge_name || '未命名法官')}</strong></a><small>${esc(court)}${place && court !== place ? ` · ${esc(place)}` : ''}</small><small>${esc(judgePeriod(row))}</small><small class="judge-background-summary"><b>法官背景</b>${esc(backgroundText)}</small><a class="judge-background-link" href="${esc(detailUrl)}#judge-background">查看法官背景 →</a>${webexAction}</span><span class="directory-metric"><label>裁决</label><b>${fmt(row.total_asylum_decisions)}</b></span><span class="directory-metric verdict-pass"><label>批准</label><b>${fmt(row.grants)}</b></span><span class="directory-metric verdict-deny"><label>拒绝</label><b>${fmt(row.denials)}</b></span><span class="directory-metric verdict-other"><label>其他</label><b>${fmt(row.other_decisions)}</b></span><span class="directory-metric directory-rate-cell"><label>批准率</label>${rate}<small>${fmt(adjudicated)} 件有效裁决</small><a class="directory-detail-link" href="${esc(detailUrl)}">查看详情 →</a></span></div>`;
+    return `<div class="judge-directory-row" role="listitem" data-href="${esc(detailUrl)}"><span class="judge-directory-identity"><a class="judge-profile-link" href="${esc(detailUrl)}"><strong>${esc(judgeName)}</strong></a><small>${esc(court)}${place && court !== place ? ` · ${esc(place)}` : ''}</small><small>${esc(judgePeriod(row))}</small><small class="judge-background-summary"><b>法官背景</b>${esc(backgroundText)}</small><a class="judge-background-link" href="${esc(detailUrl)}#judge-background" aria-label="${esc(t('查看 {judge} 的法官背景', { judge: judgeName }))}">查看法官背景 →</a>${webexAction}</span><span class="directory-metric"><label>裁决</label><b>${fmt(row.total_asylum_decisions)}</b></span><span class="directory-metric verdict-pass"><label>批准</label><b>${fmt(row.grants)}</b></span><span class="directory-metric verdict-deny"><label>拒绝</label><b>${fmt(row.denials)}</b></span><span class="directory-metric verdict-other"><label>其他</label><b>${fmt(row.other_decisions)}</b></span><span class="directory-metric directory-rate-cell"><label>批准率</label>${rate}<small>${fmt(adjudicated)} 件有效裁决</small><a class="directory-detail-link" href="${esc(detailUrl)}" aria-label="${esc(t('查看 {judge} 的详情', { judge: judgeName }))}">查看详情 →</a></span></div>`;
   }).join('') : `<div class="empty" role="listitem"><b>没有找到匹配法官</b><p>请尝试英文姓名、法院、城市或州代码。</p></div>`;
   container.querySelectorAll('.judge-directory-row[data-href]').forEach((card) => {
     const open = (event) => {

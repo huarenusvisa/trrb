@@ -17,6 +17,8 @@ const stateNames = { AZ: '亚利桑那州', CA: '加州', CO: '科罗拉多州',
 const stateName = (code) => window.AsylumI18n?.stateName?.(code, stateNames[String(code || '').toUpperCase()]) || stateNames[String(code || '').toUpperCase()] || code;
 let allJudges = [];
 let searchTimer = null;
+let directoryVisibleCount = 100;
+const DIRECTORY_BATCH_SIZE = 100;
 let selectedTrendState = 'NY';
 let selectedTrendCourt = '';
 let selectedTrendInterval = 'month';
@@ -389,11 +391,12 @@ function filterJudges(query) {
 function renderJudgeDirectory(rows, query = '') {
   const container = $('#judge-directory-list');
   if (!container) return;
+  const visibleRows = rows.slice(0, directoryVisibleCount);
   const count = $('#judge-directory-count');
   if (count) count.textContent = query
-    ? `匹配 ${fmt(rows.length)} 位／全部 ${fmt(allJudges.length)} 位`
-    : `共 ${fmt(allJudges.length)} 位法官`;
-  container.innerHTML = rows.length ? rows.map((row) => {
+    ? t('匹配 {shown} 位／全部 {total} 位，当前显示 {visible} 位', { shown: fmt(rows.length), total: fmt(allJudges.length), visible: fmt(visibleRows.length) })
+    : t('共 {total} 位法官，当前显示 {visible} 位', { total: fmt(allJudges.length), visible: fmt(visibleRows.length) });
+  container.innerHTML = rows.length ? visibleRows.map((row) => {
     const judgeName = row.judge_name || '未命名法官';
     const place = [row.court_city, row.court_state].filter(Boolean).join(', ');
     const court = row.court_name || place || '法院信息待更新';
@@ -422,10 +425,17 @@ function renderJudgeDirectory(rows, query = '') {
     };
     card.addEventListener('click', open);
   });
+  const more = $('#judge-directory-more');
+  if (more) {
+    const remaining = Math.max(0, rows.length - visibleRows.length);
+    more.hidden = remaining === 0;
+    more.textContent = t('显示更多法官（剩余 {count} 位）', { count: fmt(remaining) });
+  }
 }
 
 function applyJudgeFilter(query, { scroll = false, updateUrl = true, pushHistory = false } = {}) {
   query = String(query || '').trim();
+  directoryVisibleCount = DIRECTORY_BATCH_SIZE;
   renderJudgeDirectory(filterJudges(query), query);
   if (updateUrl) {
     const url = new URL(location.href);
@@ -437,6 +447,12 @@ function applyJudgeFilter(query, { scroll = false, updateUrl = true, pushHistory
   }
   if (scroll) $('#all-judges')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
+
+$('#judge-directory-more').addEventListener('click', () => {
+  directoryVisibleCount += DIRECTORY_BATCH_SIZE;
+  const query = String($('#judge-q').value || '').trim();
+  renderJudgeDirectory(filterJudges(query), query);
+});
 
 function knowledgeTopic(categoryName) {
   const parts = String(categoryName || '').split('·').map((part) => part.trim()).filter(Boolean);

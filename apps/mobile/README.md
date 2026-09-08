@@ -66,6 +66,15 @@ maestro test .maestro/store-screenshots.yml
 
 流程依次截取首页、美国、移民、判例新规和移民社区，并写入 `store/google-play/screenshots/phone/`。截图文件属于上架产物，不提交到 Git；提交前由发布人员在目标机型上确认尺寸、状态栏、实时内容与隐私信息。
 
+App Store 需要分别在 6.9 英寸 iPhone 和 13 英寸 iPad 模拟器上运行对应流程：
+
+```bash
+maestro test .maestro/store-screenshots-ios-iphone.yml
+maestro test .maestro/store-screenshots-ios-ipad.yml
+```
+
+三套截图生成后，运行 `npm run store:submission-check`。该严格预检会阻止截图缺失、顺序不一致、尺寸不受支持、横屏、透明通道或重复图片进入人工上传阶段；截图规格集中维护在 `store/submission-assets.json`。由于截图本身不提交到 Git，常规 CI 只验证预检器、截图清单和生成流程，严格预检必须在提交商店的工作站执行。
+
 ## 统一账号真机回归
 
 `.eas/workflows/auth-e2e.yml` 会复用最近一次 `e2e-test` 的 Android 和 iOS 模拟器构建，先验证“打开登录页 → 登录或自动注册 → 保存 Supabase 会话 → 个人页显示账号 → 退出登录”，再在两个平台分别完成社区发帖闭环和新闻评论闭环。

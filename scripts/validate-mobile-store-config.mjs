@@ -9,6 +9,7 @@ const eas = JSON.parse(fs.readFileSync(path.join(mobileRoot, 'eas.json'), 'utf8'
 const store = JSON.parse(fs.readFileSync(path.join(mobileRoot, 'store.config.json'), 'utf8'));
 const googlePlayRoot = path.join(mobileRoot, 'store/google-play');
 const googlePlay = JSON.parse(fs.readFileSync(path.join(googlePlayRoot, 'listing.json'), 'utf8'));
+const submissionAssets = JSON.parse(fs.readFileSync(path.join(mobileRoot, 'store/submission-assets.json'), 'utf8'));
 const failures = [];
 
 function expect(condition, message) {
@@ -114,6 +115,25 @@ for (const screenshotName of screenshotNames ?? []) {
   expect(screenshotFlow.includes(`store/google-play/screenshots/phone/${screenshotName}`), `Maestro flow must capture Google Play screenshot: ${screenshotName}`);
 }
 expect((screenshotFlow.match(/takeScreenshot:/g) ?? []).length === (screenshotNames ?? []).length, 'Maestro screenshot count must match the Google Play manifest');
+
+expect(JSON.stringify(submissionAssets.screens) === JSON.stringify(screenshotNames), 'Shared submission screenshot order must match Google Play listing');
+const appStoreScreenshotFlows = {
+  iphone69: '.maestro/store-screenshots-ios-iphone.yml',
+  ipad13: '.maestro/store-screenshots-ios-ipad.yml'
+};
+expect(!app.ios?.supportsTablet || Boolean(submissionAssets.appStore?.ipad13), 'iPad screenshot specification is required while tablet support is enabled');
+for (const [key, flowPath] of Object.entries(appStoreScreenshotFlows)) {
+  const set = submissionAssets.appStore?.[key];
+  expect(Boolean(set?.directory), `App Store ${key} screenshot directory is missing`);
+  expect(Array.isArray(set?.acceptedPortraitSizes) && set.acceptedPortraitSizes.length > 0, `App Store ${key} accepted screenshot sizes are missing`);
+  const absoluteFlowPath = path.join(mobileRoot, flowPath);
+  expect(fs.existsSync(absoluteFlowPath), `App Store ${key} Maestro screenshot flow is missing`);
+  const flow = fs.existsSync(absoluteFlowPath) ? fs.readFileSync(absoluteFlowPath, 'utf8') : '';
+  for (const screenshotName of submissionAssets.screens ?? []) {
+    expect(flow.includes(`${set?.directory}/${screenshotName}`), `App Store ${key} flow must capture: ${screenshotName}`);
+  }
+  expect((flow.match(/takeScreenshot:/g) ?? []).length === (submissionAssets.screens ?? []).length, `App Store ${key} screenshot count must match the shared manifest`);
+}
 
 for (const [relativePath, label, exactSize] of [
   [app.icon, 'App icon', 1024],

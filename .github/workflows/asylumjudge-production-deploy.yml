@@ -8,6 +8,10 @@ on:
         required: false
         type: boolean
         default: false
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/asylumjudge-final-bundle-trigger.txt'
 
 permissions:
   contents: read
@@ -62,7 +66,7 @@ jobs:
           path: .netlify/asylumjudge-bundle
           retention-days: 7
       - name: Deploy verified bundle to Netlify production
-        if: ${{ inputs.deploy == true }}
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.deploy == true }}
         shell: bash
         run: |
           set -euo pipefail
@@ -75,7 +79,7 @@ jobs:
             --functions ".netlify/asylumjudge-bundle/netlify/functions" \
             --message "AsylumJudge verified production bundle ${GITHUB_SHA}"
       - name: Verify live multilingual and SEO routes after deploy
-        if: ${{ inputs.deploy == true }}
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.deploy == true }}
         shell: bash
         run: |
           set -euo pipefail

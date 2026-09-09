@@ -38,4 +38,12 @@ for (const route of [
   assert.match(source, /finalHotCanonicalForLegacyId/, `${route} must use the pinned reviewed redirect map`);
 }
 
+const rootLegacyResolver = await readFile(new URL('../netlify/edge-functions/legacy-url-redirect.ts', import.meta.url), 'utf8');
+assert.match(rootLegacyResolver, /url_redirects/, 'root legacy resolver must consult the exact redirect table');
+assert.match(rootLegacyResolver, /article-exact-source-url-recovery/, 'exact source URL redirects need an observable reason marker');
+assert.ok(
+  rootLegacyResolver.indexOf('resolveStoredRedirect(url)') < rootLegacyResolver.indexOf('fetchCandidates(legacyTitle)'),
+  'exact stored redirects must run before fuzzy title matching',
+);
+
 console.log('74 reviewed legacy IDs have database-independent 中国热门头条 redirects');

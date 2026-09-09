@@ -4,10 +4,19 @@ import path from 'node:path';
 const ROOT = process.cwd();
 const SITE = 'https://trrb.net';
 const sourcePath = path.join(ROOT, 'sitemap.xml');
-const xml = fs.readFileSync(sourcePath, 'utf8');
+let xml = fs.readFileSync(sourcePath, 'utf8');
 
 if (!xml.includes('<urlset')) {
-  throw new Error('sitemap.xml is not a URL set');
+  if (!xml.includes('<sitemapindex')) throw new Error('sitemap.xml is neither a URL set nor a sitemap index');
+  const childFiles = [...xml.matchAll(/<loc>https:\/\/trrb\.net\/([^<]+\.xml)<\/loc>/gi)].map((match) => match[1]);
+  if (!childFiles.length) throw new Error('sitemap.xml index has no local child sitemaps');
+  const blocks = [];
+  for (const filename of childFiles) {
+    const childPath = path.join(ROOT, filename);
+    if (!fs.existsSync(childPath)) throw new Error(`sitemap index child is missing: ${filename}`);
+    blocks.push(...(fs.readFileSync(childPath, 'utf8').match(/<url>[\s\S]*?<\/url>/g) || []));
+  }
+  xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${blocks.join('\n')}\n</urlset>\n`;
 }
 
 function expectedImmigrationKnowledgeUrls() {

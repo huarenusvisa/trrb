@@ -1,9 +1,11 @@
 const SITE = "https://trrb.net";
 const MIN_INDEXABLE_BODY_LENGTH = 300;
 const MIN_INDEXABLE_TITLE_LENGTH = 8;
-const MAX_SITEMAP_ARTICLES = 5000;
+// The build publishes a sitemap index plus 5,000-URL article shards.  Keep the
+// former live generator available for emergency diagnostics, but do not let it
+// replace the complete, sharded sitemap index at /sitemap.xml.
 
-export const config = { path: "/sitemap.xml" };
+export const config = { path: "/_internal/sitemap-live.xml" };
 
 const FALLBACK_CATEGORY_SLUGS: Record<string, string> = {
   "重要新闻": "important-news",
@@ -240,7 +242,6 @@ export default async (request: Request, context: any) => {
       if (seenUrls.has(loc)) continue;
       seenUrls.add(loc);
       blocks.push(urlBlock(loc, lastmod(article)));
-      if (blocks.length - staticBlocks.length >= MAX_SITEMAP_ARTICLES) break;
     }
 
     const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${blocks.join("\n")}\n</urlset>\n`;
@@ -248,13 +249,13 @@ export default async (request: Request, context: any) => {
     const headers = new Headers({
       "content-type": "application/xml; charset=UTF-8",
       "cache-control": "public, max-age=30, stale-while-revalidate=60",
-      "x-trrb-sitemap": "live-supabase-v9-quality-budget-canonical",
+      "x-trrb-sitemap": "live-supabase-v10-uncapped-diagnostic",
       "x-trrb-sitemap-articles": String(articles.length),
       "x-trrb-sitemap-static-blocks": String(staticBlocks.length),
       "x-trrb-sitemap-immigration-knowledge": String(immigrationKnowledgeCount),
       "x-trrb-sitemap-excluded-thin": String(excludedThin),
       "x-trrb-sitemap-min-body": String(MIN_INDEXABLE_BODY_LENGTH),
-      "x-trrb-sitemap-article-cap": String(MAX_SITEMAP_ARTICLES),
+      "x-trrb-sitemap-article-cap": "none",
       "x-trrb-sitemap-preserved-special-topic": String(preservedSpecialTopic),
       "x-trrb-sitemap-excluded-duplicate": String(excludedDuplicate),
       "x-trrb-sitemap-dedupe-winner": "newest",

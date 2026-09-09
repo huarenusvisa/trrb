@@ -93,6 +93,42 @@ function safeCanonical(value: unknown): string {
   return canonical;
 }
 
+function legacyPathVariants(pathname: string): string[] {
+  const values = new Set<string>();
+  const add = (value: string) => {
+    const normalized = String(value || "").trim().toLowerCase();
+    if (!normalized || normalized === "/") return;
+    values.add(normalized);
+    if (normalized.endsWith("/")) values.add(normalized.replace(/\/+$/, ""));
+    else values.add(`${normalized}/`);
+  };
+  add(pathname);
+  try { add(encodeURI(decodeURIComponent(pathname))); } catch { /* malformed legacy URL */ }
+  return [...values];
+}
+
+async function resolveStoredRedirect(url: URL): Promise<Response | null> {
+  const { base, key } = supabaseConfig();
+  if (!base || !key) return null;
+  const headers = { apikey: key, Authorization: `Bearer ${key}`, Accept: "application/json" };
+
+  for (const oldPath of legacyPathVariants(url.pathname)) {
+    const lookup = new URL(`${base}/rest/v1/url_redirects`);
+    lookup.searchParams.set("select", "new_path");
+    lookup.searchParams.set("old_path", `eq.${oldPath}`);
+    lookup.searchParams.set("limit", "1");
+    const response = await fetch(lookup, { headers });
+    if (!response.ok) throw new Error(`stored redirect lookup failed ${response.status}`);
+    const rows = await response.json();
+    const destination = Array.isArray(rows) ? String(rows[0]?.new_path || "") : "";
+    if (!destination || destination === oldPath) continue;
+    const absolute = destination.startsWith("/") ? `${SITE_ORIGIN}${destination}` : destination;
+    const canonical = safeCanonical(absolute);
+    if (canonical) return redirect(canonical, "article-exact-source-url-recovery");
+  }
+  return null;
+}
+
 async function resolveLegacyWpArticle(url: URL): Promise<Response | null> {
   if (url.pathname !== "/article.html") return null;
   const legacyId = String(url.searchParams.get("id") || "").trim();
@@ -316,6 +352,14 @@ export default async (request: Request, context: any) => {
   if (!legacyCandidate) {
     if (isCcHost) return redirect(canonicalSamePath(url), "cc-domain-migration-path");
     return context.next();
+  }
+
+  try {
+    const storedRedirect = await resolveStoredRedirect(url);
+    if (storedRedirect) return storedRedirect;
+  } catch (error) {
+    console.error("stored legacy redirect lookup failed", error);
+    if (!isCcHost) return temporaryUnavailable();
   }
 
   let legacyTitle = "";

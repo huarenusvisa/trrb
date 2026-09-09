@@ -23,10 +23,11 @@ const forbidAll = (label, names, pattern) => {
 
 requireAll("300-character index threshold missing", ["build", "live", "news", "article", "productionAudit", "freshnessAudit"], /MIN_INDEXABLE_BODY_LENGTH\s*=\s*300/);
 requireAll("short-title gate missing", ["build", "live", "news", "article", "productionAudit", "freshnessAudit"], /MIN_INDEXABLE_TITLE_LENGTH\s*=\s*8/);
-requireAll("5,000 article crawl-budget cap missing", ["build", "live", "productionAudit"], /MAX_SITEMAP_ARTICLES\s*=\s*5000/);
+forbidAll("obsolete 5,000-article global cap remains", ["build", "live"], /MAX_SITEMAP_ARTICLES\s*=\s*5000/);
+if (!/CHUNK_SIZE\s*=\s*5000/.test(fs.readFileSync("scripts/split-sitemap-index.mjs", "utf8"))) failures.push("5,000-URL sitemap shard size missing");
 forbidAll("short ICE indexing exception must not return", ["build", "live", "news", "article"], /preservedShortIce|preserved-short-ice|if\s*\(isIceArticle\([^)]*\)\)\s*return/i);
 if (!/STRICT_INDEXABLE_SEO_GATE_V2/.test(files.audit)) failures.push("strict indexable SEO gate marker missing");
-if (!/live-supabase-v9-quality-budget-canonical/.test(files.live)) failures.push("live sitemap quality-budget version marker missing");
+if (!/live-supabase-v10-uncapped-diagnostic/.test(files.live)) failures.push("uncapped diagnostic sitemap marker missing");
 requireAll("legacy category-name to canonical-slug compatibility missing", ["build", "live", "news", "feedBuild", "feedLive"], /fallbackSlug/);
 
 if (failures.length) {
@@ -34,4 +35,4 @@ if (failures.length) {
   process.exit(1);
 }
 
-console.log("SEO quality contract passed: 300-character body, 8-character title, 5,000-article sitemap cap, no short-ICE exception, strict metadata gate.");
+console.log("SEO quality contract passed: 300-character body, 8-character title, complete sharded sitemap, no short-ICE exception, strict metadata gate.");

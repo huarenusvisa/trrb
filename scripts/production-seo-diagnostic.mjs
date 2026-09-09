@@ -75,7 +75,11 @@ while(queue.length && seen.size<30){
   }
 }
 for(const required of roots){if(!report.sitemaps[required])report.failures.push(`required sitemap not inspected: ${required}`);}
-if((report.sitemaps[`${SITE}/sitemap.xml`]?.article_count||0)<5) report.failures.push('main sitemap article count too small');
+const mainArticleCount = Object.entries(report.sitemaps)
+  .filter(([url]) => url === `${SITE}/sitemap.xml` || /\/sitemap-articles-\d+\.xml$/i.test(url))
+  .reduce((sum, [, row]) => sum + (row.article_count || 0), 0);
+report.sitemaps.main_article_total = mainArticleCount;
+if(mainArticleCount<5) report.failures.push('main sitemap article count too small');
 const newsCount=report.sitemaps[`${SITE}/news-sitemap.xml`]?.article_count||0;
 if(newsCount<1) report.failures.push('Google News sitemap has no recent article URLs');
 if(articles.size<5) report.failures.push(`article sitemap sample too small: ${articles.size}`);
@@ -85,12 +89,13 @@ for (const u of [...articles].slice(0,12)) {
   const title = text(r.text,/<title[^>]*>([\s\S]*?)<\/title>/i);
   const h1 = text(r.text,/<h1[^>]*>([\s\S]*?)<\/h1>/i);
   const canonical = text(r.text,/<link[^>]+rel=["']canonical["'][^>]+href=["']([^"']+)/i) || text(r.text,/<link[^>]+href=["']([^"']+)["'][^>]+rel=["']canonical["']/i);
+  const description = text(r.text,/<meta[^>]+name=["']description["'][^>]+content=["']([^"']*)/i) || text(r.text,/<meta[^>]+content=["']([^"']*)["'][^>]+name=["']description["']/i);
   const body = text(r.text,/<div[^>]+class=["'][^"']*article-body[^"']*["'][^>]*>([\s\S]*?)<\/div>/i);
-  const row = { url:u, status:r.status, final_url:r.url, prerender:r.prerender, title_length:title.length, h1_length:h1.length, canonical, body_length:body.length, schema:/NewsArticle/.test(r.text), noindex:/noindex/i.test(r.xrobots) || /name=["']robots["'][^>]+noindex/i.test(r.text) };
+  const row = { url:u, status:r.status, final_url:r.url, prerender:r.prerender, title_length:title.length, description_length:description.length, h1_length:h1.length, canonical, body_length:body.length, schema:/NewsArticle/.test(r.text), noindex:/noindex/i.test(r.xrobots) || /name=["']robots["'][^>]+noindex/i.test(r.text) };
   report.articles.push(row);
   const badPrerender=!String(row.prerender||'').startsWith('article-edge-');
   const badBody=isIceUrl(u)?row.body_length===0:row.body_length<80;
-  if(row.status!==200||badPrerender||row.canonical!==u||badBody||!row.schema||row.noindex) report.failures.push({article:u,row});
+  if(row.status!==200||badPrerender||row.canonical!==u||badBody||row.title_length<8||row.description_length<40||!row.schema||row.noindex) report.failures.push({article:u,row});
 }
 
 const pageExpectations=[

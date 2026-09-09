@@ -176,7 +176,8 @@ forbidMatch(articleMap, /\/article\.html\?id=/i, "sitemap article chunk contains
 
 const liveSitemap = await text("netlify/edge-functions/sitemap-live.ts");
 forbidMatch(liveSitemap, /jobsLoc\s*=\s*`\$\{SITE\}\/jobs\/`/, "live sitemap still adds redirected trrb.net jobs hub");
-requireMatch(liveSitemap, /live-supabase-v9-quality-budget-canonical/, "live sitemap version is not quality budget canonical v9");
+requireMatch(liveSitemap, /live-supabase-v10-uncapped-diagnostic/, "live sitemap fallback is not the uncapped diagnostic version");
+requireMatch(liveSitemap, /_internal\/sitemap-live\.xml/, "live sitemap fallback still overrides the public sitemap index");
 
 const niulai = await text("niulai/index.html");
 const niulaiAdapter = await text("niulai/data-adapter.js");

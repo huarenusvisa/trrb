@@ -47,7 +47,6 @@ on:
     # Changes here also wake enabled collectors so production coverage fixes are verified immediately.
     # ICE switch-on synchronizes category fetch/rewrite/publish flags before immediate dispatch.
     - cron: "7 * * * *"
-    - cron: "47 3 * * *"
     - cron: "37 4 * * *"
     - cron: "7 7 * * *"
     - cron: "23 8 * * 1"
@@ -140,19 +139,6 @@ jobs:
     secrets: inherit
 
 
-  # Corrective changes to this control plane immediately run both SEO monitors.
-  daily-live-monitor:
-    needs: automation-gate
-    if: ${{ needs.automation-gate.outputs.global == 'true' && needs.automation-gate.outputs.monitor == 'true' && (github.event_name == 'push' || github.event.schedule == '47 3 * * *' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'monitor')) }}
-    uses: ./.github/workflows/live-seo-crawl.yml
-    secrets: inherit
-
-  daily-seo-integrity:
-    needs: automation-gate
-    if: ${{ needs.automation-gate.outputs.global == 'true' && needs.automation-gate.outputs.monitor == 'true' && (github.event_name == 'push' || github.event.schedule == '47 3 * * *' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'monitor')) }}
-    uses: ./.github/workflows/seo-integrity.yml
-    secrets: inherit
-
   ice-night-maintenance:
     needs: automation-gate
     if: ${{ needs.automation-gate.outputs.global == 'true' && needs.automation-gate.outputs.maintenance == 'true' && (github.event.schedule == '7 7 * * *' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'maintenance')) }}
@@ -179,8 +165,6 @@ jobs:
       - secondhand-daily-ingest
       - china-hot-li-teacher
       - trump-x
-      - daily-live-monitor
-      - daily-seo-integrity
       - ice-night-maintenance
       - ice-orphan-cleanup
     runs-on: ubuntu-24.04

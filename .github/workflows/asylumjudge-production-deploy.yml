@@ -1,4 +1,4 @@
-name: AsylumJudge Production Build Gate
+name: AsylumJudge Production Build & Deploy
 
 on:
   workflow_dispatch:
@@ -12,6 +12,8 @@ on:
       - 'scripts/build-asylumjudge-site.mjs'
       - 'scripts/build-asylumjudge-seo.mjs'
       - 'scripts/asylumjudge-indexing-hygiene.mjs'
+      - 'scripts/asylumjudge-search-intent-pages.mjs'
+      - 'scripts/asylumjudge-production-regression.test.mjs'
       - 'scripts/asylumjudge-live-seo-audit.mjs'
       - 'scripts/asylumjudge-seo.test.mjs'
       - 'scripts/submit-asylumjudge-indexnow.mjs'
@@ -22,13 +24,16 @@ permissions:
   contents: read
 
 concurrency:
-  group: asylumjudge-production-build-gate
+  group: asylumjudge-production-build-deploy
   cancel-in-progress: true
 
 jobs:
-  build-test:
+  build-test-deploy:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
+    env:
+      NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+      NETLIFY_SITE_ID: 7beb8b62-f7e3-49fc-b954-46699c9956b7
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -38,6 +43,8 @@ jobs:
         run: node scripts/build-asylumjudge-site.mjs
       - name: Verify sitemap and canonical SEO contract
         run: node scripts/asylumjudge-seo.test.mjs
+      - name: Verify multilingual, branding and search-intent regression contract
+        run: node scripts/asylumjudge-production-regression.test.mjs
       - name: Verify indexing hygiene report
         shell: bash
         run: |
@@ -57,9 +64,56 @@ jobs:
           }
           console.log(`Indexing hygiene verified: ${report.localized_pages} localized pages; ${report.server_side_replacements} server-side replacements; ${highCjk} high-CJK warnings.`);
           NODE
-      - name: Save AsylumJudge production bundle
+      - name: Save one verified AsylumJudge production bundle
         uses: actions/upload-artifact@v4
         with:
           name: asylumjudge-production-bundle
           path: .netlify/asylumjudge-bundle
           retention-days: 7
+      - name: Deploy the verified bundle once to Netlify production
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "${NETLIFY_AUTH_TOKEN:-}"
+          test -n "${NETLIFY_SITE_ID:-}"
+          npx --yes netlify-cli@latest deploy \
+            --prod \
+            --site "$NETLIFY_SITE_ID" \
+            --dir ".netlify/asylumjudge-bundle/public" \
+            --functions ".netlify/asylumjudge-bundle/netlify/functions" \
+            --message "AsylumJudge verified production bundle ${GITHUB_SHA}"
+      - name: Verify live multilingual and SEO routes after deploy
+        shell: bash
+        run: |
+          set -euo pipefail
+          paths=(
+            "/"
+            "/en/"
+            "/es/"
+            "/fr/"
+            "/pt-br/"
+            "/hi/"
+            "/zh-hant/"
+            "/ru/"
+            "/ar/"
+            "/tr/"
+            "/asylum-judge-approval-rate/"
+            "/en/asylum-judge-rating/"
+            "/en/judge-backgrounds/"
+            "/en/methodology/"
+          )
+          for path in "${paths[@]}"; do
+            code=$(curl -sS -L -o /tmp/asylumjudge-live.html -w '%{http_code}' "https://asylumjudge.com${path}")
+            if [ "$code" != "200" ]; then
+              echo "Live verification failed: ${path} returned ${code}" >&2
+              exit 1
+            fi
+            if grep -qi 'Page not found' /tmp/asylumjudge-live.html; then
+              echo "Live verification failed: ${path} rendered Netlify 404 content" >&2
+              exit 1
+            fi
+          done
+          curl -fsSL https://asylumjudge.com/en/ | grep -q 'U.S. Immigration Judge Approval Rates'
+          curl -fsSL https://asylumjudge.com/en/asylum-judge-rating/ | grep -q 'Asylum Judge Rating and Approval Rate Lookup'
+          curl -fsSL https://asylumjudge.com/asylum-judge-approval-rate/ | grep -q '美国庇护法官通过率查询'
+          echo 'Live AsylumJudge multilingual and keyword routes verified.'

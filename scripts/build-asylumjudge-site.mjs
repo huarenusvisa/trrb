@@ -3,6 +3,7 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { buildAsylumJudgeSeo } from './build-asylumjudge-seo.mjs';
 import { applyAsylumJudgeIndexingHygiene } from './asylumjudge-indexing-hygiene.mjs';
+import { applyAsylumJudgeSearchIntent } from './asylumjudge-search-intent-pages.mjs';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const bundle = join(root, '.netlify', 'asylumjudge-bundle');
@@ -37,14 +38,20 @@ await cp(join(root, 'assets', 'supabase-client.js'), join(output, 'assets', 'sup
 
 await buildAsylumJudgeSeo({ root, output });
 await applyAsylumJudgeIndexingHygiene({ root, output });
+await applyAsylumJudgeSearchIntent({ root, output });
 
 const localePrefixes = ['en', 'es', 'fr', 'pt-br', 'hi', 'zh-hant', 'ru', 'ar', 'tr'];
 const localizedRewrites = localePrefixes.flatMap((locale) => [
-  `/${locale}/judge /immigration-judge-approval-rate/detail.html 200`,
-  `/${locale}/court /immigration-judge-approval-rate/court-detail.html 200`,
-  `/${locale}/compare /immigration-judge-approval-rate/compare.html 200`,
+  `/${locale} /${locale}/ 301!`,
+  `/${locale}/courts /${locale}/courts/ 301!`,
+  `/${locale}/states /${locale}/states/ 301!`,
+  `/${locale}/nationality /${locale}/nationality/ 301!`,
+  `/${locale}/compare /${locale}/compare/ 301!`,
   `/${locale}/methodology /methodology/ 301!`,
-  `/${locale}/methodology/ /methodology/ 301!`
+  `/${locale}/methodology/ /methodology/ 301!`,
+  `/${locale}/judge-backgrounds /${locale}/judge-backgrounds/ 301!`,
+  `/${locale}/judge /immigration-judge-approval-rate/detail.html 200`,
+  `/${locale}/court /immigration-judge-approval-rate/court-detail.html 200`
 ]).join('\n');
 
 await writeFile(join(output, '_redirects'), `
@@ -78,17 +85,20 @@ https://www.immigrationjudge.us/* https://asylumjudge.com/:splat 301!
 /immigration-judge-approval-rate/methodology.html /methodology/ 301!
 /judge /immigration-judge-approval-rate/detail.html 200
 /court /immigration-judge-approval-rate/court-detail.html 200
-/courts /immigration-judge-approval-rate/courts.html 200
-/states /immigration-judge-approval-rate/states.html 200
-/nationality /immigration-judge-approval-rate/china-dashboard.html 200
-/compare /immigration-judge-approval-rate/compare.html 200
-/judge-backgrounds /judge-backgrounds/index.html 200
+/courts /courts/ 301!
+/states /states/ 301!
+/nationality /nationality/ 301!
+/compare /compare/ 301!
+/judge-backgrounds /judge-backgrounds/ 301!
 /china /nationalities/china--ch/ 301!
-/methodology /immigration-judge-approval-rate/methodology.html 200
+/methodology /methodology/ 301!
 /community /asylumjudge-community.html 200!
 /community/ /asylumjudge-community.html 200!
 /immigration-judge-approval-rate / 301!
 /immigration-judge-approval-rate/ / 301!
+/asylum-judge-rating /en/asylum-judge-rating/ 301!
+/asylum-judge-rating/ /en/asylum-judge-rating/ 301!
+/asylum-judge-approval-rate /asylum-judge-approval-rate/ 301!
 ${localizedRewrites}
 `.trimStart());
 

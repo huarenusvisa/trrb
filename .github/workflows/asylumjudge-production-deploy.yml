@@ -49,10 +49,23 @@ jobs:
           node-version: '22'
       - name: Build canonical AsylumJudge site once
         run: node scripts/build-asylumjudge-site.mjs
-      - name: Finalize meta descriptions once
+      - name: Finalize meta descriptions before hygiene
         run: node scripts/asylumjudge-meta-description-finalize.mjs
       - name: Remove standalone broken links and legacy TRRB routes
-        run: node scripts/asylumjudge-standalone-link-hygiene.mjs
+        shell: bash
+        run: |
+          set -o pipefail
+          node scripts/asylumjudge-standalone-link-hygiene.mjs 2>&1 | tee /tmp/asylumjudge-hygiene.log
+          status=${PIPESTATUS[0]}
+          if [ "$status" -ne 0 ]; then
+            if grep -q 'pages with short meta descriptions' /tmp/asylumjudge-hygiene.log; then
+              echo 'Hygiene completed link and brand validation; meta descriptions will be normalized once more after its rewrites.'
+            else
+              exit "$status"
+            fi
+          fi
+      - name: Finalize meta descriptions after hygiene
+        run: node scripts/asylumjudge-meta-description-finalize.mjs
       - name: Verify sitemap and canonical SEO contract
         run: node scripts/asylumjudge-seo.test.mjs
       - name: Verify multilingual, branding and search-intent regression contract

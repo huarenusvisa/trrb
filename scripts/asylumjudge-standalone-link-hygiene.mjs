@@ -24,7 +24,7 @@ const BRAND_REPLACEMENTS = new Map([
   ['TRRB · EOIR IMMIGRATION DATA', 'ASYLUMJUDGE · EOIR IMMIGRATION DATA'],
   ['<b>唐人日报 Tang Ren Daily</b>', '<b>AsylumJudge.com</b>'],
   ['Tang Ren Daily organizes public data only and provides no legal conclusion for any individual case.', 'AsylumJudge organizes public data only and provides no legal conclusion for any individual case.'],
-  ['唐人日报仅整理公开数据，不提供针对具体案件的法律结论。', 'AsylumJudge仅整理公开数据，不提供针对具体案件的法律结论。']
+  ['唐人日报仅整理公开数据，不提供针对具体案件的法律结论。', '庇护法官仅整理公开数据，不提供针对具体案件的法律结论。']
 ]);
 const DYNAMIC_ROUTES = new Set(['/judge', '/court', '/courts', '/states', '/nationality', '/compare', '/methodology', '/community']);
 const LOCALE_DYNAMIC_RE = /^\/(?:en|es|fr|pt-br|hi|zh-hant|ru|ar|tr)\/(?:judge|court)$/;
@@ -55,6 +55,60 @@ async function resolvesInternalHref(href) {
   return false;
 }
 
+function applyStandaloneChineseBrand(html) {
+  if (!/<html[^>]+lang=["']zh-Hans["']/i.test(html)) return html;
+  let next = html
+    .replace(/｜唐人日报/g, '｜庇护法官')
+    .replace(/\|\s*唐人日报/g, '| 庇护法官')
+    .replace(/｜AsylumJudge(?:\.com)?/g, '｜庇护法官')
+    .replace(/\|\s*AsylumJudge(?:\.com)?/g, '| 庇护法官')
+    .replace(/<b>AsylumJudge\.com<\/b>/g, '<b>庇护法官</b>')
+    .replace(/aria-label="AsylumJudge\.com"/g, 'aria-label="庇护法官 AsylumJudge"')
+    .replace(/alt="AsylumJudge\.com"/g, 'alt="庇护法官 AsylumJudge"');
+
+  // Standalone Chinese pages must never present Tang Ren Daily as the site brand.
+  // TRRB may still be named inside clearly external/content-source modules and links.
+  next = next
+    .replace(/(<header\b[^>]*>[\s\S]*?<\/header>)/gi, (header) => header
+      .replace(/唐人日报\s*Tang Ren Daily/gi, '庇护法官')
+      .replace(/Tang Ren Daily\s*·\s*AsylumJudge/gi, '庇护法官')
+      .replace(/唐人日报/g, '庇护法官'))
+    .replace(/(<footer\b[^>]*>[\s\S]*?<\/footer>)/gi, (footer) => footer
+      .replace(/唐人日报\s*Tang Ren Daily/gi, '庇护法官')
+      .replace(/Tang Ren Daily\s*·\s*AsylumJudge/gi, '庇护法官')
+      .replace(/AsylumJudge\.com/gi, '庇护法官')
+      .replace(/唐人日报/g, '庇护法官'));
+  return next;
+}
+
+async function hardenRuntimeBranding() {
+  const path = join(OUT, 'asylumjudge', 'domain-brand.js');
+  if (!(await exists(path))) return 0;
+  const before = await readFile(path, 'utf8');
+  let js = before;
+  js = js.replace(
+    "'zh-Hans': { descriptor: '美国移民法官与法院数据', nav: '移民法官数据导航', skip: '跳到主要内容', footer: '共用 EOIR 数据库 · 持续更新' }",
+    "'zh-Hans': { descriptor: '庇护法官', nav: '庇护法官数据导航', skip: '跳到主要内容', footer: 'EOIR公开数据 · 持续更新' }"
+  );
+  js = js.replace(
+    "if (descriptor) descriptor.innerHTML = `<b>${brandSet.descriptor}</b><span>EOIR Immigration Court Data</span>`;",
+    "if (descriptor) descriptor.innerHTML = `<b>${brandSet.descriptor}</b><span>${locale === 'zh-Hans' ? '美国移民法官与法院数据' : 'EOIR Immigration Court Data'}</span>`;"
+  );
+  js = js.replace(
+    "if (footer) footer.innerHTML = `<b>${standaloneHost ? 'AsylumJudge.com' : 'Tang Ren Daily · AsylumJudge'}</b><span>${brandSet.footer}</span>`;",
+    "if (footer) footer.innerHTML = `<b>${standaloneHost ? (locale === 'zh-Hans' ? '庇护法官' : 'AsylumJudge.com') : 'Tang Ren Daily · AsylumJudge'}</b><span>${brandSet.footer}</span>`;"
+  );
+  js = js.replace(
+    "const next = standaloneHost ? document.title.replace(/｜唐人日报/g, '｜移民法官通过率') : document.title;",
+    "const next = standaloneHost ? document.title.replace(/｜唐人日报/g, locale === 'zh-Hans' ? '｜庇护法官' : '｜AsylumJudge') : document.title;"
+  );
+  if (js !== before) {
+    await writeFile(path, js);
+    return 1;
+  }
+  return 0;
+}
+
 const htmlFiles = await walk(OUT, (name) => name.endsWith('.html'));
 let changedFiles = 0;
 let replacements = 0;
@@ -76,11 +130,14 @@ for (const path of htmlFiles) {
     replacements += (html.match(pattern) || []).length;
     html = html.replace(pattern, to);
   }
+  html = applyStandaloneChineseBrand(html);
   if (html !== before) {
     await writeFile(path, html);
     changedFiles += 1;
   }
 }
+
+const runtimeBrandFiles = await hardenRuntimeBranding();
 
 const broken = new Map();
 for (const path of htmlFiles) {
@@ -103,4 +160,4 @@ for (const path of htmlFiles) {
 }
 if (legacyBrandHits) throw new Error(`AsylumJudge standalone link hygiene left ${legacyBrandHits} legacy TRRB/Tang Ren Daily primary-brand labels in the production bundle.`);
 
-console.log(`AsylumJudge standalone link hygiene: ${changedFiles} HTML files changed; ${replacements} broken/legacy hrefs or primary-brand labels rewritten; 0 unresolved internal routes; 0 legacy primary-brand labels.`);
+console.log(`AsylumJudge standalone link hygiene: ${changedFiles} HTML files changed; ${replacements} broken/legacy hrefs or primary-brand labels rewritten; ${runtimeBrandFiles} runtime brand file hardened; 0 unresolved internal routes; 0 legacy primary-brand labels.`);

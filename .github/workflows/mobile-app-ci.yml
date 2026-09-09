@@ -6,6 +6,8 @@ on:
       - 'apps/mobile/**'
       - 'netlify/functions/community-api.js'
       - 'netlify/functions/community-api.test.js'
+      - 'netlify/functions/public-jobs.js'
+      - 'netlify/functions/public-jobs.test.js'
       - 'netlify/functions/public-article-translation.js'
       - 'netlify/functions/public-article-translation.test.js'
       - 'netlify/functions/admin-article-translations.js'
@@ -40,6 +42,7 @@ on:
       - 'supabase/migrations/20260903202500_article_translation_reviewer_index.sql'
       - 'supabase/migrations/20260904012615_mobile_social_profile.sql'
       - 'supabase/migrations/20260907122247_claim_mobile_push_token.sql'
+      - 'supabase/migrations/20260909092000_repair_authenticated_storage_search_path.sql'
       - 'netlify.toml'
       - 'scripts/netlify-ignore-build.sh'
       - 'scripts/validate-mobile-build-cost-control.test.mjs'
@@ -50,6 +53,8 @@ on:
       - 'apps/mobile/**'
       - 'netlify/functions/community-api.js'
       - 'netlify/functions/community-api.test.js'
+      - 'netlify/functions/public-jobs.js'
+      - 'netlify/functions/public-jobs.test.js'
       - 'netlify/functions/public-article.js'
       - 'netlify/functions/public-articles.js'
       - 'netlify/functions/public-article-translation.js'
@@ -86,6 +91,7 @@ on:
       - 'supabase/migrations/20260903202500_article_translation_reviewer_index.sql'
       - 'supabase/migrations/20260904012615_mobile_social_profile.sql'
       - 'supabase/migrations/20260907122247_claim_mobile_push_token.sql'
+      - 'supabase/migrations/20260909092000_repair_authenticated_storage_search_path.sql'
       - 'netlify.toml'
       - 'scripts/netlify-ignore-build.sh'
       - 'scripts/validate-mobile-build-cost-control.test.mjs'
@@ -133,6 +139,8 @@ jobs:
           node --test netlify/functions/push-token-registration-core.test.js
           node --test netlify/functions/unified-account-login.test.js
           node --test netlify/functions/community-api.test.js
+          node --check netlify/functions/public-jobs.js
+          node --test netlify/functions/public-jobs.test.js
       - name: Install mobile dependencies
         working-directory: apps/mobile
         run: npm ci

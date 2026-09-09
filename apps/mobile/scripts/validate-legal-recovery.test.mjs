@@ -5,27 +5,23 @@ import test from 'node:test';
 const source = await readFile(new URL('../app/(tabs)/legal.tsx', import.meta.url), 'utf8');
 
 test('replaces the legal-record directory with the asylum judge portal', () => {
-  for (const destination of [
-    'https://asylumjudge.com/',
-    'https://asylumjudge.com/judge',
-    'https://asylumjudge.com/courts',
-    'https://asylumjudge.com/states',
-    'https://asylumjudge.com/nationality',
-  ]) assert.ok(source.includes(destination), `missing judge portal destination: ${destination}`);
+  assert.match(source, /from 'react-native-webview'/);
+  assert.match(source, /const ASYLUM_JUDGE_URL = 'https:\/\/asylumjudge\.com\/'/);
+  assert.match(source, /testID="judge-portal-webview"/);
+  assert.match(source, /onShouldStartLoadWithRequest=\{allowNavigation\}/);
   assert.match(source, /testID="screen-legal"/);
   assert.doesNotMatch(source, /unified-legal-authorities|readCachedLegalRecords|cacheLegalRecords/);
 });
 
 test('judge portal validates, guards and retries accessible external links', () => {
-  assert.match(source, /const openingRef = useRef\(false\)/);
-  assert.match(source, /if \(openingRef\.current\) return/);
+  assert.match(source, /isAsylumJudgeUrl\(request\.url\)/);
+  assert.match(source, /void openBrowser\(request\.url\)/);
   assert.match(source, /Linking\.canOpenURL\(url\)[\s\S]*Linking\.openURL\(url\)/);
   assert.match(source, /AccessibilityInfo\.announceForAccessibility/);
   assert.match(source, /testID="judge-portal-link-error"[\s\S]*accessibilityRole="alert"/);
-  assert.match(source, /testID="judge-portal-link-retry"[\s\S]*onPress=\{\(\) => void openExternal\(failedLink\.url, failedLink\.label\)\}/);
-  assert.match(source, /useWindowDimensions\(\)/);
-  assert.match(source, /fontScale >= 1\.3/);
-  assert.match(source, /retryButton: \{ minHeight: 44/);
+  assert.match(source, /testID="judge-portal-link-retry"/);
+  assert.match(source, /allowsBackForwardNavigationGestures/);
+  assert.match(source, /primary: \{ minHeight: 44/);
   assert.match(source, /accessibilityRole="link"/);
 });
 

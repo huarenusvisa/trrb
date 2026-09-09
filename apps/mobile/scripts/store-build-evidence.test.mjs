@@ -1,9 +1,11 @@
 import assert from 'node:assert/strict';
+import fs from 'node:fs';
 import path from 'node:path';
 import test from 'node:test';
 import { inspectBuildEvidence } from './store-build-evidence-core.mjs';
 
 const mobileRoot = path.resolve(import.meta.dirname, '..');
+const appVersion = JSON.parse(fs.readFileSync(path.join(mobileRoot, 'app.json'), 'utf8')).expo.version;
 const sourceCommit = '1234567890abcdef1234567890abcdef12345678';
 const releaseCandidateSha256 = 'a'.repeat(64);
 
@@ -15,8 +17,8 @@ function validEvidence() {
     application: {
       slug: 'trrb',
       projectId: 'cc29573d-d20c-4c3b-a7d6-1bc74838127a',
-      version: '0.2.0',
-      runtimeVersion: '0.2.0',
+      version: appVersion,
+      runtimeVersion: appVersion,
       ios: { bundleIdentifier: 'net.trrb.mobile' },
       android: { package: 'net.trrb.mobile' }
     },
@@ -29,8 +31,8 @@ function validEvidence() {
       channel: 'production',
       artifactType: platform === 'ios' ? 'ipa' : 'aab',
       sourceCommit,
-      appVersion: '0.2.0',
-      runtimeVersion: '0.2.0',
+      appVersion,
+      runtimeVersion: appVersion,
       nativeBuildVersion: '3',
       createdAt: '2026-09-08T00:00:00.000Z',
       completedAt: '2026-09-08T00:10:00.000Z'

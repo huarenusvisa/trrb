@@ -49,3 +49,11 @@ test('keeps localized profile controls and account deletion on the existing acco
   assert.match(deletion, /supabase\.auth\.signOut\(\)/);
   assert.doesNotMatch(deletion, /service_role|SUPABASE_SERVICE_ROLE_KEY/);
 });
+
+test('keeps authenticated profile-media uploads on the supported storage search path', () => {
+  const migration = read('../../supabase/migrations/20260909092000_repair_authenticated_storage_search_path.sql');
+
+  assert.match(migration, /alter role authenticated set search_path = public, storage;/i);
+  assert.doesNotMatch(migration, /alter\s+(table|schema)\s+storage\./i);
+  assert.doesNotMatch(migration, /grant\s+all/i);
+});

@@ -1,6 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, Alert, KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
-import { Stack, useLocalSearchParams } from 'expo-router';
+import { ActivityIndicator, Alert, KeyboardAvoidingView, Linking, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import * as DocumentPicker from 'expo-document-picker';
+import * as ImagePicker from 'expo-image-picker';
+import * as Sharing from 'expo-sharing';
+import { router, Stack, useFocusEffect, useLocalSearchParams } from 'expo-router';
 import { AsyncStatePanel } from '../../src/components/AsyncStatePanel';
 import { TrRbAvatar } from '../../src/components/TrRbAvatar';
 import { useForegroundRetry } from '../../src/hooks/useForegroundRetry';
@@ -25,6 +28,7 @@ export default function ChatScreen() {
   const [text, setText] = useState('');
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
+  const [sharing, setSharing] = useState<'media' | 'file' | null>(null);
   const [loadError, setLoadError] = useState('');
   const scroll = useRef<ScrollView>(null);
 
@@ -51,7 +55,7 @@ export default function ChatScreen() {
     finally { setLoading(false); }
   }, [routeId, t, targetUserId, unread.refresh]);
 
-  useEffect(() => { void load(); }, [load]);
+  useFocusEffect(useCallback(() => { void load(); }, [load]));
   useEffect(() => {
     if (!conversation) return;
     const channel = subscribeToConversation(conversation.id, () => void load());
@@ -82,6 +86,54 @@ export default function ChatScreen() {
     finally { setBusy(false); }
   };
 
+  const openDialer = async () => {
+    try {
+      const supported = await Linking.canOpenURL('tel:');
+      if (!supported) throw new Error('Dialer unavailable');
+      await Linking.openURL('tel:');
+    } catch {
+      Alert.alert(t('chat.callUnavailable'), t('chat.tryAgain'));
+    }
+  };
+
+  const shareLocalFile = async (uri: string, mimeType?: string | null) => {
+    if (!(await Sharing.isAvailableAsync())) throw new Error(t('chat.shareUnavailable'));
+    await Sharing.shareAsync(uri, { mimeType: mimeType || undefined });
+  };
+
+  const sharePhotoOrVideo = async () => {
+    setSharing('media');
+    try {
+      const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (!permission.granted) {
+        Alert.alert(t('chat.mediaPermissionTitle'), t('chat.mediaPermissionBody'));
+        return;
+      }
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ['images', 'videos'],
+        allowsMultipleSelection: false,
+        quality: 1,
+      });
+      if (!result.canceled && result.assets[0]) await shareLocalFile(result.assets[0].uri, result.assets[0].mimeType);
+    } catch {
+      Alert.alert(t('chat.shareFailed'), t('chat.tryAgain'));
+    } finally {
+      setSharing(null);
+    }
+  };
+
+  const shareDocument = async () => {
+    setSharing('file');
+    try {
+      const result = await DocumentPicker.getDocumentAsync({ copyToCacheDirectory: true, multiple: false });
+      if (!result.canceled && result.assets[0]) await shareLocalFile(result.assets[0].uri, result.assets[0].mimeType);
+    } catch {
+      Alert.alert(t('chat.shareFailed'), t('chat.tryAgain'));
+    } finally {
+      setSharing(null);
+    }
+  };
+
   if (loading) return <View style={styles.statePage}><Stack.Screen options={{ headerShown: true, title: partner?.display_name || t('chat.screenTitle'), headerBackTitle: t('common.back') }} /><AsyncStatePanel testID="chat-loading" title={t('chat.loadingTitle')} message={t('chat.loadingBody')} busy /></View>;
   if (loadError && !partner) return <View style={styles.statePage}><Stack.Screen options={{ headerShown: true, title: t('chat.screenTitle'), headerBackTitle: t('common.back') }} /><AsyncStatePanel testID="chat-error" tone="error" title={t('chat.unavailable')} message={loadError} actionLabel={t('chat.reload')} onAction={retryLoad} /></View>;
   const incomingRequest = conversation?.status === 'pending' && conversation.recipient_user_id === me;
@@ -90,7 +142,13 @@ export default function ChatScreen() {
 
   return <KeyboardAvoidingView style={styles.page} behavior={Platform.OS === 'ios' ? 'padding' : undefined} keyboardVerticalOffset={90}>
     <Stack.Screen options={{ headerShown: true, title: partner?.display_name || t('chat.screenTitle'), headerBackTitle: t('common.back') }} />
-    <View style={styles.partner}><TrRbAvatar avatarKey={partner?.avatar_key} avatarPath={partner?.avatar_path} size={40} /><View><Text style={styles.partnerName}>{partner?.display_name || t('userProfile.readerFallback')}</Text><Text style={styles.partnerState}>{t(conversation?.status === 'accepted' ? 'chat.confirmed' : 'chat.strangerProtection')}</Text></View></View>
+    <Pressable testID="chat-partner-profile" accessibilityRole="button" accessibilityLabel={t('chat.openProfileA11y', { name: partner?.display_name || t('userProfile.readerFallback') })} disabled={!partner?.id} style={styles.partner} onPress={() => partner?.id && router.push(`/user/${partner.id}`)}><TrRbAvatar avatarKey={partner?.avatar_key} avatarPath={partner?.avatar_path} size={40} /><View style={styles.partnerCopy}><Text style={styles.partnerName}>{partner?.display_name || t('userProfile.readerFallback')}</Text><Text style={styles.partnerState}>{t(conversation?.status === 'accepted' ? 'chat.confirmed' : 'chat.strangerProtection')}</Text></View><Text style={styles.partnerChevron}>›</Text></Pressable>
+    <View style={styles.localActions}>
+      <Pressable testID="chat-call" accessibilityRole="button" accessibilityLabel={t('chat.callA11y')} style={styles.localAction} onPress={() => void openDialer()}><Text style={styles.localActionText}>{t('chat.call')}</Text></Pressable>
+      <Pressable testID="chat-share-media" accessibilityRole="button" accessibilityLabel={t('chat.sharePhotoVideoA11y')} accessibilityState={{ disabled: sharing !== null, busy: sharing === 'media' }} disabled={sharing !== null} style={[styles.localAction, sharing !== null && styles.disabled]} onPress={() => void sharePhotoOrVideo()}><Text style={styles.localActionText}>{sharing === 'media' ? t('chat.sharing') : t('chat.sharePhotoVideo')}</Text></Pressable>
+      <Pressable testID="chat-share-file" accessibilityRole="button" accessibilityLabel={t('chat.shareFileA11y')} accessibilityState={{ disabled: sharing !== null, busy: sharing === 'file' }} disabled={sharing !== null} style={[styles.localAction, sharing !== null && styles.disabled]} onPress={() => void shareDocument()}><Text style={styles.localActionText}>{sharing === 'file' ? t('chat.sharing') : t('chat.shareFile')}</Text></Pressable>
+      <Text style={styles.localShareHint}>{t('chat.localShareHint')}</Text>
+    </View>
     {loadError ? <View style={styles.inlineError}><AsyncStatePanel testID="chat-refresh-error" tone="error" title={t('chat.refreshFailed')} message={loadError} actionLabel={t('chat.resync')} onAction={() => void load()} /></View> : null}
     {incomingRequest ? <View style={styles.request}><Text style={styles.requestTitle}>{t('chat.incomingTitle')}</Text><Text style={styles.requestText}>{t('chat.incomingBody')}</Text><View style={styles.requestActions}><Pressable accessibilityRole="button" disabled={busy} style={styles.accept} onPress={() => void answer(true)}><Text style={styles.acceptText}>{t('chat.accept')}</Text></Pressable><Pressable accessibilityRole="button" disabled={busy} style={styles.decline} onPress={() => void answer(false)}><Text style={styles.declineText}>{t('chat.ignore')}</Text></Pressable></View></View> : null}
     <ScrollView ref={scroll} style={styles.messages} contentContainerStyle={styles.messagesContent} onContentSizeChange={() => scroll.current?.scrollToEnd({ animated: false })}>
@@ -105,5 +163,5 @@ export default function ChatScreen() {
 }
 
 const styles = StyleSheet.create({
-  page:{flex:1,backgroundColor:'#f5f6f8'},statePage:{flex:1,justifyContent:'center',backgroundColor:'#f5f6f8',padding:14},inlineError:{padding:10,backgroundColor:'#f5f6f8'},partner:{backgroundColor:'#fff',paddingHorizontal:14,paddingVertical:10,flexDirection:'row',alignItems:'center',gap:10,borderBottomWidth:1,borderBottomColor:'#eaecf0'},partnerName:{fontWeight:'900',color:'#101828'},partnerState:{fontSize:11,color:'#98a2b3',marginTop:2},request:{backgroundColor:'#fffaeb',padding:14,borderBottomWidth:1,borderBottomColor:'#fedf89'},requestTitle:{fontWeight:'900',color:'#7a2e0e'},requestText:{color:'#93370d',fontSize:13,lineHeight:19,marginTop:4},requestActions:{flexDirection:'row',gap:9,marginTop:11},accept:{backgroundColor:'#c8211e',paddingHorizontal:16,paddingVertical:10,borderRadius:9},acceptText:{color:'#fff',fontWeight:'900'},decline:{borderWidth:1,borderColor:'#d0d5dd',paddingHorizontal:16,paddingVertical:10,borderRadius:9,backgroundColor:'#fff'},declineText:{color:'#475467',fontWeight:'900'},messages:{flex:1},messagesContent:{padding:14,paddingBottom:24},safety:{backgroundColor:'#fff',borderRadius:14,padding:18,alignItems:'center',marginVertical:16},safetyTitle:{fontWeight:'900',color:'#344054'},safetyText:{color:'#98a2b3',fontSize:13,lineHeight:19,textAlign:'center',marginTop:5},bubbleWrap:{marginBottom:12,maxWidth:'82%'},mineWrap:{alignSelf:'flex-end',alignItems:'flex-end'},theirWrap:{alignSelf:'flex-start',alignItems:'flex-start'},bubble:{borderRadius:16,paddingHorizontal:14,paddingVertical:10},mine:{backgroundColor:'#c8211e',borderBottomRightRadius:4},their:{backgroundColor:'#fff',borderBottomLeftRadius:4,borderWidth:1,borderColor:'#eaecf0'},mineText:{color:'#fff',fontSize:16,lineHeight:22},theirText:{color:'#101828',fontSize:16,lineHeight:22},time:{fontSize:10,color:'#98a2b3',marginTop:3},waiting:{backgroundColor:'#f2f4f7',padding:11},waitingText:{color:'#667085',fontSize:12,textAlign:'center'},composer:{backgroundColor:'#fff',padding:10,flexDirection:'row',alignItems:'flex-end',gap:8,borderTopWidth:1,borderTopColor:'#eaecf0'},input:{flex:1,maxHeight:110,minHeight:42,borderWidth:1,borderColor:'#d0d5dd',borderRadius:14,paddingHorizontal:12,paddingVertical:10,fontSize:16},send:{height:42,minWidth:64,borderRadius:12,backgroundColor:'#c8211e',alignItems:'center',justifyContent:'center',paddingHorizontal:14},disabled:{opacity:.45},sendText:{color:'#fff',fontWeight:'900'}
+  page:{flex:1,backgroundColor:'#f5f6f8'},statePage:{flex:1,justifyContent:'center',backgroundColor:'#f5f6f8',padding:14},inlineError:{padding:10,backgroundColor:'#f5f6f8'},partner:{backgroundColor:'#fff',paddingHorizontal:14,paddingVertical:10,flexDirection:'row',alignItems:'center',gap:10,borderBottomWidth:1,borderBottomColor:'#eaecf0'},partnerCopy:{flex:1},partnerName:{fontWeight:'900',color:'#101828'},partnerState:{fontSize:11,color:'#98a2b3',marginTop:2},partnerChevron:{fontSize:26,color:'#98a2b3'},localActions:{backgroundColor:'#fff',paddingHorizontal:12,paddingBottom:10,flexDirection:'row',alignItems:'center',flexWrap:'wrap',gap:8,borderBottomWidth:1,borderBottomColor:'#eaecf0'},localAction:{minHeight:40,borderRadius:10,borderWidth:1,borderColor:'#d0d5dd',paddingHorizontal:12,alignItems:'center',justifyContent:'center',backgroundColor:'#fff'},localActionText:{color:'#344054',fontWeight:'800',fontSize:13},localShareHint:{width:'100%',color:'#98a2b3',fontSize:11,lineHeight:16},request:{backgroundColor:'#fffaeb',padding:14,borderBottomWidth:1,borderBottomColor:'#fedf89'},requestTitle:{fontWeight:'900',color:'#7a2e0e'},requestText:{color:'#93370d',fontSize:13,lineHeight:19,marginTop:4},requestActions:{flexDirection:'row',gap:9,marginTop:11},accept:{backgroundColor:'#c8211e',paddingHorizontal:16,paddingVertical:10,borderRadius:9},acceptText:{color:'#fff',fontWeight:'900'},decline:{borderWidth:1,borderColor:'#d0d5dd',paddingHorizontal:16,paddingVertical:10,borderRadius:9,backgroundColor:'#fff'},declineText:{color:'#475467',fontWeight:'900'},messages:{flex:1},messagesContent:{padding:14,paddingBottom:24},safety:{backgroundColor:'#fff',borderRadius:14,padding:18,alignItems:'center',marginVertical:16},safetyTitle:{fontWeight:'900',color:'#344054'},safetyText:{color:'#98a2b3',fontSize:13,lineHeight:19,textAlign:'center',marginTop:5},bubbleWrap:{marginBottom:12,maxWidth:'82%'},mineWrap:{alignSelf:'flex-end',alignItems:'flex-end'},theirWrap:{alignSelf:'flex-start',alignItems:'flex-start'},bubble:{borderRadius:16,paddingHorizontal:14,paddingVertical:10},mine:{backgroundColor:'#c8211e',borderBottomRightRadius:4},their:{backgroundColor:'#fff',borderBottomLeftRadius:4,borderWidth:1,borderColor:'#eaecf0'},mineText:{color:'#fff',fontSize:16,lineHeight:22},theirText:{color:'#101828',fontSize:16,lineHeight:22},time:{fontSize:10,color:'#98a2b3',marginTop:3},waiting:{backgroundColor:'#f2f4f7',padding:11},waitingText:{color:'#667085',fontSize:12,textAlign:'center'},composer:{backgroundColor:'#fff',padding:10,flexDirection:'row',alignItems:'flex-end',gap:8,borderTopWidth:1,borderTopColor:'#eaecf0'},input:{flex:1,maxHeight:110,minHeight:42,borderWidth:1,borderColor:'#d0d5dd',borderRadius:14,paddingHorizontal:12,paddingVertical:10,fontSize:16},send:{height:42,minWidth:64,borderRadius:12,backgroundColor:'#c8211e',alignItems:'center',justifyContent:'center',paddingHorizontal:14},disabled:{opacity:.45},sendText:{color:'#fff',fontWeight:'900'}
 });

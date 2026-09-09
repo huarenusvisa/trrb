@@ -1,124 +1,90 @@
 import { useRef, useState } from 'react';
-import { AccessibilityInfo, Linking, Pressable, ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
+import { AccessibilityInfo, Linking, Platform, Pressable, StyleSheet, Text, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { WebView, type WebViewNavigation } from 'react-native-webview';
 import { useI18n } from '../../src/i18n/I18nProvider';
-import type { MessageKey } from '../../src/i18n/i18n-core';
 
-const destinations: ReadonlyArray<{ labelKey: MessageKey; url: string }> = [
-  { labelKey: 'home.portalJudgesSearch', url: 'https://asylumjudge.com/judge' },
-  { labelKey: 'home.portalJudgesCourts', url: 'https://asylumjudge.com/courts' },
-  { labelKey: 'home.portalJudgesStates', url: 'https://asylumjudge.com/states' },
-  { labelKey: 'home.portalJudgesNationalities', url: 'https://asylumjudge.com/nationality' },
-];
+const ASYLUM_JUDGE_URL = 'https://asylumjudge.com/';
 
-type FailedLink = { label: string; url: string };
+function isAsylumJudgeUrl(value: string) {
+  try {
+    const host = new URL(value).hostname.toLowerCase();
+    return host === 'asylumjudge.com' || host === 'www.asylumjudge.com';
+  } catch {
+    return false;
+  }
+}
 
 export default function JudgePortalTabScreen() {
   const { t } = useI18n();
-  const { fontScale, width } = useWindowDimensions();
-  const compact = width < 360;
-  const largeText = fontScale >= 1.3;
-  const openingRef = useRef(false);
-  const [opening, setOpening] = useState(false);
-  const [failedLink, setFailedLink] = useState<FailedLink | null>(null);
+  const webView = useRef<WebView>(null);
+  const [failed, setFailed] = useState(false);
 
-  const openExternal = async (url: string, label: string) => {
-    if (openingRef.current) return;
-    openingRef.current = true;
-    setOpening(true);
-    setFailedLink(null);
+  const openBrowser = async (url = ASYLUM_JUDGE_URL) => {
     try {
       if (!await Linking.canOpenURL(url)) throw new Error('unsupported-url');
       await Linking.openURL(url);
     } catch {
-      setFailedLink({ label, url });
-      AccessibilityInfo.announceForAccessibility(t('home.externalLinkFailed', { title: label }));
-    } finally {
-      openingRef.current = false;
-      setOpening(false);
+      AccessibilityInfo.announceForAccessibility(t('judgePortal.errorTitle'));
+      setFailed(true);
     }
   };
 
+  const allowNavigation = (request: WebViewNavigation) => {
+    if (isAsylumJudgeUrl(request.url) || request.url === 'about:blank') return true;
+    void openBrowser(request.url);
+    return false;
+  };
+
+  if (Platform.OS === 'web') {
+    return <SafeAreaView testID="screen-legal" style={styles.fallback}><Text style={styles.fallbackTitle}>AsylumJudge.com</Text><Text style={styles.fallbackBody}>{t('judgePortal.errorBody')}</Text><Pressable accessibilityRole="link" style={styles.primary} onPress={() => void openBrowser()}><Text style={styles.primaryText}>{t('judgePortal.openExternal')}</Text></Pressable></SafeAreaView>;
+  }
+
   return (
-    <ScrollView
-      testID="screen-legal"
-      style={styles.page}
-      contentContainerStyle={[styles.content, compact && styles.compactContent]}
-    >
-      <Text accessibilityRole="header" style={[styles.heading, compact && styles.compactHeading]}>{t('home.portalJudgesTitle')}</Text>
-      <Text style={styles.subtitle}>{t('home.portalJudgesBanner')}</Text>
-
-      <Pressable
-        testID="judge-portal-home"
-        accessibilityRole="link"
-        accessibilityLabel={t('home.openPortalA11y', { title: t('home.portalJudgesTitle') })}
-        accessibilityState={{ disabled: opening, busy: opening }}
-        disabled={opening}
-        style={[styles.hero, opening && styles.disabled]}
-        onPress={() => void openExternal('https://asylumjudge.com/', t('home.portalJudgesTitle'))}
-      >
-        <Text style={styles.heroTitle}>AsylumJudge.com</Text>
-        <Text style={styles.heroAction}>{opening ? t('immigration.opening') : t('home.portalJudgesAction')} →</Text>
-      </Pressable>
-
-      {failedLink ? (
-        <View testID="judge-portal-link-error" accessibilityRole="alert" accessibilityLiveRegion="polite" style={styles.errorPanel}>
-          <Text style={styles.errorText}>{t('home.externalLinkFailed', { title: failedLink.label })}</Text>
-          <Pressable
-            testID="judge-portal-link-retry"
-            accessibilityRole="button"
-            accessibilityLabel={t('home.retryExternal')}
-            accessibilityState={{ disabled: opening, busy: opening }}
-            disabled={opening}
-            style={[styles.retryButton, opening && styles.disabled]}
-            onPress={() => void openExternal(failedLink.url, failedLink.label)}
-          >
-            <Text style={styles.retryText}>{opening ? t('immigration.opening') : t('home.retryExternal')}</Text>
-          </Pressable>
-        </View>
-      ) : null}
-
-      <View style={[styles.grid, (compact || largeText) && styles.stackedGrid]}>
-        {destinations.map((destination) => {
-          const label = t(destination.labelKey);
-          return (
-            <Pressable
-              key={destination.url}
-              accessibilityRole="link"
-              accessibilityLabel={t('home.openPortalItemA11y', { item: label })}
-              accessibilityState={{ disabled: opening, busy: opening }}
-              disabled={opening}
-              style={[styles.card, (compact || largeText) && styles.stackedCard, opening && styles.disabled]}
-              onPress={() => void openExternal(destination.url, label)}
-            >
-              <Text style={styles.cardText}>{label}</Text>
-              <Text importantForAccessibility="no" accessibilityElementsHidden style={styles.arrow}>›</Text>
-            </Pressable>
-          );
-        })}
+    <SafeAreaView testID="screen-legal" edges={['top']} style={styles.page}>
+      <View style={styles.toolbar}>
+        <Text style={styles.brand}>AsylumJudge.com</Text>
+        <Pressable accessibilityRole="button" accessibilityLabel={t('judgePortal.reload')} style={styles.toolButton} onPress={() => { setFailed(false); webView.current?.reload(); }}><Text style={styles.toolText}>↻</Text></Pressable>
+        <Pressable accessibilityRole="link" accessibilityLabel={t('judgePortal.openExternal')} style={styles.toolButton} onPress={() => void openBrowser()}><Text style={styles.toolText}>↗</Text></Pressable>
       </View>
-    </ScrollView>
+      {failed ? <View testID="judge-portal-link-error" accessibilityRole="alert" style={styles.errorPanel}><Text style={styles.errorTitle}>{t('judgePortal.errorTitle')}</Text><Text style={styles.errorBody}>{t('judgePortal.errorBody')}</Text><View style={styles.errorActions}><Pressable testID="judge-portal-link-retry" accessibilityRole="button" style={styles.primary} onPress={() => { setFailed(false); webView.current?.reload(); }}><Text style={styles.primaryText}>{t('judgePortal.reload')}</Text></Pressable><Pressable accessibilityRole="link" style={styles.secondary} onPress={() => void openBrowser()}><Text style={styles.secondaryText}>{t('judgePortal.openExternal')}</Text></Pressable></View></View> : null}
+      <WebView
+        ref={webView}
+        testID="judge-portal-webview"
+        source={{ uri: ASYLUM_JUDGE_URL }}
+        originWhitelist={['https://*']}
+        onShouldStartLoadWithRequest={allowNavigation}
+        onLoadStart={() => setFailed(false)}
+        onError={() => setFailed(true)}
+        onHttpError={({ nativeEvent }) => { if (nativeEvent.statusCode >= 400) setFailed(true); }}
+        startInLoadingState
+        renderLoading={() => <View style={styles.loading}><Text style={styles.loadingText}>{t('judgePortal.loading')}</Text></View>}
+        allowsBackForwardNavigationGestures
+        setSupportMultipleWindows={false}
+        style={styles.webView}
+      />
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  page: { flex: 1, backgroundColor: '#f5f6f8' },
-  content: { paddingHorizontal: 16, paddingTop: 54, paddingBottom: 96 },
-  compactContent: { paddingHorizontal: 10 },
-  heading: { color: '#101828', fontSize: 30, lineHeight: 38, fontWeight: '900' },
-  compactHeading: { fontSize: 26, lineHeight: 34 },
-  subtitle: { color: '#667085', fontSize: 14, lineHeight: 21, marginTop: 6, marginBottom: 18 },
-  hero: { minHeight: 112, borderRadius: 16, backgroundColor: '#c8211e', padding: 18, justifyContent: 'space-between', marginBottom: 14 },
-  heroTitle: { color: '#fff', fontSize: 24, lineHeight: 32, fontWeight: '900' },
-  heroAction: { color: '#fff', fontSize: 15, lineHeight: 22, fontWeight: '800' },
-  errorPanel: { borderRadius: 12, borderWidth: 1, borderColor: '#fecdca', backgroundColor: '#fff4f2', padding: 13, marginBottom: 14, alignItems: 'flex-start' },
-  errorText: { color: '#7a271a', lineHeight: 21 },
-  retryButton: { minHeight: 44, borderRadius: 9, backgroundColor: '#c8211e', paddingHorizontal: 15, paddingVertical: 10, marginTop: 9, justifyContent: 'center' },
-  retryText: { color: '#fff', fontWeight: '800' },
-  grid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
-  stackedGrid: { flexDirection: 'column' },
-  card: { width: '48.5%', minHeight: 76, borderRadius: 13, backgroundColor: '#fff', paddingHorizontal: 15, paddingVertical: 13, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
-  stackedCard: { width: '100%' },
-  cardText: { flex: 1, color: '#101828', fontSize: 15, lineHeight: 22, fontWeight: '800' },
-  arrow: { color: '#c8211e', fontSize: 26, lineHeight: 30, marginLeft: 8 },
-  disabled: { opacity: 0.58 },
+  page: { flex: 1, backgroundColor: '#fff' },
+  toolbar: { minHeight: 46, paddingHorizontal: 12, flexDirection: 'row', alignItems: 'center', gap: 8, borderBottomWidth: 1, borderBottomColor: '#eaecf0', backgroundColor: '#fff' },
+  brand: { flex: 1, color: '#101828', fontWeight: '900' },
+  toolButton: { width: 40, height: 40, alignItems: 'center', justifyContent: 'center', borderRadius: 10, backgroundColor: '#f2f4f7' },
+  toolText: { color: '#344054', fontSize: 20, fontWeight: '900' },
+  webView: { flex: 1, backgroundColor: '#f4fbf7' },
+  loading: { position: 'absolute', top: 0, right: 0, bottom: 0, left: 0, alignItems: 'center', justifyContent: 'center', backgroundColor: '#f4fbf7' },
+  loadingText: { color: '#35654a', fontWeight: '800' },
+  errorPanel: { margin: 14, padding: 16, borderRadius: 14, borderWidth: 1, borderColor: '#fecdca', backgroundColor: '#fff4f2' },
+  errorTitle: { color: '#b42318', fontSize: 18, fontWeight: '900' },
+  errorBody: { color: '#7a271a', lineHeight: 21, marginTop: 6 },
+  errorActions: { flexDirection: 'row', gap: 10, marginTop: 14 },
+  primary: { minHeight: 44, paddingHorizontal: 16, alignItems: 'center', justifyContent: 'center', borderRadius: 10, backgroundColor: '#c8211e' },
+  primaryText: { color: '#fff', fontWeight: '900' },
+  secondary: { minHeight: 44, paddingHorizontal: 16, alignItems: 'center', justifyContent: 'center', borderRadius: 10, borderWidth: 1, borderColor: '#d0d5dd', backgroundColor: '#fff' },
+  secondaryText: { color: '#344054', fontWeight: '900' },
+  fallback: { flex: 1, padding: 24, alignItems: 'center', justifyContent: 'center', backgroundColor: '#f4fbf7' },
+  fallbackTitle: { color: '#101828', fontSize: 28, fontWeight: '900' },
+  fallbackBody: { color: '#667085', lineHeight: 22, textAlign: 'center', marginVertical: 12 },
 });

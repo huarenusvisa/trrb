@@ -45,7 +45,7 @@ test('uses the shared language context across news discovery surfaces', () => {
   const search = read('app/search.tsx');
   const list = read('src/components/PaginatedNewsList.tsx');
   assert.ok(america.includes("t('tab.america')"));
-  assert.ok(legal.includes("t('home.portalJudgesTitle')"));
+  assert.ok(legal.includes("t('judgePortal.loading')"));
   assert.ok(search.includes("t('search.placeholder')"));
   assert.ok(list.includes("t('news.loading')"));
   assert.match(home, /useReviewedNewsTranslations\(translationCandidates, locale\)/);
@@ -292,15 +292,15 @@ test('localizes job discovery and keeps long text usable on narrow screens', () 
     assert.ok(jobs.includes(`'${key}'`), `jobs screen must translate ${key}`);
   }
   assert.match(jobs, /width < 360/);
-  assert.match(jobs, /flexWrap: 'wrap'/);
-  assert.match(jobs, /minHeight: 48/);
+  assert.match(jobs, /flexWrap:\s*'wrap'/);
+  assert.match(jobs, /minHeight:\s*48/);
   assert.match(jobs, /useForegroundRetry/);
   assert.match(jobs, /withUiTimeout/);
   assert.match(jobs, /readCachedJobs\(\)/);
   assert.match(jobs, /discardReason === 'expired'/);
-  assert.match(jobs, /load\(Boolean\(items\.length\), true\)/);
+  assert.match(jobs, /fetchPage\(\{ queryText: activeQuery, refresh: true, announceSuccess: true \}\)/);
   assert.ok(jobs.includes("announceForAccessibility(t('jobs.refreshSucceeded'))"));
-  assert.match(jobs, /cacheJobs\(nextItems\)/);
+  assert.match(jobs, /cacheJobs\(page\)/);
   assert.match(jobs, /createBoundedJobsSnapshot/);
   assert.match(jobs, /testID="jobs-cache-notice"/);
   assert.ok(jobs.includes("t('jobs.cachedAt'"));

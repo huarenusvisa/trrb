@@ -59,6 +59,19 @@ test('mobile screens expose refined profile, custom media and protected messagin
   assert.match(compose, /mediaTypes: \['images', 'videos'\]/);
 });
 
+test('profile images use the authenticated server upload path and remain user-scoped', () => {
+  const settings = read('app/profile-settings.tsx');
+  const media = read('src/social/media.ts');
+  const upload = read('../../supabase/functions/profile-media-upload/index.ts');
+
+  assert.match(media, /functions\.invoke\('profile-media-upload'/);
+  assert.match(settings, /removeProfileMedia\(oldPaths\)/);
+  assert.match(upload, /userClient\.auth\.getUser\(\)/);
+  assert.match(upload, /path\.startsWith\(`\$\{user\.id\}\/`\)/);
+  assert.match(upload, /\$\{user\.id\}\/\$\{scope\}/);
+  assert.match(upload, /bytes\.length > 12 \* 1024 \* 1024/);
+});
+
 test('user discovery searches public display names and opens existing profile actions', () => {
   const screen = read('app/user-search.tsx');
   const profiles = read('src/social/profiles.ts');
@@ -164,12 +177,15 @@ test('notification center filters categories and marks only the active category 
   assert.match(screen, /accessibilityState=\{\{ selected:/);
   assert.match(screen, /listNotifications\(0, PAGE_SIZE, category\)/);
   assert.match(screen, /markAllNotificationsRead\(category\)/);
+  assert.match(screen, /testID="notifications-mark-all"/);
   assert.match(screen, /unread\.refresh\(\)/);
   assert.match(screen, /t\('inbox\.markCategory'\)/);
   assert.match(screen, /new PageRequestGate\(\)/);
   assert.match(screen, /requestGate\.current\.resetFeed\(\)/);
   assert.match(api, /notificationTypesForCategory\(category\)/);
   assert.match(api, /query\.in\('type', types\)/);
+  assert.match(api, /rpc\('mark_my_notification_read'/);
+  assert.match(api, /rpc\('mark_my_notifications_read'/);
   assert.match(provider, /markNotificationsReadLocally/);
 });
 

@@ -43,10 +43,28 @@ export function mediaStoragePath(userId: string, scope: string, asset: ImagePick
   return `${userId}/${scope}/${Date.now()}-${index}-${salt}.${extensionFor(asset)}`;
 }
 
+function arrayBufferToBase64(buffer: ArrayBuffer) {
+  const bytes = new Uint8Array(buffer);
+  let binary = '';
+  for (let offset = 0; offset < bytes.length; offset += 0x8000) {
+    binary += String.fromCharCode(...bytes.subarray(offset, Math.min(offset + 0x8000, bytes.length)));
+  }
+  return btoa(binary);
+}
+
 export async function uploadPickedAsset(bucket: string, path: string, asset: ImagePickerAsset) {
   const response = await fetch(asset.uri);
   if (!response.ok) throw new Error('无法读取所选文件，请重新选择。');
   const body = await response.arrayBuffer();
+  if (bucket === PROFILE_MEDIA_BUCKET) {
+    const scope = path.includes('/cover/') ? 'cover' : 'avatar';
+    const { data, error } = await supabase.functions.invoke('profile-media-upload', {
+      body: { scope, contentType: mimeFor(asset), base64: arrayBufferToBase64(body) },
+    });
+    if (error) throw error;
+    if (!data?.path || typeof data.path !== 'string') throw new Error('头像上传未返回有效地址，请重试。');
+    return data.path as string;
+  }
   const { error } = await supabase.storage.from(bucket).upload(path, body, {
     contentType: mimeFor(asset),
     cacheControl: '31536000',
@@ -54,4 +72,10 @@ export async function uploadPickedAsset(bucket: string, path: string, asset: Ima
   });
   if (error) throw error;
   return path;
+}
+
+export async function removeProfileMedia(paths: string[]) {
+  if (!paths.length) return;
+  const { error } = await supabase.functions.invoke('profile-media-upload', { body: { action: 'delete', paths } });
+  if (error) throw error;
 }

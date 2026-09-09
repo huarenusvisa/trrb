@@ -68,8 +68,10 @@ function tagValues(html, tag, attr) {
 }
 function has(html, re) { return re.test(html); }
 function isCleanRouteTarget(target) {
-  if (!target || path.posix.extname(target)) return false;
-  const first = target.split("/").filter(Boolean)[0] || "";
+  if (!target) return false;
+  const route = target.endsWith("/index.html") ? target.slice(0, -"/index.html".length) : target;
+  if (path.posix.extname(route)) return false;
+  const first = route.split("/").filter(Boolean)[0] || "";
   return ROUTE_PREFIXES.has(first);
 }
 

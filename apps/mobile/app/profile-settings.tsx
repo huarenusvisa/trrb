@@ -8,7 +8,7 @@ import { AsyncStatePanel } from '../src/components/AsyncStatePanel';
 import { TrRbAvatar } from '../src/components/TrRbAvatar';
 import { useForegroundRetry } from '../src/hooks/useForegroundRetry';
 import { useI18n } from '../src/i18n/I18nProvider';
-import { mediaStoragePath, PROFILE_MEDIA_BUCKET, publicProfileMediaUrl, uploadPickedAsset } from '../src/social/media';
+import { mediaStoragePath, PROFILE_MEDIA_BUCKET, publicProfileMediaUrl, removeProfileMedia, uploadPickedAsset } from '../src/social/media';
 import { PROFILE_SELECT } from '../src/social/profiles';
 import type { SocialProfile } from '../src/social/types';
 import { withUiTimeout } from '../src/utils/async-state-core';
@@ -108,13 +108,11 @@ export default function ProfileSettingsScreen() {
       let nextAvatarPath = avatarPath;
       let nextCoverPath = coverPath;
       if (avatarAsset) {
-        nextAvatarPath = mediaStoragePath(userId, 'avatar', avatarAsset);
-        await uploadPickedAsset(PROFILE_MEDIA_BUCKET, nextAvatarPath, avatarAsset);
+        nextAvatarPath = await uploadPickedAsset(PROFILE_MEDIA_BUCKET, mediaStoragePath(userId, 'avatar', avatarAsset), avatarAsset);
         uploaded.push(nextAvatarPath);
       }
       if (coverAsset) {
-        nextCoverPath = mediaStoragePath(userId, 'cover', coverAsset);
-        await uploadPickedAsset(PROFILE_MEDIA_BUCKET, nextCoverPath, coverAsset);
+        nextCoverPath = await uploadPickedAsset(PROFILE_MEDIA_BUCKET, mediaStoragePath(userId, 'cover', coverAsset), coverAsset);
         uploaded.push(nextCoverPath);
       }
       const payload = {
@@ -126,13 +124,13 @@ export default function ProfileSettingsScreen() {
       const { data, error } = await supabase.from('profiles').update(payload).eq('id', userId).select(PROFILE_SELECT).single();
       if (error) throw error;
       const oldPaths = [profile?.avatar_path, profile?.cover_path].filter((path): path is string => Boolean(path && path !== nextAvatarPath && path !== nextCoverPath));
-      if (oldPaths.length) await supabase.storage.from(PROFILE_MEDIA_BUCKET).remove(oldPaths).catch(() => undefined);
+      if (oldPaths.length) await removeProfileMedia(oldPaths).catch(() => undefined);
       const next = data as SocialProfile;
       setProfile(next); setName(next.display_name || ''); setBio(next.bio || ''); setAvatar(next.avatar_key || 'avatar_001');
       setAvatarPath(next.avatar_path); setCoverPath(next.cover_path); setAvatarAsset(null); setCoverAsset(null);
       Alert.alert(t('profileSettings.saved'), t('profileSettings.savedBody'));
     } catch (error) {
-      if (uploaded.length) await supabase.storage.from(PROFILE_MEDIA_BUCKET).remove(uploaded).catch(() => undefined);
+      if (uploaded.length) await removeProfileMedia(uploaded).catch(() => undefined);
       const message = error instanceof Error ? error.message : t('profileSettings.retryLater');
       Alert.alert(t('profileSettings.saveFailed'), message.includes('display_name_reserved') ? t('profileSettings.reservedName') : message);
     } finally { setSaving(false); }

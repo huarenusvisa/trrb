@@ -52,7 +52,7 @@ test('uses the shared language context across news discovery surfaces', () => {
   assert.match(home, /reviewedNewsTitle\(article, reviewedTranslations\)/);
   assert.match(list, /useReviewedNewsTranslations\(items, locale\)/);
   assert.match(list, /reviewedNewsTitle\(item, reviewedTranslations\)/);
-  assert.match(america, /<CommunityScreen embedded \/>/);
+  assert.match(america, /webViewTestID="community-portal-webview"/);
   assert.match(legal, /https:\/\/asylumjudge\.com\//);
   assert.doesNotMatch(list, /toLocaleString\('zh-CN'\)/);
 });

@@ -49,6 +49,8 @@ jobs:
           node-version: '22'
       - name: Build canonical AsylumJudge site once
         run: node scripts/build-asylumjudge-site.mjs
+      - name: Finalize meta descriptions once
+        run: node scripts/asylumjudge-meta-description-finalize.mjs
       - name: Remove standalone broken links and legacy TRRB routes
         run: node scripts/asylumjudge-standalone-link-hygiene.mjs
       - name: Verify sitemap and canonical SEO contract

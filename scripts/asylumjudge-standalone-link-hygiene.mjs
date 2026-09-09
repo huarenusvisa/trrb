@@ -17,7 +17,14 @@ const BRAND_REPLACEMENTS = new Map([
   ['TRRB · EOIR JUDGE PROFILE', 'ASYLUMJUDGE · IMMIGRATION JUDGE PROFILE'],
   ['TRRB · STATE ASYLUM DATA', 'ASYLUMJUDGE · STATE ASYLUM DATA'],
   ['TRRB · COURT ASYLUM DATA', 'ASYLUMJUDGE · COURT ASYLUM DATA'],
-  ['TRRB · GLOBAL ASYLUM NATIONALITY DATA', 'ASYLUMJUDGE · GLOBAL ASYLUM NATIONALITY DATA']
+  ['TRRB · GLOBAL ASYLUM NATIONALITY DATA', 'ASYLUMJUDGE · GLOBAL ASYLUM NATIONALITY DATA'],
+  ['TRRB · EOIR COURT PROFILE', 'ASYLUMJUDGE · IMMIGRATION COURT PROFILE'],
+  ['TRRB · EOIR COURT DATABASE', 'ASYLUMJUDGE · IMMIGRATION COURT DATABASE'],
+  ['TRRB · DATA METHODOLOGY', 'ASYLUMJUDGE · DATA METHODOLOGY'],
+  ['TRRB · EOIR IMMIGRATION DATA', 'ASYLUMJUDGE · EOIR IMMIGRATION DATA'],
+  ['<b>唐人日报 Tang Ren Daily</b>', '<b>AsylumJudge.com</b>'],
+  ['Tang Ren Daily organizes public data only and provides no legal conclusion for any individual case.', 'AsylumJudge organizes public data only and provides no legal conclusion for any individual case.'],
+  ['唐人日报仅整理公开数据，不提供针对具体案件的法律结论。', 'AsylumJudge仅整理公开数据，不提供针对具体案件的法律结论。']
 ]);
 const DYNAMIC_ROUTES = new Set(['/judge', '/court', '/courts', '/states', '/nationality', '/compare', '/methodology', '/community']);
 const LOCALE_DYNAMIC_RE = /^\/(?:en|es|fr|pt-br|hi|zh-hant|ru|ar|tr)\/(?:judge|court)$/;
@@ -94,6 +101,6 @@ for (const path of htmlFiles) {
   const html = await readFile(path, 'utf8');
   for (const token of BRAND_REPLACEMENTS.keys()) legacyBrandHits += (html.match(new RegExp(escapeRegex(token), 'g')) || []).length;
 }
-if (legacyBrandHits) throw new Error(`AsylumJudge standalone link hygiene left ${legacyBrandHits} legacy TRRB brand labels in the production bundle.`);
+if (legacyBrandHits) throw new Error(`AsylumJudge standalone link hygiene left ${legacyBrandHits} legacy TRRB/Tang Ren Daily primary-brand labels in the production bundle.`);
 
-console.log(`AsylumJudge standalone link hygiene: ${changedFiles} HTML files changed; ${replacements} broken/legacy hrefs or brand labels rewritten; 0 unresolved internal routes; 0 legacy profile labels.`);
+console.log(`AsylumJudge standalone link hygiene: ${changedFiles} HTML files changed; ${replacements} broken/legacy hrefs or primary-brand labels rewritten; 0 unresolved internal routes; 0 legacy primary-brand labels.`);

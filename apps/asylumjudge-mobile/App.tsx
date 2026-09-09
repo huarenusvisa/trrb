@@ -80,7 +80,7 @@ export default function App() {
   }, [judges, query]);
 
   function openJudge(judge: Judge) {
-    void Linking.openURL(`${SITE_URL LW}?id=ilho`);
+    void Linking.openURL(`${SITE_URL}/judge?id=${encodeURIComponent(String(judge.id))}`);
   }
 
   return (

@@ -6,6 +6,7 @@ import { updateCommentLikeState } from '../api/comment-like-state';
 import { supabase } from '../auth/supabase';
 import { buildCommentDisplayRows, isOwnComment, prependCreatedComment } from '../community/comment-presentation';
 import { AsyncStatePanel } from './AsyncStatePanel';
+import { TrRbAvatar } from './TrRbAvatar';
 import { clearCommentDraft, loadCommentDraft, saveCommentDraft } from '../storage/commentDraft';
 import { useForegroundRetry } from '../hooks/useForegroundRetry';
 import { withUiTimeout } from '../utils/async-state-core';
@@ -222,7 +223,7 @@ export function CommentThread({ articleId }: { articleId: string }) {
     {loading && items.length ? <Text testID="news-comments-refreshing" accessibilityLiveRegion="polite" style={styles.loadingText}>{t('comments.refreshing')}</Text> : null}
     {loadError ? <AsyncStatePanel testID="news-comments-load-error" title={t(items.length ? 'comments.refreshFailed' : 'comments.unavailableTitle')} message={items.length ? `${loadError} ${t('comments.loadedPreserved')}` : loadError} tone="error" actionLabel={t('comments.reload')} onAction={() => void load(false)} busy={loading} /> : null}
     {!loading && !loadError && items.length === 0 ? <Text testID="news-comments-empty" style={styles.empty}>{t('comments.empty')}</Text> : displayItems.map(({ item, depth, replyToLabel }, index) => <View key={item.id} testID={`news-comment-${index}`} style={[styles.comment, depth > 0 && styles.replyComment]} accessibilityLabel={replyToLabel ? t('comments.replyRelationA11y', { name: item.profiles?.display_name || t('comments.readerFallback'), target: replyToLabel }) : undefined}>
-      <View style={styles.commentHead}><Pressable onPress={() => router.push(`/user/${item.user_id}`)}><Text style={styles.name}>{item.profiles?.display_name || t('comments.readerFallback')}</Text></Pressable><Text style={styles.time}>{new Date(item.created_at).toLocaleString(localeDateTag(locale))}</Text></View>
+      <View style={styles.commentHead}><Pressable testID={`news-comment-author-${index}`} accessibilityRole="button" accessibilityLabel={t('comments.openProfileA11y', { name: item.profiles?.display_name || t('comments.readerFallback') })} style={{ minHeight: 44, flex: 1, flexDirection: 'row', alignItems: 'center', gap: 9 }} onPress={() => router.push(`/user/${item.user_id}`)}><TrRbAvatar avatarKey={item.profiles?.avatar_key} avatarPath={item.profiles?.avatar_path} size={34} /><Text style={styles.name}>{item.profiles?.display_name || t('comments.readerFallback')}</Text></Pressable><Text style={styles.time}>{new Date(item.created_at).toLocaleString(localeDateTag(locale))}</Text></View>
       {replyToLabel ? <Text style={styles.parentTag}>{t('comments.replyingTo', { name: replyToLabel })}</Text> : null}
       <Text style={styles.body}>{item.content}</Text>
       {item.status === 'pending' ? <Text testID={`news-comment-pending-${index}`} style={styles.pending}>{t('comments.pending')}</Text> : null}

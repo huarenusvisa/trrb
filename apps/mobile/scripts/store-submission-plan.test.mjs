@@ -7,6 +7,7 @@ import test from 'node:test';
 import { inspectSubmissionPlan } from './store-submission-plan-core.mjs';
 
 const mobileRoot = path.resolve(import.meta.dirname, '..');
+const appVersion = JSON.parse(fs.readFileSync(path.join(mobileRoot, 'app.json'), 'utf8')).expo.version;
 const releaseAccess = {
   TRRB_EXPO_ACCESS_CONFIRMED: '1',
   TRRB_APPLE_ASC_APP_ID: '1234567890',
@@ -26,14 +27,14 @@ function buildEvidenceFile(t, releaseCandidatePath, sourceCommit = '1234567890ab
     sourceCommit,
     releaseCandidateSha256: crypto.createHash('sha256').update(fs.readFileSync(releaseCandidatePath)).digest('hex'),
     application: {
-      slug: 'trrb', projectId: 'cc29573d-d20c-4c3b-a7d6-1bc74838127a', version: '0.2.0', runtimeVersion: '0.2.0',
+      slug: 'trrb', projectId: 'cc29573d-d20c-4c3b-a7d6-1bc74838127a', version: appVersion, runtimeVersion: appVersion,
       ios: { bundleIdentifier: 'net.trrb.mobile' }, android: { package: 'net.trrb.mobile' }
     },
     builds: ['ios', 'android'].map((platform, index) => ({
       platform,
       easBuildId: index === 0 ? '11111111-1111-4111-8111-111111111111' : '22222222-2222-4222-8222-222222222222',
       profile: 'production', status: 'finished', distribution: 'store', channel: 'production',
-      artifactType: platform === 'ios' ? 'ipa' : 'aab', sourceCommit, appVersion: '0.2.0', runtimeVersion: '0.2.0',
+      artifactType: platform === 'ios' ? 'ipa' : 'aab', sourceCommit, appVersion, runtimeVersion: appVersion,
       nativeBuildVersion: '3', createdAt: '2026-09-08T00:00:00.000Z', completedAt: '2026-09-08T00:10:00.000Z'
     }))
   }));
@@ -52,7 +53,7 @@ function screenshotEvidenceFile(t) {
   ];
   let digest = 0;
   fs.writeFileSync(evidencePath, JSON.stringify({
-    schemaVersion: 1, sourceCommit: '1234567890abcdef1234567890abcdef12345678', appVersion: '0.2.0',
+    schemaVersion: 1, sourceCommit: '1234567890abcdef1234567890abcdef12345678', appVersion,
     locale: 'zh-CN', capturedAt: '2026-09-08T00:00:00.000Z',
     sets: configs.map(([id, deviceClass, screenshotDirectory, width, height]) => ({
       id, deviceClass, directory: screenshotDirectory,
@@ -70,8 +71,8 @@ function releaseCandidateFile(t, screenshotEvidencePath) {
   fs.writeFileSync(evidencePath, JSON.stringify({
     schemaVersion: 1,
     sourceCommit: '1234567890abcdef1234567890abcdef12345678',
-    appVersion: '0.2.0',
-    runtimeVersion: '0.2.0',
+    appVersion,
+    runtimeVersion: appVersion,
     profile: 'production',
     channel: 'production',
     screenshotEvidenceSha256,
@@ -87,7 +88,7 @@ function distributionEvidenceFile(t) {
   fs.writeFileSync(evidencePath, JSON.stringify({
     schemaVersion: 1,
     sourceCommit: '1234567890abcdef1234567890abcdef12345678',
-    appVersion: '0.2.0',
+    appVersion,
     distributions: ['ios', 'android'].map((platform, index) => ({
       platform,
       easBuildId: index === 0 ? '11111111-1111-4111-8111-111111111111' : '22222222-2222-4222-8222-222222222222',
@@ -113,7 +114,7 @@ function deviceAcceptanceFile(t) {
     'account-deletion-entry-and-final-warning'
   ];
   fs.writeFileSync(evidencePath, JSON.stringify({
-    schemaVersion: 1, sourceCommit: '1234567890abcdef1234567890abcdef12345678', appVersion: '0.2.0',
+    schemaVersion: 1, sourceCommit: '1234567890abcdef1234567890abcdef12345678', appVersion,
     acceptanceRuns: ['ios', 'android'].map((platform, index) => ({
       platform,
       easBuildId: index === 0 ? '11111111-1111-4111-8111-111111111111' : '22222222-2222-4222-8222-222222222222',
@@ -131,7 +132,7 @@ function reviewSubmissionFile(t) {
   t.after(() => fs.rmSync(directory, { recursive: true, force: true }));
   const evidencePath = path.join(directory, 'evidence.json');
   fs.writeFileSync(evidencePath, JSON.stringify({
-    schemaVersion: 1, sourceCommit: '1234567890abcdef1234567890abcdef12345678', appVersion: '0.2.0',
+    schemaVersion: 1, sourceCommit: '1234567890abcdef1234567890abcdef12345678', appVersion,
     submissions: ['ios', 'android'].map((platform, index) => ({
       platform,
       easBuildId: index === 0 ? '11111111-1111-4111-8111-111111111111' : '22222222-2222-4222-8222-222222222222',

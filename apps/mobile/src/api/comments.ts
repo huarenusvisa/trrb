@@ -14,7 +14,7 @@ export type CommentRow = {
   like_count: number;
   viewer_has_liked: boolean;
   parent_author_name?: string | null;
-  profiles?: { display_name?: string; avatar_key?: string } | null;
+  profiles?: { display_name?: string; avatar_key?: string; avatar_path?: string } | null;
 };
 
 export type CommentCursor = { created_at: string; id: string } | null;
@@ -33,7 +33,7 @@ export async function currentUserId() {
 
 export async function listComments(articleId: string, cursor: CommentCursor = null) {
   const { data: sessionData } = await supabase.auth.getSession();
-  let query = supabase.from('comments').select('id,article_id,user_id,parent_id,content,status,is_pinned,created_at,updated_at,profiles!comments_user_id_fkey(display_name,avatar_key),comment_likes(count)').eq('article_id', articleId);
+  let query = supabase.from('comments').select('id,article_id,user_id,parent_id,content,status,is_pinned,created_at,updated_at,profiles!comments_user_id_fkey(display_name,avatar_key,avatar_path),comment_likes(count)').eq('article_id', articleId);
   query = sessionData.session
     ? query.or(`status.eq.published,and(user_id.eq.${sessionData.session.user.id},status.eq.pending)`)
     : query.eq('status', 'published');
@@ -79,7 +79,7 @@ export async function createComment(articleId: string, content: string, parentId
   const text = content.trim();
   if (!text || text.length > 3000) throw new Error('评论内容需要在 1–3000 字之间。');
   const userId = await currentUserId();
-  const { data, error } = await supabase.from('comments').insert({ article_id: articleId, user_id: userId, parent_id: parentId, content: text }).select('id,article_id,user_id,parent_id,content,status,is_pinned,created_at,updated_at').single();
+  const { data, error } = await supabase.from('comments').insert({ article_id: articleId, user_id: userId, parent_id: parentId, content: text }).select('id,article_id,user_id,parent_id,content,status,is_pinned,created_at,updated_at,profiles!comments_user_id_fkey(display_name,avatar_key,avatar_path)').single();
   if (error) throw error;
   return { ...data, like_count: 0, viewer_has_liked: false, parent_author_name: null } as CommentRow;
 }

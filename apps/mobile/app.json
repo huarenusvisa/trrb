@@ -3,7 +3,7 @@
     "name": "唐人日报",
     "slug": "trrb",
     "scheme": "trrb",
-    "version": "0.2.0",
+    "version": "0.2.1",
     "icon": "./assets/app-icon-1024.png",
     "orientation": "portrait",
     "userInterfaceStyle": "light",
@@ -29,7 +29,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "net.trrb.mobile",
-      "buildNumber": "2",
+      "buildNumber": "3",
       "privacyManifests": {
         "NSPrivacyTracking": false,
         "NSPrivacyTrackingDomains": [],
@@ -58,7 +58,7 @@
     },
     "android": {
       "package": "net.trrb.mobile",
-      "versionCode": 2,
+      "versionCode": 3,
       "adaptiveIcon": {
         "foregroundImage": "./assets/app-icon-1024.png",
         "backgroundColor": "#ffffff"

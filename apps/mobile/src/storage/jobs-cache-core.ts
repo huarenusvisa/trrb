@@ -1,4 +1,4 @@
-export const JOBS_CACHE_MAX_ITEMS = 40;
+export const JOBS_CACHE_MAX_ITEMS = 120;
 export const JOBS_CACHE_MAX_AGE_MS = 7 * 24 * 60 * 60 * 1000;
 const JOBS_CACHE_FUTURE_TOLERANCE_MS = 5 * 60 * 1000;
 

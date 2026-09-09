@@ -49,6 +49,13 @@ test('mobile screens expose refined profile, custom media and protected messagin
   assert.match(settings, /t\('profileSettings\.allowMessages'\)/);
   assert.match(chat, /t\('chat\.accept'\)/);
   assert.match(chat, /t\('chat\.incomingBody'\)/);
+  assert.match(chat, /testID="chat-partner-profile"/);
+  assert.match(chat, /router\.push\(`\/user\/\$\{partner\.id\}`\)/);
+  assert.match(chat, /testID="chat-call"/);
+  assert.match(chat, /testID="chat-share-media"/);
+  assert.match(chat, /testID="chat-share-file"/);
+  assert.match(chat, /Sharing\.shareAsync/);
+  assert.match(chat, /useFocusEffect/);
   assert.match(compose, /mediaTypes: \['images', 'videos'\]/);
 });
 
@@ -472,7 +479,11 @@ test('news replies stay grouped with parents and identify the reply target', () 
 
   assert.match(api, /missingParentIds/);
   assert.match(api, /profiles!comments_user_id_fkey\(display_name/);
-  assert.equal((api.match(/profiles!comments_user_id_fkey/g) || []).length, 2);
+  assert.equal((api.match(/profiles!comments_user_id_fkey/g) || []).length, 3);
+  assert.match(api, /avatar_path/);
+  assert.match(news, /news-comment-author-/);
+  assert.match(news, /<TrRbAvatar/);
+  assert.match(news, /router\.push\(`\/user\/\$\{item\.user_id\}`\)/);
   assert.match(api, /parent_author_name/);
   assert.match(presentation, /buildCommentDisplayRows/);
   assert.match(presentation, /for \(const child of children\.get\(row\.id\) \|\| \[\]\) append/);

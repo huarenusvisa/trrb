@@ -39,6 +39,11 @@ await cp(join(root, 'assets', 'supabase-client.js'), join(output, 'assets', 'sup
 await buildAsylumJudgeSeo({ root, output });
 await applyAsylumJudgeIndexingHygiene({ root, output });
 await applyAsylumJudgeSearchIntent({ root, output });
+// One consolidated post-build SEO pass: concentrate crawl budget on the four
+// strongest search locales, lengthen thin meta descriptions, strengthen the
+// hierarchy of indexable detail pages, remove low-priority translated details
+// from sitemaps, and add citeable Dataset metadata.
+await import('./asylumjudge-search-quality.mjs');
 
 const localePrefixes = ['en', 'es', 'fr', 'pt-br', 'hi', 'zh-hant', 'ru', 'ar', 'tr'];
 const localizedRewrites = localePrefixes.flatMap((locale) => [

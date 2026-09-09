@@ -28,6 +28,21 @@ jobs:
       NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
       NETLIFY_SITE_ID: 7beb8b62-f7e3-49fc-b954-46699c9956b7
     steps:
+      - name: Preflight AsylumJudge Netlify authorization before any full build
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.deploy == true }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "${NETLIFY_AUTH_TOKEN:-}"
+          test -n "${NETLIFY_SITE_ID:-}"
+          code=$(curl -sS -o /tmp/asylumjudge-netlify-site.json -w '%{http_code}' \
+            -H "Authorization: Bearer ${NETLIFY_AUTH_TOKEN}" \
+            "https://api.netlify.com/api/v1/sites/${NETLIFY_SITE_ID}" || true)
+          if [ "$code" != "200" ]; then
+            echo "AsylumJudge Netlify authorization failed before build (HTTP ${code}). No full bundle build or upload was started." >&2
+            exit 1
+          fi
+          echo 'AsylumJudge Netlify authorization preflight passed.'
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
@@ -48,15 +63,9 @@ jobs:
           const fs = require('fs');
           const report = JSON.parse(fs.readFileSync('.netlify/asylumjudge-bundle/public/asylumjudge-indexing-hygiene.json', 'utf8'));
           const highCjk = report.high_cjk_page_count ?? report.high_cjk_pages?.length ?? 0;
-          if (!Number.isFinite(report.localized_pages) || report.localized_pages < 10000) {
-            throw new Error(`Server-side localization regressed: ${report.localized_pages}`);
-          }
-          if (report.removed_untranslated_methodology_urls !== 9) {
-            throw new Error(`Expected 9 untranslated methodology URLs to be removed, got ${report.removed_untranslated_methodology_urls}`);
-          }
-          if (highCjk > 10) {
-            throw new Error(`Multilingual duplicate-content guard failed: ${highCjk} non-Chinese pages exceed the CJK threshold`);
-          }
+          if (!Number.isFinite(report.localized_pages) || report.localized_pages < 10000) throw new Error(`Server-side localization regressed: ${report.localized_pages}`);
+          if (report.removed_untranslated_methodology_urls !== 9) throw new Error(`Expected 9 untranslated methodology URLs to be removed, got ${report.removed_untranslated_methodology_urls}`);
+          if (highCjk > 10) throw new Error(`Multilingual duplicate-content guard failed: ${highCjk} non-Chinese pages exceed the CJK threshold`);
           console.log(`Indexing hygiene verified: ${report.localized_pages} localized pages; ${report.server_side_replacements} server-side replacements; ${highCjk} high-CJK warnings.`);
           NODE
       - name: Save one final verified AsylumJudge bundle
@@ -64,14 +73,12 @@ jobs:
         with:
           name: asylumjudge-production-bundle
           path: .netlify/asylumjudge-bundle
-          retention-days: 7
+          retention-days: 3
       - name: Deploy verified bundle to Netlify production
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.deploy == true }}
         shell: bash
         run: |
           set -euo pipefail
-          test -n "${NETLIFY_AUTH_TOKEN:-}"
-          test -n "${NETLIFY_SITE_ID:-}"
           npx --yes netlify-cli@latest deploy \
             --prod \
             --site "$NETLIFY_SITE_ID" \
@@ -83,32 +90,11 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          paths=(
-            "/"
-            "/en/"
-            "/es/"
-            "/fr/"
-            "/pt-br/"
-            "/hi/"
-            "/zh-hant/"
-            "/ru/"
-            "/ar/"
-            "/tr/"
-            "/asylum-judge-approval-rate/"
-            "/en/asylum-judge-rating/"
-            "/en/judge-backgrounds/"
-            "/methodology/"
-          )
+          paths=("/" "/en/" "/es/" "/fr/" "/pt-br/" "/hi/" "/zh-hant/" "/ru/" "/ar/" "/tr/" "/asylum-judge-approval-rate/" "/en/asylum-judge-rating/" "/en/judge-backgrounds/" "/methodology/")
           for path in "${paths[@]}"; do
             code=$(curl -sS -L -o /tmp/asylumjudge-live.html -w '%{http_code}' "https://asylumjudge.com${path}")
-            if [ "$code" != "200" ]; then
-              echo "Live verification failed: ${path} returned ${code}" >&2
-              exit 1
-            fi
-            if grep -qi 'Page not found' /tmp/asylumjudge-live.html; then
-              echo "Live verification failed: ${path} rendered Netlify 404 content" >&2
-              exit 1
-            fi
+            if [ "$code" != "200" ]; then echo "Live verification failed: ${path} returned ${code}" >&2; exit 1; fi
+            if grep -qi 'Page not found' /tmp/asylumjudge-live.html; then echo "Live verification failed: ${path} rendered Netlify 404 content" >&2; exit 1; fi
           done
           curl -fsSL https://asylumjudge.com/en/ | grep -q 'U.S. Immigration Judge Approval Rates'
           curl -fsSL https://asylumjudge.com/en/asylum-judge-rating/ | grep -q 'Asylum Judge Rating and Approval Rate Lookup'

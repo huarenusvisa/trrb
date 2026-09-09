@@ -18,11 +18,16 @@ for (const shard of ['static', 'judges', 'courts', 'nationalities']) {
   assert.match(sitemapIndex, new RegExp(`<loc>https://asylumjudge\\.com/sitemap-${shard}\\.xml</loc>`));
 }
 
+// Search Console showed that most discovered-but-not-indexed examples were
+// detailed Turkish, Portuguese, Russian, Arabic, Hindi and Traditional Chinese
+// entity translations. Keep those pages accessible but stop submitting them as
+// crawl-priority canonicals. The sitemaps focus detail indexing on zh-Hans,
+// English, Spanish and French while keeping all language hubs available.
 const sitemapFiles = [
   ['sitemap-static.xml', 50],
   ['sitemap-judges.xml', 1000],
-  ['sitemap-courts.xml', 500],
-  ['sitemap-nationalities.xml', 2000]
+  ['sitemap-courts.xml', 250],
+  ['sitemap-nationalities.xml', 700]
 ];
 const allUrls = [];
 for (const [file, minimum] of sitemapFiles) {
@@ -44,8 +49,8 @@ for (const url of allUrls) {
 
 const judgeUrl = allUrls.find((url) => /\/en\/judges\//.test(url));
 const courtUrl = allUrls.find((url) => /\/es\/courts\/.+--/.test(url));
-const nationalityUrl = allUrls.find((url) => /\/ar\/nationalities\//.test(url));
-assert.ok(judgeUrl && courtUrl && nationalityUrl, 'entity sitemaps must include localized pretty URLs');
+const nationalityUrl = allUrls.find((url) => /\/fr\/nationalities\//.test(url));
+assert.ok(judgeUrl && courtUrl && nationalityUrl, 'entity sitemaps must include localized pretty URLs for priority locales');
 
 for (const url of [judgeUrl, courtUrl, nationalityUrl]) {
   const pathname = new URL(url).pathname;
@@ -53,15 +58,15 @@ for (const url of [judgeUrl, courtUrl, nationalityUrl]) {
   assert.match(html, new RegExp(`<link rel="canonical" href="${url.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}">`));
   assert.match(html, /<meta name="robots" content="index,follow,/);
   assert.doesNotMatch(html, /<meta name="robots" content="noindex/i);
-  assert.equal((html.match(/rel="alternate" hreflang=/g) || []).length, 11, 'each page needs ten locale alternates plus x-default');
-  assert.equal((html.match(/type="application\/ld\+json"/g) || []).length, 1, 'each page should have one JSON-LD graph');
+  assert.equal((html.match(/rel="alternate" hreflang=/g) || []).length, 5, 'priority detail pages should advertise four indexable locale alternates plus x-default');
+  assert.equal((html.match(/type="application\/ld\+json" data-seo-generated/g) || []).length, 1, 'each entity page should retain one generated JSON-LD graph');
   const json = html.match(/<script type="application\/ld\+json" data-seo-generated>([\s\S]*?)<\/script>/)?.[1];
   assert.ok(json, 'page should have generated JSON-LD');
   assert.doesNotThrow(() => JSON.parse(json), 'JSON-LD must be valid JSON');
 }
 
 const nationalityUrls = allUrls.filter((url) => /\/nationalities\//.test(new URL(url).pathname));
-assert.ok(nationalityUrls.length >= 2000, 'localized nationality dataset pages must be generated');
+assert.ok(nationalityUrls.length >= 700, 'priority-locale nationality dataset pages must remain in the sitemap');
 for (const url of nationalityUrls) {
   const pathname = new URL(url).pathname;
   const html = await read(`${pathname.replace(/^\//, '').replace(/\/$/, '')}/index.html`);
@@ -127,14 +132,19 @@ for (const scheme of ['http', 'https']) {
   }
 }
 
-const arabicNationality = await read(`${new URL(nationalityUrl).pathname.replace(/^\//, '').replace(/\/$/, '')}/index.html`);
+// Low-priority translations still render correctly for users but are not sent
+// to search engines as detail-page indexing targets.
+const arabicNationality = await read('ar/nationalities/china--ch/index.html');
 assert.match(arabicNationality, /<html lang="ar" dir="rtl">/);
+assert.match(arabicNationality, /<meta name="robots" content="noindex,follow,max-image-preview:large">/);
 assert.match(arabicNationality, /<body data-country="[^"]+" data-seo-prerendered="true">/);
 assert.match(arabicNationality, /<h1>[^<]+<\/h1>/, 'entity H1 must remain country-specific after client translations load');
 assert.doesNotMatch(arabicNationality, /<h1 data-i18n="heroTitle">/, 'entity H1 must not be replaced by the generic nationality title');
 
 const methodology = await read('methodology/index.html');
 assert.match(methodology, /id="data-license"/, 'methodology must expose the Dataset license target');
+assert.match(methodology, /data-asylumjudge-citation="true"/, 'methodology must expose human-readable citation guidance');
+assert.match(methodology, /"@type":"Dataset"/, 'methodology must expose Dataset schema for external citation and AI/search discovery');
 
 const backgroundDirectory = await read('judge-backgrounds/index.html');
 assert.match(backgroundDirectory, /<link rel="canonical" href="https:\/\/asylumjudge\.com\/judge-backgrounds\/">/);
@@ -166,4 +176,4 @@ assert.doesNotMatch(headers, /\/\*\.(?:js|css)\s+Cache-Control:[^\n]*no-store/, 
 assert.match(headers, /\/judge\s+X-Robots-Tag: noindex, follow/);
 assert.match(headers, /\/\*\/judge\s+X-Robots-Tag: noindex, follow/);
 
-console.log(`AsylumJudge SEO contract: PASS (${allUrls.length.toLocaleString()} canonical URLs checked)`);
+console.log(`AsylumJudge SEO contract: PASS (${allUrls.length.toLocaleString()} priority canonical URLs checked; low-demand translated details remain accessible but noindex/follow)`);

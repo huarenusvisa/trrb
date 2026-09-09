@@ -22,12 +22,25 @@ const BRAND_REPLACEMENTS = new Map([
   ['TRRB · EOIR COURT DATABASE', 'ASYLUMJUDGE · IMMIGRATION COURT DATABASE'],
   ['TRRB · DATA METHODOLOGY', 'ASYLUMJUDGE · DATA METHODOLOGY'],
   ['TRRB · EOIR IMMIGRATION DATA', 'ASYLUMJUDGE · EOIR IMMIGRATION DATA'],
-  ['<b>唐人日报 Tang Ren Daily</b>', '<b>AsylumJudge.com</b>'],
-  ['Tang Ren Daily organizes public data only and provides no legal conclusion for any individual case.', 'AsylumJudge organizes public data only and provides no legal conclusion for any individual case.'],
-  ['唐人日报仅整理公开数据，不提供针对具体案件的法律结论。', '庇护法官仅整理公开数据，不提供针对具体案件的法律结论。']
+  ['<b>唐人日报 Tang Ren Daily</b>', '<b>庇护法官</b>'],
+  ['<b>Tang Ren Daily · AsylumJudge</b>', '<b>AsylumJudge.com</b>'],
+  ['Tang Ren Daily organizes public data only and provides no legal conclusion for any individual case.', 'AsylumJudge organizes public EOIR immigration-court data and provides no legal conclusion for any individual case.'],
+  ['唐人日报仅整理公开数据，不提供针对具体案件的法律结论。', '庇护法官整理美国移民法院公开数据，不提供针对具体案件的法律结论。']
 ]);
 const DYNAMIC_ROUTES = new Set(['/judge', '/court', '/courts', '/states', '/nationality', '/compare', '/methodology', '/community']);
 const LOCALE_DYNAMIC_RE = /^\/(?:en|es|fr|pt-br|hi|zh-hant|ru|ar|tr)\/(?:judge|court)$/;
+const META_SUFFIX = {
+  en: 'Compare EOIR asylum approval rates, denial rates, case counts, court assignments, historical trends, and official immigration-judge background data on AsylumJudge.',
+  es: 'Compare tasas de aprobación y denegación de asilo, volumen de casos, tribunales, tendencias históricas y datos oficiales de jueces de inmigración en AsylumJudge.',
+  fr: 'Comparez les taux d’approbation et de refus d’asile, les volumes de dossiers, les tribunaux, les tendances historiques et les données officielles des juges sur AsylumJudge.',
+  'pt-br': 'Compare taxas de aprovação e negativa de asilo, volumes de casos, tribunais, tendências históricas e dados oficiais de juízes de imigração no AsylumJudge.',
+  hi: 'AsylumJudge पर EOIR शरण स्वीकृति दर, अस्वीकृति दर, मामले की संख्या, अदालत, ऐतिहासिक रुझान और आधिकारिक इमिग्रेशन जज पृष्ठभूमि डेटा देखें।',
+  'zh-hans': '可查询美国移民法官庇护批准率、拒绝率、案件样本量、任职法院、年度趋势和EOIR公开背景数据，并结合统计口径理解历史裁决结果。',
+  'zh-hant': '可查詢美國移民法官庇護批准率、拒絕率、案件樣本量、任職法院、年度趨勢和EOIR公開背景資料，並結合統計口徑理解歷史裁決結果。',
+  ru: 'Сравнивайте доли одобрений и отказов по убежищу, объём дел, суды, исторические тенденции и официальные данные иммиграционных судей EOIR на AsylumJudge.',
+  ar: 'قارن نسب قبول ورفض اللجوء وعدد القضايا والمحاكم والاتجاهات التاريخية وبيانات قضاة الهجرة الرسمية من EOIR على AsylumJudge.',
+  tr: 'AsylumJudge üzerinde EOIR iltica onay ve ret oranlarını, dosya sayılarını, mahkemeleri, geçmiş eğilimleri ve resmi göçmenlik hâkimi geçmiş bilgilerini karşılaştırın.'
+};
 
 const escapeRegex = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 const rewriteHrefPrefix = (html, from, to) => html.replace(new RegExp(`href="${escapeRegex(from)}(?=["?#])`, 'g'), `href="${to}`);
@@ -54,6 +67,33 @@ async function resolvesInternalHref(href) {
   if (!rawPath.endsWith('/') && await exists(`${direct}.html`)) return true;
   return false;
 }
+function localeForHtml(html) {
+  const raw = (html.match(/<html[^>]*\blang=["']([^"']+)["']/i)?.[1] || 'zh-Hans').toLowerCase();
+  if (raw.startsWith('pt')) return 'pt-br';
+  if (raw.startsWith('zh-hant') || raw.startsWith('zh-tw') || raw.startsWith('zh-hk')) return 'zh-hant';
+  if (raw.startsWith('zh')) return 'zh-hans';
+  return raw.split('-')[0];
+}
+function plainText(value) {
+  return String(value || '').replace(/<[^>]+>/g, ' ').replace(/&amp;/g, '&').replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/\s+/g, ' ').trim();
+}
+function escapeAttr(value) {
+  return String(value).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+function improveMetaDescription(html) {
+  const match = html.match(/<meta\s+name=["']description["']\s+content=["']([^"']*)["']\s*\/?\s*>/i)
+    || html.match(/<meta\s+content=["']([^"']*)["']\s+name=["']description["']\s*\/?\s*>/i);
+  if (!match) return { html, changed: false };
+  const current = plainText(match[1]);
+  const locale = localeForHtml(html);
+  const min = locale === 'zh-hans' || locale === 'zh-hant' ? 72 : 120;
+  if (current.length >= min) return { html, changed: false };
+  const suffix = META_SUFFIX[locale] || META_SUFFIX.en;
+  let next = `${current}${/[。.!?！？]$/.test(current) ? '' : locale.startsWith('zh') ? '。' : '. '}${suffix}`.replace(/\s+/g, ' ').trim();
+  const max = locale === 'zh-hans' || locale === 'zh-hant' ? 105 : 175;
+  if (next.length > max) next = next.slice(0, max).replace(/[\s,;:，；：]+$/u, '') + (locale.startsWith('zh') ? '。' : '.');
+  return { html: html.replace(match[0], match[0].replace(match[1], escapeAttr(next))), changed: true };
+}
 
 function applyStandaloneChineseBrand(html) {
   if (!/<html[^>]+lang=["']zh-Hans["']/i.test(html)) return html;
@@ -65,9 +105,6 @@ function applyStandaloneChineseBrand(html) {
     .replace(/<b>AsylumJudge\.com<\/b>/g, '<b>庇护法官</b>')
     .replace(/aria-label="AsylumJudge\.com"/g, 'aria-label="庇护法官 AsylumJudge"')
     .replace(/alt="AsylumJudge\.com"/g, 'alt="庇护法官 AsylumJudge"');
-
-  // Standalone Chinese pages must never present Tang Ren Daily as the site brand.
-  // TRRB may still be named inside clearly external/content-source modules and links.
   next = next
     .replace(/(<header\b[^>]*>[\s\S]*?<\/header>)/gi, (header) => header
       .replace(/唐人日报\s*Tang Ren Daily/gi, '庇护法官')
@@ -112,6 +149,7 @@ async function hardenRuntimeBranding() {
 const htmlFiles = await walk(OUT, (name) => name.endsWith('.html'));
 let changedFiles = 0;
 let replacements = 0;
+let metaDescriptionsImproved = 0;
 for (const path of htmlFiles) {
   const before = await readFile(path, 'utf8');
   let html = before;
@@ -131,6 +169,9 @@ for (const path of htmlFiles) {
     html = html.replace(pattern, to);
   }
   html = applyStandaloneChineseBrand(html);
+  const metaResult = improveMetaDescription(html);
+  html = metaResult.html;
+  if (metaResult.changed) metaDescriptionsImproved += 1;
   if (html !== before) {
     await writeFile(path, html);
     changedFiles += 1;
@@ -154,10 +195,16 @@ if (broken.size) {
 }
 
 let legacyBrandHits = 0;
+let shortMetaDescriptions = 0;
 for (const path of htmlFiles) {
   const html = await readFile(path, 'utf8');
   for (const token of BRAND_REPLACEMENTS.keys()) legacyBrandHits += (html.match(new RegExp(escapeRegex(token), 'g')) || []).length;
+  const meta = plainText(html.match(/<meta\s+name=["']description["']\s+content=["']([^"']*)["']/i)?.[1] || '');
+  const locale = localeForHtml(html);
+  const min = locale === 'zh-hans' || locale === 'zh-hant' ? 72 : 120;
+  if (meta && meta.length < min) shortMetaDescriptions += 1;
 }
 if (legacyBrandHits) throw new Error(`AsylumJudge standalone link hygiene left ${legacyBrandHits} legacy TRRB/Tang Ren Daily primary-brand labels in the production bundle.`);
+if (shortMetaDescriptions) throw new Error(`AsylumJudge standalone link hygiene left ${shortMetaDescriptions} pages with short meta descriptions.`);
 
-console.log(`AsylumJudge standalone link hygiene: ${changedFiles} HTML files changed; ${replacements} broken/legacy hrefs or primary-brand labels rewritten; ${runtimeBrandFiles} runtime brand file hardened; 0 unresolved internal routes; 0 legacy primary-brand labels.`);
+console.log(`AsylumJudge standalone link hygiene: ${changedFiles} HTML files changed; ${replacements} broken/legacy hrefs or primary-brand labels rewritten; ${metaDescriptionsImproved} meta descriptions enriched; ${runtimeBrandFiles} runtime brand file hardened; 0 unresolved internal routes; 0 legacy primary-brand labels; 0 short meta descriptions.`);

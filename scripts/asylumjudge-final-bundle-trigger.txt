@@ -1,1 +1,1 @@
-2026-09-09 final verified AsylumJudge production bundle build after multilingual routing, SEO intent, branding, and standalone link hygiene hardening.
+2026-09-09 final unified AsylumJudge production bundle build after full-case fixes: independent branding (庇护法官 / AsylumJudge), multilingual routing, ranking/search-intent pages, crawl-budget prioritization, meta-description hardening, sitemap/indexing strategy, internal-link architecture, dataset citation signals, and standalone link hygiene.

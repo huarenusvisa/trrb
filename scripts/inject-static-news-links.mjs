@@ -137,6 +137,22 @@ function replaceExact(html, needle, replacement, file) {
   return html.replace(needle, replacement);
 }
 
+function replaceElementById(html, id, replacement, file) {
+  const startPattern = new RegExp(`<([a-z][a-z0-9-]*)\\b(?=[^>]*\\bid=["']${id}["'])[^>]*>`, 'i');
+  const startMatch = startPattern.exec(html);
+  if (!startMatch) throw new Error(`${file}: 找不到 #${id} 静态快照容器`);
+  const tag = startMatch[1];
+  const tokenPattern = new RegExp(`<\\/?${tag}\\b[^>]*>`, 'gi');
+  tokenPattern.lastIndex = startMatch.index;
+  let depth = 0;
+  let token;
+  while ((token = tokenPattern.exec(html))) {
+    depth += /^<\//.test(token[0]) ? -1 : 1;
+    if (depth === 0) return html.slice(0, startMatch.index) + replacement + html.slice(tokenPattern.lastIndex);
+  }
+  throw new Error(`${file}: #${id} 静态快照容器未闭合`);
+}
+
 function replaceContainerBefore(html, id, nextElementNeedle, replacement, file) {
   const startPattern = new RegExp(`<div\\b(?=[^>]*\\bid=["']${id}["'])[^>]*>`, "i");
   const start = html.search(startPattern);
@@ -204,9 +220,9 @@ function countArticleLinks(html) {
 async function updateHome(rows, rankRows = rows) {
   const file = path.join(ROOT, "index.html");
   let html = await readFile(file, "utf8");
-  html = replaceExact(html, '<div class="ticker" id="ticker"></div>', homeTickerSnapshot(rows), "index.html");
-  html = replaceExact(html, '<aside class="top-list" id="top-list"></aside>', homeTopSnapshot(rows), "index.html");
-  html = replaceExact(html, '<ol id="rank-list"></ol>', homeRankSnapshot(rankRows), "index.html");
+  html = replaceElementById(html, 'ticker', homeTickerSnapshot(rows), "index.html");
+  html = replaceElementById(html, 'top-list', homeTopSnapshot(rows), "index.html");
+  html = replaceElementById(html, 'rank-list', homeRankSnapshot(rankRows), "index.html");
   const count = countArticleLinks(html);
   if (count < 10) throw new Error(`index.html: 构建后可抓取新闻链接不足，只有 ${count}`);
   await writeFile(file, html);
@@ -216,7 +232,7 @@ async function updateHome(rows, rankRows = rows) {
 async function updateIce(fileName, rows) {
   const file = path.join(ROOT, fileName);
   let html = await readFile(file, "utf8");
-  html = replaceExact(html, '<div id="ice-news-list" class="ice-news-list"></div>', iceSnapshot(rows), fileName);
+  html = replaceElementById(html, 'ice-news-list', iceSnapshot(rows), fileName);
   const count = [...html.matchAll(/<a\b[^>]*href=["'](\/ice\/[^"']+)["']/gi)].length;
   if (count < 3) throw new Error(`${fileName}: 构建后可抓取 ICE 新闻链接不足，只有 ${count}`);
   await writeFile(file, html);

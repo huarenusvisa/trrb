@@ -202,7 +202,8 @@ for (const file of files.filter((item) => /(?:^|\/)sitemap[^/]*\.xml$/i.test(rel
 try {
   const liveSitemap = await readFile(path.join(ROOT, "netlify/edge-functions/sitemap-live.ts"), "utf8");
   if (/jobsLoc\s*=\s*`\$\{SITE\}\/jobs\/`/.test(liveSitemap)) errors.push("live sitemap 仍在加入已跳转的 /jobs/");
-  if (!/live-supabase-v9-quality-budget-canonical/.test(liveSitemap)) errors.push("live sitemap 未升级到 quality budget canonical v9");
+  if (!/live-supabase-v10-uncapped-diagnostic/.test(liveSitemap)) errors.push("live sitemap 诊断端点未取消全局数量上限");
+  if (!/_internal\/sitemap-live\.xml/.test(liveSitemap)) errors.push("live sitemap 仍覆盖公开 sitemap index");
 } catch (error) {
   errors.push(`无法读取 live sitemap edge: ${error.message}`);
 }

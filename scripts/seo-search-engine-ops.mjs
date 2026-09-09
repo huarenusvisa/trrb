@@ -20,6 +20,19 @@ const report={generatedAt:new Date().toISOString(),site:SITE_ORIGIN,writeMode:WR
 
 async function fetchText(url){const r=await fetch(url,{headers:{'user-agent':'TRRB-SEO-Ops/3.0','cache-control':'no-cache'}});return{status:r.status,url:r.url,text:await r.text(),headers:Object.fromEntries(r.headers.entries())};}
 function locs(xml){return[...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map(m=>m[1].replace(/&amp;/g,'&').trim());}
+async function sitemapUrls(root=`${SITE_ORIGIN}/sitemap.xml`){
+  const queue=[root],seen=new Set(),urls=new Set();
+  while(queue.length&&seen.size<30){
+    const current=queue.shift();if(seen.has(current))continue;seen.add(current);
+    const response=await fetchText(`${current}${current.includes('?')?'&':'?'}seoops_tree=${Date.now()}`);
+    if(response.status!==200)throw new Error(`sitemap ${current} HTTP ${response.status}`);
+    for(const value of locs(response.text)){
+      if(/\/sitemap-[^/?]+\.xml(?:$|\?)/i.test(value)){if(!seen.has(value))queue.push(value);}
+      else if(value.startsWith(`${SITE_ORIGIN}/`))urls.add(value);
+    }
+  }
+  return [...urls];
+}
 function cleanText(value){return String(value||'').replace(/<[^>]+>/g,' ').replace(/&(?:nbsp|amp|quot|#39);/gi,' ').replace(/\s+/g,' ').trim();}
 function tagText(html,tag){const m=String(html||'').match(new RegExp(`<${tag}\\b[^>]*>([\\s\\S]*?)<\\/${tag}>`,'i'));return cleanText(m?.[1]||'');}
 function metaDescription(html){const tags=String(html||'').match(/<meta\b[^>]*>/gi)||[];for(const tag of tags){if(!/\bname\s*=\s*["']description["']/i.test(tag))continue;const m=tag.match(/\bcontent\s*=\s*["']([^"']*)["']/i);if(m)return cleanText(m[1]);}return'';}
@@ -54,9 +67,8 @@ async function hostCanonicalAudit(){
 }
 
 async function priorityPageAudit(){
-  const sitemap=await fetchText(`${SITE_ORIGIN}/sitemap.xml?seoops=priority-${Date.now()}`);
-  if(sitemap.status!==200){report.failures.push(`Priority audit sitemap HTTP ${sitemap.status}`);report.local.priorityPages=[];return[];}
-  const sitemapUrls=new Set(locs(sitemap.text));
+  let allSitemapUrls=[];try{allSitemapUrls=await sitemapUrls();}catch(error){report.failures.push(`Priority audit ${error.message}`);report.local.priorityPages=[];return[];}
+  const sitemapUrlSet=new Set(allSitemapUrls);
   const rows=[];const passing=[];
   for(const entry of PRIORITY_PAGES){
     try{
@@ -66,11 +78,11 @@ async function priorityPageAudit(){
       if(r.status!==200)issues.push(`HTTP ${r.status}`);
       if(noindex)issues.push('noindex');
       if(canonical!==entry.canonical)issues.push(`canonical mismatch: ${canonical||'missing'}`);
-      if(!sitemapUrls.has(entry.url))issues.push('missing from sitemap');
+      if(!sitemapUrlSet.has(entry.url))issues.push('missing from sitemap');
       if(!title)report.warnings.push(`Priority page title missing: ${entry.url}`);
       if(!h1)report.warnings.push(`Priority page H1 missing: ${entry.url}`);
       if(description.length<30)report.warnings.push(`Priority page description missing/short: ${entry.url}`);
-      const row={key:entry.key,url:entry.url,status:r.status,finalUrl:r.url,canonical,title,h1,descriptionLength:description.length,noindex,inSitemap:sitemapUrls.has(entry.url),issues};rows.push(row);
+      const row={key:entry.key,url:entry.url,status:r.status,finalUrl:r.url,canonical,title,h1,descriptionLength:description.length,noindex,inSitemap:sitemapUrlSet.has(entry.url),issues};rows.push(row);
       if(issues.length)for(const issue of issues)report.failures.push(`Priority page ${entry.key}: ${issue}`);else passing.push(entry.url);
     }catch(e){rows.push({key:entry.key,url:entry.url,status:0,issues:[e.message]});report.failures.push(`Priority page ${entry.key}: ${e.message}`);}
   }
@@ -78,9 +90,7 @@ async function priorityPageAudit(){
 }
 
 async function livePageAudit(){
-  const sitemap=await fetchText(`${SITE_ORIGIN}/sitemap.xml?seoops=live-audit-${Date.now()}`);
-  if(sitemap.status!==200)throw new Error(`live sitemap HTTP ${sitemap.status}`);
-  const urls=[...new Set(locs(sitemap.text).filter(u=>u.startsWith(`${SITE_ORIGIN}/`)))].slice(0,LIVE_AUDIT_LIMIT);
+  const urls=(await sitemapUrls()).slice(0,LIVE_AUDIT_LIMIT);
   const pages=await mapLimit(urls,3,async url=>{
     try{
       let r=await fetchText(url);
@@ -131,15 +141,17 @@ async function googleOps(){
         try{await webmasters.sitemaps.delete({siteUrl:GSC_SITE_URL,feedpath:feed});report.google.deprecatedSitemapsRemoved.push(feed);}
         catch(e){report.warnings.push(`Google old sitemap cleanup failed for ${feed}: ${e.message}`);}
       }
-      for(const feed of [`${SITE_ORIGIN}/sitemap.xml`,`${SITE_ORIGIN}/news-sitemap.xml`,`${SITE_ORIGIN}/sitemap-legal.xml`])await webmasters.sitemaps.submit({siteUrl:GSC_SITE_URL,feedpath:feed});
-      report.google.sitemapsSubmitted=true;
+      const existingFeeds=new Set(report.google.sitemapsBefore.map(x=>x.path));
+      const missingFeeds=[`${SITE_ORIGIN}/sitemap.xml`,`${SITE_ORIGIN}/news-sitemap.xml`,`${SITE_ORIGIN}/sitemap-legal.xml`].filter(feed=>!existingFeeds.has(feed));
+      for(const feed of missingFeeds)await webmasters.sitemaps.submit({siteUrl:GSC_SITE_URL,feedpath:feed});
+      report.google.sitemapsSubmitted=missingFeeds;
     }
     const smAfter=await webmasters.sitemaps.list({siteUrl:GSC_SITE_URL});
     report.google.sitemaps=(smAfter.data.sitemap||[]).map(x=>({path:x.path,lastSubmitted:x.lastSubmitted,lastDownloaded:x.lastDownloaded,isPending:x.isPending,warnings:x.warnings,errors:x.errors}));
     const end=new Date(Date.now()-3*86400000);const start=new Date(end.getTime()-27*86400000);const d=x=>x.toISOString().slice(0,10);
     const perf=await webmasters.searchanalytics.query({siteUrl:GSC_SITE_URL,requestBody:{startDate:d(start),endDate:d(end),dimensions:['date'],rowLimit:100}});
     const rows=perf.data.rows||[];report.google.performance30d=rows.reduce((a,r)=>{a.clicks+=(r.clicks||0);a.impressions+=(r.impressions||0);return a},{clicks:0,impressions:0});
-    const smMain=await fetchText(`${SITE_ORIGIN}/sitemap.xml?seoops=gsc`);const articleSample=locs(smMain.text).filter(u=>u.startsWith(SITE_ORIGIN)&&!PRIORITY_PAGES.some(p=>p.url===u)).slice(0,2);
+    const articleSample=(await sitemapUrls()).filter(u=>!PRIORITY_PAGES.some(p=>p.url===u)).slice(0,2);
     const inspectionUrls=unique([...PRIORITY_PAGES.map(p=>p.url),...articleSample]);
     report.google.urlInspection=[];
     for(const u of inspectionUrls){
@@ -170,8 +182,10 @@ async function bingOps(){
     const quotaRaw=await bingCall('GetUrlSubmissionQuota',{query:{siteUrl:SITE_ORIGIN}});
     const quota=quotaRaw?.d||quotaRaw||{};report.bing.urlSubmissionQuota=quota;
     if(WRITE_MODE){
-      for(const feedUrl of [`${SITE_ORIGIN}/sitemap.xml`,`${SITE_ORIGIN}/news-sitemap.xml`,`${SITE_ORIGIN}/sitemap-legal.xml`])await bingCall('SubmitFeed',{body:{siteUrl:SITE_ORIGIN,feedUrl}});
-      report.bing.sitemapsSubmitted=true;
+      const existingFeeds=new Set((Array.isArray(report.bing.feeds)?report.bing.feeds:[]).map(x=>x?.Url||x?.url||''));
+      const missingFeeds=[`${SITE_ORIGIN}/sitemap.xml`,`${SITE_ORIGIN}/news-sitemap.xml`,`${SITE_ORIGIN}/sitemap-legal.xml`].filter(feed=>!existingFeeds.has(feed));
+      for(const feedUrl of missingFeeds)await bingCall('SubmitFeed',{body:{siteUrl:SITE_ORIGIN,feedUrl}});
+      report.bing.sitemapsSubmitted=missingFeeds;
       const dailyRaw=quota?.DailyQuota??quota?.dailyQuota;const daily=Number(dailyRaw);
       const maxBatch=Number.isFinite(daily)?Math.max(0,Math.min(500,daily)):100;
       const candidates=(report.local.submissionCandidates||[]).slice(0,maxBatch);

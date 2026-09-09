@@ -2,14 +2,9 @@ name: 生产SEO自动诊断留档
 
 on:
   workflow_dispatch:
-  schedule:
-    # Full production SEO diagnostics are intentionally batched twice daily.
-    # Ordinary main pushes rely on deployment acceptance and do not need to
-    # launch another full-site crawl.
-    - cron: '17 7,19 * * *'
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: trrb-production-seo-diagnostic
@@ -56,33 +51,27 @@ jobs:
         continue-on-error: true
         run: node scripts/production-seo-diagnostic.mjs
 
+      - id: data_audit
+        name: 全量检查文章SEO数据与历史重定向
+        continue-on-error: true
+        env:
+          SUPABASE_URL: https://fwiznbpsqkfgkvyznebz.supabase.co
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: node scripts/full-seo-data-audit.mjs
+
       - name: 保存本次生产诊断报告
         if: ${{ always() && steps.diagnostic.outcome != 'skipped' }}
         uses: actions/upload-artifact@v4
         with:
           name: production-seo-diagnostic-${{ github.run_id }}
-          path: reports/production-seo-latest.json
+          path: |
+            reports/production-seo-latest.json
+            reports/full-seo-data-latest.json
           if-no-files-found: error
           retention-days: 30
 
-      - name: 提交最新诊断报告到仓库
-        if: ${{ always() && steps.diagnostic.outcome != 'skipped' }}
-        shell: bash
-        run: |
-          set -euo pipefail
-          git config user.name "TRRB SEO Diagnostic Bot"
-          git config user.email "actions@users.noreply.github.com"
-          git add reports/production-seo-latest.json
-          if git diff --cached --quiet; then
-            echo "No report changes"
-          else
-            git commit -m "Update production SEO diagnostic report [skip ci]"
-            git pull --rebase origin main
-            git push origin HEAD:main
-          fi
-
       - name: 阻止SEO故障被标记为成功
-        if: ${{ steps.diagnostic.outcome == 'failure' }}
+        if: ${{ steps.diagnostic.outcome == 'failure' || steps.data_audit.outcome == 'failure' }}
         run: |
           echo "Production SEO diagnostic found blocking failures." >&2
           exit 1

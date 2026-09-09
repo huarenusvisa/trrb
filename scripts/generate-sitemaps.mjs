@@ -9,7 +9,6 @@ const TODAY = NOW.toISOString().slice(0, 10);
 const NEWS_CUTOFF = NOW.getTime() - 48 * 60 * 60 * 1000;
 const MIN_INDEXABLE_BODY_LENGTH = 300;
 const MIN_INDEXABLE_TITLE_LENGTH = 8;
-const MAX_SITEMAP_ARTICLES = 5000;
 const base = String(process.env.SUPABASE_URL || '').replace(/\/+$/, '');
 const key = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY || '';
 
@@ -300,7 +299,6 @@ for (const article of databaseArticles) {
 
 articleEntries
   .sort((a, b) => (b.published?.timestamp || 0) - (a.published?.timestamp || 0))
-  .slice(0, MAX_SITEMAP_ARTICLES)
   .forEach((entry) => byUrl.set(entry.loc, entry));
 
 const entries = [...byUrl.values()].sort((a, b) => b.lastmod.localeCompare(a.lastmod));
@@ -321,4 +319,4 @@ if (recentNews.length === 0 && (!categories.length || newsCategoryNames.size > 0
 
 const newsSitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">\n${recentNews.map(({ loc, article, published }) => `  <url>\n    <loc>${escapeXml(loc)}</loc>\n    <news:news>\n      <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>\n      <news:publication_date>${published.value}</news:publication_date>\n      <news:title>${escapeXml(article.title || '唐人日报新闻')}</news:title>\n    </news:news>\n  </url>`).join('\n')}\n</urlset>\n`;
 fs.writeFileSync(path.join(ROOT, 'news-sitemap.xml'), newsSitemap);
-console.log(`[sitemap] generated ${entries.length} canonical URLs; article cap ${MAX_SITEMAP_ARTICLES}; eligible articles ${articleEntries.length}; static hubs ${STATIC_HUBS.length}; immigration knowledge ${IMMIGRATION_KNOWLEDGE_ENTRIES.length}; news ${recentNews.length}; categories ${categories.length}; excluded thin/short-title ${thinExcluded}; preserved special topic ${specialTopicPreserved}; excluded duplicate ${duplicateExcluded}`);
+console.log(`[sitemap] generated ${entries.length} canonical URLs; eligible articles ${articleEntries.length}; static hubs ${STATIC_HUBS.length}; immigration knowledge ${IMMIGRATION_KNOWLEDGE_ENTRIES.length}; news ${recentNews.length}; categories ${categories.length}; excluded thin/short-title ${thinExcluded}; preserved special topic ${specialTopicPreserved}; excluded duplicate ${duplicateExcluded}`);

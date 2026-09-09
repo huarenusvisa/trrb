@@ -60,24 +60,34 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          for attempt in $(seq 1 12); do
+          target="${GITHUB_SHA}"
+          for attempt in $(seq 1 90); do
             live="$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' "https://trrb.net/deploy-version.txt?run=${GITHUB_RUN_ID}&attempt=${attempt}" 2>/dev/null | tr -d '\r\n[:space:]' || true)"
-            if [[ "$live" =~ ^[0-9a-f]{40}$ ]]; then
+            if [ "$live" = "$target" ]; then
               curl --fail --silent --show-error --max-time 20 https://trrb.net/ >/dev/null
-              echo "Production is healthy at deployed commit $live"
+              echo "Production is healthy at target commit $target"
               exit 0
             fi
-            echo "Waiting for a healthy production marker: live=${live:-unavailable} attempt=$attempt/12"
-            sleep 5
+            if [[ "$live" =~ ^[0-9a-f]{40}$ ]]; then
+              git fetch --no-tags --depth=100 origin "$live" >/dev/null 2>&1 || true
+              if git merge-base --is-ancestor "$target" "$live" 2>/dev/null; then
+                curl --fail --silent --show-error --max-time 20 https://trrb.net/ >/dev/null
+                echo "Production is healthy at descendant commit $live"
+                exit 0
+              fi
+            fi
+            echo "Waiting for production target-or-descendant: target=$target live=${live:-unavailable} attempt=$attempt/90"
+            sleep 10
           done
-          echo "Production health check failed: deploy-version marker is unavailable or invalid." >&2
+          echo "Production did not deploy the target commit within 15 minutes." >&2
           exit 1
       - name: Verify the quality-gated sitemap
         shell: bash
         run: |
-          curl --fail --silent --show-error --head https://trrb.net/sitemap.xml \
-            | tr -d '\r' \
-            | grep -qi '^x-trrb-sitemap: live-supabase-v9-quality-budget-canonical$'
+          set -euo pipefail
+          xml="$(curl --fail --silent --show-error https://trrb.net/sitemap.xml)"
+          grep -q '<sitemapindex' <<<"$xml"
+          grep -q 'sitemap-articles-1.xml' <<<"$xml"
       - name: Push current TRRB URLs through IndexNow
         env:
           INDEXNOW_FULL_SYNC: 'true'

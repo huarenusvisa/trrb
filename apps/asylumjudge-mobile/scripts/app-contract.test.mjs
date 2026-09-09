@@ -20,6 +20,8 @@ test('supports search, clear, retry and judge details', () => {
 });
 
 test('has separate native identities and internal Android testing', () => {
+  assert.equal(config.expo.owner, 'tang-daily-llc');
+  assert.equal(config.expo.extra.eas.projectId, '4443f235-79a2-4508-afe3-736331b9ae7b');
   assert.equal(config.expo.ios.bundleIdentifier, 'com.asylumjudge.mobile');
   assert.equal(config.expo.android.package, 'com.asylumjudge.mobile');
   assert.equal(eas.build.preview.distribution, 'internal');

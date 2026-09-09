@@ -54,9 +54,11 @@ jobs:
       - name: Remove standalone broken links and legacy TRRB routes
         shell: bash
         run: |
+          set +e
           set -o pipefail
           node scripts/asylumjudge-standalone-link-hygiene.mjs 2>&1 | tee /tmp/asylumjudge-hygiene.log
           status=${PIPESTATUS[0]}
+          set -e
           if [ "$status" -ne 0 ]; then
             if grep -q 'pages with short meta descriptions' /tmp/asylumjudge-hygiene.log; then
               echo 'Hygiene completed link and brand validation; meta descriptions will be normalized once more after its rewrites.'

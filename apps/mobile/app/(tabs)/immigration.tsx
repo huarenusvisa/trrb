@@ -1,17 +1,7 @@
-import { StyleSheet, View } from 'react-native';
-import JobsScreen from '../jobs';
-import { useI18n } from '../../src/i18n/I18nProvider';
+import { WebPortalScreen } from '../../src/components/WebPortalScreen';
+
+const JOBS_URL = 'https://huarengongzuo.com/';
 
 export default function JobsTabScreen() {
-  const { t } = useI18n();
-
-  return (
-    <View testID="screen-immigration" accessibilityLabel={t('tab.immigration')} style={styles.page}>
-      <JobsScreen embedded />
-    </View>
-  );
+  return <WebPortalScreen screenTestID="screen-immigration" webViewTestID="jobs-portal-webview" brand="华人工作网" url={JOBS_URL} allowedHosts={['huarengongzuo.com']} loadingText="正在打开华人工作网…" errorTitle="华人工作网暂时无法打开" errorBody="请检查网络后重试，或改用浏览器打开。" />;
 }
-
-const styles = StyleSheet.create({
-  page: { flex: 1, backgroundColor: '#f6f9fd' },
-});

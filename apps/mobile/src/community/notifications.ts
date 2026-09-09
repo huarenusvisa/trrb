@@ -47,16 +47,14 @@ export async function listNotifications(offset = 0, limit = 20, category: Notifi
 }
 
 export async function markNotificationRead(id: string) {
-  const userId = await notificationViewerId();
-  const result = await supabase.from('user_notifications').update({ is_read: true }).eq('id', id).eq('user_id', userId);
+  await notificationViewerId();
+  const result = await supabase.rpc('mark_my_notification_read', { p_notification_id: id });
   if (result.error) throw result.error;
 }
 
 export async function markAllNotificationsRead(category: NotificationCategory = 'all') {
-  const userId = await notificationViewerId();
-  const query = supabase.from('user_notifications').update({ is_read: true }).eq('user_id', userId).eq('is_read', false);
-  const types = notificationTypesForCategory(category);
-  const result = types ? await query.in('type', types) : await query;
+  await notificationViewerId();
+  const result = await supabase.rpc('mark_my_notifications_read', { p_category: category });
   if (result.error) throw result.error;
 }
 

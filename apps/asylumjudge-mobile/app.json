@@ -1,0 +1,25 @@
+{
+  "expo": {
+    "name": "移民法官",
+    "slug": "asylumjudge",
+    "scheme": "asylumjudge",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "backgroundColor": "#f5f7f6",
+    "primaryColor": "#14804a",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.asylumjudge.mobile",
+      "buildNumber": "1",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
+    },
+    "android": {
+      "package": "com.asylumjudge.mobile",
+      "versionCode": 1,
+      "predictiveBackGestureEnabled": true
+    }
+  }
+}

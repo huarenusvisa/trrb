@@ -4,6 +4,7 @@ import { join } from 'node:path';
 
 const OUT = '.netlify/asylumjudge-bundle/public';
 const locales = ['en', 'es', 'fr', 'pt-br', 'hi', 'zh-hant', 'ru', 'ar', 'tr'];
+const hubOnlyLocales = ['pt-br', 'hi', 'zh-hant', 'ru', 'ar', 'tr'];
 const read = (path) => readFileSync(join(OUT, path), 'utf8');
 
 assert.ok(existsSync(join(OUT, 'index.html')), 'Chinese root homepage must exist');
@@ -59,5 +60,29 @@ assert.match(zhJudge, /ASYLUMJUDGE · IMMIGRATION JUDGE PROFILE/, 'Chinese judge
 assert.match(enJudge, /ASYLUMJUDGE · IMMIGRATION JUDGE PROFILE/, 'English judge profile must use AsylumJudge branding');
 assert.match(zhJudge, /href="\/asylum-judge-approval-rate\//, 'Chinese judge profiles must feed internal authority to the core landing page');
 assert.match(enJudge, /href="\/en\/asylum-judge-rating\//, 'English judge profiles must feed internal authority to the core landing page');
+assert.match(zhJudge, /data-search-hierarchy="true"/, 'Chinese detail pages must expose a crawlable hierarchy');
+assert.match(enJudge, /data-search-hierarchy="true"/, 'English detail pages must expose a crawlable hierarchy');
 
-console.log('AsylumJudge production regression checks passed: multilingual routes, keyword intent, branding, sitemap, and internal links are coherent.');
+function metaDescription(html) {
+  return html.match(/<meta\s+name=["']description["']\s+content=["']([^"']*)/i)?.[1] || '';
+}
+assert.ok(metaDescription(zhJudge).length >= 110, 'Chinese judge meta description must be long enough for Bing context');
+assert.ok(metaDescription(enJudge).length >= 110, 'English judge meta description must be long enough for Bing context');
+
+for (const locale of hubOnlyLocales) {
+  const profile = firstProfile(locale);
+  assert.match(profile, /name="robots" content="noindex,follow,max-image-preview:large"/, `/${locale}/ detail pages must remain usable but stop consuming index budget`);
+}
+
+for (const sitemapName of ['sitemap-judges.xml', 'sitemap-courts.xml', 'sitemap-nationalities.xml']) {
+  const xml = read(sitemapName);
+  for (const locale of hubOnlyLocales) {
+    assert.doesNotMatch(xml, new RegExp(`https://asylumjudge\\.com/${locale}/(?:judges|courts|nationalities)/`), `${sitemapName} must not submit low-priority ${locale} entity details`);
+  }
+}
+
+const methodology = read('methodology/index.html');
+assert.match(methodology, /"@type":"Dataset"/, 'Methodology must expose citeable Dataset structured data');
+assert.match(methodology, /data-asylumjudge-citation="true"/, 'Methodology must expose a human-readable citation block');
+
+console.log('AsylumJudge production regression checks passed: routes, ranking intent, brand, crawl budget, descriptions, hierarchy, sitemaps, and citation authority are coherent.');

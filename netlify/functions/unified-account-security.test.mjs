@@ -52,7 +52,15 @@ test('binds a phone account recovery email only after validating the current pas
   assert.equal(body.recovery_email_masked, 'li***@example.com');
   assert.equal(calls.some((call) => call.url.includes('account_login_identifiers') && call.options.method === 'POST'), true);
   assert.equal(calls.some((call) => call.url.includes('/auth/v1/admin/users/user-1') && JSON.parse(String(call.options.body)).email === 'lixin@example.com'), true);
-  assert.equal(calls.some((call) => call.url.includes('/auth/v1/recover?redirect_to=https%3A%2F%2Ftrrb.net%2Freset-password%2F%3Fmode%3Dbind-email')), true);
+  const confirmationCall = calls.find((call) => call.url.includes('/auth/v1/otp?redirect_to=https%3A%2F%2Ftrrb.net%2Freset-password%2F%3Fmode%3Dbind-email'));
+  assert.deepEqual(JSON.parse(String(confirmationCall.options.body)), { email: 'lixin@example.com', create_user: false });
+});
+
+test('translates duplicate-email database errors into a Chinese account message', () => {
+  const error = Object.assign(new Error('duplicate key value violates unique constraint "users_email_partial_key"'), { statusCode: 500 });
+  const translated = _test.clientError(error);
+  assert.equal(translated.statusCode, 409);
+  assert.equal(translated.message, '这个邮箱已经属于另一个唐人日报账号，请更换邮箱，或先使用该邮箱账号登录');
 });
 
 test('does not change account data when the current password is wrong', async () => {

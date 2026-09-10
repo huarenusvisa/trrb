@@ -32,9 +32,20 @@ async function requestJson(url, options) {
   if (!response.ok) {
     const error = new Error(body?.error_description || body?.msg || body?.message || `请求失败（${response.status}）`);
     error.statusCode = response.status;
+    error.code = body?.code || body?.error_code || '';
     throw error;
   }
   return body;
+}
+
+function clientError(error) {
+  const detail = `${error?.code || ''} ${error?.message || ''}`.toLowerCase();
+  if (detail.includes('users_email_partial_key') || detail.includes('already registered') || detail.includes('already exists') || detail.includes('email_exists')) {
+    return Object.assign(new Error('这个邮箱已经属于另一个唐人日报账号'), { statusCode: 409 });
+  }
+  if (error?.statusCode === 429 || detail.includes('rate limit')) return Object.assign(new Error('发送次数过多，请稍后再试'), { statusCode: 429 });
+  if (error?.statusCode === 401) return Object.assign(new Error('重置链接无效或已过期，请重新申请'), { statusCode: 401 });
+  return Object.assign(new Error('找回密码失败，请稍后再试'), { statusCode: 500 });
 }
 
 async function rest(supabaseUrl, serviceKey, table, { method = 'GET', query = {}, body, prefer = '' } = {}) {
@@ -145,9 +156,9 @@ export default async (request) => {
     return json(400, { error: '不支持的操作' });
   } catch (error) {
     console.error('Unified account recovery error:', error);
-    const status = error?.statusCode === 401 ? 401 : error?.statusCode === 429 ? 429 : 500;
-    return json(status, { error: status === 401 ? '重置链接无效或已过期，请重新申请' : error?.message || '找回密码失败' });
+    const safeError = clientError(error);
+    return json(safeError.statusCode || 500, { error: safeError.message });
   }
 };
 
-export const _test = { normalizeIdentifier, keyedHash, phoneAlias };
+export const _test = { normalizeIdentifier, keyedHash, phoneAlias, clientError };

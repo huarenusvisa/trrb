@@ -165,6 +165,8 @@ async function patchPublishedArticle(articleId, fields) {
       seo_title: fields.title,
       seo_description: fields.summary || fields.content.slice(0, 160),
       status: "published",
+      visibility: "public",
+      topic_key: "ice",
       updated_at: nowIso()
     },
     prefer: "return=minimal"
@@ -250,6 +252,7 @@ async function publishNow(story, actor, input) {
         seo_keywords: "ICE,移民执法,拘留,遣返,美国移民",
         author: "唐人日报编辑部",
         status: "published",
+        visibility: "public",
         published_at: time,
         created_at: time,
         topic_key: "ice",

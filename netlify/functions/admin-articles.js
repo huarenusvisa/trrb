@@ -173,7 +173,10 @@ async function updateStatus(input) {
     await assertNoPublishedDuplicate(article.title, id);
   }
 
-  const patch = { status };
+  const patch = {
+    status,
+    visibility: status === "published" ? "public" : "private"
+  };
   if (status === "published") patch.published_at = nowIso();
   const rows = await rest("articles", {
     method: "PATCH",
@@ -253,8 +256,10 @@ async function saveArticle(input, actor) {
     seo_keywords: seoKeywords,
     author,
     status: storedStatus,
+    visibility: storedStatus === "published" ? "public" : "private",
     published_at: storedStatus === "published" ? time : null,
     created_at: time,
+    topic_key: isIceBrief ? "ice" : null,
     metadata: {
       publisher_version: "admin-publisher-v2",
       seo_automatic: true,

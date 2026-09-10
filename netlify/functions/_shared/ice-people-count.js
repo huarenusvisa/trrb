@@ -1,7 +1,7 @@
 "use strict";
 
-const MAX_SINGLE_EVENT = 500;
-const APPROXIMATE = /(?:约|大约|近|approximately|about|nearly)/i;
+const MAX_SINGLE_EVENT = 10000000;
+const APPROXIMATE = /(?:约|大约|近|数十|数百|数千|几百|几千|approximately|about|nearly)/i;
 const MINIMUM = /(?:至少|超过|逾|不低于|at least|more than|over)/i;
 const REMOVAL = /(?:遣返|递解|驱逐出境|遣送|送返|deport|remov|repatriat)/i;
 const ARREST = /(?:逮捕|抓捕|拘捕|拘留|羁押|扣押|被捕|arrest|detain|apprehend|custody|held)/i;
@@ -31,7 +31,7 @@ function countKind(text) {
 
 function resultFromMatch(match) {
   if (match && NON_EVENT_CONTEXT.test(match[0])) return null;
-  const value = Number(match?.[1] || 0);
+  const value = Number(String(match?.[1] || "").replaceAll(",", ""));
   if (!Number.isFinite(value) || value <= 0 || value > MAX_SINGLE_EVENT) return null;
   return {
     value,
@@ -40,17 +40,43 @@ function resultFromMatch(match) {
   };
 }
 
+function chineseQuantity(token) {
+  const value = String(token || "").replace(/\s+/g, "");
+  const estimates = { 数十: 20, 近百: 90, 数百: 200, 几百: 300, 近千: 900, 数千: 2000, 几千: 3000 };
+  if (estimates[value]) return estimates[value];
+  const digits = { 一: 1, 二: 2, 两: 2, 三: 3, 四: 4, 五: 5, 六: 6, 七: 7, 八: 8, 九: 9 };
+  const match = value.match(/^([一二两三四五六七八九])(百|千|万)$/);
+  if (!match) return 0;
+  return digits[match[1]] * ({ 百: 100, 千: 1000, 万: 10000 }[match[2]] || 0);
+}
+
+function resultFromChineseMatch(match) {
+  if (!match || NON_EVENT_CONTEXT.test(match[0])) return null;
+  const value = chineseQuantity(match[1]);
+  if (!value || value > MAX_SINGLE_EVENT) return null;
+  return { value, kind: countKind(match[0]), matchedText: match[0].trim() };
+}
+
 function extractPeopleCount(input) {
   const source = normalizeSource(input);
   const patterns = [
-    /(?:逮捕|抓捕|拘捕|拘留|羁押|扣押|带走|押送|遣返|递解|驱逐出境|遣送|送返|移送|搭载|载有|运送)(?:了|了约|约|大约|近|至少|超过|逾|不低于)?\s*(\d{1,3})\s*(?:名|人|位)/,
-    /(?:约有|约|大约|近|至少|超过|逾|不低于)?\s*(\d{1,3})\s*(?:名|人|位)(?:非法移民|移民|男子|女子|嫌疑人|人员|公民|旅客|乘客)?[^。；;，,]{0,20}?(?:被逮捕|被抓捕|被拘捕|被捕|被拘留|遭拘留|被羁押|被扣押|被带走|被押送|被遣返|遭遣返|被递解|遭递解|被驱逐出境|被遣送|被送返|落网|遣返|递解|驱逐出境|遣送|送返|移送)/,
-    /\b(?:arrested|detained|apprehended|held|deported|removed|repatriated|transported|carried)\s+(?:approximately\s+|about\s+|nearly\s+|at least\s+|more than\s+|over\s+)?(\d{1,3})\s+(?:people|persons|men|women|migrants|immigrants|individuals|detainees|passengers)\b/i,
-    /\b(?:approximately\s+|about\s+|nearly\s+|at least\s+|more than\s+|over\s+)?(\d{1,3})\s+(?:people|persons|men|women|migrants|immigrants|individuals|detainees|passengers)[^.!?]{0,30}\b(?:were\s+|was\s+)?(?:arrested|detained|apprehended|held|deported|removed|repatriated|transported)\b/i
+    /(?:逮捕|抓捕|拘捕|拘留|羁押|扣押|带走|押送|遣返|递解|驱逐出境|遣送|送返|移送|搭载|载有|运送)(?:了|了约|约|大约|近|至少|超过|逾|不低于)?\s*([\d,]{1,10})\s*(?:名|人|位)/,
+    /(?:约有|约|大约|近|至少|超过|逾|不低于)?\s*([\d,]{1,10})\s*(?:名|人|位)(?:非法移民|移民|男子|女子|嫌疑人|人员|公民|旅客|乘客)?[^。；;，,]{0,20}?(?:被逮捕|被抓捕|被拘捕|被捕|被拘留|遭拘留|被羁押|被扣押|被带走|被押送|被遣返|遭遣返|被递解|遭递解|被驱逐出境|被遣送|被送返|落网|遣返|递解|驱逐出境|遣送|送返|移送)/,
+    /\b(?:arrested|detained|apprehended|held|deported|removed|repatriated|transported|carried)\s+(?:approximately\s+|about\s+|nearly\s+|at least\s+|more than\s+|over\s+)?([\d,]{1,10})\s+(?:people|persons|men|women|migrants|immigrants|individuals|detainees|passengers)\b/i,
+    /\b(?:approximately\s+|about\s+|nearly\s+|at least\s+|more than\s+|over\s+)?([\d,]{1,10})\s+(?:people|persons|men|women|migrants|immigrants|individuals|detainees|passengers)[^.!?]{0,30}\b(?:were\s+|was\s+)?(?:arrested|detained|apprehended|held|deported|removed|repatriated|transported)\b/i
   ];
 
   for (const pattern of patterns) {
     const parsed = resultFromMatch(source.match(pattern));
+    if (parsed) return parsed;
+  }
+
+  const chinesePatterns = [
+    /(?:逮捕|抓捕|拘捕|拘留|羁押|扣押|带走|押送|遣返|递解|驱逐出境|遣送|送返|移送|搭载|载有|运送)(?:了|了约|约|大约|近|至少|超过|逾|不低于)?\s*(数十|近百|数百|几百|近千|数千|几千|[一二两三四五六七八九](?:百|千|万))\s*(?:名|人|位)/,
+    /(?:约有|约|大约|近|至少|超过|逾|不低于)?\s*(数十|近百|数百|几百|近千|数千|几千|[一二两三四五六七八九](?:百|千|万))\s*(?:名|人|位)[^。；;，,]{0,24}?(?:被逮捕|被抓捕|被拘捕|被捕|被拘留|遭拘留|被羁押|被遣返|遭遣返|被递解|被驱逐|遣返|递解|驱逐)/
+  ];
+  for (const pattern of chinesePatterns) {
+    const parsed = resultFromChineseMatch(source.match(pattern));
     if (parsed) return parsed;
   }
 

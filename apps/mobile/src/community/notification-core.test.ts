@@ -14,6 +14,7 @@ test('keeps existing notification destinations and safe fallbacks', () => {
   assert.equal(notificationTarget({ type: 'follow', actor_user_id: 'user/1' }), '/user/user%2F1');
   assert.equal(notificationTarget({ type: 'system' }), null);
   assert.equal(notificationTarget({ type: 'message' }), '/messages');
+  assert.equal(notificationTarget({ type: 'message_request', actor_user_id: 'user/2' }), '/chat/new?userId=user%2F2');
   assert.equal(notificationTarget({ type: 'message', conversation_id: 'chat/1' }), '/chat/chat%2F1');
 });
 

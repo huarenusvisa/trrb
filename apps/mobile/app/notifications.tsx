@@ -181,18 +181,17 @@ export default function NotificationsScreen() {
     setOpeningItemId(item.id);
     setActionError(null);
     try {
+      const target = notificationTarget(item);
+      if (target) router.push(target as never);
       if (!item.is_read) {
-        await withUiTimeout(markNotificationRead(item.id), t('inbox.markTimeout'));
-        if (!gate.isCurrent(token)) return;
         retryItem = { ...item, is_read: true };
         const nextItems = items.map(x => x.id === item.id ? retryItem : x);
-        setItems(nextItems);
-        cacheVisibleItems(nextItems);
-        unread.markNotificationReadLocally();
+        setItems(nextItems); cacheVisibleItems(nextItems); unread.markNotificationReadLocally();
+        void withUiTimeout(markNotificationRead(item.id), t('inbox.markTimeout')).catch((e) => {
+          console.warn('notification read sync failed', e);
+          void unread.refresh().catch(() => undefined);
+        });
       }
-      if (!gate.isCurrent(token)) return;
-      const target = notificationTarget(retryItem);
-      if (target) router.push(target as never);
     } catch (e) {
       if (gate.isCurrent(token)) reportActionError({ kind: 'open', item: retryItem, message: errorMessage(e, 'inbox.retryLater') });
     } finally {

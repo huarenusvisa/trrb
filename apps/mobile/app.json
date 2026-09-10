@@ -3,7 +3,7 @@
     "name": "唐人日报",
     "slug": "trrb",
     "scheme": "trrb",
-    "version": "0.2.1",
+    "version": "0.2.2",
     "icon": "./assets/app-icon-1024.png",
     "orientation": "portrait",
     "userInterfaceStyle": "light",
@@ -17,6 +17,14 @@
           "cameraPermission": false,
           "microphonePermission": false
         }
+      ],
+      [
+        "expo-audio",
+        {
+          "microphonePermission": "允许唐人日报使用麦克风发送语音消息。",
+          "enableBackgroundRecording": false,
+          "enableBackgroundPlayback": false
+        }
       ]
     ],
     "experiments": { "typedRoutes": true, "reactCompiler": true },
@@ -29,7 +37,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "net.trrb.mobile",
-      "buildNumber": "3",
+      "buildNumber": "4",
       "privacyManifests": {
         "NSPrivacyTracking": false,
         "NSPrivacyTrackingDomains": [],
@@ -58,7 +66,7 @@
     },
     "android": {
       "package": "net.trrb.mobile",
-      "versionCode": 3,
+      "versionCode": 4,
       "adaptiveIcon": {
         "foregroundImage": "./assets/app-icon-1024.png",
         "backgroundColor": "#ffffff"

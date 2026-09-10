@@ -15,7 +15,7 @@ test('keeps nested replies immediately below their parent with reply labels', ()
     comment(),
     comment({ id: 'reply-1', parent_id: 'root', user_id: 'user-2', profiles: { display_name: '回复者' } }),
     comment({ id: 'reply-2', parent_id: 'reply-1', user_id: 'user-3' }),
-  ], 10);
+  ], 10, new Set(['root']));
 
   assert.deepEqual(page.rows.map(({ item }) => item.id), ['root', 'reply-1', 'reply-2']);
   assert.deepEqual(page.rows.map(({ depth }) => depth), [0, 1, 2]);
@@ -29,7 +29,7 @@ test('shows the newest complete threads first and reports earlier threads', () =
     comment({ id: 'old-reply', parent_id: 'old-root' }),
     comment({ id: 'new-root' }),
     comment({ id: 'new-reply', parent_id: 'new-root' }),
-  ], 1);
+  ], 1, new Set(['new-root']));
 
   assert.deepEqual(page.rows.map(({ item }) => item.id), ['new-root', 'new-reply']);
   assert.equal(page.hiddenThreadCount, 1);
@@ -46,7 +46,7 @@ test('expands enough complete threads to reveal a notification target', () => {
 
   const count = visibleThreadCountForComment(comments, 'target-reply', 1);
   assert.equal(count, 3);
-  assert.ok(paginateCommunityCommentThreads(comments, count).rows.some(({ item }) => item.id === 'target-reply'));
+  assert.ok(paginateCommunityCommentThreads(comments, count, new Set(['old-root'])).rows.some(({ item }) => item.id === 'target-reply'));
   assert.equal(visibleThreadCountForComment(comments, 'missing', 2), 2);
 });
 

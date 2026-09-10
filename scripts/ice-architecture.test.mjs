@@ -1,10 +1,12 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
+import { createRequire } from "node:module";
 import fs from "node:fs";
 import path from "node:path";
 
 const root = process.cwd();
+const require = createRequire(import.meta.url);
 const read = (file) => fs.readFileSync(path.join(root, file), "utf8");
 const syntaxCheck = (file) => execFileSync(process.execPath, ["--check", path.join(root, file)], { stdio: "pipe" });
 
@@ -50,8 +52,8 @@ test("ICE官方来源直发，非官方来源仍由后台真实管理员审核",
   assert.match(publisher, /必须由后台真实管理员审核批准/);
   assert.doesNotMatch(publisher, /runOfficialUrgentPromotion/);
   assert.match(trusted, /status: blockedByRisk \? "pending_review" : "approved"/);
-  assert.match(trusted, /human_review_status: blockedByRisk \? "required" : "not_required_official"/);
-  assert.match(trusted, /official_direct_publish: !blockedByRisk/);
+  assert.match(trusted, /human_review_status: blockedByRisk \? "required" : \(isOfficial \? "not_required_official" : "not_required_trusted_media"\)/);
+  assert.match(trusted, /official_direct_publish: isOfficial && !blockedByRisk/);
   assert.match(restore, /reviewer_user_id/);
   assert.match(restore, /reviewed_by: approval\.reviewer_user_id/);
 });
@@ -152,6 +154,15 @@ test("审核API仅在服务端使用service role并验证管理员", () => {
   assert.match(publish, /authenticateStaff/);
   assert.match(actions, /authenticateStaff/);
   assert.doesNotMatch(read("admin/admin.js"), /SUPABASE_SERVICE_ROLE_KEY/);
+});
+
+test("ICE人工发布同步公开状态、专题路由和大规模人数", () => {
+  const publish = read("netlify/functions/ice-review-v2.js");
+  const people = require(path.join(root, "netlify/functions/_shared/ice-people-count.js"));
+  assert.match(publish, /visibility: "public"/);
+  assert.match(publish, /topic_key: "ice"/);
+  assert.equal(people.extractPeopleCount("警方配合ICE逮捕超过1800人").value, 1800);
+  assert.equal(people.extractPeopleCount("ICE遣返逾两千名恐怖分子").value, 2000);
 });
 
 test("SQL包含人工审核字段和审计日志", () => {

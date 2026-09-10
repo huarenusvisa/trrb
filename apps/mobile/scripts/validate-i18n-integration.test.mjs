@@ -313,10 +313,16 @@ test('localizes job discovery and keeps long text usable on narrow screens', () 
 test('localizes signed-in profile data controls and account deletion safeguards', () => {
   const profile = read('app/(tabs)/profile.tsx');
   const deletion = read('app/delete-account.tsx');
-  for (const source of [profile, deletion]) assert.match(source, /useI18n\(\)/);
-  for (const key of ['profile.loggedIn', 'profile.publishPost', 'profile.messages', 'profile.followRequests', 'profile.contentInteraction', 'profile.accountPrivacy', 'profile.fontSaveFailed']) {
+  const security = read('app/account-security.tsx');
+  for (const source of [profile, deletion, security]) assert.match(source, /useI18n\(\)/);
+  for (const key of ['profile.loggedIn', 'profile.publishPost', 'profile.messages', 'profile.followRequests', 'profile.contentInteraction', 'profile.accountSecurity', 'profile.accountPrivacy', 'profile.fontSaveFailed']) {
     assert.ok(profile.includes(`t('${key}'`), `profile must translate ${key}`);
   }
+  for (const key of ['accountSecurity.description', 'accountSecurity.emailRecovery', 'accountSecurity.smsDisabled', 'accountSecurity.bindEmail']) {
+    assert.ok(security.includes(`t('${key}'`), `account security must translate ${key}`);
+  }
+  assert.match(security, /secureTextEntry=\{!showPassword\}/);
+  assert.match(security, /bindRecoveryEmail\(email, password/);
   for (const key of ['deleteAccount.description', 'deleteAccount.confirmRequiredBody', 'deleteAccount.confirmInputA11y', 'deleteAccount.deleting', 'deleteAccount.cancelA11y']) {
     assert.ok(deletion.includes(`t('${key}'`), `account deletion must translate ${key}`);
   }

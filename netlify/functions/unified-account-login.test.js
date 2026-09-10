@@ -30,4 +30,6 @@ test('new email and phone registrations are confirmed server-side for immediate 
   assert.match(source, /auth\/v1\/admin\/users/);
   assert.doesNotMatch(source, /auth\/v1\/signup/);
   assert.doesNotMatch(source, /verification_required/);
+  assert.match(source, /account_login_identifiers/);
+  assert.match(source, /resolvePhoneAuthEmail/);
 });

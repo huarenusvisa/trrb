@@ -34,8 +34,12 @@ on:
       - 'netlify/functions/push-token-registration-core.test.js'
       - 'netlify/functions/unified-account-change-password.mjs'
       - 'netlify/functions/unified-account-change-password.test.mjs'
+      - 'netlify/functions/unified-account-login.js'
+      - 'netlify/functions/unified-account-login.test.js'
       - 'netlify/functions/unified-account-recovery.mjs'
       - 'netlify/functions/unified-account-recovery.test.mjs'
+      - 'netlify/functions/unified-account-security.mjs'
+      - 'netlify/functions/unified-account-security.test.mjs'
       - 'supabase/functions/direct-message-media/**'
       - 'supabase/migrations/20260910120000_mobile_rich_messages_and_profile_update.sql'
       - 'supabase/migrations/20260910143000_harden_direct_message_attachment_paths.sql'
@@ -50,6 +54,8 @@ on:
       - 'supabase/migrations/20260904012615_mobile_social_profile.sql'
       - 'supabase/migrations/20260907122247_claim_mobile_push_token.sql'
       - 'supabase/migrations/20260909092000_repair_authenticated_storage_search_path.sql'
+      - 'supabase/migrations/20260910025323_account_recovery_channels.sql'
+      - 'supabase/migrations/20260910031500_account_recovery_explicit_deny_policies.sql'
       - 'netlify.toml'
       - 'scripts/netlify-ignore-build.sh'
       - 'scripts/validate-mobile-build-cost-control.test.mjs'
@@ -90,8 +96,12 @@ on:
       - 'netlify/functions/push-token-registration-core.test.js'
       - 'netlify/functions/unified-account-change-password.mjs'
       - 'netlify/functions/unified-account-change-password.test.mjs'
+      - 'netlify/functions/unified-account-login.js'
+      - 'netlify/functions/unified-account-login.test.js'
       - 'netlify/functions/unified-account-recovery.mjs'
       - 'netlify/functions/unified-account-recovery.test.mjs'
+      - 'netlify/functions/unified-account-security.mjs'
+      - 'netlify/functions/unified-account-security.test.mjs'
       - 'supabase/functions/direct-message-media/**'
       - 'supabase/migrations/20260910120000_mobile_rich_messages_and_profile_update.sql'
       - 'supabase/migrations/20260910143000_harden_direct_message_attachment_paths.sql'
@@ -106,6 +116,8 @@ on:
       - 'supabase/migrations/20260904012615_mobile_social_profile.sql'
       - 'supabase/migrations/20260907122247_claim_mobile_push_token.sql'
       - 'supabase/migrations/20260909092000_repair_authenticated_storage_search_path.sql'
+      - 'supabase/migrations/20260910025323_account_recovery_channels.sql'
+      - 'supabase/migrations/20260910031500_account_recovery_explicit_deny_policies.sql'
       - 'netlify.toml'
       - 'scripts/netlify-ignore-build.sh'
       - 'scripts/validate-mobile-build-cost-control.test.mjs'
@@ -156,6 +168,7 @@ jobs:
           node --test netlify/functions/unified-account-change-password.test.mjs
           node --check netlify/functions/unified-account-recovery.mjs
           node --test netlify/functions/unified-account-recovery.test.mjs
+          node --test netlify/functions/unified-account-security.test.mjs
           node --test netlify/functions/community-api.test.js
           node --check netlify/functions/public-jobs.js
           node --test netlify/functions/public-jobs.test.js

@@ -7,6 +7,7 @@
   const FETCH_PAGE_SIZE = 500;
   const HISTORY_MAX = 2500;
   const REFRESH_MS = 60000;
+  const MAX_SINGLE_EVENT = 10000000;
   const DEFAULT_US_BOUNDS = window.L ? L.latLngBounds(L.latLng(24.2, -125), L.latLng(49.7, -66.4)) : null;
   const EXTENDED_US_BOUNDS = window.L ? L.latLngBounds(L.latLng(17, -171), L.latLng(72, -50)) : null;
 
@@ -73,16 +74,16 @@
       .replace(/\b\d{5}(?:-\d{4})?\b/g, " ")
       .replace(/\bA#?\s*\d+/gi, " ");
     const patterns = [
-      /(?:逮捕|抓捕|拘捕|拘留|羁押|扣押|带走|押送|遣返|递解|驱逐出境|遣送|送返|移送|搭载|载有|运送)(?:了|了约|约|大约|近|至少|超过|逾|不低于)?\s*(\d{1,3})\s*(?:名|人|位)/,
-      /(?:约有|约|大约|近|至少|超过|逾|不低于)?\s*(\d{1,3})\s*(?:名|人|位)(?:非法移民|移民|男子|女子|嫌疑人|人员|公民|旅客|乘客)?[^。；;，,]{0,20}?(?:被逮捕|被抓捕|被拘捕|被捕|被拘留|遭拘留|被羁押|被扣押|被带走|被押送|被遣返|遭遣返|被递解|遭递解|被驱逐出境|被遣送|被送返|落网|遣返|递解|驱逐出境|遣送|送返|移送)/,
-      /\b(?:arrested|detained|apprehended|held|deported|removed|repatriated|transported|carried)\s+(?:approximately\s+|about\s+|nearly\s+|at least\s+|more than\s+|over\s+)?(\d{1,3})\s+(?:people|persons|men|women|migrants|immigrants|individuals|detainees|passengers)\b/i,
-      /\b(?:approximately\s+|about\s+|nearly\s+|at least\s+|more than\s+|over\s+)?(\d{1,3})\s+(?:people|persons|men|women|migrants|immigrants|individuals|detainees|passengers)[^.!?]{0,30}\b(?:were\s+|was\s+)?(?:arrested|detained|apprehended|held|deported|removed|repatriated|transported)\b/i
+      /(?:逮捕|抓捕|拘捕|拘留|羁押|扣押|带走|押送|遣返|递解|驱逐出境|遣送|送返|移送|搭载|载有|运送)(?:了|了约|约|大约|近|至少|超过|逾|不低于)?\s*([\d,]{1,13})\s*(?:名|人|位)/,
+      /(?:约有|约|大约|近|至少|超过|逾|不低于)?\s*([\d,]{1,13})\s*(?:名|人|位)(?:非法移民|移民|男子|女子|嫌疑人|人员|公民|旅客|乘客)?[^。；;，,]{0,20}?(?:被逮捕|被抓捕|被拘捕|被捕|被拘留|遭拘留|被羁押|被扣押|被带走|被押送|被遣返|遭遣返|被递解|遭递解|被驱逐出境|被遣送|被送返|落网|遣返|递解|驱逐出境|遣送|送返|移送)/,
+      /\b(?:arrested|detained|apprehended|held|deported|removed|repatriated|transported|carried)\s+(?:approximately\s+|about\s+|nearly\s+|at least\s+|more than\s+|over\s+)?([\d,]{1,13})\s+(?:people|persons|men|women|migrants|immigrants|individuals|detainees|passengers)\b/i,
+      /\b(?:approximately\s+|about\s+|nearly\s+|at least\s+|more than\s+|over\s+)?([\d,]{1,13})\s+(?:people|persons|men|women|migrants|immigrants|individuals|detainees|passengers)[^.!?]{0,30}\b(?:were\s+|was\s+)?(?:arrested|detained|apprehended|held|deported|removed|repatriated|transported)\b/i
     ];
     for (const pattern of patterns) {
       const match = source.match(pattern);
       if (match && /(?:反遣返|抗议|示威|游行|倡议|集会|protest|rally|demonstration)/i.test(match[0])) continue;
-      const value = Number(match?.[1]);
-      if (value > 0 && value <= 500) {
+      const value = Number(String(match?.[1] || "").replaceAll(",", ""));
+      if (value > 0 && value <= MAX_SINGLE_EVENT) {
         const matched = match[0];
         const kind = /约|大约|近|approximately|about|nearly/i.test(matched)
           ? "estimated"
@@ -102,7 +103,7 @@
     const fallback = textCount(`${row.title || ""} ${row.summary || ""} ${row.content || ""}`);
     const candidates = [metadata.people_count, metadata.detained_count, metadata.arrested_count, metadata.removed_count, row.arrest_count]
       .map(Number)
-      .filter((n) => Number.isFinite(n) && n > 0 && n <= 500);
+      .filter((n) => Number.isFinite(n) && n > 0 && n <= MAX_SINGLE_EVENT);
     const people = candidates.length ? Math.max(...candidates) : fallback.value;
     const city = metadata.city || row.city || "";
     const state = metadata.state_code || row.state || "";

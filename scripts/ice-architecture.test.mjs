@@ -158,9 +158,12 @@ test("审核API仅在服务端使用service role并验证管理员", () => {
 
 test("ICE人工发布同步公开状态、专题路由和大规模人数", () => {
   const publish = read("netlify/functions/ice-review-v2.js");
+  const frontend = read("topic/ice/ice.js");
   const people = require(path.join(root, "netlify/functions/_shared/ice-people-count.js"));
   assert.match(publish, /visibility: "public"/);
   assert.match(publish, /topic_key: "ice"/);
+  assert.match(frontend, /MAX_SINGLE_EVENT = 10000000/);
+  assert.match(frontend, /n <= MAX_SINGLE_EVENT/);
   assert.equal(people.extractPeopleCount("警方配合ICE逮捕超过1800人").value, 1800);
   assert.equal(people.extractPeopleCount("ICE遣返逾两千名恐怖分子").value, 2000);
 });

@@ -1,0 +1,106 @@
+.account-recovery-intro {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 18px;
+}
+.account-recovery-intro h3,
+.account-recovery-intro p { margin: 0; }
+.account-recovery-intro p { max-width: 880px; }
+.account-recovery-intro > strong {
+  padding: 9px 13px;
+  border-radius: 999px;
+  color: #166534;
+  background: #dcfce7;
+  white-space: nowrap;
+}
+.account-recovery-lookup {
+  display: grid;
+  grid-template-columns: minmax(260px, 520px) auto;
+  align-items: end;
+  gap: 14px;
+  margin-bottom: 0;
+}
+.account-recovery-lookup label { margin-top: 0; }
+.account-recovery-lookup button { min-height: 49px; }
+#account-recovery-message[data-kind="success"] { color: #166534; }
+#account-recovery-message[data-kind="error"] { color: #b91c1c; }
+.account-recovery-summary-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+.account-recovery-summary-head span {
+  color: #166534;
+  font-weight: 800;
+}
+.account-recovery-summary-head h3 { margin: 4px 0 0; }
+.account-recovery-summary-head b {
+  padding: 6px 11px;
+  border-radius: 999px;
+  background: #e2e8f0;
+}
+.account-recovery-summary dl {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(140px, 1fr));
+  gap: 12px;
+  margin: 20px 0 0;
+}
+.account-recovery-summary dl > div {
+  padding: 13px;
+  border-radius: 10px;
+  background: #f8fafc;
+}
+.account-recovery-summary dt {
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 700;
+}
+.account-recovery-summary dd {
+  margin: 6px 0 0;
+  font-weight: 800;
+  word-break: break-word;
+}
+.account-recovery-form { margin-top: 18px; }
+.account-recovery-form h3 { margin-top: 0; }
+.account-recovery-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr;
+  gap: 14px;
+}
+.account-recovery-grid label { margin-top: 0; }
+.account-recovery-confirm {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 14px;
+  border: 1px solid #fbbf24;
+  border-radius: 10px;
+  background: #fffbeb;
+  line-height: 1.6;
+}
+.account-recovery-confirm input {
+  width: 20px;
+  height: 20px;
+  flex: 0 0 auto;
+  margin-top: 2px;
+}
+.account-recovery-form > button { margin-top: 0; }
+.account-recovery-history { margin-top: 18px; }
+.recovery-status-sent { background: #dcfce7; color: #166534; }
+.recovery-status-processing { background: #fef3c7; color: #92400e; }
+.recovery-status-failed { background: #fee2e2; color: #991b1b; }
+
+@media (max-width: 980px) {
+  .account-recovery-summary dl { grid-template-columns: repeat(2, minmax(140px, 1fr)); }
+  .account-recovery-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 680px) {
+  .account-recovery-intro { display: block; }
+  .account-recovery-intro > strong { display: inline-block; margin-top: 12px; }
+  .account-recovery-lookup { grid-template-columns: 1fr; }
+  .account-recovery-summary dl { grid-template-columns: 1fr; }
+}

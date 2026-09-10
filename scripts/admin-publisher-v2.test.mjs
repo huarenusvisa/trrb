@@ -60,6 +60,12 @@ test("manual category selection is persisted as an explicit editorial override",
   assert.match(api, /human_category_override_updated_at: time/);
 });
 
+test("publishing always synchronizes public visibility and ICE topic routing", () => {
+  assert.match(api, /visibility: status === "published" \? "public" : "private"/);
+  assert.match(api, /visibility: storedStatus === "published" \? "public" : "private"/);
+  assert.match(api, /topic_key: isIceBrief \? "ice" : null/);
+});
+
 test("desktop one-screen mode is scoped only to the publish page", () => {
   assert.match(client, /trrb:admin-page-shown/);
   assert.match(client, /event\.detail\?\.page === "new-article"/);

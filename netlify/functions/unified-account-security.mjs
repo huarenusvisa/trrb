@@ -38,9 +38,22 @@ async function requestJson(url, options = {}) {
   if (!response.ok) {
     const error = new Error(body?.error_description || body?.msg || body?.message || body?.details || `请求失败（${response.status}）`);
     error.statusCode = response.status;
+    error.code = body?.code || body?.error_code || '';
     throw error;
   }
   return body;
+}
+
+function clientError(error) {
+  const detail = `${error?.code || ''} ${error?.message || ''}`.toLowerCase();
+  if (detail.includes('users_email_partial_key') || detail.includes('already registered') || detail.includes('already exists') || detail.includes('email_exists')) {
+    return Object.assign(new Error('这个邮箱已经属于另一个唐人日报账号，请更换邮箱，或先使用该邮箱账号登录'), { statusCode: 409 });
+  }
+  if (error?.statusCode === 429 || detail.includes('rate limit')) {
+    return Object.assign(new Error('发送次数过多，请稍后再试'), { statusCode: 429 });
+  }
+  if ([400, 401, 409].includes(error?.statusCode) && /^[\u3400-\u9fff]/.test(String(error?.message || ''))) return error;
+  return Object.assign(new Error('账号安全设置保存失败，请稍后再试'), { statusCode: 500 });
 }
 
 function makeRest(supabaseUrl, serviceKey) {
@@ -153,8 +166,8 @@ export default async (request) => {
         body: { user_id: user.id, recovery_email: recoveryEmail, email_status: 'pending', email_requested_at: now, email_verified_at: null, sms_status: 'disabled', updated_at: now },
         prefer: 'resolution=merge-duplicates,return=minimal',
       });
-      await requestJson(`${supabaseUrl}/auth/v1/recover?redirect_to=${encodeURIComponent(BIND_EMAIL_REDIRECT)}`, {
-        method: 'POST', headers: { apikey: authApiKey, 'Content-Type': 'application/json' }, body: JSON.stringify({ email: recoveryEmail }),
+      await requestJson(`${supabaseUrl}/auth/v1/otp?redirect_to=${encodeURIComponent(BIND_EMAIL_REDIRECT)}`, {
+        method: 'POST', headers: { apikey: authApiKey, 'Content-Type': 'application/json' }, body: JSON.stringify({ email: recoveryEmail, create_user: false }),
       });
     } catch (error) {
       await requestJson(`${supabaseUrl}/auth/v1/admin/users/${encodeURIComponent(user.id)}`, {
@@ -167,7 +180,7 @@ export default async (request) => {
       } else {
         await rest('account_recovery_channels', { method: 'DELETE', query: { user_id: `eq.${user.id}` } }).catch(() => undefined);
       }
-      throw error;
+      throw clientError(error);
     }
 
     return json(200, { ...publicStatus({ ...user, email: recoveryEmail }, { recovery_email: recoveryEmail, email_status: 'pending' }), email_sent: true });
@@ -175,8 +188,9 @@ export default async (request) => {
     console.error('Unified account security error:', error);
     const status = error?.statusCode === 401 ? 401 : error?.statusCode === 429 ? 429 : error?.statusCode === 409 ? 409 : error?.statusCode === 400 ? 400 : 500;
     const fallback = status === 401 ? '当前密码不正确或登录已失效' : status === 429 ? '发送次数过多，请稍后再试' : '账号安全设置保存失败';
-    return json(status, { error: error?.message || fallback });
+    const safeError = clientError(error);
+    return json(safeError.statusCode || status, { error: safeError.message || fallback });
   }
 };
 
-export const _test = { normalizeEmail, maskEmail, phoneAlias, keyedHash, publicStatus };
+export const _test = { normalizeEmail, maskEmail, phoneAlias, keyedHash, publicStatus, clientError };

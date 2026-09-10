@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import recoverAccount from './unified-account-recovery.mjs';
+import recoverAccount, { _test } from './unified-account-recovery.mjs';
 
 const originalFetch = globalThis.fetch;
 const originalNetlify = globalThis.Netlify;
@@ -94,4 +94,10 @@ test('confirms a pending recovery email without changing the password', async ()
   assert.deepEqual(await response.json(), { verified: true });
   assert.equal(calls.some((call) => call.url.includes('account_recovery_channels') && call.options.method === 'PATCH'), true);
   assert.equal(calls.some((call) => call.options.method === 'PUT'), false);
+});
+
+test('never exposes an English database constraint to the client', () => {
+  const translated = _test.clientError(Object.assign(new Error('duplicate key value violates unique constraint "users_email_partial_key"'), { statusCode: 500 }));
+  assert.equal(translated.statusCode, 409);
+  assert.equal(translated.message, '这个邮箱已经属于另一个唐人日报账号');
 });

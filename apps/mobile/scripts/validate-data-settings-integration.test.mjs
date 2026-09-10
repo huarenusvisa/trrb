@@ -6,13 +6,16 @@ const read = (path) => fs.readFileSync(new URL(`../${path}`, import.meta.url), '
 
 test('keeps profile settings on explicit presentation-field privileges', () => {
   const migration = read('../../supabase/migrations/20260903172316_repair_mobile_profile_notifications.sql');
+  const profileUpdateMigration = read('../../supabase/migrations/20260910120000_mobile_rich_messages_and_profile_update.sql');
   const settings = read('app/profile-settings.tsx');
 
   assert.match(migration, /grant select\(id, display_name, avatar_key, bio, status\)/);
   assert.match(migration, /grant update\(display_name, avatar_key, bio\)/);
   assert.doesNotMatch(migration, /grant update on public\.profiles to authenticated/);
   assert.match(settings, /\.eq\('id', user\.id\)/);
-  assert.match(settings, /\.eq\('id', userId\)/);
+  assert.match(settings, /supabase\.rpc\('update_my_profile'/);
+  assert.match(profileUpdateMigration, /v_user_id uuid := auth\.uid\(\)/);
+  assert.match(profileUpdateMigration, /revoke all on function public\.update_my_profile[^;]+from public, anon/);
 });
 
 test('limits notification access to the signed-in owner and read state', () => {

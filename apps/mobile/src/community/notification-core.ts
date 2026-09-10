@@ -51,7 +51,8 @@ export type NotificationTarget = {
 
 export function notificationTarget(item: NotificationTarget) {
   if (item.type === 'message' || item.type === 'message_request') {
-    return item.conversation_id ? `/chat/${encodeURIComponent(item.conversation_id)}` : '/messages';
+    if (item.conversation_id) return `/chat/${encodeURIComponent(item.conversation_id)}`;
+    return item.actor_user_id ? `/chat/new?userId=${encodeURIComponent(item.actor_user_id)}` : '/messages';
   }
   if (item.type === 'follow_request') return '/follow-requests';
   if (item.community_post_id) {

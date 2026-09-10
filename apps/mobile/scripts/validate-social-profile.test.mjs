@@ -4,6 +4,8 @@ import test from 'node:test';
 
 const read = (path) => fs.readFileSync(new URL(`../${path}`, import.meta.url), 'utf8');
 const migration = read('../../supabase/migrations/20260904012615_mobile_social_profile.sql');
+const richMessageMigration = read('../../supabase/migrations/20260910120000_mobile_rich_messages_and_profile_update.sql');
+const attachmentPathMigration = read('../../supabase/migrations/20260910143000_harden_direct_message_attachment_paths.sql');
 
 test('enforces the one-message request gate in the database', () => {
   assert.match(migration, /for update;/i, 'conversation row must be locked before checking the first message');
@@ -30,6 +32,23 @@ test('block removes follows and freezes conversations', () => {
   assert.match(migration, /private\.users_are_blocked/);
 });
 
+test('rich messages stay private and profile edits use the authenticated owner', () => {
+  const mediaFunction = read('../../supabase/functions/direct-message-media/index.ts');
+  const messages = read('src/social/messages.ts');
+  assert.match(richMessageMigration, /'direct-message-media',\s*'direct-message-media',\s*false/);
+  assert.match(richMessageMigration, /message_type in \('text', 'image', 'video', 'file', 'audio', 'call'\)/);
+  assert.match(richMessageMigration, /create or replace function public\.update_my_profile/);
+  assert.match(richMessageMigration, /v_user_id uuid := auth\.uid\(\)/);
+  assert.match(richMessageMigration, /revoke all on function public\.update_my_profile[^;]+from public, anon/);
+  assert.match(mediaFunction, /userClient\.auth\.getUser\(\)/);
+  assert.match(mediaFunction, /conversation\.requester_user_id !== user\.id/);
+  assert.match(mediaFunction, /attachment_path\.startsWith\(`\$\{conversationId\}\/\$\{message\.sender_user_id\}\/`\)/);
+  assert.match(mediaFunction, /createSignedUrl/);
+  assert.match(attachmentPathMigration, /attachment_path like conversation_id::text \|\| '\/' \|\| sender_user_id::text \|\| '\/%'/);
+  assert.match(messages, /direct message attachment URLs unavailable/);
+  assert.match(messages, /attachment_url: urls\[message\.id\] \|\| null/);
+});
+
 test('mobile screens expose refined profile, custom media and protected messaging', () => {
   const profile = read('app/(tabs)/profile.tsx');
   const hero = read('src/components/ProfileHero.tsx');
@@ -51,10 +70,12 @@ test('mobile screens expose refined profile, custom media and protected messagin
   assert.match(chat, /t\('chat\.incomingBody'\)/);
   assert.match(chat, /testID="chat-partner-profile"/);
   assert.match(chat, /router\.push\(`\/user\/\$\{partner\.id\}`\)/);
-  assert.match(chat, /testID="chat-call"/);
+  assert.match(chat, /testID="chat-audio-call"/);
+  assert.match(chat, /testID="chat-video-call"/);
   assert.match(chat, /testID="chat-share-media"/);
   assert.match(chat, /testID="chat-share-file"/);
-  assert.match(chat, /Sharing\.shareAsync/);
+  assert.match(chat, /uploadMessageFile/);
+  assert.match(chat, /useAudioRecorder/);
   assert.match(chat, /useFocusEffect/);
   assert.match(compose, /mediaTypes: \['images', 'videos'\]/);
 });
@@ -503,7 +524,8 @@ test('news replies stay grouped with parents and identify the reply target', () 
   assert.match(api, /parent_author_name/);
   assert.match(presentation, /buildCommentDisplayRows/);
   assert.match(presentation, /for \(const child of children\.get\(row\.id\) \|\| \[\]\) append/);
-  assert.match(news, /displayItems\.map\(\(\{ item, depth, replyToLabel \}/);
+  assert.match(news, /displayItems\.map\(\(\{ item, depth, replyToLabel, threadRootId, replyCount, expanded \}/);
+  assert.match(news, /comments\.expandReplies/);
   assert.match(news, /t\('comments\.replyingTo'/);
   assert.match(news, /styles\.replyComment/);
 });

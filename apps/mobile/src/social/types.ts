@@ -54,6 +54,14 @@ export type DirectMessage = {
   conversation_id: string;
   sender_user_id: string;
   body: string;
+  message_type: 'text' | 'image' | 'video' | 'file' | 'audio' | 'call';
+  attachment_path: string | null;
+  attachment_name: string | null;
+  attachment_mime: string | null;
+  attachment_size: number | null;
+  attachment_duration_ms: number | null;
+  metadata: Record<string, unknown>;
+  attachment_url?: string | null;
   read_at: string | null;
   created_at: string;
 };

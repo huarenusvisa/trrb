@@ -2,9 +2,10 @@ import type { RealtimeChannel } from '@supabase/supabase-js';
 import { supabase } from '../auth/supabase';
 import { currentUserId, loadSocialProfile, loadSocialProfiles } from './profiles';
 import type { ConversationSummary, DirectConversation, DirectMessage } from './types';
+import { messageFileUrls } from './message-media';
 
 const CONVERSATION_SELECT = 'id,requester_user_id,recipient_user_id,status,accepted_at,last_message_at,created_at,updated_at';
-const MESSAGE_SELECT = 'id,conversation_id,sender_user_id,body,read_at,created_at';
+const MESSAGE_SELECT = 'id,conversation_id,sender_user_id,body,message_type,attachment_path,attachment_name,attachment_mime,attachment_size,attachment_duration_ms,metadata,read_at,created_at';
 
 export async function listConversations() {
   const userId = await currentUserId();
@@ -54,30 +55,73 @@ export async function findConversationWith(targetUserId: string) {
 export async function listMessages(conversationId: string) {
   const { data, error } = await supabase.from('direct_messages').select(MESSAGE_SELECT).eq('conversation_id', conversationId).order('created_at', { ascending: true }).limit(500);
   if (error) throw error;
-  return (data || []) as DirectMessage[];
+  const messages = (data || []) as DirectMessage[];
+  const attachmentIds = messages.filter((message) => message.attachment_path).map((message) => message.id);
+  let urls: Record<string, string> = {};
+  if (attachmentIds.length) {
+    try {
+      urls = await messageFileUrls(conversationId, attachmentIds);
+    } catch (error) {
+      // A temporary media-service failure must not hide the conversation or
+      // prevent text messages from being read and marked as read.
+      console.warn('direct message attachment URLs unavailable', error);
+    }
+  }
+  return messages.map((message) => ({ ...message, attachment_url: urls[message.id] || null }));
 }
 
-export async function createMessageRequest(targetUserId: string, body: string) {
+export async function ensureConversationWith(targetUserId: string) {
   const userId = await currentUserId();
-  const clean = body.trim();
-  if (!clean || clean.length > 2000) throw new Error('消息需要在 1–2000 字之间。');
   let conversation = await findConversationWith(targetUserId);
   if (!conversation) {
-    const { data, error } = await supabase.from('direct_conversations').insert({ requester_user_id: userId, recipient_user_id: targetUserId }).select(CONVERSATION_SELECT).single();
+    const { data, error } = await supabase.from('direct_conversations')
+      .insert({ requester_user_id: userId, recipient_user_id: targetUserId })
+      .select(CONVERSATION_SELECT).single();
     if (error && error.code !== '23505') throw error;
     conversation = data as DirectConversation | null;
     if (!conversation) conversation = await findConversationWith(targetUserId);
   }
   if (!conversation) throw new Error('无法创建聊天申请。');
+  return conversation;
+}
+
+export async function createMessageRequest(targetUserId: string, body: string) {
+  const clean = body.trim();
+  if (!clean || clean.length > 2000) throw new Error('消息需要在 1–2000 字之间。');
+  const conversation = await ensureConversationWith(targetUserId);
   await sendMessage(conversation.id, clean);
   return conversation;
 }
 
 export async function sendMessage(conversationId: string, body: string) {
+  return sendRichMessage(conversationId, { body, messageType: 'text' });
+}
+
+export async function sendRichMessage(conversationId: string, input: {
+  body: string;
+  messageType: DirectMessage['message_type'];
+  attachmentPath?: string | null;
+  attachmentName?: string | null;
+  attachmentMime?: string | null;
+  attachmentSize?: number | null;
+  attachmentDurationMs?: number | null;
+  metadata?: Record<string, unknown>;
+}) {
   const userId = await currentUserId();
-  const clean = body.trim();
+  const clean = input.body.trim();
   if (!clean || clean.length > 2000) throw new Error('消息需要在 1–2000 字之间。');
-  const { data, error } = await supabase.from('direct_messages').insert({ conversation_id: conversationId, sender_user_id: userId, body: clean }).select(MESSAGE_SELECT).single();
+  const { data, error } = await supabase.from('direct_messages').insert({
+    conversation_id: conversationId,
+    sender_user_id: userId,
+    body: clean,
+    message_type: input.messageType,
+    attachment_path: input.attachmentPath || null,
+    attachment_name: input.attachmentName || null,
+    attachment_mime: input.attachmentMime || null,
+    attachment_size: input.attachmentSize || null,
+    attachment_duration_ms: input.attachmentDurationMs || null,
+    metadata: input.metadata || {},
+  }).select(MESSAGE_SELECT).single();
   if (error) {
     if (error.message.includes('waiting_for_chat_confirmation')) throw new Error('对方确认聊天前，你不能再发送第二条消息。');
     if (error.message.includes('confirm_chat_before_reply')) throw new Error('请先点击“确认聊天”，再回复消息。');

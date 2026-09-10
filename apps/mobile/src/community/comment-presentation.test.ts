@@ -30,7 +30,10 @@ test('places replies directly after their parent and names the reply target', ()
     row({ id: 'reply', parent_id: 'root', user_id: 'user-2', profiles: { display_name: '回复者' } }),
     row(),
   ];
-  const display = buildCommentDisplayRows(rows);
+  const collapsed = buildCommentDisplayRows(rows);
+  assert.deepEqual(collapsed.map(({ item }) => item.id), ['new-root', 'root']);
+  assert.equal(collapsed[1].replyCount, 1);
+  const display = buildCommentDisplayRows(rows, new Set(['root']));
   assert.deepEqual(display.map(({ item }) => item.id), ['new-root', 'root', 'reply']);
   assert.equal(display[2].depth, 1);
   assert.equal(display[2].replyToLabel, '测试用户');

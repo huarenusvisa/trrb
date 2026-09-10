@@ -11,7 +11,9 @@
   }
 
   async function token() {
-    const { data } = await window.supabaseClient.auth.getSession();
+    const client = window.supabaseClient;
+    if (!client?.auth) throw new Error('后台认证组件未就绪，请刷新页面后重试。');
+    const { data } = await client.auth.getSession();
     const accessToken = data.session?.access_token;
     if (!accessToken) throw new Error('后台登录已失效，请重新登录。');
     return accessToken;

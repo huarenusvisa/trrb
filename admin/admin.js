@@ -13,6 +13,12 @@ const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, 
   }
 });
 
+// Feature scripts load after this file and need the authenticated admin
+// session. Top-level `const` bindings are not properties of `window`, so make
+// the shared client explicit instead of letting modules create separate auth
+// sessions.
+window.supabaseClient = supabaseClient;
+
 const el = (id) => document.getElementById(id);
 let currentUser = null;
 let currentAdmin = null;

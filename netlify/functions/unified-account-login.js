@@ -74,6 +74,35 @@ async function passwordSignIn(email, password) {
   });
 }
 
+async function resolvePhoneAuthEmail(account) {
+  if (account.type !== 'phone') return { email: account.authEmail, mapped: false };
+  const rows = await rest('account_login_identifiers', {
+    query: { select: 'user_id', identifier_hash: `eq.${keyedHash(account.authEmail)}`, limit: '1' }
+  });
+  const userId = Array.isArray(rows) ? rows[0]?.user_id : '';
+  if (!userId) return { email: account.authEmail, mapped: false };
+  const user = await requestJson(`${SUPABASE_URL}/auth/v1/admin/users/${encodeURIComponent(userId)}`, {
+    headers: { apikey: SERVICE_KEY, Authorization: `Bearer ${SERVICE_KEY}` }
+  });
+  return { email: safeText(user?.email, 320).toLowerCase() || account.authEmail, mapped: true };
+}
+
+async function rememberPhoneLogin(account, session) {
+  const userId = safeText(session?.user?.id, 100);
+  if (account.type !== 'phone' || !userId) return;
+  await rest('account_login_identifiers', {
+    method: 'POST',
+    query: { on_conflict: 'identifier_hash' },
+    body: {
+      identifier_hash: keyedHash(account.authEmail),
+      user_id: userId,
+      identifier_type: 'phone',
+      updated_at: new Date().toISOString()
+    },
+    prefer: 'resolution=merge-duplicates,return=minimal'
+  });
+}
+
 async function recentAttempts(column, hash) {
   const since = new Date(Date.now() - 60 * 60 * 1000).toISOString();
   const rows = await rest('account_registration_attempts', {
@@ -122,8 +151,11 @@ exports.handler = async (event) => {
     const password = String(body.password || '');
     if (password.length < 8 || password.length > 128) return json(400, { error: '密码需要 8–128 位' }, event);
 
+    const resolved = await resolvePhoneAuthEmail(account);
     try {
-      const session = await passwordSignIn(account.authEmail, password);
+      const session = await passwordSignIn(resolved.email, password);
+      try { await rememberPhoneLogin(account, session); }
+      catch (mappingError) { console.error('Could not refresh phone login mapping:', mappingError); }
       return json(200, { created: false, account: { type: account.type, label: account.label }, session }, event);
     } catch (signInError) {
       const identifierHash = keyedHash(account.authEmail);
@@ -135,14 +167,28 @@ exports.handler = async (event) => {
       ]);
       if (identifierCount >= 5 || ipCount >= 5) return json(429, { error: '尝试次数过多，请一小时后再试' }, event);
 
+      // A mapped phone identifier already belongs to a user whose underlying
+      // Auth email may be a recovery address. Never create a duplicate alias
+      // account when the password is wrong.
+      if (resolved.mapped) {
+        await recordAttempt(identifierHash, ipHash, false);
+        return json(401, { error: '账号或密码错误' }, event);
+      }
+
       try {
-        await createConfirmedUser(account, password);
+        const createdUser = await createConfirmedUser(account, password);
+        if (account.type === 'phone' && createdUser?.id) {
+          try { await rememberPhoneLogin(account, { user: { id: createdUser.id } }); }
+          catch (mappingError) { console.error('Could not create phone login mapping:', mappingError); }
+        }
         await recordAttempt(identifierHash, ipHash, true);
       } catch (createError) {
         await recordAttempt(identifierHash, ipHash, false);
         return json(401, { error: '账号或密码错误' }, event);
       }
       const session = await passwordSignIn(account.authEmail, password);
+      try { await rememberPhoneLogin(account, session); }
+      catch (mappingError) { console.error('Could not refresh new phone login mapping:', mappingError); }
       return json(200, { created: true, account: { type: account.type, label: account.label }, session }, event);
     }
   } catch (error) {
@@ -151,4 +197,4 @@ exports.handler = async (event) => {
   }
 };
 
-exports._test = { normalizePhone, normalizeIdentifier };
+exports._test = { normalizePhone, normalizeIdentifier, keyedHash };

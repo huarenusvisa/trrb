@@ -35,9 +35,14 @@ export default function AuthScreen() {
       const result = await loginOrRegister(identifier, password);
       const { error } = await supabase.auth.setSession(result.session);
       if (error) throw error;
-      Alert.alert(result.created ? t('auth.registerSuccess') : t('auth.signInSuccess'), result.created ? t('auth.registerSuccessBody') : t('auth.welcomeBack'), [
-        { text: t('auth.continue'), onPress: () => router.back() },
-      ]);
+      if (result.created) {
+        Alert.alert(t('auth.registerSuccess'), t('auth.registerSuccessBody'), [
+          { text: t('auth.continue'), style: 'cancel', onPress: () => router.back() },
+          { text: t('profile.accountSecurity'), onPress: () => router.replace('/account-security') },
+        ]);
+      } else {
+        Alert.alert(t('auth.signInSuccess'), t('auth.welcomeBack'), [{ text: t('auth.continue'), onPress: () => router.back() }]);
+      }
     } catch (error) {
       setMessage(authClientErrorMessage(locale, error));
     } finally { setBusy(false); }

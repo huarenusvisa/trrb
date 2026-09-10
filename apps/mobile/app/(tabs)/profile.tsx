@@ -104,6 +104,7 @@ export default function ProfileScreen() {
       </View>
       <Text style={styles.groupTitle}>{t('profile.settings')}</Text>
       <View style={styles.menuGroup}>
+        <Menu testID="profile-account-security" title={t('profile.accountSecurity')} meta={t('profile.accountSecurityMeta')} onPress={() => router.push('/account-security')} />
         <Menu title={t('profile.accountPrivacy')} meta={t('profile.accountPrivacyMeta')} onPress={() => router.push('/profile-settings')} />
         <Menu testID="open-language-settings" title={t('profile.language')} meta={t('profile.languageMeta', { language: languageName(locale) })} onPress={() => router.push('/language-settings')} />
         <Menu title={t('profile.pushSettings')} meta={t('profile.pushSettingsMeta')} onPress={() => router.push('/push-settings')} last />

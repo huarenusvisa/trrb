@@ -6,7 +6,7 @@ const html = fs.readFileSync(new URL("../topic/ice/index.html", import.meta.url)
 const script = fs.readFileSync(new URL("../topic/ice/ice.js", import.meta.url), "utf8");
 
 assert.match(html, /data-range="all"[\s\S]*历史发布/);
-assert.match(html, /ice\.js\?v=20260907-history-v2/);
+assert.match(html, /ice\.js\?v=20260910-people-large-v1/);
 assert.match(script, /visibility", "eq\.public"/);
 assert.match(script, /async function fetchIceHistory/);
 assert.match(script, /offset", String\(offset\)/);

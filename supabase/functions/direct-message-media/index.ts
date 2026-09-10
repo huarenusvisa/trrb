@@ -55,13 +55,14 @@ Deno.serve(async (request) => {
     const ids = Array.isArray(payload.messageIds) ? payload.messageIds.filter((id) => /^[0-9a-f-]{36}$/i.test(id)).slice(0, 100) : [];
     if (!ids.length) return reply({ urls: {} });
     const { data: messages, error } = await admin.from("direct_messages")
-      .select("id,attachment_path")
+      .select("id,attachment_path,sender_user_id")
       .eq("conversation_id", conversationId)
       .in("id", ids)
       .not("attachment_path", "is", null);
     if (error) return reply({ error: "lookup_failed" }, 503);
     const urls: Record<string, string> = {};
     await Promise.all((messages || []).map(async (message) => {
+      if (typeof message.attachment_path !== "string" || !message.attachment_path.startsWith(`${conversationId}/${message.sender_user_id}/`)) return;
       const { data } = await admin.storage.from("direct-message-media").createSignedUrl(message.attachment_path, 3600);
       if (data?.signedUrl) urls[message.id] = data.signedUrl;
     }));

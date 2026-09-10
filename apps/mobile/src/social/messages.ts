@@ -57,7 +57,16 @@ export async function listMessages(conversationId: string) {
   if (error) throw error;
   const messages = (data || []) as DirectMessage[];
   const attachmentIds = messages.filter((message) => message.attachment_path).map((message) => message.id);
-  const urls = attachmentIds.length ? await messageFileUrls(conversationId, attachmentIds) : {};
+  let urls: Record<string, string> = {};
+  if (attachmentIds.length) {
+    try {
+      urls = await messageFileUrls(conversationId, attachmentIds);
+    } catch (error) {
+      // A temporary media-service failure must not hide the conversation or
+      // prevent text messages from being read and marked as read.
+      console.warn('direct message attachment URLs unavailable', error);
+    }
+  }
   return messages.map((message) => ({ ...message, attachment_url: urls[message.id] || null }));
 }
 

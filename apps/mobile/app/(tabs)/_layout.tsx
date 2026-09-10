@@ -1,14 +1,16 @@
 import { Tabs } from 'expo-router';
 import { Text } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useI18n } from '../../src/i18n/I18nProvider';
 import { useUnreadCounts } from '../../src/notifications/UnreadProvider';
 import { unreadBadgeValue } from '../../src/notifications/unread-core';
 
-const TabIcon = ({ label }: { label: string }) => <Text style={{ fontSize: 15, fontWeight: '700' }}>{label}</Text>;
+const TabIcon = ({ label }: { label: string }) => <Text style={{ fontSize: 16, fontWeight: '800' }}>{label}</Text>;
 
 export default function TabLayout() {
   const { t } = useI18n();
   const unread = useUnreadCounts();
+  const insets = useSafeAreaInsets();
   const profileBadge = unreadBadgeValue(unread);
   return (
     <Tabs
@@ -16,7 +18,9 @@ export default function TabLayout() {
         headerShown: false,
         tabBarActiveTintColor: '#c8211e',
         tabBarInactiveTintColor: '#667085',
-        tabBarStyle: { height: 66, paddingBottom: 8, paddingTop: 6 }
+        tabBarStyle: { height: 72 + Math.max(insets.bottom, 8), paddingBottom: Math.max(insets.bottom, 10), paddingTop: 8 },
+        tabBarItemStyle: { minHeight: 54 },
+        tabBarLabelStyle: { fontSize: 12, fontWeight: '700' }
       }}
     >
       <Tabs.Screen name="index" options={{ title: t('tab.home'), tabBarButtonTestID: 'tab-home', tabBarIcon: () => <TabIcon label={t('tab.homeIcon')} /> }} />

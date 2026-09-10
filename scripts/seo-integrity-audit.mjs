@@ -7,7 +7,7 @@ const SKIP_DIRS = new Set([".git", "node_modules", ".netlify"]);
 const SKIP_HTML_PREFIXES = ["admin/", "trrb_admin_v1/"];
 const EXTERNAL_PRODUCT_PREFIXES = ["asylumjudge/", "immigration-judge-approval-rate/", "jobs/", "huarengongzuo/"];
 const INTENTIONAL_NOINDEX_HTML = new Set([
-  "404.html", "delete-account.html", "expose.html", "health.html", "thanks.html"
+  "404.html", "delete-account.html", "expose.html", "health.html", "thanks.html", "reset-password/index.html"
 ]);
 const DYNAMIC_SEO_HTML = new Set(["article.html", "listing.html", "legal/detail.html"]);
 const STRICT_INDEXABLE_SEO_GATE = "STRICT_INDEXABLE_SEO_GATE_V2";

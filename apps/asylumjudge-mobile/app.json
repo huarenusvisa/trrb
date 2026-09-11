@@ -1,31 +1,32 @@
 {
   "expo": {
-    "name": "移民法官",
-    "slug": "asylumjudge",
-    "scheme": "asylumjudge",
-    "owner": "tang-daily-llc",
-    "version": "0.1.0",
-    "orientation": "portrait",
-    "userInterfaceStyle": "light",
-    "backgroundColor": "#f5f7f6",
-    "primaryColor": "#14804a",
-    "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.asylumjudge.mobile",
-      "buildNumber": "1",
-      "infoPlist": {
-        "ITSAppUsesNonExemptEncryption": false
-      }
-    },
     "android": {
       "package": "com.asylumjudge.mobile",
-      "versionCode": 1,
-      "predictiveBackGestureEnabled": true
+      "predictiveBackGestureEnabled": true,
+      "versionCode": 1
     },
+    "backgroundColor": "#f5f7f6",
     "extra": {
       "eas": {
         "projectId": "4443f235-79a2-4508-afe3-736331b9ae7b"
       }
-    }
+    },
+    "ios": {
+      "buildNumber": "2",
+      "bundleIdentifier": "com.asylumjudge.mobile",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      },
+      "supportsTablet": true
+    },
+    "name": "移民法官",
+    "orientation": "portrait",
+    "owner": "tang-daily-llc",
+    "primaryColor": "#14804a",
+    "scheme": "asylumjudge",
+    "slug": "asylumjudge",
+    "userInterfaceStyle": "light",
+    "version": "0.1.0",
+    "icon": "./assets/icon.png"
   }
 }

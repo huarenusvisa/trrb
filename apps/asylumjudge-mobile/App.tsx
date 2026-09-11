@@ -1,3 +1,4 @@
+import { privacySections, privacyUpdated } from './privacy';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useMemo, useState } from 'react';
 import {
@@ -5,6 +6,8 @@ import {
   Alert,
   FlatList,
   Linking,
+  Modal,
+  ScrollView,
   Pressable,
   SafeAreaView,
   StyleSheet,
@@ -41,6 +44,7 @@ function percent(value: number | null | undefined) {
 }
 
 export default function App() {
+  const [showPrivacy, setShowPrivacy] = useState(false);
   const [judges, setJudges] = useState<Judge[]>([]);
   const [query, setQuery] = useState('');
   const [error, setError] = useState('');
@@ -164,6 +168,9 @@ export default function App() {
         />
       )}
       <View style={styles.support}>
+        <Pressable accessibilityRole="button" onPress={() => setShowPrivacy(true)}>
+          <Text style={styles.supportLink}>隐私政策</Text>
+        </Pressable>
         <Text style={styles.supportTitle}>客服与隐私联系</Text>
         <Pressable accessibilityRole="link" onPress={() => void openSupport('mailto:huarenfalv@gmail.com')}>
           <Text selectable style={styles.supportLink}>huarenfalv@gmail.com</Text>
@@ -172,11 +179,31 @@ export default function App() {
           <Text selectable style={styles.supportLink}>+1 929-789-1391</Text>
         </Pressable>
       </View>
+      <Modal visible={showPrivacy} animationType="slide" onRequestClose={() => setShowPrivacy(false)}>
+        <SafeAreaView style={styles.safeArea}>
+          <View style={styles.header}>
+            <Text accessibilityRole="header" style={styles.title}>隐私政策</Text>
+            <Text style={styles.subtitle}>移民法官 AsylumJudge · {privacyUpdated}</Text>
+            <Pressable accessibilityRole="button" onPress={() => setShowPrivacy(false)}>
+              <Text style={styles.supportLink}>关闭，返回目录</Text>
+            </Pressable>
+          </View>
+          <ScrollView contentContainerStyle={styles.list}>
+            {privacySections.map(([heading, body]) => (
+              <View key={heading} style={styles.card}>
+                <Text accessibilityRole="header" style={styles.name}>{heading}</Text>
+                <Text selectable style={styles.policyBody}>{body}</Text>
+              </View>
+            ))}
+          </ScrollView>
+        </SafeAreaView>
+      </Modal>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+  policyBody: { color: '#526158', fontSize: 16, lineHeight: 26, marginTop: 8 },
   support: { paddingHorizontal: 20, paddingVertical: 8, backgroundColor: '#ffffff', borderTopWidth: 1, borderTopColor: '#dce5df' },
   supportTitle: { color: '#526158', fontSize: 12 },
   supportLink: { color: '#14804a', fontSize: 14, paddingVertical: 12 },

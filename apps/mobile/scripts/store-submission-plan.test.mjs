@@ -28,7 +28,7 @@ function buildEvidenceFile(t, releaseCandidatePath, sourceCommit = '1234567890ab
     releaseCandidateSha256: crypto.createHash('sha256').update(fs.readFileSync(releaseCandidatePath)).digest('hex'),
     application: {
       slug: 'trrb', projectId: 'cc29573d-d20c-4c3b-a7d6-1bc74838127a', version: appVersion, runtimeVersion: appVersion,
-      ios: { bundleIdentifier: 'net.trrb.mobile' }, android: { package: 'net.trrb.mobile' }
+      ios: { bundleIdentifier: 'com.tangrenribao.iosapp' }, android: { package: 'net.trrb.mobile' }
     },
     builds: ['ios', 'android'].map((platform, index) => ({
       platform,

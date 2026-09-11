@@ -1,6 +1,12 @@
 name: Tang Daily iOS Release
 
 on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'apps/mobile/**'
+      - '.github/workflows/tang-daily-ios-release.yml'
   workflow_dispatch:
     inputs:
       release_action:
@@ -87,9 +93,9 @@ jobs:
           npm run config:check
 
       - name: Build Tang Daily iOS
-        if: ${{ inputs.release_action == 'build-only' }}
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.release_action == 'build-only' }}
         run: eas build --platform ios --profile production --non-interactive
 
       - name: Build and upload Tang Daily iOS
-        if: ${{ inputs.release_action == 'build-and-upload' }}
+        if: ${{ github.event_name == 'push' || inputs.release_action == 'build-and-upload' }}
         run: eas build --platform ios --profile production --non-interactive --auto-submit

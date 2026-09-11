@@ -1,0 +1,95 @@
+name: Tang Daily iOS Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_action:
+        description: Tang Daily release action
+        required: true
+        default: build-and-upload
+        type: choice
+        options:
+          - build-and-upload
+          - build-only
+
+permissions:
+  contents: read
+
+concurrency:
+  group: tang-daily-ios-release
+  cancel-in-progress: false
+
+jobs:
+  ios-release:
+    name: Tang Daily iOS production
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    defaults:
+      run:
+        working-directory: apps/mobile
+    steps:
+      - name: Check out selected Tang Daily ref
+        uses: actions/checkout@v5
+
+      - name: Require Expo token
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+        run: |
+          if [ -z "$EXPO_TOKEN" ]; then
+            echo "Missing repository secret: EXPO_TOKEN"
+            exit 1
+          fi
+
+      - name: Set up Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: apps/mobile/package-lock.json
+
+      - name: Set up Expo and EAS
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          packager: npm
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Install Tang Daily dependencies
+        run: npm ci
+
+      - name: Verify Tang Daily release identity
+        run: |
+          node - <<'NODE'
+          const app = require('./app.json').expo;
+          const eas = require('./eas.json');
+          const expected = {
+            projectId: 'cc29573d-d20c-4c3b-a7d6-1bc74838127a',
+            bundleIdentifier: 'com.tangrenribao.iosapp',
+            ascAppId: '6744951884',
+            appleTeamId: 'ZJ2LNXPXH3'
+          };
+          const actual = {
+            projectId: app.extra?.eas?.projectId,
+            bundleIdentifier: app.ios?.bundleIdentifier,
+            ascAppId: eas.submit?.production?.ios?.ascAppId,
+            appleTeamId: eas.submit?.production?.ios?.appleTeamId
+          };
+          for (const [key, value] of Object.entries(expected)) {
+            if (actual[key] !== value) {
+              throw new Error(`Tang Daily identity mismatch for ${key}: expected ${value}, received ${actual[key]}`);
+            }
+          }
+          if (app.name !== '唐人日报' || app.slug !== 'trrb') {
+            throw new Error('This workflow can only release the 唐人日报 / trrb Expo project.');
+          }
+          console.log(`Verified 唐人日报 iOS ${app.version} (${app.ios.buildNumber}); EAS will apply production autoIncrement.`);
+          NODE
+          npm run config:check
+
+      - name: Build Tang Daily iOS
+        if: ${{ inputs.release_action == 'build-only' }}
+        run: eas build --platform ios --profile production --non-interactive
+
+      - name: Build and upload Tang Daily iOS
+        if: ${{ inputs.release_action == 'build-and-upload' }}
+        run: eas build --platform ios --profile production --non-interactive --auto-submit

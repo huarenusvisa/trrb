@@ -46,7 +46,7 @@ function readListingText(relativePath) {
 
 expect(app.name === '唐人日报', 'expo.name must remain 唐人日报');
 expect(/^\d+\.\d+\.\d+$/.test(app.version ?? ''), 'expo.version must use semantic x.y.z format');
-expect(app.ios?.bundleIdentifier === 'net.trrb.mobile', 'iOS bundleIdentifier must be net.trrb.mobile');
+expect(app.ios?.bundleIdentifier === 'com.tangrenribao.iosapp', 'iOS bundleIdentifier must match the existing App Store app: com.tangrenribao.iosapp');
 expect(/^\d+$/.test(app.ios?.buildNumber ?? ''), 'iOS buildNumber must be a numeric string');
 expect(Number.isInteger(app.android?.versionCode) && app.android.versionCode > 0, 'Android versionCode must be a positive integer');
 expect(app.android?.package === 'net.trrb.mobile', 'Android package must be net.trrb.mobile');

@@ -15,7 +15,7 @@ import { syncFavoritesWithCloud, syncHistoryWithCloud } from '../../src/storage/
 import { getReadingPreferences, ReadingPreferences, setReadingFontScale } from '../../src/storage/reading-preferences';
 import { disableCurrentDevicePushToken } from '../../src/push/registration';
 import { useI18n } from '../../src/i18n/I18nProvider';
-import { languageName, MessageKey } from '../../src/i18n/i18n-core';
+import { languageName, MessageKey, SupportedLocale } from '../../src/i18n/i18n-core';
 import { useUnreadCounts } from '../../src/notifications/UnreadProvider';
 
 const FONT_OPTIONS: { label: MessageKey; scale: ReadingPreferences['fontScale'] }[] = [
@@ -23,8 +23,14 @@ const FONT_OPTIONS: { label: MessageKey; scale: ReadingPreferences['fontScale'] 
   { label: 'profile.fontLarge', scale: 1.15 }, { label: 'profile.fontExtraLarge', scale: 1.3 },
 ];
 
+const QUICK_LANGUAGES: { locale: SupportedLocale; label: string }[] = [
+  { locale: 'zh-CN', label: '简体' },
+  { locale: 'zh-TW', label: '繁體' },
+  { locale: 'en', label: 'EN' },
+];
+
 export default function ProfileScreen() {
-  const { locale, t } = useI18n();
+  const { locale, setPreference, t } = useI18n();
   const unread = useUnreadCounts();
   const [session, setSession] = useState<Session | null>(null);
   const [profile, setProfile] = useState<SocialProfile | null>(null);
@@ -84,6 +90,12 @@ export default function ProfileScreen() {
   };
 
   return <ScrollView testID="screen-profile" style={styles.page} contentContainerStyle={styles.pageContent}>
+    <View testID="quick-language-picker" accessibilityRole="radiogroup" style={styles.languagePicker}>
+      {QUICK_LANGUAGES.map((option) => {
+        const selected = option.locale === locale;
+        return <Pressable key={option.locale} testID={`quick-language-${option.locale}`} accessibilityRole="radio" accessibilityLabel={option.label} accessibilityState={{ selected }} onPress={() => void setPreference(option.locale)} style={[styles.languageOption, selected && styles.languageOptionActive]}><Text style={[styles.languageOptionText, selected && styles.languageOptionTextActive]}>{option.label}</Text></Pressable>;
+      })}
+    </View>
     {loading ? <ActivityIndicator style={styles.loader} color="#c8211e" /> : session && profile ? <>
       <ProfileHero profile={profile} followers={counts.followers} following={counts.following} account={t('profile.loggedIn', { account: accountLabel(session.user) })} own onEdit={() => router.push('/profile-settings')} onFollowers={() => router.push({ pathname: '/connections/followers', params: { userId: profile.id } })} onFollowing={() => router.push({ pathname: '/connections/following', params: { userId: profile.id } })} />
       <View style={styles.primaryActions}>
@@ -131,5 +143,5 @@ function Menu({ title, meta, onPress, last, testID }: { title: string; meta: str
 }
 
 const styles = StyleSheet.create({
-  page:{flex:1,backgroundColor:'#f5f6f8'},pageContent:{padding:14,paddingTop:54,paddingBottom:42},loader:{marginVertical:40},h1:{fontSize:32,fontWeight:'900',color:'#101828'},sub:{color:'#667085',marginTop:6,marginBottom:18},warning:{backgroundColor:'#fff4e5',color:'#8a4b08',padding:12,borderRadius:10,marginBottom:12},primaryActions:{flexDirection:'row',gap:8,marginTop:14},publish:{flex:1.08,backgroundColor:'#c8211e',borderRadius:14,padding:13,alignItems:'center',justifyContent:'center'},publishIcon:{color:'#fff',fontSize:22,fontWeight:'500',lineHeight:22},publishText:{color:'#fff',fontWeight:'900',marginTop:3},action:{flex:1,backgroundColor:'#fff',borderRadius:14,padding:13,borderWidth:1,borderColor:'#eaecf0',justifyContent:'center'},actionTitle:{fontWeight:'900',color:'#101828'},actionMeta:{fontSize:12,color:'#98a2b3',marginTop:4},sectionHead:{flexDirection:'row',justifyContent:'space-between',alignItems:'center',marginTop:24,marginBottom:10,paddingHorizontal:3},sectionTitle:{fontSize:20,fontWeight:'900',color:'#101828'},sectionMeta:{color:'#98a2b3'},groupTitle:{fontSize:20,fontWeight:'900',color:'#101828',marginTop:26,marginBottom:10,paddingHorizontal:3},menuGroup:{backgroundColor:'#fff',borderRadius:16,borderWidth:1,borderColor:'#eaecf0',overflow:'hidden'},menu:{minHeight:56,padding:16,flexDirection:'row',alignItems:'center',borderBottomWidth:1,borderBottomColor:'#f2f4f7'},menuLast:{borderBottomWidth:0},menuCopy:{flex:1},menuTitle:{fontSize:17,fontWeight:'900',color:'#101828'},menuMeta:{color:'#98a2b3',fontSize:13,marginTop:5},chevron:{fontSize:28,color:'#98a2b3'},fontCard:{backgroundColor:'#fff',borderRadius:16,padding:16,marginTop:12,borderWidth:1,borderColor:'#eaecf0'},cardTitle:{fontSize:17,fontWeight:'900',color:'#101828'},cardMeta:{color:'#98a2b3',fontSize:13,marginTop:5},fontRow:{flexDirection:'row',gap:6,marginTop:14},fontOption:{flex:1,borderWidth:1,borderColor:'#d0d5dd',borderRadius:9,paddingVertical:9,alignItems:'center'},fontOptionActive:{backgroundColor:'#c8211e',borderColor:'#c8211e'},fontOptionText:{fontWeight:'800',fontSize:12,color:'#475467'},fontOptionTextActive:{color:'#fff'},fontPreview:{color:'#344054',marginTop:14},login:{backgroundColor:'#c8211e',padding:15,borderRadius:12,alignItems:'center',marginBottom:14},loginText:{color:'#fff',fontWeight:'800',fontSize:16},signOut:{borderWidth:1,borderColor:'#d0d5dd',padding:14,borderRadius:12,alignItems:'center',marginTop:18},signOutText:{color:'#475467',fontWeight:'800'}
+  page:{flex:1,backgroundColor:'#f5f6f8'},pageContent:{padding:14,paddingTop:54,paddingBottom:42},languagePicker:{alignSelf:'flex-end',flexDirection:'row',padding:3,borderWidth:1,borderColor:'#d0d5dd',borderRadius:999,backgroundColor:'#fff',marginBottom:16},languageOption:{minWidth:52,minHeight:40,paddingHorizontal:10,alignItems:'center',justifyContent:'center',borderRadius:999},languageOptionActive:{backgroundColor:'#c8211e'},languageOptionText:{color:'#667085',fontSize:13,fontWeight:'900'},languageOptionTextActive:{color:'#fff'},loader:{marginVertical:40},h1:{fontSize:32,fontWeight:'900',color:'#101828'},sub:{color:'#667085',marginTop:6,marginBottom:18},warning:{backgroundColor:'#fff4e5',color:'#8a4b08',padding:12,borderRadius:10,marginBottom:12},primaryActions:{flexDirection:'row',gap:8,marginTop:14},publish:{flex:1.08,backgroundColor:'#c8211e',borderRadius:14,padding:13,alignItems:'center',justifyContent:'center'},publishIcon:{color:'#fff',fontSize:22,fontWeight:'500',lineHeight:22},publishText:{color:'#fff',fontWeight:'900',marginTop:3},action:{flex:1,backgroundColor:'#fff',borderRadius:14,padding:13,borderWidth:1,borderColor:'#eaecf0',justifyContent:'center'},actionTitle:{fontWeight:'900',color:'#101828'},actionMeta:{fontSize:12,color:'#98a2b3',marginTop:4},sectionHead:{flexDirection:'row',justifyContent:'space-between',alignItems:'center',marginTop:24,marginBottom:10,paddingHorizontal:3},sectionTitle:{fontSize:20,fontWeight:'900',color:'#101828'},sectionMeta:{color:'#98a2b3'},groupTitle:{fontSize:20,fontWeight:'900',color:'#101828',marginTop:26,marginBottom:10,paddingHorizontal:3},menuGroup:{backgroundColor:'#fff',borderRadius:16,borderWidth:1,borderColor:'#eaecf0',overflow:'hidden'},menu:{minHeight:56,padding:16,flexDirection:'row',alignItems:'center',borderBottomWidth:1,borderBottomColor:'#f2f4f7'},menuLast:{borderBottomWidth:0},menuCopy:{flex:1},menuTitle:{fontSize:17,fontWeight:'900',color:'#101828'},menuMeta:{color:'#98a2b3',fontSize:13,marginTop:5},chevron:{fontSize:28,color:'#98a2b3'},fontCard:{backgroundColor:'#fff',borderRadius:16,padding:16,marginTop:12,borderWidth:1,borderColor:'#eaecf0'},cardTitle:{fontSize:17,fontWeight:'900',color:'#101828'},cardMeta:{color:'#98a2b3',fontSize:13,marginTop:5},fontRow:{flexDirection:'row',gap:6,marginTop:14},fontOption:{flex:1,borderWidth:1,borderColor:'#d0d5dd',borderRadius:9,paddingVertical:9,alignItems:'center'},fontOptionActive:{backgroundColor:'#c8211e',borderColor:'#c8211e'},fontOptionText:{fontWeight:'800',fontSize:12,color:'#475467'},fontOptionTextActive:{color:'#fff'},fontPreview:{color:'#344054',marginTop:14},login:{backgroundColor:'#c8211e',padding:15,borderRadius:12,alignItems:'center',marginBottom:14},loginText:{color:'#fff',fontWeight:'800',fontSize:16},signOut:{borderWidth:1,borderColor:'#d0d5dd',padding:14,borderRadius:12,alignItems:'center',marginTop:18},signOutText:{color:'#475467',fontWeight:'800'}
 });

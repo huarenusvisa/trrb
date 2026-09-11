@@ -19,6 +19,10 @@ import PushSettings from '../../mobile/app/push-settings';
 import UserSearch from '../../mobile/app/user-search';
 import Followers from '../../mobile/app/connections/followers';
 import Following from '../../mobile/app/connections/following';
+import Article from '../../mobile/app/article/[id]';
+import Chat from '../../mobile/app/chat/[id]';
+import CommunityPost from '../../mobile/app/community/[id]';
+import UserProfile from '../../mobile/app/user/[id]';
 
 const ROUTES: Record<string, React.ComponentType> = {
   '/account-security': AccountSecurity,
@@ -44,7 +48,11 @@ const ROUTES: Record<string, React.ComponentType> = {
 
 export default function SharedTangDailyRoute() {
   const pathname = usePathname();
-  const Screen = ROUTES[pathname];
+  const Screen = ROUTES[pathname]
+    || (pathname.startsWith('/article/') ? Article : undefined)
+    || (pathname.startsWith('/chat/') ? Chat : undefined)
+    || (pathname.startsWith('/community/') ? CommunityPost : undefined)
+    || (pathname.startsWith('/user/') ? UserProfile : undefined);
   if (Screen) return <Screen />;
   return <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', padding: 24 }}><Text>页面暂时无法打开</Text></View>;
 }

@@ -12,6 +12,20 @@ const TRUSTED_HOSTS = new Set([
   'www.trrb.net'
 ]);
 
+// The Tang Daily app uses the community page's compact embedded mode. Apply
+// the same mode only on AsylumJudge community routes so the native app does
+// not repeat a full website header and long introduction above the feed.
+const COMMUNITY_COMPACT_SCRIPT = `
+(() => {
+  const path = window.location.pathname.replace(/\\/+$/, '') || '/';
+  document.documentElement.classList.toggle(
+    'app-embedded',
+    path === '/community' || path === '/asylumjudge/community'
+  );
+})();
+true;
+`;
+
 function isTrustedWebUrl(url: string) {
   try {
     const parsed = new URL(url);
@@ -81,6 +95,7 @@ function AsylumJudgeApp() {
         setSupportMultipleWindows={false}
         startInLoadingState
         applicationNameForUserAgent="AsylumJudgeMobile/1.0.1"
+        injectedJavaScriptBeforeContentLoaded={COMMUNITY_COMPACT_SCRIPT}
         onLoadStart={() => setFailed(false)}
         onLoadProgress={({ nativeEvent }) => setLoadProgress(nativeEvent.progress)}
         onLoadEnd={() => setLoadProgress(1)}

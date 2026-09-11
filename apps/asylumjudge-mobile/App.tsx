@@ -2,6 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import { useEffect, useMemo, useState } from 'react';
 import {
   ActivityIndicator,
+  Alert,
   FlatList,
   Linking,
   Pressable,
@@ -79,6 +80,14 @@ export default function App() {
     });
   }, [judges, query]);
 
+  async function openSupport(url: string) {
+    try {
+      await Linking.openURL(url);
+    } catch {
+      Alert.alert('联系支持', '邮箱：huarenfalv@gmail.com\n电话：+1 929-789-1391');
+    }
+  }
+
   function openJudge(judge: Judge) {
     void Linking.openURL(`${SITE_URL}/judge?id=${encodeURIComponent(String(judge.id))}`);
   }
@@ -154,11 +163,23 @@ export default function App() {
           )}
         />
       )}
+      <View style={styles.support}>
+        <Text style={styles.supportTitle}>客服与隐私联系</Text>
+        <Pressable accessibilityRole="link" onPress={() => void openSupport('mailto:huarenfalv@gmail.com')}>
+          <Text selectable style={styles.supportLink}>huarenfalv@gmail.com</Text>
+        </Pressable>
+        <Pressable accessibilityRole="link" onPress={() => void openSupport('tel:+19297891391')}>
+          <Text selectable style={styles.supportLink}>+1 929-789-1391</Text>
+        </Pressable>
+      </View>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+  support: { paddingHorizontal: 20, paddingVertical: 8, backgroundColor: '#ffffff', borderTopWidth: 1, borderTopColor: '#dce5df' },
+  supportTitle: { color: '#526158', fontSize: 12 },
+  supportLink: { color: '#14804a', fontSize: 14, paddingVertical: 12 },
   safeArea: { flex: 1, backgroundColor: '#f5f7f6' },
   header: { backgroundColor: '#ffffff', paddingHorizontal: 20, paddingBottom: 16, paddingTop: 18, borderBottomColor: '#dce5df', borderBottomWidth: 1 },
   eyebrow: { color: '#14804a', fontSize: 12, fontWeight: '800', letterSpacing: 1.2 },

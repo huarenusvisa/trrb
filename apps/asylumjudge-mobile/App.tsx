@@ -18,7 +18,7 @@ const TABS: AppTab[] = [
   {
     key: 'data',
     icon: '院',
-    label: '法院数据',
+    label: '移民法院数据',
     accessibilityLabel: '移民法院数据',
     url: 'https://asylumjudge.com/'
   },
@@ -46,7 +46,7 @@ const TABS: AppTab[] = [
   {
     key: 'profile',
     icon: '我',
-    label: '我的',
+    label: '我的中心',
     accessibilityLabel: '我的中心',
     url: 'https://trrb.net/community/?app=1&account=1'
   }

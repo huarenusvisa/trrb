@@ -14,7 +14,8 @@ test('maps supported system locale variants without confusing Traditional and Si
 test('keeps valid persisted choices and safely resets invalid storage values', () => {
   assert.equal(normalizeLocalePreference('system'), 'system');
   assert.equal(normalizeLocalePreference('zh-TW'), 'zh-TW');
-  assert.equal(normalizeLocalePreference('es'), 'system');
+  assert.equal(normalizeLocalePreference('es'), 'zh-CN');
+  assert.equal(normalizeLocalePreference(null), 'zh-CN');
   assert.equal(resolveLocale('system', 'en-GB'), 'en');
   assert.equal(resolveLocale('zh-CN', 'en-US'), 'zh-CN');
 });

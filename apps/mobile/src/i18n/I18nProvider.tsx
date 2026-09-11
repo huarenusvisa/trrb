@@ -23,7 +23,7 @@ type I18nContextValue = {
 const I18nContext = createContext<I18nContextValue | null>(null);
 
 export function I18nProvider({ children }: { children: ReactNode }) {
-  const [preference, setPreferenceState] = useState<LocalePreference>('system');
+  const [preference, setPreferenceState] = useState<LocalePreference>('zh-CN');
   const [detectedLocale, setDetectedLocale] = useState(systemLocale);
 
   useEffect(() => {

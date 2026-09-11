@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Linking, Pressable, RefreshControl, ScrollView, Share, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
+import { Alert, Linking, Pressable, RefreshControl, ScrollView, Share, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import { Stack, router, useLocalSearchParams } from 'expo-router';
 import * as Clipboard from 'expo-clipboard';
 import { ArticleNavigation, ArticleTranslation, fetchArticle, fetchArticleNavigation, fetchArticleTranslation, fetchRelatedArticles, NewsArticle } from '../../src/api/trrb';
@@ -43,6 +43,7 @@ export default function ArticleDetailScreen() {
   const [favorite, setFavorite] = useState(false);
   const [readingScale, setReadingScale] = useState<ReadingPreferences['fontScale']>(1);
   const [translation, setTranslation] = useState<ArticleTranslation | null>(null);
+  const [translationLocale, setTranslationLocale] = useState<ArticleTranslation['locale'] | null>(null);
   const [showTranslation, setShowTranslation] = useState(false);
   const [translationLoading, setTranslationLoading] = useState(false);
   const [translationError, setTranslationError] = useState(false);
@@ -134,12 +135,15 @@ export default function ArticleDetailScreen() {
   const retryArticle = useCallback(() => { void load(false); }, [load]);
   useForegroundRetry(Boolean(error), retryArticle);
 
-  const loadTranslation = useCallback(async () => {
-    if (!article || (locale !== 'en' && locale !== 'zh-TW')) return;
+  const loadTranslation = useCallback(async (targetLocale: ArticleTranslation['locale']) => {
+    if (!article) return;
     const version = ++translationVersion.current;
+    setTranslationLocale(targetLocale);
+    setTranslation(null);
+    setShowTranslation(false);
     setTranslationLoading(true);
     setTranslationError(false);
-    const cached = await readCachedArticleTranslation(article.id, locale).catch(() => null);
+    const cached = await readCachedArticleTranslation(article.id, targetLocale).catch(() => null);
     if (version !== translationVersion.current) return;
     if (cached) {
       setTranslation(cached);
@@ -147,16 +151,18 @@ export default function ArticleDetailScreen() {
       setTranslationLoading(false);
     }
     if (offline) {
+      if (!cached) setTranslationError(true);
       setTranslationLoading(false);
       return;
     }
     try {
-      const row = await withTimeout(fetchArticleTranslation(article.id, locale));
+      const row = await withTimeout(fetchArticleTranslation(article.id, targetLocale));
       if (version !== translationVersion.current) return;
-      if (!row) await removeCachedArticleTranslation(article.id, locale).catch(() => {});
+      if (!row) await removeCachedArticleTranslation(article.id, targetLocale).catch(() => {});
       else await cacheArticleTranslation(row).catch(() => {});
       setTranslation(row);
       setShowTranslation(Boolean(row));
+      if (!row && !cached) setTranslationError(true);
     } catch {
       if (version !== translationVersion.current) return;
       if (!cached) {
@@ -167,20 +173,36 @@ export default function ArticleDetailScreen() {
     } finally {
       if (version === translationVersion.current) setTranslationLoading(false);
     }
-  }, [article?.id, locale, offline]);
+  }, [article?.id, offline]);
 
   useEffect(() => {
     translationVersion.current += 1;
     setTranslation(null);
+    setTranslationLocale(null);
     setShowTranslation(false);
     setTranslationLoading(false);
     setTranslationError(false);
-    void loadTranslation();
     return () => { translationVersion.current += 1; };
-  }, [loadTranslation]);
+  }, [article?.id]);
 
-  const retryTranslation = useCallback(() => { void loadTranslation(); }, [loadTranslation]);
+  const retryTranslation = useCallback(() => { if (translationLocale) void loadTranslation(translationLocale); }, [loadTranslation, translationLocale]);
   useForegroundRetry(translationError, retryTranslation);
+
+  const showOriginal = useCallback(() => {
+    translationVersion.current += 1;
+    setShowTranslation(false);
+    setTranslationLoading(false);
+    setTranslationError(false);
+  }, []);
+
+  const openTranslationMenu = useCallback(() => {
+    Alert.alert(t('article.translateTitle'), t('article.translateDescription'), [
+      { text: t('article.showOriginal'), onPress: showOriginal },
+      { text: '繁體中文', onPress: () => void loadTranslation('zh-TW') },
+      { text: 'English', onPress: () => void loadTranslation('en') },
+      { text: t('article.translationCancel'), style: 'cancel' },
+    ]);
+  }, [loadTranslation, showOriginal, t]);
 
   const webUrl = useMemo(() => {
     if (!article) return 'https://trrb.net';
@@ -249,7 +271,7 @@ export default function ArticleDetailScreen() {
   const displayedTitle = showTranslation && translation ? translation.title : article.title;
   const displayedSummary = showTranslation && translation ? translation.summary : article.summary;
   const displayedContent = showTranslation && translation ? translation.content : article.content;
-  return <><Stack.Screen options={{ title: '', headerShown: true, headerBackTitle: t('common.back'), headerShadowVisible: false, gestureEnabled: true }} /><ScrollView style={styles.page} contentContainerStyle={[styles.content, stackedLayout && styles.contentNarrow]} contentInsetAdjustmentBehavior="automatic" automaticallyAdjustKeyboardInsets keyboardDismissMode="on-drag" keyboardShouldPersistTaps="handled" refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => void load(false, true)} accessibilityLabel={t('article.retry')} />}>
+  return <><Stack.Screen options={{ title: '', headerShown: true, headerBackTitle: t('common.back'), headerShadowVisible: false, gestureEnabled: true }} /><View style={styles.screen}><ScrollView style={styles.page} contentContainerStyle={[styles.content, stackedLayout && styles.contentNarrow]} contentInsetAdjustmentBehavior="automatic" automaticallyAdjustKeyboardInsets keyboardDismissMode="on-drag" keyboardShouldPersistTaps="handled" refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => void load(false, true)} accessibilityLabel={t('article.retry')} />}>
     {offline ? <View testID="article-offline-banner" accessibilityRole="alert" accessibilityLiveRegion="polite" style={styles.offline}><Text style={styles.offlineText}>{error}</Text><Pressable testID="article-offline-retry" accessibilityRole="button" accessibilityLabel={t('article.reconnect')} style={styles.inlineRetry} onPress={() => void load(false)}><Text style={styles.retry}>{t('article.reconnect')}</Text></Pressable></View> : null}
     <Pressable testID="article-category-button" style={styles.categoryButton} onPress={openArticleSection} accessibilityRole="button" accessibilityLabel={t('article.openCategory', { category: categoryName })}>
       <Text style={styles.category}>{categoryName}</Text>
@@ -260,15 +282,15 @@ export default function ArticleDetailScreen() {
     {article.cover_image ? <NewsImage testID="article-cover-image" uri={article.cover_image} style={[styles.image, stackedLayout && styles.imageNarrow]} /> : null}
     {displayedSummary ? <Text style={[styles.summary,{fontSize:18*readingScale,lineHeight:29*readingScale}]}>{displayedSummary}</Text> : null}
     <Text style={[styles.body,{fontSize:18*readingScale,lineHeight:32*readingScale}]}>{displayedContent || t('article.contentUnavailable')}</Text>
-    {translation ? <View style={styles.translationControls}>
+    {translation && showTranslation ? <View style={styles.translationControls}>
       <Text testID="article-reviewed-translation-note" style={styles.translationNote}>{t('article.reviewedTranslation')}</Text>
-      <Pressable testID="article-translation-toggle" accessibilityRole="button" accessibilityLabel={showTranslation ? t('article.showOriginal') : t('article.showTranslation')} style={styles.translationButton} onPress={() => setShowTranslation((value) => !value)}>
-        <Text style={styles.translationButtonText}>{showTranslation ? t('article.showOriginal') : t('article.showTranslation')}</Text>
+      <Pressable testID="article-translation-toggle" accessibilityRole="button" accessibilityLabel={t('article.showOriginal')} style={styles.translationButton} onPress={showOriginal}>
+        <Text style={styles.translationButtonText}>{t('article.showOriginal')}</Text>
       </Pressable>
-    </View> : locale !== 'zh-CN' ? translationError ? <View testID="article-translation-error" accessibilityRole="alert" accessibilityLiveRegion="polite" style={styles.translationError}>
+    </View> : translationError ? <View testID="article-translation-error" accessibilityRole="alert" accessibilityLiveRegion="polite" style={styles.translationError}>
       <Text style={styles.translationErrorText}>{t('article.translationFailed')}</Text>
       <Pressable testID="article-translation-retry" accessibilityRole="button" accessibilityLabel={t('article.retryTranslation')} disabled={translationLoading} style={styles.translationRetry} onPress={retryTranslation}><Text style={styles.translationRetryText}>{t('article.retryTranslation')}</Text></Pressable>
-    </View> : <Text testID="article-original-language-note" accessibilityLiveRegion="polite" style={styles.languageNote}>{translationLoading ? t('article.checkingTranslation') : t('article.originalLanguage')}</Text> : null}
+    </View> : null}
     {!offline && (navigation.previous || navigation.next) ? <View style={styles.navigation}>
       <Text accessibilityRole="header" style={styles.navigationTitle}>{t('article.continueReading')}</Text>
       <View style={[styles.navigationRow, stackedLayout && styles.navigationRowStacked]}>
@@ -285,7 +307,19 @@ export default function ArticleDetailScreen() {
     </View>
     {related.length ? <View style={styles.related}><Text accessibilityRole="header" style={styles.relatedTitle}>{t('article.related')}</Text>{related.map((item)=><Pressable key={String(item.id)} accessibilityRole="button" accessibilityLabel={t('news.openArticle', { title: item.title })} style={styles.relatedItem} onPress={()=>router.push(`/article/${item.id}`)}><Text style={styles.relatedItemTitle}>{item.title}</Text><Text style={styles.relatedMeta}>{newsCategoryName(locale, item.category_name)}</Text></Pressable>)}</View> : null}
     {!offline ? <CommentThread articleId={String(article.id)} /> : null}
-  </ScrollView></>;
+  </ScrollView>
+    <Pressable
+      testID="article-translate-button"
+      accessibilityRole="button"
+      accessibilityLabel={t('article.translateAction')}
+      accessibilityState={{ busy: translationLoading, disabled: translationLoading }}
+      disabled={translationLoading}
+      style={[styles.translateFab, translationLoading && styles.translateFabBusy]}
+      onPress={openTranslationMenu}
+    >
+      <Text style={styles.translateFabText}>{translationLoading ? '…' : '译'}</Text>
+    </Pressable>
+  </View></>;
 }
 
-const styles=StyleSheet.create({page:{flex:1,backgroundColor:'#fff'},content:{padding:20,paddingTop:20,paddingBottom:60},contentNarrow:{paddingHorizontal:16},center:{flex:1,alignItems:'center',justifyContent:'center',padding:28,gap:12},muted:{color:'#667085',textAlign:'center'},errorTitle:{fontSize:20,fontWeight:'900',color:'#101828'},categoryButton:{alignSelf:'flex-start',minHeight:44,flexDirection:'row',alignItems:'center',gap:5,backgroundColor:'#fff1f0',borderRadius:999,paddingHorizontal:12,paddingVertical:8},category:{color:'#c8211e',fontWeight:'900',fontSize:14,flexShrink:1},categoryArrow:{color:'#c8211e',fontWeight:'900',fontSize:18,lineHeight:18},title:{fontSize:30,lineHeight:40,fontWeight:'900',color:'#101828',marginTop:10},titleNarrow:{fontSize:27,lineHeight:36},meta:{color:'#667085',marginTop:12,marginBottom:20,flexShrink:1},image:{width:'100%',aspectRatio:16/9,borderRadius:16,backgroundColor:'#eaecf0',marginBottom:22},imageNarrow:{borderRadius:12},summary:{fontWeight:'700',color:'#344054',marginBottom:20,flexShrink:1},body:{color:'#1d2939',flexShrink:1},languageNote:{color:'#667085',fontSize:13,lineHeight:19,marginTop:18},translationControls:{marginTop:18,gap:10,alignItems:'flex-start'},translationNote:{color:'#027a48',fontSize:13,lineHeight:19,fontWeight:'700',flexShrink:1},translationButton:{minHeight:48,borderWidth:1,borderColor:'#d0d5dd',borderRadius:999,paddingHorizontal:14,paddingVertical:10,justifyContent:'center'},translationButtonText:{color:'#344054',fontSize:13,fontWeight:'800',flexShrink:1},translationError:{marginTop:18,gap:8,alignItems:'flex-start'},translationErrorText:{color:'#b42318',fontSize:13,lineHeight:19,fontWeight:'700',flexShrink:1},translationRetry:{minHeight:44,justifyContent:'center',borderWidth:1,borderColor:'#fda29b',borderRadius:999,paddingHorizontal:14},translationRetryText:{color:'#b42318',fontWeight:'800'},navigation:{marginTop:30,paddingTop:22,borderTopWidth:1,borderTopColor:'#eaecf0'},navigationTitle:{fontSize:20,fontWeight:'900',color:'#101828',marginBottom:12},navigationRow:{flexDirection:'row',gap:10},navigationRowStacked:{flexDirection:'column'},navigationItem:{flex:1,minHeight:126,borderWidth:1,borderColor:'#d0d5dd',borderRadius:12,padding:13,backgroundColor:'#f9fafb'},navigationSpacer:{flex:1},navigationLabel:{color:'#c8211e',fontWeight:'900',fontSize:13,marginBottom:8},navigationLabelNext:{textAlign:'right'},navigationItemTitle:{color:'#1d2939',fontWeight:'800',fontSize:15,lineHeight:21,flexShrink:1},actions:{gap:12,marginTop:30},actionError:{color:'#b42318',fontWeight:'700',lineHeight:21},actionSuccess:{color:'#027a48',fontWeight:'700',lineHeight:21},primaryButton:{minHeight:48,backgroundColor:'#c8211e',borderRadius:12,paddingVertical:12,paddingHorizontal:18,alignItems:'center',justifyContent:'center'},savedButton:{minHeight:48,backgroundColor:'#344054',borderRadius:12,paddingVertical:12,paddingHorizontal:18,alignItems:'center',justifyContent:'center'},disabledButton:{opacity:0.6},primaryButtonText:{color:'#fff',fontWeight:'800',fontSize:16,textAlign:'center',flexShrink:1},outlineButton:{minHeight:48,borderWidth:1,borderColor:'#d0d5dd',borderRadius:12,paddingVertical:12,paddingHorizontal:18,alignItems:'center',justifyContent:'center'},outlineButtonText:{color:'#344054',fontWeight:'800',fontSize:16,textAlign:'center',flexShrink:1},related:{marginTop:36,paddingTop:24,borderTopWidth:1,borderTopColor:'#eaecf0'},relatedTitle:{fontSize:22,fontWeight:'900',color:'#101828',marginBottom:10},relatedItem:{minHeight:48,paddingVertical:14,borderBottomWidth:1,borderBottomColor:'#f2f4f7'},relatedItemTitle:{fontSize:17,lineHeight:24,fontWeight:'800',color:'#1d2939',flexShrink:1},relatedMeta:{fontSize:12,color:'#667085',marginTop:5},offline:{backgroundColor:'#fffaeb',borderWidth:1,borderColor:'#fedf89',borderRadius:12,padding:12,marginBottom:18},offlineText:{color:'#93370d',flexShrink:1},inlineRetry:{minHeight:44,alignSelf:'flex-start',justifyContent:'center'},retry:{color:'#b54708',fontWeight:'900'},skeleton:{flex:1,padding:20,paddingTop:70,backgroundColor:'#fff'},sk1:{height:14,width:70,backgroundColor:'#eaecf0',borderRadius:7,marginBottom:18},sk2:{height:34,width:'92%',backgroundColor:'#eaecf0',borderRadius:8,marginBottom:12},sk3:{height:14,width:'48%',backgroundColor:'#f2f4f7',borderRadius:7,marginBottom:24},sk4:{height:220,width:'100%',backgroundColor:'#eaecf0',borderRadius:16,marginBottom:24},sk5:{height:18,width:'100%',backgroundColor:'#f2f4f7',borderRadius:7,marginBottom:12}});
+const styles=StyleSheet.create({screen:{flex:1,backgroundColor:'#fff'},page:{flex:1,backgroundColor:'#fff'},translateFab:{position:'absolute',right:18,bottom:24,width:58,height:58,borderRadius:29,alignItems:'center',justifyContent:'center',backgroundColor:'#8d97ab',shadowColor:'#000',shadowOpacity:0.18,shadowRadius:8,shadowOffset:{width:0,height:3},elevation:5},translateFabBusy:{opacity:0.65},translateFabText:{color:'#fff',fontSize:24,fontWeight:'800'},content:{padding:20,paddingTop:20,paddingBottom:96},contentNarrow:{paddingHorizontal:16},center:{flex:1,alignItems:'center',justifyContent:'center',padding:28,gap:12},muted:{color:'#667085',textAlign:'center'},errorTitle:{fontSize:20,fontWeight:'900',color:'#101828'},categoryButton:{alignSelf:'flex-start',minHeight:44,flexDirection:'row',alignItems:'center',gap:5,backgroundColor:'#fff1f0',borderRadius:999,paddingHorizontal:12,paddingVertical:8},category:{color:'#c8211e',fontWeight:'900',fontSize:14,flexShrink:1},categoryArrow:{color:'#c8211e',fontWeight:'900',fontSize:18,lineHeight:18},title:{fontSize:30,lineHeight:40,fontWeight:'900',color:'#101828',marginTop:10},titleNarrow:{fontSize:27,lineHeight:36},meta:{color:'#667085',marginTop:12,marginBottom:20,flexShrink:1},image:{width:'100%',aspectRatio:16/9,borderRadius:16,backgroundColor:'#eaecf0',marginBottom:22},imageNarrow:{borderRadius:12},summary:{fontWeight:'700',color:'#344054',marginBottom:20,flexShrink:1},body:{color:'#1d2939',flexShrink:1},translationControls:{marginTop:18,gap:10,alignItems:'flex-start'},translationNote:{color:'#027a48',fontSize:13,lineHeight:19,fontWeight:'700',flexShrink:1},translationButton:{minHeight:48,borderWidth:1,borderColor:'#d0d5dd',borderRadius:999,paddingHorizontal:14,paddingVertical:10,justifyContent:'center'},translationButtonText:{color:'#344054',fontSize:13,fontWeight:'800',flexShrink:1},translationError:{marginTop:18,gap:8,alignItems:'flex-start'},translationErrorText:{color:'#b42318',fontSize:13,lineHeight:19,fontWeight:'700',flexShrink:1},translationRetry:{minHeight:44,justifyContent:'center',borderWidth:1,borderColor:'#fda29b',borderRadius:999,paddingHorizontal:14},translationRetryText:{color:'#b42318',fontWeight:'800'},navigation:{marginTop:30,paddingTop:22,borderTopWidth:1,borderTopColor:'#eaecf0'},navigationTitle:{fontSize:20,fontWeight:'900',color:'#101828',marginBottom:12},navigationRow:{flexDirection:'row',gap:10},navigationRowStacked:{flexDirection:'column'},navigationItem:{flex:1,minHeight:126,borderWidth:1,borderColor:'#d0d5dd',borderRadius:12,padding:13,backgroundColor:'#f9fafb'},navigationSpacer:{flex:1},navigationLabel:{color:'#c8211e',fontWeight:'900',fontSize:13,marginBottom:8},navigationLabelNext:{textAlign:'right'},navigationItemTitle:{color:'#1d2939',fontWeight:'800',fontSize:15,lineHeight:21,flexShrink:1},actions:{gap:12,marginTop:30},actionError:{color:'#b42318',fontWeight:'700',lineHeight:21},actionSuccess:{color:'#027a48',fontWeight:'700',lineHeight:21},primaryButton:{minHeight:48,backgroundColor:'#c8211e',borderRadius:12,paddingVertical:12,paddingHorizontal:18,alignItems:'center',justifyContent:'center'},savedButton:{minHeight:48,backgroundColor:'#344054',borderRadius:12,paddingVertical:12,paddingHorizontal:18,alignItems:'center',justifyContent:'center'},disabledButton:{opacity:0.6},primaryButtonText:{color:'#fff',fontWeight:'800',fontSize:16,textAlign:'center',flexShrink:1},outlineButton:{minHeight:48,borderWidth:1,borderColor:'#d0d5dd',borderRadius:12,paddingVertical:12,paddingHorizontal:18,alignItems:'center',justifyContent:'center'},outlineButtonText:{color:'#344054',fontWeight:'800',fontSize:16,textAlign:'center',flexShrink:1},related:{marginTop:36,paddingTop:24,borderTopWidth:1,borderTopColor:'#eaecf0'},relatedTitle:{fontSize:22,fontWeight:'900',color:'#101828',marginBottom:10},relatedItem:{minHeight:48,paddingVertical:14,borderBottomWidth:1,borderBottomColor:'#f2f4f7'},relatedItemTitle:{fontSize:17,lineHeight:24,fontWeight:'800',color:'#1d2939',flexShrink:1},relatedMeta:{fontSize:12,color:'#667085',marginTop:5},offline:{backgroundColor:'#fffaeb',borderWidth:1,borderColor:'#fedf89',borderRadius:12,padding:12,marginBottom:18},offlineText:{color:'#93370d',flexShrink:1},inlineRetry:{minHeight:44,alignSelf:'flex-start',justifyContent:'center'},retry:{color:'#b54708',fontWeight:'900'},skeleton:{flex:1,padding:20,paddingTop:70,backgroundColor:'#fff'},sk1:{height:14,width:70,backgroundColor:'#eaecf0',borderRadius:7,marginBottom:18},sk2:{height:34,width:'92%',backgroundColor:'#eaecf0',borderRadius:8,marginBottom:12},sk3:{height:14,width:'48%',backgroundColor:'#f2f4f7',borderRadius:7,marginBottom:24},sk4:{height:220,width:'100%',backgroundColor:'#eaecf0',borderRadius:16,marginBottom:24},sk5:{height:18,width:'100%',backgroundColor:'#f2f4f7',borderRadius:7,marginBottom:12}});

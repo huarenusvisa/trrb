@@ -16,6 +16,11 @@ test('wires persisted language selection through root, tabs and profile', () => 
     assert.ok(tabs.includes(`t('${key}')`), `tab layout must translate ${key}`);
   }
   assert.match(profile, /testID="open-language-settings"/);
+  assert.match(profile, /testID="quick-language-picker"/);
+  for (const locale of ['zh-CN', 'zh-TW', 'en']) {
+    assert.ok(profile.includes(`{ locale: '${locale}'`), `guest profile must expose ${locale}`);
+  }
+  assert.match(profile, /testID=\{`quick-language-\$\{option\.locale\}`\}/);
   assert.match(profile, /router\.push\('\/language-settings'\)/);
   for (const preference of ['system', 'zh-CN', 'zh-TW', 'en']) {
     assert.ok(settings.includes(`preference: '${preference}'`), `language screen must expose ${preference}`);
@@ -23,6 +28,7 @@ test('wires persisted language selection through root, tabs and profile', () => 
   assert.match(provider, /AsyncStorage\.getItem\(STORAGE_KEY\)/);
   assert.match(provider, /AsyncStorage\.setItem\(STORAGE_KEY, safePreference\)/);
   assert.match(provider, /AppState\.addEventListener\('change'/);
+  assert.match(provider, /useState<LocalePreference>\('zh-CN'\)/);
 });
 
 test('uses the shared language context across news discovery surfaces', () => {
@@ -48,10 +54,10 @@ test('uses the shared language context across news discovery surfaces', () => {
   assert.ok(legal.includes("t('judgePortal.loading')"));
   assert.ok(search.includes("t('search.placeholder')"));
   assert.ok(list.includes("t('news.loading')"));
-  assert.match(home, /useReviewedNewsTranslations\(translationCandidates, locale\)/);
-  assert.match(home, /reviewedNewsTitle\(article, reviewedTranslations\)/);
-  assert.match(list, /useReviewedNewsTranslations\(items, locale\)/);
-  assert.match(list, /reviewedNewsTitle\(item, reviewedTranslations\)/);
+  assert.doesNotMatch(home, /useReviewedNewsTranslations|reviewedNewsTitle/);
+  assert.match(home, /const titleFor = \(article: NewsArticle\) => article\.title/);
+  assert.doesNotMatch(list, /useReviewedNewsTranslations|reviewedNewsTitle/);
+  assert.match(list, />\{item\.title\}<\/Text>/);
   assert.match(america, /webViewTestID="community-portal-webview"/);
   assert.match(legal, /https:\/\/asylumjudge\.com\//);
   assert.doesNotMatch(list, /toLocaleString\('zh-CN'\)/);
@@ -81,14 +87,16 @@ test('localizes unified account chrome and keeps Maestro language-neutral', () =
 test('localizes article chrome while preserving published story text', () => {
   const article = read('app/article/[id].tsx');
   assert.match(article, /useI18n\(\)/);
-  for (const key of ['article.unavailableTitle', 'article.offline', 'article.continueReading', 'article.previous', 'article.next', 'article.save', 'article.share', 'article.copyLink', 'article.openWebsite', 'article.related', 'article.reviewedTranslation', 'article.showOriginal', 'article.showTranslation']) {
+  for (const key of ['article.unavailableTitle', 'article.offline', 'article.continueReading', 'article.previous', 'article.next', 'article.save', 'article.share', 'article.copyLink', 'article.openWebsite', 'article.related', 'article.reviewedTranslation', 'article.showOriginal', 'article.translateTitle', 'article.translateAction']) {
     assert.ok(article.includes(`t('${key}')`), `article detail must translate ${key}`);
   }
   assert.match(article, /article\.title/);
   assert.match(article, /displayedContent \|\| t\('article\.contentUnavailable'\)/);
   assert.match(article, /: article\.content/);
-  assert.match(article, /testID="article-original-language-note"/);
-  assert.match(article, /fetchArticleTranslation\(article\.id, locale\)/);
+  assert.match(article, /testID="article-translate-button"/);
+  assert.match(article, /fetchArticleTranslation\(article\.id, targetLocale\)/);
+  assert.match(article, /openTranslationMenu/);
+  assert.doesNotMatch(article, /void loadTranslation\(\);/);
   assert.match(article, /testID="article-translation-toggle"/);
   assert.match(article, /testID="article-reviewed-translation-note"/);
   assert.doesNotMatch(article, /toLocaleString\('zh-CN'\)/);

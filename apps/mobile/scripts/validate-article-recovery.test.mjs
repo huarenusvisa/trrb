@@ -49,7 +49,7 @@ test('reviewed translation failures remain retryable without hiding the publishe
 });
 
 test('reviewed translations restore from isolated local cache and survive refresh failures', () => {
-  assert.match(article, /readCachedArticleTranslation\(article\.id, locale\)/);
+  assert.match(article, /readCachedArticleTranslation\(article\.id, targetLocale\)/);
   assert.match(article, /if \(cached\)[\s\S]*setTranslation\(cached\)[\s\S]*if \(offline\) \{/);
   assert.match(article, /cacheArticleTranslation\(row\)/);
   assert.match(article, /if \(!row\) await removeCachedArticleTranslation/);

@@ -5,10 +5,8 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { fetchArticles, fetchHomepageFocus, homepageSupplementGaps, NewsArticle, sortNewestFirst } from '../../src/api/trrb';
 import { NewsImage, prefetchNewsImages } from '../../src/components/NewsImage';
 import { useForegroundRetry } from '../../src/hooks/useForegroundRetry';
-import { useReviewedNewsTranslations } from '../../src/hooks/useReviewedNewsTranslations';
 import { useI18n } from '../../src/i18n/I18nProvider';
 import { localeDateTag, MessageKey } from '../../src/i18n/i18n-core';
-import { reviewedNewsTitle } from '../../src/news/reviewed-translations-core';
 import { cacheHomeFeed, readCachedHomeFeedEnvelope } from '../../src/storage/newsFeedCache';
 import { isNewsFeedCacheStale } from '../../src/storage/news-feed-cache-core';
 
@@ -332,15 +330,7 @@ export default function HomeScreen() {
     election: articles.find((item) => item.title.includes('中期选举') || item.title.includes('选举')),
     finance: articles.find((item) => /财经|股市|美股|基金|ETF/i.test(item.title)),
   }), [articles]);
-  const translationCandidates = useMemo(() => [
-    ...importantCarousel,
-    ...(activeHot ? [activeHot] : []),
-    ...rankItems,
-    ...Object.values(topicLatest).filter((item): item is NewsArticle => Boolean(item)),
-    ...categoryGroups.flatMap((section) => section.items),
-  ], [activeHot, categoryGroups, importantCarousel, rankItems, topicLatest]);
-  const reviewedTranslations = useReviewedNewsTranslations(translationCandidates, locale);
-  const titleFor = (article: NewsArticle) => reviewedNewsTitle(article, reviewedTranslations);
+  const titleFor = (article: NewsArticle) => article.title;
   const weatherInfo = weatherLabel(weather.code, weather.isDay);
   const dateLabel = useMemo(() => new Intl.DateTimeFormat(localeDateTag(locale), { month: 'numeric', day: 'numeric', weekday: 'short', timeZone: 'America/New_York' }).format(new Date()), [locale]);
 

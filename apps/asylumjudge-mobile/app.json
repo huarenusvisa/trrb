@@ -3,7 +3,7 @@
     "android": {
       "package": "com.asylumjudge.mobile",
       "predictiveBackGestureEnabled": true,
-      "versionCode": 3
+      "versionCode": 4
     },
     "backgroundColor": "#ffffff",
     "extra": {
@@ -12,7 +12,7 @@
       }
     },
     "ios": {
-      "buildNumber": "5",
+      "buildNumber": "6",
       "bundleIdentifier": "com.asylumjudge.mobile",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
@@ -26,7 +26,10 @@
     "scheme": "asylumjudge",
     "slug": "asylumjudge",
     "userInterfaceStyle": "light",
-    "version": "1.0.2",
-    "icon": "./assets/icon.png"
+    "version": "1.0.3",
+    "icon": "./assets/icon.png",
+    "plugins": [
+      "expo-router"
+    ]
   }
 }

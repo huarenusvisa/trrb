@@ -31,8 +31,10 @@ test('wires persisted language selection through root, tabs and profile', () => 
     assert.ok(settings.includes(`preference: '${preference}'`), `language screen must expose ${preference}`);
   }
   assert.match(provider, /AsyncStorage\.getItem\(STORAGE_KEY\)/);
-  assert.match(provider, /AsyncStorage\.setItem\(STORAGE_KEY, safePreference\)/);
-  assert.match(provider, /setLanguageChoicePending\(stored === null\)/);
+  assert.match(provider, /AsyncStorage\.getItem\(LANGUAGE_ONBOARDING_STORAGE_KEY\)/);
+  assert.match(provider, /\[STORAGE_KEY, safePreference\]/);
+  assert.match(provider, /\[LANGUAGE_ONBOARDING_STORAGE_KEY, 'true'\]/);
+  assert.match(provider, /setLanguageChoicePending\(onboardingCompleted !== 'true'\)/);
   assert.match(provider, /setLanguageChoicePending\(false\)/);
   assert.match(provider, /AppState\.addEventListener\('change'/);
   assert.match(provider, /useState<LocalePreference>\('zh-CN'\)/);
@@ -101,6 +103,8 @@ test('localizes article chrome while preserving published story text', () => {
   assert.match(article, /displayedContent \|\| t\('article\.contentUnavailable'\)/);
   assert.match(article, /: article\.content/);
   assert.match(article, /testID="article-translate-button"/);
+  assert.match(article, /Math\.max\(24, insets\.bottom \+ 12\)/);
+  assert.match(article, /zIndex:50/);
   assert.match(article, /fetchArticleTranslation\(article\.id, targetLocale\)/);
   assert.match(article, /openTranslationMenu/);
   assert.doesNotMatch(article, /void loadTranslation\(\);/);

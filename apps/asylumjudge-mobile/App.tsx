@@ -3,7 +3,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { BackHandler, Linking, Platform, Pressable, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { WebView, type WebViewNavigation } from 'react-native-webview';
-import ProfileScreen from '../mobile/app/(tabs)/profile';
+import ProfileScreen from './shared-mobile/app/(tabs)/profile';
 
 type TabKey = 'data' | 'community' | 'bia' | 'knowledge' | 'profile';
 

@@ -51,7 +51,10 @@ test('release commands cannot publish directly to public store tracks', () => {
   const eas = JSON.parse(fs.readFileSync(path.join(mobileRoot, 'eas.json'), 'utf8'));
   assert.equal(eas.submit.production.android.track, 'internal');
   assert.equal(eas.submit.production.android.releaseStatus, 'draft');
-  assert.equal(eas.submit.production.ios, undefined);
+  assert.deepEqual(eas.submit.production.ios, {
+    ascAppId: '6744951884',
+    appleTeamId: 'ZJ2LNXPXH3'
+  });
   assert.ok(packageJson.scripts['store:release-preflight:strict'].includes('--strict'));
   assert.equal(JSON.stringify(packageJson.scripts).includes('--auto-submit'), false);
 });

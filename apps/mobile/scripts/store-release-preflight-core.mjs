@@ -27,8 +27,10 @@ export function inspectReleaseReadiness({ mobileRoot, env = {} }) {
   expect(eas.build?.production?.ios?.simulator !== true, 'iOS production build must target physical devices and App Store distribution');
   expect(eas.submit?.production?.android?.track === 'internal', 'Android first submission must target the internal track');
   expect(eas.submit?.production?.android?.releaseStatus === 'draft', 'Android first submission must remain a draft');
-  expect(eas.submit?.production?.ios == null, 'Do not commit an iOS submit profile before the real numeric App Store Connect app ID is known');
-  expect(app.ios?.bundleIdentifier === app.android?.package, 'iOS and Android production identifiers must remain aligned');
+  expect(eas.submit?.production?.ios?.ascAppId === '6744951884', 'iOS submission must target the verified existing App Store app');
+  expect(eas.submit?.production?.ios?.appleTeamId === 'ZJ2LNXPXH3', 'iOS submission must use the verified Apple team');
+  expect(app.ios?.bundleIdentifier === 'com.tangrenribao.iosapp', 'iOS must retain the existing App Store bundle identifier');
+  expect(app.android?.package === 'net.trrb.mobile', 'Android must retain its existing package identifier');
   expect(readiness.submissionSafety?.automaticProductionRelease === false, 'Automatic public store release must remain disabled');
   expect(readiness.submissionSafety?.credentialsCommittedToRepository === false, 'Release manifest must forbid committed credentials');
 

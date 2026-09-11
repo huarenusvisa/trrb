@@ -6,8 +6,6 @@ import { fetchArticlePage, NewsArticle } from '../api/trrb';
 import { useI18n } from '../i18n/I18nProvider';
 import { localeDateTag } from '../i18n/i18n-core';
 import { useForegroundRetry } from '../hooks/useForegroundRetry';
-import { useReviewedNewsTranslations } from '../hooks/useReviewedNewsTranslations';
-import { reviewedNewsTitle } from '../news/reviewed-translations-core';
 import { cacheNewsPage, readCachedNewsPageEnvelope } from '../storage/newsFeedCache';
 import { isNewsFeedCacheStale } from '../storage/news-feed-cache-core';
 import { NewsImage, prefetchNewsImages } from './NewsImage';
@@ -38,8 +36,6 @@ export function PaginatedNewsList({ title, category, q, emptyText }: Props) {
   const prefetchedThroughRef = useRef(-1);
   const requestGateRef = useRef(new NewsPageRequestGate());
   const viewabilityConfig = useRef({ itemVisiblePercentThreshold: 50, minimumViewTime: 120 }).current;
-  const reviewedTranslations = useReviewedNewsTranslations(items, locale);
-
   useEffect(() => { itemsRef.current = items; }, [items]);
   useEffect(() => { prefetchedThroughRef.current = -1; }, [category, q]);
 
@@ -158,17 +154,17 @@ export function PaginatedNewsList({ title, category, q, emptyText }: Props) {
     <Pressable
       testID={`category-article-${index}`}
       accessibilityRole="button"
-      accessibilityLabel={t('news.openArticle', { title: reviewedNewsTitle(item, reviewedTranslations) })}
+      accessibilityLabel={t('news.openArticle', { title: item.title })}
       style={[styles.card, compact && styles.compactCard, largeText && styles.largeTextCard]}
       onPress={() => router.push({ pathname: '/article/[id]', params: { id: String(item.id) } })}
     >
       <NewsImage uri={item.cover_image} style={styles.thumb} testID={`category-article-image-${index}`} priority="low" />
       <View style={styles.body}>
-        <Text style={styles.articleTitle} numberOfLines={largeText ? undefined : 3}>{reviewedNewsTitle(item, reviewedTranslations)}</Text>
+        <Text style={styles.articleTitle} numberOfLines={largeText ? undefined : 3}>{item.title}</Text>
         <Text style={styles.meta}>{item.published_at ? new Date(item.published_at).toLocaleString(localeDateTag(locale)) : ''}</Text>
       </View>
     </Pressable>
-  ), [compact, largeText, locale, reviewedTranslations, t]);
+  ), [compact, largeText, locale, t]);
 
   if (loading) return <View style={styles.center} accessibilityLiveRegion="polite" accessibilityLabel={t('news.loading')}><ActivityIndicator size="large" color="#c8211e" /><Text style={styles.muted}>{t('news.loading')}</Text></View>;
 

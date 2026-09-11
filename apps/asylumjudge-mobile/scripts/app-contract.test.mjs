@@ -37,6 +37,12 @@ test('renders the complete Tang Daily native profile and shared account stack', 
   assert.equal(pkg.overrides['react-native-screens'], '4.26.0');
 });
 
+test('ships clean shared localization source', () => {
+  const i18n = readFileSync(new URL('../shared-mobile/src/i18n/i18n-core.ts', import.meta.url), 'utf8');
+  assert.match(i18n, /^export const SUPPORTED_LOCALES/);
+  assert.doesNotMatch(i18n, /Warning: truncated output/);
+});
+
 test('applies mobile app chrome and keeps the compact community mode', () => {
   assert.match(app, /NATIVE_APP_SCRIPT/);
   assert.match(app, /asylumjudge-native-app/);

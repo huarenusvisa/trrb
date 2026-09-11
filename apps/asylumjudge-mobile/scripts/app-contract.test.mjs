@@ -33,7 +33,8 @@ test('renders the complete Tang Daily native profile and shared account stack', 
   assert.ok(pkg.dependencies['@supabase/supabase-js']);
   assert.ok(pkg.dependencies['@react-native-async-storage/async-storage']);
   assert.equal(pkg.dependencies['expo-asset'], '~57.0.16');
-  assert.equal(pkg.dependencies['react-native-screens'], '4.27.0');
+  assert.equal(pkg.dependencies['react-native-screens'], '4.26.0');
+  assert.equal(pkg.overrides['react-native-screens'], '4.26.0');
 });
 
 test('applies mobile app chrome and keeps the compact community mode', () => {

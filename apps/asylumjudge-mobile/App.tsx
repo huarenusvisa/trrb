@@ -1,238 +1,177 @@
-import { privacySections, privacyUpdated } from './privacy';
 import { StatusBar } from 'expo-status-bar';
-import { useEffect, useMemo, useState } from 'react';
-import {
-  ActivityIndicator,
-  Alert,
-  FlatList,
-  Linking,
-  Modal,
-  ScrollView,
-  Pressable,
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  TextInput,
-  View
-} from 'react-native';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { BackHandler, Linking, Platform, Pressable, StyleSheet, Text, View } from 'react-native';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import { WebView } from 'react-native-webview';
 
-const API_URL = 'https://asylumjudge.com/.netlify/functions/immigration-judges?mode=directory';
-const SITE_URL = 'https://asylumjudge.com';
+const HOME_URL = 'https://asylumjudge.com/';
+const TRUSTED_HOSTS = new Set([
+  'asylumjudge.com',
+  'www.asylumjudge.com',
+  'trrb.net',
+  'www.trrb.net'
+]);
 
-type Judge = {
-  id: string | number;
-  judge_name?: string;
-  court_name?: string;
-  court_city?: string;
-  court_state?: string;
-  grants?: number;
-  denials?: number;
-  total_asylum_decisions?: number;
-  adjudicated_approval_rate?: number | null;
-};
-
-function normalize(value: unknown) {
-  return String(value ?? '')
-    .normalize('NFKD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .toLocaleLowerCase()
-    .replace(/[’'.,-]/g, '');
-}
-
-function percent(value: number | null | undefined) {
-  return value == null ? '样本不足' : `${Number(value).toFixed(1)}%`;
-}
-
-export default function App() {
-  const [showPrivacy, setShowPrivacy] = useState(false);
-  const [judges, setJudges] = useState<Judge[]>([]);
-  const [query, setQuery] = useState('');
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(true);
-
-  async function loadJudges() {
-    setLoading(true);
-    setError('');
-    try {
-      const response = await fetch(API_URL);
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
-      const payload = await response.json();
-      if (!Array.isArray(payload.results)) throw new Error('Invalid response');
-      setJudges(payload.results);
-    } catch {
-      setError('法官数据暂时无法读取，请检查网络后重试。');
-    } finally {
-      setLoading(false);
-    }
+function isTrustedWebUrl(url: string) {
+  try {
+    const parsed = new URL(url);
+    return parsed.protocol === 'https:' && TRUSTED_HOSTS.has(parsed.hostname.toLowerCase());
+  } catch {
+    return false;
   }
+}
+
+function AsylumJudgeApp() {
+  const webViewRef = useRef<WebView>(null);
+  const [canGoBack, setCanGoBack] = useState(false);
+  const [loadProgress, setLoadProgress] = useState(0);
+  const [failed, setFailed] = useState(false);
+  const [reloadKey, setReloadKey] = useState(0);
+
+  const goBack = useCallback(() => {
+    if (!canGoBack) return false;
+    webViewRef.current?.goBack();
+    return true;
+  }, [canGoBack]);
 
   useEffect(() => {
-    void loadJudges();
+    if (Platform.OS !== 'android') return undefined;
+    const subscription = BackHandler.addEventListener('hardwareBackPress', goBack);
+    return () => subscription.remove();
+  }, [goBack]);
+
+  const openUrl = useCallback((url: string) => {
+    if (isTrustedWebUrl(url)) return true;
+
+    if (/^(mailto:|tel:|sms:)/i.test(url) || /^https?:/i.test(url)) {
+      void Linking.openURL(url);
+    }
+    return false;
   }, []);
 
-  const results = useMemo(() => {
-    const terms = normalize(query).trim().split(/\s+/).filter(Boolean);
-    if (!terms.length) return judges;
-    return judges.filter((judge) => {
-      const searchable = normalize([
-        judge.judge_name,
-        judge.court_name,
-        judge.court_city,
-        judge.court_state
-      ].filter(Boolean).join(' '));
-      return terms.every((term) => searchable.includes(term));
-    });
-  }, [judges, query]);
-
-  async function openSupport(url: string) {
-    try {
-      await Linking.openURL(url);
-    } catch {
-      Alert.alert('联系支持', '邮箱：huarenfalv@gmail.com\n电话：+1 929-789-1391');
-    }
-  }
-
-  function openJudge(judge: Judge) {
-    void Linking.openURL(`${SITE_URL}/judge?id=${encodeURIComponent(String(judge.id))}`);
-  }
+  const retry = useCallback(() => {
+    setFailed(false);
+    setLoadProgress(0);
+    setReloadKey((value) => value + 1);
+  }, []);
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <StatusBar style="dark" />
-      <View style={styles.header}>
-        <Text style={styles.eyebrow}>ASYLUMJUDGE.COM</Text>
-        <Text style={styles.title}>移民法官</Text>
-        <Text style={styles.subtitle}>查询美国移民法官、法院和庇护裁决数据</Text>
-      </View>
+    <SafeAreaView style={styles.safeArea} edges={['top', 'bottom']}>
+      <StatusBar style="dark" backgroundColor="#ffffff" />
 
-      <View style={styles.searchRow}>
-        <TextInput
-          accessibilityLabel="搜索移民法官"
-          autoCapitalize="none"
-          onChangeText={setQuery}
-          placeholder="姓名、法院、城市或州代码"
-          returnKeyType="search"
-          style={styles.search}
-          value={query}
-        />
-        {query ? (
-          <Pressable accessibilityRole="button" accessibilityLabel="清除搜索" onPress={() => setQuery('')} style={styles.clear}>
-            <Text style={styles.clearText}>清除</Text>
-          </Pressable>
-        ) : null}
-      </View>
+      {loadProgress > 0 && loadProgress < 1 ? (
+        <View style={styles.progressTrack} accessibilityLabel="页面加载中">
+          <View style={[styles.progressBar, { width: `${Math.max(8, loadProgress * 100)}%` }]} />
+        </View>
+      ) : null}
 
-      {loading ? (
-        <View style={styles.state}>
-          <ActivityIndicator color="#14804a" size="large" />
-          <Text style={styles.stateText}>正在读取法官数据…</Text>
-        </View>
-      ) : error ? (
-        <View style={styles.state}>
-          <Text style={styles.error}>{error}</Text>
-          <Pressable accessibilityRole="button" onPress={() => void loadJudges()} style={styles.retry}>
-            <Text style={styles.retryText}>重新尝试</Text>
+      <WebView
+        key={reloadKey}
+        ref={webViewRef}
+        source={{ uri: HOME_URL }}
+        style={styles.webView}
+        originWhitelist={['https://*', 'mailto:*', 'tel:*', 'sms:*']}
+        javaScriptEnabled
+        domStorageEnabled
+        sharedCookiesEnabled
+        thirdPartyCookiesEnabled
+        allowsBackForwardNavigationGestures
+        pullToRefreshEnabled
+        allowsInlineMediaPlayback
+        setSupportMultipleWindows={false}
+        startInLoadingState
+        applicationNameForUserAgent="AsylumJudgeMobile/1.0.1"
+        onLoadStart={() => setFailed(false)}
+        onLoadProgress={({ nativeEvent }) => setLoadProgress(nativeEvent.progress)}
+        onLoadEnd={() => setLoadProgress(1)}
+        onNavigationStateChange={(state) => setCanGoBack(state.canGoBack)}
+        onShouldStartLoadWithRequest={(request) => openUrl(request.url)}
+        onError={() => setFailed(true)}
+        renderLoading={() => <View style={styles.loading} />}
+      />
+
+      {failed ? (
+        <View style={styles.errorPanel} accessibilityRole="alert">
+          <Text style={styles.errorTitle}>页面暂时无法打开</Text>
+          <Text style={styles.errorText}>请检查网络连接，然后重新加载。</Text>
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel="重新加载 AsylumJudge"
+            onPress={retry}
+            style={({ pressed }) => [styles.retryButton, pressed && styles.retryPressed]}
+          >
+            <Text style={styles.retryText}>重新加载</Text>
           </Pressable>
         </View>
-      ) : (
-        <FlatList
-          contentContainerStyle={styles.list}
-          data={results}
-          initialNumToRender={20}
-          keyExtractor={(item) => String(item.id)}
-          ListHeaderComponent={<Text style={styles.count}>找到 {results.length.toLocaleString('zh-CN')} 位法官</Text>}
-          ListEmptyComponent={<Text style={styles.stateText}>没有找到匹配法官</Text>}
-          renderItem={({ item }) => (
-            <Pressable
-              accessibilityRole="button"
-              accessibilityLabel={`查看 ${item.judge_name || '未命名法官'} 的详情`}
-              onPress={() => openJudge(item)}
-              style={({ pressed }) => [styles.card, pressed && styles.cardPressed]}
-            >
-              <View style={styles.cardTop}>
-                <View style={styles.identity}>
-                  <Text style={styles.name}>{item.judge_name || '未命名法官'}</Text>
-                  <Text style={styles.court}>{item.court_name || [item.court_city, item.court_state].filter(Boolean).join(', ') || '法院待更新'}</Text>
-                </View>
-                <Text style={[styles.rate, item.adjudicated_approval_rate == null && styles.rateUnavailable]}>
-                  {percent(item.adjudicated_approval_rate)}
-                </Text>
-              </View>
-              <View style={styles.metrics}>
-                <Text style={styles.metric}>裁决 {Number(item.total_asylum_decisions || 0).toLocaleString('zh-CN')}</Text>
-                <Text style={styles.grant}>批准 {Number(item.grants || 0).toLocaleString('zh-CN')}</Text>
-                <Text style={styles.denial}>拒绝 {Number(item.denials || 0).toLocaleString('zh-CN')}</Text>
-              </View>
-            </Pressable>
-          )}
-        />
-      )}
-      <View style={styles.support}>
-        <Pressable accessibilityRole="button" onPress={() => setShowPrivacy(true)}>
-          <Text style={styles.supportLink}>隐私政策</Text>
-        </Pressable>
-        <Text style={styles.supportTitle}>客服与隐私联系</Text>
-        <Pressable accessibilityRole="link" onPress={() => void openSupport('mailto:huarenfalv@gmail.com')}>
-          <Text selectable style={styles.supportLink}>huarenfalv@gmail.com</Text>
-        </Pressable>
-        <Pressable accessibilityRole="link" onPress={() => void openSupport('tel:+19297891391')}>
-          <Text selectable style={styles.supportLink}>+1 929-789-1391</Text>
-        </Pressable>
-      </View>
-      <Modal visible={showPrivacy} animationType="slide" onRequestClose={() => setShowPrivacy(false)}>
-        <SafeAreaView style={styles.safeArea}>
-          <View style={styles.header}>
-            <Text accessibilityRole="header" style={styles.title}>隐私政策</Text>
-            <Text style={styles.subtitle}>移民法官 AsylumJudge · {privacyUpdated}</Text>
-            <Pressable accessibilityRole="button" onPress={() => setShowPrivacy(false)}>
-              <Text style={styles.supportLink}>关闭，返回目录</Text>
-            </Pressable>
-          </View>
-          <ScrollView contentContainerStyle={styles.list}>
-            {privacySections.map(([heading, body]) => (
-              <View key={heading} style={styles.card}>
-                <Text accessibilityRole="header" style={styles.name}>{heading}</Text>
-                <Text selectable style={styles.policyBody}>{body}</Text>
-              </View>
-            ))}
-          </ScrollView>
-        </SafeAreaView>
-      </Modal>
+      ) : null}
     </SafeAreaView>
   );
 }
 
+export default function App() {
+  return (
+    <SafeAreaProvider>
+      <AsylumJudgeApp />
+    </SafeAreaProvider>
+  );
+}
+
 const styles = StyleSheet.create({
-  policyBody: { color: '#526158', fontSize: 16, lineHeight: 26, marginTop: 8 },
-  support: { paddingHorizontal: 20, paddingVertical: 8, backgroundColor: '#ffffff', borderTopWidth: 1, borderTopColor: '#dce5df' },
-  supportTitle: { color: '#526158', fontSize: 12 },
-  supportLink: { color: '#14804a', fontSize: 14, paddingVertical: 12 },
-  safeArea: { flex: 1, backgroundColor: '#f5f7f6' },
-  header: { backgroundColor: '#ffffff', paddingHorizontal: 20, paddingBottom: 16, paddingTop: 18, borderBottomColor: '#dce5df', borderBottomWidth: 1 },
-  eyebrow: { color: '#14804a', fontSize: 12, fontWeight: '800', letterSpacing: 1.2 },
-  title: { color: '#122119', fontSize: 30, fontWeight: '800', marginTop: 3 },
-  subtitle: { color: '#526158', fontSize: 14, marginTop: 4 },
-  searchRow: { alignItems: 'center', backgroundColor: '#ffffff', flexDirection: 'row', gap: 8, padding: 14 },
-  search: { backgroundColor: '#f1f5f2', borderColor: '#cbd8d0', borderRadius: 12, borderWidth: 1, flex: 1, fontSize: 16, minHeight: 48, paddingHorizontal: 14 },
-  clear: { alignItems: 'center', justifyContent: 'center', minHeight: 48, minWidth: 48 },
-  clearText: { color: '#14804a', fontWeight: '700' },
-  state: { alignItems: 'center', flex: 1, justifyContent: 'center', padding: 24 },
-  stateText: { color: '#526158', fontSize: 16, marginTop: 12, textAlign: 'center' },
-  error: { color: '#9d2727', fontSize: 16, textAlign: 'center' },
-  retry: { backgroundColor: '#14804a', borderRadius: 10, marginTop: 16, paddingHorizontal: 20, paddingVertical: 13 },
-  retryText: { color: '#ffffff', fontWeight: '800' },
-  list: { padding: 14, paddingBottom: 36 },
-  count: { color: '#526158', fontSize: 13, marginBottom: 10 },
-  card: { backgroundColor: '#ffffff', borderColor: '#dce5df', borderRadius: 14, borderWidth: 1, marginBottom: 10, padding: 15 },
-  cardPressed: { opacity: 0.7 },
-  cardTop: { alignItems: 'flex-start', flexDirection: 'row', gap: 12, justifyContent: 'space-between' },
-  identity: { flex: 1 },
-  name: { color: '#122119', fontSize: 17, fontWeight: '800' },
-  court: { color: '#617068', fontSize: 13, marginTop: 4 },
-  rate: { color: '#14804a', fontSize: 18, fontWeight: '900' },
-  rateUnavailable: { color: '#7b8680', fontSize: 12 },
-  metrics: { flexDirection: 'row', flexWrap: 'wrap', gap: 12, marginTop: 12 },
-  metric: { color: '#526158', fontSize: 13 },
-  grant: { color: '#14804a', fontSize: 13, fontWeight: '700' },
-  denial: { color: '#a43a3a', fontSize: 13, fontWeight: '700' }
+  safeArea: {
+    flex: 1,
+    backgroundColor: '#ffffff'
+  },
+  webView: {
+    flex: 1,
+    backgroundColor: '#ffffff'
+  },
+  progressTrack: {
+    height: 2,
+    backgroundColor: '#e7ece9'
+  },
+  progressBar: {
+    height: 2,
+    backgroundColor: '#14804a'
+  },
+  loading: {
+    flex: 1,
+    backgroundColor: '#ffffff'
+  },
+  errorPanel: {
+    ...StyleSheet.absoluteFillObject,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#f5f7f6',
+    padding: 28
+  },
+  errorTitle: {
+    color: '#102019',
+    fontSize: 21,
+    fontWeight: '800'
+  },
+  errorText: {
+    color: '#5f6f67',
+    fontSize: 15,
+    lineHeight: 23,
+    marginTop: 10,
+    textAlign: 'center'
+  },
+  retryButton: {
+    minHeight: 48,
+    minWidth: 144,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 24,
+    backgroundColor: '#14804a',
+    marginTop: 22,
+    paddingHorizontal: 24
+  },
+  retryPressed: {
+    opacity: 0.82
+  },
+  retryText: {
+    color: '#ffffff',
+    fontSize: 16,
+    fontWeight: '800'
+  }
 });

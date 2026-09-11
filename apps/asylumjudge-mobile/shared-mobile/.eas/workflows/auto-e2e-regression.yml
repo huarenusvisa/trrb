@@ -1,0 +1,94 @@
+name: APP-R2 Native E2E Regression
+
+on:
+  workflow_dispatch: {}
+  push:
+    branches: ['main']
+    # Full simulator builds are reserved for changes that can alter the native
+    # runtime. App screens and TypeScript are covered by Mobile App CI and OTA.
+    paths:
+      - 'apps/mobile/eas.json'
+      - 'apps/mobile/app.json'
+      # Dependency installs are lockfile-driven. package.json alone also changes
+      # for harmless script/test commands and must not spend two native builds.
+      - 'apps/mobile/package-lock.json'
+      - 'apps/mobile/assets/app-icon-1024.png'
+
+concurrency:
+  cancel_in_progress: true
+  group: ${{ workflow.filename }}-${{ github.ref }}
+
+jobs:
+  static_regression:
+    name: TypeScript typecheck
+    steps:
+      - uses: eas/checkout
+      - uses: eas/install_node_modules
+      - name: TypeScript typecheck
+        run: npm run typecheck
+        working_directory: .
+      - name: Repository audit handoff
+        run: echo "APP-R2 N1-N9 repository-level audits run in .github/workflows/app-r2-static-regression.yml"
+        working_directory: .
+
+  build_android:
+    name: Build Android emulator app
+    needs: [static_regression]
+    type: build
+    params:
+      platform: android
+      profile: e2e-test
+
+  build_ios:
+    name: Build iOS simulator app
+    needs: [static_regression]
+    type: build
+    params:
+      platform: ios
+      profile: e2e-test
+
+  test_android:
+    name: Android automated UI regression
+    needs: [build_android]
+    type: maestro
+    params:
+      build_id: ${{ needs.build_android.outputs.build_id }}
+      flow_path:
+        - '.maestro/home-category-article.yml'
+        - '.maestro/search.yml'
+        - '.maestro/tabs.yml'
+      retries: 2
+      retry_failed_only: true
+
+  test_ios_home:
+    name: iOS home category article regression
+    needs: [build_ios]
+    type: maestro
+    params:
+      build_id: ${{ needs.build_ios.outputs.build_id }}
+      flow_path: '.maestro/home-category-article.yml'
+      retries: 2
+      retry_failed_only: true
+      record_screen: true
+
+  test_ios_search:
+    name: iOS search regression
+    needs: [build_ios]
+    type: maestro
+    params:
+      build_id: ${{ needs.build_ios.outputs.build_id }}
+      flow_path: '.maestro/search.yml'
+      retries: 2
+      retry_failed_only: true
+      record_screen: true
+
+  test_ios_tabs:
+    name: iOS bottom tabs regression
+    needs: [build_ios]
+    type: maestro
+    params:
+      build_id: ${{ needs.build_ios.outputs.build_id }}
+      flow_path: '.maestro/tabs.yml'
+      retries: 2
+      retry_failed_only: true
+      record_screen: true

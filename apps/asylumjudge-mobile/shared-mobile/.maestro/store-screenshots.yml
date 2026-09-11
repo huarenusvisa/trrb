@@ -1,0 +1,47 @@
+appId: net.trrb.mobile
+name: Google Play phone screenshots (zh-CN)
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible: "唐人日报"
+    timeout: 30000
+- takeScreenshot: "store/google-play/screenshots/phone/01-home"
+- tapOn:
+    id: "tab-america"
+    retryTapIfNoChange: true
+- extendedWaitUntil:
+    visible:
+      id: "screen-america"
+    timeout: 30000
+- takeScreenshot: "store/google-play/screenshots/phone/02-america"
+- tapOn:
+    id: "tab-immigration"
+    retryTapIfNoChange: true
+- extendedWaitUntil:
+    visible:
+      id: "screen-immigration"
+    timeout: 20000
+- takeScreenshot: "store/google-play/screenshots/phone/03-immigration"
+- tapOn:
+    id: "tab-legal"
+    retryTapIfNoChange: true
+- extendedWaitUntil:
+    visible:
+      id: "screen-legal"
+    timeout: 30000
+- takeScreenshot: "store/google-play/screenshots/phone/04-legal"
+- tapOn:
+    id: "tab-profile"
+    retryTapIfNoChange: true
+- extendedWaitUntil:
+    visible:
+      id: "screen-profile"
+    timeout: 20000
+- tapOn:
+    id: "open-community-guest"
+    retryTapIfNoChange: true
+- extendedWaitUntil:
+    visible: "移民社区"
+    timeout: 30000
+- takeScreenshot: "store/google-play/screenshots/phone/05-community"

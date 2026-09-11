@@ -1,0 +1,148 @@
+{
+  "schemaVersion": 1,
+  "policy": {
+    "automaticPublicRelease": false,
+    "productionBuildTrigger": "manual-only",
+    "androidFirstTrack": "internal",
+    "androidFirstReleaseStatus": "draft",
+    "credentialsStorage": "eas-and-store-consoles-only"
+  },
+  "stages": [
+    {
+      "id": "release-preflight",
+      "title": "Release access and metadata preflight",
+      "dependsOn": [],
+      "commands": ["npm run store:release-preflight:strict"],
+      "evidence": {
+        "label": "Validated version-bound iPhone, iPad and Android store screenshot evidence",
+        "environmentVariable": "TRRB_STORE_SCREENSHOT_EVIDENCE_FILE",
+        "command": "npm run store:screenshot-evidence-check -- store/screenshot-evidence.local.json"
+      },
+      "candidateEvidence": {
+        "label": "Frozen production candidate bound to the validated screenshot evidence",
+        "environmentVariable": "TRRB_STORE_RELEASE_CANDIDATE_FILE",
+        "screenshotEvidenceEnvironmentVariable": "TRRB_STORE_SCREENSHOT_EVIDENCE_FILE",
+        "command": "npm run store:release-candidate-check -- store/release-candidate.local.json store/screenshot-evidence.local.json"
+      },
+      "confirmations": []
+    },
+    {
+      "id": "production-builds",
+      "title": "Signed iOS and Android production builds",
+      "dependsOn": ["release-preflight"],
+      "commands": [
+        "eas build --platform ios --profile production",
+        "eas build --platform android --profile production"
+      ],
+      "evidence": {
+        "label": "Validated paired iOS and Android production build evidence",
+        "environmentVariable": "TRRB_STORE_BUILD_EVIDENCE_FILE",
+        "releaseCandidateEnvironmentVariable": "TRRB_STORE_RELEASE_CANDIDATE_FILE",
+        "screenshotEvidenceEnvironmentVariable": "TRRB_STORE_SCREENSHOT_EVIDENCE_FILE",
+        "generationCommand": "npm run store:build-evidence-generate",
+        "command": "npm run store:build-evidence-check -- store/build-evidence.local.json store/release-candidate.local.json store/screenshot-evidence.local.json"
+      },
+      "confirmations": [
+        {
+          "id": "ios-production-build",
+          "label": "Signed iOS production build completed",
+          "environmentVariable": "TRRB_IOS_PRODUCTION_BUILD_CONFIRMED"
+        },
+        {
+          "id": "android-production-aab",
+          "label": "Signed Android production AAB completed",
+          "environmentVariable": "TRRB_ANDROID_PRODUCTION_BUILD_CONFIRMED"
+        }
+      ]
+    },
+    {
+      "id": "internal-distribution",
+      "title": "TestFlight and Google Play internal distribution",
+      "dependsOn": ["production-builds"],
+      "commands": [
+        "eas submit --platform ios --profile production",
+        "eas submit --platform android --profile production"
+      ],
+      "evidence": {
+        "label": "Validated TestFlight and Google Play internal distribution evidence",
+        "environmentVariable": "TRRB_STORE_DISTRIBUTION_EVIDENCE_FILE",
+        "buildEvidenceEnvironmentVariable": "TRRB_STORE_BUILD_EVIDENCE_FILE",
+        "command": "npm run store:distribution-evidence-check -- store/distribution-evidence.local.json store/build-evidence.local.json"
+      },
+      "confirmations": [
+        {
+          "id": "testflight-processing",
+          "label": "Build processed and available in TestFlight",
+          "environmentVariable": "TRRB_TESTFLIGHT_BUILD_CONFIRMED"
+        },
+        {
+          "id": "play-internal-draft",
+          "label": "AAB available as a Google Play internal-track draft",
+          "environmentVariable": "TRRB_PLAY_INTERNAL_BUILD_CONFIRMED"
+        }
+      ]
+    },
+    {
+      "id": "real-device-acceptance",
+      "title": "Final real-device acceptance",
+      "dependsOn": ["internal-distribution"],
+      "commands": [],
+      "evidence": {
+        "label": "Validated iOS and Android physical-device acceptance evidence",
+        "environmentVariable": "TRRB_STORE_DEVICE_ACCEPTANCE_FILE",
+        "distributionEvidenceEnvironmentVariable": "TRRB_STORE_DISTRIBUTION_EVIDENCE_FILE",
+        "buildEvidenceEnvironmentVariable": "TRRB_STORE_BUILD_EVIDENCE_FILE",
+        "command": "npm run store:device-acceptance-check -- store/device-acceptance.local.json store/distribution-evidence.local.json store/build-evidence.local.json"
+      },
+      "acceptanceCases": [
+        "guest-news-browsing",
+        "unified-account-sign-in-and-sign-out",
+        "community-post-comment-and-cleanup",
+        "news-comment-reply-and-cleanup",
+        "favorites-and-history-cloud-sync",
+        "push-registration-delivery-and-deep-link",
+        "account-deletion-entry-and-final-warning"
+      ],
+      "testContentPolicy": "marked-test-content-only-and-clean-up-after-acceptance",
+      "confirmations": [
+        {
+          "id": "ios-real-device-acceptance",
+          "label": "TestFlight build passed acceptance on a physical iPhone or iPad",
+          "environmentVariable": "TRRB_IOS_DEVICE_ACCEPTANCE_CONFIRMED"
+        },
+        {
+          "id": "android-real-device-acceptance",
+          "label": "Play internal build passed acceptance on a physical Android device",
+          "environmentVariable": "TRRB_ANDROID_DEVICE_ACCEPTANCE_CONFIRMED"
+        }
+      ]
+    },
+    {
+      "id": "store-review-submission",
+      "title": "Manual store review submission",
+      "dependsOn": ["real-device-acceptance"],
+      "commands": [],
+      "manualOnly": true,
+      "evidence": {
+        "label": "Validated manual App Store and Google Play review submission evidence",
+        "environmentVariable": "TRRB_STORE_REVIEW_SUBMISSION_FILE",
+        "deviceEvidenceEnvironmentVariable": "TRRB_STORE_DEVICE_ACCEPTANCE_FILE",
+        "distributionEvidenceEnvironmentVariable": "TRRB_STORE_DISTRIBUTION_EVIDENCE_FILE",
+        "buildEvidenceEnvironmentVariable": "TRRB_STORE_BUILD_EVIDENCE_FILE",
+        "command": "npm run store:review-submission-check -- store/review-submission.local.json store/device-acceptance.local.json store/distribution-evidence.local.json store/build-evidence.local.json"
+      },
+      "confirmations": [
+        {
+          "id": "apple-review-submitted",
+          "label": "iOS version manually submitted for App Review",
+          "environmentVariable": "TRRB_APPLE_REVIEW_SUBMITTED"
+        },
+        {
+          "id": "google-review-submitted",
+          "label": "Android release manually submitted for Google Play review",
+          "environmentVariable": "TRRB_GOOGLE_REVIEW_SUBMITTED"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,119 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import test from 'node:test';
+
+const read = (path) => fs.readFileSync(new URL(`../${path}`, import.meta.url), 'utf8');
+
+test('keeps the App homepage on the PC mobile content structure', () => {
+  const home = read('app/(tabs)/index.tsx');
+  const i18n = read('src/i18n/i18n-core.ts');
+  const api = read('src/api/trrb.ts');
+  const renderStart = home.indexOf('return (');
+  const renderedHome = home.slice(renderStart);
+  const markers = ['testID="home-important-carousel"', 'testID="home-rankings"', 'testID="home-topics"', 'testID={`home-news-${key}`}', 'testID={`home-portal-${section.key}`}', 'testID="home-reader-services"'];
+  let position = -1;
+  for (const marker of markers) {
+    const next = renderedHome.indexOf(marker);
+    assert.ok(next > position, `${marker} must remain in canonical homepage order`);
+    position = next;
+  }
+  assert.match(home, /titleKey: 'home\.topicFinanceTitle'/);
+  assert.match(home, /newsSections = \[\s*\{ key: 'china-hot', titleKey: 'home\.sectionChinaHot', category: '热门头条'/);
+  for (const section of ['移民法官通过率', '移民美国', '美国判例与新规', '招聘求职', '移民社区', '订阅每日快报', '加入读者群', '投稿爆料']) {
+    assert.ok(i18n.includes(section), `${section} must stay in the localized App homepage content`);
+  }
+  for (const marker of ['home.portalJudgesTitle', 'home.portalImmigrationTitle', 'home.portalLegalTitle', 'home.portalJobsTitle', 'home.portalCommunityTitle', 'home.readerSubscribeTitle', 'home.readerGroupTitle', 'home.readerTipsTitle']) {
+    assert.ok(home.includes(marker), `${marker} must stay on the App homepage`);
+  }
+  assert.match(api, /public-home-articles/);
+});
+
+
+test('loads the visible hero before below-the-fold homepage images', () => {
+  const home = read('app/(tabs)/index.tsx');
+  assert.match(home, /setShowDeferredImages\(true\)/);
+  assert.match(home, /testID={`home-important-image-\${index}`} priority={index === 0 \? 'high' : 'normal'}/);
+  assert.match(home, /uri={showDeferredImages \? topic\.image : undefined}[^>]*priority="low"/);
+  assert.match(home, /uri={showDeferredImages \? first\.cover_image : undefined}[^>]*priority="low"/);
+  assert.match(home, /InteractionManager\.runAfterInteractions[\s\S]*setShowDeferredImages\(true\)/);
+  assert.match(home, /importantCarousel\.slice\(1, 3\)[\s\S]*InteractionManager\.runAfterInteractions[\s\S]*prefetchNewsImages/);
+});
+
+test('guards homepage external links and keeps failures retryable', () => {
+  const home = read('app/(tabs)/index.tsx');
+  const i18n = read('src/i18n/i18n-core.ts');
+  assert.match(home, /const externalActionRef = useRef\(false\)/);
+  assert.match(home, /if \(externalActionRef\.current\) return/);
+  assert.match(home, /Linking\.canOpenURL\(url\)[\s\S]*Linking\.openURL\(url\)/);
+  assert.match(home, /setExternalFailure\(\{ url, label \}\)/);
+  assert.match(home, /AccessibilityInfo\.announceForAccessibility\(t\('home\.externalLinkFailed'/);
+  assert.match(home, /testID="home-external-link-error"[\s\S]*accessibilityRole="alert"/);
+  assert.match(home, /testID="home-external-link-retry"[\s\S]*onPress=\{\(\) => void openExternal\(externalFailure\.url, externalFailure\.label\)\}/);
+  assert.match(home, /openExternal\(service\.url, t\(service\.titleKey\)\)/);
+  assert.doesNotMatch(home, /Linking\.openURL\(service\.url\)|Linking\.openURL\(section\.url\)/);
+  assert.match(i18n, /'home\.externalLinkFailed': '无法打开“\{title\}”。请检查网络或稍后重试。'/);
+  assert.match(i18n, /'home\.retryExternal': 'Try opening again'/);
+});
+
+test('shows the U.S. section once instead of repeating it on every card', () => {
+  const america = read('app/(tabs)/america.tsx');
+  const i18n = read('src/i18n/i18n-core.ts');
+  assert.match(i18n, /'america\.heading': '美国时政'/);
+  assert.doesNotMatch(america, /style=\{styles\.cat\}/);
+});
+
+test('keeps category labels at the page level and rotates important news on the homepage', () => {
+  const home = read('app/(tabs)/index.tsx');
+  const list = read('src/components/PaginatedNewsList.tsx');
+  const categoryFlow = read('.maestro/home-category-article.yml');
+  assert.match(list, /testID="category-screen-title"/);
+  assert.doesNotMatch(list, /newsCategoryName|styles\.category/);
+  assert.match(home, /testID="home-important-carousel"/);
+  assert.match(home, /pagingEnabled/);
+  assert.match(home, /importantCarousel\.map/);
+  assert.match(home, /setInterval[\s\S]*carouselRef\.current\?\.scrollTo/);
+  assert.match(home, /testID=\{item\.category === '重要新闻' \? 'home-nav-important' : undefined\}/);
+  assert.match(categoryFlow, /id: "home-nav-important"/);
+  assert.match(categoryFlow, /id: "category-screen-title"/);
+  assert.doesNotMatch(categoryFlow, /visible: "重要新闻"|text: "重要新闻"/);
+  for (const category of ['重要新闻', '热门头条', '美国时政', '美国警情', '招聘求职', 'ICE执法动态']) {
+    assert.match(home, new RegExp(`category: '${category}'`));
+  }
+});
+
+test('keeps ICE in its designated sections, ranking, nav and qualified focus carousel', () => {
+  const home = read('app/(tabs)/index.tsx');
+  const api = read('src/api/trrb.ts');
+  const focus = fs.readFileSync(new URL('../../../netlify/functions/public-home-focus.js', import.meta.url), 'utf8');
+  const publicArticles = fs.readFileSync(new URL('../../../netlify/functions/public-articles.js', import.meta.url), 'utf8');
+  assert.doesNotMatch(home, /中国官场/);
+  assert.match(home, /key: 'ice',[\s\S]*?titleKey: 'home\.topicIceTitle'/);
+  assert.match(home, /key: 'ice-news', titleKey: 'home\.sectionIce', category: 'ICE执法动态'/);
+  assert.equal((home.match(/category: 'ICE执法动态'/g) || []).length, 2);
+  assert.equal((home.match(/titleKey: 'home\.topicIceTitle'/g) || []).length, 1);
+  assert.match(home, /rankCategories[^;]*'ICE执法动态'/s);
+  assert.match(home, /const rankItems = useMemo[\s\S]*?return articles[\s\S]*?rankCategories\.has/);
+  assert.match(home, /HOME_NAV_ITEMS[^;]*'ICE执法动态'/s);
+  assert.match(api, /export async function fetchHomepageFocus/);
+  assert.match(home, /fetchHomepageFocus\(\)\.catch/);
+  assert.match(home, /const importantCarousel = useMemo[\s\S]*?return focusArticles\.filter/);
+  assert.match(focus, /MIN_LONGFORM_CHARS = 1500/);
+  assert.match(focus, /isIceEnforcementText/);
+  assert.match(focus, /textLength\(row\?\.content\) < MIN_LONGFORM_CHARS/);
+  assert.match(focus, /b\.homepage_focus_score - a\.homepage_focus_score/);
+  assert.match(publicArticles, /category === "ICE执法动态"/);
+  assert.match(publicArticles, /topic_key\.eq\.ice/);
+  assert.match(publicArticles, /isIceEnforcementText/);
+  assert.match(home, /const homepageArticles = useMemo\(\(\) => articles\.filter\(\(item\) => !isHiddenHomepageCategory/);
+  assert.match(home, /value\.startsWith\('中国官'\)[^;]*\/ICE\/i\.test\(value\)/);
+  assert.match(home, /section\.key === 'ice-news' \? articles : homepageArticles/);
+});
+
+test('renders continuous previous and next official-news navigation', () => {
+  const detail = read('app/article/[id].tsx');
+  const api = read('src/api/trrb.ts');
+  assert.match(api, /fetchArticleNavigation/);
+  assert.match(api, /fetchArticlePage\(\{ offset, limit: 60 \}\)/);
+  assert.match(detail, /testID="article-previous"/);
+  assert.match(detail, /testID="article-next"/);
+});

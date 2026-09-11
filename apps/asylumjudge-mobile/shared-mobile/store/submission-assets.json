@@ -1,0 +1,25 @@
+{
+  "screens": [
+    "01-home",
+    "02-america",
+    "03-immigration",
+    "04-legal",
+    "05-community"
+  ],
+  "appStore": {
+    "iphone69": {
+      "directory": "store/app-store/screenshots/iphone-6.9",
+      "acceptedPortraitSizes": [[1260, 2736], [1290, 2796], [1320, 2868]]
+    },
+    "ipad13": {
+      "directory": "store/app-store/screenshots/ipad-13",
+      "acceptedPortraitSizes": [[2048, 2732], [2064, 2752]]
+    }
+  },
+  "googlePlay": {
+    "directory": "store/google-play/screenshots/phone",
+    "minimumDimension": 320,
+    "maximumDimension": 3840,
+    "maximumAspectRatio": 2
+  }
+}

@@ -1,0 +1,37 @@
+appId: net.trrb.mobile
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible:
+      id: "home-nav-important"
+    timeout: 30000
+- tapOn:
+    id: "home-nav-important"
+    retryTapIfNoChange: true
+- extendedWaitUntil:
+    visible:
+      id: "category-screen-title"
+    timeout: 25000
+- assertVisible:
+    id: "category-news-list"
+- extendedWaitUntil:
+    visible:
+      id: "category-article-0"
+    timeout: 25000
+- tapOn:
+    id: "category-article-0"
+    retryTapIfNoChange: true
+- extendedWaitUntil:
+    visible:
+      id: "article-category-button"
+    timeout: 25000
+- tapOn:
+    id: "article-category-button"
+    retryTapIfNoChange: true
+- extendedWaitUntil:
+    visible:
+      id: "category-screen-title"
+    timeout: 25000
+- assertVisible:
+    id: "category-screen-title"

@@ -1,0 +1,252 @@
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { AccessibilityInfo, Pressable, RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { router, Stack, useLocalSearchParams } from 'expo-router';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { AsyncStatePanel } from '../src/components/AsyncStatePanel';
+import { PageRequestGate } from '../src/components/news-page-request-core';
+import { NotificationActionGate } from '../src/notifications/notification-action-core';
+import { supabase } from '../src/auth/supabase';
+import { listNotifications, markAllNotificationsRead, markNotificationRead, notificationCategories, notificationTarget, type NotificationCategory, type NotificationType, type UserNotification } from '../src/community/notifications';
+import { useI18n } from '../src/i18n/I18nProvider';
+import { localeDateTag, type MessageKey } from '../src/i18n/i18n-core';
+import { useForegroundRetry } from '../src/hooks/useForegroundRetry';
+import { cacheNotifications, readCachedNotifications } from '../src/storage/notificationCache';
+import { withUiTimeout } from '../src/utils/async-state-core';
+import { useUnreadCounts } from '../src/notifications/UnreadProvider';
+
+const PAGE_SIZE = 20;
+const CATEGORY_KEYS: Record<NotificationCategory, MessageKey> = {
+  all: 'inbox.category.all', replies: 'inbox.category.replies', likes: 'inbox.category.likes',
+  follows: 'inbox.category.follows', messages: 'inbox.category.messages', moderation: 'inbox.category.moderation',
+};
+const NOTICE_KEYS: Record<NotificationType, MessageKey> = {
+  comment_reply: 'inbox.notice.commentReply', comment_like: 'inbox.notice.commentLike', community_reply: 'inbox.notice.communityReply',
+  community_post_like: 'inbox.notice.communityPostLike', community_comment_like: 'inbox.notice.communityCommentLike', community_report: 'inbox.notice.communityReport',
+  follow: 'inbox.notice.follow', follow_request: 'inbox.notice.followRequest', follow_accept: 'inbox.notice.followAccept',
+  message_request: 'inbox.notice.messageRequest', message: 'inbox.notice.message', system: 'inbox.notice.system',
+};
+
+export default function NotificationsScreen() {
+  const { locale, t } = useI18n();
+  const { pushTarget } = useLocalSearchParams<{ pushTarget?: string }>();
+  const unread = useUnreadCounts();
+  const [items, setItems] = useState<UserNotification[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+  const [category, setCategory] = useState<NotificationCategory>('all');
+  const [markingRead, setMarkingRead] = useState(false);
+  const [openingItemId, setOpeningItemId] = useState('');
+  const [actionError, setActionError] = useState<
+    | { kind: 'open'; item: UserNotification; message: string }
+    | { kind: 'mark-all'; message: string }
+    | null
+  >(null);
+  const [error, setError] = useState('');
+  const [viewerId, setViewerId] = useState('');
+  const [nextOffset, setNextOffset] = useState<number | null>(null);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [pageError, setPageError] = useState('');
+  const [cachedStatus, setCachedStatus] = useState<{ savedAt: number; count: number; truncated: boolean } | null>(null);
+  const requestGate = useRef(new PageRequestGate());
+  const actionGate = useRef(new NotificationActionGate());
+  const hydratedCaches = useRef(new Set<string>());
+  const errorMessage = useCallback((error: unknown, fallback: MessageKey) => error instanceof Error
+    ? error.message === '需要登录' ? t('inbox.signInRequired') : error.message
+    : t(fallback), [t]);
+
+  const load = useCallback(async (refresh = false, knownViewerId = '', announceSuccess = false) => {
+    const gate = requestGate.current;
+    const token = gate.startRefresh();
+    if (!token) return;
+    actionGate.current.reset();
+    setOpeningItemId('');
+    setMarkingRead(false);
+    setActionError(null);
+    setLoadingMore(false);
+    if (refresh) setRefreshing(true);
+    else {
+      setRefreshing(false);
+      setLoading(true);
+    }
+    try {
+      const page = await withUiTimeout(listNotifications(0, PAGE_SIZE, category), t('inbox.timeout'));
+      if (!gate.isCurrent(token)) return;
+      setItems(page.notifications);
+      setNextOffset(page.nextOffset);
+      setPageError('');
+      setCachedStatus(null);
+      setError('');
+      if (knownViewerId) void cacheNotifications(page.notifications, page.nextOffset, knownViewerId, category).catch(() => undefined);
+      if (announceSuccess) AccessibilityInfo.announceForAccessibility(t('inbox.refreshSucceeded'));
+    }
+    catch (e) { if (gate.isCurrent(token)) setError(errorMessage(e, 'inbox.loadFailed')); }
+    finally {
+      if (gate.finish(token)) refresh ? setRefreshing(false) : setLoading(false);
+    }
+  }, [category, errorMessage, t]);
+
+  useEffect(() => {
+    let active = true;
+    const begin = async () => {
+      try {
+        const { data } = await supabase.auth.getSession();
+        const userId = data.session?.user.id;
+        if (!userId) throw new Error('需要登录');
+        if (!active) return;
+        setViewerId(userId);
+        const cacheScope = `${userId}:${category}`;
+        let cachedResult = null;
+        if (!hydratedCaches.current.has(cacheScope)) {
+          hydratedCaches.current.add(cacheScope);
+          cachedResult = await readCachedNotifications(userId, category).catch(() => null);
+        }
+        if (!active) return;
+        const announceRefresh = cachedResult?.discardReason === 'expired';
+        if (announceRefresh) AccessibilityInfo.announceForAccessibility(t('inbox.cacheExpired'));
+        const cached = cachedResult?.snapshot;
+        if (cached?.notifications.length && cachedResult?.savedAt) {
+          setItems(cached.notifications);
+          setNextOffset(cached.nextOffset);
+          setCachedStatus({ savedAt: cachedResult.savedAt, count: cached.notifications.length, truncated: cached.truncated === true });
+          setLoading(false);
+          await load(true, userId, true);
+        } else await load(false, userId, announceRefresh);
+      } catch {
+        if (active) await load(false);
+      }
+    };
+    void begin();
+    return () => {
+      active = false;
+      requestGate.current.resetFeed();
+      actionGate.current.reset();
+    };
+  }, [category, load]);
+  useForegroundRetry(Boolean(error), () => void load(true, viewerId, true));
+
+  const cacheVisibleItems = (nextItems: UserNotification[], nextPageOffset = nextOffset) => {
+    if (!viewerId) return;
+    void cacheNotifications(nextItems, nextPageOffset, viewerId, category).catch(() => undefined);
+  };
+
+  const selectCategory = (nextCategory: NotificationCategory) => {
+    if (nextCategory === category || markingRead) return;
+    requestGate.current.resetFeed();
+    actionGate.current.reset();
+    setOpeningItemId('');
+    setActionError(null);
+    setCategory(nextCategory);
+    setItems([]);
+    setNextOffset(null);
+    setLoadingMore(false);
+    setError('');
+    setPageError('');
+    setCachedStatus(null);
+    setLoading(true);
+    setRefreshing(false);
+  };
+
+  const loadMore = async () => {
+    if (nextOffset === null || refreshing) return;
+    const gate = requestGate.current;
+    const token = gate.startAppend(nextOffset);
+    if (!token) return;
+    setLoadingMore(true);
+    setPageError('');
+    try {
+      const page = await withUiTimeout(listNotifications(token.offset, PAGE_SIZE, category), t('inbox.pageTimeout'));
+      if (!gate.isCurrent(token)) return;
+      const known = new Set(items.map((item) => item.id));
+      const nextItems = [...items, ...page.notifications.filter((item) => !known.has(item.id))];
+      setItems(nextItems);
+      setNextOffset(page.nextOffset);
+      cacheVisibleItems(nextItems, page.nextOffset);
+    } catch (e) {
+      if (gate.isCurrent(token)) setPageError(errorMessage(e, 'inbox.pageFailed'));
+    } finally {
+      if (gate.finish(token)) setLoadingMore(false);
+    }
+  };
+
+  const reportActionError = (nextError: NonNullable<typeof actionError>) => {
+    setActionError(nextError);
+    AccessibilityInfo.announceForAccessibility(`${t('inbox.actionFailed')} ${nextError.message}`);
+  };
+
+  const openItem = async (item: UserNotification) => {
+    const gate = actionGate.current;
+    const token = gate.start(item.id);
+    if (!token) return;
+    let retryItem = item;
+    setOpeningItemId(item.id);
+    setActionError(null);
+    try {
+      const target = notificationTarget(item);
+      if (target) router.push(target as never);
+      if (!item.is_read) {
+        retryItem = { ...item, is_read: true };
+        const nextItems = items.map(x => x.id === item.id ? retryItem : x);
+        setItems(nextItems); cacheVisibleItems(nextItems); unread.markNotificationReadLocally();
+        void withUiTimeout(markNotificationRead(item.id), t('inbox.markTimeout')).catch((e) => {
+          console.warn('notification read sync failed', e);
+          void unread.refresh().catch(() => undefined);
+        });
+      }
+    } catch (e) {
+      if (gate.isCurrent(token)) reportActionError({ kind: 'open', item: retryItem, message: errorMessage(e, 'inbox.retryLater') });
+    } finally {
+      if (gate.finish(token)) setOpeningItemId('');
+    }
+  };
+
+  const markAll = async () => {
+    const gate = actionGate.current;
+    const token = gate.start(`mark-all:${category}`);
+    if (!token) return;
+    const unreadCount = items.filter((item) => !item.is_read).length;
+    setMarkingRead(true);
+    setActionError(null);
+    try {
+      await withUiTimeout(markAllNotificationsRead(category), t('inbox.markTimeout'));
+      if (!gate.isCurrent(token)) return;
+      const nextItems = items.map(x => ({ ...x, is_read: true }));
+      setItems(nextItems);
+      cacheVisibleItems(nextItems);
+      category === 'all' ? unread.markAllNotificationsReadLocally() : unread.markNotificationsReadLocally(unreadCount);
+      void unread.refresh().catch((refreshError) => console.warn('unread count sync failed', refreshError));
+    } catch (e) {
+      if (gate.isCurrent(token)) reportActionError({ kind: 'mark-all', message: errorMessage(e, 'inbox.retryLater') });
+    } finally {
+      if (gate.finish(token)) setMarkingRead(false);
+    }
+  };
+
+  const categoryLabel = t(CATEGORY_KEYS[category]);
+  const itemTitle = (item: UserNotification) => item.title || t(NOTICE_KEYS[item.type]);
+
+  return <SafeAreaView edges={['top']} style={styles.safe}><Stack.Screen options={{ title: t('inbox.screenTitle'), headerBackTitle: t('common.back') }} />
+    <ScrollView style={styles.page} contentContainerStyle={styles.content} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => void load(true, viewerId, true)} />}>
+      <View style={styles.header}><Text style={styles.h1}>{t('inbox.heading')}</Text>{items.some(item => !item.is_read) ? <Pressable testID="notifications-mark-all" style={styles.markAllButton} disabled={markingRead || Boolean(openingItemId)} accessibilityRole="button" accessibilityLabel={category === 'all' ? t('inbox.markAllA11y') : t('inbox.markCategoryA11y', { category: categoryLabel })} onPress={() => void markAll()}><Text style={[styles.markAll, markingRead && styles.disabled]}>{markingRead ? t('inbox.processing') : category === 'all' ? t('inbox.markAll') : t('inbox.markCategory')}</Text></Pressable> : null}</View>
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.filters} accessibilityRole="tablist">
+        {notificationCategories.map((item) => <Pressable key={item.key} disabled={markingRead} testID={`notification-filter-${item.key}`} accessibilityRole="tab" accessibilityState={{ selected: category === item.key, disabled: markingRead }} accessibilityLabel={t('inbox.filterA11y', { category: t(CATEGORY_KEYS[item.key]) })} style={[styles.filter, category === item.key && styles.filterSelected, markingRead && styles.disabled]} onPress={() => selectCategory(item.key)}><Text style={[styles.filterText, category === item.key && styles.filterTextSelected]}>{t(CATEGORY_KEYS[item.key])}</Text></Pressable>)}
+      </ScrollView>
+      {pushTarget === 'unavailable' ? <AsyncStatePanel testID="notifications-push-target-unavailable" tone="error" title={t('inbox.pushTargetUnavailableTitle')} message={t('inbox.pushTargetUnavailableBody')} /> : null}
+      {cachedStatus ? <View testID="notifications-offline-cache" accessibilityRole="alert" accessibilityLiveRegion="polite" style={styles.cacheNotice}>
+        <Text style={styles.cacheNoticeText}>{t('inbox.cacheDetails', { count: cachedStatus.count, savedAt: new Date(cachedStatus.savedAt).toLocaleString(localeDateTag(locale)) })}</Text>
+        {cachedStatus.truncated ? <Text testID="notifications-cache-truncated" style={styles.cacheTruncatedText}>{t('inbox.cacheTruncated')}</Text> : null}
+      </View> : null}
+      {loading ? <AsyncStatePanel testID="notifications-loading" title={t('inbox.loadingTitle')} message={t('inbox.loadingBody')} busy /> : error && items.length === 0 ? <AsyncStatePanel testID="notifications-error" tone="error" title={t('inbox.loadErrorTitle')} message={error} actionLabel={t('inbox.reload')} onAction={() => void load(true, viewerId, true)} busy={refreshing} /> : <>
+      {error ? <AsyncStatePanel testID="notifications-refresh-error" tone="error" title={t('inbox.refreshErrorTitle')} message={error} actionLabel={t('inbox.resync')} onAction={() => void load(true, viewerId, true)} busy={refreshing} /> : null}
+      {!error && items.length === 0 ? <AsyncStatePanel testID="notifications-empty" title={category === 'all' ? t('inbox.emptyAllTitle') : t('inbox.emptyCategoryTitle', { category: categoryLabel })} message={category === 'all' ? t('inbox.emptyAllBody') : t('inbox.emptyCategoryBody')} /> : items.map(item => <Pressable disabled={Boolean(openingItemId) || markingRead} accessibilityRole="button" accessibilityLabel={t('inbox.openA11y', { title: itemTitle(item) })} accessibilityState={{ disabled: Boolean(openingItemId) || markingRead, busy: openingItemId === item.id }} key={item.id} style={[styles.card, !item.is_read && styles.unread, (Boolean(openingItemId) || markingRead) && styles.disabled]} onPress={() => void openItem(item)}>
+        <View style={styles.row}><Text style={styles.title}>{itemTitle(item)}</Text>{!item.is_read ? <View style={styles.dot} /> : null}</View>
+        {item.body ? <Text style={styles.body}>{item.body}</Text> : null}
+        <Text style={styles.time}>{new Date(item.created_at).toLocaleString(localeDateTag(locale))}</Text>
+      </Pressable>)}
+      {actionError ? <AsyncStatePanel testID="notifications-action-error" tone="error" title={t('inbox.actionFailed')} message={actionError.message} actionLabel={t('inbox.retryAction')} onAction={() => actionError.kind === 'open' ? void openItem(actionError.item) : void markAll()} busy={Boolean(openingItemId) || markingRead} /> : null}
+      {pageError ? <AsyncStatePanel testID="notifications-page-error" tone="error" title={t('inbox.pageErrorTitle')} message={pageError} actionLabel={t('inbox.retryPage')} onAction={() => void loadMore()} busy={loadingMore} /> : null}
+      {!pageError && nextOffset !== null ? <Pressable testID="notifications-load-more" accessibilityRole="button" accessibilityLabel={loadingMore ? t('inbox.loadingMoreA11y') : t('inbox.loadMore')} accessibilityState={{ disabled: loadingMore || refreshing }} disabled={loadingMore || refreshing} style={[styles.loadMore, (loadingMore || refreshing) && styles.disabled]} onPress={() => void loadMore()}><Text style={styles.loadMoreText}>{loadingMore ? t('inbox.loadingMore') : t('inbox.loadMore')}</Text></Pressable> : null}
+      </>}
+    </ScrollView></SafeAreaView>;
+}
+
+const styles = StyleSheet.create({safe:{flex:1,backgroundColor:'#f5f6f8'},page:{flex:1,backgroundColor:'#f5f6f8'},content:{padding:16,paddingBottom:48},header:{flexDirection:'row',justifyContent:'space-between',alignItems:'center',marginBottom:10},h1:{fontSize:28,fontWeight:'900',color:'#101828'},markAllButton:{minHeight:44,minWidth:88,paddingHorizontal:12,alignItems:'center',justifyContent:'center',borderRadius:10},markAll:{color:'#c8211e',fontWeight:'800'},disabled:{opacity:.55},filters:{gap:8,paddingBottom:14},filter:{minHeight:40,justifyContent:'center',paddingHorizontal:15,borderRadius:20,backgroundColor:'#fff',borderWidth:1,borderColor:'#d0d5dd'},filterSelected:{backgroundColor:'#c8211e',borderColor:'#c8211e'},filterText:{color:'#344054',fontWeight:'700'},filterTextSelected:{color:'#fff'},cacheNotice:{backgroundColor:'#fffaeb',borderColor:'#fedf89',borderWidth:1,borderRadius:10,padding:11,marginBottom:10},cacheNoticeText:{color:'#93370d',fontWeight:'700'},cacheTruncatedText:{color:'#7a2e0e',fontWeight:'800',marginTop:6,lineHeight:20},card:{backgroundColor:'#fff',borderRadius:14,padding:16,marginBottom:10,borderWidth:1,borderColor:'#eaecf0'},unread:{borderColor:'#f04438',backgroundColor:'#fff8f7'},row:{flexDirection:'row',alignItems:'center',justifyContent:'space-between',gap:10},title:{fontSize:17,fontWeight:'800',color:'#101828',flex:1},dot:{width:9,height:9,borderRadius:9,backgroundColor:'#c8211e'},body:{color:'#475467',marginTop:6,lineHeight:21},time:{color:'#98a2b3',fontSize:12,marginTop:10},loadMore:{minHeight:48,alignItems:'center',justifyContent:'center',backgroundColor:'#fff',borderColor:'#d0d5dd',borderWidth:1,borderRadius:10},loadMoreText:{color:'#344054',fontWeight:'900'}});

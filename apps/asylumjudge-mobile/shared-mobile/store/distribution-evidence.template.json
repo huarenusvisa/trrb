@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "REPLACE_WITH_FULL_40_CHARACTER_GIT_COMMIT_SHA",
+  "appVersion": "0.2.0",
+  "distributions": [
+    {
+      "platform": "ios",
+      "easBuildId": "REPLACE_WITH_THE_VERIFIED_IOS_EAS_BUILD_UUID",
+      "destination": "testflight",
+      "status": "available",
+      "nativeBuildVersion": "REPLACE_WITH_BUILD_NUMBER",
+      "submittedAt": "REPLACE_WITH_ISO_TIMESTAMP",
+      "availableAt": "REPLACE_WITH_ISO_TIMESTAMP"
+    },
+    {
+      "platform": "android",
+      "easBuildId": "REPLACE_WITH_THE_VERIFIED_ANDROID_EAS_BUILD_UUID",
+      "destination": "google-play-internal",
+      "status": "available",
+      "releaseStatus": "draft",
+      "nativeBuildVersion": "REPLACE_WITH_VERSION_CODE",
+      "submittedAt": "REPLACE_WITH_ISO_TIMESTAMP",
+      "availableAt": "REPLACE_WITH_ISO_TIMESTAMP"
+    }
+  ]
+}

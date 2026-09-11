@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "releaseLane": "internal-testing",
+  "codeStatus": "ready",
+  "submissionSafety": {
+    "automaticProductionRelease": false,
+    "androidTrack": "internal",
+    "androidReleaseStatus": "draft",
+    "credentialsSource": "remote",
+    "credentialsCommittedToRepository": false
+  },
+  "externalRequirements": [
+    {
+      "id": "expo_access_token",
+      "label": "Expo access token",
+      "confirmationEnvironmentVariable": "TRRB_EXPO_ACCESS_CONFIRMED"
+    },
+    {
+      "id": "apple_asc_app_id",
+      "label": "Apple numeric App Store Connect app ID",
+      "confirmationEnvironmentVariable": "TRRB_APPLE_ASC_APP_ID"
+    },
+    {
+      "id": "apple_distribution_credentials",
+      "label": "Apple Distribution and App Store Connect API credentials stored in EAS",
+      "confirmationEnvironmentVariable": "TRRB_APPLE_CREDENTIALS_CONFIRMED"
+    },
+    {
+      "id": "google_play_service_account",
+      "label": "Google Play service account linked and stored in EAS",
+      "confirmationEnvironmentVariable": "TRRB_GOOGLE_PLAY_CREDENTIALS_CONFIRMED"
+    },
+    {
+      "id": "store_screenshots",
+      "label": "Five screenshots for iPhone, iPad and Android",
+      "confirmationEnvironmentVariable": "TRRB_STORE_SCREENSHOTS_CONFIRMED"
+    },
+    {
+      "id": "store_console_forms",
+      "label": "Apple privacy and Google Data Safety forms confirmed by the account owner",
+      "confirmationEnvironmentVariable": "TRRB_STORE_FORMS_CONFIRMED"
+    },
+    {
+      "id": "store_review_account",
+      "label": "Non-expiring review account stored only in Apple and Google store consoles",
+      "confirmationEnvironmentVariable": "TRRB_REVIEW_ACCOUNT_CONFIRMED"
+    }
+  ]
+}

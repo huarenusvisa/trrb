@@ -1,0 +1,33 @@
+appId: net.trrb.mobile
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible:
+      id: "home-search-button"
+    timeout: 30000
+- tapOn:
+    id: "home-search-button"
+    retryTapIfNoChange: true
+- extendedWaitUntil:
+    visible:
+      id: "search-screen"
+    timeout: 20000
+- extendedWaitUntil:
+    visible:
+      id: "search-input"
+    timeout: 15000
+- tapOn:
+    id: "search-input"
+- inputText: "特朗普"
+- tapOn:
+    id: "search-submit"
+    retryTapIfNoChange: true
+- extendedWaitUntil:
+    visible:
+      id: "search-results"
+    timeout: 20000
+- assertVisible:
+    id: "category-screen-title"
+- assertVisible:
+    id: "category-news-list"

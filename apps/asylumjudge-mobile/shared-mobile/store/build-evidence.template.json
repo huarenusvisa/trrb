@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "REPLACE_WITH_FULL_40_CHARACTER_GIT_COMMIT_SHA",
+  "releaseCandidateSha256": "REPLACE_WITH_RELEASE_CANDIDATE_FILE_SHA256",
+  "application": {
+    "slug": "trrb",
+    "projectId": "cc29573d-d20c-4c3b-a7d6-1bc74838127a",
+    "version": "0.2.0",
+    "runtimeVersion": "0.2.0",
+    "ios": { "bundleIdentifier": "com.tangrenribao.iosapp" },
+    "android": { "package": "net.trrb.mobile" }
+  },
+  "builds": [
+    {
+      "platform": "ios",
+      "easBuildId": "REPLACE_WITH_EAS_BUILD_UUID",
+      "profile": "production",
+      "status": "finished",
+      "distribution": "store",
+      "channel": "production",
+      "artifactType": "ipa",
+      "sourceCommit": "REPLACE_WITH_FULL_40_CHARACTER_GIT_COMMIT_SHA",
+      "appVersion": "0.2.0",
+      "runtimeVersion": "0.2.0",
+      "nativeBuildVersion": "REPLACE_WITH_BUILD_NUMBER",
+      "createdAt": "REPLACE_WITH_ISO_TIMESTAMP",
+      "completedAt": "REPLACE_WITH_ISO_TIMESTAMP"
+    },
+    {
+      "platform": "android",
+      "easBuildId": "REPLACE_WITH_EAS_BUILD_UUID",
+      "profile": "production",
+      "status": "finished",
+      "distribution": "store",
+      "channel": "production",
+      "artifactType": "aab",
+      "sourceCommit": "REPLACE_WITH_FULL_40_CHARACTER_GIT_COMMIT_SHA",
+      "appVersion": "0.2.0",
+      "runtimeVersion": "0.2.0",
+      "nativeBuildVersion": "REPLACE_WITH_VERSION_CODE",
+      "createdAt": "REPLACE_WITH_ISO_TIMESTAMP",
+      "completedAt": "REPLACE_WITH_ISO_TIMESTAMP"
+    }
+  ]
+}

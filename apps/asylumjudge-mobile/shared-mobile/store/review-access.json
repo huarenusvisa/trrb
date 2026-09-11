@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "status": "ready-for-console-credentials",
+  "authentication": {
+    "guestBrowsingAvailable": true,
+    "loginPath": "My tab > Sign in",
+    "identifierType": "email-or-phone",
+    "reviewAccount": {
+      "provisioning": "pre-created-unified-account",
+      "storage": "apple-and-google-store-consoles-only",
+      "repositoryAllowed": false,
+      "mustNotExpire": true,
+      "requiresOtpOrMfa": false,
+      "requiresSubscription": false,
+      "requiresExternalHardware": false
+    }
+  },
+  "reviewFlows": [
+    {
+      "id": "guest-news",
+      "access": "guest",
+      "instructions": "Launch the app and browse Home, U.S., Immigration and Legal Updates without signing in.",
+      "evidence": ["app/(tabs)/index.tsx", "app/(tabs)/profile.tsx"]
+    },
+    {
+      "id": "unified-account",
+      "access": "review-account",
+      "instructions": "Open My, tap Sign in, then enter the review identifier and password supplied in the store console.",
+      "evidence": ["app/auth.tsx#auth-identifier", "app/auth.tsx#auth-password", "app/auth.tsx#auth-submit"]
+    },
+    {
+      "id": "community-and-comments",
+      "access": "review-account",
+      "instructions": "Open Community to create a post or comment, or open a news article to comment, reply, like and report.",
+      "evidence": ["app/community.tsx#community-compose", "app/community-compose.tsx#community-submit", "src/components/CommentThread.tsx#news-comment-submit"]
+    },
+    {
+      "id": "cloud-library",
+      "access": "review-account",
+      "instructions": "Save an article, then open My > Favorites or My > Reading history to verify cloud synchronization.",
+      "evidence": ["app/favorites.tsx#favorites-sync-status", "app/history.tsx#history-sync-status"]
+    },
+    {
+      "id": "push-notifications",
+      "access": "review-account",
+      "instructions": "Open My > Push notifications and explicitly enable this device. The system permission prompt is never shown on first launch.",
+      "evidence": ["app/push-settings.tsx#push-device-toggle", "app/push-settings.tsx#push-device-status"]
+    },
+    {
+      "id": "account-deletion",
+      "access": "review-account",
+      "instructions": "Open My > Account and privacy > Delete account. The final destructive action requires typing DELETE and permanently removes the signed-in account.",
+      "evidence": ["app/profile-settings.tsx", "app/delete-account.tsx"]
+    }
+  ],
+  "storeConsoleFields": {
+    "apple": "App Review Information > Sign-in information and Notes",
+    "google": "Policy and programs > App content > App access"
+  }
+}

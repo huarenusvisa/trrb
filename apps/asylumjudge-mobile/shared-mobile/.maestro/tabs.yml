@@ -1,0 +1,38 @@
+appId: net.trrb.mobile
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible:
+      id: "tab-america"
+    timeout: 30000
+- tapOn:
+    id: "tab-america"
+    retryTapIfNoChange: true
+- extendedWaitUntil:
+    visible:
+      id: "screen-america"
+    timeout: 30000
+- tapOn:
+    id: "tab-immigration"
+    retryTapIfNoChange: true
+- extendedWaitUntil:
+    visible:
+      id: "screen-immigration"
+    timeout: 20000
+- tapOn:
+    id: "tab-legal"
+    retryTapIfNoChange: true
+- extendedWaitUntil:
+    visible:
+      id: "screen-legal"
+    timeout: 30000
+- tapOn:
+    id: "tab-profile"
+    retryTapIfNoChange: true
+- extendedWaitUntil:
+    visible:
+      id: "screen-profile"
+    timeout: 20000
+- assertVisible:
+    id: "tab-profile"

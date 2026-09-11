@@ -1,0 +1,106 @@
+appId: net.trrb.mobile
+name: Community lifecycle with marked content cleanup
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible:
+      id: "tab-profile"
+    timeout: 30000
+- tapOn:
+    id: "tab-profile"
+    retryTapIfNoChange: true
+- extendedWaitUntil:
+    visible:
+      id: "profile-login"
+    timeout: 20000
+- tapOn:
+    id: "profile-login"
+- tapOn:
+    id: "auth-identifier"
+- inputText: ${MAESTRO_TEST_ACCOUNT_IDENTIFIER}
+- tapOn:
+    id: "auth-password"
+- inputText: ${MAESTRO_TEST_ACCOUNT_PASSWORD}
+- tapOn:
+    id: "auth-submit"
+- extendedWaitUntil:
+    visible: "注册成功|登录成功"
+    timeout: 30000
+- tapOn: "继续"
+- extendedWaitUntil:
+    visible:
+      id: "open-community"
+    timeout: 20000
+- tapOn:
+    id: "open-community"
+    retryTapIfNoChange: true
+- extendedWaitUntil:
+    visible:
+      id: "community-screen"
+    timeout: 30000
+- tapOn:
+    id: "community-compose"
+- extendedWaitUntil:
+    visible:
+      id: "community-title-input"
+    timeout: 15000
+- tapOn:
+    id: "community-title-input"
+- inputText: "【TRRB-E2E-${MAESTRO_TEST_CONTENT_SUFFIX}】社区闭环测试"
+- tapOn:
+    id: "community-content-input"
+- inputText: "TRRB 自动化测试内容，无真实用户信息；本帖将在流程结束后立即下架。"
+- tapOn:
+    id: "community-privacy-confirm"
+- tapOn:
+    id: "community-submit"
+- extendedWaitUntil:
+    visible: "【TRRB-E2E-${MAESTRO_TEST_CONTENT_SUFFIX}】社区闭环测试"
+    timeout: 30000
+- tapOn: "【TRRB-E2E-${MAESTRO_TEST_CONTENT_SUFFIX}】社区闭环测试"
+- extendedWaitUntil:
+    visible:
+      id: "community-post-detail"
+    timeout: 20000
+- tapOn:
+    id: "community-like"
+- extendedWaitUntil:
+    visible: "已点赞。"
+    timeout: 15000
+- scrollUntilVisible:
+    element:
+      id: "community-comment-input"
+    direction: DOWN
+    timeout: 20000
+- tapOn:
+    id: "community-comment-input"
+- inputText: "TRRB-E2E 自动化评论，测试完成后随帖子下架。"
+- tapOn:
+    id: "community-comment-submit"
+- extendedWaitUntil:
+    visible: "评论发布成功。"
+    timeout: 20000
+- scrollUntilVisible:
+    element:
+      id: "community-report"
+    direction: UP
+    timeout: 20000
+- tapOn:
+    id: "community-report"
+- tapOn:
+    id: "community-report-reason"
+- inputText: "TRRB-E2E 自动化举报测试"
+- tapOn:
+    id: "community-report-submit"
+- extendedWaitUntil:
+    visible: "举报已提交，管理员会进行审核。"
+    timeout: 15000
+- tapOn:
+    id: "community-unpublish"
+- tapOn: "确定下架"
+- extendedWaitUntil:
+    visible:
+      id: "community-screen"
+    timeout: 20000
+- assertNotVisible: "【TRRB-E2E-${MAESTRO_TEST_CONTENT_SUFFIX}】社区闭环测试"

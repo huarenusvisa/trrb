@@ -1,0 +1,82 @@
+{
+  "expo": {
+    "name": "唐人日报",
+    "slug": "trrb",
+    "scheme": "trrb",
+    "version": "1.1.0",
+    "icon": "./assets/app-icon-1024.png",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "plugins": [
+      "expo-router",
+      "expo-notifications",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "允许唐人日报访问照片和视频，用于设置头像、主页背景和发布个人动态。",
+          "cameraPermission": false,
+          "microphonePermission": false
+        }
+      ],
+      [
+        "expo-audio",
+        {
+          "microphonePermission": "允许唐人日报使用麦克风发送语音消息。",
+          "enableBackgroundRecording": false,
+          "enableBackgroundPlayback": false
+        }
+      ]
+    ],
+    "experiments": { "typedRoutes": true, "reactCompiler": true },
+    "updates": {
+      "url": "https://u.expo.dev/cc29573d-d20c-4c3b-a7d6-1bc74838127a"
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.tangrenribao.iosapp",
+      "buildNumber": "7",
+      "privacyManifests": {
+        "NSPrivacyTracking": false,
+        "NSPrivacyTrackingDomains": [],
+        "NSPrivacyAccessedAPITypes": [
+          {
+            "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategoryFileTimestamp",
+            "NSPrivacyAccessedAPITypeReasons": ["0A2A.1", "3B52.1", "C617.1"]
+          },
+          {
+            "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategoryDiskSpace",
+            "NSPrivacyAccessedAPITypeReasons": ["85F4.1", "E174.1"]
+          },
+          {
+            "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategorySystemBootTime",
+            "NSPrivacyAccessedAPITypeReasons": ["35F9.1"]
+          },
+          {
+            "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategoryUserDefaults",
+            "NSPrivacyAccessedAPITypeReasons": ["CA92.1"]
+          }
+        ]
+      },
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
+    },
+    "android": {
+      "package": "net.trrb.mobile",
+      "versionCode": 4,
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/app-icon-1024.png",
+        "backgroundColor": "#ffffff"
+      },
+      "predictiveBackGestureEnabled": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "cc29573d-d20c-4c3b-a7d6-1bc74838127a"
+      }
+    }
+  }
+}

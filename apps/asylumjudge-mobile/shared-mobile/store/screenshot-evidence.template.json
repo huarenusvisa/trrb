@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "REPLACE_WITH_FULL_40_CHARACTER_GIT_COMMIT",
+  "appVersion": "0.2.0",
+  "locale": "zh-CN",
+  "capturedAt": "2026-09-08T00:00:00.000Z",
+  "sets": [
+    {
+      "id": "app-store-iphone69",
+      "deviceClass": "iphone-6.9",
+      "directory": "store/app-store/screenshots/iphone-6.9",
+      "screenshots": [
+        { "name": "01-home", "width": 1290, "height": 2796, "sha256": "REPLACE_WITH_SHA256" },
+        { "name": "02-america", "width": 1290, "height": 2796, "sha256": "REPLACE_WITH_SHA256" },
+        { "name": "03-immigration", "width": 1290, "height": 2796, "sha256": "REPLACE_WITH_SHA256" },
+        { "name": "04-legal", "width": 1290, "height": 2796, "sha256": "REPLACE_WITH_SHA256" },
+        { "name": "05-community", "width": 1290, "height": 2796, "sha256": "REPLACE_WITH_SHA256" }
+      ]
+    },
+    {
+      "id": "app-store-ipad13",
+      "deviceClass": "ipad-13",
+      "directory": "store/app-store/screenshots/ipad-13",
+      "screenshots": [
+        { "name": "01-home", "width": 2048, "height": 2732, "sha256": "REPLACE_WITH_SHA256" },
+        { "name": "02-america", "width": 2048, "height": 2732, "sha256": "REPLACE_WITH_SHA256" },
+        { "name": "03-immigration", "width": 2048, "height": 2732, "sha256": "REPLACE_WITH_SHA256" },
+        { "name": "04-legal", "width": 2048, "height": 2732, "sha256": "REPLACE_WITH_SHA256" },
+        { "name": "05-community", "width": 2048, "height": 2732, "sha256": "REPLACE_WITH_SHA256" }
+      ]
+    },
+    {
+      "id": "google-play-phone",
+      "deviceClass": "android-phone",
+      "directory": "store/google-play/screenshots/phone",
+      "screenshots": [
+        { "name": "01-home", "width": 1080, "height": 1920, "sha256": "REPLACE_WITH_SHA256" },
+        { "name": "02-america", "width": 1080, "height": 1920, "sha256": "REPLACE_WITH_SHA256" },
+        { "name": "03-immigration", "width": 1080, "height": 1920, "sha256": "REPLACE_WITH_SHA256" },
+        { "name": "04-legal", "width": 1080, "height": 1920, "sha256": "REPLACE_WITH_SHA256" },
+        { "name": "05-community", "width": 1080, "height": 1920, "sha256": "REPLACE_WITH_SHA256" }
+      ]
+    }
+  ]
+}

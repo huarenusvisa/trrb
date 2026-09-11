@@ -248,7 +248,7 @@ function AsylumJudgeApp() {
           allowsInlineMediaPlayback
           setSupportMultipleWindows={false}
           startInLoadingState
-          applicationNameForUserAgent="AsylumJudgeMobile/1.0.2"
+          applicationNameForUserAgent="AsylumJudgeMobile/1.0.3"
           injectedJavaScriptBeforeContentLoaded={NATIVE_APP_SCRIPT}
           onLoadStart={() => setFailed(false)}
           onLoadProgress={({ nativeEvent }) => setLoadProgress(nativeEvent.progress)}

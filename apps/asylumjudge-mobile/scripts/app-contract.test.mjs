@@ -27,7 +27,7 @@ test('connects each tab to its production route', () => {
 });
 
 test('renders the complete Tang Daily native profile and shared account stack', () => {
-  assert.match(app, /ProfileScreen from '..\/mobile\/app\/\(tabs\)\/profile'/);
+  assert.match(app, /ProfileScreen from '.\/shared-mobile\/app\/\(tabs\)\/profile'/);
   const pkg = JSON.parse(readFileSync(new URL('../package.json', import.meta.url), 'utf8'));
   assert.equal(pkg.main, 'expo-router/entry');
   assert.ok(pkg.dependencies['@supabase/supabase-js']);

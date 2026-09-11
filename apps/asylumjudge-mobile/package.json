@@ -33,7 +33,7 @@
     "react-dom": "19.2.3",
     "react-native": "0.86.3",
     "react-native-safe-area-context": "~5.7.0",
-    "react-native-screens": "4.27.0",
+    "react-native-screens": "4.26.0",
     "react-native-url-polyfill": "^2.0.0",
     "react-native-web": "~0.21.0",
     "react-native-webview": "13.16.1"
@@ -41,5 +41,8 @@
   "devDependencies": {
     "@types/react": "~19.2.2",
     "typescript": "~6.0.3"
+  },
+  "overrides": {
+    "react-native-screens": "4.26.0"
   }
 }

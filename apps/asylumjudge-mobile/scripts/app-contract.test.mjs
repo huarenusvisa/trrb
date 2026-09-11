@@ -22,6 +22,13 @@ test('keeps AsylumJudge and Tang Daily navigation inside the app', () => {
   assert.match(app, /Linking\.openURL/);
 });
 
+test('uses the same compact mobile community mode as the Tang Daily app', () => {
+  assert.match(app, /COMMUNITY_COMPACT_SCRIPT/);
+  assert.match(app, /path === '\/community'/);
+  assert.match(app, /'app-embedded'/);
+  assert.match(app, /injectedJavaScriptBeforeContentLoaded=\{COMMUNITY_COMPACT_SCRIPT\}/);
+});
+
 test('keeps the existing product identity and increments the release', () => {
   assert.equal(config.expo.owner, 'tang-daily-llc');
   assert.equal(config.expo.extra.eas.projectId, '4443f235-79a2-4508-afe3-736331b9ae7b');

@@ -6,7 +6,7 @@ import { fetchArticles, fetchHomepageFocus, homepageSupplementGaps, NewsArticle,
 import { NewsImage, prefetchNewsImages } from '../../src/components/NewsImage';
 import { useForegroundRetry } from '../../src/hooks/useForegroundRetry';
 import { useI18n } from '../../src/i18n/I18nProvider';
-import { localeDateTag, MessageKey } from '../../src/i18n/i18n-core';
+import { localeDateTag, MessageKey, SupportedLocale } from '../../src/i18n/i18n-core';
 import { cacheHomeFeed, readCachedHomeFeedEnvelope } from '../../src/storage/newsFeedCache';
 import { isNewsFeedCacheStale } from '../../src/storage/news-feed-cache-core';
 
@@ -18,6 +18,11 @@ const HOME_NAV_ITEMS = [
   { category: '招聘求职', labelKey: 'home.navJobs', route: '/jobs' },
   { category: 'ICE执法动态', labelKey: 'home.navIce' },
 ] as const satisfies ReadonlyArray<{ category: string; labelKey: MessageKey; route?: '/jobs' }>;
+const ONBOARDING_LANGUAGES: { locale: SupportedLocale; label: string }[] = [
+  { locale: 'zh-CN', label: '简体' },
+  { locale: 'zh-TW', label: '繁體' },
+  { locale: 'en', label: 'EN' },
+];
 const rankCategories = new Set(['热门头条', '中国热门头条', '美国时政', '美国警情', 'ICE执法动态', 'ICE执法', 'ICE执法追踪', 'ICE新闻', '驱逐快报']);
 
 const newsSections = [
@@ -148,7 +153,7 @@ function isHiddenHomepageCategory(category?: string) {
 }
 
 export default function HomeScreen() {
-  const { locale, t } = useI18n();
+  const { languageChoicePending, locale, setPreference, t } = useI18n();
   const insets = useSafeAreaInsets();
   const { width } = useWindowDimensions();
   const carouselRef = useRef<ScrollView>(null);
@@ -395,6 +400,12 @@ export default function HomeScreen() {
           if (next !== showStickyBrand) setShowStickyBrand(next);
         }}
       >
+        {languageChoicePending ? <View testID="home-language-picker" accessibilityRole="radiogroup" style={styles.languagePicker}>
+          {ONBOARDING_LANGUAGES.map((option) => {
+            const selected = option.locale === locale;
+            return <Pressable key={option.locale} testID={`home-language-${option.locale}`} accessibilityRole="radio" accessibilityLabel={option.label} accessibilityState={{ selected }} onPress={() => void setPreference(option.locale)} style={[styles.languageOption, selected && styles.languageOptionActive]}><Text style={[styles.languageOptionText, selected && styles.languageOptionTextActive]}>{option.label}</Text></Pressable>;
+          })}
+        </View> : null}
         <View style={styles.utilityRow}>
           <View style={styles.utilityCell}><Text style={styles.utilityIcon}>📍</Text><Text style={styles.utilityText}>{t('home.locationNewYork')}</Text></View>
           <Text style={styles.utilityDate}>{dateLabel}</Text>
@@ -632,6 +643,11 @@ const styles = StyleSheet.create({
   utilityText: { fontSize: 11, color: '#667085', fontWeight: '600' },
   utilityDate: { flex: 1, textAlign: 'center', fontSize: 11, color: '#98a2b3' },
   utilityWeather: { flex: 1, flexDirection: 'row', gap: 4, justifyContent: 'flex-end', alignItems: 'center' },
+  languagePicker: { alignSelf: 'flex-end', flexDirection: 'row', padding: 3, borderWidth: 1, borderColor: '#d0d5dd', borderRadius: 999, backgroundColor: '#fff', marginBottom: 12 },
+  languageOption: { minWidth: 52, minHeight: 40, paddingHorizontal: 10, alignItems: 'center', justifyContent: 'center', borderRadius: 999 },
+  languageOptionActive: { backgroundColor: '#c8211e' },
+  languageOptionText: { color: '#667085', fontSize: 13, fontWeight: '900' },
+  languageOptionTextActive: { color: '#fff' },
   brandRow: { marginTop: 15, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   brand: { color: '#b51d1a', fontSize: 29, lineHeight: 34, fontWeight: '900', letterSpacing: 1 },
   brandEn: { color: '#344054', fontSize: 9, letterSpacing: 2.5, marginTop: 1, fontWeight: '700' },

@@ -53,7 +53,7 @@ expect(app.android?.package === 'net.trrb.mobile', 'Android package must be net.
 expect(app.runtimeVersion?.policy === 'appVersion', 'OTA runtimeVersion must follow appVersion');
 expect(/^https:\/\/u\.expo\.dev\/[0-9a-f-]{36}$/.test(app.updates?.url ?? ''), 'Expo Updates URL is invalid');
 expect(/^[0-9a-f-]{36}$/.test(app.extra?.eas?.projectId ?? ''), 'EAS projectId is invalid');
-expect(eas.cli?.appVersionSource === 'local', 'EAS appVersionSource must be local');
+expect(eas.cli?.appVersionSource === 'remote', 'EAS appVersionSource must be remote for continuous production build numbers');
 expect(eas.build?.production?.channel === 'production', 'Production build must use the production update channel');
 expect(eas.build?.production?.credentialsSource === 'remote', 'Production credentials must be managed remotely by EAS');
 expect(eas.build?.production?.autoIncrement === true, 'Production build must auto-increment native build versions');

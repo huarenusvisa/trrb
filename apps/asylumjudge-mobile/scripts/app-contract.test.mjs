@@ -33,8 +33,12 @@ test('renders the complete Tang Daily native profile and shared account stack', 
   assert.ok(pkg.dependencies['@supabase/supabase-js']);
   assert.ok(pkg.dependencies['@react-native-async-storage/async-storage']);
   assert.equal(pkg.dependencies['expo-asset'], '~57.0.16');
+  assert.equal(pkg.dependencies['react-native-reanimated'], '4.5.1');
   assert.equal(pkg.dependencies['react-native-screens'], '4.26.0');
+  assert.equal(pkg.dependencies['react-native-worklets'], '0.10.1');
+  assert.equal(pkg.overrides['react-native-reanimated'], '4.5.1');
   assert.equal(pkg.overrides['react-native-screens'], '4.26.0');
+  assert.equal(pkg.overrides['react-native-worklets'], '0.10.1');
 });
 
 test('ships clean shared localization source', () => {

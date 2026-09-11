@@ -88,14 +88,48 @@ jobs:
           if (app.name !== '唐人日报' || app.slug !== 'trrb') {
             throw new Error('This workflow can only release the 唐人日报 / trrb Expo project.');
           }
-          console.log(`Verified 唐人日报 iOS ${app.version} (${app.ios.buildNumber}); EAS will apply production autoIncrement.`);
+          if (eas.cli?.appVersionSource !== 'remote') {
+            throw new Error('Tang Daily production releases must use the remote EAS build-number source.');
+          }
+          console.log(`Verified 唐人日报 iOS ${app.version}; EAS will apply remote production autoIncrement.`);
           NODE
           npm run config:check
 
+      - name: Preflight Tang Daily iOS JavaScript bundle
+        run: npx expo export --platform ios --output-dir /tmp/tang-daily-ios-preflight --clear
+
       - name: Build Tang Daily iOS
+        id: eas_build
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.release_action == 'build-only' }}
-        run: eas build --platform ios --profile production --non-interactive
+        run: eas build --platform ios --profile production --non-interactive --verbose-logs
 
       - name: Build and upload Tang Daily iOS
+        id: eas_release
         if: ${{ github.event_name == 'push' || inputs.release_action == 'build-and-upload' }}
-        run: eas build --platform ios --profile production --non-interactive --auto-submit
+        run: eas build --platform ios --profile production --non-interactive --auto-submit --verbose-logs
+
+      - name: Print detailed EAS logs after a cloud build failure
+        if: ${{ failure() && (steps.eas_build.outcome == 'failure' || steps.eas_release.outcome == 'failure') }}
+        run: |
+          eas build:list --platform ios --limit 1 --json --non-interactive > /tmp/tang-daily-latest-build.json
+          node - <<'NODE' > /tmp/tang-daily-log-urls.txt
+          const fs = require('node:fs');
+          const builds = JSON.parse(fs.readFileSync('/tmp/tang-daily-latest-build.json', 'utf8'));
+          const build = builds[0];
+          if (!build) {
+            throw new Error('EAS returned no recent Tang Daily iOS build.');
+          }
+          console.error(JSON.stringify({
+            id: build.id,
+            status: build.status,
+            appVersion: build.appVersion,
+            appBuildVersion: build.appBuildVersion,
+            error: build.error
+          }, null, 2));
+          for (const url of build.logFiles ?? []) {
+            console.log(url);
+          }
+          NODE
+          while IFS= read -r log_url; do
+            curl --fail --silent --show-error "$log_url" || true
+          done < /tmp/tang-daily-log-urls.txt

@@ -17,8 +17,7 @@ import ProfileCompose from '../shared-mobile/app/profile-compose';
 import ProfileSettings from '../shared-mobile/app/profile-settings';
 import PushSettings from '../shared-mobile/app/push-settings';
 import UserSearch from '../shared-mobile/app/user-search';
-import Followers from '../shared-mobile/app/connections/followers';
-import Following from '../shared-mobile/app/connections/following';
+import Connections from '../shared-mobile/app/connections/[type]';
 import Article from '../shared-mobile/app/article/[id]';
 import Chat from '../shared-mobile/app/chat/[id]';
 import CommunityPost from '../shared-mobile/app/community/[id]';
@@ -42,8 +41,8 @@ const ROUTES: Record<string, React.ComponentType> = {
   '/profile-settings': ProfileSettings,
   '/push-settings': PushSettings,
   '/user-search': UserSearch,
-  '/connections/followers': Followers,
-  '/connections/following': Following,
+  '/connections/followers': Connections,
+  '/connections/following': Connections,
 };
 
 export default function SharedTangDailyRoute() {

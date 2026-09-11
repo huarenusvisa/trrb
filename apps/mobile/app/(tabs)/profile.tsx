@@ -90,12 +90,12 @@ export default function ProfileScreen() {
   };
 
   return <ScrollView testID="screen-profile" style={styles.page} contentContainerStyle={styles.pageContent}>
-    <View testID="quick-language-picker" accessibilityRole="radiogroup" style={styles.languagePicker}>
+    {session ? <View testID="quick-language-picker" accessibilityRole="radiogroup" style={styles.languagePicker}>
       {QUICK_LANGUAGES.map((option) => {
         const selected = option.locale === locale;
         return <Pressable key={option.locale} testID={`quick-language-${option.locale}`} accessibilityRole="radio" accessibilityLabel={option.label} accessibilityState={{ selected }} onPress={() => void setPreference(option.locale)} style={[styles.languageOption, selected && styles.languageOptionActive]}><Text style={[styles.languageOptionText, selected && styles.languageOptionTextActive]}>{option.label}</Text></Pressable>;
       })}
-    </View>
+    </View> : null}
     {loading ? <ActivityIndicator style={styles.loader} color="#c8211e" /> : session && profile ? <>
       <ProfileHero profile={profile} followers={counts.followers} following={counts.following} account={t('profile.loggedIn', { account: accountLabel(session.user) })} own onEdit={() => router.push('/profile-settings')} onFollowers={() => router.push({ pathname: '/connections/followers', params: { userId: profile.id } })} onFollowing={() => router.push({ pathname: '/connections/following', params: { userId: profile.id } })} />
       <View style={styles.primaryActions}>

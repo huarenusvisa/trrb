@@ -16,6 +16,7 @@ function systemLocale(): string {
 type I18nContextValue = {
   locale: SupportedLocale;
   preference: LocalePreference;
+  languageChoicePending: boolean;
   setPreference: (preference: LocalePreference) => Promise<void>;
   t: (key: MessageKey, params?: Record<string, string | number>) => string;
 };
@@ -24,13 +25,18 @@ const I18nContext = createContext<I18nContextValue | null>(null);
 
 export function I18nProvider({ children }: { children: ReactNode }) {
   const [preference, setPreferenceState] = useState<LocalePreference>('zh-CN');
+  const [languageChoicePending, setLanguageChoicePending] = useState(false);
   const [detectedLocale, setDetectedLocale] = useState(systemLocale);
 
   useEffect(() => {
     let mounted = true;
     void AsyncStorage.getItem(STORAGE_KEY).then((stored) => {
-      if (mounted) setPreferenceState(normalizeLocalePreference(stored));
-    }).catch(() => {});
+      if (!mounted) return;
+      setPreferenceState(normalizeLocalePreference(stored));
+      setLanguageChoicePending(stored === null);
+    }).catch(() => {
+      if (mounted) setLanguageChoicePending(true);
+    });
     return () => { mounted = false; };
   }, []);
 
@@ -45,6 +51,7 @@ export function I18nProvider({ children }: { children: ReactNode }) {
   const setPreference = useCallback(async (next: LocalePreference) => {
     const safePreference = normalizeLocalePreference(next);
     setPreferenceState(safePreference);
+    setLanguageChoicePending(false);
     try {
       await AsyncStorage.setItem(STORAGE_KEY, safePreference);
     } catch {
@@ -56,9 +63,10 @@ export function I18nProvider({ children }: { children: ReactNode }) {
   const value = useMemo<I18nContextValue>(() => ({
     locale,
     preference,
+    languageChoicePending,
     setPreference,
     t: (key, params) => translate(locale, key, params),
-  }), [locale, preference, setPreference]);
+  }), [languageChoicePending, locale, preference, setPreference]);
 
   return <I18nContext.Provider value={value}>{children}</I18nContext.Provider>;
 }

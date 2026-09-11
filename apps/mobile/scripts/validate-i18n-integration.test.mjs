@@ -7,6 +7,7 @@ const read = (path) => fs.readFileSync(new URL(`../${path}`, import.meta.url), '
 test('wires persisted language selection through root, tabs and profile', () => {
   const root = read('app/_layout.tsx');
   const tabs = read('app/(tabs)/_layout.tsx');
+  const home = read('app/(tabs)/index.tsx');
   const profile = read('app/(tabs)/profile.tsx');
   const settings = read('app/language-settings.tsx');
   const provider = read('src/i18n/I18nProvider.tsx');
@@ -17,9 +18,13 @@ test('wires persisted language selection through root, tabs and profile', () => 
   }
   assert.match(profile, /testID="open-language-settings"/);
   assert.match(profile, /testID="quick-language-picker"/);
+  assert.match(profile, /\{session \? <View testID="quick-language-picker"/);
+  assert.match(home, /languageChoicePending \? <View testID="home-language-picker"/);
   for (const locale of ['zh-CN', 'zh-TW', 'en']) {
-    assert.ok(profile.includes(`{ locale: '${locale}'`), `guest profile must expose ${locale}`);
+    assert.ok(home.includes(`{ locale: '${locale}'`), `first-run home must expose ${locale}`);
+    assert.ok(profile.includes(`{ locale: '${locale}'`), `signed-in profile must expose ${locale}`);
   }
+  assert.match(home, /testID=\{`home-language-\$\{option\.locale\}`\}/);
   assert.match(profile, /testID=\{`quick-language-\$\{option\.locale\}`\}/);
   assert.match(profile, /router\.push\('\/language-settings'\)/);
   for (const preference of ['system', 'zh-CN', 'zh-TW', 'en']) {
@@ -27,6 +32,8 @@ test('wires persisted language selection through root, tabs and profile', () => 
   }
   assert.match(provider, /AsyncStorage\.getItem\(STORAGE_KEY\)/);
   assert.match(provider, /AsyncStorage\.setItem\(STORAGE_KEY, safePreference\)/);
+  assert.match(provider, /setLanguageChoicePending\(stored === null\)/);
+  assert.match(provider, /setLanguageChoicePending\(false\)/);
   assert.match(provider, /AppState\.addEventListener\('change'/);
   assert.match(provider, /useState<LocalePreference>\('zh-CN'\)/);
 });

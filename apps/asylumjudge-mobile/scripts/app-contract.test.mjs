@@ -6,7 +6,7 @@ const app = readFileSync(new URL('../App.tsx', import.meta.url), 'utf8');
 const config = JSON.parse(readFileSync(new URL('../app.json', import.meta.url), 'utf8'));
 
 test('renders the required native bottom navigation in the exact product order', () => {
-  const orderedLabels = ['法院数据', '社区', 'BIA裁决', '庇护知识', '我的'];
+  const orderedLabels = ['移民法院数据', '社区', 'BIA裁决', '庇护知识', '我的中心'];
   let cursor = -1;
   for (const label of orderedLabels) {
     const next = app.indexOf(`label: '${label}'`);

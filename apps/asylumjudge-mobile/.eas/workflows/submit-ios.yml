@@ -1,0 +1,10 @@
+name: Submit AsylumJudge iOS build 2
+
+jobs:
+  submit_ios:
+    name: Upload AsylumJudge to App Store Connect
+    type: submit
+    environment: production
+    params:
+      build_id: d8576021-7d15-481c-bada-53d09eba76a3
+      profile: production

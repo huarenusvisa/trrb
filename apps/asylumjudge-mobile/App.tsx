@@ -3,6 +3,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { BackHandler, Linking, Platform, Pressable, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { WebView, type WebViewNavigation } from 'react-native-webview';
+import ProfileScreen from '../mobile/app/(tabs)/profile';
 
 type TabKey = 'data' | 'community' | 'bia' | 'knowledge' | 'profile';
 
@@ -68,6 +69,13 @@ const NATIVE_APP_SCRIPT = `
   const path = window.location.pathname.replace(/\\/+$/, '') || '/';
   const params = new URLSearchParams(window.location.search);
   root.classList.add('asylumjudge-native-app');
+  if (!document.querySelector('meta[name="viewport"]')) {
+    const viewport = document.createElement('meta');
+    viewport.name = 'viewport';
+    viewport.content = 'width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover';
+    document.head.appendChild(viewport);
+  }
+  if (host === 'asylumjudge.com' || host === 'www.asylumjudge.com') root.classList.add('asylumjudge-data-home');
 
   if (path === '/community' || path === '/asylumjudge/community') {
     root.classList.add('app-embedded');
@@ -76,7 +84,27 @@ const NATIVE_APP_SCRIPT = `
   const style = document.createElement('style');
   style.id = 'asylumjudge-native-app-styles';
   style.textContent = \`
-    html.asylumjudge-native-app { background: #f4f8f5 !important; }
+    html.asylumjudge-native-app { background: #f4f8f5 !important; -webkit-text-size-adjust: 100% !important; overscroll-behavior-y: contain; }
+    html.asylumjudge-native-app body { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", sans-serif !important; -webkit-font-smoothing: antialiased; }
+    html.asylumjudge-native-app a, html.asylumjudge-native-app button, html.asylumjudge-native-app select { touch-action: manipulation; }
+    html.asylumjudge-native-app a:active, html.asylumjudge-native-app button:active { opacity: .76 !important; transform: scale(.985); }
+    html.asylumjudge-native-app input, html.asylumjudge-native-app select { font-size: 16px !important; }
+    html.asylumjudge-native-app.asylumjudge-data-home main { padding-top: 10px !important; }
+    html.asylumjudge-native-app.asylumjudge-data-home section { scroll-margin-top: 12px; }
+    html.asylumjudge-native-app.asylumjudge-data-home .site-header:has(.brand-lockup) { box-shadow: 0 1px 0 rgba(20,128,74,.10) !important; }
+    html.asylumjudge-native-app.asylumjudge-data-home .card,
+    html.asylumjudge-native-app.asylumjudge-data-home .panel { border-radius: 16px !important; }
+    @media (max-width: 520px) {
+      html.asylumjudge-native-app.asylumjudge-data-home .site-header:has(.brand-lockup) .header-inner { min-height: 60px !important; padding: 7px 12px !important; }
+      html.asylumjudge-native-app.asylumjudge-data-home .site-header:has(.brand-lockup) .brand-lockup { max-width: 184px !important; }
+      html.asylumjudge-native-app.asylumjudge-data-home main,
+      html.asylumjudge-native-app.asylumjudge-data-home .container,
+      html.asylumjudge-native-app.asylumjudge-data-home .shell { padding-left: 10px !important; padding-right: 10px !important; }
+      html.asylumjudge-native-app.asylumjudge-data-home .card,
+      html.asylumjudge-native-app.asylumjudge-data-home .panel { padding: 16px !important; margin-bottom: 12px !important; }
+      html.asylumjudge-native-app.asylumjudge-data-home h1 { font-size: 26px !important; line-height: 1.18 !important; }
+      html.asylumjudge-native-app.asylumjudge-data-home h2 { font-size: 20px !important; line-height: 1.25 !important; }
+    }
     html.asylumjudge-native-app body { min-width: 0 !important; overflow-x: hidden !important; }
     html.asylumjudge-native-app * { -webkit-tap-highlight-color: transparent; }
     html.asylumjudge-native-app button,
@@ -193,6 +221,9 @@ function AsylumJudgeApp() {
       <StatusBar style="dark" backgroundColor="#ffffff" />
 
       <View style={styles.content}>
+        {activeTab === 'profile' ? (
+          <ProfileScreen />
+        ) : <>
         {loadProgress > 0 && loadProgress < 1 ? (
           <View style={styles.progressTrack} accessibilityLabel="页面加载中">
             <View style={[styles.progressBar, { width: `${Math.max(8, loadProgress * 100)}%` }]} />
@@ -211,6 +242,9 @@ function AsylumJudgeApp() {
           thirdPartyCookiesEnabled
           allowsBackForwardNavigationGestures
           pullToRefreshEnabled
+          bounces
+          decelerationRate="fast"
+          contentInsetAdjustmentBehavior="never"
           allowsInlineMediaPlayback
           setSupportMultipleWindows={false}
           startInLoadingState
@@ -240,6 +274,7 @@ function AsylumJudgeApp() {
             </Pressable>
           </View>
         ) : null}
+        </>}
       </View>
 
       <View style={styles.tabBar} accessibilityRole="tablist">

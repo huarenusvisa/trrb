@@ -4,6 +4,7 @@ import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, 
 import { LocalePreference, MessageKey, normalizeLocalePreference, resolveLocale, SupportedLocale, translate } from './i18n-core';
 
 const STORAGE_KEY = 'trrb:interface-locale:v1';
+const LANGUAGE_ONBOARDING_STORAGE_KEY = 'trrb:language-onboarding-completed:v1';
 
 function systemLocale(): string {
   try {
@@ -30,10 +31,13 @@ export function I18nProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     let mounted = true;
-    void AsyncStorage.getItem(STORAGE_KEY).then((stored) => {
+    void Promise.all([
+      AsyncStorage.getItem(STORAGE_KEY),
+      AsyncStorage.getItem(LANGUAGE_ONBOARDING_STORAGE_KEY),
+    ]).then(([stored, onboardingCompleted]) => {
       if (!mounted) return;
       setPreferenceState(normalizeLocalePreference(stored));
-      setLanguageChoicePending(stored === null);
+      setLanguageChoicePending(onboardingCompleted !== 'true');
     }).catch(() => {
       if (mounted) setLanguageChoicePending(true);
     });
@@ -53,7 +57,10 @@ export function I18nProvider({ children }: { children: ReactNode }) {
     setPreferenceState(safePreference);
     setLanguageChoicePending(false);
     try {
-      await AsyncStorage.setItem(STORAGE_KEY, safePreference);
+      await AsyncStorage.multiSet([
+        [STORAGE_KEY, safePreference],
+        [LANGUAGE_ONBOARDING_STORAGE_KEY, 'true'],
+      ]);
     } catch {
       // Keep the current-session choice even when device storage is temporarily unavailable.
     }

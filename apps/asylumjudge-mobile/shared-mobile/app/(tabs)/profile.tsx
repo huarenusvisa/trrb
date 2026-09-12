@@ -105,7 +105,7 @@ export default function ProfileScreen() {
         return <Pressable key={option.locale} testID={`quick-language-${option.locale}`} accessibilityRole="radio" accessibilityLabel={option.label} accessibilityState={{ selected }} onPress={() => void setPreference(option.locale)} style={[styles.languageOption, selected && styles.languageOptionActive]}><Text style={[styles.languageOptionText, selected && styles.languageOptionTextActive]}>{option.label}</Text></Pressable>;
       })}
     </View>
-    {loading ? <ActivityIndicator style={styles.loader} color="#c8211e" /> : session && profile ? <>
+    {loading ? <ActivityIndicator style={styles.loader} color="#14804a" /> : session && profile ? <>
       <ProfileHero profile={profile} followers={counts.followers} following={counts.following} account={t('profile.loggedIn', { account: accountLabel(session.user) })} own onEdit={() => router.push('/profile-settings')} onFollowers={() => router.push({ pathname: '/connections/followers', params: { userId: profile.id } })} onFollowing={() => router.push({ pathname: '/connections/following', params: { userId: profile.id } })} />
       <View style={[styles.primaryActions, compact && styles.primaryActionsCompact]}>
         <Pressable accessibilityRole="button" style={styles.publish} onPress={() => router.push('/profile-compose')}><Text style={styles.publishIcon}>＋</Text><Text style={styles.publishText}>{t('profile.publishPost')}</Text></Pressable>
@@ -152,5 +152,49 @@ function Menu({ title, meta, onPress, last, testID }: { title: string; meta: str
 }
 
 const styles = StyleSheet.create({
-  page:{flex:1,backgroundColor:'#f5f6f8'},pageContent:{width:'100%',maxWidth:720,alignSelf:'center',paddingTop:12},languagePicker:{alignSelf:'flex-end',flexDirection:'row',padding:3,borderWidth:1,borderColor:'#d0d5dd',borderRadius:999,backgroundColor:'#fff',marginBottom:16},languageOption:{minWidth:52,minHeight:40,paddingHorizontal:10,alignItems:'center',justifyContent:'center',borderRadius:999},languageOptionActive:{backgroundColor:'#c8211e'},languageOptionText:{color:'#667085',fontSize:13,fontWeight:'900'},languageOptionTextActive:{color:'#fff'},loader:{marginVertical:40},h1:{fontSize:32,fontWeight:'900',color:'#101828'},sub:{color:'#667085',marginTop:6,marginBottom:18},warning:{backgroundColor:'#fff4e5',color:'#8a4b08',padding:12,borderRadius:10,marginBottom:12},primaryActions:{flexDirection:'row',gap:8,marginTop:14},primaryActionsCompact:{flexDirection:'column'},publish:{flex:1.08,minHeight:68,backgroundColor:'#c8211e',borderRadius:14,padding:13,alignItems:'center',justifyContent:'center'},publishIcon:{color:'#fff',fontSize:22,fontWeight:'500',lineHeight:22},publishText:{color:'#fff',fontWeight:'900',marginTop:3,textAlign:'center'},action:{flex:1,minHeight:68,backgroundColor:'#fff',borderRadius:14,padding:13,borderWidth:1,borderColor:'#eaecf0',justifyContent:'center'},actionTitle:{fontWeight:'900',color:'#101828'},actionMeta:{fontSize:12,lineHeight:17,color:'#98a2b3',marginTop:4},sectionHead:{flexDirection:'row',justifyContent:'space-between',alignItems:'center',marginTop:24,marginBottom:10,paddingHorizontal:3},sectionTitle:{fontSize:20,fontWeight:'900',color:'#101828'},sectionMeta:{color:'#98a2b3'},groupTitle:{fontSize:20,fontWeight:'900',color:'#101828',marginTop:26,marginBottom:10,paddingHorizontal:3},menuGroup:{backgroundColor:'#fff',borderRadius:16,borderWidth:1,borderColor:'#eaecf0',overflow:'hidden'},menu:{minHeight:64,paddingHorizontal:16,paddingVertical:13,flexDirection:'row',alignItems:'center',borderBottomWidth:1,borderBottomColor:'#f2f4f7'},menuLast:{borderBottomWidth:0},menuCopy:{flex:1,minWidth:0,paddingRight:10},menuTitle:{fontSize:17,lineHeight:22,fontWeight:'900',color:'#101828'},menuMeta:{color:'#667085',fontSize:13,lineHeight:19,marginTop:4},chevron:{fontSize:28,color:'#98a2b3'},fontCard:{backgroundColor:'#fff',borderRadius:16,padding:16,marginTop:12,borderWidth:1,borderColor:'#eaecf0'},cardTitle:{fontSize:17,fontWeight:'900',color:'#101828'},cardMeta:{color:'#667085',fontSize:13,lineHeight:19,marginTop:5},fontRow:{flexDirection:'row',gap:6,marginTop:14},fontRowCompact:{flexWrap:'wrap'},fontOption:{flex:1,minHeight:44,borderWidth:1,borderColor:'#d0d5dd',borderRadius:9,paddingHorizontal:6,alignItems:'center',justifyContent:'center'},fontOptionCompact:{flexBasis:'47%'},fontOptionActive:{backgroundColor:'#c8211e',borderColor:'#c8211e'},fontOptionText:{fontWeight:'800',fontSize:12,color:'#475467',textAlign:'center'},fontOptionTextActive:{color:'#fff'},fontPreview:{color:'#344054',marginTop:14},login:{minHeight:50,backgroundColor:'#c8211e',padding:15,borderRadius:12,alignItems:'center',justifyContent:'center',marginBottom:14},loginText:{color:'#fff',fontWeight:'800',fontSize:16},signOut:{minHeight:50,borderWidth:1,borderColor:'#d0d5dd',padding:14,borderRadius:12,alignItems:'center',justifyContent:'center',marginTop:18},signOutText:{color:'#475467',fontWeight:'800'}
+  page:{flex:1,backgroundColor:'#f4f8f5'},
+  pageContent:{width:'100%',maxWidth:720,alignSelf:'center',paddingTop:10},
+  languagePicker:{alignSelf:'flex-end',flexDirection:'row',padding:3,borderWidth:1,borderColor:'#cddbd2',borderRadius:999,backgroundColor:'#fff',marginBottom:14},
+  languageOption:{minWidth:50,minHeight:38,paddingHorizontal:10,alignItems:'center',justifyContent:'center',borderRadius:999},
+  languageOptionActive:{backgroundColor:'#14804a'},
+  languageOptionText:{color:'#607067',fontSize:13,fontWeight:'900'},
+  languageOptionTextActive:{color:'#fff'},
+  loader:{marginVertical:40},
+  h1:{fontSize:30,lineHeight:38,fontWeight:'900',color:'#102019'},
+  sub:{color:'#617168',fontSize:15,lineHeight:22,marginTop:4,marginBottom:16},
+  warning:{backgroundColor:'#fff8e8',color:'#8a4b08',padding:12,borderRadius:12,marginBottom:12,borderWidth:1,borderColor:'#f6dfae'},
+  primaryActions:{flexDirection:'row',gap:9,marginTop:14},
+  primaryActionsCompact:{flexDirection:'column'},
+  publish:{flex:1.08,minHeight:64,backgroundColor:'#14804a',borderRadius:16,padding:12,alignItems:'center',justifyContent:'center'},
+  publishIcon:{color:'#fff',fontSize:22,fontWeight:'500',lineHeight:22},
+  publishText:{color:'#fff',fontWeight:'900',marginTop:3,textAlign:'center'},
+  action:{flex:1,minHeight:64,backgroundColor:'#fff',borderRadius:16,padding:12,borderWidth:1,borderColor:'#dbe6df',justifyContent:'center'},
+  actionTitle:{fontWeight:'900',color:'#102019'},
+  actionMeta:{fontSize:12,lineHeight:17,color:'#748279',marginTop:4},
+  sectionHead:{flexDirection:'row',justifyContent:'space-between',alignItems:'center',marginTop:22,marginBottom:9,paddingHorizontal:3},
+  sectionTitle:{fontSize:19,fontWeight:'900',color:'#102019'},
+  sectionMeta:{color:'#748279'},
+  groupTitle:{fontSize:19,lineHeight:26,fontWeight:'900',color:'#102019',marginTop:23,marginBottom:9,paddingHorizontal:3},
+  menuGroup:{backgroundColor:'#fff',borderRadius:18,borderWidth:1,borderColor:'#dbe6df',overflow:'hidden',shadowColor:'#173f2b',shadowOpacity:.04,shadowRadius:10,shadowOffset:{width:0,height:3}},
+  menu:{minHeight:62,paddingHorizontal:16,paddingVertical:12,flexDirection:'row',alignItems:'center',borderBottomWidth:1,borderBottomColor:'#edf2ef'},
+  menuLast:{borderBottomWidth:0},
+  menuCopy:{flex:1,minWidth:0,paddingRight:10},
+  menuTitle:{fontSize:16,lineHeight:21,fontWeight:'900',color:'#102019'},
+  menuMeta:{color:'#617168',fontSize:13,lineHeight:18,marginTop:3},
+  chevron:{fontSize:27,color:'#8ca096'},
+  fontCard:{backgroundColor:'#fff',borderRadius:18,padding:16,marginTop:12,borderWidth:1,borderColor:'#dbe6df'},
+  cardTitle:{fontSize:16,fontWeight:'900',color:'#102019'},
+  cardMeta:{color:'#617168',fontSize:13,lineHeight:19,marginTop:5},
+  fontRow:{flexDirection:'row',gap:6,marginTop:14},
+  fontRowCompact:{flexWrap:'wrap'},
+  fontOption:{flex:1,minHeight:44,borderWidth:1,borderColor:'#cddbd2',borderRadius:10,paddingHorizontal:6,alignItems:'center',justifyContent:'center'},
+  fontOptionCompact:{flexBasis:'47%'},
+  fontOptionActive:{backgroundColor:'#14804a',borderColor:'#14804a'},
+  fontOptionText:{fontWeight:'800',fontSize:12,color:'#526159',textAlign:'center'},
+  fontOptionTextActive:{color:'#fff'},
+  fontPreview:{color:'#344a3f',marginTop:14},
+  login:{minHeight:52,backgroundColor:'#14804a',padding:14,borderRadius:16,alignItems:'center',justifyContent:'center',marginBottom:14,shadowColor:'#14804a',shadowOpacity:.14,shadowRadius:10,shadowOffset:{width:0,height:4}},
+  loginText:{color:'#fff',fontWeight:'900',fontSize:16},
+  signOut:{minHeight:50,borderWidth:1,borderColor:'#b9c9c0',backgroundColor:'#fff',padding:14,borderRadius:14,alignItems:'center',justifyContent:'center',marginTop:18},
+  signOutText:{color:'#526159',fontWeight:'800'}
 });

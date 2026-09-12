@@ -80,6 +80,23 @@ test('uses comfortable mobile typography and spacing without horizontal scaling'
   assert.match(app, /textZoom=\{100\}/);
 });
 
+test('uses a compact two-column BIA filter form on phones', () => {
+  assert.match(app, /grid-template-areas: "query query" "source body" "type sort" "from to" "reset reset"/);
+  assert.match(app, /asylumjudge-legal-page \.filters #legal-reset \{ grid-area: reset; color: #14804a/);
+  assert.match(app, /asylumjudge-legal-page main\.wrap \{ width: calc\(100% - 28px\)/);
+});
+
+test('uses the AsylumJudge green palette throughout the profile home', () => {
+  const profile = readFileSync(new URL('../shared-mobile/app/(tabs)/profile.tsx', import.meta.url), 'utf8');
+  const hero = readFileSync(new URL('../shared-mobile/src/components/ProfileHero.tsx', import.meta.url), 'utf8');
+  assert.match(profile, /languageOptionActive:\{backgroundColor:'#14804a'\}/);
+  assert.match(profile, /login:\{[^}]*backgroundColor:'#14804a'/);
+  assert.match(profile, /publish:\{[^}]*backgroundColor:'#14804a'/);
+  assert.doesNotMatch(profile, /#c8211e/);
+  assert.match(hero, /coverFallback:\{[^}]*backgroundColor:'#116b40'/);
+  assert.match(hero, /avatarEdit:\{[^}]*backgroundColor:'#14804a'/);
+});
+
 test('localizes app tabs and recovery states without oversized navigation', () => {
   const i18n = readFileSync(new URL('../shared-mobile/src/i18n/i18n-core.ts', import.meta.url), 'utf8');
   for (const key of ['asylumApp.tabData', 'asylumApp.tabCommunity', 'asylumApp.tabBia', 'asylumApp.tabKnowledge', 'asylumApp.tabProfile', 'asylumApp.errorTitle', 'asylumApp.retry']) {
@@ -105,7 +122,7 @@ test('preserves the official app identity for the next release', () => {
   assert.equal(config.expo.extra.eas.projectId, '4443f235-79a2-4508-afe3-736331b9ae7b');
   assert.equal(config.expo.ios.bundleIdentifier, 'com.asylumjudge.mobile');
   assert.equal(config.expo.version, '1.0.3');
-  assert.equal(config.expo.ios.buildNumber, '8');
+  assert.equal(config.expo.ios.buildNumber, '9');
   assert.equal(config.expo.icon, './assets/icon.png');
 });
 

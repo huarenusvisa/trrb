@@ -156,6 +156,31 @@ const NATIVE_APP_SCRIPT = `
     html.asylumjudge-native-app.asylumjudge-legal-page .filters input,
     html.asylumjudge-native-app.asylumjudge-legal-page .filters select,
     html.asylumjudge-native-app.asylumjudge-legal-page .filters button { min-height: 50px !important; height: 50px !important; font-size: 16px !important; line-height: 1.4 !important; }
+    @media (max-width: 600px) {
+      html.asylumjudge-native-app.asylumjudge-legal-page main.wrap { width: calc(100% - 28px) !important; }
+      html.asylumjudge-native-app.asylumjudge-legal-page .source-tabs { gap: 8px !important; margin-bottom: 14px !important; }
+      html.asylumjudge-native-app.asylumjudge-legal-page .source-tabs button { min-height: 44px !important; padding: 8px 6px !important; font-size: 14px !important; }
+      html.asylumjudge-native-app.asylumjudge-legal-page .filters {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        grid-template-areas: "query query" "source body" "type sort" "from to" "reset reset" !important;
+        gap: 12px 10px !important;
+        padding: 14px !important;
+        border-radius: 16px !important;
+      }
+      html.asylumjudge-native-app.asylumjudge-legal-page .filters label { gap: 6px !important; min-width: 0 !important; font-size: 13px !important; }
+      html.asylumjudge-native-app.asylumjudge-legal-page .filters label:nth-of-type(1) { grid-area: query; }
+      html.asylumjudge-native-app.asylumjudge-legal-page .filters label:nth-of-type(2) { grid-area: source; }
+      html.asylumjudge-native-app.asylumjudge-legal-page .filters label:nth-of-type(3) { grid-area: body; }
+      html.asylumjudge-native-app.asylumjudge-legal-page .filters label:nth-of-type(4) { grid-area: type; }
+      html.asylumjudge-native-app.asylumjudge-legal-page .filters label:nth-of-type(5) { grid-area: from; }
+      html.asylumjudge-native-app.asylumjudge-legal-page .filters label:nth-of-type(6) { grid-area: to; }
+      html.asylumjudge-native-app.asylumjudge-legal-page .filters label:nth-of-type(7) { grid-area: sort; }
+      html.asylumjudge-native-app.asylumjudge-legal-page .filters input,
+      html.asylumjudge-native-app.asylumjudge-legal-page .filters select,
+      html.asylumjudge-native-app.asylumjudge-legal-page .filters button { min-width: 0 !important; min-height: 46px !important; height: 46px !important; padding-left: 10px !important; padding-right: 10px !important; font-size: 14px !important; }
+      html.asylumjudge-native-app.asylumjudge-legal-page .filters #legal-reset { grid-area: reset; color: #14804a !important; border-color: #b9d5c5 !important; background: #f2f8f4 !important; }
+      html.asylumjudge-native-app.asylumjudge-legal-page .status-row { padding-top: 16px !important; }
+    }
     html.asylumjudge-native-app .immigration-hero,
     html.asylumjudge-native-app .legal-hero { padding-top: 18px !important; padding-bottom: 18px !important; }
     html.asylumjudge-native-app .container,

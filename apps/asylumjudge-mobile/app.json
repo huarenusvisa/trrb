@@ -12,7 +12,7 @@
       }
     },
     "ios": {
-      "buildNumber": "8",
+      "buildNumber": "9",
       "bundleIdentifier": "com.asylumjudge.mobile",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false,

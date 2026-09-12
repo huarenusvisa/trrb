@@ -87,7 +87,7 @@ const categories = [
   [/地产|房产|real estate/i, "real-estate"],
   [/学校|老师|幼师|教育|培训|teacher|school/i, "education"],
   [/程序|软件|IT|电脑|developer|engineer/i, "it-tech"],
-  [/办公室|文员|前台|助理|客服|行政|coordinator|assistant/i, "office-admin"],
+  [/办公室|文员|前台|助理|客服|行政|office|administrator|coordinator|assistant/i, "office-admin"],
   [/市场|销售|marketing|sales/i, "sales"],
 ];
 
@@ -315,7 +315,6 @@ function normalizeAtsCandidate(source, job) {
     application_url: applicationUrl, source_published_at: sourceDate,
   };
   const errors = [];
-  if (category !== "home-care") errors.push("not_caregiver_category");
   if (!location && !/remote|united states|usa/i.test(String(locationText || ""))) errors.push("no_verifiable_us_location");
   if (!safeHttpUrl(applicationUrl)) errors.push("missing_official_application_url");
   return { sourceKey: source.key, externalId: String(job.id), url: applicationUrl, payload, errors, payloadHash: sha256(payload) };
@@ -335,7 +334,6 @@ async function fetchEnglishCandidates() {
     const jobs = source.type === "greenhouse" ? data.jobs : data;
     return (Array.isArray(jobs) ? jobs : [])
       .map((job) => normalizeAtsCandidate(source, job))
-      .filter((item) => item.payload.category_slug === "home-care")
       .slice(0, 250);
   });
   return groups.flatMap((group) => Array.isArray(group) ? group : []);

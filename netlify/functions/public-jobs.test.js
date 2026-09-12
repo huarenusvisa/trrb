@@ -9,6 +9,8 @@ test('public jobs feed supports sanitized search and server pagination', () => {
   assert.match(source, /safeQuery\(event\.queryStringParameters\?\.q\)/);
   assert.match(source, /boundedInteger\(event\.queryStringParameters\?\.offset/);
   assert.match(source, /rpc\/search_job_listings/);
+  assert.match(source, /p_category_slug: category \|\| null/);
+  assert.match(source, /'Access-Control-Allow-Origin': '\*'/);
   assert.match(source, /p_keyword: keyword \|\| null/);
   assert.match(source, /p_offset: offset/);
   assert.match(source, /nextOffset: hasMore \? offset \+ items\.length : null/);

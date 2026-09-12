@@ -5,6 +5,7 @@ export type SupportedLocale = (typeof SUPPORTED_LOCALES)[number];
 export type LocalePreference = (typeof LOCALE_PREFERENCES)[number];
 
 const zhCN = {
+  'asylumApp.tabData': '法院数据', 'asylumApp.tabCommunity': '社区', 'asylumApp.tabBia': 'BIA裁决', 'asylumApp.tabKnowledge': '庇护知识', 'asylumApp.tabProfile': '我的中心', 'asylumApp.errorTitle': '页面暂时无法打开', 'asylumApp.errorBody': '请检查网络连接，然后重新加载。', 'asylumApp.retry': '重新加载', 'asylumApp.retryA11y': '重新加载当前页面',
   'comments.openProfileA11y': '打开{name}的个人主页并关注', 'comments.expandReplies': '展开 {count} 条回复', 'comments.collapseReplies': '收起回复',
   'chat.call': '拨号', 'chat.callA11y': '打开手机拨号功能', 'chat.callUnavailable': '无法打开拨号功能', 'chat.openProfileA11y': '打开{name}的个人主页并关注',
   'chat.sharePhotoVideo': '照片/视频', 'chat.sharePhotoVideoA11y': '从本机选择照片或视频并用系统分享',
@@ -243,6 +244,7 @@ const zhCN = {
 export type MessageKey = keyof typeof zhCN;
 
 const zhTW: Record<MessageKey, string> = {
+  'asylumApp.tabData': '法院數據', 'asylumApp.tabCommunity': '社區', 'asylumApp.tabBia': 'BIA裁決', 'asylumApp.tabKnowledge': '庇護知識', 'asylumApp.tabProfile': '我的中心', 'asylumApp.errorTitle': '頁面暫時無法開啟', 'asylumApp.errorBody': '請檢查網路連線，然後重新載入。', 'asylumApp.retry': '重新載入', 'asylumApp.retryA11y': '重新載入目前頁面',
   'comments.openProfileA11y': '打開{name}的個人主頁並關注', 'comments.expandReplies': '展開 {count} 則回覆', 'comments.collapseReplies': '收起回覆',
   'chat.call': '撥號', 'chat.callA11y': '打開手機撥號功能', 'chat.callUnavailable': '無法打開撥號功能', 'chat.openProfileA11y': '打開{name}的個人主頁並關注',
   'chat.sharePhotoVideo': '照片/影片', 'chat.sharePhotoVideoA11y': '從本機選擇照片或影片並用系統分享',
@@ -323,6 +325,7 @@ const zhTW: Record<MessageKey, string> = {
 };
 
 const en: Record<MessageKey, string> = {
+  'asylumApp.tabData': 'Court Data', 'asylumApp.tabCommunity': 'Community', 'asylumApp.tabBia': 'BIA Cases', 'asylumApp.tabKnowledge': 'Asylum Guide', 'asylumApp.tabProfile': 'My Account', 'asylumApp.errorTitle': 'This page is unavailable', 'asylumApp.errorBody': 'Check your connection, then reload the page.', 'asylumApp.retry': 'Reload', 'asylumApp.retryA11y': 'Reload the current page',
   'comments.openProfileA11y': 'Open {name}\'s profile to follow', 'comments.expandReplies': 'View {count} replies', 'comments.collapseReplies': 'Hide replies',
   'chat.call': 'Dial', 'chat.callA11y': 'Open the phone dialer', 'chat.callUnavailable': 'The phone dialer could not be opened.', 'chat.openProfileA11y': 'Open {name}\'s profile to follow',
   'chat.sharePhotoVideo': 'Photo/video', 'chat.sharePhotoVideoA11y': 'Choose a photo or video on this device and share it with the system share sheet',

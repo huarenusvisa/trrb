@@ -22,6 +22,7 @@ import Article from '../shared-mobile/app/article/[id]';
 import Chat from '../shared-mobile/app/chat/[id]';
 import CommunityPost from '../shared-mobile/app/community/[id]';
 import UserProfile from '../shared-mobile/app/user/[id]';
+import { useI18n } from '../shared-mobile/src/i18n/I18nProvider';
 
 const ROUTES: Record<string, React.ComponentType> = {
   '/account-security': AccountSecurity,
@@ -46,6 +47,7 @@ const ROUTES: Record<string, React.ComponentType> = {
 };
 
 export default function SharedTangDailyRoute() {
+  const { t } = useI18n();
   const pathname = usePathname();
   const Screen = ROUTES[pathname]
     || (pathname.startsWith('/article/') ? Article : undefined)
@@ -53,5 +55,5 @@ export default function SharedTangDailyRoute() {
     || (pathname.startsWith('/community/') ? CommunityPost : undefined)
     || (pathname.startsWith('/user/') ? UserProfile : undefined);
   if (Screen) return <Screen />;
-  return <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', padding: 24 }}><Text>页面暂时无法打开</Text></View>;
+  return <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', padding: 24 }}><Text>{t('asylumApp.errorTitle')}</Text></View>;
 }

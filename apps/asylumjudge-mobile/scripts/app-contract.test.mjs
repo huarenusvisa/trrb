@@ -53,6 +53,29 @@ test('applies mobile app chrome and keeps the compact community mode', () => {
   assert.match(app, /app-embedded/);
   assert.match(app, /home-nav \{ display: none/);
   assert.match(app, /injectedJavaScriptBeforeContentLoaded=\{NATIVE_APP_SCRIPT\}/);
+  assert.match(app, /width: min\(100%, 760px\)/);
+  assert.match(app, /automaticallyAdjustContentInsets=\{false\}/);
+  assert.match(app, /textZoom=\{100\}/);
+});
+
+test('localizes app tabs and recovery states without oversized navigation', () => {
+  const i18n = readFileSync(new URL('../shared-mobile/src/i18n/i18n-core.ts', import.meta.url), 'utf8');
+  for (const key of ['asylumApp.tabData', 'asylumApp.tabCommunity', 'asylumApp.tabBia', 'asylumApp.tabKnowledge', 'asylumApp.tabProfile', 'asylumApp.errorTitle', 'asylumApp.retry']) {
+    assert.ok(app.includes(key), `App must use ${key}`);
+    assert.ok(i18n.includes(`'${key}'`), `translations must define ${key}`);
+  }
+  assert.match(app, /minHeight: 52/);
+  assert.match(app, /adjustsFontSizeToFit/);
+  assert.doesNotMatch(app, />页面暂时无法打开</);
+});
+
+test('keeps the native profile responsive on narrow screens and large text', () => {
+  const profile = readFileSync(new URL('../shared-mobile/app/(tabs)/profile.tsx', import.meta.url), 'utf8');
+  assert.match(profile, /useWindowDimensions\(\)/);
+  assert.match(profile, /width < 390 \|\| deviceFontScale > 1\.15/);
+  assert.match(profile, /primaryActionsCompact/);
+  assert.match(profile, /maxWidth:720/);
+  assert.doesNotMatch(profile, /paddingTop:54/);
 });
 
 test('preserves the official app identity for the next release', () => {

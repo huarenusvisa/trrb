@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <rect width="1024" height="1024" fill="#ffffff"/>
+  <rect x="40" y="40" width="944" height="944" rx="220" fill="#ffffff" stroke="#cfd5de" stroke-width="40"/>
+  <rect x="232" y="226" width="160" height="420" rx="48" fill="#14804a"/>
+  <rect x="432" y="338" width="160" height="308" rx="48" fill="#c4161c"/>
+  <rect x="632" y="438" width="160" height="208" rx="48" fill="#2563a9"/>
+  <g fill="#101828" font-family="DejaVu Sans, Arial, sans-serif" font-size="132" font-weight="900">
+    <text x="410" y="842" transform="rotate(-9 410 842)">U</text>
+    <text x="540" y="821" transform="rotate(9 540 821)">S</text>
+  </g>
+</svg>

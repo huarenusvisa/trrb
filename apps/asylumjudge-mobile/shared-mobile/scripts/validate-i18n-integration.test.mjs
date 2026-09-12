@@ -7,6 +7,7 @@ const read = (path) => fs.readFileSync(new URL(`../${path}`, import.meta.url), '
 test('wires persisted language selection through root, tabs and profile', () => {
   const root = read('app/_layout.tsx');
   const tabs = read('app/(tabs)/_layout.tsx');
+  const home = read('app/(tabs)/index.tsx');
   const profile = read('app/(tabs)/profile.tsx');
   const settings = read('app/language-settings.tsx');
   const provider = read('src/i18n/I18nProvider.tsx');
@@ -17,16 +18,25 @@ test('wires persisted language selection through root, tabs and profile', () => 
   }
   assert.match(profile, /testID="open-language-settings"/);
   assert.match(profile, /testID="quick-language-picker"/);
+  assert.match(profile, /<View testID="quick-language-picker"/);
+  assert.doesNotMatch(profile, /\{session \? <View testID="quick-language-picker"/);
+  assert.match(home, /languageChoicePending \? <View testID="home-language-picker"/);
   for (const locale of ['zh-CN', 'zh-TW', 'en']) {
-    assert.ok(profile.includes(`{ locale: '${locale}'`), `guest profile must expose ${locale}`);
+    assert.ok(home.includes(`{ locale: '${locale}'`), `first-run home must expose ${locale}`);
+    assert.ok(profile.includes(`{ locale: '${locale}'`), `signed-in profile must expose ${locale}`);
   }
+  assert.match(home, /testID=\{`home-language-\$\{option\.locale\}`\}/);
   assert.match(profile, /testID=\{`quick-language-\$\{option\.locale\}`\}/);
   assert.match(profile, /router\.push\('\/language-settings'\)/);
   for (const preference of ['system', 'zh-CN', 'zh-TW', 'en']) {
     assert.ok(settings.includes(`preference: '${preference}'`), `language screen must expose ${preference}`);
   }
   assert.match(provider, /AsyncStorage\.getItem\(STORAGE_KEY\)/);
-  assert.match(provider, /AsyncStorage\.setItem\(STORAGE_KEY, safePreference\)/);
+  assert.match(provider, /AsyncStorage\.getItem\(LANGUAGE_ONBOARDING_STORAGE_KEY\)/);
+  assert.match(provider, /\[STORAGE_KEY, safePreference\]/);
+  assert.match(provider, /\[LANGUAGE_ONBOARDING_STORAGE_KEY, 'true'\]/);
+  assert.match(provider, /setLanguageChoicePending\(onboardingCompleted !== 'true'\)/);
+  assert.match(provider, /setLanguageChoicePending\(false\)/);
   assert.match(provider, /AppState\.addEventListener\('change'/);
   assert.match(provider, /useState<LocalePreference>\('zh-CN'\)/);
 });
@@ -63,6 +73,16 @@ test('uses the shared language context across news discovery surfaces', () => {
   assert.doesNotMatch(list, /toLocaleString\('zh-CN'\)/);
 });
 
+test('localizes embedded portal controls and permits narrow-screen wrapping', () => {
+  const portal = read('src/components/WebPortalScreen.tsx');
+  assert.match(portal, /useI18n\(\)/);
+  assert.match(portal, /t\('judgePortal\.reload'\)/);
+  assert.match(portal, /t\('judgePortal\.openExternal'\)/);
+  assert.doesNotMatch(portal, />重新加载</);
+  assert.doesNotMatch(portal, />在浏览器打开</);
+  assert.match(portal, /errorActions:\{flexDirection:'row',flexWrap:'wrap'/);
+});
+
 test('localizes unified account chrome and keeps Maestro language-neutral', () => {
   const auth = read('app/auth.tsx');
   const home = read('app/(tabs)/index.tsx');
@@ -94,6 +114,8 @@ test('localizes article chrome while preserving published story text', () => {
   assert.match(article, /displayedContent \|\| t\('article\.contentUnavailable'\)/);
   assert.match(article, /: article\.content/);
   assert.match(article, /testID="article-translate-button"/);
+  assert.match(article, /Math\.max\(24, insets\.bottom \+ 12\)/);
+  assert.match(article, /zIndex:50/);
   assert.match(article, /fetchArticleTranslation\(article\.id, targetLocale\)/);
   assert.match(article, /openTranslationMenu/);
   assert.doesNotMatch(article, /void loadTranslation\(\);/);

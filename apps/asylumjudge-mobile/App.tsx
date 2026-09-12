@@ -4,6 +4,8 @@ import { BackHandler, Linking, Platform, Pressable, StyleSheet, Text, View } fro
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { WebView, type WebViewNavigation } from 'react-native-webview';
 import ProfileScreen from './shared-mobile/app/(tabs)/profile';
+import { useI18n } from './shared-mobile/src/i18n/I18nProvider';
+import type { MessageKey } from './shared-mobile/src/i18n/i18n-core';
 
 type TabKey = 'data' | 'community' | 'bia' | 'knowledge' | 'profile';
 
@@ -11,6 +13,7 @@ type AppTab = {
   key: TabKey;
   icon: string;
   label: string;
+  labelKey: MessageKey;
   accessibilityLabel: string;
   url: string;
 };
@@ -20,6 +23,7 @@ const TABS: AppTab[] = [
     key: 'data',
     icon: '院',
     label: '移民法院数据',
+    labelKey: 'asylumApp.tabData',
     accessibilityLabel: '移民法院数据',
     url: 'https://asylumjudge.com/'
   },
@@ -27,6 +31,7 @@ const TABS: AppTab[] = [
     key: 'community',
     icon: '区',
     label: '社区',
+    labelKey: 'asylumApp.tabCommunity',
     accessibilityLabel: '移民社区',
     url: 'https://trrb.net/community/?app=1'
   },
@@ -34,6 +39,7 @@ const TABS: AppTab[] = [
     key: 'bia',
     icon: '判',
     label: 'BIA裁决',
+    labelKey: 'asylumApp.tabBia',
     accessibilityLabel: 'BIA 裁决',
     url: 'https://trrb.net/legal/?app=1&source=asylumjudge'
   },
@@ -41,6 +47,7 @@ const TABS: AppTab[] = [
     key: 'knowledge',
     icon: '知',
     label: '庇护知识',
+    labelKey: 'asylumApp.tabKnowledge',
     accessibilityLabel: '庇护知识',
     url: 'https://trrb.net/immigrate/center?path=humanitarian&app=1'
   },
@@ -48,6 +55,7 @@ const TABS: AppTab[] = [
     key: 'profile',
     icon: '我',
     label: '我的中心',
+    labelKey: 'asylumApp.tabProfile',
     accessibilityLabel: '我的中心',
     url: 'https://trrb.net/community/?app=1&account=1'
   }
@@ -118,7 +126,7 @@ const NATIVE_APP_SCRIPT = `
     html.asylumjudge-native-app .immigration-hero,
     html.asylumjudge-native-app .legal-hero { padding-top: 18px !important; padding-bottom: 18px !important; }
     html.asylumjudge-native-app .container,
-    html.asylumjudge-native-app .shell { width: 100% !important; max-width: 100% !important; }
+    html.asylumjudge-native-app .shell { width: min(100%, 760px) !important; max-width: 760px !important; margin-left: auto !important; margin-right: auto !important; }
     html.asylumjudge-native-app .site-header:has(.brand-lockup) { position: sticky !important; top: 0 !important; z-index: 50 !important; }
     html.asylumjudge-native-app .site-header:has(.brand-lockup) .home-nav { display: none !important; }
     html.asylumjudge-native-app .site-header:has(.brand-lockup) .header-inner { min-height: 66px !important; padding: 9px 14px !important; }
@@ -169,6 +177,7 @@ function tabFromUrl(url: string): TabKey | null {
 }
 
 function AsylumJudgeApp() {
+  const { t } = useI18n();
   const webViewRef = useRef<WebView>(null);
   const [activeTab, setActiveTab] = useState<TabKey>('data');
   const [sourceUrl, setSourceUrl] = useState(TABS[0].url);
@@ -218,7 +227,7 @@ function AsylumJudgeApp() {
 
   return (
     <SafeAreaView style={styles.safeArea} edges={['top', 'bottom']}>
-      <StatusBar style="dark" backgroundColor="#ffffff" />
+      <StatusBar style="dark" />
 
       <View style={styles.content}>
         {activeTab === 'profile' ? (
@@ -241,10 +250,12 @@ function AsylumJudgeApp() {
           sharedCookiesEnabled
           thirdPartyCookiesEnabled
           allowsBackForwardNavigationGestures
+          automaticallyAdjustContentInsets={false}
           pullToRefreshEnabled
           bounces
           decelerationRate="fast"
           contentInsetAdjustmentBehavior="never"
+          textZoom={100}
           allowsInlineMediaPlayback
           setSupportMultipleWindows={false}
           startInLoadingState
@@ -262,15 +273,15 @@ function AsylumJudgeApp() {
 
         {failed ? (
           <View style={styles.errorPanel} accessibilityRole="alert">
-            <Text style={styles.errorTitle}>页面暂时无法打开</Text>
-            <Text style={styles.errorText}>请检查网络连接，然后重新加载。</Text>
+            <Text style={styles.errorTitle}>{t('asylumApp.errorTitle')}</Text>
+            <Text style={styles.errorText}>{t('asylumApp.errorBody')}</Text>
             <Pressable
               accessibilityRole="button"
-              accessibilityLabel="重新加载当前页面"
+              accessibilityLabel={t('asylumApp.retryA11y')}
               onPress={retry}
               style={({ pressed }) => [styles.retryButton, pressed && styles.retryPressed]}
             >
-              <Text style={styles.retryText}>重新加载</Text>
+              <Text style={styles.retryText}>{t('asylumApp.retry')}</Text>
             </Pressable>
           </View>
         ) : null}
@@ -284,7 +295,7 @@ function AsylumJudgeApp() {
             <Pressable
               key={tab.key}
               accessibilityRole="tab"
-              accessibilityLabel={tab.accessibilityLabel}
+              accessibilityLabel={t(tab.labelKey)}
               accessibilityState={{ selected }}
               onPress={() => selectTab(tab)}
               style={({ pressed }) => [styles.tabItem, pressed && styles.tabPressed]}
@@ -292,7 +303,7 @@ function AsylumJudgeApp() {
               <View style={[styles.tabIcon, selected && styles.tabIconActive]}>
                 <Text style={[styles.tabIconText, selected && styles.tabIconTextActive]}>{tab.icon}</Text>
               </View>
-              <Text numberOfLines={1} style={[styles.tabLabel, selected && styles.tabLabelActive]}>{tab.label}</Text>
+              <Text numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.82} style={[styles.tabLabel, selected && styles.tabLabelActive]}>{t(tab.labelKey)}</Text>
             </Pressable>
           );
         })}
@@ -317,7 +328,11 @@ const styles = StyleSheet.create({
   progressBar: { height: 2, backgroundColor: '#14804a' },
   loading: { flex: 1, backgroundColor: '#f4f8f5' },
   errorPanel: {
-    ...StyleSheet.absoluteFillObject,
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#f5f7f6',
@@ -338,21 +353,21 @@ const styles = StyleSheet.create({
   retryPressed: { opacity: 0.82 },
   retryText: { color: '#ffffff', fontSize: 16, fontWeight: '800' },
   tabBar: {
-    minHeight: 68,
+    minHeight: 52,
     flexDirection: 'row',
     alignItems: 'stretch',
     borderTopWidth: StyleSheet.hairlineWidth,
     borderTopColor: '#d4ddd7',
     backgroundColor: '#ffffff',
     paddingHorizontal: 3,
-    paddingTop: 5
+    paddingTop: 2
   },
-  tabItem: { flex: 1, minHeight: 60, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 1 },
+  tabItem: { flex: 1, minHeight: 48, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 2, paddingVertical: 2 },
   tabPressed: { backgroundColor: '#f2f7f4' },
-  tabIcon: { width: 27, height: 27, borderRadius: 9, alignItems: 'center', justifyContent: 'center' },
+  tabIcon: { width: 24, height: 24, borderRadius: 8, alignItems: 'center', justifyContent: 'center' },
   tabIconActive: { backgroundColor: '#e6f4eb' },
-  tabIconText: { color: '#66736c', fontSize: 15, fontWeight: '900' },
+  tabIconText: { color: '#66736c', fontSize: 14, fontWeight: '900' },
   tabIconTextActive: { color: '#14804a' },
-  tabLabel: { color: '#66736c', fontSize: 10, fontWeight: '700', marginTop: 3 },
+  tabLabel: { color: '#66736c', fontSize: 10, lineHeight: 12, fontWeight: '700', marginTop: 2, textAlign: 'center' },
   tabLabelActive: { color: '#14804a', fontWeight: '900' }
 });

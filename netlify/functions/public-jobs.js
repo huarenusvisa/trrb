@@ -10,6 +10,9 @@ function json(statusCode, body) {
       'Content-Type': 'application/json; charset=utf-8',
       'Cache-Control': 'public, max-age=60, s-maxage=60',
       'X-Content-Type-Options': 'nosniff',
+      // Public, read-only feed shared by the main domain and its aliases.
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, OPTIONS',
     },
     body: JSON.stringify(body),
   };
@@ -83,12 +86,12 @@ async function directListingRows(requestedIds, limit) {
   return rest('job_listings', { query });
 }
 
-async function searchRows(keyword, offset, limit) {
+async function searchRows(keyword, category, offset, limit) {
   return rest('rpc/search_job_listings', {
     method: 'POST',
     body: {
       p_keyword: keyword || null,
-      p_category_slug: null,
+      p_category_slug: category || null,
       p_employment_type: null,
       p_state_code: null,
       p_city: null,
@@ -128,6 +131,7 @@ exports.handler = async (event) => {
     const limit = boundedInteger(event.queryStringParameters?.limit, 30, 1, 60);
     const offset = boundedInteger(event.queryStringParameters?.offset, 0, 0, 10_000);
     const keyword = safeQuery(event.queryStringParameters?.q);
+    const category = safeQuery(event.queryStringParameters?.category);
 
     if (requestedIds.length) {
       const rows = await directListingRows(requestedIds, limit);
@@ -140,7 +144,7 @@ exports.handler = async (event) => {
       });
     }
 
-    const searched = await searchRows(keyword, offset, limit);
+    const searched = await searchRows(keyword, category, offset, limit);
     const page = Array.isArray(searched) ? searched : [];
     const hasMore = page.length > limit;
     const visibleRows = page.slice(0, limit);
@@ -152,6 +156,7 @@ exports.handler = async (event) => {
       source: 'search_job_listings',
       country_code: 'US',
       query: keyword || null,
+      category: category || null,
       nextOffset: hasMore ? offset + items.length : null,
       items,
     });

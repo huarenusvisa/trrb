@@ -58,13 +58,31 @@ test('applies mobile app chrome and keeps the compact community mode', () => {
   assert.match(app, /textZoom=\{100\}/);
 });
 
+test('removes Tang Daily chrome and explanatory copy from the in-app BIA hub', () => {
+  assert.match(app, /path\.startsWith\('\/legal'\)/);
+  assert.match(app, /asylumjudge-legal-page \.legal-header/);
+  assert.match(app, /asylumjudge-legal-page \.hero > \.eyebrow/);
+  assert.match(app, /asylumjudge-legal-page \.hero > p:not\(\.eyebrow\)/);
+  assert.match(app, /asylumjudge-legal-page \.hero h1 \{ margin: 0/);
+});
+
+test('uses comfortable mobile typography and spacing without horizontal scaling', () => {
+  assert.match(app, /font-size: 16px !important; line-height: 1\.55/);
+  assert.match(app, /trend-scope-controls label \{[^}]*font-size: 13px/);
+  assert.match(app, /trend-scope-controls select \{[^}]*min-height: 50px/);
+  assert.match(app, /asylumjudge-legal-page \.filters label \{[^}]*font-size: 14px/);
+  assert.match(app, /minHeight: 58/);
+  assert.match(app, /fontSize: 11\.5, lineHeight: 15/);
+  assert.match(app, /textZoom=\{100\}/);
+});
+
 test('localizes app tabs and recovery states without oversized navigation', () => {
   const i18n = readFileSync(new URL('../shared-mobile/src/i18n/i18n-core.ts', import.meta.url), 'utf8');
   for (const key of ['asylumApp.tabData', 'asylumApp.tabCommunity', 'asylumApp.tabBia', 'asylumApp.tabKnowledge', 'asylumApp.tabProfile', 'asylumApp.errorTitle', 'asylumApp.retry']) {
     assert.ok(app.includes(key), `App must use ${key}`);
     assert.ok(i18n.includes(`'${key}'`), `translations must define ${key}`);
   }
-  assert.match(app, /minHeight: 52/);
+  assert.match(app, /minHeight: 58/);
   assert.match(app, /adjustsFontSizeToFit/);
   assert.doesNotMatch(app, />页面暂时无法打开</);
 });
@@ -85,4 +103,19 @@ test('preserves the official app identity for the next release', () => {
   assert.equal(config.expo.version, '1.0.3');
   assert.equal(config.expo.ios.buildNumber, '6');
   assert.equal(config.expo.icon, './assets/icon.png');
+});
+
+test('declares native permissions for profile media, chat audio and notifications', () => {
+  const config = JSON.parse(readFileSync(new URL('../app.json', import.meta.url), 'utf8')).expo;
+  assert.ok(config.plugins.includes('expo-notifications'));
+  const imagePicker = config.plugins.find((plugin) => Array.isArray(plugin) && plugin[0] === 'expo-image-picker');
+  const audio = config.plugins.find((plugin) => Array.isArray(plugin) && plugin[0] === 'expo-audio');
+  assert.match(imagePicker?.[1]?.photosPermission || '', /移民法官/);
+  assert.equal(imagePicker?.[1]?.cameraPermission, false);
+  assert.match(audio?.[1]?.microphonePermission || '', /语音消息/);
+  assert.equal(audio?.[1]?.enableBackgroundRecording, false);
+  assert.match(config.ios?.infoPlist?.NSMicrophoneUsageDescription || '', /语音消息/);
+  assert.equal(config.ios?.privacyManifests?.NSPrivacyTracking, false);
+  assert.equal(config.runtimeVersion?.policy, 'appVersion');
+  assert.match(config.updates?.url || '', /4443f235-79a2-4508-afe3-736331b9ae7b/);
 });

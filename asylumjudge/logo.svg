@@ -1,11 +1,15 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="760" height="160" viewBox="0 0 760 160" role="img" aria-labelledby="title desc">
   <title id="title">AsylumJudge.com</title>
-  <desc id="desc">Independent United States immigration court data.</desc>
+  <desc id="desc">Independent United States immigration court data, identified by a curved US mark.</desc>
   <g transform="translate(8 8) scale(.28125)">
     <rect x="10" y="10" width="492" height="492" rx="112" fill="#fff" stroke="#D0D5DD" stroke-width="20"/>
-    <rect x="116" y="150" width="80" height="214" rx="24" fill="#14804A"/>
-    <rect x="216" y="207" width="80" height="157" rx="24" fill="#C4161C"/>
-    <rect x="316" y="257" width="80" height="107" rx="24" fill="#2563A9"/>
+    <rect x="116" y="126" width="80" height="214" rx="24" fill="#14804A"/>
+    <rect x="216" y="183" width="80" height="157" rx="24" fill="#C4161C"/>
+    <rect x="316" y="233" width="80" height="107" rx="24" fill="#2563A9"/>
+    <g fill="#101828" font-family="Arial, Helvetica, sans-serif" font-size="68" font-weight="900">
+      <text x="207" y="426" transform="rotate(-9 207 426)">U</text>
+      <text x="270" y="416" transform="rotate(9 270 416)">S</text>
+    </g>
   </g>
   <text x="174" y="101" fill="#101828" font-family="Arial, Helvetica, sans-serif" font-size="68" font-weight="800" letter-spacing="-3">Asylum</text>
   <text x="399" y="101" fill="#14804A" font-family="Arial, Helvetica, sans-serif" font-size="68" font-weight="800" letter-spacing="-3">Judge</text>

@@ -5,7 +5,7 @@ const serviceKey = String(process.env.SUPABASE_SERVICE_ROLE_KEY || '');
 const allowedKeys = new Set([
   'global', 'ice', 'china_hot', 'trump_x', 'jobs', 'secondhand',
   'seo_indexnow', 'seo_search_engine', 'monitor', 'maintenance',
-  'legacy_404', 'seo_metadata', 'legacy_recovery'
+  'seo_metadata', 'legacy_recovery'
 ]);
 
 function clean(value, max) {

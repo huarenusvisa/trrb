@@ -14,20 +14,17 @@ assert.match(control, /CONTROL_PLANE_WORKFLOW = 'operations-control-plane\.yml'/
 assert.match(control, /seo_suite[\s\S]*seo_indexnow[\s\S]*seo_search_engine[\s\S]*monitor/);
 assert.match(control, /controlKeyFilter\(targetKeys\)/);
 assert.match(controlUi, /搜索引擎提交与SEO监控/);
-assert.match(controlUi, /ICE夜间安全维护/);
-assert.match(controlUi, /旧站404手动盘点/);
+assert.match(controlUi, /唐人日报后台夜间安全维护/);
+assert.doesNotMatch(controlUi, /旧站404手动盘点/);
 assert.match(controlUi, /立即同步一次/);
-assert.match(controlUi, /开始恢复旧文章/);
-assert.match(controlUi, /下载404报告（TXT）/);
-assert.match(controlUi, /download_legacy_404_report/);
-assert.match(controlUi, /payload\.download_url/);
-assert.match(control, /downloadLegacy404Report/);
-assert.match(control, /expires_in: 60/);
-assert.match(control, /SUPABASE_URL}\/storage\/v1/);
+assert.doesNotMatch(controlUi, /下载404报告（TXT）/);
+assert.doesNotMatch(controlUi, /download_legacy_404_report/);
+assert.doesNotMatch(control, /downloadLegacy404Report/);
 assert.match(controlUi, /automation-advanced/);
 assert.match(controlUi, /开启自动任务/);
-assert.match(controlUi, /固定安全规则/);
-assert.doesNotMatch(seoWorkflow, /Submit fresh URLs through IndexNow/);
+assert.match(controlUi, /无需每天操作/);
+assert.doesNotMatch(seoWorkflow, /^  schedule:/m);
+assert.match(seoWorkflow, /INDEXNOW_FULL_SYNC: 'false'/);
 assert.match(control, /not\.in\.\(global,seo_metadata,legacy_recovery\)/);
 assert.match(control, /in\.\(seo_metadata,legacy_recovery\)/);
 assert.match(control, /CONTROL_PLANE_KEYS\.has\(key\).*CONTROL_PLANE_WORKFLOW/s);
@@ -41,12 +38,6 @@ assert.match(control, /enabled: 'eq\.true'/);
 
 const legacyRecovery = read('.github/workflows/legacy-search-recovery.yml');
 assert.doesNotMatch(legacyRecovery, /confirm_apply/);
-
-const legacyAudit = read('.github/workflows/legacy-404-audit.yml');
-assert.match(legacyAudit, /^  workflow_dispatch:/m);
-assert.doesNotMatch(legacyAudit, /^  schedule:/m);
-assert.doesNotMatch(legacyAudit, /^  push:/m);
-assert.match(legacyAudit, /legacy_404 one-shot control reset to false/);
 
 const iceMaintenance = read('.github/workflows/ice-night-maintenance.yml');
 assert.doesNotMatch(iceMaintenance, /reclassify-immigration-articles\.mjs/);

@@ -4,10 +4,8 @@
 name: 全站 Google/Bing SEO 自动机器人
 
 on:
+  workflow_call:
   workflow_dispatch:
-  schedule:
-    # One daily robot run covers TRRB plus AsylumJudge. No extra schedule is added.
-    - cron: '23 7 * * *'
   push:
     # Run immediately when the SEO robot or AsylumJudge indexing protection changes.
     branches: [main]
@@ -41,8 +39,8 @@ jobs:
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
         run: node scripts/automation-gate.mjs
       - id: gate
-        # SEO is autonomous. Keep only the global emergency kill switch for scheduled runs.
-        run: echo "allowed=${{ github.event_name != 'schedule' || steps.controls.outputs.global == 'true' }}" >> "$GITHUB_OUTPUT"
+        # Scheduled and reusable runs require the complete SEO suite to remain enabled.
+        run: echo "allowed=${{ github.event_name == 'workflow_dispatch' || (steps.controls.outputs.global == 'true' && steps.controls.outputs.seo_indexnow == 'true' && steps.controls.outputs.seo_search_engine == 'true' && steps.controls.outputs.monitor == 'true') }}" >> "$GITHUB_OUTPUT"
 
   trrb-monitor:
     needs: automation-gate
@@ -90,7 +88,7 @@ jobs:
           grep -q 'sitemap-articles-1.xml' <<<"$xml"
       - name: Push current TRRB URLs through IndexNow
         env:
-          INDEXNOW_FULL_SYNC: 'true'
+          INDEXNOW_FULL_SYNC: 'false'
           INDEXNOW_INCLUDE_RETIRED: 'true'
           INDEXNOW_FRESH_HOURS: '48'
           INDEXNOW_USE_LIVE_NEWS: 'true'

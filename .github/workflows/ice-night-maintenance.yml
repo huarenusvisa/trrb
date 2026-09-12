@@ -1,4 +1,4 @@
-name: ICE夜间维护与自修复
+name: 唐人日报后台夜间安全维护
 
 on:
   workflow_call:
@@ -79,6 +79,9 @@ jobs:
           node --check scripts/ice-trusted-source-promote.mjs
           node --check scripts/ice-publish-due.mjs
 
+      - name: Validate Tang Ren Daily backend control plane
+        run: node scripts/backend-night-health.mjs
+
       - name: Run architecture regression tests
         run: |
           node --test scripts/ice-architecture.test.mjs
@@ -108,9 +111,9 @@ jobs:
           node scripts/ice-multisource.mjs --self-test
           echo "纽约时间08:00前最终检查通过，ICE实时流水线已准备恢复。"
 
-      - name: Maintenance summary
+      - name: Backend maintenance summary
         if: always()
         run: |
           echo "纽约时间：${{ needs.new-york-maintenance-gate.outputs.ny_time }}"
           echo "本轮未调用X接口、未调用OpenAI、未自动发布新闻。"
-          echo "已执行：代码检查、回归测试、卡死任务恢复、失败任务重试、12小时过期清理、回复过滤和事件去重；未修改普通文章栏目。"
+          echo "已执行：唐人日报后台控制面、数据库与发布队列健康检查，以及ICE内部队列的安全维护；未修改普通文章栏目。"

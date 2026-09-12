@@ -4,7 +4,7 @@ import fs from 'node:fs';
 const keys = [
   'global', 'ice', 'china_hot', 'trump_x', 'jobs', 'secondhand',
   'seo_indexnow', 'seo_search_engine', 'monitor', 'maintenance',
-  'legacy_404', 'seo_metadata', 'legacy_recovery'
+  'seo_metadata', 'legacy_recovery'
 ];
 
 const url = String(process.env.SUPABASE_URL || '').replace(/\/+$/, '');

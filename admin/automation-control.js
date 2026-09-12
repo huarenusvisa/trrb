@@ -1,7 +1,7 @@
 (() => {
   const $ = (id) => document.getElementById(id);
   const escapeHtml = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[char]));
-  const MERGED_KEYS = new Set(['seo_indexnow','seo_search_engine','monitor','maintenance','legacy_404','seo_metadata','legacy_recovery']);
+  const MERGED_KEYS = new Set(['seo_indexnow','seo_search_engine','monitor','maintenance','seo_metadata','legacy_recovery']);
 
   async function request(options = {}) {
     const token = await window.getAdminAccessToken?.();
@@ -18,50 +18,6 @@
       throw error;
     }
     return payload;
-  }
-
-  async function downloadLegacy404Report(button) {
-    const status = button.closest('.automation-report-download')?.querySelector('[data-legacy-report-status]');
-    const original = button.textContent;
-    button.disabled = true;
-    button.textContent = '正在准备TXT…';
-    if (status) {
-      status.textContent = '正在读取最新报告，请稍候…';
-      status.className = 'automation-report-status loading';
-    }
-    try {
-      const token = await window.getAdminAccessToken?.();
-      if (!token) throw new Error('后台登录已失效，请重新登录');
-      const response = await fetch('/.netlify/functions/automation-control?action=download_legacy_404_report', {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      const payload = await response.json().catch(() => ({}));
-      if (!response.ok) {
-        throw new Error(payload.error || `下载失败（${response.status}）`);
-      }
-      if (!payload.download_url) throw new Error('下载地址生成失败');
-      const link = document.createElement('a');
-      link.href = payload.download_url;
-      link.download = payload.filename || 'trrb-旧站404与301处理报告.txt';
-      link.rel = 'noopener';
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-      $('automation-control-message').textContent = 'TXT报告已下载。请优先处理“建议301”，其余记录逐条人工核对。';
-      if (status) {
-        status.textContent = '下载已开始；请查看浏览器下载记录。';
-        status.className = 'automation-report-status success';
-      }
-    } catch (error) {
-      if (status) {
-        status.textContent = `下载失败：${error.message}`;
-        status.className = 'automation-report-status error';
-      }
-      throw error;
-    } finally {
-      button.disabled = false;
-      button.textContent = original;
-    }
   }
 
   function renderNotifications(notifications = [], dispatchReady = true) {
@@ -203,50 +159,15 @@
     const maintenance = byKey.get('maintenance');
     if (maintenance) cards.push(renderMergedCard({
       key: 'maintenance',
-      name: 'ICE夜间安全维护',
-      description: '打开后，系统只在夜间恢复卡死任务、清理过期候选、过滤回复、合并重复事件和清理孤立媒体；不会重分类普通文章。',
+      name: '唐人日报后台夜间安全维护',
+      description: '开启一次后长期生效，每晚自动检查后台、任务队列和数据库，并执行安全清理；ICE数据维护只是其中一个内部步骤。',
       controls: [maintenance],
       sort: 90,
-      note: '拒绝稿满1小时自动删除是固定安全规则，不需要打开本开关。'
-    }, globalEnabled));
-
-    const legacyAudit = byKey.get('legacy_404');
-    if (legacyAudit) cards.push(renderMergedCard({
-      key: 'legacy_404',
-      name: '旧站404手动盘点',
-      description: '需要时手动运行一次旧链接和404盘点；只生成报告，不修改文章。',
-      controls: [legacyAudit],
-      sort: 100,
-      manualHtml: `
-        <div class="automation-report-download">
-          <div>
-            <strong>最新检查报告</strong>
-            <p>下载TXT后，可按“建议301、待人工处理、保留404/410”逐条修复。</p>
-            <small class="automation-report-status" data-legacy-report-status>点击按钮后，下载状态会显示在这里。</small>
-          </div>
-          <button type="button" class="automation-toggle-button enable" data-download-legacy-report>下载404报告（TXT）</button>
-        </div>
-      ` + (byKey.get('legacy_recovery') ? manualTool(
-        byKey.get('legacy_recovery'),
-        '高级操作：恢复旧文章',
-        '开始恢复旧文章',
-        '停止恢复',
-        '这会向数据库写入文章；只有确定需要恢复旧内容时才执行。'
-      ) : ''),
-      note: '这是一次性人工检查，不再每6小时自动运行。',
-      enableLabel: '立即检查一次',
-      disableLabel: '停止检查'
+      note: '无需每天操作；关闭按钮仅用于紧急暂停。不会自动删除已发布文章或人工审核通过的内容。'
     }, globalEnabled));
 
     root.innerHTML = cards.sort((a, b) => a.sort - b.sort).map((card) => card.html).join('');
     root.querySelectorAll('[data-automation-key]').forEach((button) => button.addEventListener('click', () => update(button)));
-    root.querySelectorAll('[data-download-legacy-report]').forEach((button) => button.addEventListener('click', async () => {
-      try {
-        await downloadLegacy404Report(button);
-      } catch (error) {
-        $('automation-control-message').textContent = `报告下载失败：${error.message}`;
-      }
-    }));
   }
 
   async function update(button) {

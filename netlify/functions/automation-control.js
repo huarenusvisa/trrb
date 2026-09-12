@@ -15,14 +15,10 @@ const CONTROL_GROUPS = {
 const CONTROL_PLANE_KEYS = new Set(['ice', 'china_hot', 'trump_x', 'jobs', 'secondhand', 'seo_indexnow', 'monitor', 'maintenance', 'seo_metadata', 'legacy_recovery']);
 const DISPATCHES = {
   seo_suite: [
-    { workflow: 'operations-control-plane.yml', inputs: { module: 'seo' } },
-    { workflow: 'seo-search-engine-ops.yml' },
-    { workflow: 'operations-control-plane.yml', inputs: { module: 'monitor' } }
+    { workflow: 'operations-control-plane.yml', inputs: { module: 'seo' } }
   ],
   global: [
-    { workflow: 'operations-control-plane.yml', inputs: { module: 'all' } },
-    { workflow: 'seo-search-engine-ops.yml' },
-    { workflow: 'legacy-404-audit.yml' }
+    { workflow: 'operations-control-plane.yml', inputs: { module: 'all' } }
   ],
   ice: [{ workflow: 'operations-control-plane.yml', inputs: { module: 'ice' } }],
   china_hot: [{ workflow: 'operations-control-plane.yml', inputs: { module: 'china-hot' } }],
@@ -30,10 +26,9 @@ const DISPATCHES = {
   jobs: [{ workflow: 'operations-control-plane.yml', inputs: { module: 'jobs' } }],
   secondhand: [{ workflow: 'operations-control-plane.yml', inputs: { module: 'secondhand' } }],
   seo_indexnow: [{ workflow: 'operations-control-plane.yml', inputs: { module: 'seo' } }],
-  seo_search_engine: [{ workflow: 'seo-search-engine-ops.yml' }],
+  seo_search_engine: [{ workflow: 'operations-control-plane.yml', inputs: { module: 'seo' } }],
   monitor: [{ workflow: 'operations-control-plane.yml', inputs: { module: 'monitor' } }],
   maintenance: [{ workflow: 'operations-control-plane.yml', inputs: { module: 'maintenance' } }],
-  legacy_404: [{ workflow: 'legacy-404-audit.yml' }],
   seo_metadata: [{ workflow: 'operations-control-plane.yml', inputs: { module: 'seo' } }],
   legacy_recovery: [{ workflow: 'operations-control-plane.yml', inputs: { module: 'ico' } }]
 };
@@ -53,7 +48,6 @@ const CANCEL_WORKFLOWS = {
   seo_search_engine: ['seo-search-engine-ops.yml'],
   monitor: ['live-seo-crawl.yml', 'seo-integrity.yml'],
   maintenance: ['ice-night-maintenance.yml', 'ice-orphan-media-cleanup.yml'],
-  legacy_404: ['legacy-404-audit.yml'],
   seo_metadata: ['round13-publish-seo-sync.yml'],
   legacy_recovery: ['legacy-search-recovery.yml']
 };
@@ -72,53 +66,6 @@ function getEnv(name) {
 
 function githubToken() {
   return getEnv('GITHUB_AUTOMATION_TOKEN') || getEnv('GH_AUTOMATION_TOKEN');
-}
-
-async function downloadLegacy404Report() {
-  const response = await fetch(`${SUPABASE_URL}/storage/v1/object/sign/automation-reports/legacy-404-latest.txt`, {
-    method: 'POST',
-    headers: {
-      apikey: SERVICE_KEY,
-      Authorization: `Bearer ${SERVICE_KEY}`,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ expiresIn: 60 })
-  });
-  const payload = await response.json().catch(() => ({}));
-  if (!response.ok) {
-    const missing = response.status === 404
-      || /NoSuchKey|Object not found|not found/i.test(String(payload.message || payload.error || ''));
-    const error = new Error(missing
-      ? '404报告尚未生成。请先开启自动检查，任务完成后再下载。'
-      : `读取404报告失败（${response.status}）`);
-    error.statusCode = missing ? 404 : response.status;
-    throw error;
-  }
-  const signedPath = payload.signedURL || payload.signedUrl || '';
-  if (!signedPath) {
-    const error = new Error('无法生成404报告临时下载地址');
-    error.statusCode = 502;
-    throw error;
-  }
-  const rawUrl = signedPath.startsWith('http')
-    ? signedPath
-    : signedPath.startsWith('/storage/v1/')
-      ? `${SUPABASE_URL}${signedPath}`
-      : `${SUPABASE_URL}/storage/v1${signedPath.startsWith('/') ? '' : '/'}${signedPath}`;
-  const downloadUrl = new URL(rawUrl);
-  downloadUrl.searchParams.set('download', 'trrb-legacy-404-report.txt');
-  return {
-    statusCode: 200,
-    headers: {
-      'Content-Type': 'application/json; charset=utf-8',
-      'Cache-Control': 'no-store'
-    },
-    body: JSON.stringify({
-      download_url: downloadUrl.toString(),
-      filename: 'trrb-legacy-404-report.txt',
-      expires_in: 60
-    })
-  };
 }
 
 async function github(path, options = {}) {
@@ -336,9 +283,6 @@ exports.handler = async (event) => {
   let requestedKey = null;
   try {
     ({ user } = await authenticateStaff(event, ['owner', 'editor']));
-    if (event.httpMethod === 'GET' && event.queryStringParameters?.action === 'download_legacy_404_report') {
-      return downloadLegacy404Report();
-    }
     if (event.httpMethod === 'GET') {
       const [controls, notifications] = await Promise.all([
         rest('automation_controls', {

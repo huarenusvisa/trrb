@@ -49,6 +49,7 @@ on:
     - cron: "7 * * * *"
     - cron: "37 4 * * *"
     - cron: "7 7 * * *"
+    - cron: "23 7 * * *"
     - cron: "23 8 * * 1"
     - cron: "12 13 * * *"
     - cron: "12 23 * * *"
@@ -74,6 +75,7 @@ jobs:
       jobs: ${{ steps.gate.outputs.jobs }}
       secondhand: ${{ steps.gate.outputs.secondhand }}
       seo_indexnow: ${{ steps.gate.outputs.seo_indexnow }}
+      seo_search_engine: ${{ steps.gate.outputs.seo_search_engine }}
       monitor: ${{ steps.gate.outputs.monitor }}
       maintenance: ${{ steps.gate.outputs.maintenance }}
       seo_metadata: ${{ steps.gate.outputs.seo_metadata }}
@@ -100,10 +102,10 @@ jobs:
     uses: ./.github/workflows/round13-publish-seo-sync.yml
     secrets: inherit
 
-  seo-indexnow:
+  seo-search-engine:
     needs: automation-gate
-    if: ${{ needs.automation-gate.outputs.global == 'true' && needs.automation-gate.outputs.seo_indexnow == 'true' && (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'seo')) }}
-    uses: ./.github/workflows/indexnow.yml
+    if: ${{ needs.automation-gate.outputs.global == 'true' && needs.automation-gate.outputs.seo_indexnow == 'true' && needs.automation-gate.outputs.seo_search_engine == 'true' && needs.automation-gate.outputs.monitor == 'true' && (github.event.schedule == '23 7 * * *' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'seo' || inputs.module == 'monitor')) }}
+    uses: ./.github/workflows/seo-search-engine-ops.yml
     secrets: inherit
 
   ico-accelerated-recovery:
@@ -139,7 +141,7 @@ jobs:
     secrets: inherit
 
 
-  ice-night-maintenance:
+  backend-night-maintenance:
     needs: automation-gate
     if: ${{ needs.automation-gate.outputs.global == 'true' && needs.automation-gate.outputs.maintenance == 'true' && (github.event.schedule == '7 7 * * *' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'maintenance')) }}
     uses: ./.github/workflows/ice-night-maintenance.yml
@@ -159,13 +161,13 @@ jobs:
       - automation-gate
       - ice
       - seo-metadata
-      - seo-indexnow
+      - seo-search-engine
       - ico-accelerated-recovery
       - jobs-daily-ingest
       - secondhand-daily-ingest
       - china-hot-li-teacher
       - trump-x
-      - ice-night-maintenance
+      - backend-night-maintenance
       - ice-orphan-cleanup
     runs-on: ubuntu-24.04
     steps:

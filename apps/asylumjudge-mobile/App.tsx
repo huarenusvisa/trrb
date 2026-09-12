@@ -90,8 +90,11 @@ const NATIVE_APP_SCRIPT = `
     root.classList.add('app-embedded');
   }
 
-  const style = document.createElement('style');
-  style.id = 'asylumjudge-native-app-styles';
+  let style = document.getElementById('asylumjudge-native-app-styles');
+  if (!style) {
+    style = document.createElement('style');
+    style.id = 'asylumjudge-native-app-styles';
+  }
   style.textContent = \`
     html.asylumjudge-native-app { background: #f4f8f5 !important; -webkit-text-size-adjust: 100% !important; overscroll-behavior-y: contain; }
     html.asylumjudge-native-app body { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", sans-serif !important; font-size: 16px !important; line-height: 1.55 !important; -webkit-font-smoothing: antialiased; }
@@ -165,6 +168,22 @@ const NATIVE_APP_SCRIPT = `
     html.asylumjudge-native-app .community-layout { padding-top: 8px !important; }
   \`;
   (document.head || document.documentElement).appendChild(style);
+
+  const applyNativePresentation = () => {
+    root.classList.add('asylumjudge-native-app');
+    if ((host === 'trrb.net' || host === 'www.trrb.net') && path.startsWith('/legal')) {
+      root.classList.add('asylumjudge-legal-page');
+      document.querySelectorAll('.legal-header, .hero > .eyebrow, .hero > p:not(.eyebrow)').forEach((element) => {
+        element.style.setProperty('display', 'none', 'important');
+      });
+    }
+  };
+  applyNativePresentation();
+  if (!window.__asylumJudgeNativeObserver) {
+    const observer = new MutationObserver(applyNativePresentation);
+    observer.observe(document.documentElement, { childList: true, subtree: true });
+    window.__asylumJudgeNativeObserver = observer;
+  }
 
   if (params.get('account') === '1') {
     const openAccount = () => {
@@ -291,9 +310,13 @@ function AsylumJudgeApp() {
           startInLoadingState
           applicationNameForUserAgent="AsylumJudgeMobile/1.0.3"
           injectedJavaScriptBeforeContentLoaded={NATIVE_APP_SCRIPT}
+          injectedJavaScript={NATIVE_APP_SCRIPT}
           onLoadStart={() => setFailed(false)}
           onLoadProgress={({ nativeEvent }) => setLoadProgress(nativeEvent.progress)}
-          onLoadEnd={() => setLoadProgress(1)}
+          onLoadEnd={() => {
+            setLoadProgress(1);
+            webViewRef.current?.injectJavaScript(NATIVE_APP_SCRIPT);
+          }}
           onNavigationStateChange={trackNavigation}
           onShouldStartLoadWithRequest={(request) => openUrl(request.url)}
           onError={() => setFailed(true)}

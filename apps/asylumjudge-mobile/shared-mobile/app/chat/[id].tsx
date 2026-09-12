@@ -34,13 +34,14 @@ function VoiceBubble({ message, mine }: { message: DirectMessage; mine: boolean 
 }
 
 function MessageBody({ message, mine, open }: { message: DirectMessage; mine: boolean; open: (url: string) => void }) {
+  const { t } = useI18n();
   const textStyle = mine ? styles.mineText : styles.theirText;
   if (message.message_type === 'image' && message.attachment_url) return <Pressable onPress={() => open(message.attachment_url!)}><Image source={{ uri: message.attachment_url }} contentFit="cover" style={styles.messageImage} /></Pressable>;
   if (message.message_type === 'audio') return <VoiceBubble message={message} mine={mine} />;
-  if (message.message_type === 'video' || message.message_type === 'file') return <Pressable accessibilityRole="link" disabled={!message.attachment_url} onPress={() => message.attachment_url && open(message.attachment_url)}><Text style={textStyle}>{message.message_type === 'video' ? '▶ ' : '📄 '}{message.attachment_name || message.body}</Text></Pressable>;
+  if (message.message_type === 'video' || message.message_type === 'file') return <Pressable accessibilityRole="link" disabled={!message.attachment_url} onPress={() => message.attachment_url && open(message.attachment_url)}><Text style={textStyle}>{message.message_type === 'video' ? `▶ ${t('chat.videoAttachment')}` : `📄 ${message.attachment_name || t('chat.fileAttachment')}`}</Text></Pressable>;
   if (message.message_type === 'call') {
     const callUrl = typeof message.metadata?.url === 'string' ? message.metadata.url : '';
-    return <Pressable accessibilityRole="link" disabled={!callUrl} onPress={() => callUrl && open(callUrl)}><Text style={textStyle}>{message.metadata?.mode === 'video' ? '📹 ' : '☎️ '}{message.body}{callUrl ? '  ›' : ''}</Text></Pressable>;
+    return <Pressable accessibilityRole="link" disabled={!callUrl} onPress={() => callUrl && open(callUrl)}><Text style={textStyle}>{message.metadata?.mode === 'video' ? `📹 ${t('chat.videoCallInvite')}` : `☎️ ${t('chat.audioCallInvite')}`}{callUrl ? '  ›' : ''}</Text></Pressable>;
   }
   return <Text style={textStyle}>{message.body}</Text>;
 }
@@ -131,7 +132,7 @@ export default function ChatScreen() {
   const toggleRecording = async () => {
     if (recorderState.isRecording) {
       setAttachmentBusy('audio');
-      try { await recorder.stop(); const status = recorder.getStatus(); if (status.url) await sendAttachment({ uri: status.url, contentType: Platform.OS === 'web' ? 'audio/webm' : 'audio/mp4', name: 'voice-message.m4a', durationMs: status.durationMillis, kind: 'audio' }); }
+      try { await recorder.stop(); const status = recorder.getStatus(); if (!status.url) throw new Error(t('chat.recordingUnavailable')); await sendAttachment({ uri: status.url, contentType: Platform.OS === 'web' ? 'audio/webm' : 'audio/mp4', name: 'voice-message.m4a', durationMs: status.durationMillis, kind: 'audio' }); }
       catch (error) { Alert.alert(t('chat.sendFailed'), error instanceof Error ? error.message : t('chat.tryAgain')); }
       finally { setAttachmentBusy(null); await setAudioModeAsync({ allowsRecording: false }).catch(() => undefined); }
       return;

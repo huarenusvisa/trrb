@@ -6,6 +6,12 @@ const SUPABASE_SERVICE_ROLE_KEY = String(process.env.SUPABASE_SERVICE_ROLE_KEY |
 const TARGET_CANDIDATES = Math.max(50, Math.min(500, Number(process.env.JOBS_TARGET_CANDIDATES || 200)));
 const SOURCE_KEY = "500work";
 const SOURCE_ORIGIN = "https://500work.com";
+const ATS_SOURCES = [
+  { type: "greenhouse", key: "greenhouse_freedomcare", board: "freedomcare" },
+  { type: "greenhouse", key: "greenhouse_bayada", board: "bayada" },
+  { type: "lever", key: "lever_distro", board: "distro" },
+  { type: "lever", key: "lever_springoakliving", board: "springoakliving" },
+];
 const USER_AGENT = "TangDailyJobsBot/1.0 (+https://huarengongzuo.com/)";
 const NOW = new Date();
 const NOW_ISO = NOW.toISOString();
@@ -151,6 +157,13 @@ function pickLocation(text) {
   return null;
 }
 
+function pickEnglishLocation(text) {
+  const known = pickLocation(text);
+  if (known) return known;
+  const match = String(text || "").match(/(?:^|,\s*)([A-Za-z .'-]+),\s*([A-Z]{2})(?:\s+\d{5})?(?:$|\b)/);
+  return match ? { state_code: match[2], city: match[1].trim() } : null;
+}
+
 function pickCategory(primaryText, supplementalText = "") {
   for (const text of [primaryText, supplementalText]) {
     for (const [pattern, slug] of categories) if (pattern.test(text)) return slug;
@@ -195,6 +208,12 @@ async function fetchText(url, attempts = 3) {
     }
   }
   throw lastError;
+}
+
+async function fetchJson(url) {
+  const response = await fetch(url, { headers: { "user-agent": USER_AGENT, accept: "application/json" }, signal: AbortSignal.timeout(25000) });
+  if (!response.ok) throw new Error(`${url} HTTP ${response.status}`);
+  return response.json();
 }
 
 async function rest(table, query = "", { method = "GET", body, prefer = "return=representation" } = {}) {
@@ -275,11 +294,56 @@ function normalizeCandidate(url, html) {
     contact_public: Boolean(contact),
     source_published_at: published?.toISOString() || null,
   };
-  return { externalId, url, payload, errors, payloadHash: sha256(payload) };
+  return { sourceKey: SOURCE_KEY, externalId, url, payload, errors, payloadHash: sha256(payload) };
+}
+
+function normalizeAtsCandidate(source, job) {
+  const greenhouse = source.type === "greenhouse";
+  const title = decodeHtml(greenhouse ? job.title : job.text).slice(0, 120);
+  const description = decodeHtml(greenhouse ? job.content : (job.descriptionPlain || job.description || "")).slice(0, 4000);
+  const locationText = greenhouse ? job.location?.name : job.categories?.location;
+  const location = pickEnglishLocation(locationText);
+  const category = pickCategory(title, description);
+  const applicationUrl = greenhouse ? job.absolute_url : job.hostedUrl;
+  const sourceDate = greenhouse ? job.updated_at : (job.createdAt ? new Date(job.createdAt).toISOString() : null);
+  const payload = {
+    title, description, category_slug: category, country_code: "US",
+    state_code: location?.state_code || null, city: location?.city || null,
+    employment_type: greenhouse ? "unspecified" : (job.categories?.commitment || "unspecified"),
+    work_mode: /remote/i.test(`${locationText} ${job.workplaceType || ""}`) ? "remote" : "onsite",
+    company_name: source.board, contact_method: null, contact_value: null, contact_public: false,
+    application_url: applicationUrl, source_published_at: sourceDate,
+  };
+  const errors = [];
+  if (category !== "home-care") errors.push("not_caregiver_category");
+  if (!location && !/remote|united states|usa/i.test(String(locationText || ""))) errors.push("no_verifiable_us_location");
+  if (!safeHttpUrl(applicationUrl)) errors.push("missing_official_application_url");
+  return { sourceKey: source.key, externalId: String(job.id), url: applicationUrl, payload, errors, payloadHash: sha256(payload) };
+}
+
+function safeHttpUrl(value) {
+  try { const url = new URL(String(value || "")); return /^https?:$/.test(url.protocol) ? url.href : ""; }
+  catch { return ""; }
+}
+
+async function fetchEnglishCandidates() {
+  const groups = await mapLimit(ATS_SOURCES, 2, async (source) => {
+    const endpoint = source.type === "greenhouse"
+      ? `https://boards-api.greenhouse.io/v1/boards/${source.board}/jobs?content=true`
+      : `https://api.lever.co/v0/postings/${source.board}?mode=json`;
+    const data = await fetchJson(endpoint);
+    const jobs = source.type === "greenhouse" ? data.jobs : data;
+    return (Array.isArray(jobs) ? jobs : [])
+      .map((job) => normalizeAtsCandidate(source, job))
+      .filter((item) => item.payload.category_slug === "home-care")
+      .slice(0, 250);
+  });
+  return groups.flatMap((group) => Array.isArray(group) ? group : []);
 }
 
 async function storeCandidate(candidate) {
-  const sourceFilter = `source_key=eq.${SOURCE_KEY}&source_external_id=eq.${encodeURIComponent(candidate.externalId)}`;
+  const sourceKey = candidate.sourceKey || SOURCE_KEY;
+  const sourceFilter = `source_key=eq.${sourceKey}&source_external_id=eq.${encodeURIComponent(candidate.externalId)}`;
   const existingRaw = await rest("job_ingest_raw", `${sourceFilter}&payload_hash=eq.${candidate.payloadHash}&select=id,stage,normalized_job_listing_id&limit=1`);
   let rawId;
   if (existingRaw?.[0]) {
@@ -287,7 +351,7 @@ async function storeCandidate(candidate) {
     await rest("job_ingest_raw", `id=eq.${rawId}`, { method: "PATCH", body: { fetched_at: NOW_ISO, last_seen_at: NOW_ISO } });
   } else {
     const inserted = await rest("job_ingest_raw", "", { method: "POST", body: {
-      source_key: SOURCE_KEY,
+      source_key: sourceKey,
       source_external_id: candidate.externalId,
       source_url: candidate.url,
       fetched_at: NOW_ISO,
@@ -344,12 +408,13 @@ async function storeCandidate(candidate) {
     updated_at: NOW_ISO,
     contact_method: candidate.payload.contact_method,
     contact_value: candidate.payload.contact_value,
-    contact_public: true,
+    contact_public: Boolean(candidate.payload.contact_public),
+    application_url: candidate.payload.application_url || null,
     expires_at: EXPIRES_ISO,
     moderation_hold: false,
     listing_origin: "external",
     company_name: candidate.payload.company_name,
-    source_key: SOURCE_KEY,
+    source_key: sourceKey,
     source_external_id: candidate.externalId,
     source_url: candidate.url,
     source_published_at: candidate.payload.source_published_at,
@@ -357,7 +422,7 @@ async function storeCandidate(candidate) {
     source_payload_hash: candidate.payloadHash,
     work_mode: candidate.payload.work_mode,
     visa_support_status: "not_stated",
-    language_requirements: ["Chinese"],
+    language_requirements: sourceKey === SOURCE_KEY ? ["Chinese"] : ["English"],
   } });
   const listingId = listing?.[0]?.id;
   if (rawId && listingId) await rest("job_ingest_raw", `id=eq.${rawId}`, { method: "PATCH", body: { stage: "published", normalized_job_listing_id: listingId, validation_errors: [] } });
@@ -373,7 +438,8 @@ async function main() {
     if (urls.length < 50) throw new Error(`Source discovery returned only ${urls.length} candidate URLs`);
 
     const fetched = await mapLimit(urls, 3, async (url) => normalizeCandidate(url, await fetchText(url)));
-    const candidates = fetched.filter((item) => !item?.error);
+    const englishCandidates = await fetchEnglishCandidates();
+    const candidates = [...fetched.filter((item) => !item?.error), ...englishCandidates];
     summary.fetched = candidates.length;
     summary.fetch_errors = fetched.length - candidates.length;
     for (const failed of fetched.filter((item) => item?.error).slice(0, 10)) console.error("FETCH_ERROR", failed.url, failed.error);
@@ -407,4 +473,4 @@ async function main() {
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) await main();
 
-export { normalizeCandidate, pickCategory };
+export { normalizeAtsCandidate, normalizeCandidate, pickCategory, pickEnglishLocation };

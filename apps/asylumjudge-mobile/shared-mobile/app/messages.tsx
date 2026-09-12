@@ -42,9 +42,15 @@ export default function MessagesScreen() {
         const incoming = item.status === 'pending' && item.recipient_user_id === me;
         const state = item.status === 'pending' ? t(incoming ? 'messages.pendingIncoming' : 'messages.pendingOutgoing') : item.status === 'accepted' ? '' : t(item.status === 'declined' ? 'messages.declined' : 'messages.ended');
         const partnerName = item.partner?.display_name || t('userProfile.readerFallback');
+        const preview = item.latest_message?.message_type === 'image' ? t('chat.imageAttachment')
+          : item.latest_message?.message_type === 'video' ? t('chat.videoAttachment')
+          : item.latest_message?.message_type === 'audio' ? t('chat.audioAttachment')
+          : item.latest_message?.message_type === 'file' ? item.latest_message.attachment_name || t('chat.fileAttachment')
+          : item.latest_message?.message_type === 'call' ? t(item.latest_message.metadata?.mode === 'video' ? 'chat.videoCallInvite' : 'chat.audioCallInvite')
+          : item.latest_message?.body || t('messages.openChat');
         return <Pressable accessibilityRole="button" accessibilityLabel={t(state ? 'messages.openChatStateA11y' : 'messages.openChatA11y', { name: partnerName, state })} key={item.id} style={styles.row} onPress={() => router.push(`/chat/${item.id}`)}>
           <TrRbAvatar avatarKey={item.partner?.avatar_key} avatarPath={item.partner?.avatar_path} size={52} />
-          <View style={styles.copy}><View style={styles.nameRow}><Text style={styles.name}>{partnerName}</Text>{state ? <Text style={incoming ? styles.request : styles.state}>{state}</Text> : null}</View><Text numberOfLines={1} style={styles.preview}>{item.latest_message?.body || t('messages.openChat')}</Text></View>
+          <View style={styles.copy}><View style={styles.nameRow}><Text style={styles.name}>{partnerName}</Text>{state ? <Text style={incoming ? styles.request : styles.state}>{state}</Text> : null}</View><Text numberOfLines={1} style={styles.preview}>{preview}</Text></View>
           {item.unread_count ? <View style={styles.badge}><Text style={styles.badgeText}>{Math.min(item.unread_count, 99)}</Text></View> : null}
         </Pressable>;
       })}

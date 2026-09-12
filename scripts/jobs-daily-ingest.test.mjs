@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { pickCategory } from "./jobs-daily-ingest.mjs";
+import { normalizeAtsCandidate, pickCategory, pickEnglishLocation } from "./jobs-daily-ingest.mjs";
 
 test("routes all caregiver job terms to the shared home-care category", () => {
   for (const title of [
@@ -22,4 +22,20 @@ test("routes all caregiver job terms to the shared home-care category", () => {
   ]) {
     assert.equal(pickCategory(title), "home-care", title);
   }
+});
+
+test("normalizes an official Lever caregiver posting", () => {
+  const item = normalizeAtsCandidate(
+    { type: "lever", key: "lever_test", board: "test" },
+    { id: "abc", text: "Senior Caregiver", descriptionPlain: "Companion care and housekeeping", hostedUrl: "https://jobs.lever.co/test/abc", createdAt: 1789250000000, categories: { location: "New Canaan, CT", commitment: "Full-time" } },
+  );
+  assert.equal(item.payload.category_slug, "home-care");
+  assert.equal(item.payload.state_code, "CT");
+  assert.equal(item.payload.city, "New Canaan");
+  assert.equal(item.payload.application_url, "https://jobs.lever.co/test/abc");
+  assert.deepEqual(item.errors, []);
+});
+
+test("parses standard English US locations", () => {
+  assert.deepEqual(pickEnglishLocation("Conway, SC"), { state_code: "SC", city: "Conway" });
 });

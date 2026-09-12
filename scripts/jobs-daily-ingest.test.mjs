@@ -39,3 +39,12 @@ test("normalizes an official Lever caregiver posting", () => {
 test("parses standard English US locations", () => {
   assert.deepEqual(pickEnglishLocation("Conway, SC"), { state_code: "SC", city: "Conway" });
 });
+
+test("keeps non-caregiver English jobs for the general jobs site", () => {
+  const item = normalizeAtsCandidate(
+    { type: "lever", key: "lever_test", board: "test" },
+    { id: "office-1", text: "Office Administrator", descriptionPlain: "Manage the front office", hostedUrl: "https://jobs.lever.co/test/office-1", createdAt: 1789250000000, categories: { location: "New York, NY", commitment: "Full-time" } },
+  );
+  assert.equal(item.payload.category_slug, "office-admin");
+  assert.deepEqual(item.errors, []);
+});

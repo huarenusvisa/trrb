@@ -33,9 +33,10 @@ export default function TabLayout() {
         headerShown: false,
         tabBarActiveTintColor: '#c8211e',
         tabBarInactiveTintColor: '#667085',
-        tabBarStyle: { height: 72 + Math.max(insets.bottom, 8), paddingBottom: Math.max(insets.bottom, 10), paddingTop: 8 },
-        tabBarItemStyle: { minHeight: 54 },
-        tabBarLabelStyle: { fontSize: 12, fontWeight: '700' }
+        tabBarHideOnKeyboard: true,
+        tabBarStyle: { height: 52 + insets.bottom, paddingBottom: Math.max(insets.bottom, 4), paddingTop: 4 },
+        tabBarItemStyle: { minHeight: 48, paddingVertical: 2 },
+        tabBarLabelStyle: { fontSize: 11, lineHeight: 14, fontWeight: '700' }
       }}
     >
       <Tabs.Screen name="index" options={{ title: t('tab.home'), tabBarButtonTestID: 'tab-home', tabBarIcon: ({ color, focused, size }) => <TabIcon name={{ ios: 'house', android: 'home', web: 'home' }} activeName={{ ios: 'house.fill', android: 'home_filled', web: 'home_filled' }} color={color} focused={focused} size={size} /> }} />

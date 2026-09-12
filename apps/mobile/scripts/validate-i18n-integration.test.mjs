@@ -18,7 +18,8 @@ test('wires persisted language selection through root, tabs and profile', () => 
   }
   assert.match(profile, /testID="open-language-settings"/);
   assert.match(profile, /testID="quick-language-picker"/);
-  assert.match(profile, /\{session \? <View testID="quick-language-picker"/);
+  assert.match(profile, /<View testID="quick-language-picker"/);
+  assert.doesNotMatch(profile, /\{session \? <View testID="quick-language-picker"/);
   assert.match(home, /languageChoicePending \? <View testID="home-language-picker"/);
   for (const locale of ['zh-CN', 'zh-TW', 'en']) {
     assert.ok(home.includes(`{ locale: '${locale}'`), `first-run home must expose ${locale}`);
@@ -70,6 +71,16 @@ test('uses the shared language context across news discovery surfaces', () => {
   assert.match(america, /webViewTestID="community-portal-webview"/);
   assert.match(legal, /https:\/\/asylumjudge\.com\//);
   assert.doesNotMatch(list, /toLocaleString\('zh-CN'\)/);
+});
+
+test('localizes embedded portal controls and permits narrow-screen wrapping', () => {
+  const portal = read('src/components/WebPortalScreen.tsx');
+  assert.match(portal, /useI18n\(\)/);
+  assert.match(portal, /t\('judgePortal\.reload'\)/);
+  assert.match(portal, /t\('judgePortal\.openExternal'\)/);
+  assert.doesNotMatch(portal, />重新加载</);
+  assert.doesNotMatch(portal, />在浏览器打开</);
+  assert.match(portal, /errorActions:\{flexDirection:'row',flexWrap:'wrap'/);
 });
 
 test('localizes unified account chrome and keeps Maestro language-neutral', () => {

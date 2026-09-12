@@ -75,7 +75,7 @@ const categories = [
   [/仓库|倉庫|物流|货仓|貨倉|理货|叉车|warehouse|logistics/i, "logistics-warehouse"],
   [/司机|司機|送货|送貨|配送|卡车|卡車|TLC|driver/i, "truck-driver"],
   [/超市|零售|店员|销售|sales|retail/i, "retail-grocery"],
-  [/保姆|育儿嫂|育兒嫂|月嫂|导乐|導樂|护理|護理|护工|護工|老人照护|老人照護|家政|阿姨|老人中心|home care|caregiver|nanny|doula/i, "home-care"],
+  [/保姆|育儿嫂|育兒嫂|月嫂|导乐|導樂|护理|護理|护工|護工|老人照护|老人照護|家政|阿姨|老人中心|home[ -]?care|caregiver|nanny|babysitter|baby[ -]?sitter|newborn care specialist|postpartum doula|birth doula|doula|home health aide|personal care aide|elder care|elderly care|senior care|companion care|housekeeper|housekeeping/i, "home-care"],
   [/律师|法律|legal/i, "legal"],
   [/会计|bookkeeper|accountant|finance/i, "accounting-finance"],
   [/地产|房产|real estate/i, "real-estate"],

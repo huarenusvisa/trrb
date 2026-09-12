@@ -53,6 +53,8 @@ test('applies mobile app chrome and keeps the compact community mode', () => {
   assert.match(app, /app-embedded/);
   assert.match(app, /home-nav \{ display: none/);
   assert.match(app, /injectedJavaScriptBeforeContentLoaded=\{NATIVE_APP_SCRIPT\}/);
+  assert.match(app, /injectedJavaScript=\{NATIVE_APP_SCRIPT\}/);
+  assert.match(app, /webViewRef\.current\?\.injectJavaScript\(NATIVE_APP_SCRIPT\)/);
   assert.match(app, /width: min\(100%, 760px\)/);
   assert.match(app, /automaticallyAdjustContentInsets=\{false\}/);
   assert.match(app, /textZoom=\{100\}/);
@@ -64,6 +66,8 @@ test('removes Tang Daily chrome and explanatory copy from the in-app BIA hub', (
   assert.match(app, /asylumjudge-legal-page \.hero > \.eyebrow/);
   assert.match(app, /asylumjudge-legal-page \.hero > p:not\(\.eyebrow\)/);
   assert.match(app, /asylumjudge-legal-page \.hero h1 \{ margin: 0/);
+  assert.match(app, /querySelectorAll\('\.legal-header, \.hero > \.eyebrow, \.hero > p:not\(\.eyebrow\)'\)/);
+  assert.match(app, /MutationObserver\(applyNativePresentation\)/);
 });
 
 test('uses comfortable mobile typography and spacing without horizontal scaling', () => {
@@ -101,7 +105,7 @@ test('preserves the official app identity for the next release', () => {
   assert.equal(config.expo.extra.eas.projectId, '4443f235-79a2-4508-afe3-736331b9ae7b');
   assert.equal(config.expo.ios.bundleIdentifier, 'com.asylumjudge.mobile');
   assert.equal(config.expo.version, '1.0.3');
-  assert.equal(config.expo.ios.buildNumber, '6');
+  assert.equal(config.expo.ios.buildNumber, '7');
   assert.equal(config.expo.icon, './assets/icon.png');
 });
 

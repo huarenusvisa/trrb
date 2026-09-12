@@ -1,7 +1,9 @@
 (() => {
   const $ = (id) => document.getElementById(id);
   const escapeHtml = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[char]));
-  const MERGED_KEYS = new Set(['seo_indexnow','seo_search_engine','monitor','maintenance','seo_metadata','legacy_recovery']);
+  // legacy_404 remains hidden even if an older production database has not yet
+  // applied the removal migration.
+  const MERGED_KEYS = new Set(['seo_indexnow','seo_search_engine','monitor','maintenance','legacy_404','seo_metadata','legacy_recovery']);
 
   async function request(options = {}) {
     const token = await window.getAdminAccessToken?.();

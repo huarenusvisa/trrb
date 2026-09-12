@@ -385,6 +385,9 @@ test('profile post composer restores text drafts and keeps failed uploads retrya
 
   assert.match(compose, /loadProfilePostDraft/);
   assert.match(compose, /saveProfilePostDraft/);
+  assert.match(compose, /currentUserId\(\)/);
+  assert.match(drafts, /resolveAccountStorageKey/);
+  assert.match(drafts, /userId: string/);
   assert.match(compose, /profile-compose-draft-restored/);
   assert.match(compose, /profile-compose-error/);
   assert.match(compose, /t\('profileCompose\.retry'\)/);

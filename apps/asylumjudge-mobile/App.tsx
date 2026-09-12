@@ -84,6 +84,7 @@ const NATIVE_APP_SCRIPT = `
     document.head.appendChild(viewport);
   }
   if (host === 'asylumjudge.com' || host === 'www.asylumjudge.com') root.classList.add('asylumjudge-data-home');
+  if ((host === 'trrb.net' || host === 'www.trrb.net') && path.startsWith('/legal')) root.classList.add('asylumjudge-legal-page');
 
   if (path === '/community' || path === '/asylumjudge/community') {
     root.classList.add('app-embedded');
@@ -93,7 +94,7 @@ const NATIVE_APP_SCRIPT = `
   style.id = 'asylumjudge-native-app-styles';
   style.textContent = \`
     html.asylumjudge-native-app { background: #f4f8f5 !important; -webkit-text-size-adjust: 100% !important; overscroll-behavior-y: contain; }
-    html.asylumjudge-native-app body { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", sans-serif !important; -webkit-font-smoothing: antialiased; }
+    html.asylumjudge-native-app body { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", sans-serif !important; font-size: 16px !important; line-height: 1.55 !important; -webkit-font-smoothing: antialiased; }
     html.asylumjudge-native-app a, html.asylumjudge-native-app button, html.asylumjudge-native-app select { touch-action: manipulation; }
     html.asylumjudge-native-app a:active, html.asylumjudge-native-app button:active { opacity: .76 !important; transform: scale(.985); }
     html.asylumjudge-native-app input, html.asylumjudge-native-app select { font-size: 16px !important; }
@@ -102,6 +103,22 @@ const NATIVE_APP_SCRIPT = `
     html.asylumjudge-native-app.asylumjudge-data-home .site-header:has(.brand-lockup) { box-shadow: 0 1px 0 rgba(20,128,74,.10) !important; }
     html.asylumjudge-native-app.asylumjudge-data-home .card,
     html.asylumjudge-native-app.asylumjudge-data-home .panel { border-radius: 16px !important; }
+    html.asylumjudge-native-app.asylumjudge-data-home .state-market { padding: 18px 16px 16px !important; }
+    html.asylumjudge-native-app.asylumjudge-data-home .state-market-head span { font-size: 11px !important; line-height: 1.45 !important; }
+    html.asylumjudge-native-app.asylumjudge-data-home .state-market-head b { font-size: 17px !important; line-height: 1.4 !important; margin-top: 4px !important; }
+    html.asylumjudge-native-app.asylumjudge-data-home .state-market-head small { font-size: 12px !important; line-height: 1.55 !important; margin-top: 5px !important; }
+    html.asylumjudge-native-app.asylumjudge-data-home .trend-interval-tabs { gap: 8px !important; }
+    html.asylumjudge-native-app.asylumjudge-data-home .trend-interval-tabs button { min-height: 48px !important; font-size: 13px !important; padding: 8px 13px !important; }
+    html.asylumjudge-native-app.asylumjudge-data-home .state-market-legend { gap: 8px !important; font-size: 12px !important; line-height: 1.45 !important; }
+    html.asylumjudge-native-app.asylumjudge-data-home .market-touch-hint { font-size: 11px !important; line-height: 1.55 !important; margin-top: 7px !important; }
+    html.asylumjudge-native-app.asylumjudge-data-home .trend-scope-controls { gap: 13px !important; margin-top: 13px !important; }
+    html.asylumjudge-native-app.asylumjudge-data-home .trend-scope-controls label { gap: 7px !important; font-size: 13px !important; line-height: 1.45 !important; }
+    html.asylumjudge-native-app.asylumjudge-data-home .trend-scope-controls select { min-height: 50px !important; font-size: 15px !important; padding: 10px 34px 10px 12px !important; }
+    html.asylumjudge-native-app.asylumjudge-data-home .state-trend-states { gap: 9px !important; margin-top: 14px !important; }
+    html.asylumjudge-native-app.asylumjudge-data-home .state-trend-states > span { font-size: 13px !important; line-height: 1.45 !important; }
+    html.asylumjudge-native-app.asylumjudge-data-home .state-trend-states button { min-height: 48px !important; font-size: 14px !important; line-height: 1.35 !important; }
+    html.asylumjudge-native-app.asylumjudge-data-home .state-trend-detail { gap: 11px 14px !important; font-size: 13px !important; line-height: 1.45 !important; }
+    html.asylumjudge-native-app.asylumjudge-data-home .state-trend-detail strong { font-size: 15px !important; }
     @media (max-width: 520px) {
       html.asylumjudge-native-app.asylumjudge-data-home .site-header:has(.brand-lockup) .header-inner { min-height: 60px !important; padding: 7px 12px !important; }
       html.asylumjudge-native-app.asylumjudge-data-home .site-header:has(.brand-lockup) .brand-lockup { max-width: 184px !important; }
@@ -123,6 +140,19 @@ const NATIVE_APP_SCRIPT = `
     html.asylumjudge-native-app header.site-header:not(:has(.brand-lockup)),
     html.asylumjudge-native-app nav.nav,
     html.asylumjudge-native-app footer.footer { display: none !important; }
+    html.asylumjudge-native-app.asylumjudge-legal-page .legal-header,
+    html.asylumjudge-native-app.asylumjudge-legal-page .hero > .eyebrow,
+    html.asylumjudge-native-app.asylumjudge-legal-page .hero > p:not(.eyebrow) { display: none !important; }
+    html.asylumjudge-native-app.asylumjudge-legal-page main.wrap { padding-top: 0 !important; }
+    html.asylumjudge-native-app.asylumjudge-legal-page .hero { padding: 14px 0 18px !important; }
+    html.asylumjudge-native-app.asylumjudge-legal-page .hero h1 { margin: 0 !important; font-size: 32px !important; line-height: 1.25 !important; }
+    html.asylumjudge-native-app.asylumjudge-legal-page .source-tabs { gap: 12px !important; margin-bottom: 22px !important; }
+    html.asylumjudge-native-app.asylumjudge-legal-page .source-tabs button { min-height: 50px !important; font-size: 15px !important; line-height: 1.35 !important; }
+    html.asylumjudge-native-app.asylumjudge-legal-page .filters { gap: 16px !important; padding: 18px !important; }
+    html.asylumjudge-native-app.asylumjudge-legal-page .filters label { gap: 9px !important; font-size: 14px !important; line-height: 1.4 !important; }
+    html.asylumjudge-native-app.asylumjudge-legal-page .filters input,
+    html.asylumjudge-native-app.asylumjudge-legal-page .filters select,
+    html.asylumjudge-native-app.asylumjudge-legal-page .filters button { min-height: 50px !important; height: 50px !important; font-size: 16px !important; line-height: 1.4 !important; }
     html.asylumjudge-native-app .immigration-hero,
     html.asylumjudge-native-app .legal-hero { padding-top: 18px !important; padding-bottom: 18px !important; }
     html.asylumjudge-native-app .container,
@@ -353,7 +383,7 @@ const styles = StyleSheet.create({
   retryPressed: { opacity: 0.82 },
   retryText: { color: '#ffffff', fontSize: 16, fontWeight: '800' },
   tabBar: {
-    minHeight: 52,
+    minHeight: 58,
     flexDirection: 'row',
     alignItems: 'stretch',
     borderTopWidth: StyleSheet.hairlineWidth,
@@ -362,12 +392,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 3,
     paddingTop: 2
   },
-  tabItem: { flex: 1, minHeight: 48, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 2, paddingVertical: 2 },
+  tabItem: { flex: 1, minHeight: 54, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 2, paddingVertical: 3 },
   tabPressed: { backgroundColor: '#f2f7f4' },
-  tabIcon: { width: 24, height: 24, borderRadius: 8, alignItems: 'center', justifyContent: 'center' },
+  tabIcon: { width: 27, height: 27, borderRadius: 9, alignItems: 'center', justifyContent: 'center' },
   tabIconActive: { backgroundColor: '#e6f4eb' },
-  tabIconText: { color: '#66736c', fontSize: 14, fontWeight: '900' },
+  tabIconText: { color: '#66736c', fontSize: 16, fontWeight: '900' },
   tabIconTextActive: { color: '#14804a' },
-  tabLabel: { color: '#66736c', fontSize: 10, lineHeight: 12, fontWeight: '700', marginTop: 2, textAlign: 'center' },
+  tabLabel: { color: '#66736c', fontSize: 11.5, lineHeight: 15, fontWeight: '700', marginTop: 2, textAlign: 'center' },
   tabLabelActive: { color: '#14804a', fontWeight: '900' }
 });

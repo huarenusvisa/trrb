@@ -1,5 +1,6 @@
 import { router } from 'expo-router';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useI18n } from '../src/i18n/I18nProvider';
 import { LocalePreference, MessageKey } from '../src/i18n/i18n-core';
 
@@ -12,8 +13,11 @@ const OPTIONS: { preference: LocalePreference; label: MessageKey; meta: MessageK
 
 export default function LanguageSettingsScreen() {
   const { preference, setPreference, t } = useI18n();
+  const insets = useSafeAreaInsets();
+  const { width } = useWindowDimensions();
   return (
-    <ScrollView testID="screen-language-settings" style={styles.page} contentContainerStyle={styles.content}>
+    <SafeAreaView style={styles.page} edges={['top', 'left', 'right']}>
+    <ScrollView testID="screen-language-settings" style={styles.page} contentInsetAdjustmentBehavior="automatic" contentContainerStyle={[styles.content, { paddingHorizontal: width < 390 ? 12 : 18, paddingBottom: Math.max(32, insets.bottom + 20) }]}>
       <Pressable accessibilityRole="button" onPress={() => router.back()} style={styles.back}><Text style={styles.backText}>‹ {t('common.back')}</Text></Pressable>
       <Text style={styles.h1}>{t('language.heading')}</Text>
       <Text style={styles.description}>{t('language.description')}</Text>
@@ -39,12 +43,13 @@ export default function LanguageSettingsScreen() {
         })}
       </View>
     </ScrollView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   page: { flex: 1, backgroundColor: '#f5f6f8' },
-  content: { padding: 18, paddingTop: 54, paddingBottom: 40 },
+  content: { width: '100%', maxWidth: 720, alignSelf: 'center', paddingTop: 12 },
   back: { alignSelf: 'flex-start', paddingVertical: 8, paddingRight: 14, marginBottom: 8 },
   backText: { color: '#c8211e', fontWeight: '800', fontSize: 16 },
   h1: { fontSize: 30, fontWeight: '900', color: '#101828' },

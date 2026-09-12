@@ -6,6 +6,7 @@ import { router, Stack } from 'expo-router';
 import { AsyncStatePanel } from '../src/components/AsyncStatePanel';
 import { useI18n } from '../src/i18n/I18nProvider';
 import { createProfilePost } from '../src/social/posts';
+import { currentUserId } from '../src/social/profiles';
 import { clearProfilePostDraft, loadProfilePostDraft, saveProfilePostDraft } from '../src/storage/profilePostDraft';
 
 export default function ProfileComposeScreen() {
@@ -19,15 +20,19 @@ export default function ProfileComposeScreen() {
   const [failure, setFailure] = useState('');
   const saveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const latestCaption = useRef('');
+  const draftUserId = useRef<string | null>(null);
 
   useEffect(() => () => {
     if (saveTimer.current) clearTimeout(saveTimer.current);
-    void saveProfilePostDraft(latestCaption.current).catch(() => undefined);
+    if (draftUserId.current) void saveProfilePostDraft(draftUserId.current, latestCaption.current).catch(() => undefined);
   }, []);
 
   useEffect(() => {
     let active = true;
-    void loadProfilePostDraft().then((draft) => {
+    void currentUserId().then((userId) => {
+      draftUserId.current = userId;
+      return loadProfilePostDraft(userId);
+    }).then((draft) => {
       if (!active) return;
       if (draft) { latestCaption.current = draft.caption; setCaption(draft.caption); setDraftRestored(true); }
     }).catch(() => undefined).finally(() => { if (active) setDraftReady(true); });
@@ -37,7 +42,9 @@ export default function ProfileComposeScreen() {
   useEffect(() => {
     if (!draftReady) return;
     if (saveTimer.current) clearTimeout(saveTimer.current);
-    saveTimer.current = setTimeout(() => { void saveProfilePostDraft(caption).catch(() => undefined); }, 600);
+    saveTimer.current = setTimeout(() => {
+      if (draftUserId.current) void saveProfilePostDraft(draftUserId.current, caption).catch(() => undefined);
+    }, 600);
     return () => { if (saveTimer.current) clearTimeout(saveTimer.current); };
   }, [caption, draftReady]);
 
@@ -63,7 +70,7 @@ export default function ProfileComposeScreen() {
       await createProfilePost(caption, assets, ({ completed, total }) => {
         setProgress(completed >= total ? t('profileCompose.finishing') : t('profileCompose.uploading', { current: completed + 1, total }));
       });
-      await clearProfilePostDraft();
+      if (draftUserId.current) await clearProfilePostDraft(draftUserId.current);
       latestCaption.current = '';
       setCaption(''); setAssets([]); setDraftRestored(false); setProgress('');
       Alert.alert(t('profileCompose.publishedTitle'), t('profileCompose.publishedBody'), [{ text: t('profileCompose.done'), onPress: () => router.back() }]);
@@ -78,7 +85,7 @@ export default function ProfileComposeScreen() {
     if (saveTimer.current) clearTimeout(saveTimer.current);
     latestCaption.current = '';
     setCaption(''); setAssets([]); setDraftRestored(false); setFailure('');
-    await clearProfilePostDraft().catch(() => undefined);
+    if (draftUserId.current) await clearProfilePostDraft(draftUserId.current).catch(() => undefined);
   };
 
   return <ScrollView style={styles.page} contentContainerStyle={styles.content} automaticallyAdjustKeyboardInsets keyboardDismissMode="on-drag" keyboardShouldPersistTaps="handled">

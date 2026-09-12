@@ -2,6 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { supabase } from '../auth/supabase';
 import { syncFavoriteLibrary } from './favorites-sync-core';
 import { clearHistoryLibrary, syncHistoryLibrary } from './history-sync-core';
+import { resolveAccountStorageKey } from './account-storage-scope';
 import type { SavedArticle } from './favorites-sync-core';
 
 export type { SavedArticle } from './favorites-sync-core';
@@ -29,45 +30,75 @@ async function currentUserIdOrNull() {
   return data.user?.id ?? null;
 }
 
-export async function getFavorites() { return readList(FAVORITES_KEY); }
+function mergeStoredLists(accountValue: string, guestValue: string, limit = Number.POSITIVE_INFINITY) {
+  const parse = (raw: string) => {
+    try {
+      const value = JSON.parse(raw);
+      return Array.isArray(value) ? value as SavedArticle[] : [];
+    } catch { return [] as SavedArticle[]; }
+  };
+  const seen = new Set<string>();
+  return JSON.stringify([...parse(guestValue), ...parse(accountValue)].filter((item) => {
+    const id = String(item?.id ?? '');
+    if (!id || seen.has(id)) return false;
+    seen.add(id);
+    return true;
+  }).slice(0, limit));
+}
+
+async function currentStorageScope(baseKey: string) {
+  const userId = await currentUserIdOrNull();
+  const limit = baseKey === HISTORY_KEY ? MAX_HISTORY : Number.POSITIVE_INFINITY;
+  const key = await resolveAccountStorageKey(AsyncStorage, baseKey, userId, (account, guest) => mergeStoredLists(account, guest, limit));
+  return { key, userId };
+}
+
+export async function getFavorites() {
+  const { key } = await currentStorageScope(FAVORITES_KEY);
+  return readList(key);
+}
 export async function isFavorite(id: string | number) { return (await getFavorites()).some((x) => String(x.id) === String(id)); }
 
 export async function toggleFavorite(article: SavedArticle) {
-  const rows = await getFavorites();
+  const scope = await currentStorageScope(FAVORITES_KEY);
+  const rows = await readList(scope.key);
   const exists = rows.some((x) => String(x.id) === String(article.id));
   const next = exists ? rows.filter((x) => String(x.id) !== String(article.id)) : [article, ...rows];
-  await writeList(FAVORITES_KEY, next);
+  await writeList(scope.key, next);
 
-  const userId = await currentUserIdOrNull();
-  if (userId) {
+  if (scope.userId) {
     if (exists) {
-      const { error } = await supabase.from('favorites').delete().eq('user_id', userId).eq('article_id', String(article.id));
+      const { error } = await supabase.from('favorites').delete().eq('user_id', scope.userId).eq('article_id', String(article.id));
       if (error) throw error;
     } else {
-      const { error } = await supabase.from('favorites').upsert({ user_id: userId, article_id: String(article.id) }, { onConflict: 'user_id,article_id' });
+      const { error } = await supabase.from('favorites').upsert({ user_id: scope.userId, article_id: String(article.id) }, { onConflict: 'user_id,article_id' });
       if (error) throw error;
     }
   }
   return !exists;
 }
 
-export async function getHistory() { return readList(HISTORY_KEY); }
+export async function getHistory() {
+  const { key } = await currentStorageScope(HISTORY_KEY);
+  return readList(key);
+}
 export async function addHistory(article: SavedArticle) {
-  const rows = await getHistory();
+  const scope = await currentStorageScope(HISTORY_KEY);
+  const rows = await readList(scope.key);
   const lastReadAt = new Date().toISOString();
   const next = [{ ...article, last_read_at: lastReadAt }, ...rows.filter((x) => String(x.id) !== String(article.id))].slice(0, MAX_HISTORY);
-  await writeList(HISTORY_KEY, next);
-  const userId = await currentUserIdOrNull();
-  if (userId) {
-    const { error } = await supabase.from('reading_history').upsert({ user_id: userId, article_id: String(article.id), last_read_at: lastReadAt }, { onConflict: 'user_id,article_id' });
+  await writeList(scope.key, next);
+  if (scope.userId) {
+    const { error } = await supabase.from('reading_history').upsert({ user_id: scope.userId, article_id: String(article.id), last_read_at: lastReadAt }, { onConflict: 'user_id,article_id' });
     if (error) throw error;
   }
 }
 
 export async function clearHistory() {
+  const scope = await currentStorageScope(HISTORY_KEY);
   return clearHistoryLibrary({
-    getCurrentUserId: currentUserIdOrNull,
-    clearLocalHistory: () => AsyncStorage.removeItem(HISTORY_KEY),
+    getCurrentUserId: async () => scope.userId,
+    clearLocalHistory: () => AsyncStorage.removeItem(scope.key),
     clearCloudHistory: async (userId) => {
       const { error } = await supabase.from('reading_history').delete().eq('user_id', userId);
       if (error) throw error;
@@ -78,7 +109,11 @@ export async function clearHistory() {
 export async function mergeLocalLibraryToCloud() {
   const userId = await currentUserIdOrNull();
   if (!userId) return { favorites: 0, history: 0 };
-  const [favorites, history] = await Promise.all([getFavorites(), getHistory()]);
+  const [favoritesKey, historyKey] = await Promise.all([
+    resolveAccountStorageKey(AsyncStorage, FAVORITES_KEY, userId, (account, guest) => mergeStoredLists(account, guest)),
+    resolveAccountStorageKey(AsyncStorage, HISTORY_KEY, userId, (account, guest) => mergeStoredLists(account, guest, MAX_HISTORY)),
+  ]);
+  const [favorites, history] = await Promise.all([readList(favoritesKey), readList(historyKey)]);
   if (favorites.length) {
     const { error } = await supabase.from('favorites').upsert(favorites.map((x) => ({ user_id: userId, article_id: String(x.id) })), { onConflict: 'user_id,article_id', ignoreDuplicates: true });
     if (error) throw error;
@@ -104,10 +139,11 @@ export async function getCloudFavoriteIds() {
 }
 
 export async function syncFavoritesWithCloud(resolveArticle: (id: string) => Promise<SavedArticle | null>) {
+  const scope = await currentStorageScope(FAVORITES_KEY);
   return syncFavoriteLibrary({
-    getCurrentUserId: currentUserIdOrNull,
-    readLocalFavorites: getFavorites,
-    writeLocalFavorites: (items) => writeList(FAVORITES_KEY, items),
+    getCurrentUserId: async () => scope.userId,
+    readLocalFavorites: () => readList(scope.key),
+    writeLocalFavorites: (items) => writeList(scope.key, items),
     listCloudFavoriteIds: async (userId) => {
       const { data, error } = await supabase
         .from('favorites')
@@ -137,10 +173,11 @@ export async function getCloudHistoryIds() {
 }
 
 export async function syncHistoryWithCloud(resolveArticle: (id: string) => Promise<SavedArticle | null>) {
+  const scope = await currentStorageScope(HISTORY_KEY);
   return syncHistoryLibrary({
-    getCurrentUserId: currentUserIdOrNull,
-    readLocalHistory: getHistory,
-    writeLocalHistory: (items) => writeList(HISTORY_KEY, items),
+    getCurrentUserId: async () => scope.userId,
+    readLocalHistory: () => readList(scope.key),
+    writeLocalHistory: (items) => writeList(scope.key, items),
     listCloudHistory: async (userId, limit) => {
       const { data, error } = await supabase
         .from('reading_history')

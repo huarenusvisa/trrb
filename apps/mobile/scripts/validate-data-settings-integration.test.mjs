@@ -53,6 +53,32 @@ test('keeps localized profile controls and account deletion on the existing acco
   assert.doesNotMatch(deletion, /service_role|SUPABASE_SERVICE_ROLE_KEY/);
 });
 
+test('keeps authenticated profile loading distinct from guest mode and reports broken legal links', () => {
+  const profile = read('app/(tabs)/profile.tsx');
+
+  assert.match(profile, /setSession\(next\);[\s\S]*setLoading\(true\);[\s\S]*await loadProfile\(next\);[\s\S]*setLoading\(false\)/);
+  assert.match(profile, /testID="profile-loading"/);
+  assert.match(profile, /testID="profile-load-error"/);
+  assert.match(profile, /session \? <AsyncStatePanel/);
+  assert.match(profile, /await Linking\.canOpenURL\(url\)/);
+  assert.match(profile, /await Linking\.openURL\(url\)/);
+  assert.match(profile, /t\('profile\.linkOpenFailedBody'/);
+});
+
+test('isolates local favorites, history and personal-post drafts by account', () => {
+  const library = read('src/storage/library.ts');
+  const draft = read('src/storage/profilePostDraft.ts');
+  const compose = read('app/profile-compose.tsx');
+
+  assert.match(library, /resolveAccountStorageKey\(AsyncStorage, FAVORITES_KEY, userId,/);
+  assert.match(library, /resolveAccountStorageKey\(AsyncStorage, HISTORY_KEY, userId,/);
+  assert.match(library, /writeList\(scope\.key, next\)/);
+  assert.match(draft, /loadProfilePostDraft\(userId: string\)/);
+  assert.match(draft, /saveProfilePostDraft\(userId: string, caption: string\)/);
+  assert.match(compose, /draftUserId = useRef<string \| null>\(null\)/);
+  assert.match(compose, /saveProfilePostDraft\(draftUserId\.current, latestCaption\.current\)/);
+});
+
 test('keeps authenticated profile-media uploads on the supported storage search path', () => {
   const migration = read('../../supabase/migrations/20260909011903_repair_authenticated_storage_search_path.sql');
 

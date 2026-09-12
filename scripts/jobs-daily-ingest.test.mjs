@@ -13,6 +13,12 @@ test("routes all caregiver job terms to the shared home-care category", () => {
     "Caregiver needed",
     "Nanny wanted",
     "Doula position",
+    "Babysitter needed",
+    "Newborn Care Specialist",
+    "Postpartum Doula",
+    "Home Health Aide",
+    "Elder Care Companion",
+    "Housekeeper wanted",
   ]) {
     assert.equal(pickCategory(title), "home-care", title);
   }

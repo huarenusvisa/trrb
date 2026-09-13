@@ -87,8 +87,9 @@ const NATIVE_APP_SCRIPT = `
   if ((host === 'trrb.net' || host === 'www.trrb.net') && path.startsWith('/legal')) root.classList.add('asylumjudge-legal-page');
 
   if (path === '/community' || path === '/asylumjudge/community') {
-    root.classList.add('app-embedded');
+    root.classList.add('app-embedded', 'asylumjudge-community-page');
   }
+  if ((host === 'trrb.net' || host === 'www.trrb.net') && path.startsWith('/immigrate')) root.classList.add('asylumjudge-knowledge-page');
 
   let style = document.getElementById('asylumjudge-native-app-styles');
   if (!style) {
@@ -180,6 +181,102 @@ const NATIVE_APP_SCRIPT = `
       html.asylumjudge-native-app.asylumjudge-legal-page .filters button { min-width: 0 !important; min-height: 46px !important; height: 46px !important; padding-left: 10px !important; padding-right: 10px !important; font-size: 14px !important; }
       html.asylumjudge-native-app.asylumjudge-legal-page .filters #legal-reset { grid-area: reset; color: #14804a !important; border-color: #b9d5c5 !important; background: #f2f8f4 !important; }
       html.asylumjudge-native-app.asylumjudge-legal-page .status-row { padding-top: 16px !important; }
+    }
+    html.asylumjudge-native-app.asylumjudge-community-page body,
+    html.asylumjudge-native-app.asylumjudge-knowledge-page body { background: #f4f8f5 !important; color: #102019 !important; }
+    html.asylumjudge-native-app.asylumjudge-community-page {
+      --ink: #102019;
+      --muted: #5f6f67;
+      --line: #d4ddd7;
+      --paper: #ffffff;
+      --wash: #f4f8f5;
+      --red: #14804a;
+      --red-dark: #0d6b3d;
+      --green: #14804a;
+      --shadow: 0 14px 36px rgba(16, 32, 25, .09);
+    }
+    html.asylumjudge-native-app.asylumjudge-community-page .hero {
+      background: linear-gradient(135deg, #f8fcf9 0%, #edf8f1 58%, #deefe5 100%) !important;
+      border-bottom-color: #d4e5da !important;
+    }
+    html.asylumjudge-native-app.asylumjudge-community-page .eyebrow,
+    html.asylumjudge-native-app.asylumjudge-community-page .category,
+    html.asylumjudge-native-app.asylumjudge-community-page .badge.category,
+    html.asylumjudge-native-app.asylumjudge-community-page .likedCount { color: #14804a !important; }
+    html.asylumjudge-native-app.asylumjudge-community-page button,
+    html.asylumjudge-native-app.asylumjudge-community-page .hero-actions button { background: #14804a !important; color: #ffffff !important; }
+    html.asylumjudge-native-app.asylumjudge-community-page .secondary,
+    html.asylumjudge-native-app.asylumjudge-community-page .text-button,
+    html.asylumjudge-native-app.asylumjudge-community-page .hero-actions a,
+    html.asylumjudge-native-app.asylumjudge-community-page .post-actions button {
+      background: #ffffff !important;
+      color: #102019 !important;
+      border-color: #c9d8cf !important;
+    }
+    html.asylumjudge-native-app.asylumjudge-community-page .category-grid button {
+      background: #ffffff !important;
+      color: #102019 !important;
+      border-color: #d4ddd7 !important;
+      box-shadow: 0 5px 18px rgba(16, 32, 25, .035) !important;
+    }
+    html.asylumjudge-native-app.asylumjudge-community-page .category-grid button.featured,
+    html.asylumjudge-native-app.asylumjudge-community-page .category-grid button.active {
+      background: #eef8f2 !important;
+      border-color: #a9cfb8 !important;
+    }
+    html.asylumjudge-native-app.asylumjudge-community-page .category-grid button:hover { border-color: #14804a !important; }
+    html.asylumjudge-native-app.asylumjudge-community-page .badge.category,
+    html.asylumjudge-native-app.asylumjudge-community-page .likedButton { background: #e6f4eb !important; }
+    html.asylumjudge-native-app.asylumjudge-community-page .avatar { background: #e6f4eb !important; color: #0d6b3d !important; }
+    html.asylumjudge-native-app.asylumjudge-community-page .hero h1,
+    html.asylumjudge-native-app.asylumjudge-community-page .section-head h2,
+    html.asylumjudge-native-app.asylumjudge-community-page .feed-toolbar h2 { color: #102019 !important; }
+    html.asylumjudge-native-app.asylumjudge-community-page .hero h1 + p,
+    html.asylumjudge-native-app.asylumjudge-community-page .category-grid small,
+    html.asylumjudge-native-app.asylumjudge-community-page .notice { color: #5f6f67 !important; }
+    html.asylumjudge-native-app.asylumjudge-knowledge-page .knowledge-top { display: none !important; }
+    html.asylumjudge-native-app.asylumjudge-knowledge-page .center-hero {
+      padding: 30px 0 28px !important;
+      background: linear-gradient(135deg, #0d6b3d 0%, #14804a 58%, #2b9862 100%) !important;
+      color: #ffffff !important;
+    }
+    html.asylumjudge-native-app.asylumjudge-knowledge-page .center-layout { padding-top: 22px !important; padding-bottom: 44px !important; gap: 18px !important; }
+    html.asylumjudge-native-app.asylumjudge-knowledge-page .center-sidebar,
+    html.asylumjudge-native-app.asylumjudge-knowledge-page .topic-overview,
+    html.asylumjudge-native-app.asylumjudge-knowledge-page .topic-card,
+    html.asylumjudge-native-app.asylumjudge-knowledge-page .article-item {
+      border-color: #d4ddd7 !important;
+      background: #ffffff !important;
+      box-shadow: 0 6px 20px rgba(16, 32, 25, .045) !important;
+    }
+    html.asylumjudge-native-app.asylumjudge-knowledge-page .center-sidebar a { color: #34483d !important; }
+    html.asylumjudge-native-app.asylumjudge-knowledge-page .center-sidebar a:hover,
+    html.asylumjudge-native-app.asylumjudge-knowledge-page .center-sidebar a.is-current {
+      background: #e6f4eb !important;
+      color: #0d6b3d !important;
+    }
+    html.asylumjudge-native-app.asylumjudge-knowledge-page .topic-card:hover { border-color: #14804a !important; }
+    html.asylumjudge-native-app.asylumjudge-knowledge-page .knowledge-structure header p,
+    html.asylumjudge-native-app.asylumjudge-knowledge-page .related-articles header p,
+    html.asylumjudge-native-app.asylumjudge-knowledge-page .article-item small,
+    html.asylumjudge-native-app.asylumjudge-knowledge-page .article-item a { color: #14804a !important; }
+    html.asylumjudge-native-app.asylumjudge-knowledge-page .knowledge-step {
+      border-left-color: #14804a !important;
+      background: #eef8f2 !important;
+    }
+    html.asylumjudge-native-app.asylumjudge-knowledge-page .topic-overview p,
+    html.asylumjudge-native-app.asylumjudge-knowledge-page .topic-card span,
+    html.asylumjudge-native-app.asylumjudge-knowledge-page .knowledge-step small,
+    html.asylumjudge-native-app.asylumjudge-knowledge-page .article-item p { color: #5f6f67 !important; }
+    @media (max-width: 640px) {
+      html.asylumjudge-native-app.asylumjudge-community-page .hero h1 { font-size: 27px !important; line-height: 1.2 !important; }
+      html.asylumjudge-native-app.asylumjudge-community-page .hero-actions { gap: 10px !important; }
+      html.asylumjudge-native-app.asylumjudge-community-page .hero-actions button,
+      html.asylumjudge-native-app.asylumjudge-community-page .hero-actions a { min-width: 0 !important; padding: 10px 14px !important; }
+      html.asylumjudge-native-app.asylumjudge-knowledge-page .center-hero { padding: 26px 0 24px !important; }
+      html.asylumjudge-native-app.asylumjudge-knowledge-page .center-hero h1 { font-size: 30px !important; }
+      html.asylumjudge-native-app.asylumjudge-knowledge-page .center-layout { padding-left: 12px !important; padding-right: 12px !important; }
+      html.asylumjudge-native-app.asylumjudge-knowledge-page .center-sidebar { padding: 18px !important; border-radius: 16px !important; }
     }
     html.asylumjudge-native-app .immigration-hero,
     html.asylumjudge-native-app .legal-hero { padding-top: 18px !important; padding-bottom: 18px !important; }

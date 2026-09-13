@@ -86,6 +86,16 @@ test('uses a compact two-column BIA filter form on phones', () => {
   assert.match(app, /asylumjudge-legal-page main\.wrap \{ width: calc\(100% - 28px\)/);
 });
 
+test('uses the AsylumJudge palette for embedded community and knowledge pages', () => {
+  assert.match(app, /asylumjudge-community-page/);
+  assert.match(app, /asylumjudge-knowledge-page/);
+  assert.match(app, /asylumjudge-community-page \.hero \{[\s\S]*?#edf8f1/);
+  assert.match(app, /asylumjudge-community-page \.category-grid button\.featured,[\s\S]*?background: #eef8f2/);
+  assert.match(app, /asylumjudge-knowledge-page \.center-hero \{[\s\S]*?#14804a/);
+  assert.match(app, /asylumjudge-knowledge-page \.knowledge-step \{[\s\S]*?border-left-color: #14804a/);
+  assert.match(app, /asylumjudge-knowledge-page \.knowledge-top \{ display: none/);
+});
+
 test('uses the AsylumJudge green palette throughout the profile home', () => {
   const profile = readFileSync(new URL('../shared-mobile/app/(tabs)/profile.tsx', import.meta.url), 'utf8');
   const hero = readFileSync(new URL('../shared-mobile/src/components/ProfileHero.tsx', import.meta.url), 'utf8');
@@ -122,7 +132,7 @@ test('preserves the official app identity for the next release', () => {
   assert.equal(config.expo.extra.eas.projectId, '4443f235-79a2-4508-afe3-736331b9ae7b');
   assert.equal(config.expo.ios.bundleIdentifier, 'com.asylumjudge.mobile');
   assert.equal(config.expo.version, '1.0.3');
-  assert.equal(config.expo.ios.buildNumber, '11');
+  assert.equal(config.expo.ios.buildNumber, '13');
   assert.equal(config.expo.icon, './assets/icon.png');
 });
 

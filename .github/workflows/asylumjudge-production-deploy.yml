@@ -96,13 +96,13 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          cd .netlify/asylumjudge-bundle
           npx --yes netlify-cli@latest deploy \
             --prod \
             --no-build \
-            --config ".netlify/asylumjudge-bundle/netlify.toml" \
             --site "$NETLIFY_SITE_ID" \
-            --dir ".netlify/asylumjudge-bundle/public" \
-            --functions ".netlify/asylumjudge-bundle/netlify/functions" \
+            --dir "public" \
+            --functions "netlify/functions" \
             --message "AsylumJudge verified production bundle ${GITHUB_SHA}"
       - name: Verify live multilingual and SEO routes after deploy
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.deploy == true }}

@@ -1,0 +1,59 @@
+{
+  "complete": true,
+  "source": "production-sitemap-before-fix",
+  "generated_at": "2026-09-13T00:21:29.177420+00:00",
+  "urls": [
+    {
+      "url": "https://huarengongzuo.com/",
+      "fingerprint": "production-before-public-index-v2"
+    },
+    {
+      "url": "https://huarengongzuo.com/jobs/",
+      "fingerprint": "production-before-public-index-v2"
+    },
+    {
+      "url": "https://huarengongzuo.com/jobs/locations/new-york/",
+      "fingerprint": "production-before-public-index-v2"
+    },
+    {
+      "url": "https://huarengongzuo.com/jobs/locations/flushing/",
+      "fingerprint": "production-before-public-index-v2"
+    },
+    {
+      "url": "https://huarengongzuo.com/jobs/locations/los-angeles/",
+      "fingerprint": "production-before-public-index-v2"
+    },
+    {
+      "url": "https://huarengongzuo.com/jobs/locations/boston/",
+      "fingerprint": "production-before-public-index-v2"
+    },
+    {
+      "url": "https://huarengongzuo.com/jobs/locations/houston/",
+      "fingerprint": "production-before-public-index-v2"
+    },
+    {
+      "url": "https://huarengongzuo.com/jobs/categories/restaurant/",
+      "fingerprint": "production-before-public-index-v2"
+    },
+    {
+      "url": "https://huarengongzuo.com/jobs/categories/driver/",
+      "fingerprint": "production-before-public-index-v2"
+    },
+    {
+      "url": "https://huarengongzuo.com/jobs/categories/warehouse/",
+      "fingerprint": "production-before-public-index-v2"
+    },
+    {
+      "url": "https://huarengongzuo.com/jobs/categories/beauty-nail/",
+      "fingerprint": "production-before-public-index-v2"
+    },
+    {
+      "url": "https://huarengongzuo.com/jobs/categories/home-care/",
+      "fingerprint": "production-before-public-index-v2"
+    },
+    {
+      "url": "https://huarengongzuo.com/ershou/",
+      "fingerprint": "production-before-public-index-v2"
+    }
+  ]
+}

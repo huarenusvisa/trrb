@@ -22,8 +22,8 @@ function iso(value: unknown): string {
 }
 function supabaseConfig() {
   return {
-    base: (Deno.env.get("SUPABASE_URL") || "").replace(/\/+$/, ""),
-    key: Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") || ""
+    base: (Netlify.env.get("SUPABASE_URL") || "").replace(/\/+$/, ""),
+    key: Netlify.env.get("SUPABASE_SERVICE_ROLE_KEY") || ""
   };
 }
 function headers(key: string) {
@@ -44,6 +44,7 @@ async function getJob(id: string) {
   url.searchParams.set("id", `eq.${id}`);
   url.searchParams.set("status", "eq.open");
   url.searchParams.set("moderation_hold", "eq.false");
+  url.searchParams.set("deleted_at", "is.null");
   url.searchParams.set("limit", "1");
   const response = await fetch(url, { headers: headers(key), cache: "no-store" });
   if (!response.ok) throw new Error(`job_listings ${response.status}`);
@@ -134,16 +135,14 @@ function schemaFor(job: any, canonical: string) {
   if (salary) schema.baseSalary = salary;
   return schema;
 }
-function page(job: any, canonical: string, indexable: boolean) {
+function page(job: any, canonical: string, richResultEligible: boolean) {
   const title = clean(job.title);
   const company = clean(job.company_name);
   const description = clean(job.description);
   const place = [job.neighborhood, job.borough || job.county, job.city, job.state_code].map(clean).filter(Boolean).join(" · ");
   const action = publicAction(job);
-  const robots = indexable
-    ? "index,follow,max-image-preview:large,max-snippet:-1"
-    : "noindex,follow,noarchive";
-  const schema = indexable ? `<script type="application/ld+json" data-hg-jobposting>${escJson(schemaFor(job, canonical))}</script>` : "";
+  const robots = "index,follow,max-image-preview:large,max-snippet:-1";
+  const schema = richResultEligible ? `<script type="application/ld+json" data-hg-jobposting>${escJson(schemaFor(job, canonical))}</script>` : "";
   const expired = new Date(String(job.expires_at || "")).getTime() <= Date.now();
   return `<!doctype html>
 <html lang="zh-Hans"><head>
@@ -179,15 +178,16 @@ export default async (request: Request, context: any) => {
     const job = await getJob(id);
     if (!job) return context.next();
     const canonical = `${SITE}/jobs/listing.html?id=${encodeURIComponent(id)}`;
-    const indexable = eligible(job);
-    const html = page(job, canonical, indexable);
+    // Public visibility controls indexing; completeness only controls JobPosting markup.
+    const richResultEligible = eligible(job);
+    const html = page(job, canonical, richResultEligible);
     const responseHeaders = new Headers({
       "content-type": "text/html; charset=UTF-8",
       "cache-control": "public, max-age=60, stale-while-revalidate=300",
       "link": `<${canonical}>; rel="canonical"`,
-      "x-hg-job-prerender": indexable ? "google-jobs-v1" : "public-noindex-v1"
+      "x-hg-job-prerender": richResultEligible ? "google-jobs-v1" : "public-index-v2"
     });
-    if (!indexable) responseHeaders.set("x-robots-tag", "noindex, follow");
+    responseHeaders.set("x-robots-tag", "index, follow");
     return new Response(request.method === "HEAD" ? null : html, { status: 200, headers: responseHeaders });
   } catch (error) {
     console.error("Huaren Gongzuo job prerender failed", error);

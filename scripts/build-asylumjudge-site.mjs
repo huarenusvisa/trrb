@@ -80,6 +80,17 @@ https://www.immigrationjudge.us/* https://asylumjudge.com/:splat 301!
 /asylumjudge/trrb.html / 301!
 /asylumjudge/judge-backgrounds.html /judge-backgrounds/ 301!
 /asylumjudge-community.html /community/ 301!
+/hot-headlines https://trrb.net/hot-headlines 301!
+/us-politics https://trrb.net/us-politics 301!
+/us-crime https://trrb.net/us-crime 301!
+/ice https://trrb.net/ice 301!
+/immigrate/center https://trrb.net/immigrate/center 301!
+/immigrate/ https://trrb.net/immigrate/ 301!
+/huarengongzuo/ https://trrb.net/huarengongzuo/ 301!
+/jobs/ https://trrb.net/jobs/ 301!
+/legal/ https://trrb.net/legal/ 301!
+/privacy.html https://trrb.net/privacy.html 301!
+/terms.html https://trrb.net/terms.html 301!
 /immigration-judge-approval-rate/index.html / 301!
 /immigration-judge-approval-rate/detail.html /judge 301!
 /immigration-judge-approval-rate/court-detail.html /court 301!

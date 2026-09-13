@@ -155,6 +155,9 @@ async function walkHtml(root) {
   const out = [];
   async function visit(dir) {
     for (const entry of await readdir(dir, { withFileTypes: true })) {
+      // Ignore transient copy/sync directories that may appear while the
+      // generated bundle is being mirrored by the local preview runtime.
+      if (entry.name.startsWith('.')) continue;
       const path = join(dir, entry.name);
       if (entry.isDirectory()) await visit(path);
       else if (entry.isFile() && entry.name === 'index.html') out.push(path);

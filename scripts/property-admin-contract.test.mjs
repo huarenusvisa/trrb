@@ -1,0 +1,4 @@
+import assert from "node:assert/strict";import fs from "node:fs";
+const api=fs.readFileSync("netlify/functions/property-admin.js","utf8"),sql=fs.readFileSync("supabase/migrations/20260913235500_property_admin_foundation.sql","utf8"),html=fs.readFileSync("admin/index.html","utf8");
+assert.match(api,/authenticateStaff\(event,\["owner","admin","editor"\]\)/);assert.match(api,/property-private/);assert.match(api,/只能把线索分配给已认证经纪/);assert.match(api,/发布房源必须二次确认/);
+assert.match(sql,/enable row level security/g);assert.match(sql,/revoke all[\s\S]+from anon,authenticated/);assert.match(sql,/property_admin_audit/);assert.match(html,/data-page="property-admin"/);console.log("property admin contract: PASS");

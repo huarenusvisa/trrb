@@ -233,6 +233,7 @@ function showPage(page, sourceButton = null) {
     "article-translations": "文章翻译审核",
     "asylumjudge-review": "AsylumJudge内容中心",
     "account-recovery": "账号找回",
+    "property-admin": "纽约房产管理",
     rankings: "24小时热榜"
   };
 
@@ -250,6 +251,7 @@ function showPage(page, sourceButton = null) {
   if (page === "asylumjudge-review") window.loadAsylumJudgeReview?.();
   if (page === "article-translations") window.loadArticleTranslations?.();
   if (page === "account-recovery") window.loadAccountRecoveryActions?.();
+  if (page === "property-admin") window.loadPropertyAdmin?.();
   document.dispatchEvent(new CustomEvent("trrb:admin-page-shown", { detail: { page, preset } }));
 }
 

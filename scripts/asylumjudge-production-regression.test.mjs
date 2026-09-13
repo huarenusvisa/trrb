@@ -35,6 +35,12 @@ assert.match(hardening, /stopImmediatePropagation/, 'language hardening must pre
 assert.match(hardening, /\/en\/asylum-judge-rating\//, 'language hardening must map the English keyword page');
 
 const redirects = read('_redirects');
+for (const line of redirects.trim().split(/\r?\n/)) {
+  const [source, destination, status] = line.trim().split(/\s+/);
+  if (!/^30[18]!?$/.test(status || '') || !source?.startsWith('/') || !destination?.startsWith('/')) continue;
+  const normalized = (path) => path === '/' ? path : path.replace(/\/+$/, '');
+  assert.notEqual(normalized(source), normalized(destination), `${line} can self-redirect after Netlify trailing-slash normalization`);
+}
 for (const locale of locales) {
   assert.match(redirects, new RegExp(`/${locale}/methodology /methodology/ 301!`), `/${locale}/methodology must fall back to the only indexable methodology page instead of 404`);
   assert.match(redirects, new RegExp(`/${locale}/methodology/ /methodology/ 301!`), `/${locale}/methodology/ must fall back instead of 404`);

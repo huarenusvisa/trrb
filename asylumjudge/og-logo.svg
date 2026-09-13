@@ -8,15 +8,13 @@
     <rect x="116" y="126" width="80" height="214" rx="24" fill="#14804A"/>
     <rect x="216" y="183" width="80" height="157" rx="24" fill="#C4161C"/>
     <rect x="316" y="233" width="80" height="107" rx="24" fill="#2563A9"/>
-    <g fill="#101828" font-family="Arial, Helvetica, sans-serif" font-size="68" font-weight="900">
-      <text x="207" y="426" transform="rotate(-9 207 426)">U</text>
-      <text x="270" y="416" transform="rotate(9 270 416)">S</text>
-    </g>
+    <text x="256" y="398" text-anchor="middle" fill="#101828" font-family="Arial, Helvetica, sans-serif" font-size="54" font-weight="900">U.S.</text>
+    <text x="256" y="446" text-anchor="middle" fill="#475467" font-family="Arial, Helvetica, sans-serif" font-size="27" font-weight="700">Immigration Court</text>
   </g>
   <text x="465" y="310" fill="#101828" font-family="Arial, Helvetica, sans-serif" font-size="78" font-weight="800" letter-spacing="-3">Asylum</text>
   <text x="723" y="310" fill="#14804A" font-family="Arial, Helvetica, sans-serif" font-size="78" font-weight="800" letter-spacing="-3">Judge</text>
   <text x="946" y="310" fill="#667085" font-family="Arial, Helvetica, sans-serif" font-size="31" font-weight="700">.com</text>
-  <text x="468" y="365" fill="#475467" font-family="Arial, Helvetica, sans-serif" font-size="23" font-weight="700" letter-spacing="2">U.S. IMMIGRATION COURT DATA</text>
+  <text x="468" y="365" fill="#475467" font-family="Arial, Helvetica, sans-serif" font-size="23" font-weight="700" letter-spacing="2">U.S. Immigration Court</text>
   <g transform="translate(468 410)">
     <circle cx="8" cy="8" r="8" fill="#14804A"/><text x="27" y="15" fill="#667085" font-family="Arial" font-size="18" font-weight="700">APPROVED</text>
     <circle cx="158" cy="8" r="8" fill="#C4161C"/><text x="177" y="15" fill="#667085" font-family="Arial" font-size="18" font-weight="700">DENIED</text>

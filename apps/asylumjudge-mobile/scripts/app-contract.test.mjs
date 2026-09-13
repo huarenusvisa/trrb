@@ -122,7 +122,7 @@ test('preserves the official app identity for the next release', () => {
   assert.equal(config.expo.extra.eas.projectId, '4443f235-79a2-4508-afe3-736331b9ae7b');
   assert.equal(config.expo.ios.bundleIdentifier, 'com.asylumjudge.mobile');
   assert.equal(config.expo.version, '1.0.3');
-  assert.equal(config.expo.ios.buildNumber, '9');
+  assert.equal(config.expo.ios.buildNumber, '10');
   assert.equal(config.expo.icon, './assets/icon.png');
 });
 

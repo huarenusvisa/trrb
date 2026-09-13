@@ -114,7 +114,10 @@ jobs:
             if [ "$code" != "200" ]; then echo "Live verification failed: ${path} returned ${code}" >&2; exit 1; fi
             if grep -qi 'Page not found' /tmp/asylumjudge-live.html; then echo "Live verification failed: ${path} rendered Netlify 404 content" >&2; exit 1; fi
           done
-          curl -fsSL https://asylumjudge.com/en/ | grep -q 'U.S. Immigration Judge Approval Rates'
-          curl -fsSL https://asylumjudge.com/en/asylum-judge-rating/ | grep -q 'Asylum Judge Rating and Approval Rate Lookup'
-          curl -fsSL https://asylumjudge.com/asylum-judge-approval-rate/ | grep -q '美国庇护法官通过率查询'
+          curl -fsSL -o /tmp/asylumjudge-en.html https://asylumjudge.com/en/
+          grep -q 'U.S. Immigration Judge Approval Rates' /tmp/asylumjudge-en.html
+          curl -fsSL -o /tmp/asylumjudge-rating.html https://asylumjudge.com/en/asylum-judge-rating/
+          grep -q 'Asylum Judge Rating and Approval Rate Lookup' /tmp/asylumjudge-rating.html
+          curl -fsSL -o /tmp/asylumjudge-approval.html https://asylumjudge.com/asylum-judge-approval-rate/
+          grep -q '美国庇护法官通过率查询' /tmp/asylumjudge-approval.html
           echo 'Live AsylumJudge multilingual and keyword routes verified.'

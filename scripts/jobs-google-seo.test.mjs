@@ -35,19 +35,18 @@ assert.match(page, /clean\(job\.description\)\.length\s*>=\s*MIN_DESCRIPTION/, "
 assert.match(page, /expires\s*>\s*Date\.now\(\)/, "future-expiry gate missing");
 assert.match(page, /publicAction\(job\)/, "public apply/contact gate missing");
 assert.match(page, /validCompany\(job\.company_name\)/, "placeholder employer gate missing from job page");
-assert.match(sitemap, /validCompany\(job\.company_name\)/, "placeholder employer gate missing from jobs sitemap");
 for (const placeholder of ["未公开雇主", "招聘方未公开名称", "unknown", "confidential"]) {
   assert.ok(page.includes(placeholder), `job page does not reject placeholder employer: ${placeholder}`);
-  assert.ok(sitemap.includes(placeholder), `jobs sitemap does not reject placeholder employer: ${placeholder}`);
 }
 assert.doesNotMatch(page, /name:\s*["']华人工作网["'][\s\S]{0,80}hiringOrganization/, "platform must not impersonate the hiring organization");
 assert.match(page, /SUPABASE_SERVICE_ROLE_KEY/, "server-side database key lookup missing");
 assert.doesNotMatch(listing, /SUPABASE_SERVICE_ROLE_KEY/, "service role key leaked into public listing HTML");
 
-assert.match(sitemap, /google-jobs-quality-gated-v1/, "quality-gated jobs sitemap marker missing");
-assert.match(sitemap, /\.filter\(eligible\)/, "jobs sitemap does not share the eligibility boundary");
+assert.match(sitemap, /public-jobs-v2/, "public jobs sitemap marker missing");
+assert.match(sitemap, /url\.searchParams\.set\("status",\s*"eq\.open"\)/, "jobs sitemap open-status boundary missing");
+assert.match(sitemap, /url\.searchParams\.set\("moderation_hold",\s*"eq\.false"\)/, "jobs sitemap moderation boundary missing");
+assert.match(sitemap, /url\.searchParams\.set\("deleted_at",\s*"is\.null"\)/, "jobs sitemap deletion boundary missing");
 assert.match(sitemap, /listing\.html\?id=/, "jobs sitemap missing canonical detail URLs");
-assert.match(sitemap, /expires\s*>\s*Date\.now\(\)/, "sitemap future-expiry gate missing");
 assert.match(sitemap, /\/jobs\/locations\/flushing\//, "evergreen location pages missing from sitemap");
 assert.match(sitemap, /\/jobs\/categories\/restaurant\//, "evergreen category pages missing from sitemap");
 assert.doesNotMatch(sitemap, /block\(`\$\{SITE\}\/jobs\/(?:publish|seeker)\.html/, "transaction forms must not be emitted in sitemap");

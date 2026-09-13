@@ -1,11 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
   <rect width="1024" height="1024" fill="#ffffff"/>
-  <rect x="40" y="40" width="944" height="944" rx="220" fill="#ffffff" stroke="#cfd5de" stroke-width="40"/>
-  <rect x="232" y="226" width="160" height="420" rx="48" fill="#14804a"/>
-  <rect x="432" y="338" width="160" height="308" rx="48" fill="#c4161c"/>
-  <rect x="632" y="438" width="160" height="208" rx="48" fill="#2563a9"/>
-  <g fill="#101828" font-family="DejaVu Sans, Arial, sans-serif" font-size="132" font-weight="900">
-    <text x="410" y="842" transform="rotate(-9 410 842)">U</text>
-    <text x="540" y="821" transform="rotate(9 540 821)">S</text>
-  </g>
+  <rect x="48" y="48" width="928" height="928" rx="216" fill="#ffffff" stroke="#d0d5dd" stroke-width="34"/>
+  <rect x="224" y="202" width="164" height="408" rx="48" fill="#14804a"/>
+  <rect x="430" y="316" width="164" height="294" rx="48" fill="#c4161c"/>
+  <rect x="636" y="412" width="164" height="198" rx="48" fill="#2563a9"/>
+  <text x="512" y="760" text-anchor="middle" fill="#101828" font-family="Arial, Helvetica, sans-serif" font-size="116" font-weight="900">U.S.</text>
+  <text x="512" y="846" text-anchor="middle" fill="#475467" font-family="Arial, Helvetica, sans-serif" font-size="48" font-weight="700">Immigration Court</text>
 </svg>

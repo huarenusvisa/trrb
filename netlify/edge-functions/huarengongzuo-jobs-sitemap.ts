@@ -1,8 +1,5 @@
 const SITE = "https://huarengongzuo.com";
-const MIN_DESCRIPTION = 100;
-const MAX_JOBS = 1000;
-const OFFICIAL_APPLY_SOURCE = /^(greenhouse_|jazzhr_|lever_|workday_|ashby_)/i;
-const UNKNOWN_COMPANY = /^(?:未公开雇主|招聘方未公开名称|未公开|不详|未知|unknown|confidential)$/i;
+const PAGE_SIZE = 1000;
 const EVERGREEN_URLS = [
   ["/", "1.0"], ["/jobs/", "0.9"],
   ["/jobs/locations/new-york/", "0.8"], ["/jobs/locations/flushing/", "0.8"],
@@ -19,38 +16,36 @@ function clean(value: unknown): string { return String(value ?? "").replace(/\s+
 function esc(value: unknown): string {
   return clean(value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&apos;");
 }
-function publicAction(job: any): boolean {
-  if (job.contact_public && ["phone","email"].includes(clean(job.contact_method)) && clean(job.contact_value)) return true;
-  return OFFICIAL_APPLY_SOURCE.test(clean(job.source_key)) && /^https?:\/\//i.test(clean(job.application_url));
-}
-function validCompany(value: unknown): boolean {
-  const company = clean(value);
-  return Boolean(company && !UNKNOWN_COMPANY.test(company));
-}
-function eligible(job: any): boolean {
-  const expires = new Date(String(job.expires_at || "")).getTime();
-  return Boolean(
-    validCompany(job.company_name) && clean(job.description).length >= MIN_DESCRIPTION &&
-    clean(job.title) && clean(job.city) && clean(job.state_code) &&
-    job.published_at && Number.isFinite(expires) && expires > Date.now() && publicAction(job)
-  );
-}
 function supabaseConfig() {
-  return { base: (Deno.env.get("SUPABASE_URL") || "").replace(/\/+$/, ""), key: Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") || "" };
+  return { base: (Netlify.env.get("SUPABASE_URL") || "").replace(/\/+$/, ""), key: Netlify.env.get("SUPABASE_SERVICE_ROLE_KEY") || "" };
 }
 async function jobs() {
   const { base, key } = supabaseConfig();
   if (!base || !key) throw new Error("Supabase server configuration missing");
   const url = new URL(`${base}/rest/v1/job_listings`);
-  url.searchParams.set("select", "id,title,description,company_name,city,state_code,status,published_at,updated_at,expires_at,moderation_hold,contact_method,contact_value,contact_public,application_url,source_key");
+  url.searchParams.set("select", "id,published_at,updated_at");
   url.searchParams.set("status", "eq.open");
   url.searchParams.set("moderation_hold", "eq.false");
-  url.searchParams.set("order", "updated_at.desc");
-  url.searchParams.set("limit", String(MAX_JOBS));
-  const response = await fetch(url, { headers: { apikey: key, Authorization: `Bearer ${key}`, Accept: "application/json" }, cache: "no-store" });
-  if (!response.ok) throw new Error(`job_listings ${response.status}`);
-  const rows = await response.json();
-  return (Array.isArray(rows) ? rows : []).filter(eligible);
+  url.searchParams.set("deleted_at", "is.null");
+  url.searchParams.set("order", "id.asc");
+  url.searchParams.set("limit", String(PAGE_SIZE));
+  const jobs: any[] = [];
+  for (let offset = 0; ; offset += PAGE_SIZE) {
+    url.searchParams.set("offset", String(offset));
+    const response = await fetch(url, { headers: { apikey: key, Authorization: `Bearer ${key}`, Accept: "application/json" }, cache: "no-store" });
+    if (!response.ok) throw new Error(`job_listings ${response.status}`);
+    const rows = await response.json();
+    if (!Array.isArray(rows)) throw new Error("Invalid jobs sitemap response");
+    jobs.push(...rows);
+    if (rows.length < PAGE_SIZE) break;
+  }
+  // Never silently emit an invalid or truncated sitemap.
+  if (jobs.length + EVERGREEN_URLS.length > 50000) throw new Error("Sitemap requires an index with child sitemaps");
+  return jobs;
+}
+function lastmod(value: unknown): string | null {
+  const date = new Date(String(value || ""));
+  return Number.isNaN(date.getTime()) ? null : date.toISOString().slice(0,10);
 }
 function block(loc: string, lastmod: string | null, priority: string) {
   const modified = lastmod ? `\n    <lastmod>${esc(lastmod)}</lastmod>` : "";
@@ -65,7 +60,7 @@ export default async (request: Request, context: any) => {
       ...EVERGREEN_URLS.map(([path, priority]) => block(`${SITE}${path}`, null, priority)),
       ...rows.map((job: any) => block(
         `${SITE}/jobs/listing.html?id=${encodeURIComponent(job.id)}`,
-        new Date(job.updated_at || job.published_at).toISOString().slice(0,10),
+        lastmod(job.updated_at || job.published_at),
         "0.8"
       ))
     ];
@@ -73,9 +68,8 @@ export default async (request: Request, context: any) => {
     const responseHeaders = new Headers({
       "content-type": "application/xml; charset=UTF-8",
       "cache-control": "public, max-age=300, stale-while-revalidate=600",
-      "x-hg-sitemap": "google-jobs-quality-gated-v1",
-      "x-hg-sitemap-jobs": String(rows.length),
-      "x-hg-sitemap-min-description": String(MIN_DESCRIPTION)
+      "x-hg-sitemap": "public-jobs-v2",
+      "x-hg-sitemap-jobs": String(rows.length)
     });
     return new Response(request.method === "HEAD" ? null : xml, { status: 200, headers: responseHeaders });
   } catch (error) {

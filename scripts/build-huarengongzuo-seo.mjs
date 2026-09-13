@@ -1,0 +1,20 @@
+import {readFile,writeFile} from 'node:fs/promises';
+import {createHash} from 'node:crypto';
+import {buildTasks} from './build-huarengongzuo-seo-tasks.mjs';
+const root='huarengongzuo/seo/';
+const input=JSON.parse(await readFile(root+'public-jobs-snapshot.json','utf8'));
+if(input.complete!==true) throw new Error('Complete public snapshot required');
+const source=await readFile('netlify/edge-functions/huarengongzuo-jobs-sitemap.ts','utf8');
+const evergreen=[...source.split('] as const;')[0].matchAll(/\["(\/[^"\n]*)", "/g)].map(x=>'https://huarengongzuo.com'+x[1]);
+if(evergreen.length!==13) throw new Error('Review evergreen routes before building');
+const urls=[...evergreen.map(url=>({url,lastmod:null})),...input.jobs.map(job=>({url:`https://huarengongzuo.com/jobs/listing.html?id=${job.id}`,lastmod:job.updated_at}))].map(row=>({...row,fingerprint:createHash('sha256').update(JSON.stringify([row.url,row.lastmod,'public-index-v2'])).digest('hex')}));
+const current={complete:true,generated_at:input.generated_at,urls};
+let previous=null;
+try{previous=JSON.parse(await readFile(root+'previous-snapshot.json','utf8'));}catch(e){if(e.code!=='ENOENT')throw e;}
+const tasks=buildTasks(current,previous);
+const esc=s=>s.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;');
+if(urls.length>50000)throw new Error('Sitemap needs child sitemaps');
+await writeFile('huarengongzuo/sitemap.xml','<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'+urls.map(row=>`  <url><loc>${esc(row.url)}</loc>${row.lastmod?`<lastmod>${new Date(row.lastmod).toISOString()}</lastmod>`:''}</url>`).join('\n')+'\n</urlset>\n');
+await writeFile(root+'current-snapshot.json',JSON.stringify(current,null,2)+'\n');
+await writeFile(root+'tasks.json',JSON.stringify(tasks,null,2)+'\n');
+console.log(JSON.stringify({urls:urls.length,tasks:tasks.tasks.length,dispatch:false}));

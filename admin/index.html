@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="./category-manager.css?v=20260724-v3" />
   <link rel="stylesheet" href="./article-translations.css?v=20260903-v1" />
   <link rel="stylesheet" href="./account-recovery.css?v=20260910-v1" />
+  <link rel="stylesheet" href="./property-manager.css?v=20260913-v1" />
 </head>
 <body>
   <div id="app">
@@ -33,6 +34,7 @@
         <button class="nav-btn" data-page="community">用户与社区</button>
         <button class="nav-btn" data-page="account-recovery">账号找回</button>
         <button class="nav-btn" data-page="jobs-admin">招聘求职管理</button>
+        <button class="nav-btn" data-page="property-admin">纽约房产管理 <span id="property-nav-count">0</span></button>
         <button class="nav-btn" data-page="automation-control">机器人管理</button>
         <button class="nav-btn" data-page="finance-monitor">牛来接口监控</button>
         <button class="nav-btn review-nav" data-page="content-center">采集内容中心 <span id="review-nav-count">0</span></button><button class="nav-btn" data-page="rankings">24小时热榜</button>
@@ -100,6 +102,23 @@
         </section>
         <section class="page hidden" id="content-center-page"><div class="panel"><div class="category-form-head"><div><h3>采集内容中心</h3><p>中国热门头条、ICE与特朗普X资讯共用三小时采集节奏；中国新闻自动发布，ICE仅官方来源自动发布，非官方内容进入人工审核。</p></div></div><div class="content-center-tabs"><button class="content-center-tab active" data-content-center-tab="china">中国热门头条 <b id="china-hot-pool-count">0</b></button><button class="content-center-tab" data-content-center-tab="ice">ICE内容</button><button class="content-center-tab" data-content-center-tab="trump">特朗普X资讯 <b id="trump-x-pool-count">0</b></button></div></div><div id="china-hot-pool-panel"><div class="panel category-form-head"><div><h3>中国热门头条内容池</h3><p>自动发布后可在此下载、下架、恢复或删除；来源信息仅后台留存，前台不展示。</p></div><button id="refresh-china-hot-pool">刷新内容池</button></div><div id="china-hot-pool-message" class="message">正在读取内容池…</div><div id="china-hot-pool-list" class="china-hot-pool-list"></div></div><div id="trump-x-pool-panel" class="hidden"><div class="panel category-form-head"><div><h3>特朗普X资讯内容池</h3><p>每三小时只抓取特朗普本人X账号 @realDonaldTrump 发布的原创内容，不采集其他人的评论或解读。</p></div><button id="refresh-trump-x-pool">刷新内容池</button></div><div id="trump-x-pool-message" class="message">正在读取内容池…</div><div id="trump-x-pool-list" class="china-hot-pool-list"></div></div><div id="ice-review-page" class="hidden"><div class="review-head panel"><div><h3>ICE内容</h3><p>ICE/DHS等官方信息核验后自动发布；非官方来源必须由管理员审核。</p></div><button id="refresh-review">刷新审核队列</button></div><div class="review-tabs" id="review-tabs"><button class="review-tab active" data-review-filter="pending_review">待人工审核 <b id="tab-count-pending_review">0</b></button><button class="review-tab" data-review-filter="pending_corroboration">等待交叉信源 <b id="tab-count-pending_corroboration">0</b></button><button class="review-tab" data-review-filter="approved">已通过待发布 <b id="tab-count-approved">0</b></button><button class="review-tab" data-review-filter="published">已发布 <b id="tab-count-published">0</b></button><button class="review-tab" data-review-filter="rejected">已拒绝 <b id="tab-count-rejected">0</b></button><button class="review-tab" data-review-filter="failed">处理失败 <b id="tab-count-failed">0</b></button></div><div id="review-message"></div><div id="review-list"></div></div></section>
         <section class="page hidden" id="article-translations-page"><div class="panel translation-head"><div><h3>文章翻译审核</h3><p>AI 仅生成草稿。英文和繁体译文须人工逐项核对并点击“审核并发布”后，App 才会显示。</p></div><button id="refresh-article-translations" type="button">刷新</button></div><div class="panel translation-batch"><div><b>安全批量建稿</b><span>最多选择 3 篇；已有草稿或译文不会重复生成。</span></div><select id="translation-batch-locale"><option value="en">英文</option><option value="zh-TW">繁体中文</option></select><label><input id="translation-batch-cost-confirmed" type="checkbox" /> 我确认本次会使用模型额度</label><button id="translation-batch-generate" type="button">生成所选草稿</button><span id="translation-batch-summary">尚未选择新闻</span></div><div id="article-translations-message" class="message">进入本页后读取近期正式新闻。</div><div class="table-wrap"><table><thead><tr><th>选择</th><th>正式原文</th><th>英文</th><th>繁体中文</th></tr></thead><tbody id="article-translations-body"></tbody></table></div></section>
+        <section class="page hidden" id="property-admin-page">
+          <div class="panel property-intro"><div><h3>纽约房产管理中心</h3><p>统一管理房源、图片与证明、经纪与 Broker 认证、房源认领和客户线索。证明文件为私有材料，审核通过不等于自动公开。</p></div><button id="property-refresh" type="button">刷新</button></div>
+          <div id="property-message" class="message">进入本页后读取。</div><div class="cards cards-five" id="property-counts"></div>
+          <form class="panel property-form" id="property-listing-form"><div class="category-form-head"><div><h3>后台录入房源</h3><p>保存为待审核；核验授权和证明后才能二次确认发布。</p></div></div><div class="property-grid">
+            <label class="property-wide">房源标题<input name="title" maxlength="220" required /></label><label class="property-wide">完整地址<input name="address" maxlength="300" required /></label>
+            <label>社区<input name="neighborhood" maxlength="120" required /></label><label>交易类型<select name="listing_type"><option value="sale">出售</option><option value="rent">出租</option><option value="commercial">商业地产</option></select></label><label>物业类型<input name="property_type" maxlength="80" required /></label>
+            <label>价格<input name="price" type="number" min="1" required /></label><label>卧室<input name="bedrooms" type="number" min="0" step=".5" /></label><label>卫生间<input name="bathrooms" type="number" min="0" step=".5" /></label><label>平方英尺<input name="square_feet" type="number" min="0" /></label>
+            <label>提交人<input name="submitter_name" maxlength="120" /></label><label>提交人邮箱<input name="submitter_email" type="email" maxlength="200" /></label><label class="property-wide">房源介绍<textarea name="description" maxlength="20000"></textarea></label>
+            <label class="property-wide">房源图片<input id="property-photos" type="file" accept="image/jpeg,image/png,image/webp" multiple /><small>可多选，单个不超过12MB。</small></label>
+            <label>证明类型<select name="proof_category"><option value="authorization">挂牌授权</option><option value="ownership">产权证明</option><option value="identity">身份材料</option><option value="other">其他证明</option></select></label><label>证明文件<input id="property-proofs" type="file" accept="image/jpeg,image/png,image/webp,application/pdf" multiple /></label>
+            <label class="property-wide"><span><input name="authorization_confirmed" value="yes" type="checkbox" required /> 已确认资料和图片授权；此确认只允许进入审核，不代表审核通过。</span></label>
+          </div><button type="submit">保存并进入审核</button><div id="property-create-message" class="message"></div></form>
+          <div class="panel"><h3>房源审核</h3><div class="table-wrap"><table><thead><tr><th>房源</th><th>类型</th><th>状态</th><th>ID</th><th>操作</th></tr></thead><tbody id="property-listings-body"></tbody></table></div></div>
+          <div class="panel"><h3>经纪与执照审核</h3><div class="table-wrap"><table><thead><tr><th>经纪</th><th>执照</th><th>状态</th><th>ID</th><th>操作</th></tr></thead><tbody id="property-agents-body"></tbody></table></div></div>
+          <div class="panel"><h3>房源/主页认领审核</h3><div class="table-wrap"><table><thead><tr><th>申请人</th><th>关系</th><th>状态</th><th>ID</th><th>操作</th></tr></thead><tbody id="property-claims-body"></tbody></table></div></div>
+          <div class="panel"><h3>客户线索（按经纪隔离）</h3><div class="table-wrap"><table><thead><tr><th>联系人</th><th>需求</th><th>状态</th><th>ID</th><th>操作</th></tr></thead><tbody id="property-leads-body"></tbody></table></div></div>
+        </section>
         <section class="page hidden" id="rankings-page"><div class="panel"><h3>24小时热榜</h3><button id="refresh-rankings">刷新热榜</button></div><div class="table-wrap"><table><tbody id="rankings-tbody"></tbody></table></div></section>
       </main>
     </section>
@@ -128,6 +147,7 @@
   <script src="./translation-batch-plan.js?v=20260903-v3"></script>
   <script src="./article-translations.js?v=20260903-v3"></script>
   <script src="./ice-report-integrated.js?v=20260714-v4"></script>
+  <script src="./property-manager.js?v=20260913-v1"></script>
   <script src="./admin-stability-v3.js?v=20260828-maintenance-only"></script>
 </body>
 </html>

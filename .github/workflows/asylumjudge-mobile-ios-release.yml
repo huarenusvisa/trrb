@@ -8,6 +8,11 @@ on:
       - 'apps/asylumjudge-mobile/**'
       - '.github/workflows/asylumjudge-mobile-ios-release.yml'
   workflow_dispatch:
+    inputs:
+      source_ref:
+        description: Branch or commit containing the AsylumJudge app release
+        required: true
+        default: codex/asylumjudge-submit-ios-20260911
 
 concurrency:
   group: asylumjudge-ios-testflight-${{ github.ref }}
@@ -25,6 +30,8 @@ jobs:
         working-directory: apps/asylumjudge-mobile
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.source_ref || github.ref }}
       - uses: actions/setup-node@v4
         with:
           node-version: '22.13.0'

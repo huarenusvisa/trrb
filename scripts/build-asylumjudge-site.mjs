@@ -25,6 +25,8 @@ await cp(join(root, 'asylumjudge', 'logo-mark.svg'), join(output, 'favicon.svg')
 await cp(join(root, 'asylumjudge', 'favicon-48.png'), join(output, 'favicon-48.png'));
 await cp(join(root, 'asylumjudge', 'apple-touch-icon.png'), join(output, 'apple-touch-icon.png'));
 await cp(join(root, 'asylumjudge', 'site.webmanifest'), join(output, 'site.webmanifest'));
+await cp(join(root, 'asylumjudge', 'app-support.html'), join(output, 'app-support.html'));
+await cp(join(root, 'asylumjudge', 'app-privacy.html'), join(output, 'app-privacy.html'));
 await cp(join(root, 'asylumjudge', 'google0894cf097fd7415e.html'), join(output, 'google0894cf097fd7415e.html'));
 await cp(join(root, 'asylumjudge', '8d42a4dac6059bb279cede8301423e6d.txt'), join(output, '8d42a4dac6059bb279cede8301423e6d.txt'));
 await cp(join(root, 'immigration-judge-approval-rate'), join(output, 'immigration-judge-approval-rate'), { recursive: true });

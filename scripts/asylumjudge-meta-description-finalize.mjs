@@ -18,6 +18,7 @@ const suffixes = {
 
 async function walk(dir, out = []) {
   for (const entry of await readdir(dir, { withFileTypes: true })) {
+    if (entry.name.startsWith('.')) continue;
     const path = join(dir, entry.name);
     if (entry.isDirectory()) await walk(path, out);
     else if (entry.isFile() && entry.name.endsWith('.html')) out.push(path);
@@ -67,9 +68,12 @@ function finalize(html) {
     text = `${text}${joiner}${suffix}`.replace(/\s+/g, ' ').trim();
   }
   if (text.length > max) {
-    const cut = text.slice(0, max);
+    const cut = text.slice(0, max - 1);
     const stop = Math.max(cut.lastIndexOf('.'), cut.lastIndexOf('。'), cut.lastIndexOf('؛'), cut.lastIndexOf('।'));
-    text = (stop >= min ? cut.slice(0, stop + 1) : cut).trim();
+    const word = Math.max(cut.lastIndexOf(' '), cut.lastIndexOf('，'), cut.lastIndexOf(','), cut.lastIndexOf('；'));
+    const end = stop >= min ? stop + 1 : word >= min ? word : max - 1;
+    text = cut.slice(0, end).trim().replace(/[\s,;:，；：]+$/u, '');
+    if (!/[。.!?！？؛।]$/u.test(text)) text += locale.startsWith('zh') ? '。' : '.';
   }
   if (text.length < min) text = `${text} ${suffix}`.slice(0, max).trim();
   const nextTag = found.tag.replace(/\bcontent\s*=\s*(["'])([\s\S]*?)\1/i, `content="${escapeAttr(text)}"`);

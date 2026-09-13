@@ -80,11 +80,19 @@ function plainText(value) {
 function escapeAttr(value) {
   return String(value).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
+function findDescriptionTag(html) {
+  const tags = html.match(/<meta\b[^>]*>/gi) || [];
+  for (const tag of tags) {
+    if (!/\bname\s*=\s*["']description["']/i.test(tag)) continue;
+    const content = tag.match(/\bcontent\s*=\s*(["'])([\s\S]*?)\1/i);
+    if (content) return { tag, value: content[2] };
+  }
+  return null;
+}
 function improveMetaDescription(html) {
-  const match = html.match(/<meta\s+name=["']description["']\s+content=["']([^"']*)["']\s*\/?\s*>/i)
-    || html.match(/<meta\s+content=["']([^"']*)["']\s+name=["']description["']\s*\/?\s*>/i);
-  if (!match) return { html, changed: false };
-  const current = plainText(match[1]);
+  const found = findDescriptionTag(html);
+  if (!found) return { html, changed: false };
+  const current = plainText(found.value);
   const locale = localeForHtml(html);
   const min = locale === 'zh-hans' || locale === 'zh-hant' ? 72 : 120;
   if (current.length >= min) return { html, changed: false };
@@ -92,7 +100,8 @@ function improveMetaDescription(html) {
   let next = `${current}${/[。.!?！？]$/.test(current) ? '' : locale.startsWith('zh') ? '。' : '. '}${suffix}`.replace(/\s+/g, ' ').trim();
   const max = locale === 'zh-hans' || locale === 'zh-hant' ? 105 : 175;
   if (next.length > max) next = next.slice(0, max).replace(/[\s,;:，；：]+$/u, '') + (locale.startsWith('zh') ? '。' : '.');
-  return { html: html.replace(match[0], match[0].replace(match[1], escapeAttr(next))), changed: true };
+  const nextTag = found.tag.replace(/\bcontent\s*=\s*(["'])([\s\S]*?)\1/i, `content="${escapeAttr(next)}"`);
+  return { html: html.replace(found.tag, nextTag), changed: true };
 }
 
 function applyStandaloneChineseBrand(html) {
@@ -199,7 +208,7 @@ let shortMetaDescriptions = 0;
 for (const path of htmlFiles) {
   const html = await readFile(path, 'utf8');
   for (const token of BRAND_REPLACEMENTS.keys()) legacyBrandHits += (html.match(new RegExp(escapeRegex(token), 'g')) || []).length;
-  const meta = plainText(html.match(/<meta\s+name=["']description["']\s+content=["']([^"']*)["']/i)?.[1] || '');
+  const meta = plainText(findDescriptionTag(html)?.value || '');
   const locale = localeForHtml(html);
   const min = locale === 'zh-hans' || locale === 'zh-hant' ? 72 : 120;
   if (meta && meta.length < min) shortMetaDescriptions += 1;

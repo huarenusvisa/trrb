@@ -1,0 +1,137 @@
+{
+  "schema_version": 1,
+  "task_id": "asylumjudge-seo-2026-09-13",
+  "site": "AsylumJudge",
+  "origin": "https://asylumjudge.com",
+  "generated_at": "2026-09-13T00:21:43.780Z",
+  "status": "pending_central_seo_robot",
+  "external_submission_performed": false,
+  "consumer": "central SEO robot",
+  "counts": {
+    "add": 2,
+    "update": 5873,
+    "delete": 8700,
+    "redirects": 11
+  },
+  "sitemaps": [
+    "https://asylumjudge.com/sitemap.xml",
+    "https://asylumjudge.com/sitemap-static.xml",
+    "https://asylumjudge.com/sitemap-judges.xml",
+    "https://asylumjudge.com/sitemap-courts.xml",
+    "https://asylumjudge.com/sitemap-nationalities.xml"
+  ],
+  "redirects": [
+    {
+      "url": "https://asylumjudge.com/hot-headlines",
+      "target": "https://trrb.net/hot-headlines",
+      "status": 301
+    },
+    {
+      "url": "https://asylumjudge.com/us-politics",
+      "target": "https://trrb.net/us-politics",
+      "status": 301
+    },
+    {
+      "url": "https://asylumjudge.com/us-crime",
+      "target": "https://trrb.net/us-crime",
+      "status": 301
+    },
+    {
+      "url": "https://asylumjudge.com/ice",
+      "target": "https://trrb.net/ice",
+      "status": 301
+    },
+    {
+      "url": "https://asylumjudge.com/immigrate/center",
+      "target": "https://trrb.net/immigrate/center",
+      "status": 301
+    },
+    {
+      "url": "https://asylumjudge.com/immigrate/",
+      "target": "https://trrb.net/immigrate/",
+      "status": 301
+    },
+    {
+      "url": "https://asylumjudge.com/huarengongzuo/",
+      "target": "https://trrb.net/huarengongzuo/",
+      "status": 301
+    },
+    {
+      "url": "https://asylumjudge.com/jobs/",
+      "target": "https://trrb.net/jobs/",
+      "status": 301
+    },
+    {
+      "url": "https://asylumjudge.com/legal/",
+      "target": "https://trrb.net/legal/",
+      "status": 301
+    },
+    {
+      "url": "https://asylumjudge.com/privacy.html",
+      "target": "https://trrb.net/privacy.html",
+      "status": 301
+    },
+    {
+      "url": "https://asylumjudge.com/terms.html",
+      "target": "https://trrb.net/terms.html",
+      "status": 301
+    }
+  ],
+  "actions": {
+    "add": {
+      "urls": [
+        "https://asylumjudge.com/asylum-judge-approval-rate/",
+        "https://asylumjudge.com/en/asylum-judge-rating/"
+      ]
+    },
+    "update": {
+      "canonical_url_sources": [
+        "https://asylumjudge.com/sitemap-static.xml",
+        "https://asylumjudge.com/sitemap-judges.xml",
+        "https://asylumjudge.com/sitemap-courts.xml",
+        "https://asylumjudge.com/sitemap-nationalities.xml"
+      ],
+      "redirect_urls": [
+        "https://asylumjudge.com/hot-headlines",
+        "https://asylumjudge.com/us-politics",
+        "https://asylumjudge.com/us-crime",
+        "https://asylumjudge.com/ice",
+        "https://asylumjudge.com/immigrate/center",
+        "https://asylumjudge.com/immigrate/",
+        "https://asylumjudge.com/huarengongzuo/",
+        "https://asylumjudge.com/jobs/",
+        "https://asylumjudge.com/legal/",
+        "https://asylumjudge.com/privacy.html",
+        "https://asylumjudge.com/terms.html"
+      ],
+      "exclude_urls": [
+        "https://asylumjudge.com/asylum-judge-approval-rate/",
+        "https://asylumjudge.com/en/asylum-judge-rating/"
+      ],
+      "expected_count": 5873
+    },
+    "delete": {
+      "robots_match": "noindex,follow",
+      "locale_prefixes": [
+        "pt-br",
+        "hi",
+        "zh-hant",
+        "ru",
+        "ar",
+        "tr"
+      ],
+      "entity_segments": [
+        "judges",
+        "courts",
+        "nationalities"
+      ],
+      "url_pattern": "https://asylumjudge.com/{locale}/{entity}/{slug}/",
+      "expected_count": 8700,
+      "meaning": "Remove from searchable index only; pages remain available to users."
+    }
+  },
+  "materialization": {
+    "command": "node scripts/build-asylumjudge-seo-url-tasks.mjs",
+    "expanded_bundle_path": "/asylumjudge/seo-url-tasks-expanded.json"
+  }
+}

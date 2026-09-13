@@ -35,11 +35,32 @@ function localeAndEntity(file) {
 
 async function walk(dir, out = []) {
   for (const entry of await readdir(dir, { withFileTypes: true })) {
+    if (entry.name.startsWith('.')) continue;
     const p = join(dir, entry.name);
     if (entry.isDirectory()) await walk(p, out);
     else if (entry.isFile() && entry.name.endsWith('.html')) out.push(p);
   }
   return out;
+}
+
+function findDescriptionTag(html) {
+  const tags = html.match(/<meta\b[^>]*>/gi) || [];
+  for (const tag of tags) {
+    if (!/\bname\s*=\s*["']description["']/i.test(tag)) continue;
+    const content = tag.match(/\bcontent\s*=\s*(["'])([\s\S]*?)\1/i);
+    if (content) return { tag, value: content[2] };
+  }
+  return null;
+}
+
+function decodeAttribute(value) {
+  return String(value || '')
+    .replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/\s+/g, ' ').trim();
+}
+
+function escapeAttribute(value) {
+  return String(value).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
 function upsertRobots(html, content) {
@@ -50,17 +71,21 @@ function upsertRobots(html, content) {
 }
 
 function improveDescription(html, locale) {
-  const match = html.match(/<meta\s+name=["']description["']\s+content=["']([^"']*)["'][^>]*>/i);
-  if (!match) return html;
-  let description = match[1].trim();
+  const found = findDescriptionTag(html);
+  if (!found) return html;
+  let description = decodeAttribute(found.value);
   const suffix = DESCRIPTION_SUFFIX[locale] || DESCRIPTION_SUFFIX.en;
   while (description.length < MIN_DESCRIPTION) description += suffix;
   if (description.length > MAX_DESCRIPTION) {
-    const cut = description.slice(0, MAX_DESCRIPTION);
+    const cut = description.slice(0, MAX_DESCRIPTION - 1);
     const stop = Math.max(cut.lastIndexOf('.'), cut.lastIndexOf('。'), cut.lastIndexOf('؛'), cut.lastIndexOf('।'));
-    description = (stop >= MIN_DESCRIPTION ? cut.slice(0, stop + 1) : cut).trim();
+    const word = Math.max(cut.lastIndexOf(' '), cut.lastIndexOf('，'), cut.lastIndexOf(','), cut.lastIndexOf('；'));
+    const end = stop >= MIN_DESCRIPTION ? stop + 1 : word >= MIN_DESCRIPTION ? word : MAX_DESCRIPTION - 1;
+    description = cut.slice(0, end).trim().replace(/[\s,;:，；：]+$/u, '');
+    if (!/[。.!?！？؛।]$/u.test(description)) description += locale === '' || locale === 'zh-hant' ? '。' : '.';
   }
-  return html.replace(match[0], `<meta name="description" content="${description.replace(/"/g, '&quot;')}">`);
+  const nextTag = found.tag.replace(/\bcontent\s*=\s*(["'])([\s\S]*?)\1/i, `content="${escapeAttribute(description)}"`);
+  return html.replace(found.tag, nextTag);
 }
 
 function removeLowPriorityHreflang(html) {
@@ -117,9 +142,9 @@ for (const file of files) {
   const { locale, detail } = localeAndEntity(file);
   const before = await readFile(file, 'utf8');
   let html = before;
-  const descBefore = html.match(/<meta\s+name=["']description["']\s+content=["']([^"']*)/i)?.[1] || '';
+  const descBefore = findDescriptionTag(html)?.value || '';
   html = improveDescription(html, locale);
-  const descAfter = html.match(/<meta\s+name=["']description["']\s+content=["']([^"']*)/i)?.[1] || '';
+  const descAfter = findDescriptionTag(html)?.value || '';
   if (descAfter !== descBefore) descriptions += 1;
 
   if (detail && HUB_ONLY_LOCALES.has(locale)) {

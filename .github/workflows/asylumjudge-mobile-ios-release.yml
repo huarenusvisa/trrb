@@ -1,0 +1,42 @@
+name: AsylumJudge iOS TestFlight Release
+
+on:
+  push:
+    branches:
+      - codex/asylumjudge-submit-ios-20260911
+    paths:
+      - 'apps/asylumjudge-mobile/**'
+      - '.github/workflows/asylumjudge-mobile-ios-release.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: asylumjudge-ios-testflight-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  test-and-upload:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    defaults:
+      run:
+        working-directory: apps/asylumjudge-mobile
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.13.0'
+          cache: npm
+          cache-dependency-path: apps/asylumjudge-mobile/package-lock.json
+      - name: Install dependencies
+        run: npm ci
+      - name: Run release checks
+        run: |
+          npm test
+          npm run typecheck
+      - name: Build and upload to TestFlight
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+        run: npx eas-cli@19.1.0 build --platform ios --profile production --non-interactive --auto-submit --wait

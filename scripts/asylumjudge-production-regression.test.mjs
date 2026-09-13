@@ -40,6 +40,9 @@ for (const locale of locales) {
   assert.match(redirects, new RegExp(`/${locale}/methodology/ /methodology/ 301!`), `/${locale}/methodology/ must fall back instead of 404`);
 }
 assert.match(redirects, /\/asylum-judge-rating\/ \/en\/asylum-judge-rating\/ 301!/, 'English keyword alias must canonicalize to /en/');
+for (const path of ['/hot-headlines', '/us-politics', '/us-crime', '/ice', '/immigrate/', '/huarengongzuo/', '/jobs/', '/legal/', '/privacy.html', '/terms.html']) {
+  assert.match(redirects, new RegExp(`^${path.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')} https://trrb\\.net/`, 'm'), `${path} must redirect to its canonical Tang Daily destination instead of returning an AsylumJudge 404`);
+}
 
 const sitemap = read('sitemap-static.xml');
 assert.match(sitemap, /https:\/\/asylumjudge\.com\/asylum-judge-approval-rate\//, 'static sitemap must include the Chinese keyword landing page');
@@ -64,10 +67,13 @@ assert.match(zhJudge, /data-search-hierarchy="true"/, 'Chinese detail pages must
 assert.match(enJudge, /data-search-hierarchy="true"/, 'English detail pages must expose a crawlable hierarchy');
 
 function metaDescription(html) {
-  return html.match(/<meta\s+name=["']description["']\s+content=["']([^"']*)/i)?.[1] || '';
+  const tag = (html.match(/<meta\b[^>]*\bname\s*=\s*(["'])description\1[^>]*>/i) || [])[0] || '';
+  return (tag.match(/\bcontent\s*=\s*(["'])([\s\S]*?)\1/i) || [])[2] || '';
 }
 assert.ok(metaDescription(zhJudge).length >= 110, 'Chinese judge meta description must be long enough for Bing context');
 assert.ok(metaDescription(enJudge).length >= 110, 'English judge meta description must be long enough for Bing context');
+assert.ok(metaDescription(zhJudge).length <= 180, 'Chinese judge meta description must avoid search-result truncation');
+assert.ok(metaDescription(enJudge).length <= 180, 'English judge meta description must avoid search-result truncation');
 
 for (const locale of hubOnlyLocales) {
   const profile = firstProfile(locale);

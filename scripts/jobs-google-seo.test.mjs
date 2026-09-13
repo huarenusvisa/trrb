@@ -75,8 +75,9 @@ assert.match(submitter, /URL_DELETED/, "Google expired-job notification missing"
 assert.match(submitter, /sitemaps\.submit/, "Google Search Console sitemap submission missing");
 assert.match(submitter, /SubmitFeed/, "Bing sitemap submission missing");
 assert.match(submitter, /api\.indexnow\.org\/indexnow/, "Bing IndexNow fallback missing");
-assert.match(workflow, /workflow_run:[\s\S]*JOBS Daily Ingest/, "successful jobs ingestion does not trigger search notification");
-assert.match(workflow, /GOOGLE_JOBS_INDEXING_LIMIT:\s*'200'/, "Google daily submission guard missing");
+assert.doesNotMatch(workflow, /workflow_run:|schedule:/, "independent site must not run its own scheduled SEO robot");
+assert.doesNotMatch(workflow, /huarengongzuo-google-jobs-submit\.mjs|SEO_WRITE_MODE:\s*['\"]true/, "independent site must not submit directly to search engines");
+assert.match(workflow, /huarengongzuo\/seo\/tasks\.json/, "central SEO task-pool handoff is missing");
 assert.match(home, /google-site-verification/, "Google Search Console ownership marker missing from Huaren Gongzuo home");
 
 console.log("Google Jobs SEO contract passed: real employer, full description, live expiry, public application, server rendering and sitemap gates are enforced.");

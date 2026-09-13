@@ -1,59 +1,40 @@
-name: 华人工作网 Google Jobs提交
+name: 华人工作网 SEO任务池（中央机器人接管）
 
 on:
   workflow_dispatch:
-  workflow_run:
-    workflows: ["JOBS Daily Ingest"]
-    types: [completed]
 
 permissions:
   contents: read
 
 concurrency:
-  group: huarengongzuo-google-jobs-submit
+  group: huarengongzuo-seo-task-pool
   cancel-in-progress: true
 
 jobs:
-  submit:
-    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+  validate-handoff:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
-      - name: Install Google API client
-        run: npm install --no-save googleapis@144
-      - name: Wait for production quality gates
-        shell: bash
+      - name: Verify independent task manifest
         run: |
-          for attempt in {1..36}; do
-            sitemap_headers="$(curl --fail --silent --show-error --head 'https://huarengongzuo.com/sitemap.xml' | tr -d '\r' || true)"
-            robots_body="$(curl --fail --silent --show-error 'https://huarengongzuo.com/robots.txt' || true)"
-            if grep -qi '^x-hg-sitemap: google-jobs-quality-gated-v1$' <<<"$sitemap_headers" \
-              && grep -q '^Sitemap: https://huarengongzuo.com/sitemap.xml$' <<<"$robots_body"; then
-              exit 0
-            fi
-            sleep 10
-          done
-          echo 'Timed out waiting for Huaren Gongzuo production SEO gates.' >&2
-          exit 1
-      - name: Submit sitemap and eligible jobs
-        env:
-          GOOGLE_SEARCH_CONSOLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SEARCH_CONSOLE_SERVICE_ACCOUNT_JSON }}
-          HG_GOOGLE_SEARCH_CONSOLE_SITE_URL: ${{ vars.HG_GOOGLE_SEARCH_CONSOLE_SITE_URL || 'https://huarengongzuo.com/' }}
-          BING_WEBMASTER_API_KEY: ${{ secrets.BING_WEBMASTER_API_KEY }}
-          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
-          GOOGLE_JOBS_INDEXING_LIMIT: '200'
-          SEO_WRITE_MODE: 'true'
-        run: node scripts/huarengongzuo-google-jobs-submit.mjs
-      - name: Save submission report
-        if: always()
+          node scripts/huarengongzuo-public-seo.test.mjs
+          node <<'NODE'
+          const fs = require('fs');
+          const manifest = JSON.parse(fs.readFileSync('huarengongzuo/seo/tasks.json', 'utf8'));
+          if (manifest.origin !== 'https://huarengongzuo.com') throw new Error('origin mismatch');
+          if (manifest.dispatch !== false) throw new Error('independent dispatch must remain false');
+          if (!Array.isArray(manifest.tasks) || !manifest.tasks.length) throw new Error('task pool is empty');
+          console.log(`Central handoff ready: ${manifest.tasks.length} tasks; no external submission.`);
+          NODE
+      - name: Save central handoff artifact
         uses: actions/upload-artifact@v4
         with:
-          name: huarengongzuo-google-jobs-submit-report
-          path: huarengongzuo-google-jobs-submit-report.json
-          if-no-files-found: warn
+          name: huarengongzuo-seo-task-pool
+          path: |
+            huarengongzuo/seo/tasks.json
+            huarengongzuo/seo/current-snapshot.json
           retention-days: 30

@@ -11,6 +11,11 @@ on:
     branches: [main]
     paths:
       - '.github/workflows/seo-search-engine-ops.yml'
+      - 'seo/central-task-pools.json'
+      - 'scripts/central-seo-task-orchestrator.mjs'
+      - 'scripts/central-seo-task-orchestrator.test.mjs'
+      - 'asylumjudge/seo-url-tasks.json'
+      - 'huarengongzuo/seo/tasks.json'
       - 'scripts/asylumjudge-live-seo-audit.mjs'
       - 'scripts/submit-asylumjudge-indexnow.mjs'
       - 'scripts/asylumjudge-indexing-hygiene.mjs'
@@ -132,8 +137,12 @@ jobs:
           node-version: '22'
       - name: Build and auto-normalize AsylumJudge SEO output
         run: node scripts/build-asylumjudge-site.mjs
+      - name: Materialize AsylumJudge tasks for the central SEO robot
+        run: node scripts/build-asylumjudge-seo-url-tasks.mjs
       - name: Verify AsylumJudge canonical sitemap contract
-        run: node scripts/asylumjudge-seo.test.mjs
+        run: |
+          node scripts/asylumjudge-seo.test.mjs
+          node scripts/asylumjudge-seo-url-tasks.test.mjs
       - name: Block multilingual duplicate-canonical regression
         shell: bash
         run: |
@@ -159,8 +168,14 @@ jobs:
           ASYLUMJUDGE_SEO_SAMPLE_PER_SITEMAP: '8'
           ASYLUMJUDGE_SEO_CONCURRENCY: '4'
         run: node scripts/asylumjudge-live-seo-audit.mjs
-      - name: Push live AsylumJudge canonical URLs through IndexNow
-        run: node scripts/submit-asylumjudge-indexnow.mjs --live
+      - name: Verify central SEO task-pool isolation and dry-run gate
+        env:
+          SUPABASE_URL: https://fwiznbpsqkfgkvyznebz.supabase.co
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: |
+          node scripts/central-seo-task-orchestrator.test.mjs
+          node scripts/central-seo-task-orchestrator.mjs --dry-run
+          node scripts/central-seo-task-orchestrator.mjs --dry-run --persist
       - name: Save AsylumJudge SEO robot reports
         if: always()
         uses: actions/upload-artifact@v4
@@ -169,6 +184,8 @@ jobs:
           path: |
             asylumjudge-live-seo-report.json
             .netlify/asylumjudge-bundle/public/asylumjudge-indexing-hygiene.json
+            central-seo-task-report.json
+            central-seo-dispatch-plan.json
           if-no-files-found: warn
           retention-days: 30
       - name: 写入 AsylumJudge SEO 机器人站内通知

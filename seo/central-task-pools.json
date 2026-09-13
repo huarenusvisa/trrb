@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "strategy": "central-only",
+  "dispatch": false,
+  "action_priority": ["add", "delete", "update"],
+  "sites": [
+    {
+      "key": "asylumjudge",
+      "origin": "https://asylumjudge.com",
+      "manifest_path": "asylumjudge/seo-url-tasks.json",
+      "expanded_path": ".netlify/asylumjudge-bundle/public/asylumjudge/seo-url-tasks-expanded.json",
+      "daily_quota": 500
+    },
+    {
+      "key": "huarengongzuo",
+      "origin": "https://huarengongzuo.com",
+      "manifest_path": "huarengongzuo/seo/tasks.json",
+      "daily_quota": 250
+    }
+  ]
+}

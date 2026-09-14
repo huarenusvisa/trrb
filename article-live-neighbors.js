@@ -42,7 +42,8 @@
   function articleHref(article) {
     if (!article) return "/";
     if (typeof window.TRRB_articleUrl === "function") {
-      const routed = window.TRRB_articleUrl(article);
+      const routed = window.TRRB_articleUrl(article.category_name === "中国热门头条"
+        ? { ...article, category_name: "热门头条" } : article);
       if (routed) return routed;
     }
     const slug = String(article.slug || "").trim();

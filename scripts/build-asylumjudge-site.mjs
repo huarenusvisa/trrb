@@ -59,7 +59,7 @@ const localizedRewrites = localePrefixes.flatMap((locale) => [
   `/${locale}/court /immigration-judge-approval-rate/court-detail.html 200`
 ]).join('\n');
 
-await writeFile(join(output, '_redirects'), `
+const redirects = `
 http://immigrationjudge.net/ https://asylumjudge.com/en/ 301!
 http://immigrationjudge.net/* https://asylumjudge.com/en/:splat 301!
 http://www.immigrationjudge.net/ https://asylumjudge.com/en/ 301!
@@ -116,7 +116,15 @@ https://www.immigrationjudge.us/* https://asylumjudge.com/:splat 301!
 /asylum-judge-rating/ /en/asylum-judge-rating/ 301!
 /asylum-judge-approval-rate /asylum-judge-approval-rate/ 301!
 ${localizedRewrites}
-`.trimStart());
+`.trimStart();
+// Netlify matches slash variants when applying redirect rules. A forced
+// /path -> /path/ redirect can therefore redirect /path/ back to itself.
+// Let the CDN handle directory slashes; retain actual route migrations.
+const safeRedirects = redirects.split('\n').filter((line) => {
+  const [from, to, status] = line.trim().split(/\s+/);
+  return !/^30[1278]!?$/.test(status || '') || from.replace(/\/+$/, '') !== to.replace(/\/+$/, '');
+}).join('\n');
+await writeFile(join(output, '_redirects'), safeRedirects);
 
 await writeFile(join(output, '_headers'), `
 /*.html

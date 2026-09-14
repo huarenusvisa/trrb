@@ -58,7 +58,7 @@
 
   function contentMeetsPublishMinimum(content) {
     const text = String(content || "").trim();
-    return isIceBriefCategory() ? text.length > 0 : text.length >= 30;
+    return text.length > 0;
   }
 
   function titleSignature() {
@@ -171,7 +171,7 @@
     const content = el("article-content").value.trim();
     const progress = el("ai-cover-progress");
     if (!title || !contentMeetsPublishMinimum(content)) {
-      if (!options.silent) alert(isIceBriefCategory() ? "请先填写标题和实际快讯内容。" : "请先填写标题和至少30个字的正文。");
+      if (!options.silent) alert("请先填写标题和正文。");
       return "";
     }
     progress.classList.remove("hidden");
@@ -290,10 +290,8 @@
     const autoAiCover = el("auto-ai-cover").checked;
     const submitButton = el("article-submit");
 
-    if (title.length < 5 || !contentMeetsPublishMinimum(content)) {
-      el("article-message").textContent = isIceBriefCategory()
-        ? "请填写至少5个字的标题和实际快讯内容。ICE快讯不按字数门槛淘汰。"
-        : "请填写至少5个字的标题和至少30个字的正文。";
+    if (!title || !contentMeetsPublishMinimum(content)) {
+      el("article-message").textContent = "请填写标题和正文。";
       return;
     }
 

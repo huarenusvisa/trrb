@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { articleIndexability, visibleArticleText } from '../netlify/shared/article-indexability.mjs';
 const ORIGIN = String(process.env.SITE_ORIGIN || 'https://trrb.net').replace(/\/+$/, '');
 const SAMPLE = Math.max(3, Math.min(20, Number(process.env.PRERENDER_SAMPLE || 8)));
 const UA_GOOGLE = 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)';
@@ -16,7 +17,7 @@ function isArticleUrl(value){
   }catch{return false;}
 }
 function articleLocs(xml){return allLocs(xml).filter(isArticleUrl).map(u=>u.replace('https://www.trrb.net',ORIGIN));}
-function textMatch(html,re){const m=html.match(re);return m?String(m[1]||'').replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim():'';}
+function textMatch(html,re){const m=html.match(re);return m?visibleArticleText(m[1]):'';}
 async function get(url, ua, redirect='follow'){return fetch(url,{redirect,headers:{'user-agent':ua,'accept':'text/html,application/xhtml+xml','cache-control':'no-cache'}});}
 
 async function collectArticleUrls(){
@@ -58,20 +59,20 @@ for(const url of urls){
     const title=textMatch(html,/<title>([\s\S]*?)<\/title>/i);
     const h1=textMatch(html,/<h1[^>]*>([\s\S]*?)<\/h1>/i);
     const bodyBlock=html.match(/<div[^>]+class=["'][^"']*article-body[^"']*["'][^>]*>([\s\S]*?)<\/div>/i)?.[1]||'';
-    const bodyText=String(bodyBlock).replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim();
+    const eligibility=articleIndexability({title:h1,content:bodyBlock});
+    const bodyText=eligibility.body;
     const hasMarker=/data-prerendered=["']true["']/i.test(html);
     const hasSchema=/application\/ld\+json/i.test(html)&&/NewsArticle/.test(html);
     const prerenderHeader=res.headers.get('x-trrb-prerender')||'';
     const robots=textMatch(html,/<meta[^>]+name=["']robots["'][^>]+content=["']([^"']*)/i);
-    const ice=new URL(url).pathname.startsWith('/ice/');
     const checks={
       status:res.status===200,
       host:new URL(res.url).hostname==='trrb.net',
       marker:hasMarker,
       header:/^article-edge-v\d+/i.test(prerenderHeader),
-      title:title.length>8&&!/Tang Ren Daily\s*$/.test(title),
-      h1:h1.length>4,
-      body:ice?bodyText.length>0:bodyText.length>=80,
+      title:Boolean(title)&&!/^Tang Ren Daily\s*$/.test(title),
+      h1:Boolean(eligibility.title),
+      body:Boolean(eligibility.body),
       canonical:canonical===url,
       schema:hasSchema,
       indexable:!/noindex/i.test(robots)&&!/noindex/i.test(res.headers.get('x-robots-tag')||'')

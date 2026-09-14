@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import fs from 'node:fs';
+import { articleIndexability } from '../netlify/shared/article-indexability.mjs';
 
 const SITE = 'https://trrb.net';
 const UA = 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)';
@@ -38,17 +39,6 @@ async function fetchOne(url, redirect = 'manual') {
   } catch (error) {
     return { ok: false, status: 0, url, location: '', xrobots: '', text: '', error: error?.message || String(error) };
   }
-}
-
-function visibleText(html = '') {
-  return String(html)
-    .replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, ' ')
-    .replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi, ' ')
-    .replace(/<[^>]+>/g, ' ')
-    .replace(/&nbsp;|&#160;/gi, ' ')
-    .replace(/&[a-z0-9#]+;/gi, ' ')
-    .replace(/\s+/g, ' ')
-    .trim();
 }
 
 function canonical(html = '') {
@@ -91,12 +81,16 @@ for (const id of ids) {
   row.final_status = final.status;
   row.final_url = final.url;
   row.canonical = canonical(final.text);
-  row.body_length = visibleText(final.text.match(/<div[^>]+class=["'][^"']*article-body[^"']*["'][^>]*>[\s\S]*?<\/div>/i)?.[0] || '').length;
+  const eligibility = articleIndexability({
+    title: final.text.match(/<h1\b[^>]*>([\s\S]*?)<\/h1>/i)?.[1] || final.text.match(/<title\b[^>]*>([\s\S]*?)<\/title>/i)?.[1] || '',
+    content: final.text.match(/<div[^>]+class=["'][^"']*article-body[^"']*["'][^>]*>[\s\S]*?<\/div>/i)?.[0] || ''
+  });
+  row.body_length = eligibility.body.length;
   row.noindex = /noindex/i.test(final.xrobots) || /name=["']robots["'][^>]+noindex/i.test(final.text);
 
   if (final.status !== 200) report.failures.push({ id, problem: 'canonical target did not return 200', status: final.status, target });
   if (row.canonical !== target) report.failures.push({ id, problem: 'canonical tag mismatch', expected: target, actual: row.canonical });
-  if (row.body_length < 80) report.failures.push({ id, problem: 'restored article body too short/empty', body_length: row.body_length, target });
+  if (!eligibility.indexable) report.failures.push({ id, problem: 'restored article has no visible title/body', reasons: eligibility.reasons, body_length: row.body_length, target });
   if (row.noindex) report.failures.push({ id, problem: 'restored canonical is noindex', target });
 
   report.samples.push(row);

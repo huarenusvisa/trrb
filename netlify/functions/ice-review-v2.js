@@ -127,21 +127,12 @@ async function existingArticle(platform, sourceId) {
 }
 
 function chinese(value) { return /[\u3400-\u9fff]/u.test(String(value || "")); }
-function bodyLength(value) { return Array.from(String(value || "").replace(/\s+/g, "")).length; }
-function editorialTarget(payload = {}) {
-  return Number(payload.source_character_count || 0) >= 300
-    ? { min: 500, max: 800 }
-    : { min: 300, max: 600 };
-}
 function shingles(value) { const text = String(value || "").toLowerCase().replace(/[^a-z0-9\u3400-\u9fff]+/g, ""); const set = new Set(); for (let index = 0; index < text.length - 1; index += 1) set.add(text.slice(index, index + 2)); return set; }
 function similarity(a, b) { const left = shingles(a), right = shingles(b); if (!left.size || !right.size) return 0; let common = 0; for (const token of left) if (right.has(token)) common += 1; return common / (left.size + right.size - common); }
 function assertEditorialReady(story, title, content, input = {}) {
   const payload = story.ai_payload && typeof story.ai_payload === "object" ? story.ai_payload : {};
-  const { min, max } = editorialTarget(payload);
-  const count = bodyLength(content);
   if (!isIceEnforcementText(title, story.summary, content)) throw Object.assign(new Error("该内容不是明确的ICE执法新闻，不能发布到ICE栏目"), { statusCode: 400 });
   if (!chinese(title) || !chinese(content)) throw Object.assign(new Error("标题和正文必须是中文，禁止直接发布英文原文"), { statusCode: 400 });
-  if (count < min || count > max) throw Object.assign(new Error(`正文当前${count}字，必须达到${min}-${max}字后才能发布`), { statusCode: 400 });
   if (payload.old_news_checked !== true && input.not_old_news_confirmed !== true) throw Object.assign(new Error("尚未完成旧闻核验，不能发布"), { statusCode: 400 });
   if (payload.appears_old_news === true) throw Object.assign(new Error("系统识别为旧闻，不能发布"), { statusCode: 400 });
   if (Number(payload.image_count || 0) > 0 && payload.image_grounding_used !== true && input.image_reviewed !== true) throw Object.assign(new Error("原帖含图片但尚未完成读图核验，不能发布"), { statusCode: 400 });
@@ -208,9 +199,9 @@ async function updatePublishedArticle(story, actor, fields, input = {}) {
 }
 
 async function publishNow(story, actor, input) {
-  const title = safeText(input.title || story.final_title || story.title, 220);
+  const title = safeText(input.title || story.final_title || story.title, Infinity);
   const summary = safeText(input.summary || story.final_summary || story.summary, 1200);
-  const content = safeText(input.content || story.final_content || story.content || summary, 30000);
+  const content = safeText(input.content || story.final_content || story.content || summary, Infinity);
   const coverImage = safeText(input.cover_image || story.final_cover_image || story.cover_image, 3000);
   const notes = safeText(input.notes, 4000);
   if (!title || !content) {
@@ -351,3 +342,5 @@ exports.handler = async (event) => {
     return json(error.statusCode || 500, { error: error.message || String(error) });
   }
 };
+
+exports.assertEditorialReady = assertEditorialReady;

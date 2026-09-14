@@ -1,3 +1,4 @@
+import { articleIndexability, ARTICLE_INDEXABILITY_POLICY } from "../netlify/shared/article-indexability.mjs";
 import fs from 'node:fs';
 import path from 'node:path';
 import vm from 'node:vm';
@@ -7,8 +8,6 @@ const SITE = 'https://trrb.net';
 const NOW = new Date();
 const TODAY = NOW.toISOString().slice(0, 10);
 const NEWS_CUTOFF = NOW.getTime() - 48 * 60 * 60 * 1000;
-const MIN_INDEXABLE_BODY_LENGTH = 300;
-const MIN_INDEXABLE_TITLE_LENGTH = 8;
 const base = String(process.env.SUPABASE_URL || '').replace(/\/+$/, '');
 const key = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY || '';
 
@@ -103,9 +102,7 @@ const isSpecialTopicArticle = (article) => {
   return topic === 'ice' || topic === 'trump';
 };
 const isIndexableArticle = (article) => {
-  const title = visibleText(article?.title || '');
-  const body = visibleText(article?.content || article?.summary || '');
-  return title.length >= MIN_INDEXABLE_TITLE_LENGTH && body.length >= MIN_INDEXABLE_BODY_LENGTH;
+  return articleIndexability(article).indexable;
 };
 const escapeXml = (value = '') => cleanText(value)
   .replaceAll('&', '&amp;')
@@ -165,8 +162,9 @@ async function fetchAllPublishedArticles() {
   const all = [];
   for (let page = 0; page < maxPages; page += 1) {
     const rows = await rest('articles', {
-      select: 'id,title,slug,summary,content,category_id,category_name,topic_key,status,published_at,created_at,source_url,cover_image',
+      select: 'id,title,slug,summary,content,category_id,category_name,topic_key,status,visibility,published_at,created_at,source_url,cover_image',
       status: 'eq.published',
+      visibility: 'eq.public',
       order: 'published_at.desc.nullslast,created_at.desc,id.desc',
       limit: String(pageSize),
       offset: String(page * pageSize)
@@ -267,7 +265,7 @@ const isAllowed = (article, idSet, nameSet, slugSet) => {
 const byUrl = new Map(staticEntries.map((entry) => [entry.loc, entry]));
 const seenTitles = new Set();
 const seenBodies = new Set();
-let thinExcluded = 0;
+let emptyExcluded = 0;
 let specialTopicPreserved = 0;
 let duplicateExcluded = 0;
 const articleEntries = [];
@@ -276,9 +274,9 @@ for (const article of databaseArticles) {
   if (!isAllowed(article, sitemapCategoryIds, sitemapCategoryNames, sitemapCategorySlugs)) continue;
   if (isSpecialTopicArticle(article)) specialTopicPreserved += 1;
 
-  const body = visibleText(article?.content || article?.summary || '');
+  const { body } = articleIndexability(article);
   if (!isIndexableArticle(article)) {
-    thinExcluded += 1;
+    emptyExcluded += 1;
     continue;
   }
   const titleKey = normalizedTitle(article?.title || '');
@@ -319,4 +317,4 @@ if (recentNews.length === 0 && (!categories.length || newsCategoryNames.size > 0
 
 const newsSitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">\n${recentNews.map(({ loc, article, published }) => `  <url>\n    <loc>${escapeXml(loc)}</loc>\n    <news:news>\n      <news:publication><news:name>唐人日报</news:name><news:language>zh-cn</news:language></news:publication>\n      <news:publication_date>${published.value}</news:publication_date>\n      <news:title>${escapeXml(article.title || '唐人日报新闻')}</news:title>\n    </news:news>\n  </url>`).join('\n')}\n</urlset>\n`;
 fs.writeFileSync(path.join(ROOT, 'news-sitemap.xml'), newsSitemap);
-console.log(`[sitemap] generated ${entries.length} canonical URLs; eligible articles ${articleEntries.length}; static hubs ${STATIC_HUBS.length}; immigration knowledge ${IMMIGRATION_KNOWLEDGE_ENTRIES.length}; news ${recentNews.length}; categories ${categories.length}; excluded thin/short-title ${thinExcluded}; preserved special topic ${specialTopicPreserved}; excluded duplicate ${duplicateExcluded}`);
+console.log(`[sitemap] policy ${ARTICLE_INDEXABILITY_POLICY}; generated ${entries.length} canonical URLs; eligible articles ${articleEntries.length}; static hubs ${STATIC_HUBS.length}; immigration knowledge ${IMMIGRATION_KNOWLEDGE_ENTRIES.length}; news ${recentNews.length}; categories ${categories.length}; excluded empty title/body ${emptyExcluded}; preserved special topic ${specialTopicPreserved}; excluded duplicate ${duplicateExcluded}`);

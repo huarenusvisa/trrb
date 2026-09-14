@@ -15,19 +15,10 @@ function json(statusCode, body) {
 
 function nowIso() { return new Date().toISOString(); }
 function chinese(value) { return /[\u3400-\u9fff]/u.test(String(value || '')); }
-function bodyLength(value) { return Array.from(String(value || '').replace(/\s+/g, '')).length; }
-function editorialTarget(payload = {}) {
-  return Number(payload.source_character_count || 0) >= 300
-    ? { min: 500, max: 800 }
-    : { min: 300, max: 600 };
-}
 function assertEditorialReady(story, fields, input = {}) {
   const payload = story.ai_payload && typeof story.ai_payload === 'object' ? story.ai_payload : {};
-  const { min, max } = editorialTarget(payload);
-  const count = bodyLength(fields.content);
   if (!isIceEnforcementText(fields.title, fields.summary, fields.content)) { const error = new Error('该内容不是明确的ICE执法新闻，不能批准发布'); error.statusCode = 400; throw error; }
   if (!chinese(fields.title) || !chinese(fields.content)) { const error = new Error('标题和正文必须是中文，禁止直接发布英文原文'); error.statusCode = 400; throw error; }
-  if (count < min || count > max) { const error = new Error(`正文当前${count}字，必须达到${min}-${max}字后才能批准发布`); error.statusCode = 400; throw error; }
   if (payload.old_news_checked !== true && input.not_old_news_confirmed !== true) { const error = new Error('尚未完成旧闻核验，不能批准发布'); error.statusCode = 400; throw error; }
   if (payload.appears_old_news === true) { const error = new Error('系统识别为旧闻，不能批准发布'); error.statusCode = 400; throw error; }
   if (Number(payload.image_count || 0) > 0 && payload.image_grounding_used !== true && input.image_reviewed !== true) { const error = new Error('原帖含图片但尚未完成读图核验，不能批准发布'); error.statusCode = 400; throw error; }
@@ -63,9 +54,9 @@ async function storyDetail(id) {
 
 function editedFields(input, story) {
   return {
-    title: safeText(input.title || story.title, 220),
+    title: safeText(input.title || story.title, Infinity),
     summary: safeText(input.summary || story.summary, 1200),
-    content: safeText(input.content || story.content, 30000),
+    content: safeText(input.content || story.content, Infinity),
     coverImage: safeText(input.cover_image || story.cover_image, 3000)
   };
 }
@@ -247,3 +238,5 @@ exports.handler = async (event) => {
     return json(error.statusCode || 500, { error: error.message || String(error) });
   }
 };
+
+exports.assertEditorialReady = assertEditorialReady;

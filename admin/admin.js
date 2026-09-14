@@ -611,13 +611,10 @@ function reviewTime(value) {
 function updateIceEditorialCount(story = activeReview?.story || {}) {
   const content = el("review-content")?.value || "";
   const count = Array.from(content.replace(/\s+/g, "")).length;
-  const payload = story?.ai_payload && typeof story.ai_payload === "object" ? story.ai_payload : {};
-  const min = Number(payload.target_min_chars || (Number(payload.source_character_count || 0) >= 300 ? 500 : 300));
-  const max = Number(payload.source_character_count || 0) >= 300 ? 800 : 600;
   const counter = el("ice-editorial-count");
   const target = el("ice-editorial-target");
-  if (counter) { counter.textContent = `${count}字`; counter.style.color = count >= min && count <= max ? "#166534" : "#b42318"; }
-  if (target) target.textContent = `本稿发布标准：${min}-${max}字。未达到标准时可以保存，但批准和发布会被拦截。`;
+  if (counter) { counter.textContent = `${count}字`; counter.style.color = count > 0 ? "#166534" : "#b42318"; }
+  if (target) target.textContent = "按信源事实完整报道，字数不限制批准和发布。";
 }
 
 function renderReviewPipeline() {
@@ -688,12 +685,9 @@ function renderReviewCard(story) {
     : `<span class="risk-chip safe">无硬风险</span>`;
 
   const image = story.cover_image ? `<div class="review-item-media"><img src="${escapeAttr(story.cover_image)}" alt="" loading="lazy" /></div>` : "";
-  const payload = story.ai_payload && typeof story.ai_payload === "object" ? story.ai_payload : {};
   const body = String(story.final_content || story.content || story.summary || story.decision_reason || "暂无正文").trim();
   const count = Array.from(body.replace(/\s+/g, "")).length;
-  const min = Number(payload.target_min_chars || (Number(payload.source_character_count || 0) >= 300 ? 500 : 300));
-  const max = Number(payload.source_character_count || 0) >= 300 ? 800 : 600;
-  const countHtml = `<span class="risk-chip ${count >= min && count <= max ? "safe" : "danger"}">${count}字 / ${min}-${max}字</span>`;
+  const countHtml = `<span class="risk-chip">${count}字</span>`;
 
   return `
     <article class="review-item review-item-v2" data-story-id="${escapeAttr(story.id)}" style="grid-template-columns:${image ? "164px minmax(0,1fr) auto" : "minmax(0,1fr) auto"}">
@@ -866,14 +860,9 @@ async function handleReviewAction(action) {
   }
 
   if (["approve", "publish_now"].includes(action)) {
-    const story = activeReview.story || {};
-    const metadata = story.ai_payload && typeof story.ai_payload === "object" ? story.ai_payload : {};
-    const min = Number(metadata.target_min_chars || (Number(metadata.source_character_count || 0) >= 300 ? 500 : 300));
-    const max = Number(metadata.source_character_count || 0) >= 300 ? 800 : 600;
-    const count = Array.from(el("review-content").value.replace(/\s+/g, "")).length;
-    if (count < min || count > max) {
-      el("review-action-message").textContent = `当前正文${count}字，必须编辑到${min}-${max}字后才能发布。可以先点击“保存编辑”。`;
-      el("review-content").focus();
+    if (!el("review-title").value.trim() || !el("review-content").value.trim()) {
+      el("review-action-message").textContent = "标题和正文不能为空。";
+      (!el("review-title").value.trim() ? el("review-title") : el("review-content")).focus();
       return;
     }
     if (!el("review-not-old").checked) {

@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { articleIndexability, visibleArticleText } from '../netlify/shared/article-indexability.mjs';
 import fs from 'node:fs';
 
 const SITE = 'https://trrb.net';
@@ -6,7 +7,7 @@ const base = String(process.env.SUPABASE_URL || '').replace(/\/+$/, '');
 const key = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY || '';
 if (!base || !key) throw new Error('Supabase credentials are required');
 
-const clean = (value = '') => String(value).replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, ' ').replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi, ' ').replace(/<[^>]+>/g, ' ').replace(/&[a-z0-9#]+;/gi, ' ').replace(/\s+/g, ' ').trim();
+const clean = visibleArticleText;
 const pathOnly = (value = '') => {
   try { return decodeURIComponent(new URL(value, SITE).pathname).replace(/\/+$/, '') || '/'; }
   catch { return ''; }
@@ -45,20 +46,19 @@ const [articles, redirects] = await Promise.all([
 const canonicalPaths = new Set(['/','/community','/immigrate','/legal','/important-news','/hot-headlines','/us-politics','/us-crime','/immigration','/asylum','/deport','/ice','/ice/news','/trump']);
 const redirectPaths = new Set(redirects.map((row) => pathOnly(row.old_path)).filter(Boolean));
 const duplicateCanonical = new Map();
-const issues = { short_title: [], short_description: [], thin_body: [], invalid_canonical: [], missing_legacy_redirect: [], dead_internal_links: [] };
+const issues = { missing_title: [], missing_description: [], empty_body: [], invalid_canonical: [], missing_legacy_redirect: [], dead_internal_links: [] };
 let indexable = 0;
 
 for (const article of articles) {
-  const title = clean(article.seo_title || article.title);
-  const description = clean(article.summary || article.content).slice(0, 180);
-  const body = clean(article.content || article.summary);
+  const eligibility = articleIndexability(article);
+  const description = (clean(article.summary) || eligibility.body).slice(0, 180);
   const canonical = String(article.canonical_url || '').trim();
   const canonicalPath = pathOnly(canonical);
   if (canonicalPath) canonicalPaths.add(canonicalPath);
-  if (title.length < 8) issues.short_title.push(article.id);
-  if (description.length < 50) issues.short_description.push(article.id);
-  if (body.length < 300) issues.thin_body.push(article.id);
-  if (title.length >= 8 && body.length >= 300) indexable += 1;
+  if (!eligibility.title) issues.missing_title.push(article.id);
+  if (!description) issues.missing_description.push(article.id);
+  if (!eligibility.body) issues.empty_body.push(article.id);
+  if (eligibility.indexable) indexable += 1;
   if (canonical && (!canonical.startsWith(`${SITE}/`) || /article\.html\?id=/i.test(canonical))) issues.invalid_canonical.push({ id: article.id, canonical });
   if (canonicalPath) duplicateCanonical.set(canonicalPath, [...(duplicateCanonical.get(canonicalPath) || []), article.id]);
   const oldPath = legacyArticlePath(article.source_url);

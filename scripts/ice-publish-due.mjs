@@ -9,7 +9,7 @@ const { buildPeopleCountMetadata } = peopleCountModule;
 const { isIceEnforcementText, isIceEnforcementEvidence } = iceClassifier;
 const OFFICIAL_TYPES = /^(official|government|agency)$/i;
 const OFFICIAL_HANDLES = /^(icegov|dhsgov|hsi_hq|cbp|usbpchief|uscis|dojcrimdiv|usmarshalshq|fbi|ero[a-z0-9_]*|ice[a-z0-9_]*|dhs[a-z0-9_]*|cbp[a-z0-9_]*|usbp[a-z0-9_]*|uscis[a-z0-9_]*)$/i;
-const EDITORIAL_VERSION = "zh-title-body-v7-300-600-800-context-image";
+const ACCEPTED_EDITORIAL_VERSIONS = new Set(["zh-title-body-v8-source-led", "zh-title-body-v7-300-600-800-context-image"]);
 
 function intEnv(name, fallback, min = 0, max = Number.MAX_SAFE_INTEGER) {
   const value = Number(process.env[name] ?? fallback);
@@ -27,9 +27,8 @@ function safeJson(value, fallback = null) {
 }
 function hasChinese(value) { return /[\u3400-\u9fff]/u.test(String(value || "")); }
 function chineseRatio(value) { const text = String(value || "").replace(/\s+/g, ""); return text ? (text.match(/[\u3400-\u9fff]/gu) || []).length / Array.from(text).length : 0; }
-function bodyLength(value) { return Array.from(String(value || "").replace(/\s+/g, "")).length; }
 function hasVisualMedia(post) { const media = safeJson(post?.media, post?.media || []); return (Array.isArray(media) ? media : []).some((item) => item?.url || item?.preview_image_url); }
-function editorialReady(story, post) { const payload = safeJson(story?.ai_payload, story?.ai_payload || {}); const min = Number(payload?.target_min_chars || 300); const max = Number(payload?.target_max_chars || 800); const length = bodyLength(story.content); return payload?.translation_version === EDITORIAL_VERSION && payload?.translated_to_chinese === true && payload?.old_news_checked === true && payload?.appears_old_news !== true && hasChinese(story.title) && hasChinese(story.content) && chineseRatio(story.content) >= 0.45 && length >= min && length <= max && (!hasVisualMedia(post) || payload?.image_grounding_used === true); }
+function editorialReady(story, post) { const payload = safeJson(story?.ai_payload, story?.ai_payload || {}); return ACCEPTED_EDITORIAL_VERSIONS.has(payload?.translation_version) && payload?.translated_to_chinese === true && payload?.old_news_checked === true && payload?.appears_old_news !== true && hasChinese(story.title) && hasChinese(story.content) && chineseRatio(story.content) >= 0.45 && (!hasVisualMedia(post) || payload?.image_grounding_used === true); }
 function shingles(value) { const text = String(value || "").toLowerCase().replace(/[^a-z0-9\u3400-\u9fff]+/g, ""); const out = new Set(); for (let i = 0; i < text.length - 1; i += 1) out.add(text.slice(i, i + 2)); return out; }
 function similarity(a, b) { const left = shingles(a), right = shingles(b); if (!left.size || !right.size) return 0; let common = 0; for (const token of left) if (right.has(token)) common += 1; return common / (left.size + right.size - common); }
 function isOfficialUrgent(story) {
@@ -160,7 +159,7 @@ async function publish(story) {
   const post = await leadPost(story);
   if (!post) throw new Error(`故事${story.id}没有来源帖子`);
   if (!editorialReady(story, post)) {
-    await updateStory(story.id, { status: "pending_review", human_review_status: officialApproved ? "required" : story.human_review_status, scheduled_at: null, decision_reason: `${story.decision_reason || ""}；发布器拦截：中文翻译、300/500-800字、读图或旧闻检查未通过` });
+    await updateStory(story.id, { status: "pending_review", human_review_status: officialApproved ? "required" : story.human_review_status, scheduled_at: null, decision_reason: `${story.decision_reason || ""}；发布器拦截：中文翻译、读图或旧闻检查未通过` });
     return null;
   }
   const eventType = story.event_type || post.event_type || "other";
@@ -240,4 +239,5 @@ async function main() {
   }
   console.log(`ICE规律发布器完成：${published}条`);
 }
-main().catch((error) => { console.error("ICE规律发布器失败：", error); process.exitCode = 1; });
+export { editorialReady };
+if (process.argv[1] === fileURLToPath(import.meta.url)) main().catch((error) => { console.error("ICE规律发布器失败：", error); process.exitCode = 1; });

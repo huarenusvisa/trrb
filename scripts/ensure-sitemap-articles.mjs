@@ -66,6 +66,6 @@ if (articleLocs.length < 10) {
 await import('./audit-public-visibility-contract.mjs');
 
 // IMPORTANT: this step intentionally does not add articles. generate-sitemaps.mjs
-// is the single authority for thin-content, ICE-short-brief and duplicate rules.
-// Re-adding every published row here used to undo those filters.
+// is the single authority for nonempty article content and duplicate rules.
+// Short articles are eligible; empty and nonpublic records remain excluded.
 console.log(`[sitemap-assure] canonical articles=${articleLocs.length}; news=${newsLocs.length}; legacy=0; non-mutating validation PASS`);

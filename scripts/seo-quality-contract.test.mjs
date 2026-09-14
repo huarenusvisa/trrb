@@ -21,8 +21,8 @@ const forbidAll = (label, names, pattern) => {
   for (const name of names) if (pattern.test(files[name])) failures.push(`${label}: ${name}`);
 };
 
-requireAll("300-character index threshold missing", ["build", "live", "news", "article", "productionAudit", "freshnessAudit"], /MIN_INDEXABLE_BODY_LENGTH\s*=\s*300/);
-requireAll("short-title gate missing", ["build", "live", "news", "article", "productionAudit", "freshnessAudit"], /MIN_INDEXABLE_TITLE_LENGTH\s*=\s*8/);
+forbidAll("removed article length gate must not return", ["build", "live", "news", "article", "productionAudit", "freshnessAudit"], /MIN_INDEXABLE_(?:BODY|TITLE)_LENGTH/);
+requireAll("shared nonempty article policy missing", ["build", "live", "news", "article", "productionAudit", "freshnessAudit"], /articleIndexability/);
 forbidAll("obsolete 5,000-article global cap remains", ["build", "live"], /MAX_SITEMAP_ARTICLES\s*=\s*5000/);
 if (!/CHUNK_SIZE\s*=\s*5000/.test(fs.readFileSync("scripts/split-sitemap-index.mjs", "utf8"))) failures.push("5,000-URL sitemap shard size missing");
 forbidAll("short ICE indexing exception must not return", ["build", "live", "news", "article"], /preservedShortIce|preserved-short-ice|if\s*\(isIceArticle\([^)]*\)\)\s*return/i);
@@ -35,4 +35,4 @@ if (failures.length) {
   process.exit(1);
 }
 
-console.log("SEO quality contract passed: 300-character body, 8-character title, complete sharded sitemap, no short-ICE exception, strict metadata gate.");
+console.log("SEO quality contract passed: nonempty title/body without length limits, complete sharded sitemap, no short-ICE exception, strict metadata gate.");

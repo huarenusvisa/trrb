@@ -1,3 +1,4 @@
+import { articleIndexability, visibleArticleText } from '../netlify/shared/article-indexability.mjs';
 const SITE = "https://trrb.net";
 const UA = "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)";
 
@@ -80,11 +81,7 @@ function getCanonical(html) {
   return (html.match(/<link[^>]+rel=["']canonical["'][^>]+href=["']([^"']+)/i)?.[1] || "").trim();
 }
 
-function stripHtml(s) { return String(s || "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim(); }
-function isIceUrl(value) {
-  try { return new URL(value).pathname.startsWith("/ice/") && new URL(value).pathname !== "/ice/news"; }
-  catch { return false; }
-}
+const stripHtml = visibleArticleText;
 
 const report = { generated_at: new Date().toISOString(), host: {}, samples: [], failures: [] };
 
@@ -118,19 +115,17 @@ for (const url of articles) {
     const canonical = getCanonical(text);
     const body = stripHtml(text.match(/<div class=["']article-body["'][^>]*>([\s\S]*?)<\/div>/i)?.[1]);
     const hasSchema = /NewsArticle/.test(text);
-    const ice = isIceUrl(url);
+    const eligibility = articleIndexability({ title: h1, content: body });
     const row = { url, status: res.status, title_length: title.length, h1_length: h1.length, description_length: description.length, canonical, robots, body_length: body.length, hasSchema, prerender: res.headers.get("x-trrb-prerender") || "" };
     report.samples.push(row);
     const bad = [];
     if (res.status !== 200) bad.push(`status ${res.status}`);
-    if (!title || title.length < 8) bad.push("missing/short title");
-    if (!h1 || h1.length < 4) bad.push("missing/short h1");
-    if (!ice && description.length < 70) bad.push(`short description ${description.length}`);
-    if (ice && description.length === 0) bad.push("missing ICE description");
+    if (!title) bad.push("missing title");
+    if (!eligibility.title) bad.push("missing h1");
+    if (!visibleArticleText(description)) bad.push("missing description");
     if (canonical !== url) bad.push(`canonical mismatch ${canonical}`);
     if (/noindex/i.test(robots)) bad.push("noindex");
-    if (!ice && body.length < 80) bad.push(`thin prerendered body ${body.length}`);
-    if (ice && body.length === 0) bad.push("empty ICE prerendered body");
+    if (!eligibility.body) bad.push("empty prerendered body");
     if (!hasSchema) bad.push("missing NewsArticle");
     if (!row.prerender) bad.push("missing prerender header");
     if (bad.length) report.failures.push({ url, bad });

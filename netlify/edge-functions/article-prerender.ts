@@ -1,6 +1,5 @@
+import { articleIndexability, visibleArticleText, ARTICLE_INDEXABILITY_POLICY } from "../shared/article-indexability.mjs";
 const SITE = "https://trrb.net";
-const MIN_INDEXABLE_BODY_LENGTH = 300;
-const MIN_INDEXABLE_TITLE_LENGTH = 8;
 
 export const config = { path: ["/article.html", "/*/*"] };
 
@@ -57,16 +56,6 @@ function canonicalSection(value: unknown): string {
   return SECTION_ALIASES[raw] || raw;
 }
 
-function visibleText(value: unknown): string {
-  return clean(value)
-    .replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, " ")
-    .replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi, " ")
-    .replace(/<[^>]+>/g, " ")
-    .replace(/&nbsp;|&#160;/gi, " ")
-    .replace(/&[a-z0-9#]+;/gi, " ")
-    .replace(/\s+/g, " ")
-    .trim();
-}
 
 function isIceArticle(article: any): boolean {
   const topic = clean(article?.topic_key).toLowerCase();
@@ -75,9 +64,7 @@ function isIceArticle(article: any): boolean {
 }
 
 function isIndexableArticle(article: any): boolean {
-  const title = visibleText(article?.title || "");
-  const body = visibleText(article?.content || article?.summary || "");
-  return title.length >= MIN_INDEXABLE_TITLE_LENGTH && body.length >= MIN_INDEXABLE_BODY_LENGTH;
+  return articleIndexability(article).indexable;
 }
 
 function isoDate(value: unknown): string {
@@ -87,8 +74,8 @@ function isoDate(value: unknown): string {
 
 function buildDescription(article: any): string {
   const title = clean(article.title) || "唐人日报新闻";
-  const summary = clean(article.summary);
-  const content = clean(article.content);
+  const summary = visibleArticleText(article.summary);
+  const content = visibleArticleText(article.content);
   let description = summary;
   if (description.length < 90 && content) {
     const remaining = Math.max(0, 165 - description.length - (description ? 1 : 0));
@@ -109,7 +96,7 @@ function dbHeaders(key: string) {
   return { apikey: key, Authorization: `Bearer ${key}`, Accept: "application/json" };
 }
 
-const ARTICLE_SELECT = "id,title,slug,summary,content,category_id,category_name,topic_key,cover_image,seo_keywords,author,status,published_at,created_at,metadata";
+const ARTICLE_SELECT = "id,title,slug,summary,content,category_id,category_name,topic_key,cover_image,seo_keywords,author,status,visibility,published_at,created_at,metadata";
 
 async function getArticleById(id: string) {
   const { base, key } = supabaseConfig();
@@ -118,6 +105,7 @@ async function getArticleById(id: string) {
   url.searchParams.set("select", ARTICLE_SELECT);
   url.searchParams.set("id", `eq.${id}`);
   url.searchParams.set("status", "eq.published");
+  url.searchParams.set("visibility", "eq.public");
   url.searchParams.set("limit", "1");
   const response = await fetch(url, { headers: dbHeaders(key), cache: "no-store" });
   if (!response.ok) throw new Error(`Supabase article id ${response.status}`);
@@ -132,6 +120,7 @@ async function getArticleBySlug(slug: string) {
   url.searchParams.set("select", ARTICLE_SELECT);
   url.searchParams.set("slug", `eq.${slug}`);
   url.searchParams.set("status", "eq.published");
+  url.searchParams.set("visibility", "eq.public");
   url.searchParams.set("order", "published_at.desc.nullslast,created_at.desc");
   url.searchParams.set("limit", "1");
   const response = await fetch(url, { headers: dbHeaders(key), cache: "no-store" });
@@ -272,7 +261,7 @@ function injectBody(html: string, article: any, canonical: string) {
   const displayCategory = category === "热门头条" ? "中国热门头条" : category;
   const author = clean(article.author) || "Tang Ren Daily";
   const published = isoDate(article.published_at || article.created_at).slice(0, 10);
-  const content = String(article.content || "").trim();
+  const content = String(visibleArticleText(article.content) ? article.content : article.summary || "").trim();
   const paragraphs = content.split(/\n{2,}|\r?\n/).map((p) => clean(p)).filter(Boolean);
   const image = clean(article.cover_image);
   const warning = article?.metadata?.unverified_public_claim
@@ -428,6 +417,8 @@ export default async (request: Request, context: any) => {
     headers.set("cache-control", "public, max-age=60, stale-while-revalidate=300");
     headers.set("x-trrb-prerender", "article-edge-v4-archive-410-ice-safe");
     headers.set("link", `<${canonical}>; rel=\"canonical\"`);
+    headers.set("x-trrb-indexability-policy", ARTICLE_INDEXABILITY_POLICY);
+    headers.set("x-trrb-indexability", articleIndexability(article).reasons.join(",") || "eligible");
     if (!isIndexableArticle(article)) headers.set("x-robots-tag", "noindex, follow");
     else headers.delete("x-robots-tag");
 

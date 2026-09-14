@@ -7,7 +7,7 @@ const { CHINA_HOT_CATEGORY, isChinaHotHeadline } = chinaHotHeadlines;
 const SOURCE_HANDLE = "whyyoutouzhele";
 const SOURCE_NAME = "李老师不是你老师";
 const PIPELINE = "china-hot-li-teacher-v2";
-const PROCESSING_VERSION = "adaptive-editorial-v1";
+const PROCESSING_VERSION = "source-led-no-length-v2";
 const WARNING = "真实性提示：本文所述信息可能尚未获得独立核实，部分细节可能存在偏差，请以权威部门后续通报为准。";
 const DRY_RUN = process.argv.includes("--dry-run");
 const RECOVER_ARCHIVED = process.argv.includes("--recover-archived");
@@ -116,20 +116,13 @@ export function qualifyTweet(tweet) {
   const text = textWithoutLinks(tweet?.text);
   if (!tweet?.id || !text || !isOriginalPost(tweet)) return { accepted: false, reason: "not-original" };
   if (/^RT\s+@/i.test(text)) return { accepted: false, reason: "retweet" };
-  const cjkCount = (text.match(/[\u3400-\u9fff]/gu) || []).length;
-  if (text.length < 35 || cjkCount < 18) return { accepted: false, reason: "low-information" };
   const title = deriveTitle(text);
   if (!isChinaHotHeadline(title, text)) return { accepted: false, reason: "outside-china-hot" };
   return { accepted: true, reason: "china-news", text, title };
 }
 
-export function targetLength(rawText, mediaCount = 0) {
-  const length = cleanText(rawText, 20_000).length;
-  const grounded = Number(mediaCount) > 0;
-  if (length < 100) return { min: 80, max: grounded ? 260 : 200, band: "brief" };
-  if (length < 180) return { min: 120, max: grounded ? 360 : 280, band: "short" };
-  if (length < 300) return { min: 160, max: grounded ? 500 : 420, band: "short" };
-  return { min: Math.min(length, 1200), max: Math.min(1500, Math.max(650, length + 250)), band: "source-led" };
+export function targetLength() {
+  return { min: null, max: null, band: "不限字数" };
 }
 
 function mediaFor(tweet, mediaMap) {
@@ -341,23 +334,23 @@ function visualContext(tweet) {
   return `随附静态素材说明：照片${photos}张，视频缩略图${videoPreviews}张。视频缩略图不是视频本身，不能据此描述声音、持续时间、动作先后或画面外过程。`;
 }
 
-async function generateArticle(qualified, tweet, attempt = 0, previous = null) {
+export async function generateArticle(qualified, tweet, attempt = 0, previous = null) {
   const target = targetLength(qualified.text, visualInputs(tweet).length);
   const schema = {
     type: "object", additionalProperties: false, required: ["title", "summary", "content", "seo_keywords", "appears_old_news", "old_news_reason"],
     properties: {
-      title: { type: "string", minLength: 8, maxLength: 48 }, summary: { type: "string", minLength: 40, maxLength: 180 },
-      content: { type: "string", minLength: target.min, maxLength: target.max }, seo_keywords: { type: "string", minLength: 5, maxLength: 180 },
+      title: { type: "string", minLength: 1 }, summary: { type: "string" },
+      content: { type: "string", minLength: 1 }, seo_keywords: { type: "string" },
       appears_old_news: { type: "boolean" }, old_news_reason: { type: "string" },
     },
   };
   const response = await readJson(await request("https://api.openai.com/v1/responses", {
     method: "POST", headers: { Authorization: `Bearer ${process.env.OPENAI_API_KEY}`, "Content-Type": "application/json" },
     body: JSON.stringify({
-      model: OPENAI_MODEL, store: false, max_output_tokens: target.max > 900 ? 2600 : 1600,
+      model: OPENAI_MODEL, store: false, max_output_tokens: qualified.text.length > 900 ? 2600 : 1600,
       instructions: [
         "你是唐人日报中国热门头条编辑。只依据输入原文和随附原帖图片整理中文新闻，严禁补造人物、数字、地点、引语、原因或结果。",
-        `根据原文和图片的事实密度，将正文控制在${target.min}至${target.max}个中文字符，采用自然的新闻稿结构。短消息可以写成短讯，不得为了凑字重复原文。`,
+        "正文篇幅由原文和图片中可核实的事实决定，不设字数上下限。短消息可以写成短讯，不得为了凑字重复原文。",
         "优先从图片中读取可辨认的文字、通知、评论、时间、地点、物件、服装、动作、场景、构图和色彩。图片信息必须用“截图文字显示”“画面可见”等方式明确归因；看不清就不写。",
         "只允许补充确定的基础行政地理关系，例如城市所属省份、区县与城市的关系，以及画面直接显示的场所类型。不要补充企业性质、人物履历、统计数字、历史细节、行业评价或其他模型记忆中的背景。",
         "不得根据长相推断人物性格、职业、身份、族群、健康状况、犯罪倾向或动机；只描述画面中直接可见的表情、姿态、衣着和行为。",
@@ -365,17 +358,17 @@ async function generateArticle(qualified, tweet, attempt = 0, previous = null) {
         "随附的视频素材仅为静态缩略图。除非原文明确写出，否则不得写爆炸声、对话、连续动作、持续时间、多次发生或拍摄前后的过程。",
         "场景描述使用可核对的名词、颜色、数量、位置和可见动作，不写“环境整洁”“设施完善”“氛围紧张”等评价性形容。",
         "标题必须保留原文中的中国地点、机构或政治人物等主体，使文章明确属于中国新闻。",
-        "标题写成18至36个中文字符的新闻标题，不得复制整段原文，不得以日期开头。摘要、标题和正文不得三段重复。",
+        "标题简洁概括新闻事实，不设字数门槛，不得复制整段原文，不得以日期开头。摘要、标题和正文不得三段重复。",
         "对未核实说法准确注明来自发帖者、截图、目击者或公开通报；不要反复写“尚待核实”。",
         "必须检查是否为旧闻。只有原文或图片明确显示过去日期、周年、回顾、旧视频、旧照片或旧事件重新传播时，appears_old_news才为true，并在old_news_reason写明证据；不得凭模型记忆判断。",
         "正文和标题不得出现媒体名称、社交平台名称、账号名称、抓取方式或原始链接，不写‘李老师’或‘X平台’。",
         "禁止写任何提醒、呼吁、警惕、号召、建议、启示、意义、必要性、重要性、重视、决心、严厉打击等套话。不要评论，不要像广告或宣传稿。",
         "content字段只能是正文，不得在正文末尾添加关键词、标签、SEO词、来源栏或说明栏；seo_keywords只能放在单独的seo_keywords字段。",
-        "不要在正文重复真实性提示，页面会另行统一展示。不要使用Markdown标题。信息确实不足以达到字数时不要编造。",
+        "不要在正文重复真实性提示，页面会另行统一展示。不要使用Markdown标题。信息不足时保留短讯，不要编造。",
       ].join("\n"),
       input: [{ role: "user", content: [
         { type: "input_text", text: previous
-          ? `原始事实：\n${qualified.text.slice(0, 12_000)}\n\n${visualContext(tweet)}\n\n上一版未通过质量检查（长度${previous.content.length}、中国主体不明确或含套话）。请重新阅读原文和图片，标题必须保留原文中的中国主体，并完整重写；只能补充有依据的具体信息：\n${previous.content}`
+          ? `原始事实：\n${qualified.text.slice(0, 12_000)}\n\n${visualContext(tweet)}\n\n上一版未通过质量检查（空标题正文、中国主体不明确、含套话或字段整段重复）。请重新阅读原文和图片，标题必须保留原文中的中国主体，并完整重写；只能补充有依据的具体信息：\n${previous.content}`
           : `原始事实：\n${qualified.text.slice(0, 12_000)}\n\n${visualContext(tweet)}\n\n请结合随附原帖图片中的可见信息整理文章。` },
         ...visualInputs(tweet),
       ] }],
@@ -383,16 +376,15 @@ async function generateArticle(qualified, tweet, attempt = 0, previous = null) {
     }),
   }, 60_000));
   const article = JSON.parse(responseText(response));
-  article.title = cleanText(article.title, 220); article.summary = cleanText(article.summary, 600); article.content = cleanText(article.content, 10_000); article.old_news_reason = cleanText(article.old_news_reason, 800);
+  article.title = cleanText(article.title, Infinity); article.summary = cleanText(article.summary, Infinity); article.content = cleanText(article.content, Infinity); article.old_news_reason = cleanText(article.old_news_reason, 800);
   const subjectClear = isChinaHotHeadline(article.title, article.content);
   const normalizedTitle = article.title.replace(/[^a-z0-9\u3400-\u9fff]+/giu, "").toLowerCase();
   const normalizedSummary = article.summary.replace(/[^a-z0-9\u3400-\u9fff]+/giu, "").toLowerCase();
   const normalizedContent = article.content.replace(/[^a-z0-9\u3400-\u9fff]+/giu, "").toLowerCase();
   const repeatedFields = normalizedTitle === normalizedContent || normalizedSummary === normalizedContent || normalizedTitle === normalizedSummary;
-  const invalid = article.content.length < target.min || article.content.length > target.max || article.title.length > 48 || containsBoilerplate(article.content) || !subjectClear || repeatedFields;
+  const invalid = !article.title || !article.content || containsBoilerplate(article.content) || !subjectClear || repeatedFields;
   if (invalid && attempt < 2) return generateArticle(qualified, tweet, attempt + 1, article);
-  if (article.content.length < target.min || article.content.length > target.max) throw new Error(`生成正文长度${article.content.length}，未达到${target.min}-${target.max}字`);
-  if (article.title.length > 48) throw new Error("生成标题超过48字，禁止把整段原文当作标题");
+  if (!article.title || !article.content) throw new Error("生成标题和正文不能为空");
   if (containsBoilerplate(article.content)) throw new Error("生成正文含提醒、呼吁或宣传式套话，禁止自动发布");
   if (!subjectClear) throw new Error("生成稿未明确中国新闻主体");
   if (repeatedFields) throw new Error("标题、摘要和正文存在整段重复");
@@ -638,7 +630,7 @@ async function repairTodayBatch() {
         const tweet = tweetFromArticle(row);
         const rawText = textWithoutLinks(tweet.text);
         const qualified = { accepted: true, reason: "repair", text: rawText, title: deriveTitle(rawText) };
-        if (!tweet.id || rawText.length < 35) {
+        if (!tweet.id || !rawText) {
           counters.skipped += 1;
           results.push({ id: row.id, status: "skipped", reason: "missing-source-material" });
           continue;

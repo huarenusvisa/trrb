@@ -71,13 +71,12 @@
 
   const sourceText = (value) => String(value || "").replace(/https?:\/\/\S+/gi, " ").replace(/(?:^|\s)@[A-Za-z0-9_]+/g, " ").replace(/\s+/g, " ").trim();
   const bodyLength = (value) => Array.from(String(value || "").replace(/\s+/g, "")).length;
-  function targetFor(item) { return sourceText(item?.raw_text).length < 300 ? { min: 300, max: 600 } : { min: 500, max: 800 }; }
   function trumpMedia(item) { return Array.isArray(item?.raw_payload?.media) ? item.raw_payload.media : []; }
   function updateTrumpCount() {
-    const target = targetFor(state.activeTrump); const count = bodyLength(el("trump-editor-content")?.value);
+    const count = bodyLength(el("trump-editor-content")?.value);
     el("trump-editor-count").textContent = `${count}字`;
-    el("trump-editor-count").style.color = count >= target.min && count <= target.max ? "#166534" : "#b42318";
-    el("trump-editor-target").textContent = `原帖${sourceText(state.activeTrump?.raw_text).length}字；本稿必须为${target.min}-${target.max}字。`;
+    el("trump-editor-count").style.color = "";
+    el("trump-editor-target").textContent = `原帖${sourceText(state.activeTrump?.raw_text).length}字；正文不限字数。`;
   }
   function openTrumpEditor(item) {
     state.activeTrump = item; const payload = item.ai_payload || {}; const media = trumpMedia(item);

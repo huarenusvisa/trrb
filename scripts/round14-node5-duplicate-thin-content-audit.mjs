@@ -1,6 +1,7 @@
 // Round 14 node5 production audit.
 import { createHash } from 'node:crypto';
 import { writeFileSync } from 'node:fs';
+import { articleIndexability, visibleArticleText } from '../netlify/shared/article-indexability.mjs';
 
 const ORIGIN=(process.env.SITE_ORIGIN||'https://trrb.net').replace(/\/$/,'');
 const SUPABASE_URL='https://fwiznbpsqkfgkvyznebz.supabase.co';
@@ -10,7 +11,7 @@ const ALIASES={important:'important-news',hot:'hot-headlines',politics:'us-polit
 const FALLBACK={'重要新闻':'important-news','热门头条':'hot-headlines','美国时政':'us-politics','美国警情':'us-crime','中国官场':'china-officialdom','移民美国':'immigration','庇护百科':'asylum','驱逐快报':'deport','ICE执法动态':'ice','ICE执法':'ice','曝光墙':'expose'};
 const checks=[];let failures=0;
 function check(ok,label,detail=''){checks.push({ok:Boolean(ok),label,detail});if(!ok)failures++;console.log(`${ok?'PASS':'FAIL'} ${label}${detail?` — ${detail}`:''}`);}
-const clean=v=>String(v||'').replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi,' ').replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi,' ').replace(/<[^>]+>/g,' ').replace(/&nbsp;|&#160;/gi,' ').replace(/&[a-z0-9#]+;/gi,' ').replace(/\s+/g,' ').trim();
+const clean=visibleArticleText;
 const canonicalSection=v=>ALIASES[clean(v)]||clean(v);
 const normTitle=v=>clean(v).toLowerCase().replace(/[\p{P}\p{S}\s]+/gu,'');
 const hash=v=>createHash('sha256').update(clean(v)).digest('hex');
@@ -38,11 +39,13 @@ const contentCompeting=dupContent.filter(([,group])=>indexedCount(group)>1);
 check(titleCompeting.length===0,'重复标题组最多一个URL进入可索引 Sitemap',`duplicateGroups=${dupTitle.length}; competing=${titleCompeting.length}`);
 check(contentCompeting.length===0,'重复正文组最多一个URL进入可索引 Sitemap',`duplicateGroups=${dupContent.length}; competing=${contentCompeting.length}`);
 
-const thinNonIce=arts.filter(a=>!isIce(a)&&clean(a.content||a.summary).length<80);
-const thinNonIceInSitemap=thinNonIce.filter(a=>sitemap.text.includes(canonical(a)));
-check(thinNonIceInSitemap.length===0,'非ICE薄内容未进入可索引 Sitemap',`thinNonIce=${thinNonIce.length}; indexed=${thinNonIceInSitemap.length}`);
+const emptyArticles=arts.filter(a=>!articleIndexability(a).indexable);
+const emptyInSitemap=emptyArticles.filter(a=>sitemap.text.includes(canonical(a)));
+check(emptyInSitemap.length===0,'无可见标题或正文的文章未进入可索引 Sitemap',`empty=${emptyArticles.length}; indexed=${emptyInSitemap.length}`);
 
-const shortIce=arts.filter(a=>isIce(a)&&clean(a.content||a.summary).length>0&&clean(a.content||a.summary).length<80);
+// Length selects a regression sample only; it must never require noindex.
+const shortNonIce=arts.filter(a=>!isIce(a)&&articleIndexability(a).indexable&&articleIndexability(a).body.length<80);
+const shortIce=arts.filter(a=>isIce(a)&&articleIndexability(a).indexable&&articleIndexability(a).body.length<80);
 const shortIceInSitemap=shortIce.filter(a=>sitemap.text.includes(canonical(a)));
 check(shortIce.length===0||shortIceInSitemap.length>0,'短ICE快讯不会仅因篇幅短被整体排除',`shortIce=${shortIce.length}; indexed=${shortIceInSitemap.length}`);
 const sitemapMarker=sitemap.headers['x-trrb-sitemap']||'';
@@ -54,9 +57,13 @@ check(sitemap.text.includes(`<loc>${ORIGIN}/immigrate/center?path=study</loc>`),
 check(sitemap.text.includes(`<loc>${ORIGIN}/immigrate/center?path=study&amp;topic=f1</loc>`),'Live Sitemap 保留移民知识专题入口');
 check(!new RegExp(`<loc>${ORIGIN.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}/(?:jobs|finance|people)(?:/|\\?|<)`,'i').test(sitemap.text),'预上线或退役产品未进入 Live Sitemap');
 
-let thinNonIceNoindexBad=0;
-for(const a of thinNonIce.slice(0,20)){const r=await fetch(`${canonical(a)}?r14n5=thin`,{headers:{'user-agent':'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)','cache-control':'no-cache'}});const html=await r.text();const robots=(html.match(/<meta[^>]+name=["']robots["'][^>]+content=["']([^"']+)["']/i)||html.match(/<meta[^>]+content=["']([^"']+)[^>]+name=["']robots["']/i)||[])[1]||'';if(r.status===200&&!/noindex/i.test(robots))thinNonIceNoindexBad++;}
-check(thinNonIceNoindexBad===0,'非ICE薄内容文章页明确 noindex',`checked=${Math.min(thinNonIce.length,20)}; bad=${thinNonIceNoindexBad}`);
+let emptyNoindexBad=0;
+for(const a of emptyArticles.slice(0,20)){const r=await fetch(`${canonical(a)}?r14n5=empty`,{headers:{'user-agent':'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)','cache-control':'no-cache'}});const html=await r.text();const robots=(html.match(/<meta[^>]+name=["']robots["'][^>]+content=["']([^"']+)["']/i)||html.match(/<meta[^>]+content=["']([^"']+)[^>]+name=["']robots["']/i)||[])[1]||'';if(r.status===200&&!/noindex/i.test(robots)&&!/noindex/i.test(r.headers.get('x-robots-tag')||''))emptyNoindexBad++;}
+check(emptyNoindexBad===0,'无可见标题或正文的文章明确 noindex',`checked=${Math.min(emptyArticles.length,20)}; bad=${emptyNoindexBad}`);
+
+let shortNonIceNoindexBad=0;
+for(const a of shortNonIce.slice(0,20)){const r=await fetch(`${canonical(a)}?r14n5=short`,{headers:{'user-agent':'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)','cache-control':'no-cache'}});const html=await r.text();const robots=(html.match(/<meta[^>]+name=["']robots["'][^>]+content=["']([^"']+)["']/i)||html.match(/<meta[^>]+content=["']([^"']+)[^>]+name=["']robots["']/i)||[])[1]||'';if(r.status===200&&(/noindex/i.test(robots)||/noindex/i.test(r.headers.get('x-robots-tag')||'')))shortNonIceNoindexBad++;}
+check(shortNonIceNoindexBad===0,'非ICE短讯不会仅因篇幅短被文章页 noindex',`checked=${Math.min(shortNonIce.length,20)}; noindex=${shortNonIceNoindexBad}`);
 
 let shortIceNoindexBad=0;
 for(const a of shortIce.slice(0,20)){const r=await fetch(`${canonical(a)}?r14n5=ice-short`,{headers:{'user-agent':'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)','cache-control':'no-cache'}});const html=await r.text();const robots=(html.match(/<meta[^>]+name=["']robots["'][^>]+content=["']([^"']+)["']/i)||html.match(/<meta[^>]+content=["']([^"']+)[^>]+name=["']robots["']/i)||[])[1]||'';if(r.status===200&&/noindex/i.test(robots))shortIceNoindexBad++;}
@@ -64,6 +71,6 @@ check(shortIceNoindexBad===0,'短ICE快讯不会仅因篇幅短被文章页 noin
 
 const canonicals=new Set(arts.map(canonical));
 check(canonicals.size===arts.length,'全库 canonical 一对一唯一',`unique=${canonicals.size}/${arts.length}`);
-writeFileSync('round14-node5-duplicate-thin-content-audit.json',JSON.stringify({generatedAt:new Date().toISOString(),origin:ORIGIN,published:arts.length,thinNonIce:thinNonIce.length,shortIce:shortIce.length,shortIceIndexed:shortIceInSitemap.length,duplicateSlug:dupSlug.length,duplicateTitleGroups:dupTitle.length,duplicateContentGroups:dupContent.length,titleCompeting:titleCompeting.length,contentCompeting:contentCompeting.length,sitemapMarker,immigrationKnowledgeCount,checks,failures},null,2));
+writeFileSync('round14-node5-duplicate-thin-content-audit.json',JSON.stringify({generatedAt:new Date().toISOString(),origin:ORIGIN,published:arts.length,emptyArticles:emptyArticles.length,shortNonIce:shortNonIce.length,shortIce:shortIce.length,shortIceIndexed:shortIceInSitemap.length,duplicateSlug:dupSlug.length,duplicateTitleGroups:dupTitle.length,duplicateContentGroups:dupContent.length,titleCompeting:titleCompeting.length,contentCompeting:contentCompeting.length,sitemapMarker,immigrationKnowledgeCount,checks,failures},null,2));
 console.log(`ROUND14 NODE5 audit: checks=${checks.length}; failures=${failures}`);
 if(failures===0)console.log('ROUND14 NODE5 PASS: duplicate/thin governance and v5 static sitemap authority verified without length-only ICE exclusion');else{console.log('ROUND14 NODE5 FAIL: duplicate/thin or static sitemap authority issues detected');process.exitCode=1;}

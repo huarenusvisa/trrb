@@ -202,8 +202,8 @@ function validateExternalCover(value) {
 }
 
 async function saveArticle(input, actor) {
-  const title = safeText(input.title, 220);
-  const content = safeText(input.content, 50000);
+  const title = safeText(input.title, Infinity);
+  const content = safeText(input.content, Infinity);
   let categoryId = safeText(input.category_id, 100) || null;
   let categoryName = safeText(input.category_name, 80) || "美国时政";
   const requestedStatus = safeText(input.status, 30) || "draft";
@@ -216,18 +216,13 @@ async function saveArticle(input, actor) {
   if (categoryPolicy.corrected) categoryId = null;
   const isIceBrief = ICE_CATEGORIES.has(categoryName);
 
-  if (title.length < 5) {
-    const error = new Error("标题至少需要5个字");
+  if (!title) {
+    const error = new Error("标题不能为空");
     error.statusCode = 400;
     throw error;
   }
   if (!content.trim()) {
     const error = new Error("正文不能为空");
-    error.statusCode = 400;
-    throw error;
-  }
-  if (!isIceBrief && content.length < 30) {
-    const error = new Error("普通文章正文至少需要30个字；ICE执法快讯不以篇幅作为发布门槛");
     error.statusCode = 400;
     throw error;
   }

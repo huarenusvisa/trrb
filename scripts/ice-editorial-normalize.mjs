@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import process from "node:process";
+import { fileURLToPath } from "node:url";
 
 const EDITORIAL_VERSION = "zh-brief-v2";
 
@@ -110,8 +111,8 @@ async function normalizeWithAi(story, posts) {
         "你是唐人日报ICE快讯编辑。",
         "所有输出必须是简体中文；原始信源为英文时必须准确翻译，不得保留完整英文句子，ICE、DHS等机构缩写可保留。",
         "只使用信源中明确出现的事实，不补充外部信息，不把指控写成定论。",
-        "title写成10至24个中文字符，包含地点和ICE核心动作。",
-        "bulletin写成30至50个中文字符的客观快讯；必须以地点开头，不得少于30字，不得超过50字。",
+        "title准确概括地点和ICE核心动作，不设字数上下限。",
+        "bulletin写成基于信源的客观快讯，不设字数上下限，不为凑字补充信息；信源明确地点时以地点开头。",
         "location_text必须进行地点分类，优先格式为“州中文名·城市中文名”，例如“缅因州·比德福德”；无法确认时写“地点待确认”。",
         "city使用中文城市名；state_code使用美国州两位英文缩写，无法确认则留空。",
         "source_language按主要原始信源判断为zh、en、mixed或unknown。",
@@ -153,7 +154,7 @@ async function normalizeWithAi(story, posts) {
 }
 
 function compact(value) {
-  return safeText(value, 500)
+  return safeText(value, Infinity)
     .replace(/https?:\/\/\S+/gi, "")
     .replace(/\s+/g, "")
     .replace(/[“”]/g, "")
@@ -161,24 +162,11 @@ function compact(value) {
 }
 
 function clampBulletin(value) {
-  let chars = Array.from(compact(value));
-  if (chars.length < 30) {
-    const suffix = Array.from("目前公开信息有限，事件地点、人员情况及执法细节仍待有关方面进一步核实。");
-    for (const char of suffix) {
-      if (chars.length >= 30 || chars.length >= 50) break;
-      chars.push(char);
-    }
-  }
-  if (chars.length > 50) chars = chars.slice(0, 49).concat("。");
-  const text = chars.join("").replace(/。+$/g, "。");
-  return text || "该ICE相关事件地点和具体情况仍待有关方面进一步核实。";
+  return compact(value).replace(/。+$/g, "。");
 }
 
-function clampTitle(value, location) {
-  let text = compact(value).replace(/[。！？!?]+$/g, "");
-  if (!text || !/[\u3400-\u9fff]/.test(text)) text = `${location || "地点待确认"}发生ICE执法事件`;
-  const chars = Array.from(text);
-  return chars.length > 24 ? chars.slice(0, 24).join("") : text;
+function clampTitle(value) {
+  return compact(value).replace(/[。！？!?]+$/g, "");
 }
 
 function sourceLanguageFromPosts(posts) {
@@ -211,16 +199,15 @@ function locationFromPosts(story, posts) {
 }
 
 function hasSavedChineseEditorial(story) {
-  const title = safeText(story.final_title, 220);
+  const title = safeText(story.final_title, Infinity);
   const bulletin = compact(story.final_summary || story.final_content);
-  return /[\u3400-\u9fff]/.test(title) && /[\u3400-\u9fff]/.test(bulletin) && Array.from(bulletin).length >= 30 && Array.from(bulletin).length <= 50;
+  return /[\u3400-\u9fff]/.test(title) && /[\u3400-\u9fff]/.test(bulletin);
 }
 
 function looksNormalized(story) {
   const payload = story.ai_payload || {};
-  const bulletinLength = Array.from(compact(story.summary || story.content)).length;
-  const hasChinese = /[\u3400-\u9fff]/.test(`${story.title || ""}${story.summary || ""}`);
-  return payload.editorial_version === EDITORIAL_VERSION && hasChinese && bulletinLength >= 30 && bulletinLength <= 50 && payload.location_text;
+  const hasChinese = /[\u3400-\u9fff]/.test(story.title || "") && /[\u3400-\u9fff]/.test(story.summary || story.content || "");
+  return payload.editorial_version === EDITORIAL_VERSION && hasChinese && Boolean(payload.location_text);
 }
 
 async function storiesToNormalize() {
@@ -250,7 +237,8 @@ async function postsFor(story) {
 async function patchStory(story, normalized, posts = []) {
   const locationText = safeText(normalized.location_text, 160) || "地点待确认";
   const bulletin = clampBulletin(normalized.bulletin);
-  const title = clampTitle(normalized.title, locationText);
+  const title = clampTitle(normalized.title);
+  if (!/[\u3400-\u9fff]/.test(title) || !/[\u3400-\u9fff]/.test(bulletin)) throw new Error("标题和快讯必须为非空中文");
   const payload = {
     ...(story.ai_payload || {}),
     location_text: locationText,
@@ -322,7 +310,8 @@ async function main() {
   console.log(`ICE中文快讯规范化完成：更新${changed}条，共检查${stories.length}条`);
 }
 
-main().catch((error) => {
+export { clampBulletin, clampTitle, hasSavedChineseEditorial, looksNormalized };
+if (process.argv[1] === fileURLToPath(import.meta.url)) main().catch((error) => {
   console.error("ICE中文快讯规范化失败：", error);
   process.exitCode = 1;
 });

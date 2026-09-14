@@ -243,7 +243,7 @@ for (const row of archiveRows) {
     ? row.body.map(clean).filter(Boolean)
     : (clean(row.body) ? [clean(row.body)] : []);
   const content=body.join('\n\n');
-  if(content.length<180){ skipped.no_body++; continue; }
+  if(!content){ skipped.no_body++; continue; }
   const published=publishedAt(row); if(!published){ skipped.bad_date++; continue; }
   const archiveCategory=clean(row.category);
   const disposition=approvedCategory

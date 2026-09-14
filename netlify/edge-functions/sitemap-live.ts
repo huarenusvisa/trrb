@@ -1,6 +1,5 @@
+import { articleIndexability, ARTICLE_INDEXABILITY_POLICY } from "../shared/article-indexability.mjs";
 const SITE = "https://trrb.net";
-const MIN_INDEXABLE_BODY_LENGTH = 300;
-const MIN_INDEXABLE_TITLE_LENGTH = 8;
 // The build publishes a sitemap index plus 5,000-URL article shards.  Keep the
 // former live generator available for emergency diagnostics, but do not let it
 // replace the complete, sharded sitemap index at /sitemap.xml.
@@ -202,7 +201,7 @@ export default async (request: Request, context: any) => {
 
     const seenTitles = new Set<string>();
     const seenBodies = new Set<string>();
-    let excludedThin = 0;
+    let excludedEmpty = 0;
     let excludedDuplicate = 0;
     let preservedSpecialTopic = 0;
 
@@ -219,10 +218,9 @@ export default async (request: Request, context: any) => {
         preservedSpecialTopic++;
       }
 
-      const body = visibleText(article?.content || article?.summary || "");
-      const title = visibleText(article?.title || "");
-      if (title.length < MIN_INDEXABLE_TITLE_LENGTH || body.length < MIN_INDEXABLE_BODY_LENGTH) {
-        excludedThin++;
+      const { indexable, body } = articleIndexability(article);
+      if (!indexable) {
+        excludedEmpty++;
         continue;
       }
 
@@ -253,8 +251,8 @@ export default async (request: Request, context: any) => {
       "x-trrb-sitemap-articles": String(articles.length),
       "x-trrb-sitemap-static-blocks": String(staticBlocks.length),
       "x-trrb-sitemap-immigration-knowledge": String(immigrationKnowledgeCount),
-      "x-trrb-sitemap-excluded-thin": String(excludedThin),
-      "x-trrb-sitemap-min-body": String(MIN_INDEXABLE_BODY_LENGTH),
+      "x-trrb-sitemap-excluded-empty": String(excludedEmpty),
+      "x-trrb-sitemap-indexability-policy": ARTICLE_INDEXABILITY_POLICY,
       "x-trrb-sitemap-article-cap": "none",
       "x-trrb-sitemap-preserved-special-topic": String(preservedSpecialTopic),
       "x-trrb-sitemap-excluded-duplicate": String(excludedDuplicate),

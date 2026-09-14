@@ -17,6 +17,16 @@ on:
       - "scripts/finalize-redirects.mjs"
       - "scripts/seo-integrity-audit.mjs"
       - "scripts/seo-quality-contract.test.mjs"
+      - "netlify/shared/article-indexability.mjs"
+      - "netlify/edge-functions/article-prerender.ts"
+      - "netlify/edge-functions/*sitemap*.ts"
+      - "scripts/*indexability*.mjs"
+      - "scripts/production-seo-diagnostic*.mjs"
+      - "scripts/google-search-performance*.mjs"
+      - "scripts/seo-live-page-policy*.mjs"
+      - "scripts/admin-article-length.test.mjs"
+      - "scripts/legacy-restore-short-article.test.mjs"
+      - "scripts/generate-sitemaps.mjs"
       - "scripts/jobs-user-workflows.test.mjs"
       - "scripts/huarengongzuo-i18n.test.mjs"
       - "scripts/automation-control-contract.test.mjs"
@@ -67,6 +77,17 @@ jobs:
           node scripts/upgrade-article-urls.mjs
       - name: Validate legacy archive category policy
         run: node scripts/legacy-category-policy.test.mjs
+      - name: Verify short article indexing and search diagnostics
+        run: >-
+          node --experimental-strip-types --test
+          scripts/article-indexability.test.mjs
+          scripts/article-indexability-audits.test.mjs
+          scripts/admin-article-length.test.mjs
+          scripts/legacy-restore-short-article.test.mjs
+          scripts/ice-original-posts.test.mjs
+          scripts/production-seo-diagnostic.test.mjs
+          scripts/google-search-performance.test.mjs
+          scripts/seo-live-page-policy.test.mjs
       - name: Run production integrity validation
         run: node scripts/validate-site.mjs
       - name: Run SEO and internal 404 audit

@@ -1,14 +1,14 @@
 #!/usr/bin/env node
+import { articleIndexability, visibleArticleText } from '../netlify/shared/article-indexability.mjs';
 
 const ORIGIN=String(process.env.SITE_ORIGIN||'https://trrb.net').replace(/\/+$/,'');
 const SUPABASE_URL='https://fwiznbpsqkfgkvyznebz.supabase.co';
 const KEY='sb_publishable_hSmKJghvQoJKg0m5loDQ2g_f1gu8qak';
 const H={apikey:KEY,Authorization:`Bearer ${KEY}`,Accept:'application/json'};
-const MIN_INDEXABLE_BODY_LENGTH=80;
 const FALLBACK=new Map([['重要新闻','important-news'],['热门头条','hot-headlines'],['美国时政','us-politics'],['美国警情','us-crime'],['中国官场','china-officialdom'],['移民美国','immigration'],['庇护百科','asylum'],['驱逐快报','deport'],['ICE执法动态','ice'],['ICE执法','ice'],['曝光墙','expose']]);
 const checks=[];const failures=[];
 const clean=(v='')=>String(v??'').replace(/\s+/g,' ').trim();
-const visible=(v='')=>clean(v).replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi,' ').replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi,' ').replace(/<[^>]+>/g,' ').replace(/&nbsp;|&#160;/gi,' ').replace(/&[a-z0-9#]+;/gi,' ').replace(/\s+/g,' ').trim();
+const visible=visibleArticleText;
 const normTitle=(v='')=>visible(v).toLowerCase().replace(/[\p{P}\p{S}\s]+/gu,'');
 function record(ok,label,detail=''){checks.push({ok,label,detail});console.log(`${ok?'PASS':'FAIL'} ${label}${detail?` — ${detail}`:''}`);if(!ok)failures.push({label,detail});}
 async function db(table,params){const u=new URL(`${SUPABASE_URL}/rest/v1/${table}`);Object.entries(params).forEach(([k,v])=>u.searchParams.set(k,String(v)));const r=await fetch(u,{headers:H,cache:'no-store'});if(!r.ok)throw new Error(`${table} ${r.status}: ${(await r.text()).slice(0,180)}`);return r.json();}
@@ -20,7 +20,6 @@ const byId=new Map(categories.map(x=>[String(x.id||''),x]));const byName=new Map
 function section(a){const t=clean(a.topic_key).toLowerCase();if(t==='trump')return'trump';if(t==='ice')return'ice';return clean(byId.get(String(a.category_id||''))?.slug)||clean(byName.get(clean(a.category_name))?.slug)||FALLBACK.get(clean(a.category_name))||'news';}
 function canonical(a){return `${ORIGIN}/${encodeURIComponent(section(a))}/${encodeURIComponent(clean(a.slug||a.id))}`;}
 function special(a){const t=clean(a?.topic_key).toLowerCase();return t==='trump'||t==='ice';}
-function ice(a){const t=clean(a?.topic_key).toLowerCase();const c=clean(a?.category_name);return t==='ice'||c==='ICE执法动态'||c==='ICE执法';}
 function allowed(a,flag){if(special(a))return true;if(!categories.length)return true;const c=a.category_id?byId.get(String(a.category_id)):byName.get(clean(a.category_name));return c?c[flag]!==false:true;}
 function timestamp(a){const t=Date.parse(a?.published_at||a?.created_at||'');return Number.isFinite(t)?t:0;}
 
@@ -28,8 +27,8 @@ function timestamp(a){const t=Date.parse(a?.published_at||a?.created_at||'');ret
 const seenTitles=new Set();const seenBodies=new Set();const mainEligible=[];
 for(const a of articles){
   if(!a?.id||!clean(a.title)||!clean(a.slug)||!allowed(a,'include_in_sitemap'))continue;
-  const body=visible(a.content||a.summary||'');
-  if(ice(a)?!body:body.length<MIN_INDEXABLE_BODY_LENGTH)continue;
+  const { indexable, body } = articleIndexability(a);
+  if(!indexable)continue;
   const titleKey=normTitle(a.title);const bodyKey=body.length>=120?body:'';
   if((titleKey.length>=8&&seenTitles.has(titleKey))||(bodyKey&&seenBodies.has(bodyKey)))continue;
   if(titleKey.length>=8)seenTitles.add(titleKey);if(bodyKey)seenBodies.add(bodyKey);
@@ -41,8 +40,8 @@ const now=Date.now(),cutoff=now-48*60*60*1000;
 const newsSeenTitles=new Set();const newsSeenBodies=new Set();const newsEligible=[];
 for(const a of articles.filter(a=>{const ts=timestamp(a);return ts>=cutoff&&ts<=now+300000;}).sort((a,b)=>timestamp(a)-timestamp(b))){
   if(!a?.id||!clean(a.title)||!clean(a.slug)||!allowed(a,'include_in_google_news'))continue;
-  const body=visible(a.content||a.summary||'');
-  if(ice(a)?!body:body.length<MIN_INDEXABLE_BODY_LENGTH)continue;
+  const { indexable, body } = articleIndexability(a);
+  if(!indexable)continue;
   const titleKey=normTitle(a.title);const bodyKey=body.length>=120?body:'';
   if((titleKey.length>=8&&newsSeenTitles.has(titleKey))||(bodyKey&&newsSeenBodies.has(bodyKey)))continue;
   if(titleKey.length>=8)newsSeenTitles.add(titleKey);if(bodyKey)newsSeenBodies.add(bodyKey);

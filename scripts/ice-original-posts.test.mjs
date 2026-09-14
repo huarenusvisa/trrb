@@ -1,6 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import fs from "node:fs";
+import vm from "node:vm";
 import {
   referencedReply,
   startsAsReply,
@@ -10,8 +11,20 @@ import {
   hasChinese,
   chineseRatio,
   needsTranslation,
-  targetLength
+  fitTitle,
+  schemaFor,
+  translate,
+  patchStory
 } from "./ice-translate-title-body.mjs";
+import { editorialReady as publisherReady } from "./ice-publish-due.mjs";
+import { editorialReady as promoterReady } from "./ice-trusted-source-promote.mjs";
+import manualPublish from "../netlify/functions/ice-review-v2.js";
+import manualApprove from "../netlify/functions/ice-review-actions-v4.js";
+import { clampBulletin, clampTitle, hasSavedChineseEditorial, looksNormalized } from "./ice-editorial-normalize.mjs";
+
+const checkedPayload = { translation_version: "zh-title-body-v8-source-led", translated_to_chinese: true, old_news_checked: true, appears_old_news: false };
+const shortStory = { title: "ICE通报", content: "ICE通报在纽约拘捕一人。", ai_payload: checkedPayload };
+
 
 test("X referenced_tweets replied_to is rejected", () => {
   assert.equal(referencedReply({ referenced_tweets: [{ type: "replied_to", id: "1" }] }), true);
@@ -35,19 +48,101 @@ test("Chinese detector distinguishes translated and English content", () => {
   assert.ok(chineseRatio("ICE在缅因州通报一起执法事件") > 0.45);
 });
 
-test("English or overly short story requires Chinese title and body generation", () => {
+test("untranslated or unchecked stories require Chinese editorial processing", () => {
   assert.equal(needsTranslation({ title: "Now it is in Maine", content: "ICE reported a shooting.", ai_payload: {} }), true);
   assert.equal(needsTranslation({ title: "缅因州发生ICE执法枪击事件", content: "ICE表示，执法人员执行最终驱逐令期间，一名男子驾车试图逃离现场。", ai_payload: {} }, 100, 0), true);
   const body = "据ICE发布的信息，" + "执法人员在现场核对身份并说明行动安排。".repeat(16);
   assert.equal(needsTranslation({ title: "缅因州发生ICE执法行动事件", content: body, ai_payload: { translation_version: "zh-title-body-v7-300-600-800-context-image", translated_to_chinese: true, old_news_checked: true, target_min_chars: 300, target_max_chars: 600 } }, 100, 0), false);
 });
 
-test("ICE source length maps to mandatory Chinese article length", () => {
-  assert.deepEqual(targetLength(299), { min: 300, max: 600, band: "300-600字" });
-  assert.deepEqual(targetLength(300), { min: 500, max: 800, band: "500-800字" });
+test("reviewed Chinese articles do not require translation because of title or body length", () => {
+  for (const content of [shortStory.content, "据ICE通报，执法人员在纽约拘捕一人。".repeat(1800)]) {
+    const story = { ...shortStory, content };
+    assert.equal(needsTranslation(story, 10, 0), false);
+    assert.equal(needsTranslation({ ...story, ai_payload: { ...checkedPayload, translation_version: "zh-title-body-v7-300-600-800-context-image", target_min_chars: 500, target_max_chars: 800 } }, 900, 0), false);
+    assert.equal(publisherReady(story, {}), true);
+    assert.equal(promoterReady(story, []), true);
+    assert.doesNotThrow(() => manualPublish.assertEditorialReady(story, story.title, content));
+    assert.doesNotThrow(() => manualApprove.assertEditorialReady(story, story));
+  }
+  assert.equal(fitTitle("ICE通报"), "ICE通报");
+  const longTitle = "ICE通报纽约执法详情".repeat(30);
+  assert.equal(fitTitle(longTitle), longTitle);
 });
 
-test("ICE publisher hard-gates Chinese length, image reading, duplicate and old-news checks", () => {
+test("empty, English, old-news and unreviewed-image stories remain blocked", () => {
+  for (const story of [
+    { ...shortStory, title: "" },
+    { ...shortStory, content: " " },
+    { ...shortStory, content: "ICE announced an arrest." },
+    { ...shortStory, ai_payload: { ...checkedPayload, old_news_checked: false } },
+    { ...shortStory, ai_payload: { ...checkedPayload, appears_old_news: true } },
+    { ...shortStory, ai_payload: { ...checkedPayload, image_count: 1, image_grounding_used: false } }
+  ]) {
+    const evidence = story.ai_payload.image_count ? [{ media: [{ url: "https://example.com/evidence.jpg" }] }] : [];
+    assert.equal(publisherReady(story, evidence[0] || {}), false);
+    assert.equal(promoterReady(story, evidence), false);
+    assert.throws(() => manualPublish.assertEditorialReady(story, story.title, story.content));
+    assert.throws(() => manualApprove.assertEditorialReady(story, story));
+  }
+  const unrelated = { ...shortStory, title: "天气预报", content: "纽约明天有雨。" };
+  assert.throws(() => manualPublish.assertEditorialReady(unrelated, unrelated.title, unrelated.content), /不是明确的ICE/);
+  assert.throws(() => manualApprove.assertEditorialReady(unrelated, unrelated), /不是明确的ICE/);
+});
+
+test("translation has no schema character limits and accepts short and long output without retries", async (t) => {
+  assert.doesNotMatch(JSON.stringify(schemaFor()), /minLength|maxLength/);
+  let requests = 0;
+  let currentContent = shortStory.content;
+  t.mock.method(globalThis, "fetch", async (_url, options) => {
+    requests += 1;
+    const payload = JSON.parse(options.body);
+    assert.doesNotMatch(payload.instructions, /必须为\d|写到\d|不得少于\d|不得超过\d/);
+    return new Response(JSON.stringify({ output_text: JSON.stringify({ title: shortStory.title, summary: currentContent, content: currentContent, source_language: "en", image_observations: "", appears_old_news: false, old_news_reason: "" }) }), { status: 200 });
+  });
+  const posts = [{ source_text: "ICE announced an arrest in New York." }];
+  assert.equal((await translate(shortStory, posts)).content, currentContent);
+  assert.equal(requests, 1);
+  currentContent = "据ICE通报，执法人员在纽约拘捕一人。".repeat(1800);
+  assert.equal((await translate(shortStory, posts)).content, currentContent);
+  assert.equal(requests, 2);
+});
+
+test("translation persistence preserves full title and body and still rejects empty content", async (t) => {
+  const originalUrl = process.env.SUPABASE_URL;
+  process.env.SUPABASE_URL = "https://example.com";
+  t.after(() => { if (originalUrl === undefined) delete process.env.SUPABASE_URL; else process.env.SUPABASE_URL = originalUrl; });
+  let written;
+  t.mock.method(globalThis, "fetch", async (_url, options) => {
+    written = JSON.parse(options.body);
+    return new Response(null, { status: 204 });
+  });
+  const title = "ICE通报纽约执法详情".repeat(30);
+  const content = "ICE通报在纽约拘捕一人。".repeat(3000);
+  await patchStory(shortStory, { title, content, summary: "执法通报", sourceLength: 60, imageCount: 0 }, [{}]);
+  assert.equal(written.title, title);
+  assert.equal(written.content, content);
+  assert.equal(written.ai_payload.target_min_chars, null);
+  assert.equal(written.ai_payload.target_max_chars, null);
+  await assert.rejects(() => patchStory(shortStory, { title, content: " " }, [{}]), /非空中文/);
+});
+
+test("brief normalization does not pad, truncate or reprocess valid Chinese text by length", () => {
+  const short = "纽约ICE拘捕一人。";
+  const long = short.repeat(100);
+  assert.equal(clampBulletin(short), short);
+  assert.equal(clampBulletin(long), long);
+  assert.equal(clampBulletin(""), "");
+  assert.equal(clampTitle("ICE通报"), "ICE通报");
+  assert.equal(clampTitle(long.slice(0, -1)), long.slice(0, -1));
+  for (const content of [short, long]) {
+    assert.equal(hasSavedChineseEditorial({ final_title: "ICE通报", final_content: content }), true);
+    assert.equal(looksNormalized({ title: "ICE通报", content, ai_payload: { editorial_version: "zh-brief-v2", location_text: "纽约" } }), true);
+  }
+  assert.equal(hasSavedChineseEditorial({ final_title: "ICE通报", final_content: "" }), false);
+});
+
+test("ICE publisher retains image reading, duplicate and old-news checks", () => {
   const source = fs.readFileSync(new URL("./ice-publish-due.mjs", import.meta.url), "utf8");
   const translator = fs.readFileSync(new URL("./ice-translate-title-body.mjs", import.meta.url), "utf8");
   const manualPublish = fs.readFileSync(new URL("../netlify/functions/ice-review-v2.js", import.meta.url), "utf8");
@@ -57,8 +152,7 @@ test("ICE publisher hard-gates Chinese length, image reading, duplicate and old-
   assert.match(source, /image_grounding_used/);
   assert.match(source, /old_news_checked/);
   assert.match(source, /recentSimilarArticle/);
-  assert.match(translator, /minLength: schemaMin/);
-  assert.match(translator, /maxLength: target\.max/);
+  assert.doesNotMatch(translator, /minLength|maxLength/);
   assert.match(translator, /VERIFIED_ICE_EDITORIAL_CONTEXT/);
   assert.match(translator, /verified_editorial_background/);
   assert.match(translator, /国籍只可在信源明确记载时写入/);
@@ -96,4 +190,40 @@ test("ICE后台审核只保留一个前端请求入口和一个发布接口", ()
   assert.doesNotMatch(featureModules, /window\.fetch\s*=/);
   assert.doesNotMatch(featureModules, /(?:window\.)?showPage\s*=(?!=)/);
   assert.match(router, /action === 'publish_now'/);
+});
+
+
+test("admin approval accepts short and long articles while enforcing nonempty and review confirmations", async () => {
+  const source = fs.readFileSync(new URL("../admin/admin.js", import.meta.url), "utf8");
+  const handler = source.slice(source.indexOf("async function handleReviewAction(action)"), source.indexOf("function generateSummary(content"));
+  let confirmations = 0;
+  const elements = {
+    "review-title": { value: "ICE通报", focus() {} },
+    "review-content": { value: shortStory.content, focus() {} },
+    "review-action-message": { textContent: "" },
+    "review-not-old": { checked: true, focus() {} },
+    "review-image-reviewed": { disabled: false, checked: true, focus() {} }
+  };
+  const context = vm.createContext({ activeReview: { story: { id: "sample" } }, el: (id) => elements[id], window: { confirm() { confirmations += 1; return false; } } });
+  vm.runInContext(handler, context);
+  for (const content of [shortStory.content, shortStory.content.repeat(3000)]) {
+    elements["review-content"].value = content;
+    await context.handleReviewAction("approve");
+    await context.handleReviewAction("publish_now");
+  }
+  assert.equal(confirmations, 4);
+  elements["review-content"].value = " ";
+  await context.handleReviewAction("approve");
+  assert.equal(confirmations, 4);
+  assert.match(elements["review-action-message"].textContent, /不能为空/);
+  elements["review-content"].value = shortStory.content;
+  elements["review-not-old"].checked = false;
+  await context.handleReviewAction("approve");
+  assert.equal(confirmations, 4);
+  assert.match(elements["review-action-message"].textContent, /不是旧闻/);
+  elements["review-not-old"].checked = true;
+  elements["review-image-reviewed"].checked = false;
+  await context.handleReviewAction("publish_now");
+  assert.equal(confirmations, 4);
+  assert.match(elements["review-action-message"].textContent, /核对图片/);
 });

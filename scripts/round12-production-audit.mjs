@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { articleIndexability, visibleArticleText } from '../netlify/shared/article-indexability.mjs';
 import fs from 'node:fs';
 
 const ORIGIN = String(process.env.SITE_ORIGIN || 'https://trrb.net').replace(/\/+$/, '');
@@ -6,8 +7,6 @@ const SUPABASE_URL = 'https://fwiznbpsqkfgkvyznebz.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_hSmKJghvQoJKg0m5loDQ2g_f1gu8qak';
 const UA = 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 Version/18.0 Mobile/15E148 Safari/604.1';
 const TIMEOUT = 15000;
-const MIN_INDEXABLE_BODY_LENGTH = 300;
-const MIN_INDEXABLE_TITLE_LENGTH = 8;
 const MAX_SITEMAP_ARTICLES = 5000;
 const ARTICLE_SECTIONS = new Set(['ice','trump','important-news','hot-headlines','us-politics','us-crime','china-officialdom','immigration','asylum','deport','news','expose']);
 const FALLBACK = new Map([
@@ -76,22 +75,8 @@ function stableSuffix(slug) {
   const s = String(slug || '');
   return s.match(/-([a-z0-9]{6,14}-[a-z0-9]{6,14})$/i)?.[1] || s.match(/-([a-z0-9]{6,14})$/i)?.[1] || '';
 }
-function visibleText(value='') {
-  return String(value||'')
-    .replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi,' ')
-    .replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi,' ')
-    .replace(/<[^>]+>/g,' ')
-    .replace(/&nbsp;|&#160;/gi,' ')
-    .replace(/&[a-z0-9#]+;/gi,' ')
-    .replace(/\s+/g,' ')
-    .trim();
-}
+const visibleText = visibleArticleText;
 function normalizedTitle(value='') { return visibleText(value).toLowerCase().replace(/[\p{P}\p{S}\s]+/gu,''); }
-function isIceArticle(a) {
-  const topic=String(a?.topic_key||'').trim().toLowerCase();
-  const category=String(a?.category_name||'').trim();
-  return topic==='ice'||category==='ICE执法动态'||category==='ICE执法';
-}
 function isSpecialTopic(a) {
   const topic=String(a?.topic_key||'').trim().toLowerCase();
   return topic==='ice'||topic==='trump';
@@ -149,9 +134,8 @@ function expectedIndexArticles() {
   const selected=[];
   for(const a of [...articles].sort((x,y)=>timeOf(y)-timeOf(x))){
     if(!allowedInSitemap(a))continue;
-    const body=visibleText(a.content||a.summary||'');
-    const title=visibleText(a.title||'');
-    if(title.length<MIN_INDEXABLE_TITLE_LENGTH||body.length<MIN_INDEXABLE_BODY_LENGTH)continue;
+    const { indexable, body } = articleIndexability(a);
+    if(!indexable)continue;
     const titleKey=normalizedTitle(a.title);
     const bodyKey=body.length>=120?body:'';
     if((titleKey.length>=8&&seenTitles.has(titleKey))||(bodyKey&&seenBodies.has(bodyKey)))continue;
@@ -277,7 +261,7 @@ for (const path of ['/','/important-news','/us-crime','/trump','/ice','/listing.
 }
 record(8, false, '真实浏览器移动端视觉验收尚未执行', '等待 Playwright/iPhone viewport 工作流', 'warning');
 
-// 9. 质量预算索引：只比较去重、正文不少于300字且位于最新5000篇预算内的文章。
+// 9. 质量预算索引：只比较去重、具有可见标题及正文或摘要且位于最新5000篇预算内的文章。
 try {
   const root = await req(`${ORIGIN}/sitemap.xml`, {headers:{'cache-control':'no-cache'}});
   const rootXml = await root.text();
@@ -300,9 +284,9 @@ try {
   const staleInSitemap = [...siteSet].filter(x => !dbSet.has(x));
   record(9, siteSet.size === dbSet.size, '文章Sitemap数量与当前应索引文章集合一致', `sitemap=${siteSet.size}; expected=${dbSet.size}`);
   record(9, missingFromSitemap.length === 0, '所有应索引 canonical 均在 Sitemap', `missing=${missingFromSitemap.length}`);
-  record(9, staleInSitemap.length === 0, 'Sitemap 无下线/薄稿/重复稿多余URL', `stale=${staleInSitemap.length}`);
+  record(9, staleInSitemap.length === 0, 'Sitemap 无下线/空稿/重复稿多余URL', `stale=${staleInSitemap.length}`);
   record(9, !sitemapUrls.some(x => /article\.html\?id=|www\.trrb\.net/i.test(x)), 'Sitemap 无旧参数URL或www');
-  record(9, expectedArticles.every(a => visibleText(a.content||a.summary||'').length >= MIN_INDEXABLE_BODY_LENGTH), 'Sitemap不再接纳不足300字的短稿', `expected=${expectedArticles.length}`);
+  record(9, expectedArticles.every(a => articleIndexability(a).indexable), 'Sitemap文章具备可见标题和正文或摘要，不设字数门槛', `expected=${expectedArticles.length}`);
 } catch (e) { record(9, false, '全量Sitemap索引检查', e.message || String(e)); }
 
 for (let i = 1; i <= 9; i++) {

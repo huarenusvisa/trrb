@@ -1,6 +1,5 @@
+import { articleIndexability, ARTICLE_INDEXABILITY_POLICY } from "../shared/article-indexability.mjs";
 const SITE = "https://trrb.net";
-const MIN_INDEXABLE_BODY_LENGTH = 300;
-const MIN_INDEXABLE_TITLE_LENGTH = 8;
 export const config = { path: "/news-sitemap.xml" };
 
 const FALLBACK: Record<string,string> = {
@@ -55,7 +54,7 @@ export default async(request:Request,context:any)=>{
     const seenTitles=new Set<string>();
     const seenBodies=new Set<string>();
     let excludedDuplicate=0;
-    let excludedThin=0;
+    let excludedEmpty=0;
     let preservedSpecialTopic=0;
     const selected:{a:any;ts:number;loc:string}[]=[];
 
@@ -67,9 +66,8 @@ export default async(request:Request,context:any)=>{
         preservedSpecialTopic++;
       }
 
-      const body=visible(a.content||a.summary||"");
-      const title=visible(a.title||"");
-      if(title.length<MIN_INDEXABLE_TITLE_LENGTH||body.length<MIN_INDEXABLE_BODY_LENGTH){excludedThin++;continue;}
+      const {indexable,body}=articleIndexability(a);
+      if(!indexable){excludedEmpty++;continue;}
 
       const titleKey=normalizedTitle(a.title);
       const bodyKey=body.length>=120?body:"";
@@ -93,8 +91,8 @@ export default async(request:Request,context:any)=>{
       "x-trrb-news-count":String(blocks.length),
       "x-trrb-news-source-rows":String(articles.length),
       "x-trrb-news-recent-candidates":String(recent.length),
-      "x-trrb-news-excluded-thin":String(excludedThin),
-      "x-trrb-news-min-body":String(MIN_INDEXABLE_BODY_LENGTH),
+      "x-trrb-news-excluded-empty":String(excludedEmpty),
+      "x-trrb-news-indexability-policy":ARTICLE_INDEXABILITY_POLICY,
       "x-trrb-news-preserved-special-topic":String(preservedSpecialTopic),
       "x-trrb-news-excluded-duplicate":String(excludedDuplicate),
       "x-trrb-news-dedupe-winner":"newest"

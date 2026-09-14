@@ -1,6 +1,8 @@
 import fs from 'node:fs/promises';
 import process from 'node:process';
 import { google } from 'googleapis';
+import { collectGoogleSearchPerformance } from './google-search-performance.mjs';
+import { canonicalHref, hasNoindex, livePageBlockingIssues } from './seo-live-page-policy.mjs';
 
 const SITE_ORIGIN=(process.env.SITE_ORIGIN||'https://trrb.net').replace(/\/$/,'');
 const GSC_SITE_URL=process.env.GOOGLE_SEARCH_CONSOLE_SITE_URL||'sc-domain:trrb.net';
@@ -36,8 +38,6 @@ async function sitemapUrls(root=`${SITE_ORIGIN}/sitemap.xml`){
 function cleanText(value){return String(value||'').replace(/<[^>]+>/g,' ').replace(/&(?:nbsp|amp|quot|#39);/gi,' ').replace(/\s+/g,' ').trim();}
 function tagText(html,tag){const m=String(html||'').match(new RegExp(`<${tag}\\b[^>]*>([\\s\\S]*?)<\\/${tag}>`,'i'));return cleanText(m?.[1]||'');}
 function metaDescription(html){const tags=String(html||'').match(/<meta\b[^>]*>/gi)||[];for(const tag of tags){if(!/\bname\s*=\s*["']description["']/i.test(tag))continue;const m=tag.match(/\bcontent\s*=\s*["']([^"']*)["']/i);if(m)return cleanText(m[1]);}return'';}
-function canonicalHref(html){return(String(html||'').match(/<link\b[^>]*\brel\s*=\s*["'][^"']*canonical[^"']*["'][^>]*\bhref\s*=\s*["']([^"']+)/i)?.[1]||String(html||'').match(/<link\b[^>]*\bhref\s*=\s*["']([^"']+)["'][^>]*\brel\s*=\s*["'][^"']*canonical/i)?.[1]||'').trim();}
-function hasNoindex(html,headers={}){return/noindex/i.test(headers['x-robots-tag']||'')||/<meta\b[^>]*\bname\s*=\s*["']robots["'][^>]*\bcontent\s*=\s*["'][^"']*noindex/i.test(String(html||''));}
 async function mapLimit(items,limit,fn){const out=new Array(items.length);let next=0;await Promise.all(Array.from({length:Math.min(limit,items.length)},async()=>{while(true){const i=next++;if(i>=items.length)return;out[i]=await fn(items[i],i);}}));return out;}
 function unique(items){return[...new Set(items.filter(Boolean))];}
 function isDeprecatedFeed(raw){try{const u=new URL(raw);const host=u.hostname.toLowerCase();return(host===`www.${CANONICAL_HOST}`)||(host===CANONICAL_HOST&&u.protocol!=='https:');}catch{return false;}}
@@ -97,9 +97,10 @@ async function livePageAudit(){
       if(r.status===403||r.status===429){await new Promise(resolve=>setTimeout(resolve,1200));r=await fetchText(url);}
       await new Promise(resolve=>setTimeout(resolve,180));
       const title=tagText(r.text,'title');const description=metaDescription(r.text);const h1=tagText(r.text,'h1');
+      const canonical=canonicalHref(r.text);const noindex=hasNoindex(r.text,r.headers);
       const images=r.text.match(/<img\b[^>]*>/gi)||[];const missingAlt=images.filter(tag=>!/(?:^|\s)alt\s*=\s*["'][^"']*["']/i.test(tag)).length;
-      const issues=[];if(r.status!==200)issues.push(`HTTP ${r.status}`);if(title.length<8)issues.push('title missing/short');if(description.length<40)issues.push('description missing/short');if(!h1)issues.push('H1 missing');if(missingAlt)issues.push(`${missingAlt} image(s) missing alt`);
-      return{url,status:r.status,title,description,h1,missingAlt,issues};
+      const issues=livePageBlockingIssues({url,status:r.status,title,description,h1,missingAlt,canonical,noindex});
+      return{url,status:r.status,title,description,h1,missingAlt,canonical,noindex,issues};
     }catch(e){return{url,status:0,title:'',description:'',h1:'',missingAlt:0,issues:[e.message]};}
   });
   const seenTitles=new Map(),seenDescriptions=new Map();
@@ -148,9 +149,11 @@ async function googleOps(){
     }
     const smAfter=await webmasters.sitemaps.list({siteUrl:GSC_SITE_URL});
     report.google.sitemaps=(smAfter.data.sitemap||[]).map(x=>({path:x.path,lastSubmitted:x.lastSubmitted,lastDownloaded:x.lastDownloaded,isPending:x.isPending,warnings:x.warnings,errors:x.errors}));
-    const end=new Date(Date.now()-3*86400000);const start=new Date(end.getTime()-27*86400000);const d=x=>x.toISOString().slice(0,10);
-    const perf=await webmasters.searchanalytics.query({siteUrl:GSC_SITE_URL,requestBody:{startDate:d(start),endDate:d(end),dimensions:['date'],rowLimit:100}});
-    const rows=perf.data.rows||[];report.google.performance30d=rows.reduce((a,r)=>{a.clicks+=(r.clicks||0);a.impressions+=(r.impressions||0);return a},{clicks:0,impressions:0});
+    report.google.performance28d=await collectGoogleSearchPerformance({query:params=>webmasters.searchanalytics.query(params),siteUrl:GSC_SITE_URL});
+    report.warnings.push(...report.google.performance28d.warnings.map(message=>`Google performance: ${message}`));
+    // Keep the historical field for readers of existing reports; it always covered 28 days, despite its name.
+    if(report.google.performance28d.current){const {clicks,impressions}=report.google.performance28d.current;report.google.performance30d={clicks,impressions};}
+    report.google.performance30dMetadata={deprecated:true,actualDays:28,replacement:'google.performance28d',windows:report.google.performance28d.windows};
     const articleSample=(await sitemapUrls()).filter(u=>!PRIORITY_PAGES.some(p=>p.url===u)).slice(0,2);
     const inspectionUrls=unique([...PRIORITY_PAGES.map(p=>p.url),...articleSample]);
     report.google.urlInspection=[];

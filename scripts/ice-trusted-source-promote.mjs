@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import process from "node:process";
+import { fileURLToPath } from "node:url";
 import iceClassifier from "../netlify/functions/_shared/ice-enforcement.js";
 
 const { isIceEnforcementText, isIceEnforcementEvidence } = iceClassifier;
@@ -16,7 +17,7 @@ const TRUSTED_MEDIA_HANDLES = new Set([
 ]);
 const AUTO_PUBLISH_SCORE = Number(process.env.ICE_AUTO_PUBLISH_SCORE || 80);
 const MAX_AGE_MINUTES = Number(process.env.ICE_TRUSTED_MAX_AGE_MINUTES || 120);
-const EDITORIAL_VERSION = "zh-title-body-v7-300-600-800-context-image";
+const ACCEPTED_EDITORIAL_VERSIONS = new Set(["zh-title-body-v8-source-led", "zh-title-body-v7-300-600-800-context-image"]);
 
 function nowIso() { return new Date().toISOString(); }
 function requireEnv() { const missing = REQUIRED.filter((name) => !process.env[name]); if (missing.length) throw new Error(`缺少 GitHub Secret：${missing.join(", ")}`); }
@@ -33,9 +34,8 @@ function trustedMedia(post) {
 }
 function recentEnough(story) { const time = new Date(story.last_seen_at || story.first_seen_at || story.created_at || 0).getTime(); return Number.isFinite(time) && Date.now() - time <= MAX_AGE_MINUTES * 60000; }
 function hasChinese(value) { return /[\u3400-\u9fff]/.test(String(value || "")); }
-function length(value) { return Array.from(String(value || "").replace(/\s+/g, "")).length; }
 function mediaCount(evidence) { return evidence.reduce((count, post) => { const media = Array.isArray(post.media) ? post.media : []; return count + media.filter((item) => item?.url || item?.preview_image_url).length; }, 0); }
-function editorialReady(story, evidence) { const payload = story.ai_payload && typeof story.ai_payload === "object" ? story.ai_payload : {}; const min = Number(payload.target_min_chars || 300); const max = Number(payload.target_max_chars || 800); const bodyLength = length(story.content); return payload.translation_version === EDITORIAL_VERSION && payload.translated_to_chinese === true && payload.old_news_checked === true && payload.appears_old_news !== true && hasChinese(story.title) && hasChinese(story.content) && bodyLength >= min && bodyLength <= max && (mediaCount(evidence) === 0 || payload.image_grounding_used === true); }
+function editorialReady(story, evidence) { const payload = story.ai_payload && typeof story.ai_payload === "object" ? story.ai_payload : {}; return ACCEPTED_EDITORIAL_VERSIONS.has(payload.translation_version) && payload.translated_to_chinese === true && payload.old_news_checked === true && payload.appears_old_news !== true && hasChinese(story.title) && hasChinese(story.content) && (mediaCount(evidence) === 0 || payload.image_grounding_used === true); }
 
 async function main() {
   requireEnv();
@@ -110,4 +110,5 @@ async function main() {
   console.log(JSON.stringify({ stage: "ice-official-auto-publish-v7-strict-evidence", checked: Array.isArray(rows) ? rows.length : 0, official_auto_approved: autoApproved, trusted_media_auto_approved: trustedMediaApproved, official_risk_blocked: riskBlocked, rejected_non_ice: rejectedNonIce, manual_non_official: manual, incomplete_or_not_chinese: incomplete, stale }, null, 2));
 }
 
-main().catch((error) => { console.error("ICE官方信源自动发布分流失败：", error); process.exitCode = 1; });
+export { editorialReady };
+if (process.argv[1] === fileURLToPath(import.meta.url)) main().catch((error) => { console.error("ICE官方信源自动发布分流失败：", error); process.exitCode = 1; });

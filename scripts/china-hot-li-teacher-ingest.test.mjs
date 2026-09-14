@@ -2,7 +2,7 @@
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import test from "node:test";
-import { buildCandidate, buildChrtRecord, buildPublishedArticle, buildReviewDraft, containsBoilerplate, deriveDraftTitle, qualifyTweet, shouldRetryCandidate, similarity, targetLength } from "./china-hot-li-teacher-ingest.mjs";
+import { buildCandidate, buildChrtRecord, buildPublishedArticle, buildReviewDraft, containsBoilerplate, deriveDraftTitle, generateArticle, qualifyTweet, shouldRetryCandidate, similarity, targetLength } from "./china-hot-li-teacher-ingest.mjs";
 
 const chinaTweet = {
   id: "123", created_at: "2026-08-23T08:00:00.000Z", lang: "zh",
@@ -18,15 +18,13 @@ test("中国新闻及中国政治人物内容进入中国热门头条池", () =>
   assert.equal(candidate.proposed_section, "中国热门头条");
   assert.equal(candidate.decision, "processing");
   assert.equal(candidate.pipeline, "china-hot-li-teacher-v2");
-  assert.equal(candidate.ai_payload.processing_version, "adaptive-editorial-v1");
+  assert.equal(candidate.ai_payload.processing_version, "source-led-no-length-v2");
 });
 
-test("正文篇幅跟随事实密度和图片素材，不再强迫短消息凑到300字", () => {
-  assert.deepEqual(targetLength("短文"), { min: 80, max: 200, band: "brief" });
-  assert.deepEqual(targetLength("中".repeat(120)), { min: 120, max: 280, band: "short" });
-  assert.deepEqual(targetLength("中".repeat(120), 1), { min: 120, max: 360, band: "short" });
-  assert.deepEqual(targetLength("中".repeat(220)), { min: 160, max: 420, band: "short" });
-  assert.deepEqual(targetLength("中".repeat(300)), { min: 300, max: 650, band: "source-led" });
+test("正文不设字数上下限，元数据不再声明强制篇幅区间", () => {
+  for (const source of ["短文", "中".repeat(300), "中".repeat(1200)]) {
+    assert.deepEqual(targetLength(source, 1), { min: null, max: null, band: "不限字数" });
+  }
 });
 
 test("失败草稿使用短标题并明确阻止未经编辑直接发布", () => {
@@ -123,7 +121,37 @@ test("直接涉及中国的跨国新闻进入中国热门，纯美国新闻仍�
   assert.equal(qualifyTweet({ id: "us", text: "8月23日，美国佛罗里达州警方宣布将与ICE开展联合执法行动，并公布新的移民拘留安排。" }).accepted, false);
   assert.equal(qualifyTweet({ id: "reply", text: chinaTweet.text, referenced_tweets: [{ type: "replied_to" }] }).accepted, false);
   assert.equal(qualifyTweet({ id: "rt", text: `RT @example: ${chinaTweet.text}` }).accepted, false);
-  assert.equal(qualifyTweet({ id: "thin", text: "北京突发，稍后更新。" }).accepted, false);
+  assert.equal(qualifyTweet({ id: "short", text: "北京地铁恢复运营。" }).accepted, true);
+  assert.equal(qualifyTweet({ id: "empty", text: "https://example.com" }).accepted, false);
+});
+
+test("中国热门短原帖和不在建议篇幅区间的稿件不会因字数重试或拒绝", async (t) => {
+  const tweet = { ...chinaTweet, text: "北京地铁恢复运营。" };
+  const qualified = qualifyTweet(tweet);
+  assert.equal(qualified.accepted, true);
+  let generated;
+  let requests = 0;
+  t.mock.method(globalThis, "fetch", async (_url, options) => {
+    requests += 1;
+    const input = JSON.parse(options.body);
+    const fields = input.text.format.schema.properties;
+    assert.equal(fields.title.minLength, 1);
+    assert.equal(fields.content.minLength, 1);
+    assert.equal(fields.content.maxLength, undefined);
+    assert.equal(fields.title.maxLength, undefined);
+    return new Response(JSON.stringify({ output_text: JSON.stringify(generated) }), { status: 200 });
+  });
+  for (const content of ["北京地铁恢复运营。", "北京地铁恢复运营，线路已重新开放。".repeat(800)]) {
+    generated = { title: "北京地铁", summary: "线路开放", content, seo_keywords: "北京", appears_old_news: false, old_news_reason: "" };
+    const result = await generateArticle(qualified, tweet);
+    assert.equal(result.content, content.normalize("NFKC"));
+    assert.equal(result.title, "北京地铁");
+  }
+  assert.equal(requests, 2, "valid short and long articles each need only one model request");
+  generated = { ...generated, content: " " };
+  await assert.rejects(generateArticle(qualified, tweet), /标题和正文不能为空/);
+  generated = { ...generated, title: "纽约地铁", content: "纽约地铁恢复运营。" };
+  await assert.rejects(generateArticle(qualified, tweet), /未明确中国新闻主体/);
 });
 
 test("中国平台、城市、教育软件和国产汽车线索不会被错误过滤", () => {
@@ -145,7 +173,7 @@ test("自动失败草稿可有界重试，人工复核决定不会被自动覆�
   assert.equal(shouldRetryCandidate({
     decision: "review_required",
     decision_reason: "自动扩写或发布失败：生成稿未明确中国新闻主体；保留为可编辑草稿，由编辑决定是否发布",
-    ai_payload: { processing_version: "adaptive-editorial-v1", automatic_retry_attempts: 3 },
+    ai_payload: { processing_version: "source-led-no-length-v2", automatic_retry_attempts: 3 },
   }, qualified), false);
   assert.equal(shouldRetryCandidate({
     decision: "review_required",

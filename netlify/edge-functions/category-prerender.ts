@@ -244,6 +244,10 @@ export default async (request: Request, context: any) => {
       .replace(/<div class="listing-grid" id="listing-grid">[\s\S]*?<\/div><nav class="pagination" id="pagination" aria-label="分页"><\/nav>/i, `<div class="listing-grid" id="listing-grid" data-seo-category-snapshot="edge" data-page="${page}">${cards(articles, displayName)}</div>${pagination(path, page, totalPages)}`);
 
     const responseHeaders = new Headers(upstream.headers);
+    // The generic listing template is intentionally noindex. Its transport
+    // headers must not override this successfully rendered public category.
+    responseHeaders.delete("x-robots-tag");
+    responseHeaders.delete("content-length");
     responseHeaders.set("content-type", "text/html; charset=UTF-8");
     responseHeaders.set("cache-control", "public, max-age=60, stale-while-revalidate=300");
     responseHeaders.set("x-trrb-category-prerender", "category-edge-v1");

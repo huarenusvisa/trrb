@@ -107,9 +107,7 @@ https://trrb.net/jobs/* https://huarengongzuo.com/jobs/:splat 301!
 /hot-headlines /listing.html?category=%E7%83%AD%E9%97%A8%E5%A4%B4%E6%9D%A1 200!
 /immigration /listing.html?category=%E7%A7%BB%E6%B0%91%E7%BE%8E%E5%9B%BD 200!
 /ice /topic/ice/live-v6.html 200!
-/ice/ /ice 301!
 /ice/news /listing.html?category=ICE%E6%89%A7%E6%B3%95%E5%8A%A8%E6%80%81 200!
-/ice/news/ /ice/news 301!
 /topic/ice /ice 301!
 /topic/ice/ /ice 301!
 /topic/trump /trump 301!

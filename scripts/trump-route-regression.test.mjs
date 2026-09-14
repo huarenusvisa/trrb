@@ -17,6 +17,6 @@ test("内部index重写不会再次被Edge重定向回规范入口", () => {
 });
 
 test("规范入口继续内部重写到真实专题页面", () => {
-  const config = read("netlify.toml");
-  assert.match(config, /from\s*=\s*["']\/trump["'][\s\S]{0,100}to\s*=\s*["']\/trump\/index\.html["'][\s\S]{0,80}status\s*=\s*200/);
+  const redirects = read("_redirects");
+  assert.match(redirects, /^\/trump \/trump\/index\.html 200!$/m);
 });

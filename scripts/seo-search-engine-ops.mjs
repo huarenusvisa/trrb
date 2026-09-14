@@ -204,5 +204,5 @@ if(!report.google.configured){
 }
 if(!report.bing.configured){const message='Bing Webmaster account API not authorized yet';(REQUIRE_BING?report.failures:report.warnings).push(message);}
 await fs.writeFile('seo-search-engine-ops-report.json',JSON.stringify(report,null,2)+'\n');
-console.log(JSON.stringify({site:report.site,writeMode:report.writeMode,priorityOrder:report.priorityOrder,googleConfigured:report.google.configured,bingConfigured:report.bing.configured,googleDeprecatedRemoved:report.google.deprecatedSitemapsRemoved||[],bingDeprecatedRemoved:report.bing.deprecatedFeedsRemoved||[],warnings:report.warnings,failures:report.failures},null,2));
+console.log(JSON.stringify({site:report.site,writeMode:report.writeMode,priorityOrder:report.priorityOrder,googleConfigured:report.google.configured,bingConfigured:report.bing.configured,livePageAudit:report.local.livePages,googleDeprecatedRemoved:report.google.deprecatedSitemapsRemoved||[],bingDeprecatedRemoved:report.bing.deprecatedFeedsRemoved||[],warnings:report.warnings,failures:report.failures},null,2));
 if(report.failures.length)process.exitCode=1;

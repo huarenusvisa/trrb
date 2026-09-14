@@ -1,11 +1,12 @@
 const CANONICAL = "https://trrb.net/ice";
 
 export const config = {
+  // Do not match live-v6.html: /ice internally rewrites to that file.
   path: [
+    "/ice/",
     "/topic/ice",
     "/topic/ice/",
-    "/topic/ice/index.html",
-    "/topic/ice/live-v6.html"
+    "/topic/ice/index.html"
   ]
 };
 

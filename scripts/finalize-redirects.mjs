@@ -114,9 +114,7 @@ const required = [
   '/hot-headlines /listing.html?category=%E7%83%AD%E9%97%A8%E5%A4%B4%E6%9D%A1 200!',
   '/immigration /listing.html?category=%E7%A7%BB%E6%B0%91%E7%BE%8E%E5%9B%BD 200!',
   '/ice /topic/ice/live-v6.html 200!',
-  '/ice/ /ice 301!',
   '/ice/news /listing.html?category=ICE%E6%89%A7%E6%B3%95%E5%8A%A8%E6%80%81 200!',
-  '/ice/news/ /ice/news 301!',
   '/topic/ice /ice 301!',
   '/topic/ice/ /ice 301!',
   '/topic/trump /trump 301!',
@@ -140,7 +138,7 @@ const requiredPaths = new Set(required.map((rule) => rule.split(/\s+/)[0]));
 const retiredAsylumPaths = new Set(['/asylum', '/asylum/', '/asylum/:slug', '/asylum-guide', '/niulai', '/niulai/*', '/ershou', '/ershou/', '/ershou/:splat', '/secondhand', '/secondhand/', '/marketplace', '/marketplace/', '/classifieds', '/classifieds/']);
 // Netlify normalizes trailing slashes before matching redirect rules. A
 // `/trump/ -> /trump` rule can therefore become a self-redirect for `/trump`.
-const retiredNormalizedRedirectPaths = new Set(['/trump/']);
+const retiredNormalizedRedirectPaths = new Set(['/trump/', '/ice/', '/ice/news/']);
 const filtered = lines.filter((line) => {
   const route = line.split(/\s+/)[0];
   const retiredChinaCategoryQuery = /^\/listing(?:\.html)?\s+category=(?:中国官场|%E4%B8%AD%E5%9B%BD%E5%AE%98%E5%9C%BA)\s+/i.test(line);
@@ -179,8 +177,6 @@ for (const [route, target] of [
   ['/asylum', '/immigrate/center?path=humanitarian'],
   ['/asylum/', '/immigrate/center?path=humanitarian'],
   ['/asylum/:slug', '/immigration/:slug'],
-  ['/ice/', '/ice'],
-  ['/ice/news/', '/ice/news'],
   ['/topic/ice', '/ice'],
   ['/topic/ice/', '/ice'],
   ['/topic/trump', '/trump'],
@@ -201,8 +197,10 @@ for (const [route, target] of [
   const expected = `${route} ${target} 301!`;
   if (!outputLines.includes(expected)) throw new Error(`duplicate public topic URL is not permanently canonicalized: ${expected}`);
 }
-if (outputLines.some((line) => line.split(/\s+/)[0] === '/trump/')) {
-  throw new Error('Netlify-normalized /trump/ self-redirect survived redirect finalization');
+for (const route of retiredNormalizedRedirectPaths) {
+  if (outputLines.some((line) => line.split(/\s+/)[0] === route)) {
+    throw new Error(`Netlify-normalized ${route} self-redirect survived redirect finalization`);
+  }
 }
 if (outputLines.some((line) => /^\/asylum(?:\s|\/)/.test(line) && /listing\.html\?category=.*(?:%E5%BA%87%E6%8A%A4%E7%99%BE%E7%A7%91|庇护百科)/i.test(line))) {
   throw new Error('retired asylum encyclopedia internal rewrite survived redirect finalization');

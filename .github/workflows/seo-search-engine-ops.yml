@@ -11,6 +11,11 @@ on:
     branches: [main]
     paths:
       - '.github/workflows/seo-search-engine-ops.yml'
+      - 'scripts/seo-search-engine-ops.mjs'
+      - 'scripts/category-ice-indexability.test.mjs'
+      - 'scripts/finalize-redirects.mjs'
+      - 'netlify/edge-functions/category-prerender.ts'
+      - 'netlify/edge-functions/01-ice-route-canonical.ts'
       - 'seo/central-task-pools.json'
       - 'scripts/central-seo-task-orchestrator.mjs'
       - 'scripts/central-seo-task-orchestrator.test.mjs'
@@ -60,6 +65,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Verify category indexability and ICE routing
+        id: page_regressions
+        run: node --experimental-strip-types --test scripts/category-ice-indexability.test.mjs
       - name: Install Google API client
         id: install_google
         run: npm install --no-save googleapis@144
@@ -132,7 +140,7 @@ jobs:
           AUTOMATION_CONTROL_KEY: seo_search_engine
           AUTOMATION_NOTIFICATION_TITLE: TRRB Google/Bing SEO机器人执行失败
           AUTOMATION_FAILURE_RESULTS: ${{ toJSON(steps) }}
-          AUTOMATION_FAILURE_LABELS: '{"install_google":"安装 Google API 客户端","production_health":"生产版本与网站健康验收","sitemap":"站点地图检查","indexnow":"IndexNow 提交","search_ops":"Google/Bing 操作及页面检查"}'
+          AUTOMATION_FAILURE_LABELS: '{"page_regressions":"栏目收录与 ICE 路由回归检查","install_google":"安装 Google API 客户端","production_health":"生产版本与网站健康验收","sitemap":"站点地图检查","indexnow":"IndexNow 提交","search_ops":"Google/Bing 操作及页面检查"}'
         run: node scripts/automation-notify.mjs
 
   asylumjudge-monitor:

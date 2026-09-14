@@ -27,6 +27,19 @@ test("正文不设字数上下限，元数据不再声明强制篇幅区间", ()
   }
 });
 
+test("栏目资格同时检查原文与成稿，拒绝把无关外国稿标为中国头条", () => {
+  const tweet = { ...chinaTweet, text: "9月13日，胖东来创始人于东来发文称，新员工将为学员性质，合同四年不续签。" };
+  const qualified = qualifyTweet(tweet);
+  const copy = { title: "胖东来新员工将为学员性质", summary: "于东来公布员工培养安排。", content: "于东来称，新员工合同四年，公司将培养员工学习生活方式和相关技术。" };
+  const body = buildPublishedArticle(tweet, qualified, copy);
+  assert.equal(body.metadata.source_category_qualified, true);
+  assert.equal(body.metadata.category_policy_version, "source-social-v3");
+  assert.equal(body.metadata.human_category_override, undefined);
+  const unrelated = { title: "美国国会讨论预算", summary: "美国讨论财政安排。", content: "美国国会将审议年度预算。" };
+  assert.equal(buildPublishedArticle(tweet, qualified, unrelated).metadata.source_category_qualified, false);
+  assert.equal(buildPublishedArticle(tweet, { ...qualified, accepted: false }, copy).metadata.source_category_qualified, false);
+});
+
 test("失败草稿使用短标题并明确阻止未经编辑直接发布", () => {
   const raw = "9月12日，有博主直播测试理想最新版智驾，从小路汇入主路时未预留足够安全反应时间，直播随后被封禁。";
   const title = deriveDraftTitle(raw);

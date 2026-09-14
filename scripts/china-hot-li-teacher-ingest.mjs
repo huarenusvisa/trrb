@@ -242,7 +242,7 @@ export function similarity(leftValue, rightValue) {
 async function recentChinaArticles() {
   const cutoff = new Date(Date.now() - 30 * 86400_000).toISOString();
   const rows = await supabase("articles", { query: {
-    select: "id,title,summary,content", category_name: `eq.${CHINA_HOT_CATEGORY}`,
+    select: "id,title,summary,content", category_name: "in.(热门头条,中国热门头条)",
     status: "eq.published", visibility: "eq.public", published_at: `gte.${cutoff}`,
     order: "published_at.desc", limit: "1000",
   } });
@@ -442,6 +442,11 @@ export function buildPublishedArticle(tweet, qualified, article, publishedAt = n
     metadata: {
       collector: PIPELINE, automatic_publish: true, manual_review_required: false, review_status: "auto_published",
       category_display_name: "中国热门头条", unverified_public_claim: true, content_warning: WARNING,
+      category_policy_version: "source-social-v3",
+      source_category_qualified: qualified.accepted === true && (
+        isChinaHotHeadline(article.title, article.content)
+        || (isSourceSocialReport(qualified.title, qualified.text) && isSourceSocialReport(article.title, article.content))
+      ),
       public_source_attribution: false, source_text_original: qualified.text, source_media: attachments,
       source_public_metrics: tweet.public_metrics || {}, openai_model: OPENAI_MODEL, generated_target: article.target,
       editorial_expansion_version: EXPANSION_VERSION, image_grounding_used: visualInputs(tweet).length > 0,
@@ -580,7 +585,7 @@ async function recoverArchivedBatch() {
 async function repairablePublishedArticles() {
   const rows = await supabase("articles", { query: {
     select: "id,title,summary,content,seo_keywords,source_post_id,source_created_at,created_at,metadata",
-    automation_source: `eq.${PIPELINE}`, category_name: `eq.${CHINA_HOT_CATEGORY}`,
+    automation_source: `eq.${PIPELINE}`, category_name: "in.(热门头条,中国热门头条)",
     status: "eq.published", visibility: "eq.public", created_at: `gte.${REPAIR_SINCE}`,
     order: "created_at.asc", limit: "200",
   } });

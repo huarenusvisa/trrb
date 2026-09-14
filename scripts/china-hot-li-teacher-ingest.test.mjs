@@ -2,7 +2,7 @@
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import test from "node:test";
-import { buildCandidate, buildChrtRecord, buildPublishedArticle, buildReviewDraft, containsBoilerplate, qualifyTweet, shouldRetryCandidate, similarity, targetLength } from "./china-hot-li-teacher-ingest.mjs";
+import { buildCandidate, buildChrtRecord, buildPublishedArticle, buildReviewDraft, containsBoilerplate, deriveDraftTitle, qualifyTweet, shouldRetryCandidate, similarity, targetLength } from "./china-hot-li-teacher-ingest.mjs";
 
 const chinaTweet = {
   id: "123", created_at: "2026-08-23T08:00:00.000Z", lang: "zh",
@@ -18,11 +18,27 @@ test("中国新闻及中国政治人物内容进入中国热门头条池", () =>
   assert.equal(candidate.proposed_section, "中国热门头条");
   assert.equal(candidate.decision, "processing");
   assert.equal(candidate.pipeline, "china-hot-li-teacher-v2");
+  assert.equal(candidate.ai_payload.processing_version, "adaptive-editorial-v1");
 });
 
-test("不足300字扩写到300字以上，原文已足300字则不强迫扩成800字", () => {
-  assert.deepEqual(targetLength("短文"), { min: 300, max: 650, band: "short" });
+test("正文篇幅跟随事实密度和图片素材，不再强迫短消息凑到300字", () => {
+  assert.deepEqual(targetLength("短文"), { min: 80, max: 200, band: "brief" });
+  assert.deepEqual(targetLength("中".repeat(120)), { min: 120, max: 280, band: "short" });
+  assert.deepEqual(targetLength("中".repeat(120), 1), { min: 120, max: 360, band: "short" });
+  assert.deepEqual(targetLength("中".repeat(220)), { min: 160, max: 420, band: "short" });
   assert.deepEqual(targetLength("中".repeat(300)), { min: 300, max: 650, band: "source-led" });
+});
+
+test("失败草稿使用短标题并明确阻止未经编辑直接发布", () => {
+  const raw = "9月12日，有博主直播测试理想最新版智驾，从小路汇入主路时未预留足够安全反应时间，直播随后被封禁。";
+  const title = deriveDraftTitle(raw);
+  assert.ok(title.length <= 42);
+  assert.doesNotMatch(title, /^9月12日/);
+  const draft = buildReviewDraft({ ...chinaTweet, text: raw }, "需要编辑核对", "2026-08-23T09:00:00.000Z");
+  assert.notEqual(draft.title, draft.content);
+  assert.notEqual(draft.summary, draft.content);
+  assert.equal(draft.metadata.publication_blocked_until_edited, true);
+  assert.match(draft.content, /编辑提示/);
 });
 
 test("识别并阻止提醒、呼吁和宣传式凑字", () => {
@@ -110,6 +126,15 @@ test("直接涉及中国的跨国新闻进入中国热门，纯美国新闻仍�
   assert.equal(qualifyTweet({ id: "thin", text: "北京突发，稍后更新。" }).accepted, false);
 });
 
+test("中国平台、城市、教育软件和国产汽车线索不会被错误过滤", () => {
+  assert.equal(qualifyTweet({ id: "bilibili", text: "9月12日，B站一网友发布视频，用德国普通保安两小时的到手工资测试当地物价和购买力，引发中文网友讨论。" }).accepted, true);
+  assert.equal(qualifyTweet({ id: "zhidao", text: "9月11日，一名大学生发帖称，高校学习软件知到在开启VPN时提示检测到相关网络环境，担心使用记录被学校看到。" }).accepted, true);
+  assert.equal(qualifyTweet({ id: "dongguan", text: "9月11日，东莞实验中学高三学生因晚下课导致夜宵被抢完，校方随后在公告栏回应学生反映的问题。" }).accepted, true);
+  assert.equal(qualifyTweet({ id: "ningbo", text: "9月11日晚，宁波大学新生开学典礼突遇大雨，校长临时缩短讲稿并提前结束致辞。" }).accepted, true);
+  assert.equal(qualifyTweet({ id: "li-auto", text: "9月12日，有博主直播测试理想智驾，从小路汇入主路时未预留足够安全反应时间，随后紧急刹车。" }).accepted, true);
+  assert.equal(qualifyTweet({ id: "ai", text: "9月12日，Anthropic与OpenAI首席执行官就人工智能发展速度发表意见，并讨论第三方评估机制和安全实践。" }).accepted, false);
+});
+
 test("自动失败草稿可有界重试，人工复核决定不会被自动覆盖", () => {
   const qualified = qualifyTweet(chinaTweet);
   assert.equal(shouldRetryCandidate({
@@ -120,8 +145,13 @@ test("自动失败草稿可有界重试，人工复核决定不会被自动覆�
   assert.equal(shouldRetryCandidate({
     decision: "review_required",
     decision_reason: "自动扩写或发布失败：生成稿未明确中国新闻主体；保留为可编辑草稿，由编辑决定是否发布",
-    ai_payload: { automatic_retry_attempts: 3 },
+    ai_payload: { processing_version: "adaptive-editorial-v1", automatic_retry_attempts: 3 },
   }, qualified), false);
+  assert.equal(shouldRetryCandidate({
+    decision: "review_required",
+    decision_reason: "自动扩写或发布失败：生成正文长度150，未达到300-650字；保留为可编辑草稿，由编辑决定是否发布",
+    ai_payload: { processing_version: "grounded-image-v6", automatic_retry_attempts: 3 },
+  }, qualified), true);
   assert.equal(shouldRetryCandidate({
     decision: "review_required",
     decision_reason: "编辑要求人工核对来源",
@@ -151,4 +181,23 @@ test("中国热门头条打开开关立即采集，并由每小时唤醒器补�
   assert.match(control, /ice:/);
   assert.match(control, /uses: \.\/\.github\/workflows\/china-hot-li-teacher-ingest\.yml/);
   assert.doesNotMatch(workflow, /-\s+["']?scripts\/\*\*/);
+});
+
+test("后台显示中文处理原因，审核草稿不能通过恢复按钮直接发布", () => {
+  const ingest = fs.readFileSync(new URL("./china-hot-li-teacher-ingest.mjs", import.meta.url), "utf8");
+  const html = fs.readFileSync(new URL("../admin/index.html", import.meta.url), "utf8");
+  const ui = fs.readFileSync(new URL("../admin/content-center.js", import.meta.url), "utf8");
+  const api = fs.readFileSync(new URL("../netlify/functions/china-hot-pool-admin.js", import.meta.url), "utf8");
+  assert.match(html, /未通过加工的材料只能重新加工或编辑/);
+  assert.match(ui, /review_required:\s*"需要重新加工"/);
+  assert.match(ui, /处理说明：/);
+  assert.match(ui, /data-pool-action="retry"/);
+  assert.match(ui, /data-pool-edit/);
+  assert.doesNotMatch(ui, /published \? "take_down" : "restore"/);
+  assert.match(api, /未经加工的审核草稿不能直接恢复发布/);
+  assert.match(api, /candidate\.decision !== "taken_down"/);
+  assert.match(api, /action === "retry"/);
+  assert.match(ingest, /async function reprocessableCandidates\(\)/);
+  assert.match(ingest, /decision: "in\.\(failed,review_required\)"/);
+  assert.match(ingest, /tweetsById/);
 });

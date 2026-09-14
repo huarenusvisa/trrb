@@ -2,7 +2,12 @@
   const state = { items: [], trumpItems: [], activeTrump: null };
   const el = (id) => document.getElementById(id);
   const esc = (value) => String(value ?? "").replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[char]));
-  const titleOf = (item) => item.ai_payload?.title || item.ai_payload?.proposed_title || item.raw_text || "未命名内容";
+  const decisionLabels = {
+    processing: "自动加工中", published: "已发布", review_required: "需要重新加工",
+    failed: "加工失败", rejected: "已过滤", duplicate: "重复内容",
+    taken_down: "已下架", deleted: "已删除", legacy_archived: "历史归档",
+  };
+  const titleOf = (item) => item.ai_payload?.title || item.ai_payload?.proposed_title || "标题待生成";
   const timeOf = (item) => new Date(item.collected_at || item.created_at || Date.now()).toLocaleString("zh-CN");
 
   async function api(body) {
@@ -25,7 +30,15 @@
     el("china-hot-pool-count").textContent = String(state.items.length);
     el("china-hot-pool-list").innerHTML = state.items.length ? state.items.map((item) => {
       const published = item.decision === "published";
-      return `<article class="china-hot-pool-item"><div><span class="tag">${esc(item.decision || "未处理")}</span><time>${esc(timeOf(item))}</time><h4>${esc(titleOf(item))}</h4><p>${esc(String(item.raw_text || "").slice(0, 220))}</p></div><div class="china-hot-pool-actions">${item.article_id ? `<a href="/article.html?id=${encodeURIComponent(item.article_id)}" target="_blank" rel="noopener">查看文章</a>` : ""}<button data-pool-download="${esc(item.id)}">下载</button>${item.article_id ? `<button data-pool-action="${published ? "take_down" : "restore"}" data-pool-id="${esc(item.id)}">${published ? "下架" : "恢复"}</button>` : ""}<button class="danger" data-pool-action="delete" data-pool-id="${esc(item.id)}">删除文章</button></div></article>`;
+      const takenDown = item.decision === "taken_down";
+      const retryable = ["review_required", "failed"].includes(item.decision);
+      const reason = item.decision_reason || item.ai_payload?.reason || "等待处理";
+      const summary = item.ai_payload?.summary || item.raw_text || "没有可显示的原始材料";
+      const source = item.source_url ? `<a class="source-link" href="${esc(item.source_url)}" target="_blank" rel="noopener noreferrer">查看原始来源</a>` : "";
+      const articleAction = published
+        ? `<a href="/article.html?id=${encodeURIComponent(item.article_id)}" target="_blank" rel="noopener">查看文章</a>`
+        : item.article_id ? `<button data-pool-edit="${esc(item.article_id)}">编辑草稿</button>` : "";
+      return `<article class="china-hot-pool-item"><div><span class="tag">${esc(decisionLabels[item.decision] || item.decision || "未处理")}</span><time>${esc(timeOf(item))}</time><h4>${esc(titleOf(item))}</h4><p>${esc(String(summary).slice(0, 240))}</p><p class="pool-reason"><b>处理说明：</b>${esc(reason)}</p>${source}</div><div class="china-hot-pool-actions">${articleAction}<button data-pool-download="${esc(item.id)}">下载</button>${retryable ? `<button data-pool-action="retry" data-pool-id="${esc(item.id)}">重新加工</button>` : ""}${published ? `<button data-pool-action="take_down" data-pool-id="${esc(item.id)}">下架</button>` : ""}${takenDown ? `<button data-pool-action="restore" data-pool-id="${esc(item.id)}">恢复</button>` : ""}<button class="danger" data-pool-action="delete" data-pool-id="${esc(item.id)}">删除文章</button></div></article>`;
     }).join("") : "<div class=\"panel\">内容池暂时为空。</div>";
   }
 
@@ -107,12 +120,18 @@
     }
     const dl = event.target.closest("[data-pool-download]");
     if (dl) download(state.items.find((item) => item.id === dl.dataset.poolDownload));
+    const edit = event.target.closest("[data-pool-edit]");
+    if (edit) window.editArticle?.(edit.dataset.poolEdit);
     const action = event.target.closest("[data-pool-action]");
     if (action) {
-      const label = action.dataset.poolAction === "delete" ? "删除前台文章（内容池记录仍保留）" : action.textContent.trim();
+      const label = action.dataset.poolAction === "delete" ? "删除关联文章（内容池原始记录仍保留）" : action.textContent.trim();
       if (!confirm(`确定${label}？`)) return;
       action.disabled = true;
-      try { await api({ action: action.dataset.poolAction, id: action.dataset.poolId }); await load(); }
+      try {
+        await api({ action: action.dataset.poolAction, id: action.dataset.poolId });
+        if (action.dataset.poolAction === "retry") alert("已加入重新加工队列，将由采集任务按新版规则处理，不会直接发布原始材料。");
+        await load();
+      }
       catch (error) { alert(error.message); action.disabled = false; }
     }
     const trumpDownload = event.target.closest("[data-trump-download]");

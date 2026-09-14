@@ -15,7 +15,7 @@ exports.handler = async (event) => {
     const input = event.body ? JSON.parse(event.body) : {};
     const action = safeText(input.action || event.queryStringParameters?.action || "list", 40);
     if (action === "list") {
-      const rows = await rest("news_candidates", { query: { select: "id,external_id,pipeline,raw_text,raw_payload,ai_payload,decision,decision_reason,article_id,collected_at,processed_at,created_at,updated_at", pipeline: "like.china-hot-li-teacher%", order: "collected_at.desc", limit: "500" } });
+      const rows = await rest("news_candidates", { query: { select: "id,external_id,pipeline,source_url,source_account,source_name,raw_text,raw_payload,ai_payload,decision,decision_reason,article_id,collected_at,processed_at,created_at,updated_at", pipeline: "like.china-hot-li-teacher%", order: "collected_at.desc", limit: "500" } });
       return json(200, { ok: true, items: Array.isArray(rows) ? rows : [] });
     }
     const candidateId = safeText(input.id, 100);
@@ -25,8 +25,23 @@ exports.handler = async (event) => {
     if (!candidate) return json(404, { error: "内容池记录不存在" });
     const article = await articleFor(candidate.article_id);
     const time = new Date().toISOString();
+    if (action === "retry") {
+      if (!["review_required", "failed"].includes(candidate.decision)) return json(409, { error: "只有需要重新加工或加工失败的内容才能加入重试队列" });
+      const aiPayload = candidate.ai_payload && typeof candidate.ai_payload === "object" ? candidate.ai_payload : {};
+      await rest("news_candidates", {
+        method: "PATCH", query: { id: `eq.${candidateId}` }, prefer: "return=minimal",
+        body: {
+          decision: "failed", decision_reason: "管理员已请求重新加工，等待下一轮采集任务按新版规则处理",
+          ai_payload: { ...aiPayload, status: "queued_for_reprocess", automatic_retry_attempts: 0, automatic_retry_at: time, automatic_retry_exhausted: false },
+          updated_at: time,
+        },
+      });
+      return json(200, { ok: true, queued: true });
+    }
     if (["take_down", "restore"].includes(action)) {
       if (!article) return json(409, { error: "这条记录没有关联文章" });
+      if (action === "take_down" && candidate.decision !== "published") return json(409, { error: "只有已发布文章才能下架" });
+      if (action === "restore" && candidate.decision !== "taken_down") return json(409, { error: "未经加工的审核草稿不能直接恢复发布，请先重新加工或人工编辑" });
       const restored = action === "restore";
       const metadata = article.metadata && typeof article.metadata === "object" ? article.metadata : {};
       await rest("articles", { method: "PATCH", query: { id: `eq.${article.id}` }, body: { status: restored ? "published" : "hidden", visibility: restored ? "public" : "private", metadata: { ...metadata, content_pool_action: action, content_pool_action_at: time, content_pool_action_by: user.id } }, prefer: "return=minimal" });

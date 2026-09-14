@@ -7,12 +7,13 @@ const { CHINA_HOT_CATEGORY, isChinaHotHeadline } = chinaHotHeadlines;
 const SOURCE_HANDLE = "whyyoutouzhele";
 const SOURCE_NAME = "李老师不是你老师";
 const PIPELINE = "china-hot-li-teacher-v2";
+const PROCESSING_VERSION = "adaptive-editorial-v1";
 const WARNING = "真实性提示：本文所述信息可能尚未获得独立核实，部分细节可能存在偏差，请以权威部门后续通报为准。";
 const DRY_RUN = process.argv.includes("--dry-run");
 const RECOVER_ARCHIVED = process.argv.includes("--recover-archived");
 const REPAIR_TODAY = process.argv.includes("--repair-today");
 const REPAIR_SINCE = cleanText(process.env.CHINA_HOT_REPAIR_SINCE || "2026-08-24T00:00:00Z", 100);
-const EXPANSION_VERSION = "grounded-image-v6";
+const EXPANSION_VERSION = "grounded-image-v7-adaptive";
 const LOOKBACK_HOURS = intEnv("LI_TEACHER_LOOKBACK_HOURS", 6, 3, 24);
 const MAX_FETCH = intEnv("LI_TEACHER_MAX_FETCH", 100, 10, 200);
 const MAX_PUBLISH = intEnv("LI_TEACHER_MAX_PUBLISH", RECOVER_ARCHIVED ? 150 : 20, 1, 150);
@@ -97,6 +98,15 @@ export function deriveTitle(value) {
   return cleanText(text.split(/\n|(?<=[。！？!?])\s*/u).find(Boolean) || text, 220) || "中国新闻动态";
 }
 
+export function deriveDraftTitle(value) {
+  const text = deriveTitle(value).replace(/^\d{1,2}月\d{1,2}日(?:晚|早|上午|下午)?[，,：:\s]*/u, "");
+  const sentence = cleanText(text.split(/[。！？!?\n]/u).find(Boolean) || text, 100);
+  const clauses = sentence.split(/[，,；;]/u).map((item) => cleanText(item, 80)).filter(Boolean);
+  let title = clauses[0] || sentence || "中国新闻材料待编辑";
+  if (title.length < 16 && clauses[1] && `${title}：${clauses[1]}`.length <= 42) title = `${title}：${clauses[1]}`;
+  return title.length > 42 ? `${title.slice(0, 41)}…` : title;
+}
+
 function isOriginalPost(tweet) {
   return !(Array.isArray(tweet?.referenced_tweets) ? tweet.referenced_tweets : [])
     .some((item) => ["replied_to", "retweeted"].includes(String(item?.type || "")));
@@ -113,9 +123,12 @@ export function qualifyTweet(tweet) {
   return { accepted: true, reason: "china-news", text, title };
 }
 
-export function targetLength(rawText) {
+export function targetLength(rawText, mediaCount = 0) {
   const length = cleanText(rawText, 20_000).length;
-  if (length < 300) return { min: 300, max: 650, band: "short" };
+  const grounded = Number(mediaCount) > 0;
+  if (length < 100) return { min: 80, max: grounded ? 260 : 200, band: "brief" };
+  if (length < 180) return { min: 120, max: grounded ? 360 : 280, band: "short" };
+  if (length < 300) return { min: 160, max: grounded ? 500 : 420, band: "short" };
   return { min: Math.min(length, 1200), max: Math.min(1500, Math.max(650, length + 250)), band: "source-led" };
 }
 
@@ -155,8 +168,29 @@ async function existingCandidate(tweetId) {
 }
 
 async function existingArticle(tweetId) {
-  const rows = await supabase("articles", { query: { select: "id,status,created_at", external_id: `eq.${externalId(tweetId)}`, limit: "1" } });
+  const rows = await supabase("articles", { query: { select: "id,title,summary,content,status,created_at,metadata", external_id: `eq.${externalId(tweetId)}`, limit: "1" } });
   return Array.isArray(rows) ? rows[0] || null : null;
+}
+
+const FILTER_REASON_LABELS = {
+  "not-original": "不是可独立采集的原创内容",
+  retweet: "属于转发内容",
+  "low-information": "原始材料信息量不足",
+  "outside-china-hot": "不属于中国热门头条栏目",
+};
+
+async function markFilteredCandidate(candidate, tweet, qualified) {
+  const label = FILTER_REASON_LABELS[qualified.reason] || qualified.reason || "不符合采集规则";
+  const reason = `自动分类过滤：${label}；未创建或发布文章`;
+  await patchCandidate(candidate?.id || tweet.candidateId, {
+    decision: "rejected", decision_reason: reason, processed_at: new Date().toISOString(),
+    ai_payload: {
+      ...(candidate?.ai_payload || {}), status: "filtered", processing_version: PROCESSING_VERSION,
+      proposed_title: deriveDraftTitle(tweet.text), automatic_publish_blocked: true,
+      filter_reason: qualified.reason || "unknown",
+    },
+  });
+  return reason;
 }
 
 export function shouldRetryCandidate(candidate, qualified, now = Date.now()) {
@@ -167,6 +201,7 @@ export function shouldRetryCandidate(candidate, qualified, now = Date.now()) {
   const generatedFailure = reason.startsWith("自动扩写或发布失败:");
   const classifierFailure = reason.startsWith("自动发布复核未通过:outside-china-hot");
   if (!generatedFailure && !classifierFailure) return false;
+  if (candidate.ai_payload?.processing_version !== PROCESSING_VERSION) return true;
   const attempts = Number(candidate.ai_payload?.automatic_retry_attempts || 0);
   if (!Number.isFinite(attempts) || attempts >= 3) return false;
   const retryAt = Date.parse(candidate.ai_payload?.automatic_retry_at || "");
@@ -213,6 +248,16 @@ async function archivedCandidates() {
   return Array.isArray(rows) ? rows : [];
 }
 
+async function reprocessableCandidates() {
+  const since = new Date(Date.now() - 30 * 86400_000).toISOString();
+  const rows = await supabase("news_candidates", { query: {
+    select: "id,external_id,raw_text,raw_payload,decision,decision_reason,article_id,ai_payload,collected_at,updated_at",
+    pipeline: "like.china-hot-li-teacher-v*", decision: "in.(failed,review_required)",
+    updated_at: `gte.${since}`, order: "updated_at.asc", limit: String(MAX_FETCH),
+  } });
+  return Array.isArray(rows) ? rows : [];
+}
+
 function tweetFromCandidate(row) {
   const payload = row?.raw_payload && typeof row.raw_payload === "object" ? row.raw_payload : {};
   return {
@@ -226,13 +271,13 @@ function tweetFromCandidate(row) {
 export function buildCandidate(tweet, qualified, collectedAt = new Date().toISOString()) {
   const tweetId = cleanText(tweet.id, 100);
   const sourceUrl = `https://x.com/${SOURCE_HANDLE}/status/${tweetId}`;
-  const target = targetLength(qualified.text);
+  const target = targetLength(qualified.text, Array.isArray(tweet.media) ? tweet.media.length : 0);
   return {
     external_id: externalId(tweetId), pipeline: PIPELINE, source_url: sourceUrl,
     source_account: `@${SOURCE_HANDLE}`, source_name: SOURCE_NAME, source_level: "priority_social",
     raw_text: qualified.text,
     raw_payload: { tweet_id: tweetId, source_created_at: tweet.created_at || collectedAt, lang: tweet.lang || "zh", public_metrics: tweet.public_metrics || {}, media: tweet.media || [] },
-    ai_payload: { status: "queued", proposed_title: qualified.title, target_min_chars: target.min, target_max_chars: target.max },
+    ai_payload: { status: "queued", processing_version: PROCESSING_VERSION, proposed_title: qualified.title, target_min_chars: target.min, target_max_chars: target.max },
     proposed_section: "中国热门头条", confidence: 80, decision: "processing", decision_reason: "中国新闻候选，自动扩写发布中",
     collected_at: collectedAt, created_at: collectedAt, updated_at: collectedAt,
   };
@@ -297,11 +342,11 @@ function visualContext(tweet) {
 }
 
 async function generateArticle(qualified, tweet, attempt = 0, previous = null) {
-  const target = targetLength(qualified.text);
+  const target = targetLength(qualified.text, visualInputs(tweet).length);
   const schema = {
     type: "object", additionalProperties: false, required: ["title", "summary", "content", "seo_keywords", "appears_old_news", "old_news_reason"],
     properties: {
-      title: { type: "string", minLength: 8, maxLength: 100 }, summary: { type: "string", minLength: 50, maxLength: 240 },
+      title: { type: "string", minLength: 8, maxLength: 48 }, summary: { type: "string", minLength: 40, maxLength: 180 },
       content: { type: "string", minLength: target.min, maxLength: target.max }, seo_keywords: { type: "string", minLength: 5, maxLength: 180 },
       appears_old_news: { type: "boolean" }, old_news_reason: { type: "string" },
     },
@@ -312,7 +357,7 @@ async function generateArticle(qualified, tweet, attempt = 0, previous = null) {
       model: OPENAI_MODEL, store: false, max_output_tokens: target.max > 900 ? 2600 : 1600,
       instructions: [
         "你是唐人日报中国热门头条编辑。只依据输入原文和随附原帖图片整理中文新闻，严禁补造人物、数字、地点、引语、原因或结果。",
-        `正文必须为${target.min}至${target.max}个中文字符，采用自然的新闻稿结构。字数必须来自有效信息，禁止用提醒、呼吁、空泛评价或重复句凑字。`,
+        `根据原文和图片的事实密度，将正文控制在${target.min}至${target.max}个中文字符，采用自然的新闻稿结构。短消息可以写成短讯，不得为了凑字重复原文。`,
         "优先从图片中读取可辨认的文字、通知、评论、时间、地点、物件、服装、动作、场景、构图和色彩。图片信息必须用“截图文字显示”“画面可见”等方式明确归因；看不清就不写。",
         "只允许补充确定的基础行政地理关系，例如城市所属省份、区县与城市的关系，以及画面直接显示的场所类型。不要补充企业性质、人物履历、统计数字、历史细节、行业评价或其他模型记忆中的背景。",
         "不得根据长相推断人物性格、职业、身份、族群、健康状况、犯罪倾向或动机；只描述画面中直接可见的表情、姿态、衣着和行为。",
@@ -320,6 +365,7 @@ async function generateArticle(qualified, tweet, attempt = 0, previous = null) {
         "随附的视频素材仅为静态缩略图。除非原文明确写出，否则不得写爆炸声、对话、连续动作、持续时间、多次发生或拍摄前后的过程。",
         "场景描述使用可核对的名词、颜色、数量、位置和可见动作，不写“环境整洁”“设施完善”“氛围紧张”等评价性形容。",
         "标题必须保留原文中的中国地点、机构或政治人物等主体，使文章明确属于中国新闻。",
+        "标题写成18至36个中文字符的新闻标题，不得复制整段原文，不得以日期开头。摘要、标题和正文不得三段重复。",
         "对未核实说法准确注明来自发帖者、截图、目击者或公开通报；不要反复写“尚待核实”。",
         "必须检查是否为旧闻。只有原文或图片明确显示过去日期、周年、回顾、旧视频、旧照片或旧事件重新传播时，appears_old_news才为true，并在old_news_reason写明证据；不得凭模型记忆判断。",
         "正文和标题不得出现媒体名称、社交平台名称、账号名称、抓取方式或原始链接，不写‘李老师’或‘X平台’。",
@@ -339,10 +385,17 @@ async function generateArticle(qualified, tweet, attempt = 0, previous = null) {
   const article = JSON.parse(responseText(response));
   article.title = cleanText(article.title, 220); article.summary = cleanText(article.summary, 600); article.content = cleanText(article.content, 10_000); article.old_news_reason = cleanText(article.old_news_reason, 800);
   const subjectClear = isChinaHotHeadline(article.title, article.content);
-  if ((article.content.length < target.min || article.content.length > target.max || containsBoilerplate(article.content) || !subjectClear) && attempt < 5) return generateArticle(qualified, tweet, attempt + 1, article);
+  const normalizedTitle = article.title.replace(/[^a-z0-9\u3400-\u9fff]+/giu, "").toLowerCase();
+  const normalizedSummary = article.summary.replace(/[^a-z0-9\u3400-\u9fff]+/giu, "").toLowerCase();
+  const normalizedContent = article.content.replace(/[^a-z0-9\u3400-\u9fff]+/giu, "").toLowerCase();
+  const repeatedFields = normalizedTitle === normalizedContent || normalizedSummary === normalizedContent || normalizedTitle === normalizedSummary;
+  const invalid = article.content.length < target.min || article.content.length > target.max || article.title.length > 48 || containsBoilerplate(article.content) || !subjectClear || repeatedFields;
+  if (invalid && attempt < 2) return generateArticle(qualified, tweet, attempt + 1, article);
   if (article.content.length < target.min || article.content.length > target.max) throw new Error(`生成正文长度${article.content.length}，未达到${target.min}-${target.max}字`);
+  if (article.title.length > 48) throw new Error("生成标题超过48字，禁止把整段原文当作标题");
   if (containsBoilerplate(article.content)) throw new Error("生成正文含提醒、呼吁或宣传式套话，禁止自动发布");
   if (!subjectClear) throw new Error("生成稿未明确中国新闻主体");
+  if (repeatedFields) throw new Error("标题、摘要和正文存在整段重复");
   return { ...article, seo_keywords: cleanText(article.seo_keywords, 300), target };
 }
 
@@ -383,10 +436,13 @@ export function buildReviewDraft(tweet, reason, createdAt = new Date().toISOStri
   const attachments = Array.isArray(tweet.media) ? tweet.media : [];
   const coverImage = attachments.find((item) => item.type === "photo" && item.url)?.url
     || attachments.find((item) => item.preview_image_url)?.preview_image_url || "";
+  const draftTitle = deriveDraftTitle(rawText);
+  const draftSummary = `自动加工未完成：${draftTitle}。请核对原始材料并重新加工，未经编辑不得发布。`;
+  const draftContent = `${rawText}\n\n【编辑提示】此稿未通过自动加工质量检查。发布前必须重写标题和正文，并核对原始材料。`;
   return {
-    title: deriveTitle(rawText), slug: `li-teacher-x-${tweetId}`, summary: cleanText(rawText, 300),
-    content: rawText, category_name: CHINA_HOT_CATEGORY, cover_image: coverImage,
-    image_alt: coverImage ? deriveTitle(rawText) : "", author: "唐人日报编辑部",
+    title: draftTitle, slug: `li-teacher-x-${tweetId}`, summary: draftSummary,
+    content: draftContent, category_name: CHINA_HOT_CATEGORY, cover_image: coverImage,
+    image_alt: coverImage ? draftTitle : "", author: "唐人日报编辑部",
     status: "draft", visibility: "private", published_at: null, created_at: createdAt,
     source_url: sourceUrl, source_name: SOURCE_NAME, source_account: `@${SOURCE_HANDLE}`,
     source_level: "priority_social", source_platform: "x", source_post_id: tweetId,
@@ -397,7 +453,8 @@ export function buildReviewDraft(tweet, reason, createdAt = new Date().toISOStri
     metadata: {
       collector: PIPELINE, automatic_publish: false, manual_review_required: true,
       review_status: "manual_review", review_reason: cleanText(reason, 800), editable: true,
-      manual_publish_allowed: true, category_display_name: "中国热门头条",
+      manual_publish_allowed: true, publication_blocked_until_edited: true, processing_version: PROCESSING_VERSION,
+      category_display_name: "中国热门头条",
       source_text_original: rawText, source_media: attachments,
     },
   };
@@ -419,6 +476,11 @@ async function publishArticle(body, prior = null) {
 
 async function keepEditableDraft(tweet, reason) {
   const prior = await existingArticle(tweet.id);
+  const rawText = textWithoutLinks(tweet.text);
+  const legacyRawDraft = prior && prior.status !== "published"
+    && cleanText(prior.content, 20_000) === rawText
+    && cleanText(prior.title, 220) === deriveTitle(rawText);
+  if (legacyRawDraft) return publishArticle(buildReviewDraft(tweet, reason), prior);
   if (prior) return prior;
   return publishArticle(buildReviewDraft(tweet, reason));
 }
@@ -428,7 +490,11 @@ async function requireManualReview(candidate, tweet, reason, retry = null) {
   await patchCandidate(candidate?.id || tweet.candidateId, {
     decision: "review_required", decision_reason: reason, article_id: draft?.id || null,
     processed_at: new Date().toISOString(),
-    ai_payload: { status: "review_required", editable: true, manual_publish_allowed: true, reason, ...(retry || {}) },
+    ai_payload: {
+      ...(candidate?.ai_payload || {}), status: "review_required", processing_version: PROCESSING_VERSION,
+      proposed_title: draft?.title || deriveDraftTitle(tweet.text), summary: draft?.summary || "",
+      editable: true, manual_publish_allowed: true, reason, ...(retry || {}),
+    },
   });
   return draft;
 }
@@ -453,10 +519,9 @@ async function recoverArchivedBatch() {
         }
         const qualified = qualifyTweet(tweet);
         if (!qualified.accepted) {
-          const reason = `自动发布复核未通过：${qualified.reason}；保留为可编辑草稿，由编辑决定是否发布`;
-          const draft = await requireManualReview(row, tweet, reason);
-          counters.review_required += 1;
-          results.push({ tweetId: tweet.id, status: "review-required", articleId: draft?.id || null, reason: qualified.reason });
+          await markFilteredCandidate(row, tweet, qualified);
+          counters.filtered = Number(counters.filtered || 0) + 1;
+          results.push({ tweetId: tweet.id, status: "filtered", reason: qualified.reason });
           continue;
         }
         counters.qualified += 1;
@@ -467,7 +532,7 @@ async function recoverArchivedBatch() {
         const generated = await generateArticle(qualified, tweet);
         if (generated.appears_old_news) throw new Error(`旧闻检查未通过：${generated.old_news_reason || "原帖明确在回顾旧事件"}`);
         const saved = await publishArticle(buildPublishedArticle(tweet, qualified, generated));
-        await patchCandidate(row.id, { decision: "published", decision_reason: "中国新闻自动扩写并发布", article_id: saved?.id || null, processed_at: new Date().toISOString(), ai_payload: { status: "published", title: generated.title, summary: generated.summary, content: generated.content, seo_keywords: generated.seo_keywords, target: generated.target } });
+        await patchCandidate(row.id, { decision: "published", decision_reason: "中国新闻自动扩写并发布", article_id: saved?.id || null, processed_at: new Date().toISOString(), ai_payload: { status: "published", processing_version: PROCESSING_VERSION, title: generated.title, summary: generated.summary, content: generated.content, seo_keywords: generated.seo_keywords, target: generated.target } });
         counters.published += 1;
         results.push({ tweetId: tweet.id, status: DRY_RUN ? "dry-run" : "published", articleId: saved?.id || null, title: generated.title });
       } catch (error) {
@@ -620,19 +685,28 @@ export async function run() {
     report.chrt = await syncPublishedArticlesToChrt();
     return report;
   }
-  const tweets = await collectXPosts();
+  const collectedTweets = await collectXPosts();
+  const retryRows = await reprocessableCandidates();
+  const tweetsById = new Map(collectedTweets.map((tweet) => [String(tweet.id), tweet]));
+  for (const row of retryRows) {
+    const tweet = tweetFromCandidate(row);
+    const qualified = qualifyTweet(tweet);
+    if (tweet.id && shouldRetryCandidate(row, qualified) && !tweetsById.has(String(tweet.id))) tweetsById.set(String(tweet.id), tweet);
+  }
+  const tweets = [...tweetsById.values()];
   const recentArticles = await recentChinaArticles();
   const results = [];
-  const counters = { fetched: tweets.length, qualified: 0, published: 0, duplicate: 0, filtered: 0, failed: 0 };
+  const counters = { fetched: collectedTweets.length, queuedRetries: Math.max(0, tweets.length - collectedTweets.length), qualified: 0, published: 0, duplicate: 0, filtered: 0, review_required: 0, failed: 0 };
+  const filteredReasons = {};
   for (const tweet of tweets.sort((a, b) => Date.parse(b.created_at || 0) - Date.parse(a.created_at || 0))) {
     const qualified = qualifyTweet(tweet);
     if (!qualified.accepted) {
       counters.filtered += 1;
       const reviewInput = { accepted: true, text: textWithoutLinks(tweet.text), title: deriveTitle(tweet.text) };
       const candidate = await existingCandidate(tweet.id) || await createCandidate(tweet, reviewInput);
-      const reason = `自动发布复核未通过：${qualified.reason}；保留为可编辑草稿，由编辑决定是否发布`;
-      const draft = await requireManualReview(candidate, tweet, reason);
-      results.push({ tweetId: tweet.id, status: "review-required", reason: qualified.reason, articleId: draft?.id || null });
+      await markFilteredCandidate(candidate, tweet, qualified);
+      filteredReasons[qualified.reason] = Number(filteredReasons[qualified.reason] || 0) + 1;
+      results.push({ tweetId: tweet.id, status: "filtered", reason: qualified.reason });
       continue;
     }
     counters.qualified += 1;
@@ -647,21 +721,21 @@ export async function run() {
       const generated = await generateArticle(qualified, tweet);
       if (generated.appears_old_news) {
         counters.filtered += 1;
-        await patchCandidate(candidate?.id, { decision: "rejected", decision_reason: `旧闻检查未通过：${generated.old_news_reason || "原帖明确在回顾旧事件"}`, processed_at: new Date().toISOString(), ai_payload: { ...generated, status: "filtered_old_news", automatic_publish_blocked: true } });
+        await patchCandidate(candidate?.id, { decision: "rejected", decision_reason: `旧闻检查未通过：${generated.old_news_reason || "原帖明确在回顾旧事件"}`, processed_at: new Date().toISOString(), ai_payload: { ...generated, status: "filtered_old_news", processing_version: PROCESSING_VERSION, automatic_publish_blocked: true } });
         results.push({ tweetId: tweet.id, status: "old-news", reason: generated.old_news_reason || "原帖明确在回顾旧事件" });
         continue;
       }
       const similar = duplicateArticle(generated, recentArticles);
       if (similar) {
         counters.duplicate += 1;
-        await patchCandidate(candidate?.id, { decision: "duplicate", decision_reason: `与近30天已发布中国热门头条重复：${similar.id}`, article_id: similar.id, processed_at: new Date().toISOString(), ai_payload: { ...generated, status: "duplicate", duplicate_article_id: similar.id } });
+        await patchCandidate(candidate?.id, { decision: "duplicate", decision_reason: `与近30天已发布中国热门头条重复：${similar.id}`, article_id: similar.id, processed_at: new Date().toISOString(), ai_payload: { ...generated, status: "duplicate", processing_version: PROCESSING_VERSION, duplicate_article_id: similar.id } });
         results.push({ tweetId: tweet.id, status: "duplicate-content", articleId: similar.id });
         continue;
       }
       const articleBody = buildPublishedArticle(tweet, qualified, generated);
       const saved = await publishArticle(articleBody, priorArticle);
       recentArticles.unshift({ id: saved?.id, title: generated.title, summary: generated.summary, content: generated.content });
-      await patchCandidate(candidate?.id, { decision: "published", decision_reason: "中国新闻自动扩写并发布", article_id: saved?.id || null, processed_at: new Date().toISOString(), ai_payload: { status: "published", title: generated.title, summary: generated.summary, content: generated.content, seo_keywords: generated.seo_keywords, target: generated.target } });
+      await patchCandidate(candidate?.id, { decision: "published", decision_reason: "中国新闻自动扩写并发布", article_id: saved?.id || null, processed_at: new Date().toISOString(), ai_payload: { status: "published", processing_version: PROCESSING_VERSION, title: generated.title, summary: generated.summary, content: generated.content, seo_keywords: generated.seo_keywords, target: generated.target } });
       counters.published += 1; results.push({ tweetId: tweet.id, status: DRY_RUN ? "dry-run" : "published", articleId: saved?.id || null, title: generated.title });
     } catch (error) {
       const reason = `自动扩写或发布失败：${cleanText(error?.message || error, 600)}；保留为可编辑草稿，由编辑决定是否发布`;
@@ -672,11 +746,12 @@ export async function run() {
         automatic_retry_at: new Date(Date.now() + retryDelay).toISOString(),
       } : { automatic_retry_attempts: retryAttempts, automatic_retry_exhausted: true };
       const draft = await requireManualReview(candidate, tweet, reason, retry);
+      counters.review_required += 1;
       results.push({ tweetId: tweet.id, status: "review-required", articleId: draft?.id || null, error: cleanText(error?.message || error, 800) });
     }
   }
   const chrt = await syncPublishedArticlesToChrt();
-  const report = { pipeline: PIPELINE, mode: DRY_RUN ? "dry-run" : "auto-publish", checkedAt: new Date().toISOString(), lookbackHours: LOOKBACK_HOURS, ...counters, chrt, results };
+  const report = { pipeline: PIPELINE, processingVersion: PROCESSING_VERSION, mode: DRY_RUN ? "dry-run" : "auto-publish", checkedAt: new Date().toISOString(), lookbackHours: LOOKBACK_HOURS, ...counters, filteredReasons, chrt, results };
   console.log(JSON.stringify(report, null, 2));
   if (counters.failed) throw new Error("本轮仍有中国热门头条未能发布或保留为可编辑草稿");
   return report;

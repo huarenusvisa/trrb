@@ -490,6 +490,8 @@ th { background: #f1f5f9; }
 .china-hot-pool-item { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:20px; padding:18px; background:#fff; border:1px solid var(--border); border-radius:14px; }
 .china-hot-pool-item h4 { margin:8px 0; font-size:18px; }
 .china-hot-pool-item p { margin:0; color:var(--muted); }
+.china-hot-pool-item .pool-reason { margin-top:8px; padding:8px 10px; border-radius:8px; background:#fff7ed; color:#9a3412; font-size:13px; line-height:1.5; }
+.china-hot-pool-item .source-link { display:inline-block; margin-top:8px; color:#1d4ed8; font-size:13px; font-weight:700; }
 .china-hot-pool-item time { margin-left:10px; color:var(--muted); font-size:12px; }
 .china-hot-pool-actions { display:flex; flex-wrap:wrap; align-content:center; gap:8px; }
 .china-hot-pool-actions a { display:inline-flex; align-items:center; padding:10px 14px; border-radius:8px; background:#eef2f7; color:#16304d; text-decoration:none; font-weight:800; }

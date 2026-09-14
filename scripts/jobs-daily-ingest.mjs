@@ -3,7 +3,13 @@ import { pathToFileURL } from "node:url";
 
 const SUPABASE_URL = String(process.env.SUPABASE_URL || "").replace(/\/$/, "");
 const SUPABASE_SERVICE_ROLE_KEY = String(process.env.SUPABASE_SERVICE_ROLE_KEY || "");
-const TARGET_CANDIDATES = Math.max(50, Math.min(500, Number(process.env.JOBS_TARGET_CANDIDATES || 200)));
+const TARGET_CANDIDATES = Math.max(50, Math.min(1_000, Number(process.env.JOBS_TARGET_CANDIDATES || 500)));
+const ATS_SOURCE_LIMIT = Math.max(100, Math.min(1_000, Number(process.env.JOBS_ATS_SOURCE_LIMIT || 625)));
+const STORE_BATCH_SIZE = Math.max(50, Math.min(500, Number(process.env.JOBS_STORE_BATCH_SIZE || 150)));
+const STORE_CONCURRENCY = Math.max(2, Math.min(16, Number(process.env.JOBS_STORE_CONCURRENCY || 8)));
+const REST_RETRY_ATTEMPTS = Math.max(1, Math.min(5, Number(process.env.JOBS_REST_RETRY_ATTEMPTS || 3)));
+const MAX_WRITE_ERROR_RATE = Math.max(0.1, Math.min(0.8, Number(process.env.JOBS_MAX_WRITE_ERROR_RATE || 0.35)));
+const MIN_WRITE_ERROR_THRESHOLD = Math.max(10, Math.min(500, Number(process.env.JOBS_MIN_WRITE_ERROR_THRESHOLD || 75)));
 const SOURCE_KEY = "500work";
 const SOURCE_ORIGIN = "https://500work.com";
 const ATS_SOURCES = [
@@ -211,25 +217,49 @@ async function fetchText(url, attempts = 3) {
 }
 
 async function fetchJson(url) {
-  const response = await fetch(url, { headers: { "user-agent": USER_AGENT, accept: "application/json" }, signal: AbortSignal.timeout(25000) });
-  if (!response.ok) throw new Error(`${url} HTTP ${response.status}`);
-  return response.json();
+  let lastError;
+  for (let attempt = 1; attempt <= 3; attempt += 1) {
+    try {
+      const response = await fetch(url, { headers: { "user-agent": USER_AGENT, accept: "application/json" }, signal: AbortSignal.timeout(25000) });
+      if (!response.ok) throw new Error(`${url} HTTP ${response.status}`);
+      return response.json();
+    } catch (error) {
+      lastError = error;
+      if (attempt < 3) await new Promise((resolve) => setTimeout(resolve, 800 * attempt));
+    }
+  }
+  throw lastError;
 }
 
 async function rest(table, query = "", { method = "GET", body, prefer = "return=representation" } = {}) {
-  const response = await fetch(`${SUPABASE_URL}/rest/v1/${table}${query ? `?${query}` : ""}`, {
-    method,
-    headers: {
-      apikey: SUPABASE_SERVICE_ROLE_KEY,
-      authorization: `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
-      "content-type": "application/json",
-      prefer,
-    },
-    body: body === undefined ? undefined : JSON.stringify(body),
-  });
-  const text = await response.text();
-  if (!response.ok) throw new Error(`${table} ${method} ${response.status}: ${text.slice(0, 500)}`);
-  return text ? JSON.parse(text) : null;
+  let lastError;
+  for (let attempt = 1; attempt <= REST_RETRY_ATTEMPTS; attempt += 1) {
+    try {
+      const response = await fetch(`${SUPABASE_URL}/rest/v1/${table}${query ? `?${query}` : ""}`, {
+        method,
+        headers: {
+          apikey: SUPABASE_SERVICE_ROLE_KEY,
+          authorization: `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
+          "content-type": "application/json",
+          prefer,
+        },
+        body: body === undefined ? undefined : JSON.stringify(body),
+      });
+      const text = await response.text();
+      if (!response.ok) {
+        const error = new Error(`${table} ${method} ${response.status}: ${text.slice(0, 500)}`);
+        error.status = response.status;
+        throw error;
+      }
+      return text ? JSON.parse(text) : null;
+    } catch (error) {
+      lastError = error;
+      const transient = !error.status || error.status === 408 || error.status === 429 || error.status >= 500;
+      if (!transient || attempt === REST_RETRY_ATTEMPTS) break;
+      await new Promise((resolve) => setTimeout(resolve, 500 * (2 ** (attempt - 1)) + Math.floor(Math.random() * 250)));
+    }
+  }
+  throw lastError;
 }
 
 function sha256(value) {
@@ -327,16 +357,43 @@ function safeHttpUrl(value) {
 
 async function fetchEnglishCandidates() {
   const groups = await mapLimit(ATS_SOURCES, 2, async (source) => {
-    const endpoint = source.type === "greenhouse"
-      ? `https://boards-api.greenhouse.io/v1/boards/${source.board}/jobs?content=true`
-      : `https://api.lever.co/v0/postings/${source.board}?mode=json`;
-    const data = await fetchJson(endpoint);
-    const jobs = source.type === "greenhouse" ? data.jobs : data;
-    return (Array.isArray(jobs) ? jobs : [])
-      .map((job) => normalizeAtsCandidate(source, job))
-      .slice(0, 250);
+    try {
+      const endpoint = source.type === "greenhouse"
+        ? `https://boards-api.greenhouse.io/v1/boards/${source.board}/jobs?content=true`
+        : `https://api.lever.co/v0/postings/${source.board}?mode=json`;
+      const data = await fetchJson(endpoint);
+      const jobs = source.type === "greenhouse" ? data.jobs : data;
+      const discovered = Array.isArray(jobs) ? jobs : [];
+      return {
+        source_key: source.key,
+        discovered: discovered.length,
+        candidates: discovered.slice(0, ATS_SOURCE_LIMIT).map((job) => normalizeAtsCandidate(source, job)),
+        error: null,
+      };
+    } catch (error) {
+      return { source_key: source.key, discovered: 0, candidates: [], error: String(error?.message || error) };
+    }
   });
-  return groups.flatMap((group) => Array.isArray(group) ? group : []);
+  const reports = groups.map((group, index) => group?.source_key ? group : {
+    source_key: ATS_SOURCES[index].key,
+    discovered: 0,
+    candidates: [],
+    error: String(group?.error || "unknown_source_error"),
+  });
+  return {
+    candidates: reports.flatMap((group) => group.candidates),
+    sources: reports.map(({ candidates, ...report }) => ({ ...report, fetched: candidates.length })),
+  };
+}
+
+function emptySourceSummary() {
+  return { discovered: 0, fetched: 0, published: 0, repaired: 0, existing: 0, rejected: 0, write_errors: 0, error: null };
+}
+
+function addStatus(summary, sourceKey, status) {
+  const source = summary.sources[sourceKey] ||= emptySourceSummary();
+  if (Object.hasOwn(source, status)) source[status] += 1;
+  if (Object.hasOwn(summary, status)) summary[status] += 1;
 }
 
 async function storeCandidate(candidate) {
@@ -429,39 +486,71 @@ async function storeCandidate(candidate) {
 
 async function main() {
   if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) throw new Error("Missing SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY");
-  const summary = { started_at: NOW_ISO, target: TARGET_CANDIDATES, discovered: 0, fetched: 0, published: 0, repaired: 0, existing: 0, rejected: 0, fetch_errors: 0, write_errors: 0 };
+  const summary = {
+    started_at: NOW_ISO,
+    target: TARGET_CANDIDATES,
+    ats_source_limit: ATS_SOURCE_LIMIT,
+    batch_size: STORE_BATCH_SIZE,
+    concurrency: STORE_CONCURRENCY,
+    discovered: 0,
+    fetched: 0,
+    published: 0,
+    repaired: 0,
+    existing: 0,
+    rejected: 0,
+    fetch_errors: 0,
+    source_errors: 0,
+    write_errors: 0,
+    sources: {},
+  };
   try {
     const urls = await discoverUrls();
     summary.discovered = urls.length;
+    summary.sources[SOURCE_KEY] = { ...emptySourceSummary(), discovered: urls.length };
     if (urls.length < 50) throw new Error(`Source discovery returned only ${urls.length} candidate URLs`);
 
     const fetched = await mapLimit(urls, 3, async (url) => normalizeCandidate(url, await fetchText(url)));
-    const englishCandidates = await fetchEnglishCandidates();
-    const candidates = [...fetched.filter((item) => !item?.error), ...englishCandidates];
+    const chineseCandidates = fetched.filter((item) => !item?.error);
+    const english = await fetchEnglishCandidates();
+    const candidates = [...chineseCandidates, ...english.candidates];
+    summary.sources[SOURCE_KEY].fetched = chineseCandidates.length;
+    for (const report of english.sources) {
+      summary.sources[report.source_key] = { ...emptySourceSummary(), ...report };
+      summary.discovered += report.discovered;
+      if (report.error) summary.source_errors += 1;
+    }
     summary.fetched = candidates.length;
-    summary.fetch_errors = fetched.length - candidates.length;
+    summary.fetch_errors = fetched.length - chineseCandidates.length;
     for (const failed of fetched.filter((item) => item?.error).slice(0, 10)) console.error("FETCH_ERROR", failed.url, failed.error);
+    for (const report of english.sources.filter((item) => item.error)) console.error("SOURCE_ERROR", report.source_key, report.error);
 
-    const stored = await mapLimit(candidates, 4, async (candidate) => {
-      try { return await storeCandidate(candidate); }
-      catch (error) { console.error("WRITE_ERROR", candidate.url, error?.message || error); return "write_error"; }
-    });
-    for (const status of stored) {
-      if (status === "published") summary.published += 1;
-      else if (status === "repaired") summary.repaired += 1;
-      else if (status === "existing") summary.existing += 1;
-      else if (status === "rejected") summary.rejected += 1;
-      else summary.write_errors += 1;
+    for (let offset = 0; offset < candidates.length; offset += STORE_BATCH_SIZE) {
+      const batch = candidates.slice(offset, offset + STORE_BATCH_SIZE);
+      const stored = await mapLimit(batch, STORE_CONCURRENCY, async (candidate) => {
+        try { return { sourceKey: candidate.sourceKey || SOURCE_KEY, status: await storeCandidate(candidate) }; }
+        catch (error) {
+          console.error("WRITE_ERROR", candidate.sourceKey || SOURCE_KEY, candidate.url, error?.message || error);
+          return { sourceKey: candidate.sourceKey || SOURCE_KEY, status: "write_errors" };
+        }
+      });
+      for (const result of stored) addStatus(summary, result.sourceKey, result.status);
+      console.log(`JOBS_INGEST_BATCH ${JSON.stringify({ offset, size: batch.length, published: summary.published, existing: summary.existing, rejected: summary.rejected, write_errors: summary.write_errors })}`);
     }
 
+    const allowedWriteErrors = Math.max(MIN_WRITE_ERROR_THRESHOLD, Math.ceil(summary.fetched * MAX_WRITE_ERROR_RATE));
+    summary.allowed_write_errors = allowedWriteErrors;
+    summary.completed_at = new Date().toISOString();
     await rest("job_source_registry", `source_key=eq.${SOURCE_KEY}`, { method: "PATCH", body: {
       last_checked_at: NOW_ISO,
       last_success_at: NOW_ISO,
-      last_error: summary.fetch_errors || summary.write_errors ? `partial: fetch_errors=${summary.fetch_errors}, write_errors=${summary.write_errors}` : null,
+      last_error: summary.fetch_errors || summary.source_errors || summary.write_errors
+        ? `partial: fetch_errors=${summary.fetch_errors}, source_errors=${summary.source_errors}, write_errors=${summary.write_errors}`
+        : null,
       updated_at: NOW_ISO,
     } });
     console.log(`JOBS_INGEST_SUMMARY ${JSON.stringify(summary)}`);
-    if (summary.fetched < 50 || summary.write_errors > Math.max(10, summary.fetched * 0.1)) process.exitCode = 1;
+    const handled = summary.published + summary.repaired + summary.existing + summary.rejected;
+    if (summary.fetched < 50 || handled === 0 || summary.write_errors > allowedWriteErrors) process.exitCode = 1;
   } catch (error) {
     await rest("job_source_registry", `source_key=eq.${SOURCE_KEY}`, { method: "PATCH", body: { last_checked_at: NOW_ISO, last_error: String(error?.message || error).slice(0, 500), updated_at: NOW_ISO } }).catch(() => {});
     console.error(`JOBS_INGEST_FATAL ${error?.stack || error}`);

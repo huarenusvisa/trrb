@@ -112,12 +112,23 @@ function isOriginalPost(tweet) {
     .some((item) => ["replied_to", "retweeted"].includes(String(item?.type || "")));
 }
 
+// This fallback is scoped to the existing China-news source feed. Generic
+// words such as school or employee must not classify unrelated feeds as China.
+export function isSourceSocialReport(title, content = "") {
+  const text = cleanText(`${title}\n${content}`, 20_000);
+  const foreign = /美国|美國|纽约|紐約|加州|洛杉矶|特朗普|川普|白宫|白宮|日本|东京|東京|韩国|韓國|首尔|首爾|朝鲜|朝鮮|英国|英國|伦敦|倫敦|德国|德國|法国|法國|加拿大|澳大利亚|澳洲|新西兰|新西蘭|俄罗斯|俄羅斯|乌克兰|烏克蘭|印度|越南|泰国|泰國|缅甸|緬甸|柬埔寨|新加坡|马来西亚|馬來西亞|以色列|伊朗|台湾|臺灣|台灣|香港|澳门|澳門|\b(?:ICE|FBI|DHS|OpenAI|Anthropic)\b/i;
+  if (foreign.test(text)) return false;
+  const subject = /学生|學生|学校|學校|高中|中学|中學|大学|大學|高校|校园|校園|老师|教師|教师|校方|教学楼|教學樓|宿舍|工作单位|工作單位|员工|員工|工人|工厂|工廠|打工|铁饭碗|鐵飯碗|业主|業主|居民|村民|小区|小區|医院|醫院|患者/;
+  const event = /发帖|發帖|分享|视频|視頻|拍摄|拍攝|反映|投诉|投訴|举报|舉報|通知|通报|通報|回应|回應|规定|規定|限制|辞职|辭職|辞退|辭退|欠薪|讨薪|討薪|罢工|罷工|维权|維權|冲突|衝突|封控|栏杆|欄杆|铁栅|鐵柵/;
+  return subject.test(text) && event.test(text);
+}
+
 export function qualifyTweet(tweet) {
   const text = textWithoutLinks(tweet?.text);
   if (!tweet?.id || !text || !isOriginalPost(tweet)) return { accepted: false, reason: "not-original" };
   if (/^RT\s+@/i.test(text)) return { accepted: false, reason: "retweet" };
   const title = deriveTitle(text);
-  if (!isChinaHotHeadline(title, text)) return { accepted: false, reason: "outside-china-hot" };
+  if (!isChinaHotHeadline(title, text) && !isSourceSocialReport(title, text)) return { accepted: false, reason: "outside-china-hot" };
   return { accepted: true, reason: "china-news", text, title };
 }
 
@@ -188,6 +199,14 @@ async function markFilteredCandidate(candidate, tweet, qualified) {
 
 export function shouldRetryCandidate(candidate, qualified, now = Date.now()) {
   if (!candidate || !qualified?.accepted) return false;
+  if (candidate.decision === "rejected") {
+    // Only revive classifier rejections, never editor decisions, old news,
+    // duplicate records or articles that have already been created.
+    return !candidate.article_id
+      && candidate.ai_payload?.status === "filtered"
+      && candidate.ai_payload?.filter_reason === "outside-china-hot"
+      && cleanText(candidate.decision_reason, 1_000).startsWith("自动分类过滤:");
+  }
   if (candidate.decision === "failed") return true;
   if (candidate.decision !== "review_required") return false;
   const reason = cleanText(candidate.decision_reason, 1_000);
@@ -248,7 +267,13 @@ async function reprocessableCandidates() {
     pipeline: "like.china-hot-li-teacher-v*", decision: "in.(failed,review_required)",
     updated_at: `gte.${since}`, order: "updated_at.asc", limit: String(MAX_FETCH),
   } });
-  return Array.isArray(rows) ? rows : [];
+  const filtered = await supabase("news_candidates", { query: {
+    select: "id,external_id,raw_text,raw_payload,decision,decision_reason,article_id,ai_payload,collected_at,updated_at",
+    pipeline: "like.china-hot-li-teacher-v*", decision: "eq.rejected", article_id: "is.null",
+    "ai_payload->>status": "eq.filtered", "ai_payload->>filter_reason": "eq.outside-china-hot",
+    updated_at: `gte.${since}`, order: "updated_at.desc", limit: String(MAX_FETCH),
+  } });
+  return [...(Array.isArray(rows) ? rows : []), ...(Array.isArray(filtered) ? filtered : [])];
 }
 
 function tweetFromCandidate(row) {
@@ -357,7 +382,7 @@ export async function generateArticle(qualified, tweet, attempt = 0, previous = 
         "不得从书架、服装、表情、建筑、车辆或环境推断知识水平、专业性、经济状况、工作状态、生活状态、性格或可信度。不要使用“显示其”“反映出其”“说明其”等推断句。",
         "随附的视频素材仅为静态缩略图。除非原文明确写出，否则不得写爆炸声、对话、连续动作、持续时间、多次发生或拍摄前后的过程。",
         "场景描述使用可核对的名词、颜色、数量、位置和可见动作，不写“环境整洁”“设施完善”“氛围紧张”等评价性形容。",
-        "标题必须保留原文中的中国地点、机构或政治人物等主体，使文章明确属于中国新闻。",
+        "标题保留原文已提供的地点、机构或人物；社会与校园事件可以用学生、学校、工作单位等真实主体。原文未交代地名时不得补造中国或具体地点来满足分类。",
         "标题简洁概括新闻事实，不设字数门槛，不得复制整段原文，不得以日期开头。摘要、标题和正文不得三段重复。",
         "对未核实说法准确注明来自发帖者、截图、目击者或公开通报；不要反复写“尚待核实”。",
         "必须检查是否为旧闻。只有原文或图片明确显示过去日期、周年、回顾、旧视频、旧照片或旧事件重新传播时，appears_old_news才为true，并在old_news_reason写明证据；不得凭模型记忆判断。",
@@ -368,7 +393,7 @@ export async function generateArticle(qualified, tweet, attempt = 0, previous = 
       ].join("\n"),
       input: [{ role: "user", content: [
         { type: "input_text", text: previous
-          ? `原始事实：\n${qualified.text.slice(0, 12_000)}\n\n${visualContext(tweet)}\n\n上一版未通过质量检查（空标题正文、中国主体不明确、含套话或字段整段重复）。请重新阅读原文和图片，标题必须保留原文中的中国主体，并完整重写；只能补充有依据的具体信息：\n${previous.content}`
+          ? `原始事实：\n${qualified.text.slice(0, 12_000)}\n\n${visualContext(tweet)}\n\n上一版未通过质量检查（空标题正文、中国主体不明确、含套话或字段整段重复）。请重新阅读原文和图片，标题必须保留原文中的真实事件主体，并完整重写；只能补充有依据的具体信息：\n${previous.content}`
           : `原始事实：\n${qualified.text.slice(0, 12_000)}\n\n${visualContext(tweet)}\n\n请结合随附原帖图片中的可见信息整理文章。` },
         ...visualInputs(tweet),
       ] }],
@@ -377,7 +402,8 @@ export async function generateArticle(qualified, tweet, attempt = 0, previous = 
   }, 60_000));
   const article = JSON.parse(responseText(response));
   article.title = cleanText(article.title, Infinity); article.summary = cleanText(article.summary, Infinity); article.content = cleanText(article.content, Infinity); article.old_news_reason = cleanText(article.old_news_reason, 800);
-  const subjectClear = isChinaHotHeadline(article.title, article.content);
+  const subjectClear = isChinaHotHeadline(article.title, article.content)
+    || (isSourceSocialReport(qualified.title, qualified.text) && isSourceSocialReport(article.title, article.content));
   const normalizedTitle = article.title.replace(/[^a-z0-9\u3400-\u9fff]+/giu, "").toLowerCase();
   const normalizedSummary = article.summary.replace(/[^a-z0-9\u3400-\u9fff]+/giu, "").toLowerCase();
   const normalizedContent = article.content.replace(/[^a-z0-9\u3400-\u9fff]+/giu, "").toLowerCase();

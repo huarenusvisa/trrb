@@ -229,3 +229,46 @@ test("后台显示中文处理原因，审核草稿不能通过恢复按钮直�
   assert.match(ingest, /decision: "in\.\(failed,review_required\)"/);
   assert.match(ingest, /tweetsById/);
 });
+
+const socialExamples = [
+  { id: 'work-exit', text: '“亲手砸掉铁饭碗 亲手解开铁镣铐”\n9月9日，一位网友因为工作单位限制出境、无法自由出国旅游，决定辞职。但由于所在单位规定5年内不能主动辞职，只能通过“被辞退”的方式离开，她只好和领导商量如何走辞退流程。在得到领导理解后，她开始旷工。' },
+  { id: 'school-rails', text: '“真的像鸟笼”\n9月11日，一位学生分享自己高中学校的教学楼，从楼梯间向上全是密密麻麻的栅栏。视频迅速引发其他学校学生分享和讨论，网友评论道这是哪里的监狱。' }
+];
+test('截图中的单位限制出境和校园栅栏报道不再因缺少地名被过滤', () => {
+  for (const tweet of socialExamples) {
+    const qualified = qualifyTweet(tweet);
+    assert.equal(qualified.accepted, true, tweet.id);
+    assert.equal(shouldRetryCandidate({ decision: 'rejected', article_id: null,
+      decision_reason: '自动分类过滤：不属于中国热门头条栏目；未创建或发布文章',
+      ai_payload: { status: 'filtered', filter_reason: 'outside-china-hot' }
+    }, qualified), true);
+  }
+  for (const text of ['美国高中学生分享教学楼视频。', '日本工人发帖反映辞职规定。', '纽约一名网友拍摄学校的围栏。', '今天的心情真的像鸟笼', '学校课程招生广告，欢迎报名。']) {
+    assert.equal(qualifyTweet({ id: 'foreign-or-not-report', text }).accepted, false, text);
+  }
+});
+
+test('分类回补不会重新发布人工拒绝、下架、旧闻或已有文章', () => {
+  const qualified = qualifyTweet(socialExamples[0]);
+  const row = { decision: 'rejected', article_id: null,
+    decision_reason: '自动分类过滤：不属于中国热门头条栏目；未创建或发布文章',
+    ai_payload: { status: 'filtered', filter_reason: 'outside-china-hot' } };
+  for (const patch of [
+    { decision_reason: '编辑决定不发布' }, { decision: 'taken_down' },
+    { article_id: 'existing-article' }, { ai_payload: { status: 'filtered_old_news' } },
+    { decision: 'duplicate' }, { ai_payload: { status: 'filtered', filter_reason: 'not-original' } }
+  ]) assert.equal(shouldRetryCandidate({ ...row, ...patch }, qualified), false);
+});
+
+test('社会事件生成稿同样接受真实主体，不强迫补造中国地名', async t => {
+  let calls = 0;
+  t.mock.method(globalThis, 'fetch', async (_url, options) => {
+    calls++;
+    const input = JSON.parse(options.body);
+    assert.match(input.instructions, /原文未交代地名时不得补造/);
+    return Response.json({ output_text: JSON.stringify({ title: '高中教学楼密集栅栏引发讨论', summary: '学生分享教学楼画面。', content: '一位学生分享高中学校教学楼的视频，楼梯间向上可见密集栅栏，其他学生也分享了各自学校的情况。', seo_keywords: '校园,教学楼', appears_old_news: false, old_news_reason: '' }) });
+  });
+  const article = await generateArticle(qualifyTweet(socialExamples[1]), socialExamples[1]);
+  assert.equal(calls, 1);
+  assert.doesNotMatch(article.content, /中国|北京|上海/);
+});

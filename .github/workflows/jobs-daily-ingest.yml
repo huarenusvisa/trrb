@@ -2,6 +2,12 @@ name: JOBS Daily Ingest
 
 on:
   workflow_call:
+    inputs:
+      target:
+        description: Maximum Chinese-source candidates to inspect
+        required: false
+        type: number
+        default: 500
 
 permissions:
   contents: read
@@ -13,11 +19,17 @@ concurrency:
 jobs:
   ingest:
     runs-on: ubuntu-24.04
-    timeout-minutes: 45
+    timeout-minutes: 90
     env:
       SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
       SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
-      JOBS_TARGET_CANDIDATES: ${{ inputs.target || '200' }}
+      JOBS_TARGET_CANDIDATES: ${{ inputs.target || 500 }}
+      JOBS_ATS_SOURCE_LIMIT: 625
+      JOBS_STORE_BATCH_SIZE: 150
+      JOBS_STORE_CONCURRENCY: 8
+      JOBS_REST_RETRY_ATTEMPTS: 3
+      JOBS_MAX_WRITE_ERROR_RATE: 0.35
+      JOBS_MIN_WRITE_ERROR_THRESHOLD: 75
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

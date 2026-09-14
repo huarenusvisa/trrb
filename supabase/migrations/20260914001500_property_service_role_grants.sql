@@ -1,0 +1,1 @@
+grant all privileges on table public.property_brokers,public.property_agents,public.property_listings,public.property_claims,public.property_leads,public.property_files,public.property_admin_audit to service_role; grant usage,select on sequence public.property_admin_audit_id_seq to service_role; notify pgrst, 'reload schema';

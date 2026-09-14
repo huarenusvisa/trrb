@@ -130,7 +130,7 @@ jobs:
               command = tomllib.load(config_file)['build']['command']
           subprocess.run(['bash', '-e', '-o', 'pipefail', '-c', command], check=True)
           PY
-            COMMIT_REF="$DEPLOY_SHA" npx --yes netlify-cli@latest deploy --prod --context production --site "$NETLIFY_SITE_ID" --no-build
+            COMMIT_REF="$DEPLOY_SHA" npx --yes netlify-cli@latest deploy --prod --site "$NETLIFY_SITE_ID" --no-build
           elif [ -n "${NETLIFY_BUILD_HOOK:-}" ]; then
             deploy_mode='build-hook'
             echo 'Deploy mode: Netlify build hook fallback'

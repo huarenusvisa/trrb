@@ -1,5 +1,6 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
+import { buildAsylumJudgeCategories } from './asylumjudge-categories.mjs';
 
 const ORIGIN = 'https://asylumjudge.com';
 const DEFAULT_API = 'https://trrb.net/.netlify/functions/immigration-judges';
@@ -680,6 +681,8 @@ export async function buildAsylumJudgeSeo({ root, output }) {
     nationalityRows,
     () => nationalityModified
   );
+
+  staticRows.push(...await buildAsylumJudgeCategories({ root, output, judgeData, courtData, slugify, shortId }));
 
   await Promise.all([
     writeFile(join(output, 'sitemap-static.xml'), sitemapXml(staticRows)),

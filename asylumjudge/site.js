@@ -99,7 +99,7 @@ function renderStates(rows, data = {}) {
   const normalized = [...rows].sort((a, b) => Number(b.total_asylum_decisions || 0) - Number(a.total_asylum_decisions || 0));
   const selected = preferred.map((code) => normalized.find((row) => String(row.state || '').toUpperCase() === code)).filter(Boolean);
   for (const row of normalized) if (selected.length < 6 && !selected.includes(row)) selected.push(row);
-  $('#state-list').innerHTML = selected.map((row) => `<li class="state-entry"><a class="state-row" href="${appPath('courts')}?state=${encodeURIComponent(row.state || '')}&fy=${encodeURIComponent(data.fiscal_year || '')}"><span><b>${esc(stateName(row.state) || row.state || '未标注')}</b> · ${fmt(row.total_asylum_decisions)} 件</span><b>${pct(row.adjudicated_approval_rate)}</b></a></li>`).join('');
+  $('#state-list').innerHTML = selected.map((row) => `<li class="state-entry"><a class="state-row" href="${window.asylumJudgeStateUrl ? window.asylumJudgeStateUrl(row.state, data.fiscal_year) : `${appPath('courts')}?state=${encodeURIComponent(row.state || '')}&fy=${encodeURIComponent(data.fiscal_year || '')}`}"><span><b>${esc(stateName(row.state) || row.state || '未标注')}</b> · ${fmt(row.total_asylum_decisions)} 件</span><b>${pct(row.adjudicated_approval_rate)}</b></a></li>`).join('');
   const status = $('#state-list-status');
   if (status) status.textContent = `${fmt(selected.length)} ${window.AsylumI18n?.t?.('州') || '州'}`;
 

@@ -2,3 +2,5 @@
 
 2026-09-14: prerender home and court directories, preserve API fallback, repair localized navigation.
 2026-09-14: remove forced trailing-slash self redirects detected during live verification.
+
+2026-09-14 Publish state landing pages and fiscal-year approval-rate comparison with verified annual samples.

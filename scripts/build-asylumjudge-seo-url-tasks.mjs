@@ -76,6 +76,8 @@ async function buildManifest() {
     if (url.startsWith(ORIGIN + '/')) removeFromIndex.add(url);
   }
 
+  const categories = JSON.parse(await readFile(join(OUT, 'asylumjudge', 'category-urls.json'), 'utf8'));
+  for (const url of categories.added) { if (!canonical.has(url)) throw new Error('Category URL absent from sitemap: ' + url); ADDED.add(url); }
   const add = [...ADDED].sort();
   const update = [...canonical]
     .filter((url) => !ADDED.has(url))

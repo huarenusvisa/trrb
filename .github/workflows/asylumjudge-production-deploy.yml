@@ -72,6 +72,12 @@ jobs:
         run: node scripts/asylumjudge-seo.test.mjs
       - name: Verify multilingual, branding and search-intent regression contract
         run: node scripts/asylumjudge-production-regression.test.mjs
+      - name: Verify state categories and annual comparison
+        run: node scripts/asylumjudge-categories.test.mjs
+      - name: Prepare URL changes for the central SEO workflow
+        run: |
+          node scripts/build-asylumjudge-seo-url-tasks.mjs
+          node scripts/asylumjudge-seo-url-tasks.test.mjs
       - name: Verify indexing hygiene report
         shell: bash
         run: |
@@ -109,7 +115,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          paths=("/" "/en/" "/es/" "/fr/" "/pt-br/" "/hi/" "/zh-hant/" "/ru/" "/ar/" "/tr/" "/asylum-judge-approval-rate/" "/en/asylum-judge-rating/" "/en/judge-backgrounds/" "/methodology/")
+          paths=("/states/" "/en/states/" "/states/california/" "/en/states/california/" "/en/states/new-york/" "/judge-approval-rates/" "/en/judge-approval-rates/" "/" "/en/" "/es/" "/fr/" "/pt-br/" "/hi/" "/zh-hant/" "/ru/" "/ar/" "/tr/" "/asylum-judge-approval-rate/" "/en/asylum-judge-rating/" "/en/judge-backgrounds/" "/methodology/")
           for path in "${paths[@]}"; do
             code=$(curl -sS -L -o /tmp/asylumjudge-live.html -w '%{http_code}' "https://asylumjudge.com${path}")
             if [ "$code" != "200" ]; then echo "Live verification failed: ${path} returned ${code}" >&2; exit 1; fi

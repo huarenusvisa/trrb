@@ -120,7 +120,17 @@ jobs:
           if [ "$token_valid" = "true" ]; then
             deploy_mode='cli'
             echo 'Deploy mode: Netlify CLI direct production deploy via validated repository token'
-            COMMIT_REF="$DEPLOY_SHA" npx --yes netlify-cli@latest deploy --prod --context production --site "$NETLIFY_SITE_ID"
+            # Build with the same full netlify.toml command and the verified CI
+            # credentials. CLI's remote environment must not replace these with
+            # a stale build key. Only upload after all build checks have passed.
+            COMMIT_REF="$DEPLOY_SHA" python - <<'PY'
+          import subprocess
+          import tomllib
+          with open('netlify.toml', 'rb') as config_file:
+              command = tomllib.load(config_file)['build']['command']
+          subprocess.run(['bash', '-e', '-o', 'pipefail', '-c', command], check=True)
+          PY
+            COMMIT_REF="$DEPLOY_SHA" npx --yes netlify-cli@latest deploy --prod --context production --site "$NETLIFY_SITE_ID" --no-build
           elif [ -n "${NETLIFY_BUILD_HOOK:-}" ]; then
             deploy_mode='build-hook'
             echo 'Deploy mode: Netlify build hook fallback'

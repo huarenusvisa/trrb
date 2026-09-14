@@ -14,6 +14,9 @@ on:
       - 'seo/central-task-pools.json'
       - 'scripts/central-seo-task-orchestrator.mjs'
       - 'scripts/central-seo-task-orchestrator.test.mjs'
+      - 'scripts/asylumjudge-seo-url-tasks.test.mjs'
+      - 'scripts/automation-notify.mjs'
+      - 'scripts/automation-notify.test.mjs'
       - 'asylumjudge/seo-url-tasks.json'
       - 'huarengongzuo/seo/tasks.json'
       - 'scripts/asylumjudge-live-seo-audit.mjs'
@@ -58,8 +61,10 @@ jobs:
         with:
           node-version: '22'
       - name: Install Google API client
+        id: install_google
         run: npm install --no-save googleapis@144
       - name: Verify live production health
+        id: production_health
         shell: bash
         run: |
           set -euo pipefail
@@ -85,6 +90,7 @@ jobs:
           echo "Production did not deploy the target commit within 15 minutes." >&2
           exit 1
       - name: Verify the quality-gated sitemap
+        id: sitemap
         shell: bash
         run: |
           set -euo pipefail
@@ -92,6 +98,7 @@ jobs:
           grep -q '<sitemapindex' <<<"$xml"
           grep -q 'sitemap-articles-1.xml' <<<"$xml"
       - name: Push current TRRB URLs through IndexNow
+        id: indexnow
         env:
           INDEXNOW_FULL_SYNC: 'false'
           INDEXNOW_INCLUDE_RETIRED: 'true'
@@ -99,6 +106,7 @@ jobs:
           INDEXNOW_USE_LIVE_NEWS: 'true'
         run: node scripts/submit-indexnow.mjs
       - name: Run TRRB search-engine operations
+        id: search_ops
         env:
           SITE_ORIGIN: https://trrb.net
           GOOGLE_SEARCH_CONSOLE_SITE_URL: ${{ vars.GOOGLE_SEARCH_CONSOLE_SITE_URL || 'sc-domain:trrb.net' }}
@@ -123,6 +131,8 @@ jobs:
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
           AUTOMATION_CONTROL_KEY: seo_search_engine
           AUTOMATION_NOTIFICATION_TITLE: TRRB Google/Bing SEO机器人执行失败
+          AUTOMATION_FAILURE_RESULTS: ${{ toJSON(steps) }}
+          AUTOMATION_FAILURE_LABELS: '{"install_google":"安装 Google API 客户端","production_health":"生产版本与网站健康验收","sitemap":"站点地图检查","indexnow":"IndexNow 提交","search_ops":"Google/Bing 操作及页面检查"}'
         run: node scripts/automation-notify.mjs
 
   asylumjudge-monitor:
@@ -136,14 +146,18 @@ jobs:
         with:
           node-version: '22'
       - name: Build and auto-normalize AsylumJudge SEO output
+        id: build
         run: node scripts/build-asylumjudge-site.mjs
       - name: Materialize AsylumJudge tasks for the central SEO robot
+        id: materialize
         run: node scripts/build-asylumjudge-seo-url-tasks.mjs
       - name: Verify AsylumJudge canonical sitemap contract
+        id: contract
         run: |
           node scripts/asylumjudge-seo.test.mjs
           node scripts/asylumjudge-seo-url-tasks.test.mjs
       - name: Block multilingual duplicate-canonical regression
+        id: multilingual
         shell: bash
         run: |
           set -euo pipefail
@@ -163,16 +177,19 @@ jobs:
           console.log(`AsylumJudge indexing guard passed: ${report.localized_pages} localized pages; ${highCjk} high-CJK warnings.`);
           NODE
       - name: Audit the live AsylumJudge site for canonical, noindex, redirects and 404s
+        id: live_audit
         env:
           ASYLUMJUDGE_SITE_ORIGIN: https://asylumjudge.com
           ASYLUMJUDGE_SEO_SAMPLE_PER_SITEMAP: '8'
           ASYLUMJUDGE_SEO_CONCURRENCY: '4'
         run: node scripts/asylumjudge-live-seo-audit.mjs
       - name: Verify central SEO task-pool isolation and dry-run gate
+        id: task_pool
         env:
           SUPABASE_URL: https://fwiznbpsqkfgkvyznebz.supabase.co
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
         run: |
+          node --test scripts/automation-notify.test.mjs
           node scripts/central-seo-task-orchestrator.test.mjs
           node scripts/central-seo-task-orchestrator.mjs --dry-run
           node scripts/central-seo-task-orchestrator.mjs --dry-run --persist
@@ -195,5 +212,7 @@ jobs:
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
           AUTOMATION_CONTROL_KEY: seo_search_engine
           AUTOMATION_NOTIFICATION_TITLE: AsylumJudge SEO机器人执行失败
-          AUTOMATION_NOTIFICATION_MESSAGE: 'AsylumJudge live canonical/noindex/redirect/404 or multilingual duplicate-content guard failed. Review the SEO robot artifact before the next deploy.'
+          AUTOMATION_NOTIFICATION_MESSAGE: '移民法官 SEO 任务执行失败，请查看本次 GitHub Actions 日志。'
+          AUTOMATION_FAILURE_RESULTS: ${{ toJSON(steps) }}
+          AUTOMATION_FAILURE_LABELS: '{"build":"网站 SEO 构建","materialize":"生成 SEO 任务清单","contract":"站点地图及任务清单检查","multilingual":"多语言重复内容检查","live_audit":"线上 canonical、noindex、重定向及404检查","task_pool":"中央任务清单校验及入队"}'
         run: node scripts/automation-notify.mjs

@@ -65,6 +65,19 @@ await assert.rejects(
 );
 
 const centralWorkflow = await readFile('.github/workflows/seo-search-engine-ops.yml', 'utf8');
+const productionConfig = JSON.parse(await readFile('seo/central-task-pools.json', 'utf8'));
+const asylumPool = productionConfig.sites.find((site) => site.key === 'asylumjudge');
+assert.equal(asylumPool.manifest_path, '.netlify/asylumjudge-bundle/public/asylumjudge/seo-url-tasks.json', 'consume the freshly built manifest, not a previous day source snapshot');
+assert.equal(asylumPool.expanded_path, '.netlify/asylumjudge-bundle/public/asylumjudge/seo-url-tasks-expanded.json');
+
+const mismatched = JSON.parse(await readFile(file('asylum-expanded.json'), 'utf8'));
+mismatched.task_id = 'aj-next-day';
+await writeFile(file('asylum-expanded.json'), JSON.stringify(mismatched));
+await assert.rejects(
+  orchestrate({ configPath: file('config.json'), reportPath: file('mismatch-report.json'), planPath: file('mismatch-plan.json'), dryRun: true }),
+  /expanded task_id mismatch/,
+  'stale or mixed build artifacts must still be rejected'
+);
 const jobsWorkflow = await readFile('.github/workflows/huarengongzuo-google-jobs-submit.yml', 'utf8');
 assert.doesNotMatch(centralWorkflow, /node scripts\/submit-asylumjudge-indexnow\.mjs/, 'AsylumJudge must not bypass the central task pool');
 assert.doesNotMatch(jobsWorkflow, /workflow_run:|schedule:/, 'Huaren Gongzuo must not schedule an independent SEO robot');

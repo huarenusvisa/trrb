@@ -7,7 +7,7 @@
     {
       "key": "asylumjudge",
       "origin": "https://asylumjudge.com",
-      "manifest_path": "asylumjudge/seo-url-tasks.json",
+      "manifest_path": ".netlify/asylumjudge-bundle/public/asylumjudge/seo-url-tasks.json",
       "expanded_path": ".netlify/asylumjudge-bundle/public/asylumjudge/seo-url-tasks-expanded.json",
       "daily_quota": 500
     },

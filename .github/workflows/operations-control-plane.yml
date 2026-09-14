@@ -178,5 +178,7 @@ jobs:
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
           AUTOMATION_CONTROL_KEY: global
           AUTOMATION_NOTIFICATION_TITLE: 机器人任务流执行失败
+          AUTOMATION_FAILURE_RESULTS: ${{ toJSON(needs) }}
+          AUTOMATION_FAILURE_LABELS: '{"automation-gate":"读取机器人开关","ice":"ICE 采集","seo-metadata":"SEO 元数据同步","seo-search-engine":"总 SEO 任务","ico-accelerated-recovery":"旧稿恢复","jobs-daily-ingest":"招聘采集","secondhand-daily-ingest":"二手信息采集","china-hot-li-teacher":"中国热门头条采集","trump-x":"特朗普动态采集","backend-night-maintenance":"后台维护","ice-orphan-cleanup":"ICE 媒体清理"}'
           AUTOMATION_NOTIFICATION_MESSAGE: "控制面任务失败；触发模块：${{ inputs.module || 'scheduled' }}。请查看 GitHub Actions 运行日志。"
         run: node scripts/automation-notify.mjs

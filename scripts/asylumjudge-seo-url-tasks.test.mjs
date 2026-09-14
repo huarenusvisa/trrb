@@ -4,7 +4,7 @@ import { join } from 'node:path';
 
 const ROOT = process.cwd();
 const OUT = join(ROOT, '.netlify', 'asylumjudge-bundle', 'public');
-const manifest = JSON.parse(await readFile(join(ROOT, 'asylumjudge', 'seo-url-tasks.json'), 'utf8'));
+const manifest = JSON.parse(await readFile(join(OUT, 'asylumjudge', 'seo-url-tasks.json'), 'utf8'));
 const expanded = JSON.parse(await readFile(join(OUT, 'asylumjudge', 'seo-url-tasks-expanded.json'), 'utf8'));
 const sitemapFiles = ['sitemap-static.xml', 'sitemap-judges.xml', 'sitemap-courts.xml', 'sitemap-nationalities.xml'];
 const sitemapUrls = new Set();
@@ -17,6 +17,8 @@ assert.equal(manifest.schema_version, 1);
 assert.equal(manifest.origin, 'https://asylumjudge.com');
 assert.equal(manifest.status, 'pending_central_seo_robot');
 assert.equal(manifest.external_submission_performed, false);
+assert.equal(expanded.task_id, manifest.task_id, 'manifest and expanded tasks must come from the same build');
+assert.equal(expanded.generated_at, manifest.generated_at, 'manifest and expanded tasks must have the same generation time');
 
 for (const action of ['add', 'update', 'delete']) {
   const urls = expanded.actions[action];

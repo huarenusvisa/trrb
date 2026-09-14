@@ -43,7 +43,7 @@ const META_SUFFIX = {
 };
 
 const escapeRegex = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-const rewriteHrefPrefix = (html, from, to) => html.replace(new RegExp(`href="${escapeRegex(from)}(?=["?#])`, 'g'), `href="${to}`);
+const rewriteHrefPrefix = (html, from, to) => html.replace(new RegExp(`href=(["'])${escapeRegex(from)}(?=["'?#])`, 'g'), (_, quote) => `href=${quote}${to}`);
 async function walk(dir, predicate, out = []) {
   for (const entry of await readdir(dir, { withFileTypes: true })) {
     const path = join(dir, entry.name);

@@ -200,7 +200,7 @@ const slugify = (value) => cleanName(value).normalize('NFKD').replace(/[\u0300-\
 const shortId = (value) => String(value || '').replace(/[^a-zA-Z0-9]/g, '').slice(0, 12).toLowerCase();
 const n = (value) => Number(value || 0);
 const localeNumber = (value, locale) => n(value).toLocaleString(locale);
-const rate = (row) => row?.adjudicated_approval_rate == null ? '—' : `${Number(row.adjudicated_approval_rate).toFixed(1)}%`;
+const rate = (row) => n(row?.grants) + n(row?.denials) < 50 || row?.adjudicated_approval_rate == null ? '—' : `${Number(row.adjudicated_approval_rate).toFixed(1)}%`;
 const lastmod = (value) => /^\d{4}-\d{2}-\d{2}/.test(String(value || '')) ? String(value).slice(0, 10) : TODAY;
 const nationalityRegionAliases = new Map(Object.entries({
   'turkey': 'TR', 'kirghizia kyrgyzstan': 'KG', 'democratic republic of congo': 'CD',
@@ -279,11 +279,70 @@ const localizedPath = (locale, relative = '') => {
   return `${prefix}/${clean}${clean ? '/' : ''}`.replace(/\/+/g, '/');
 };
 const localizedUrl = (locale, relative = '') => `${ORIGIN}${localizedPath(locale, relative)}`;
+// Match by stable ID, preserving accessibility attributes and nested markup.
+function fillElement(html, id, content) {
+  const opening = new RegExp(`<([a-z][a-z0-9]*)\\b[^>]*\\bid="${id}"[^>]*>`, 'i').exec(html);
+  if (!opening) throw new Error(`Missing prerender target: ${id}`);
+  const tags = new RegExp(`</?${opening[1]}\\b[^>]*>`, 'gi');
+  tags.lastIndex = opening.index + opening[0].length;
+  let depth = 1;
+  for (let match; (match = tags.exec(html));) {
+    depth += match[0].startsWith('</') ? -1 : 1;
+    if (!depth) return html.slice(0, opening.index) + opening[0].replace(/aria-busy="true"/g, 'aria-busy="false"') + content + html.slice(match.index);
+  }
+  throw new Error(`Unclosed prerender target: ${id}`);
+}
+
+function localizeNavigation(html, locale) {
+  const legacy = { '': '', 'index.html': '', 'courts.html': 'courts', 'states.html': 'states', 'china-dashboard.html': 'nationality', 'compare.html': 'compare', 'methodology.html': 'methodology' };
+  return html.replace(/(<a\b[^>]*\bhref=")([^"#]+)(")/g, (match, before, href, after) => {
+    if (!href.startsWith('/') || href.startsWith('//')) return match;
+    const url = new URL(href, ORIGIN);
+    let route = url.pathname.replace(/^\/+|\/+$/g, '');
+    if (route.startsWith('immigration-judge-approval-rate')) {
+      const key = route.replace(/^immigration-judge-approval-rate\/?/, '');
+      if (!(key in legacy)) return match;
+      route = legacy[key];
+    }
+    if (!['', 'courts', 'states', 'nationality', 'compare', 'judge-backgrounds', 'methodology'].includes(route)) return match;
+    return before + (route === 'methodology' ? '/methodology/' : localizedPath(locale, route)) + url.search + url.hash + after;
+  });
+}
+
+function renderDirectory(template, key, locale, judgeData, courtData, stateData) {
+  let html = template.replace('<body>', '<body data-seo-prerendered="true">');
+  const fill = (id, content) => { html = fillElement(html, id, content); };
+  const fmt = (value) => localeNumber(value, locale.code);
+  const period = `FY ${courtData.fiscal_year} · ${courtData.fiscal_year - 1}-10-01 – ${courtData.period_end || `${courtData.fiscal_year}-09-30`}`;
+  if (key === 'home') {
+    html = html.replace(/(<main\b[^>]*>)/, `$1<h1 class="shell" style="font-size:clamp(22px,3vw,34px);padding-top:24px">${escapeHtml(copy[locale.code].home[0].split(/[|｜]/)[0].trim())}</h1>`);
+    const judges = judgeData.results || [];
+    fill('judge-directory-count', `${fmt(judges.length)} · ${escapeHtml(copy[locale.code].home[0].split(/[|｜]/)[0].trim())}`);
+    fill('judge-directory-list', judges.slice(0, 100).map((row) => {
+      const href = localizedPath(locale, `judges/${slugify(row.judge_name)}--${shortId(row.id)}`);
+      return `<div class="judge-directory-row" role="listitem"><span class="judge-directory-identity"><a class="judge-profile-link" href="${href}"><strong lang="en">${escapeHtml(row.judge_name)}</strong></a><small lang="en">${escapeHtml([row.court_name, row.court_city, row.court_state].filter(Boolean).join(' · '))}</small><small>${escapeHtml([row.data_start_date, row.data_end_date].filter(Boolean).join(' – '))}</small></span>${['total_asylum_decisions', 'grants', 'denials', 'other_decisions'].map((field, i) => `<span class="directory-metric"><label>${['裁决', '批准', '拒绝', '其他'][i]}</label><b>${fmt(row[field])}</b></span>`).join('')}<span class="directory-metric directory-rate-cell"><label>裁决批准率</label><b class="directory-rate">${rate(row)}</b>${n(row.grants) + n(row.denials) < 50 ? '<small>少于50件，不显示</small>' : ''}</span></div>`;
+    }).join(''));
+    const national = stateData.national;
+    for (const [id, value] of Object.entries({ 'national-rate': rate(national), 'court-count': fmt(national.courts), 'judge-count': fmt(national.judges), 'decision-count': fmt(national.total_asylum_decisions), 'national-sample': `${fmt(n(national.grants) + n(national.denials))} · EOIR`, 'snapshot-period-label': period, 'freshness-badge': escapeHtml(stateData.source_snapshot_date || stateData.period_end), 'state-list-status': `${stateData.states.length}` })) fill(id, value);
+    fill('state-list', stateData.states.slice(0, 6).map((row) => `<li class="state-entry"><a class="state-row" href="${localizedPath(locale, 'courts')}?state=${encodeURIComponent(row.state)}&amp;fy=${stateData.fiscal_year}"><span><b>${escapeHtml(row.state)}</b> · ${fmt(row.total_asylum_decisions)}</span><b>${rate(row)}</b></a></li>`).join(''));
+    const seed = judges.map(({ background, background_summary, webex, ...row }) => row);
+    html = html.replace('</body>', `<script type="application/json" id="judge-directory-seed">${JSON.stringify(seed).replace(/</g, '\\u003c')}</script></body>`);
+  } else {
+    const courts = courtData.courts;
+    fill('court-period-note', period);
+    fill('court-count', fmt(courts.length));
+    fill('court-judges', fmt(courts.reduce((sum, row) => sum + n(row.judges), 0)));
+    fill('court-decisions', fmt(courts.reduce((sum, row) => sum + n(row.total_asylum_decisions), 0)));
+    fill('court-results-status', `${fmt(courts.length)} · FY ${courtData.fiscal_year}`);
+    fill('court-results', `<div class="crow chead court-crow outcome-row"><span>法院</span><span>法官</span><span>结案总数</span><span>批准</span><span>拒绝</span><span>其他</span><span>裁决批准率</span></div>` + courts.map((row) => `<a class="crow court-crow outcome-row" href="${localizedPath(locale, `courts/${slugify(row.court_name)}--${String(row.court_code || slugify(row.court_state)).toLowerCase()}`)}"><span><b>${escapeHtml(row.court_name)}</b><small>${escapeHtml([row.court_city, row.court_state].filter(Boolean).join(', '))}</small></span>${['judges', 'total_asylum_decisions', 'grants', 'denials', 'other_decisions'].map((field) => `<span>${fmt(row[field])}</span>`).join('')}<span class="rate">${rate(row)}</span></a>`).join(''));
+  }
+  return html;
+}
 const alternateLinks = (relative) => `${SEO_LOCALES.map((locale) => `<link rel="alternate" hreflang="${locale.hreflang}" href="${localizedUrl(locale, relative)}">`).join('\n  ')}\n  <link rel="alternate" hreflang="x-default" href="${localizedUrl(SEO_LOCALES.find((item) => item.code === 'zh-Hans'), relative)}">`;
 
 function injectSeoHead(html, { locale, relative, title, description, schema }) {
   const canonical = localizedUrl(locale, relative);
-  let next = html
+  let next = localizeNavigation(html, locale)
     .replace(/<html\b[^>]*>/i, `<html lang="${locale.code}"${locale.code === 'ar' ? ' dir="rtl"' : ''}>`)
     .replace(/<title>[\s\S]*?<\/title>/i, `<title>${escapeHtml(title)}</title>`)
     .replace(/<meta\s+name=["']description["'][^>]*>/i, `<meta name="description" content="${escapeHtml(description)}">`)
@@ -398,7 +457,7 @@ function renderJudge(template, judge, locale) {
   const background = judge.background || judge.background_summary;
   let html = template
     .replace('<body>', `<body data-judge-id="${escapeHtml(judge.id)}" data-seo-prerendered="true">`)
-    .replace('<div id="detail-loading" class="empty">正在读取 EOIR 法官数据…</div>', '<div id="detail-loading" class="empty" hidden></div>')
+    .replace(/<div\b[^>]*id="detail-loading"[^>]*>[\s\S]*?<\/div>/, '<div id="detail-loading" class="empty" role="status" aria-live="polite" aria-busy="false" hidden></div>')
     .replace('<div id="detail" hidden>', '<div id="detail">')
     .replace('<h1 id="judge-name">—</h1>', `<h1 id="judge-name">${escapeHtml(name)}</h1>`)
     .replace('<p id="judge-court" class="lead">—</p>', `<p id="judge-court" class="lead">${escapeHtml([judge.court_name, [judge.court_city, judge.court_state].filter(Boolean).join(', ')].filter(Boolean).join(' · '))}</p>`)
@@ -409,6 +468,10 @@ function renderJudge(template, judge, locale) {
     .replace('<small id="m-adjudicated">—</small>', `<small id="m-adjudicated">${escapeHtml(`${grants} / ${denials} / ${other}`)}</small>`)
     .replace('<strong id="m-grant-deny">—</strong>', `<strong id="m-grant-deny">${escapeHtml(`${grants} / ${denials} / ${other}`)}</strong>`)
     .replace('<p id="background-source-wrap" class="background-source">', '<p id="background-source-wrap" class="background-source" hidden>');
+  html = fillElement(html, 'judge-source', `${escapeHtml(strings.summary(name, judge.court_name, total, grants, denials, other))} · ${escapeHtml([judge.data_start_date, judge.data_end_date].filter(Boolean).join(' – '))}`);
+  if (n(judge.grants) + n(judge.denials) < 50) {
+    html = fillElement(html, 'sample-warning', '少于50件，不显示').replace(/(id="sample-warning"[^>]*) hidden/, '$1');
+  }
   if (background?.biography || background?.biography_excerpt) {
     const biography = background.biography || background.biography_excerpt;
     const sourceLabel = `${background.source_title || 'DOJ/EOIR official source'}${background.source_date ? ` (${background.source_date})` : ''} →`;
@@ -435,7 +498,7 @@ function renderCourt(template, court, locale) {
   const canonical = localizedUrl(locale, relative);
   let html = template
     .replace('<body>', `<body data-court-name="${escapeHtml(court.court_name)}" data-court-state="${escapeHtml(court.court_state || '')}" data-seo-prerendered="true">`)
-    .replace('<div id="loading" class="empty">正在读取法院数据…</div>', '<div id="loading" class="empty" hidden></div>')
+    .replace(/<div\b[^>]*id="loading"[^>]*>[\s\S]*?<\/div>/, '<div id="loading" class="empty" role="status" aria-busy="false" hidden></div>')
     .replace('<div id="court-detail" hidden>', '<div id="court-detail">')
     .replace('<h1 id="court-name">—</h1>', `<h1 id="court-name">${escapeHtml(court.court_name)}</h1>`)
     .replace('<p id="court-place" class="lead">—</p>', `<p id="court-place" class="lead">${escapeHtml([court.court_city, court.court_state].filter(Boolean).join(', '))}</p>`)
@@ -533,6 +596,17 @@ export async function buildAsylumJudgeSeo({ root, output }) {
   const backgroundData = JSON.parse(backgroundText);
   const backgroundByName = new Map((backgroundData.profiles || []).map((profile) => [profile.name_key || nameKey(profile.judge_name), profile]));
 
+  const [judgeData, courtData, nationalityData, stateData] = await Promise.all([
+    fetchJson(api, { mode: 'all' }),
+    fetchJson(api, { mode: 'courts', fy: '2026' }),
+    fetchJson(api, { mode: 'nationalities' }),
+    fetchJson(api, { mode: 'states', fy: '2026' })
+  ]);
+  // Never publish an empty directory or remove entity URLs after a failed API read.
+  if (!judgeData.results?.length || !courtData.courts?.length || !nationalityData.countries?.length || !stateData.states?.length || !stateData.national) {
+    throw new Error('AsylumJudge build requires complete judge, court, nationality and state data');
+  }
+
   const staticDefinitions = [
     ['', homeTemplate, 'home'],
     ['courts', courtsTemplate, 'courts'],
@@ -546,9 +620,10 @@ export async function buildAsylumJudgeSeo({ root, output }) {
     await Promise.all(SEO_LOCALES.map(async (locale) => {
       const [title, description] = copy[locale.code][key];
       const canonical = localizedUrl(locale, relative);
-      const pageTemplate = key === 'methodology' && !template.includes('id="data-license"')
+      let pageTemplate = key === 'methodology' && !template.includes('id="data-license"')
         ? template.replace('</main>', `${DATASET_LICENSE_SECTION}</main>`)
         : template;
+      if (key === 'home' || key === 'courts') pageTemplate = renderDirectory(pageTemplate, key, locale, judgeData, courtData, stateData);
       const html = injectSeoHead(pageTemplate.replace('<body>', `<body data-asylum-locale="${locale.code}">`), {
         locale,
         relative,
@@ -562,20 +637,6 @@ export async function buildAsylumJudgeSeo({ root, output }) {
   }
   staticRows.push({ loc: `${ORIGIN}/community/`, lastmod: TODAY });
 
-  let judgeData = { results: [] };
-  let courtData = { courts: [] };
-  let nationalityData = { countries: [] };
-  const entityResponses = await Promise.allSettled([
-    fetchJson(api, { mode: 'all' }),
-    fetchJson(api, { mode: 'courts', fy: '2026' }),
-    fetchJson(api, { mode: 'nationalities' })
-  ]);
-  if (entityResponses[0].status === 'fulfilled') judgeData = entityResponses[0].value;
-  if (entityResponses[1].status === 'fulfilled') courtData = entityResponses[1].value;
-  if (entityResponses[2].status === 'fulfilled') nationalityData = entityResponses[2].value;
-  entityResponses.filter((result) => result.status === 'rejected').forEach((result) => {
-    console.warn(`AsylumJudge SEO entity generation continued with partial data: ${result.reason?.message || result.reason}`);
-  });
   judgeData.results = (judgeData.results || []).map((judge) => ({
     ...judge,
     background: backgroundByName.get(nameKey(judge.judge_name)) || judge.background || null

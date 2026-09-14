@@ -22,6 +22,7 @@ const normalizeSearchText = (value) => String(value || '')
   .toLocaleLowerCase()
   .replace(/[’'.,-]/g, '');
 let allJudges = [];
+try { allJudges = JSON.parse(document.getElementById('judge-directory-seed')?.textContent || '[]'); } catch {}
 let searchTimer = null;
 let directoryVisibleCount = 100;
 const DIRECTORY_BATCH_SIZE = 100;
@@ -35,7 +36,9 @@ const REQUEST_TIMEOUT_MS = 15000;
 const trrbColumn = /^(?:www\.)?trrb\.net$/i.test(location.hostname) && /^\/asylumjudge(?:\/|$)/i.test(location.pathname);
 const appPath = (page = '') => trrbColumn
   ? `/asylumjudge${page ? `/${page}` : ''}`
-  : (page ? `/${page}` : '/');
+  : (window.AsylumI18n?.locale && window.AsylumI18n.locale !== 'zh-Hans'
+    ? `/${window.AsylumI18n.locale.toLowerCase()}/${page ? `${page}/` : ''}`
+    : (page ? `/${page}/` : '/'));
 const sharedApiOrigin = '';
 
 function useCleanDomainRoutes() {
@@ -346,6 +349,8 @@ async function loadOverview(fiscalYear = 2026) {
   const status = $('#state-list-status');
   container.setAttribute('aria-busy', 'true');
   if (status) status.textContent = window.AsylumI18n?.t?.('正在汇总州级样本') || '正在汇总州级样本';
+  const hasOverview = document.body.dataset.seoPrerendered === 'true' && container.querySelector('a');
+  if (!hasOverview) {
   container.innerHTML = '<li class="skeleton"></li><li class="skeleton"></li><li class="skeleton"></li>';
   $('#snapshot-period-label').textContent = `FY ${fiscalYear}（读取中）`;
   $('#national-rate').textContent = '—';
@@ -353,6 +358,7 @@ async function loadOverview(fiscalYear = 2026) {
   $('#court-count').textContent = '—';
   $('#judge-count').textContent = '—';
   $('#decision-count').textContent = '—';
+  }
   document.querySelectorAll('[data-state-fy]').forEach((button) => {
     const selected = Number(button.dataset.stateFy) === Number(fiscalYear);
     button.classList.toggle('active', selected);
@@ -364,6 +370,10 @@ async function loadOverview(fiscalYear = 2026) {
     renderStates(stateData.states || [], stateData);
   } catch (error) {
     if (error.name === 'AbortError' || overviewController !== controller) return;
+    if (hasOverview) {
+      if (status) status.textContent = window.AsylumI18n?.t?.('数据库暂时无法读取') || '数据库暂时无法读取';
+      return;
+    }
     $('#snapshot-period-label').textContent = `FY ${fiscalYear}`;
     $('#national-sample').textContent = '数据库暂时无法读取';
     if (status) status.textContent = window.AsylumI18n?.t?.('数据库暂时无法读取') || '数据库暂时无法读取';
@@ -514,10 +524,12 @@ async function loadAllJudges() {
   if (!container) return;
   container.setAttribute('aria-busy', 'true');
   $('#judge-directory-count').textContent = t('正在读取全部法官…');
-  container.innerHTML = `<div class="directory-loading" role="listitem">${esc(t('正在读取全部法官资料…'))}</div>`;
+  if (allJudges.length) applyJudgeFilter($('#judge-q').value, { updateUrl: false });
+  else container.innerHTML = `<div class="directory-loading" role="listitem">${esc(t('正在读取全部法官资料…'))}</div>`;
   try {
     const data = await json('/.netlify/functions/immigration-judges?mode=directory');
-    allJudges = data.results || [];
+    if (!Array.isArray(data.results) || !data.results.length) throw new Error('Judge directory unavailable');
+    allJudges = data.results;
     applyJudgeFilter($('#judge-q').value, { updateUrl: false });
     const latest = data.latest_import;
     const stamp = String(latest?.source_date || latest?.completed_at || '').slice(0, 10);
@@ -525,6 +537,10 @@ async function loadAllJudges() {
     const badge = $('#judge-source-badge');
     if (badge && data.production_grade) badge.textContent = 'EOIR 官方数据';
   } catch (error) {
+    if (allJudges.length) {
+      applyJudgeFilter($('#judge-q').value, { updateUrl: false });
+      return;
+    }
     $('#freshness-badge').textContent = t('稍后重试');
     $('#judge-directory-count').textContent = t('读取失败');
     container.innerHTML = `<div class="empty" role="listitem"><b>${esc(t('全部法官资料暂时无法读取'))}</b><p>${esc(t('无需刷新页面，可以直接重新尝试。'))}</p><button id="judge-directory-retry" class="directory-retry" type="button">${esc(t('重新尝试'))}</button></div>`;

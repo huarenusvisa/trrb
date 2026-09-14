@@ -12,7 +12,7 @@ async function load() {
   const state = (document.body.dataset.courtState || query.get('state') || '').trim().toUpperCase();
   const requestedYear = Number.parseInt(query.get('fy') || '', 10);
   if (!courtName) { loading.textContent = '缺少法院名称'; loading.setAttribute('aria-busy', 'false'); return; }
-  loading.hidden = false;
+  loading.hidden = document.body.dataset.seoPrerendered === 'true';
   loading.textContent = initialLoading;
   loading.setAttribute('aria-busy', 'true');
   const controller = new AbortController();
@@ -55,6 +55,7 @@ async function load() {
     loading.hidden = true;
     $('#court-detail').hidden = false;
   } catch {
+    loading.hidden = false;
     loading.innerHTML = '<b>暂时无法读取该法院资料</b><p>请稍后重试。</p><button id="court-detail-retry" class="detail-retry" type="button">重新尝试</button>';
     $('#court-detail-retry').addEventListener('click', load);
   } finally {

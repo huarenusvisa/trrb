@@ -1,1 +1,3 @@
 2026-09-09 final consolidated AsylumJudge production validation run. Workflow now preserves hard link/brand failures while allowing the dedicated meta-description normalizer to run after hygiene; package covers independent branding, multilingual routing, ranking/search intent, crawl-budget prioritization, sitemap/index strategy, internal links and citation signals.
+
+2026-09-14: prerender home and court directories, preserve API fallback, repair localized navigation.

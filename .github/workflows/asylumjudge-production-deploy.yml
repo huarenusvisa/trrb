@@ -29,7 +29,7 @@ jobs:
       NETLIFY_SITE_ID: 7beb8b62-f7e3-49fc-b954-46699c9956b7
     steps:
       - name: Preflight AsylumJudge Netlify authorization before any full build
-        if: ${{ github.event_name == 'workflow_dispatch' && inputs.deploy == true }}
+        if: ${{ (github.event_name == 'workflow_dispatch' && inputs.deploy == true) || (github.event_name == 'push' && contains(github.event.head_commit.message, '[deploy-asylumjudge]')) }}
         shell: bash
         run: |
           set -euo pipefail
@@ -92,18 +92,20 @@ jobs:
           path: .netlify/asylumjudge-bundle
           retention-days: 3
       - name: Deploy verified bundle to Netlify production
-        if: ${{ github.event_name == 'workflow_dispatch' && inputs.deploy == true }}
+        if: ${{ (github.event_name == 'workflow_dispatch' && inputs.deploy == true) || (github.event_name == 'push' && contains(github.event.head_commit.message, '[deploy-asylumjudge]')) }}
         shell: bash
         run: |
           set -euo pipefail
+          cd .netlify/asylumjudge-bundle
           npx --yes netlify-cli@latest deploy \
+            --no-build \
             --prod \
             --site "$NETLIFY_SITE_ID" \
-            --dir ".netlify/asylumjudge-bundle/public" \
-            --functions ".netlify/asylumjudge-bundle/netlify/functions" \
+            --dir "public" \
+            --functions "netlify/functions" \
             --message "AsylumJudge verified production bundle ${GITHUB_SHA}"
       - name: Verify live multilingual and SEO routes after deploy
-        if: ${{ github.event_name == 'workflow_dispatch' && inputs.deploy == true }}
+        if: ${{ (github.event_name == 'workflow_dispatch' && inputs.deploy == true) || (github.event_name == 'push' && contains(github.event.head_commit.message, '[deploy-asylumjudge]')) }}
         shell: bash
         run: |
           set -euo pipefail
@@ -113,7 +115,10 @@ jobs:
             if [ "$code" != "200" ]; then echo "Live verification failed: ${path} returned ${code}" >&2; exit 1; fi
             if grep -qi 'Page not found' /tmp/asylumjudge-live.html; then echo "Live verification failed: ${path} rendered Netlify 404 content" >&2; exit 1; fi
           done
-          curl -fsSL https://asylumjudge.com/en/ | grep -q 'U.S. Immigration Judge Approval Rates'
-          curl -fsSL https://asylumjudge.com/en/asylum-judge-rating/ | grep -q 'Asylum Judge Rating and Approval Rate Lookup'
-          curl -fsSL https://asylumjudge.com/asylum-judge-approval-rate/ | grep -q '美国庇护法官通过率查询'
+          curl -fsSL https://asylumjudge.com/en/ -o /tmp/asylumjudge-home.html
+          grep -q 'U.S. Immigration Judge Approval Rates' /tmp/asylumjudge-home.html
+          curl -fsSL https://asylumjudge.com/en/asylum-judge-rating/ -o /tmp/asylumjudge-keyword.html
+          grep -q 'Asylum Judge Rating and Approval Rate Lookup' /tmp/asylumjudge-keyword.html
+          curl -fsSL https://asylumjudge.com/asylum-judge-approval-rate/ -o /tmp/asylumjudge-keyword-zh.html
+          grep -q '美国庇护法官通过率查询' /tmp/asylumjudge-keyword-zh.html
           echo 'Live AsylumJudge multilingual and keyword routes verified.'

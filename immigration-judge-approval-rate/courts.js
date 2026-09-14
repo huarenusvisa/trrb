@@ -76,6 +76,10 @@ function setLoading(loading) {
 
 function renderError() {
   $('#court-results-status').textContent = '';
+  if (document.body.dataset.seoPrerendered === 'true' && $('#court-results').querySelector('a')) {
+    $('#court-results-status').textContent = window.AsylumI18n?.t?.('法院数据库暂时无法读取') || '法院数据库暂时无法读取';
+    return;
+  }
   $('#court-results').innerHTML = '<div class="empty" role="alert"><b>法院数据库暂时无法读取</b><p>请稍后重试。</p><button id="court-retry" class="empty-retry" type="button">重新尝试</button></div>';
   $('#court-retry').addEventListener('click', () => load($('#court-q').value.trim(), selectedState));
 }

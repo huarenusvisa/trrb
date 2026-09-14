@@ -400,7 +400,8 @@ function renderCountries() {
 async function load() {
   const id = document.body.dataset.judgeId || new URLSearchParams(location.search).get('id');
   if (!id) { detailLoading.textContent = detailLoadCopy().missing; detailLoading.setAttribute('aria-busy', 'false'); return; }
-  detailLoading.hidden = false;
+  const hasPrerenderedData = document.body.dataset.seoPrerendered === 'true';
+  detailLoading.hidden = hasPrerenderedData;
   detailLoading.textContent = initialDetailLoading;
   detailLoading.setAttribute('aria-busy', 'true');
   try {
@@ -441,6 +442,7 @@ async function load() {
     detailLoading.hidden = true;
     $('#detail').hidden = false;
   } catch {
+    detailLoading.hidden = false;
     const message = detailLoadCopy();
     detailLoading.innerHTML = `<b>${esc(message.unavailable)}</b><p>${esc(message.retryLater)}</p><button id="judge-detail-retry" class="detail-retry" type="button">${esc(message.retry)}</button>`;
     $('#judge-detail-retry').addEventListener('click', load);

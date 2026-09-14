@@ -24,6 +24,19 @@ assert.match(zhKeyword, /FAQPage/, 'Chinese keyword page must contain explanator
 
 const rootHome = read('index.html');
 const enHome = read('en/index.html');
+for (const prefix of ['', ...locales]) {
+  const home = read(join(prefix, 'index.html'));
+  const base = prefix ? `/${prefix}` : '';
+  assert.equal((home.match(/<h1\b/g) || []).length, 1, `${base}/ needs exactly one primary heading`);
+  assert.ok((home.match(/class="judge-profile-link"/g) || []).length >= 100, `${base}/ needs crawlable initial judge profiles`);
+  assert.ok(home.includes(`href="${base}/courts/`), `${base}/ needs localized court navigation`);
+  assert.doesNotMatch(home, /id="(?:national-rate|court-count|judge-count|decision-count)"[^>]*>—</, `${base}/ needs actual statistics`);
+  const seed = JSON.parse(home.match(/id="judge-directory-seed">([\s\S]*?)<\/script>/)?.[1] || 'null');
+  assert.ok(seed?.length >= 1000, `${base}/ must keep its full judge directory searchable if the API fails`);
+  const courts = read(join(prefix, 'courts', 'index.html'));
+  assert.ok((courts.match(/class="crow court-crow outcome-row"/g) || []).length >= 60, `${base}/courts/ must render court data`);
+  assert.match(courts, /FY 2026 · 2025-10-01/, 'Fiscal-year statistics must show their reporting period');
+}
 assert.match(rootHome, /href="\/asylum-judge-approval-rate\//, 'Chinese home must internally link to the core approval-rate landing page');
 assert.match(enHome, /href="\/en\/asylum-judge-rating\//, 'English home must internally link to the asylum-judge-rating landing page');
 assert.match(rootHome, /language-route-hardening\.js/, 'Chinese home must load language-route hardening');
@@ -57,6 +70,11 @@ function firstProfile(prefix) {
 
 const zhJudge = firstProfile('');
 const enJudge = firstProfile('en');
+for (const html of [zhJudge, enJudge]) {
+  assert.match(html, /id="detail-loading"[^>]*hidden><\/div>/, 'Prerendering must hide the loader despite extra template attributes');
+  assert.doesNotMatch(html, /<div id="detail" hidden>/, 'Real profile data must be visible without JavaScript');
+  assert.match(html, /id="judge-source"[^>]*>[\s\S]*?\d{4}-\d{2}-\d{2}/, 'Judge profile must identify its data period');
+}
 assert.doesNotMatch(zhJudge, /TRRB · EOIR JUDGE PROFILE/, 'Chinese AsylumJudge profiles must not expose the TRRB profile brand');
 assert.doesNotMatch(enJudge, /TRRB · EOIR JUDGE PROFILE/, 'English AsylumJudge profiles must not expose the TRRB profile brand');
 assert.match(zhJudge, /ASYLUMJUDGE · IMMIGRATION JUDGE PROFILE/, 'Chinese judge profile must use AsylumJudge branding');

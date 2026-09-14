@@ -22,6 +22,7 @@
     const routes = {
       "重要新闻": "/important-news",
       "热门头条": "/hot-headlines",
+      "中国热门头条": "/hot-headlines",
       "美国时政": "/us-politics",
       "美国警情": "/us-crime",
       "中国官场": "/china-officialdom",
@@ -119,6 +120,7 @@
 
   async function rebuildArchiveNavigationAndRelated() {
     const richIndex = await ensureRichArticleIndex();
+    if (root.dataset.relatedOwner === "continuous") return;
     const list = (Array.isArray(richIndex) ? richIndex : []).filter((item) => item && item.id && item.title);
     const currentId = new URLSearchParams(window.location.search).get("id") || "";
     const currentTitle = root.querySelector(".article-header h1")?.textContent?.trim() || "";

@@ -2,15 +2,15 @@
   "version": 1,
   "site": "huarengongzuo",
   "origin": "https://huarengongzuo.com",
-  "generated_at": "2026-09-13T00:19:38.707Z",
+  "generated_at": "2026-09-14T16:01:37.703617+00:00",
   "baseline": "previous-complete-snapshot",
   "dispatch": false,
   "tasks": [
     {
-      "id": "dc2fa799a75644719972354bc44a1d2eb2843b95b49659f921ac3c75be78442c",
+      "id": "1b1118b3ee6e117cda0cfb4f1c9f66b9e5e7904b6f1d938c18b4092d3b61bd26",
       "action": "update",
       "url": "https://huarengongzuo.com/",
-      "lastmod": null
+      "lastmod": "2026-09-14"
     },
     {
       "id": "47f1c14b2b04e5821c271fb325277d68bbbcd1d8870becfd31234e027f4ec45e",

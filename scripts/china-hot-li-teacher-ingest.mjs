@@ -117,6 +117,10 @@ function isOriginalPost(tweet) {
 export function isSourceSocialReport(title, content = "") {
   const text = cleanText(`${title}\n${content}`, 20_000);
   const foreign = /美国|美國|纽约|紐約|加州|洛杉矶|特朗普|川普|白宫|白宮|日本|东京|東京|韩国|韓國|首尔|首爾|朝鲜|朝鮮|英国|英國|伦敦|倫敦|德国|德國|法国|法國|加拿大|澳大利亚|澳洲|新西兰|新西蘭|俄罗斯|俄羅斯|乌克兰|烏克蘭|印度|越南|泰国|泰國|缅甸|緬甸|柬埔寨|新加坡|马来西亚|馬來西亞|以色列|伊朗|台湾|臺灣|台灣|香港|澳门|澳門|\b(?:ICE|FBI|DHS|OpenAI|Anthropic)\b/i;
+  // The section also covers Chinese communities abroad, Hong Kong and
+  // China-related business/consumer reporting, not just named mainland cities.
+  const related = /华人|華人|香港政府|港府|中国企业|中國企業|国产手机|國產手機|胖东来|胖東來|于东来|於東來|南通中集|红领巾|紅領巾|凤凰记者|鳳凰記者|电诈园|電詐園/;
+  if (related.test(text)) return true;
   if (foreign.test(text)) return false;
   const subject = /学生|學生|学校|學校|高中|中学|中學|大学|大學|高校|校园|校園|老师|教師|教师|校方|教学楼|教學樓|宿舍|工作单位|工作單位|员工|員工|工人|工厂|工廠|打工|铁饭碗|鐵飯碗|业主|業主|居民|村民|小区|小區|医院|醫院|患者/;
   const event = /发帖|發帖|分享|视频|視頻|拍摄|拍攝|反映|投诉|投訴|举报|舉報|通知|通报|通報|回应|回應|规定|規定|限制|辞职|辭職|辞退|辭退|欠薪|讨薪|討薪|罢工|罷工|维权|維權|冲突|衝突|封控|栏杆|欄杆|铁栅|鐵柵/;

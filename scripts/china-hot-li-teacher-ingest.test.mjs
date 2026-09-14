@@ -272,3 +272,17 @@ test('社会事件生成稿同样接受真实主体，不强迫补造中国地�
   assert.equal(calls, 1);
   assert.doesNotMatch(article.content, /中国|北京|上海/);
 });
+
+
+test('中国企业、消费、香港和海外华人报道属于栏目范围', () => {
+  for (const text of [
+    '胖东来创始人于东来发文称新员工为学员性质，合同四年。',
+    '凤凰记者再访奥斯马电诈园，报道园区运作方式。',
+    '国产手机弹窗广告使老人无法联系家人，网友上前帮忙。',
+    '视频中戴红领巾的女孩坐在布满尖状物的书桌前。',
+    '在德华人反映法兰克福汽配展中餐盒饭疑似食物中毒。',
+    '香港政府回应支联会判刑相关评论。',
+    '博主晒出带有南通中集标签的工资条，累计出勤352小时。'
+  ]) assert.equal(qualifyTweet({ id: 'china-related', text }).accepted, true, text);
+  assert.equal(qualifyTweet({ id: 'unrelated', text: '德国一家餐厅宣布调整营业时间。' }).accepted, false);
+});

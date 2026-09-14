@@ -97,6 +97,9 @@ jobs:
         id: deploy
         continue-on-error: true
         shell: bash
+        env:
+          SUPABASE_URL: https://fwiznbpsqkfgkvyznebz.supabase.co
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
         run: |
           set -euo pipefail
 
@@ -204,6 +207,20 @@ jobs:
             -H 'Content-Type: application/json' \
             "https://api.github.com/repos/$GITHUB_REPOSITORY/statuses/$DEPLOY_SHA" \
             -d '{"state":"success","context":"trrb/production-accepted","description":"Production SHA deployed and accepted"}' >/dev/null
+
+      - name: 标记生产验收失败
+        if: ${{ failure() && env.DEPLOY_SHA != '' && env.SKIP_DEPLOY != 'true' }}
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          curl -fsS -X POST \
+            -H "Authorization: Bearer $GITHUB_TOKEN" \
+            -H 'Accept: application/vnd.github+json' \
+            -H 'Content-Type: application/json' \
+            "https://api.github.com/repos/$GITHUB_REPOSITORY/statuses/$DEPLOY_SHA" \
+            -d '{"state":"failure","context":"trrb/production-accepted","description":"Production deployment or exact-SHA acceptance failed; see workflow logs"}' >/dev/null
 
       - name: 同一 SHA 已部署时跳过
         if: env.SKIP_DEPLOY == 'true'

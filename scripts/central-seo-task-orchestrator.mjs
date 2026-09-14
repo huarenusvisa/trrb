@@ -87,7 +87,10 @@ async function persistQueue(tasks, sourceBySite) {
       source_id: sourceBySite.get(task.site),
       updated_at: new Date().toISOString()
     }));
-    const response = await fetch(`${base}/rest/v1/seo_task_queue?on_conflict=task_id`, {
+    // Site manifests may regenerate their IDs for an unchanged URL. Match the
+    // database's semantic unique key, while preserving status/attempt/lock fields
+    // by omitting them from this intake-only update.
+    const response = await fetch(`${base}/rest/v1/seo_task_queue?on_conflict=site_key,action,url`, {
       method: 'POST', headers, body: JSON.stringify(rows), signal: AbortSignal.timeout(30000)
     });
     if (!response.ok) throw new Error(`central queue upsert failed: HTTP ${response.status}: ${(await response.text()).slice(0, 300)}`);

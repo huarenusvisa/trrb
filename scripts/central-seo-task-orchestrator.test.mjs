@@ -78,6 +78,51 @@ await assert.rejects(
   /expanded task_id mismatch/,
   'stale or mixed build artifacts must still be rejected'
 );
+mismatched.task_id = 'aj-1';
+await writeFile(file('asylum-expanded.json'), JSON.stringify(mismatched));
+
+// Reproduce a historical row with the same site/action/URL but a different ID.
+// Intake must update it without resetting its submission status or retry state.
+const originalFetch = globalThis.fetch;
+const originalBase = process.env.SUPABASE_URL;
+const originalKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+const semanticKey = (row) => `${row.site_key}\n${row.action}\n${row.url}`;
+const oldRow = { task_id: 'previous-id', site_key: 'huarengongzuo', action: 'update', url: 'https://huarengongzuo.com/jobs/', status: 'submitted', attempts: 3, lock_owner: null };
+const database = new Map([[semanticKey(oldRow), oldRow]]);
+try {
+  process.env.SUPABASE_URL = 'https://queue.test';
+  process.env.SUPABASE_SERVICE_ROLE_KEY = 'fixture-only';
+  globalThis.fetch = async (input, options) => {
+    const request = new URL(input);
+    assert.equal(request.origin, 'https://queue.test', 'intake must not submit to search engines');
+    if (request.searchParams.get('on_conflict') !== 'site_key,action,url') {
+      return new Response('duplicate key value violates seo_task_queue_site_key_action_url_key', { status: 409 });
+    }
+    for (const row of JSON.parse(options.body)) {
+      for (const field of ['status', 'attempts', 'lock_owner', 'locked_until', 'created_at']) {
+        assert.equal(Object.hasOwn(row, field), false, `intake must preserve ${field}`);
+      }
+      const key = semanticKey(row);
+      database.set(key, { ...(database.get(key) || { status: 'pending', attempts: 0 }), ...row });
+    }
+    return new Response(null, { status: 201 });
+  };
+  for (let pass = 0; pass < 2; pass++) {
+    const jobs = JSON.parse(await readFile(file('jobs.json'), 'utf8'));
+    jobs.tasks[1].id = `job-update-generation-${pass}`;
+    await writeFile(file('jobs.json'), JSON.stringify(jobs));
+    const result = await orchestrate({ configPath: file('config.json'), reportPath: file('persist-report.json'), planPath: file('persist-plan.json'), dryRun: true, persist: true });
+    assert.equal(result.report.persisted, 5);
+    assert.equal(result.report.external_submission_performed, false);
+    assert.equal(database.size, 5, 'repeat intake must not duplicate semantic tasks');
+    assert.equal(database.get(semanticKey(oldRow)).status, 'submitted');
+    assert.equal(database.get(semanticKey(oldRow)).attempts, 3);
+  }
+} finally {
+  globalThis.fetch = originalFetch;
+  if (originalBase === undefined) delete process.env.SUPABASE_URL; else process.env.SUPABASE_URL = originalBase;
+  if (originalKey === undefined) delete process.env.SUPABASE_SERVICE_ROLE_KEY; else process.env.SUPABASE_SERVICE_ROLE_KEY = originalKey;
+}
 const jobsWorkflow = await readFile('.github/workflows/huarengongzuo-google-jobs-submit.yml', 'utf8');
 assert.doesNotMatch(centralWorkflow, /node scripts\/submit-asylumjudge-indexnow\.mjs/, 'AsylumJudge must not bypass the central task pool');
 assert.doesNotMatch(jobsWorkflow, /workflow_run:|schedule:/, 'Huaren Gongzuo must not schedule an independent SEO robot');

@@ -16,7 +16,8 @@
   function category(job) {
     // Correct clear title-level mismatches locally; leave the shared source untouched.
     const title = String(job.title || '');
-    if (/点心师|點心師|寿司|壽司|煮面|煮麵|炒锅|炒鍋/.test(title)) return 'restaurant';
+    if (/点心|點心|寿司|壽司|煮面|煮麵|炒锅|炒鍋/.test(title)) return 'restaurant';
+    if (/卡车司机|卡車司機|转运.*司机|轉運.*司機|truck driver/i.test(title)) return 'truck-driver';
     if (/仓库|倉庫|海外仓|海外倉|warehouse/i.test(title) && !/餐馆|餐館|餐厅|餐廳|厨|廚|直播|主播|销售|銷售|会计|會計|人事|HRBP/i.test(title)) return 'logistics-warehouse';
     return job.category_slug || 'other';
   }
@@ -29,7 +30,7 @@
     doc.querySelectorAll('script,style').forEach((node) => node.remove());
     doc.querySelectorAll('br').forEach((node) => node.replaceWith('\n'));
     doc.querySelectorAll('p,div,li,h1,h2,h3').forEach((node) => node.append('\n'));
-    return (doc.body.textContent || '').trim();
+    return (doc.body.textContent || '').replace(/\s*(【[^】]+】)\s*/g, '\n\n$1\n').replace(/\s+[•◆]\s*/g, '\n• ').trim();
   }
   function highlights(job) {
     const text = `${job.title || ''}\n${description(job)}`;

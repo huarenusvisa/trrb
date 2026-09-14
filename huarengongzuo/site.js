@@ -1,4 +1,5 @@
 (() => {
+  const searchPage = !!document.getElementById('jobs-results');
   const categoryNames = {restaurant:'餐饮','beauty-nail':'美甲/美容',massage:'按摩',construction:'装修/建筑','logistics-warehouse':'物流/仓库','truck-driver':'卡车/司机','retail-grocery':'超市/零售','home-care':'家政/护理',legal:'律师/法律','accounting-finance':'会计/金融','real-estate':'地产',education:'教育','it-tech':'IT/科技','office-admin':'办公室/行政',sales:'销售',other:'其他'};
   const employmentNames = {full_time:'全职',part_time:'兼职',contract:'合同',temporary:'临时',internship:'实习',unspecified:''};
   const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (ch) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[ch]));
@@ -265,10 +266,12 @@
       $('jobs-load-status').textContent = '岗位暂时未能载入，请点击“显示更多岗位”重试。';
     } finally {loading = false;render();}
   }
+  if (!searchPage) {
   const loadStatus = document.createElement('p');
   loadStatus.id = 'jobs-load-status';
   loadStatus.setAttribute('role', 'status');
   $('show-more').parentElement.append(loadStatus);
+  }
   document.addEventListener('click', (event) => {
     if (!(event.target instanceof Element)) return;
     const copy = event.target.closest('[data-copy-job]');
@@ -279,6 +282,12 @@
       return;
     }
     const chip = event.target.closest('[data-category]');
+    if (chip && searchPage) {
+      $('category').value = chip.dataset.category;
+      $('q').value = '';
+      $('jobs-search-form').requestSubmit();
+      return;
+    }
     if (chip) {
       selectedCategory = chip.dataset.category;
       $('job-q').value = '';
@@ -306,6 +315,11 @@
     openDetail(job, link || article.querySelector('[data-job-open]'));
   });
 
+  if (searchPage) {
+    window.HWJobPreview = {remember, feed, card};
+    window.dispatchEvent(new Event('hw:preview-ready'));
+    return;
+  }
   document.getElementById('job-search').addEventListener('submit', (event) => {event.preventDefault();selectedCategory = '';visible = 12;syncSearchUrl();render();document.getElementById('latest-jobs').scrollIntoView({behavior:'smooth'});});
   document.querySelectorAll('[data-place]').forEach((button) => button.addEventListener('click', () => {document.getElementById('place-q').value = button.dataset.place;visible = 12;syncSearchUrl();render();document.getElementById('latest-jobs').scrollIntoView({behavior:'smooth'});}));
   document.getElementById('show-more').addEventListener('click', async () => {visible += 12;if (filteredJobs().length < visible && nextOffset !== null) await loadMore();render();});

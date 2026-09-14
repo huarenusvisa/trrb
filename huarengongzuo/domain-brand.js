@@ -1,6 +1,14 @@
 (() => {
   if (!/^(www\.)?huarengongzuo\.com$/i.test(location.hostname)) return;
   document.documentElement.classList.add('huarengongzuo-domain');
+  if (/^\/jobs\/(?:index\.html)?$/.test(location.pathname)) {
+    const css = document.createElement('link');
+    css.rel = 'stylesheet'; css.href = '/huarengongzuo/jobs-preview.css?v=20260914-1';
+    document.head.appendChild(css);
+    const adapter = document.createElement('script');
+    adapter.src = '/huarengongzuo/jobs-preview.js?v=20260914-1';
+    document.head.appendChild(adapter);
+  }
   const canonicalPath = location.pathname === '/jobs/index.html' ? '/jobs/' : location.pathname;
   let canonical = document.querySelector('link[rel="canonical"]');
   if (!canonical) { canonical = document.createElement('link'); canonical.rel = 'canonical'; document.head.appendChild(canonical); }

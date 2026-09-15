@@ -18,8 +18,8 @@ exports.handler = async (event) => {
         rest('profiles', { query: { select: 'id,display_name,avatar_key,role,status,created_at,updated_at', order: 'created_at.desc', limit: '200' } }),
         optionalRest('comments', { query: { select: 'id,article_id,user_id,parent_id,content,status,is_pinned,created_at', order: 'created_at.desc', limit: '200' } }),
         optionalRest('comment_reports', { query: { select: 'id,comment_id,reporter_user_id,reason,status,created_at,reviewed_at', order: 'created_at.desc', limit: '200' } }),
-        optionalRest('community_posts', { query: { select: 'id,user_id,category,title,content,status,moderation_state,risk_level,is_indexable,created_at', order: 'created_at.desc', limit: '200' } }),
-        optionalRest('community_post_comments', { query: { select: 'id,post_id,user_id,content,status,risk_level,created_at', order: 'created_at.desc', limit: '200' } }),
+        optionalRest('community_posts', { query: { select: 'id,user_id,category,title,content,status,moderation_state,risk_level,risk_flags,is_indexable,published_at,created_at,updated_at,profiles!community_posts_user_id_fkey(display_name,avatar_key)', order: 'created_at.desc', limit: '200' } }),
+        optionalRest('community_post_comments', { query: { select: 'id,post_id,user_id,content,status,risk_level,created_at,updated_at,profiles!community_post_comments_user_id_fkey(display_name,avatar_key)', order: 'created_at.desc', limit: '200' } }),
         optionalRest('community_post_reports', { query: { select: 'id,post_id,comment_id,reporter_user_id,reason,status,created_at,reviewed_at', order: 'created_at.desc', limit: '200' } })
       ]);
       return json(200, { ok: true, role: admin.role, users: users || [], comments: comments || [], reports: reports || [], posts: posts || [], postComments: postComments || [], postReports: postReports || [] });

@@ -1,11 +1,26 @@
 const assert = require('node:assert/strict');
 const test = require('node:test');
-const { moderation, clean, commentCountAfterUnpublish, withViewerLikeState, withViewerCommentLikeState, resolveLikeMutation, feedPagination } = require('./community-api')._test;
+const { moderation, untrustedLinkCount, clean, commentCountAfterUnpublish, withViewerLikeState, withViewerCommentLikeState, resolveLikeMutation, feedPagination } = require('./community-api')._test;
 
 test('ordinary USCIS experience passes basic rules', () => {
   const result = moderation('uscis_interview', '纽约庇护面谈经历', '我在纽约办公室完成面谈，分享当天材料准备和流程。');
   assert.equal(result.status, 'published');
   assert.equal(result.is_indexable, false);
+});
+
+test('official government payment guidance publishes without manual review', () => {
+  const title = '庇护年费缴纳窗口 https://epay.eoir.justice.gov/';
+  const content = '法庭系统缴费网站已经开通。先访问 https://epay.eoir.justice.gov/，再进入 https://epay.eoir.justice.gov/index 完成付款。';
+  const result = moderation('immigration_help', title, content);
+  assert.equal(untrustedLinkCount(`${title}\n${content}`), 0);
+  assert.equal(result.status, 'published');
+  assert.deepEqual(result.risk_flags, []);
+});
+
+test('repeated non-government links still require review', () => {
+  const result = moderation('immigration_help', '请查看这些链接', 'https://a.example.com/a https://b.example.com/b https://c.example.com/c');
+  assert.equal(result.status, 'pending');
+  assert.ok(result.risk_flags.includes('link_flood'));
 });
 
 test('lawyer reviews always require manual review', () => {

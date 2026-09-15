@@ -76,6 +76,19 @@ async function ensureProfile(user) {
   return profile;
 }
 
+function untrustedLinkCount(value) {
+  const urls = String(value || '').match(/https?:\/\/[^\s<>"'）)\]]+/gi) || [];
+  const untrusted = new Set(urls.filter((raw) => {
+    try {
+      const host = new URL(raw).hostname.toLowerCase().replace(/\.$/, '');
+      return !(host.endsWith('.gov') || host.endsWith('.mil'));
+    } catch {
+      return true;
+    }
+  }));
+  return untrusted.size;
+}
+
 function moderation(category, title, content) {
   const combined = `${title}\n${content}`;
   if (BLOCKED.some((rule) => rule.test(combined))) {
@@ -86,7 +99,7 @@ function moderation(category, title, content) {
   const flags = [];
   if (HIGH_REVIEW.has(category)) flags.push('category_manual_review');
   if (REVIEW.some((rule) => rule.test(combined))) flags.push('sensitive_claim_or_private_data');
-  if ((combined.match(/https?:\/\//gi) || []).length > 2) flags.push('link_flood');
+  if (untrustedLinkCount(combined) > 2) flags.push('link_flood');
   const pending = flags.length > 0;
   return {
     status: pending ? 'pending' : 'published',
@@ -423,4 +436,4 @@ exports.handler = async (event) => {
   }
 };
 
-exports._test = { moderation, clean, commentCountAfterUnpublish, withViewerLikeState, withViewerCommentLikeState, resolveLikeMutation, feedPagination };
+exports._test = { moderation, untrustedLinkCount, clean, commentCountAfterUnpublish, withViewerLikeState, withViewerCommentLikeState, resolveLikeMutation, feedPagination };

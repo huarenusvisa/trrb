@@ -14,6 +14,7 @@
   <link rel="stylesheet" href="./article-translations.css?v=20260903-v1" />
   <link rel="stylesheet" href="./account-recovery.css?v=20260910-v1" />
   <link rel="stylesheet" href="./property-manager.css?v=20260913-v1" />
+  <link rel="stylesheet" href="./community-center.css?v=20260915-v2" />
 </head>
 <body>
   <div id="app">
@@ -45,7 +46,62 @@
         <section class="page hidden" id="asylumjudge-review-page"><div class="panel"><div class="category-form-head"><div><h3>AsylumJudge 庇护内容审核</h3><p>USCIS低置信度内容及全部BIA先例判决先在此人工审核。发布后自动同步到唐人日报电脑端、手机端和 AsylumJudge.com。</p></div><button id="refresh-asylum-review">刷新</button></div><div id="asylum-review-message" class="message">正在读取待审核内容…</div></div><div class="table-wrap"><table><thead><tr><th>候选内容</th><th>类型与置信度</th><th>审核依据</th><th>操作</th></tr></thead><tbody id="asylum-review-body"></tbody></table></div></section>
         <section class="page hidden publisher-page" id="new-article-page"><form class="editor-form publisher-form" id="article-form"><div class="publisher-header-grid"><div><label for="article-title">标题</label><input id="article-title" required placeholder="选择AI推荐标题后仍可人工修改" /></div><div><label for="article-category">栏目</label><select id="article-category"></select></div></div><section class="title-assistant-card"><div class="publisher-section-heading"><div><strong>AI标题推荐</strong><span id="article-title-status">正文输入后自动生成3个标题。</span></div><button type="button" class="secondary-btn compact-btn" id="refresh-title-suggestions">重新推荐</button></div><div class="title-suggestions" id="article-title-suggestions"></div></section><div class="publisher-workspace"><section class="publisher-copy-column"><label for="article-content">正文</label><textarea id="article-content" rows="16" required></textarea><div class="auto-seo-note"><b>SEO全自动</b><span>系统自动生成摘要和关键词。</span></div></section><aside class="publisher-side-column"><section class="publisher-card"><label>封面图片</label><div id="article-cover-paste-zone"><input id="article-cover-file" type="file" accept="image/*" /><div id="article-cover-preview-wrap" class="hidden"><img id="article-cover-preview" alt="" /><button type="button" id="article-cover-remove">移除</button></div><div id="article-cover-progress" class="hidden"></div></div><input id="article-cover" type="url" placeholder="https://..." /><label><input id="auto-ai-cover" type="checkbox" /> 无图时尝试生成AI封面（可选，不影响发布）</label><button type="button" id="generate-ai-cover">生成AI封面</button><div id="ai-cover-progress" class="hidden"></div></section><section class="publisher-card"><label>作者</label><input id="article-author" value="Tang Ren Daily" /><label>状态</label><select id="article-status"><option value="published">立即发布</option><option value="draft">保存草稿</option><option value="hidden">隐藏</option></select><button type="submit" id="article-submit">发布文章</button><div id="article-message"></div></section></aside></div><div class="hidden"><button id="generate-summary"></button><textarea id="article-summary"></textarea><button id="generate-seo"></button><input id="article-seo-keywords" /></div></form></section>
         <section class="page hidden" id="categories-page"><div class="category-layout"><form class="panel category-form" id="category-form"><input id="category-id" type="hidden" /><div class="category-form-head"><div><h3 id="category-form-title">新增栏目</h3><p>栏目保存后会自动出现在发布文章的栏目选择中。</p></div><button type="button" class="secondary-btn" id="category-reset">清空</button></div><label for="category-name">栏目名称</label><input id="category-name" maxlength="60" required placeholder="例如：ICE执法追踪" /><label for="category-slug">栏目网址</label><div class="slug-field"><span>trrb.net/</span><input id="category-slug" maxlength="80" required placeholder="ice" pattern="[a-z0-9-]+" /></div><label for="category-sort">排序数字</label><input id="category-sort" type="number" min="0" max="9999" value="100" /><label class="category-switch"><input id="category-active" type="checkbox" checked /><span>启用栏目</span></label><button type="submit" id="category-submit">保存栏目</button><div id="category-message" class="message"></div></form><section class="panel category-list-panel"><div class="category-form-head"><div><h3>现有栏目</h3><p>停用后不会出现在发布下拉菜单；删除前系统会检查是否已有文章使用。</p></div><div><button id="apply-standard-categories" type="button" class="secondary-btn">应用标准栏目</button> <button id="refresh-categories" type="button">刷新</button></div></div><div id="category-standard-note" class="message"></div><div id="category-list" class="category-list"></div></section></div></section>
-        <section class="page hidden" id="community-page"><div class="panel"><div class="category-form-head"><div><h3>用户与社区管理中心</h3><p>统一管理社区帖子、评论、举报和用户。律师评价、爆料及高风险内容优先人工审核。</p></div><button id="refresh-community">刷新</button></div><div id="community-message" class="message"></div></div><div class="panel"><h3>社区帖子审核</h3><div class="table-wrap"><table><thead><tr><th>板块</th><th>内容</th><th>状态/风险</th><th>时间</th><th>操作</th></tr></thead><tbody id="community-posts-body"></tbody></table></div></div><div class="panel"><h3>社区评论审核</h3><div class="table-wrap"><table><thead><tr><th>帖子ID</th><th>评论</th><th>状态/风险</th><th>时间</th><th>操作</th></tr></thead><tbody id="community-post-comments-body"></tbody></table></div></div><div class="panel"><h3>社区举报</h3><div class="table-wrap"><table><thead><tr><th>帖子ID</th><th>理由</th><th>状态</th><th>时间</th><th>操作</th></tr></thead><tbody id="community-post-reports-body"></tbody></table></div></div><div class="panel"><h3>用户管理</h3><div class="table-wrap"><table><thead><tr><th>昵称</th><th>角色</th><th>状态</th><th>注册时间</th><th>操作</th></tr></thead><tbody id="community-users-body"></tbody></table></div></div><div class="panel"><h3>新闻评论（兼容区）</h3><div class="table-wrap"><table><thead><tr><th>用户</th><th>评论</th><th>状态</th><th>时间</th><th>操作</th></tr></thead><tbody id="community-comments-body"></tbody></table></div></div><div class="panel"><h3>新闻评论举报（兼容区）</h3><div class="table-wrap"><table><thead><tr><th>评论ID</th><th>理由</th><th>状态</th><th>时间</th><th>操作</th></tr></thead><tbody id="community-reports-body"></tbody></table></div></div></section>
+        <section class="page hidden community-console" id="community-page">
+          <header class="community-hero">
+            <div>
+              <span class="community-eyebrow">COMMUNITY OPERATIONS</span>
+              <h3>用户与社区管理中心</h3>
+              <p>普通互助内容自动发布；律师评价、爆料、隐私信息及高风险指控进入人工审核。</p>
+            </div>
+            <div class="community-hero-actions">
+              <span id="community-last-sync">尚未同步</span>
+              <button id="refresh-community" type="button">刷新数据</button>
+            </div>
+          </header>
+          <div class="community-stats" aria-label="社区数据概览">
+            <article><span>社区帖子</span><strong id="community-stat-posts">0</strong><small>全部状态</small></article>
+            <article class="is-success"><span>公开发布</span><strong id="community-stat-published">0</strong><small>前台可见</small></article>
+            <article class="is-warning"><span>待人工处理</span><strong id="community-stat-pending">0</strong><small>帖子与评论</small></article>
+            <article class="is-danger"><span>未处理举报</span><strong id="community-stat-reports">0</strong><small>社区举报</small></article>
+            <article><span>注册用户</span><strong id="community-stat-users">0</strong><small>统一账号</small></article>
+          </div>
+          <div class="community-toolbar">
+            <div class="community-tabs" role="tablist" aria-label="管理内容类型">
+              <button type="button" class="active" data-community-view="posts">帖子 <span id="community-tab-posts">0</span></button>
+              <button type="button" data-community-view="post-comments">社区评论 <span id="community-tab-post-comments">0</span></button>
+              <button type="button" data-community-view="post-reports">举报 <span id="community-tab-post-reports">0</span></button>
+              <button type="button" data-community-view="users">用户 <span id="community-tab-users">0</span></button>
+              <button type="button" data-community-view="news-comments">新闻评论 <span id="community-tab-news-comments">0</span></button>
+              <button type="button" data-community-view="news-reports">新闻举报 <span id="community-tab-news-reports">0</span></button>
+            </div>
+            <label class="community-search"><span>搜索</span><input id="community-search" type="search" placeholder="搜索标题、内容、用户或编号" autocomplete="off" /></label>
+          </div>
+          <div id="community-message" class="community-message" role="status">进入本页后自动同步社区数据。</div>
+          <section class="community-workspace" data-community-section="posts">
+            <div class="community-section-head"><div><h3>社区帖子</h3><p>普通低风险内容自动公开，仅处理真正需要审核或下架的内容。</p></div><span class="community-section-count" id="community-count-posts">0 条</span></div>
+            <div class="table-wrap community-table"><table><thead><tr><th>板块与作者</th><th>内容摘要</th><th>状态与风险</th><th>时间</th><th>快捷操作</th></tr></thead><tbody id="community-posts-body"></tbody></table></div>
+          </section>
+          <section class="community-workspace hidden" data-community-section="post-comments">
+            <div class="community-section-head"><div><h3>社区评论</h3><p>查看帖子回复及需要人工处理的评论。</p></div><span class="community-section-count" id="community-count-post-comments">0 条</span></div>
+            <div class="table-wrap community-table"><table><thead><tr><th>用户与帖子</th><th>评论内容</th><th>状态与风险</th><th>时间</th><th>快捷操作</th></tr></thead><tbody id="community-post-comments-body"></tbody></table></div>
+          </section>
+          <section class="community-workspace hidden" data-community-section="post-reports">
+            <div class="community-section-head"><div><h3>社区举报</h3><p>集中处理帖子和社区评论举报。</p></div><span class="community-section-count" id="community-count-post-reports">0 条</span></div>
+            <div class="table-wrap community-table"><table><thead><tr><th>举报对象</th><th>举报理由</th><th>状态</th><th>时间</th><th>快捷操作</th></tr></thead><tbody id="community-post-reports-body"></tbody></table></div>
+          </section>
+          <section class="community-workspace hidden" data-community-section="users">
+            <div class="community-section-head"><div><h3>用户管理</h3><p>统一查看账号角色、状态和注册时间。</p></div><span class="community-section-count" id="community-count-users">0 位</span></div>
+            <div class="table-wrap community-table"><table><thead><tr><th>用户</th><th>角色</th><th>状态</th><th>注册时间</th><th>快捷操作</th></tr></thead><tbody id="community-users-body"></tbody></table></div>
+          </section>
+          <section class="community-workspace hidden" data-community-section="news-comments">
+            <div class="community-section-head"><div><h3>新闻评论</h3><p>兼容管理唐人日报新闻正文下的评论。</p></div><span class="community-section-count" id="community-count-news-comments">0 条</span></div>
+            <div class="table-wrap community-table"><table><thead><tr><th>用户</th><th>评论内容</th><th>状态</th><th>时间</th><th>快捷操作</th></tr></thead><tbody id="community-comments-body"></tbody></table></div>
+          </section>
+          <section class="community-workspace hidden" data-community-section="news-reports">
+            <div class="community-section-head"><div><h3>新闻评论举报</h3><p>兼容管理新闻评论举报记录。</p></div><span class="community-section-count" id="community-count-news-reports">0 条</span></div>
+            <div class="table-wrap community-table"><table><thead><tr><th>评论编号</th><th>举报理由</th><th>状态</th><th>时间</th><th>快捷操作</th></tr></thead><tbody id="community-reports-body"></tbody></table></div>
+          </section>
+        </section>
         <section class="page hidden" id="account-recovery-page">
           <div class="panel account-recovery-intro">
             <div>
@@ -136,7 +192,7 @@
   <script src="./category-manager.js?v=20260724-v3"></script>
   <script src="./category-policy-guard.js?v=20260725-1"></script>
   <script src="./ice-status-explainer.js?v=20260725-1"></script>
-  <script src="./community-center.js?v=20260825-community-v1"></script>
+  <script src="./community-center.js?v=20260915-community-v2"></script>
   <script src="./account-recovery.js?v=20260910-v2"></script>
   <script src="./jobs-manager.js?v=20260821-core-access"></script>
   <script src="./jobs-google-quality.js?v=20260831-quality-v1"></script>

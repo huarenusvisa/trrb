@@ -386,7 +386,9 @@ function normalizeAtsCandidate(source, job) {
     application_url: applicationUrl, source_published_at: sourceDate,
   };
   const errors = [];
-  if (!location && !/remote|united states|usa/i.test(String(locationText || ""))) errors.push("no_verifiable_us_location");
+  // Public listings require a state and city even for remote work. Keep
+  // incomplete source records in raw storage instead of failing the insert.
+  if (!location) errors.push("no_verifiable_us_location");
   if (!safeHttpUrl(applicationUrl)) errors.push("missing_official_application_url");
   return { sourceKey: source.key, externalId: String(job.id), url: applicationUrl, payload, errors, payloadHash: sha256(payload) };
 }
@@ -444,7 +446,11 @@ async function storeCandidate(candidate) {
   let rawId;
   if (existingRaw?.[0]) {
     rawId = existingRaw[0].id;
-    await rest("job_ingest_raw", `id=eq.${rawId}`, { method: "PATCH", body: { fetched_at: NOW_ISO, last_seen_at: NOW_ISO } });
+    await rest("job_ingest_raw", `id=eq.${rawId}`, { method: "PATCH", body: {
+      fetched_at: NOW_ISO, last_seen_at: NOW_ISO,
+      ...(candidate.errors.length && !existingRaw[0].normalized_job_listing_id
+        ? { stage: "rejected", validation_errors: candidate.errors } : {}),
+    } });
   } else {
     const inserted = await rest("job_ingest_raw", "", { method: "POST", body: {
       source_key: sourceKey,

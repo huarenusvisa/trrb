@@ -94,6 +94,16 @@ test("parses standard English US locations", () => {
   assert.deepEqual(pickEnglishLocation("Conway, SC"), { state_code: "SC", city: "Conway" });
 });
 
+test("holds remote postings that lack the database-required state and city", () => {
+  for (const location of ["Remote", "United States", "USA - Remote"]) {
+    const item = normalizeAtsCandidate({ type: "lever", key: "lever_test", board: "test" }, {
+      id: "remote", text: "Office Assistant", descriptionPlain: "Remote work", hostedUrl: "https://jobs.lever.co/test/remote",
+      categories: { location, commitment: "Full-time" },
+    });
+    assert.deepEqual(item.errors, ["no_verifiable_us_location"]);
+  }
+});
+
 test("keeps non-caregiver English jobs for the general jobs site", () => {
   const item = normalizeAtsCandidate(
     { type: "lever", key: "lever_test", board: "test" },

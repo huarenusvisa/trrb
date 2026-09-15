@@ -54,7 +54,7 @@ jobs:
       ICE_UNREVIEWED_EXPIRE_HOURS: "12"
       ICE_DEDUPE_HOURS: "720"
       ICE_HISTORICAL_FINGERPRINT_HOURS: "17520"
-      ICE_PUBLISHED_DEDUPE_DAYS: ${{ github.event_name == 'workflow_dispatch' && '730' || '30' }}
+      ICE_PUBLISHED_DEDUPE_DAYS: "30"
       ICE_STUCK_PROCESSING_MINUTES: "30"
       ICE_MAINTENANCE_BATCH_SIZE: "500"
     steps:

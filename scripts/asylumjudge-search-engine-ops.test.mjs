@@ -5,6 +5,8 @@ const ops = await readFile('scripts/asylumjudge-search-engine-ops.mjs', 'utf8');
 const workflow = await readFile('.github/workflows/seo-search-engine-ops.yml', 'utf8');
 
 assert.match(ops, /webmasters\.sitemaps\.submit\(\{ siteUrl: GSC_SITE_URL, feedpath: SITEMAP \}\)/, 'Google must receive the AsylumJudge sitemap through Search Console');
+assert.match(ops, /webmasters\.sites\.list\(\)/, 'Google property discovery must support URL-prefix and sc-domain properties');
+assert.match(ops, /sc-domain:asylumjudge\.com/, 'Google property discovery must recognize the AsylumJudge domain property');
 assert.match(ops, /bingCall\('SubmitFeed'/, 'Bing must receive the AsylumJudge sitemap');
 assert.match(ops, /bingCall\('SubmitUrlBatch'/, 'Bing must receive the priority URL batch');
 assert.match(ops, /\/eoir-case-status\//);

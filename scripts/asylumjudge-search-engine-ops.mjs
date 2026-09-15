@@ -4,7 +4,7 @@ import { collectGoogleSearchPerformance } from './google-search-performance.mjs'
 import { canonicalHref, hasNoindex } from './seo-live-page-policy.mjs';
 
 const ORIGIN = 'https://asylumjudge.com';
-const GSC_SITE_URL = process.env.ASYLUMJUDGE_GOOGLE_SEARCH_CONSOLE_SITE_URL || `${ORIGIN}/`;
+let GSC_SITE_URL = process.env.ASYLUMJUDGE_GOOGLE_SEARCH_CONSOLE_SITE_URL || `${ORIGIN}/`;
 const GSC_JSON = process.env.GOOGLE_SEARCH_CONSOLE_SERVICE_ACCOUNT_JSON || '';
 const BING_KEY = process.env.BING_WEBMASTER_API_KEY || '';
 const WRITE_MODE = /^(?:1|true|yes)$/i.test(process.env.SEO_WRITE_MODE || 'false');
@@ -99,9 +99,24 @@ async function googleOps() {
   const webmasters = google.webmasters({ version: 'v3', auth });
   const searchconsole = google.searchconsole({ version: 'v1', auth });
   report.google.configured = true;
-  report.google.site_url = GSC_SITE_URL;
   report.google.service_account_email = credentials.client_email || null;
   try {
+    const siteInventory = await webmasters.sites.list();
+    const availableSites = siteInventory.data.siteEntry || [];
+    const requested = GSC_SITE_URL;
+    const selected = availableSites.find((item) => item.siteUrl === requested)
+      || availableSites.find((item) => item.siteUrl === 'sc-domain:asylumjudge.com')
+      || availableSites.find((item) => {
+        try { return new URL(item.siteUrl).hostname.replace(/^www\./, '') === 'asylumjudge.com'; }
+        catch { return false; }
+      });
+    if (!selected?.siteUrl) {
+      throw new Error(`No asylumjudge.com property is available to the service account; available properties: ${availableSites.map((item) => item.siteUrl).join(', ') || 'none'}`);
+    }
+    GSC_SITE_URL = selected.siteUrl;
+    report.google.requested_site_url = requested;
+    report.google.site_url = GSC_SITE_URL;
+    report.google.available_sites = availableSites.map((item) => ({ site_url: item.siteUrl, permission_level: item.permissionLevel }));
     const site = await webmasters.sites.get({ siteUrl: GSC_SITE_URL });
     report.google.permission_level = site.data.permissionLevel || null;
     if (WRITE_MODE) {

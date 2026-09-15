@@ -98,7 +98,7 @@ jobs:
         run: |
           timeout 45s node scripts/ice-restore-human-approved.mjs || true
           timeout 45s node scripts/ice-cross-language-dedupe.mjs || true
-          timeout 45s node scripts/ice-dedupe-v3.mjs || true
+          timeout 90s node scripts/ice-dedupe-v3.mjs
           timeout 45s node scripts/ice-clean-existing-review-duplicates.mjs || true
           timeout 75s node scripts/ice-trusted-source-promote.mjs
           timeout 75s node scripts/ice-publish-due.mjs

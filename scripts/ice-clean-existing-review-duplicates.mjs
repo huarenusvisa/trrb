@@ -31,6 +31,19 @@ function similar(a, b) {
   return overlap(left, right) >= THRESHOLD;
 }
 function combined(row) { return [row.title, row.summary, row.content].filter(Boolean).join(" "); }
+function payload(row) { return row?.ai_payload && typeof row.ai_payload === "object" ? row.ai_payload : {}; }
+function fingerprint(row) {
+  const metadata = row?.metadata && typeof row.metadata === "object" ? row.metadata : {};
+  return text(row?.event_fingerprint || metadata.event_fingerprint);
+}
+function sameEvent(a, b) {
+  const left = fingerprint(a), right = fingerprint(b);
+  return Boolean(left && right && left === right) || similar(combined(a), combined(b));
+}
+function priority(story) {
+  const status = { approved: 500, pending_review: 400, pending_corroboration: 300, collecting: 200 }[story.status] || 0;
+  return status + Number(story.official_source_count || 0) * 20 + Number(story.independent_source_count || 0) * 5 + Number(Boolean(story.cover_image));
+}
 function headers(prefer = "") {
   return { apikey: process.env.SUPABASE_SERVICE_ROLE_KEY, Authorization: `Bearer ${process.env.SUPABASE_SERVICE_ROLE_KEY}`, "Content-Type": "application/json", ...(prefer ? { Prefer: prefer } : {}) };
 }
@@ -54,29 +67,46 @@ async function reject(story, reason, duplicateId = null) {
     }, prefer: "return=minimal"
   });
 }
+async function resetAutomaticOldNewsConfirmation(story) {
+  const current = payload(story);
+  if (current.old_news_checked !== true || current.manual_old_news_confirmation === true) return false;
+  await sb("ice_stories", {
+    method: "PATCH", query: { id: `eq.${story.id}` },
+    body: { ai_payload: { ...current, old_news_checked: false, manual_old_news_confirmation: false }, updated_at: new Date().toISOString() },
+    prefer: "return=minimal"
+  });
+  story.ai_payload = { ...current, old_news_checked: false, manual_old_news_confirmation: false };
+  return true;
+}
 async function main() {
   const missing = REQUIRED.filter((name) => !process.env[name]);
   if (missing.length) throw new Error(`缺少GitHub Secret：${missing.join(", ")}`);
   const cutoff = new Date(Date.now() - MAX_AGE_MINUTES * 60000).toISOString();
   const articleCutoff = new Date(Date.now() - PUBLISHED_DAYS * 86400000).toISOString();
   const [storiesRaw, articlesRaw] = await Promise.all([
-    sb("ice_stories", { query: { select: "id,title,summary,content,first_seen_at,last_seen_at,created_at,status,human_review_status,decision_reason,event_fingerprint", status: "in.(collecting,pending_review,pending_corroboration)", order: "last_seen_at.desc.nullslast,created_at.desc", limit: "1500" } }),
-    sb("articles", { query: { select: "id,title,summary,content,published_at,metadata", topic_key: "eq.ice", status: "eq.published", published_at: `gte.${articleCutoff}`, order: "published_at.desc", limit: "2000" } })
+    sb("ice_stories", { query: { select: "id,title,summary,content,cover_image,first_seen_at,last_seen_at,created_at,status,human_review_status,decision_reason,event_fingerprint,official_source_count,independent_source_count,ai_payload", status: "in.(collecting,pending_review,pending_corroboration,approved)", order: "last_seen_at.desc.nullslast,created_at.desc", limit: "1500" } }),
+    sb("articles", { query: { select: "id,title,summary,content,published_at,metadata", topic_key: "eq.ice", status: "eq.published", published_at: `gte.${articleCutoff}`, order: "published_at.desc", limit: "5000" } })
   ]);
-  const stories = (Array.isArray(storiesRaw) ? storiesRaw : []).filter((story) => story.human_review_status !== "approved");
+  const stories = (Array.isArray(storiesRaw) ? storiesRaw : []).sort((a, b) => priority(b) - priority(a));
   const articles = Array.isArray(articlesRaw) ? articlesRaw : [];
   const kept = [];
-  let stale = 0, publishedDuplicate = 0, queueDuplicate = 0, retained = 0;
+  let stale = 0, oldNews = 0, resetAutomaticChecks = 0, publishedDuplicate = 0, queueDuplicate = 0, retained = 0;
   for (const story of stories) {
+    if (await resetAutomaticOldNewsConfirmation(story)) resetAutomaticChecks += 1;
+    const review = payload(story);
+    if (review.appears_old_news === true && review.manual_old_news_confirmation !== true) {
+      await reject(story, `系统已识别为旧闻：${text(review.old_news_reason) || "来源包含旧事件日期或回顾信息"}`);
+      oldNews += 1;
+      continue;
+    }
     const seen = story.last_seen_at || story.first_seen_at || story.created_at || "";
-    if (!seen || seen < cutoff) { await reject(story, "超过时限未形成可发布的新信息，自动移出审核队列"); stale += 1; continue; }
-    const body = combined(story);
-    const article = articles.find((item) => similar(body, combined(item)));
+    if (story.status !== "approved" && (!seen || seen < cutoff)) { await reject(story, "超过时限未形成可发布的新信息，自动移出审核队列"); stale += 1; continue; }
+    const article = articles.find((item) => sameEvent(story, item));
     if (article) { await reject(story, "与数据库已发布文章高度相似且无独立新增事实", article.id); publishedDuplicate += 1; continue; }
-    const existing = kept.find((item) => similar(body, combined(item)));
+    const existing = kept.find((item) => sameEvent(story, item));
     if (existing) { await reject(story, "与审核队列中的较新候选高度相似", existing.id); queueDuplicate += 1; continue; }
     kept.push(story); retained += 1;
   }
-  console.log(JSON.stringify({ stage: "ice-clean-existing-review-duplicates-v2", scanned: stories.length, protected_human_approved: true, removed_stale: stale, removed_published_duplicates: publishedDuplicate, removed_queue_duplicates: queueDuplicate, retained }, null, 2));
+  console.log(JSON.stringify({ stage: "ice-clean-existing-review-duplicates-v3", scanned: stories.length, reset_automatic_old_news_checks: resetAutomaticChecks, removed_old_news: oldNews, removed_stale: stale, removed_published_duplicates: publishedDuplicate, removed_queue_duplicates: queueDuplicate, retained }, null, 2));
 }
 main().catch((error) => { console.error("ICE现有审核队列去重失败：", error); process.exitCode = 1; });

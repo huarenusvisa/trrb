@@ -747,7 +747,7 @@ function populateReviewModal(detail) {
   el("review-schedule").value = toDateTimeLocal(story.scheduled_at || nextHalfHourIso());
   el("review-image-reviewed").checked = !imageRequired || payload.image_grounding_used === true;
   el("review-image-reviewed").disabled = !imageRequired;
-  el("review-not-old").checked = payload.old_news_checked === true && payload.appears_old_news !== true;
+  el("review-not-old").checked = payload.manual_old_news_confirmation === true && payload.appears_old_news !== true;
   updateReviewCoverPreview();
   updateIceEditorialCount(story);
 

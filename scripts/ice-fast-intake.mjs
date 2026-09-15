@@ -5,7 +5,10 @@ import { fileURLToPath } from "node:url";
 
 const REQUIRED = ["SUPABASE_URL", "SUPABASE_SERVICE_ROLE_KEY"];
 const MAX_PER_RUN = Number(process.env.ICE_FAST_INTAKE_MAX || 500);
-const DEDUPE_HOURS = Number(process.env.ICE_DEDUPE_HOURS || 2);
+// One event should only enter the review queue once. Keep a 30-day event
+// memory even when a collector workflow forgets to provide the env override.
+const DEDUPE_HOURS = Number(process.env.ICE_DEDUPE_HOURS || 720);
+const HISTORICAL_FINGERPRINT_HOURS = Number(process.env.ICE_HISTORICAL_FINGERPRINT_HOURS || 17520);
 const DEDUPE_THRESHOLD = Number(process.env.ICE_DEDUPE_THRESHOLD || 0.48);
 
 function safeText(value, max = 30000) {
@@ -179,7 +182,11 @@ function isDuplicateText(a, b) {
 }
 function eventSignature(post) {
   const text = safeText(post.source_text, 30000);
-  const date = String(post.event_date || post.source_created_at || post.created_at || "").slice(0, 10);
+  // Never use the X repost timestamp as the event date. Doing so made the same
+  // historical event acquire a new fingerprint every day it was reposted.
+  const date = /^\d{4}-\d{2}-\d{2}$/.test(String(post.event_date || "").slice(0, 10))
+    ? String(post.event_date).slice(0, 10)
+    : "";
   const location = normalizeForDedupe([post.city, post.state_code, post.location_text].filter(Boolean).join(" "));
   const actions = [...actionKeys(text)].sort().join("-") || normalizeForDedupe(post.event_type || "other");
   const numbers = [...numberKeys(text)].sort().slice(0, 3).join("-");
@@ -204,17 +211,33 @@ async function loadRecentStories() {
   const cutoff = new Date(Date.now() - DEDUPE_HOURS * 3600000).toISOString();
   const rows = await sb("ice_stories", {
     query: {
-      select: "id,event_fingerprint,event_type,title,summary,content,last_seen_at,first_seen_at,independent_source_count,official_source_count,media_source_count,organization_source_count,individual_source_count",
-      status: "in.(collecting,pending_review,pending_corroboration,approved,published)",
+      select: "id,event_fingerprint,event_type,title,summary,content,ai_payload,status,human_review_status,last_seen_at,first_seen_at,independent_source_count,official_source_count,media_source_count,organization_source_count,individual_source_count",
+      status: "in.(collecting,pending_review,pending_corroboration,approved,published,rejected)",
       last_seen_at: `gte.${cutoff}`,
       order: "last_seen_at.desc",
-      limit: "1200"
+      limit: "1500"
+    }
+  });
+  return Array.isArray(rows) ? rows : [];
+}
+async function loadHistoricalFingerprints() {
+  const cutoff = new Date(Date.now() - HISTORICAL_FINGERPRINT_HOURS * 3600000).toISOString();
+  const recentCutoff = new Date(Date.now() - DEDUPE_HOURS * 3600000).toISOString();
+  const rows = await sb("ice_stories", {
+    query: {
+      select: "id,event_fingerprint,status,last_seen_at",
+      status: "in.(collecting,pending_review,pending_corroboration,approved,published,rejected)",
+      last_seen_at: `gte.${cutoff}`,
+      and: `(last_seen_at.lt.${recentCutoff})`,
+      order: "last_seen_at.desc",
+      limit: "5000"
     }
   });
   return Array.isArray(rows) ? rows : [];
 }
 function storyText(story) {
-  return [story.title, story.summary, story.content].filter(Boolean).join(" ");
+  const payload = safeJson(story.ai_payload, {});
+  return [payload.lead_source_text_original, story.title, story.summary, story.content].filter(Boolean).join(" ");
 }
 function findDuplicateStory(post, stories) {
   const raw = safeText(post.source_text, 30000);
@@ -246,6 +269,43 @@ async function markReply(post) {
     body: { relevant: false, processing_status: "irrelevant", last_error: "filtered_x_reply_or_comment" },
     prefer: "return=minimal"
   });
+}
+async function discardRepeatedSource(post, story) {
+  const payload = safeJson(post.extraction_payload, {});
+  await sb("ice_posts", {
+    method: "PATCH",
+    query: { id: `eq.${post.id}` },
+    body: {
+      relevant: false,
+      processing_status: "irrelevant",
+      last_error: "duplicate_event_without_material_update",
+      event_fingerprint: story.event_fingerprint,
+      extraction_payload: {
+        ...payload,
+        duplicate_event: true,
+        duplicate_story_id: story.id,
+        discarded_before_ai: true,
+        checked_at: nowIso()
+      },
+      updated_at: nowIso()
+    },
+    prefer: "return=minimal"
+  });
+}
+
+function hasMaterialUpdate(post, story) {
+  const incoming = safeText(post.source_text, 30000);
+  const existing = storyText(story);
+  const incomingNumbers = numberKeys(incoming);
+  const existingNumbers = numberKeys(existing);
+  const incomingNames = properKeys(incoming);
+  const existingNames = properKeys(existing);
+  const newNumbers = [...incomingNumbers].filter((value) => !existingNumbers.has(value));
+  const newNames = [...incomingNames].filter((value) => !existingNames.has(value));
+  const newLocation = normalizeForDedupe([post.city, post.state_code, post.location_text].filter(Boolean).join(" "));
+  const locationIsNew = Boolean(newLocation && !normalizeForDedupe(existing).includes(newLocation));
+  const explicitUpdate = /\b(?:update|updated|now|confirmed|charged|sentenced|released|deported|identified)\b|最新进展|证实|确认|起诉|判刑|释放|遣返|身份公布/iu.test(incoming);
+  return locationIsNew || newNumbers.length > 0 || newNames.length > 0 || (explicitUpdate && similarity(incoming, existing) < 0.82);
 }
 async function linkEvidence(story, post) {
   await sb("ice_story_evidence", {
@@ -283,6 +343,19 @@ async function mergeIntoStory(story, post) {
     individual_source_count: Number(story.individual_source_count || 0) + (!sameSource && type === "individual" ? 1 : 0),
     updated_at: nowIso()
   };
+  if (story.status === "rejected") {
+    patch.status = "pending_corroboration";
+    patch.human_review_status = "required";
+    patch.scheduled_at = null;
+    patch.ai_payload = {
+      ...safeJson(story.ai_payload, {}),
+      translation_pending: true,
+      old_news_checked: false,
+      manual_old_news_confirmation: false,
+      revived_by_material_update: true,
+      revived_at: nowIso()
+    };
+  }
   await sb("ice_stories", { method: "PATCH", query: { id: `eq.${story.id}` }, body: patch, prefer: "return=minimal" });
   Object.assign(story, patch);
   await linkEvidence(story, post);
@@ -320,7 +393,7 @@ async function createCandidate(post) {
       status: "pending_corroboration",
       human_review_status: "required",
       scheduled_at: null,
-      ai_payload: { fast_intake: true, fast_intake_at: time, lead_source_post_id: post.x_post_id || "", source_username: post.source_username || "", translation_pending: true, dedupe_version: 3 },
+      ai_payload: { fast_intake: true, fast_intake_at: time, lead_source_post_id: post.x_post_id || "", lead_source_text_original: raw, source_username: post.source_username || "", translation_pending: true, dedupe_version: 4, old_news_checked: false, manual_old_news_confirmation: false },
       created_at: time,
       updated_at: time
     },
@@ -341,9 +414,11 @@ async function createCandidate(post) {
 }
 async function runFastIntake() {
   requireEnv();
-  const [posts, recentStories] = await Promise.all([pendingPosts(), loadRecentStories()]);
+  const [posts, recentStories, historicalStories] = await Promise.all([pendingPosts(), loadRecentStories(), loadHistoricalFingerprints()]);
+  const historicalByFingerprint = new Map(historicalStories.map((story) => [story.event_fingerprint, story]));
   let visible = 0;
   let mergedDuplicates = 0;
+  let discardedRepeats = 0;
   let replies = 0;
   let alreadyLinked = 0;
   let failed = 0;
@@ -351,10 +426,21 @@ async function runFastIntake() {
     try {
       if (isReply(post)) { await markReply(post); replies += 1; continue; }
       if (await existingEvidence(post.id)) { alreadyLinked += 1; continue; }
+      const historical = historicalByFingerprint.get(eventSignature(post));
+      if (historical) {
+        await discardRepeatedSource(post, historical);
+        discardedRepeats += 1;
+        continue;
+      }
       const duplicate = findDuplicateStory(post, recentStories);
       if (duplicate) {
-        await mergeIntoStory(duplicate, post);
-        mergedDuplicates += 1;
+        if (hasMaterialUpdate(post, duplicate)) {
+          await mergeIntoStory(duplicate, post);
+          mergedDuplicates += 1;
+        } else {
+          await discardRepeatedSource(post, duplicate);
+          discardedRepeats += 1;
+        }
         continue;
       }
       const story = await createCandidate(post);
@@ -370,6 +456,7 @@ async function runFastIntake() {
     scanned: posts.length,
     new_candidates: visible,
     merged_duplicates: mergedDuplicates,
+    discarded_repeats_before_ai: discardedRepeats,
     filtered_replies: replies,
     already_linked: alreadyLinked,
     failed
@@ -377,7 +464,7 @@ async function runFastIntake() {
   console.log(JSON.stringify(result));
   return result;
 }
-export { runFastIntake, isReply, firstSentence, summary, normalizeForDedupe, similarity, isDuplicateText, eventSignature };
+export { runFastIntake, isReply, firstSentence, summary, normalizeForDedupe, similarity, isDuplicateText, eventSignature, hasMaterialUpdate };
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   runFastIntake().catch((error) => {
     console.error("ICE快速导入失败：", error);

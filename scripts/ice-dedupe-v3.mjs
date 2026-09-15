@@ -49,7 +49,7 @@ function anchorOverlap(a, b) { const A = anchors(a), B = anchors(b); if (!A.size
 function dimensions(row) {
   const p = payload(row), m = metadata(row);
   const entities = [...(Array.isArray(p.entities) ? p.entities : []), ...(Array.isArray(p.confirmed_facts) ? p.confirmed_facts : [])].join(" ");
-  const facts = `${row.title || ""} ${row.summary || ""} ${row.content || ""} ${entities}`;
+  const facts = `${p.lead_source_text_original || ""} ${row.title || ""} ${row.summary || ""} ${row.content || ""} ${entities}`;
   return {
     place: normalize(`${p.location_text || m.location_text || ""} ${p.city || m.city || row.city || ""} ${p.state_code || m.state_code || row.state || ""} ${row.title || ""} ${row.summary || ""}`),
     people: normalize(`${entities} ${row.title || ""} ${row.summary || ""}`),

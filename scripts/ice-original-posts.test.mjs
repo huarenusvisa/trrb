@@ -22,7 +22,7 @@ import manualPublish from "../netlify/functions/ice-review-v2.js";
 import manualApprove from "../netlify/functions/ice-review-actions-v4.js";
 import { clampBulletin, clampTitle, hasSavedChineseEditorial, looksNormalized } from "./ice-editorial-normalize.mjs";
 
-const checkedPayload = { translation_version: "zh-title-body-v8-source-led", translated_to_chinese: true, old_news_checked: true, appears_old_news: false };
+const checkedPayload = { translation_version: "zh-title-body-v8-source-led", translated_to_chinese: true, old_news_checked: true, manual_old_news_confirmation: true, appears_old_news: false };
 const shortStory = { title: "ICE通报", content: "ICE通报在纽约拘捕一人。", ai_payload: checkedPayload };
 
 
@@ -75,7 +75,7 @@ test("empty, English, old-news and unreviewed-image stories remain blocked", () 
     { ...shortStory, title: "" },
     { ...shortStory, content: " " },
     { ...shortStory, content: "ICE announced an arrest." },
-    { ...shortStory, ai_payload: { ...checkedPayload, old_news_checked: false } },
+    { ...shortStory, ai_payload: { ...checkedPayload, old_news_checked: false, manual_old_news_confirmation: false } },
     { ...shortStory, ai_payload: { ...checkedPayload, appears_old_news: true } },
     { ...shortStory, ai_payload: { ...checkedPayload, image_count: 1, image_grounding_used: false } }
   ]) {
@@ -124,6 +124,8 @@ test("translation persistence preserves full title and body and still rejects em
   assert.equal(written.content, content);
   assert.equal(written.ai_payload.target_min_chars, null);
   assert.equal(written.ai_payload.target_max_chars, null);
+  assert.equal(written.ai_payload.old_news_checked, false);
+  assert.equal(written.ai_payload.manual_old_news_confirmation, false);
   await assert.rejects(() => patchStory(shortStory, { title, content: " " }, [{}]), /非空中文/);
 });
 
@@ -160,11 +162,11 @@ test("ICE publisher retains image reading, duplicate and old-news checks", () =>
   assert.doesNotMatch(translator, /story\.reviewed_at \|\|/);
   assert.match(translator, /attempt < 5/);
   assert.match(manualPublish, /assertEditorialReady/);
-  assert.match(manualPublish, /payload\.old_news_checked !== true/);
+  assert.match(manualPublish, /payload\.manual_old_news_confirmation !== true/);
   assert.match(manualPublish, /payload\.image_grounding_used !== true/);
   assert.match(manualPublish, /patchPublishedArticle\(articleId/);
   assert.match(manualApprove, /assertEditorialReady/);
-  assert.match(manualApprove, /payload\.old_news_checked !== true/);
+  assert.match(manualApprove, /payload\.manual_old_news_confirmation !== true/);
   assert.match(manualApprove, /payload\.image_grounding_used !== true/);
   assert.match(promoter, /zh-title-body-v7-300-600-800-context-image/);
   assert.match(promoter, /isIceEnforcementText/);

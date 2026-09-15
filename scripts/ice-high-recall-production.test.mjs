@@ -42,3 +42,13 @@ test("非官方候选仍进入人工审核，最终发布边界保持严格", ()
   assert.match(publisher, /officialApproved = story\.human_review_status === "not_required_official"/);
   assert.match(publisher, /officialEvidence\(story\.id\)/);
 });
+
+test("持续采集按30天事件窗口去重并在失败时停止", () => {
+  const workflow = read(".github/workflows/ice-collector-continuous.yml");
+  assert.match(workflow, /ICE_DEDUPE_HOURS: "720"/);
+  assert.match(workflow, /ICE_HISTORICAL_FINGERPRINT_HOURS: "17520"/);
+  assert.match(workflow, /ICE_PUBLISHED_DEDUPE_DAYS: "30"/);
+  assert.match(workflow, /ICE_ENGLISH_DEDUPE_WINDOW_HOURS: "720"/);
+  assert.match(workflow, /ice-clean-existing-review-duplicates\.mjs/);
+  assert.doesNotMatch(workflow, /ice-dedupe-v3\.mjs \|\| true/);
+});

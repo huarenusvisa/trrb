@@ -28,7 +28,7 @@ async function fetchLivePublishedArticles(limit = 60) {
   const cacheKey = `trrb-live-v3-${limit}`;
   const cached = readLiveCache(cacheKey);
   if (cached) return cached;
-  const select = ["id","title","slug","summary","content","category_name","cover_image","seo_keywords","author","status","published_at","created_at","metadata"].join(",");
+  const select = ["id","title","slug","summary","content","category_name","topic_key","cover_image","seo_keywords","author","status","published_at","created_at","metadata"].join(",");
   const url = `${TRRB_SUPABASE_URL}/rest/v1/articles?select=${encodeURIComponent(select)}&status=eq.published&order=published_at.desc.nullslast,created_at.desc&limit=${limit}`;
   const rows = await fetchJsonWithTimeout(url, {
     cache: "default",
@@ -43,7 +43,7 @@ async function fetchLiveArticleById(id) {
   const cacheKey = `trrb-live-article-v3-${id}`;
   const cached = readLiveCache(cacheKey);
   if (cached?.[0]) return cached[0];
-  const select = ["id","title","slug","summary","content","category_name","cover_image","seo_keywords","author","status","published_at","created_at","metadata"].join(",");
+  const select = ["id","title","slug","summary","content","category_name","topic_key","cover_image","seo_keywords","author","status","published_at","created_at","metadata"].join(",");
   const url = `${TRRB_SUPABASE_URL}/rest/v1/articles?select=${encodeURIComponent(select)}&id=eq.${encodeURIComponent(id)}&status=eq.published&limit=1`;
   const rows = await fetchJsonWithTimeout(url, {
     cache: "default",
@@ -58,7 +58,7 @@ function mapLiveArticle(row) {
   const published = row.published_at || row.created_at || "";
   const content = String(row.content || "").trim();
   return {
-    id: row.id, title: row.title || "", category: row.category_name || "新闻",
+    id: row.id, title: row.title || "", category: row.category_name || "新闻", topicKey: row.topic_key || "",
     excerpt: row.summary || content.replace(/\s+/g, " ").slice(0, 120), image: row.cover_image || "",
     seoKeywords: row.seo_keywords || "", author: row.author || "Tang Ren Daily", date: formatLiveDate(published), time: formatLiveDateTime(published), views: "",
     body: content ? content.split(/\n{2,}|\r?\n/).map(v => v.trim()).filter(Boolean) : [], metadata: row.metadata || {}, isLive: true
@@ -162,6 +162,7 @@ function renderArticle(root, article, articles) {
       <h1>${escapeHtml(article.title || "")}</h1>
       <div class="story-meta">${escapeHtml([article.author, article.date, article.views].filter(Boolean).join(" · "))}</div>
     </header>
+    ${article.topicKey === "ren-zhengfei" ? `<aside class="article-topic-timeline"><a href="/ren-zhengfei"><b>任正非新闻时间线</b><span>按时间查看全部相关新闻 →</span></a></aside>` : ""}
     ${hasCover ? `
       <img
         class="article-image"

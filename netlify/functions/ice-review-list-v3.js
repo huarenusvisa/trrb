@@ -188,8 +188,9 @@ exports.handler = async (event) => {
     const input = JSON.parse(event.body || "{}");
     if (safeText(input.action, 40) !== "list") return json(400, { error: "只支持list操作" });
     const stories = await loadStories();
-    const postsByFingerprint = await loadLeadPosts(stories);
-    const prepared = prepareStories(stories, postsByFingerprint)
+    const activeStories = stories.filter((story) => !["rejected", "failed"].includes(String(story.status || "")));
+    const postsByFingerprint = await loadLeadPosts(activeStories);
+    const prepared = prepareStories(activeStories, postsByFingerprint)
       .filter((story) => timeValue(story.source_created_at || story.last_seen_at || story.updated_at) >= Date.now() - REVIEW_MAX_AGE_HOURS * 3600000)
       .sort((a, b) => timeValue(b.source_created_at || b.last_seen_at || b.updated_at) - timeValue(a.source_created_at || a.last_seen_at || a.updated_at));
     const chinese = prepared.filter(chineseReady);
@@ -207,9 +208,10 @@ exports.handler = async (event) => {
       stories: visible,
       pipeline: { ...(await pipelineStatus(stories)), pending_translation: pendingTranslation },
       dedupe: {
-        scanned: stories.length,
+        scanned: activeStories.length,
         visible: visible.length,
-        hidden_duplicates: Math.max(0, stories.length - prepared.length),
+        hidden_archived: stories.length - activeStories.length,
+        hidden_duplicates: Math.max(0, activeStories.length - prepared.length),
         hidden_pending_translation: prepared.length - chinese.length,
         hidden_non_ice: chinese.length - visible.length
       }

@@ -1,5 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import fs from "node:fs";
 import helper from "../netlify/functions/_shared/ice-review-list.js";
 
 const { prepareStories, keywords, sameEvent, firstSentence } = helper;
@@ -44,4 +45,10 @@ test("重复候选只显示一条并记录合并数量", () => {
 
 test("标题从原始正文截取", () => {
   assert.ok(firstSentence("ICE reported an arrest. More details follow.").startsWith("ICE reported"));
+});
+
+test("采集中心主列表不再展示已拒绝或失败记录", () => {
+  const source = fs.readFileSync(new URL("../netlify/functions/ice-review-list-v3.js", import.meta.url), "utf8");
+  assert.match(source, /!\["rejected", "failed"\]\.includes/);
+  assert.match(source, /hidden_archived/);
 });

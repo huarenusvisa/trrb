@@ -338,3 +338,7 @@
     max-height: 49px !important;
   }
 }
+.article-topic-timeline{margin:18px 0;border:1px solid #f1c5c5;border-radius:12px;background:linear-gradient(135deg,#fff8f8,#fff)}
+.article-topic-timeline a{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 16px;color:#991b1b;text-decoration:none}
+.article-topic-timeline b{font-size:17px}.article-topic-timeline span{color:#6b7280;font-size:14px}
+@media(max-width:767px){.article-topic-timeline a{align-items:flex-start;flex-direction:column;gap:5px}}

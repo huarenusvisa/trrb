@@ -264,6 +264,10 @@ function injectBody(html: string, article: any, canonical: string) {
   const content = String(visibleArticleText(article.content) ? article.content : article.summary || "").trim();
   const paragraphs = content.split(/\n{2,}|\r?\n/).map((p) => clean(p)).filter(Boolean);
   const image = clean(article.cover_image);
+  const topic = clean(article.topic_key).toLowerCase();
+  const topicTimeline = topic === "ren-zhengfei"
+    ? `<aside class="article-topic-timeline"><a href="/ren-zhengfei"><b>任正非新闻时间线</b><span>按时间查看全部相关新闻 →</span></a></aside>`
+    : "";
   const warning = article?.metadata?.unverified_public_claim
     ? clean(article?.metadata?.content_warning) || "真实性提示：本文所述信息可能尚未获得独立核实，部分细节可能存在偏差，请以权威部门后续通报为准。"
     : "";
@@ -273,6 +277,7 @@ function injectBody(html: string, article: any, canonical: string) {
         <h1>${esc(title)}</h1>
         <div class="story-meta">${esc(author)} · ${esc(published)}</div>
       </header>
+      ${topicTimeline}
       ${image ? `<img class="article-image" src="${esc(image)}" loading="eager" fetchpriority="high" alt="${esc(title)}" />` : ""}
       ${warning ? `<aside class="article-content-warning">${esc(warning)}</aside>` : ""}
       <div class="article-body">${paragraphs.map((p) => `<p>${esc(p)}</p>`).join("")}</div>

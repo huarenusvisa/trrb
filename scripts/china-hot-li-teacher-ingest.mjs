@@ -6,6 +6,8 @@ import chinaHotHeadlines from "../netlify/functions/_shared/china-hot-headlines.
 const { CHINA_HOT_CATEGORY, isChinaHotHeadline } = chinaHotHeadlines;
 const SOURCE_HANDLE = "whyyoutouzhele";
 const SOURCE_NAME = "李老师不是你老师";
+const REN_ZHENGFEI_TOPIC = "ren-zhengfei";
+const REN_ZHENGFEI_QUERY = '("任正非" OR "Ren Zhengfei") -is:retweet -is:reply';
 const PIPELINE = "china-hot-li-teacher-v2";
 const PROCESSING_VERSION = "source-led-no-length-v2";
 const WARNING = "真实性提示：本文所述信息可能尚未获得独立核实，部分细节可能存在偏差，请以权威部门后续通报为准。";
@@ -16,6 +18,7 @@ const REPAIR_SINCE = cleanText(process.env.CHINA_HOT_REPAIR_SINCE || "2026-08-24
 const EXPANSION_VERSION = "grounded-image-v7-adaptive";
 const LOOKBACK_HOURS = intEnv("LI_TEACHER_LOOKBACK_HOURS", 6, 3, 24);
 const MAX_FETCH = intEnv("LI_TEACHER_MAX_FETCH", 100, 10, 200);
+const REN_ZHENGFEI_MAX_FETCH = intEnv("REN_ZHENGFEI_MAX_FETCH", 300, 10, 500);
 const MAX_PUBLISH = intEnv("LI_TEACHER_MAX_PUBLISH", RECOVER_ARCHIVED ? 150 : 20, 1, 150);
 const PUBLISH_CONCURRENCY = intEnv("LI_TEACHER_PUBLISH_CONCURRENCY", 4, 1, 8);
 const OPENAI_MODEL = cleanText(process.env.OPENAI_MODEL || "gpt-5-mini", 100);
@@ -149,7 +152,7 @@ function mediaFor(tweet, mediaMap) {
   }));
 }
 
-async function collectXPosts() {
+async function collectLiTeacherPosts() {
   const url = new URL("https://api.x.com/2/tweets/search/recent");
   url.searchParams.set("query", `from:${SOURCE_HANDLE} -is:retweet -is:reply`);
   url.searchParams.set("max_results", "100");
@@ -164,19 +167,88 @@ async function collectXPosts() {
     const id = cleanText(tweet?.id, 100);
     if (!id || seen.has(id)) return [];
     seen.add(id);
-    return [{ ...tweet, media: mediaFor(tweet, media) }];
+    return [{ ...tweet, media: mediaFor(tweet, media), source_username: SOURCE_HANDLE, source_name: SOURCE_NAME, source_level: "priority_social" }];
   });
 }
 
-function externalId(tweetId) { return `x:${SOURCE_HANDLE}:${tweetId}`; }
+export function isRenZhengfeiTweet(tweet) {
+  const text = textWithoutLinks(tweet?.text);
+  return /任正非|Ren\s+Zhengfei/i.test(text)
+    && !/(招聘|招募|代购|抽奖|返现|博彩|赌场|色情|约炮|币圈喊单|课程报名)/i.test(text);
+}
 
-async function existingCandidate(tweetId) {
-  const rows = await supabase("news_candidates", { query: { select: "id,decision,decision_reason,article_id,ai_payload,updated_at", external_id: `eq.${externalId(tweetId)}`, limit: "1" } });
+async function collectRenZhengfeiPosts() {
+  const collected = [];
+  let nextToken = "";
+  while (collected.length < REN_ZHENGFEI_MAX_FETCH) {
+    const url = new URL("https://api.x.com/2/tweets/search/recent");
+    url.searchParams.set("query", REN_ZHENGFEI_QUERY);
+    url.searchParams.set("max_results", String(Math.min(100, REN_ZHENGFEI_MAX_FETCH - collected.length)));
+    url.searchParams.set("start_time", new Date(Date.now() - LOOKBACK_HOURS * 3_600_000).toISOString());
+    url.searchParams.set("sort_order", "recency");
+    url.searchParams.set("tweet.fields", "id,text,author_id,created_at,lang,public_metrics,possibly_sensitive,attachments,referenced_tweets");
+    url.searchParams.set("expansions", "author_id,attachments.media_keys");
+    url.searchParams.set("user.fields", "id,name,username,verified");
+    url.searchParams.set("media.fields", "media_key,type,url,preview_image_url,width,height,duration_ms");
+    if (nextToken) url.searchParams.set("next_token", nextToken);
+    const payload = await readJson(await request(url, { headers: { Authorization: `Bearer ${bearerToken()}`, Accept: "application/json" } }));
+    const media = new Map((payload?.includes?.media || []).map((item) => [String(item.media_key), item]));
+    const users = new Map((payload?.includes?.users || []).map((item) => [String(item.id), item]));
+    for (const tweet of payload?.data || []) {
+      if (!isRenZhengfeiTweet(tweet)) continue;
+      const author = users.get(String(tweet.author_id)) || {};
+      collected.push({
+        ...tweet,
+        media: mediaFor(tweet, media),
+        source_username: cleanText(author.username || "unknown", 100).replace(/^@/, ""),
+        source_name: cleanText(author.name || author.username || "X公开账号", 200),
+        source_level: author.verified ? "verified_social" : "social_monitor",
+        source_verified: Boolean(author.verified),
+        topic_key: REN_ZHENGFEI_TOPIC,
+      });
+    }
+    nextToken = cleanText(payload?.meta?.next_token, 300);
+    if (!nextToken || !(payload?.data || []).length) break;
+  }
+  return collected.slice(0, REN_ZHENGFEI_MAX_FETCH);
+}
+
+async function collectXPosts() {
+  const [liTeacher, renZhengfei] = await Promise.all([collectLiTeacherPosts(), collectRenZhengfeiPosts()]);
+  const seen = new Set();
+  return [...liTeacher, ...renZhengfei].filter((tweet) => {
+    const id = cleanText(tweet?.id, 100);
+    if (!id || seen.has(id)) return false;
+    seen.add(id);
+    return true;
+  });
+}
+
+function sourceFor(tweet = {}) {
+  const isRen = cleanText(tweet.topic_key, 100) === REN_ZHENGFEI_TOPIC;
+  const username = cleanText(tweet.source_username || SOURCE_HANDLE, 100).replace(/^@/, "") || "unknown";
+  return {
+    username,
+    name: cleanText(tweet.source_name || (isRen ? username : SOURCE_NAME), 200),
+    level: cleanText(tweet.source_level || (isRen ? "social_monitor" : "priority_social"), 100),
+    topicKey: isRen ? REN_ZHENGFEI_TOPIC : "china",
+    slugPrefix: isRen ? "ren-zhengfei-x" : "li-teacher-x",
+    externalId: isRen ? `x:ren-zhengfei:${cleanText(tweet.id, 100)}` : `x:${SOURCE_HANDLE}:${cleanText(tweet.id, 100)}`,
+  };
+}
+
+function externalId(tweetOrId) {
+  if (tweetOrId && typeof tweetOrId === "object") return cleanText(tweetOrId.external_id, 300) || sourceFor(tweetOrId).externalId;
+  return `x:${SOURCE_HANDLE}:${cleanText(tweetOrId, 100)}`;
+}
+
+async function existingCandidate(tweet) {
+  const rows = await supabase("news_candidates", { query: { select: "id,decision,decision_reason,article_id,ai_payload,updated_at", external_id: `eq.${externalId(tweet)}`, limit: "1" } });
   return Array.isArray(rows) ? rows[0] || null : null;
 }
 
-async function existingArticle(tweetId) {
-  const rows = await supabase("articles", { query: { select: "id,title,summary,content,status,created_at,metadata", external_id: `eq.${externalId(tweetId)}`, limit: "1" } });
+async function existingArticle(tweet) {
+  const rows = await supabase("articles", { query: { select: "id,title,summary,content,status,created_at,metadata", external_id: `eq.${externalId(tweet)}`, limit: "1" } });
   return Array.isArray(rows) ? rows[0] || null : null;
 }
 
@@ -287,19 +359,24 @@ function tweetFromCandidate(row) {
     created_at: payload.source_created_at || row.collected_at, lang: payload.lang || "zh",
     public_metrics: payload.source_public_metrics || payload.public_metrics || {},
     media: payload.source_media || payload.media || [], candidateId: row.id,
+    source_username: payload.source_username || "", source_name: payload.source_name || "",
+    source_level: payload.source_level || "", source_verified: Boolean(payload.source_verified),
+    topic_key: payload.topic_key || (String(row.external_id || "").startsWith("x:ren-zhengfei:") ? REN_ZHENGFEI_TOPIC : "china"),
+    external_id: row.external_id,
   };
 }
 
 export function buildCandidate(tweet, qualified, collectedAt = new Date().toISOString()) {
   const tweetId = cleanText(tweet.id, 100);
-  const sourceUrl = `https://x.com/${SOURCE_HANDLE}/status/${tweetId}`;
+  const source = sourceFor(tweet);
+  const sourceUrl = source.username === "unknown" ? `https://x.com/i/web/status/${tweetId}` : `https://x.com/${encodeURIComponent(source.username)}/status/${tweetId}`;
   const target = targetLength(qualified.text, Array.isArray(tweet.media) ? tweet.media.length : 0);
   return {
-    external_id: externalId(tweetId), pipeline: PIPELINE, source_url: sourceUrl,
-    source_account: `@${SOURCE_HANDLE}`, source_name: SOURCE_NAME, source_level: "priority_social",
+    external_id: externalId(tweet), pipeline: PIPELINE, source_url: sourceUrl,
+    source_account: `@${source.username}`, source_name: source.name, source_level: source.level,
     raw_text: qualified.text,
-    raw_payload: { tweet_id: tweetId, source_created_at: tweet.created_at || collectedAt, lang: tweet.lang || "zh", public_metrics: tweet.public_metrics || {}, media: tweet.media || [] },
-    ai_payload: { status: "queued", processing_version: PROCESSING_VERSION, proposed_title: qualified.title, target_min_chars: target.min, target_max_chars: target.max },
+    raw_payload: { tweet_id: tweetId, source_created_at: tweet.created_at || collectedAt, lang: tweet.lang || "zh", public_metrics: tweet.public_metrics || {}, media: tweet.media || [], source_username: source.username, source_name: source.name, source_level: source.level, source_verified: Boolean(tweet.source_verified), topic_key: source.topicKey },
+    ai_payload: { status: "queued", processing_version: PROCESSING_VERSION, proposed_title: qualified.title, target_min_chars: target.min, target_max_chars: target.max, topic_key: source.topicKey },
     proposed_section: "中国热门头条", confidence: 80, decision: "processing", decision_reason: "中国新闻候选，自动扩写发布中",
     collected_at: collectedAt, created_at: collectedAt, updated_at: collectedAt,
   };
@@ -423,19 +500,20 @@ export async function generateArticle(qualified, tweet, attempt = 0, previous = 
 
 export function buildPublishedArticle(tweet, qualified, article, publishedAt = new Date().toISOString()) {
   const tweetId = cleanText(tweet.id, 100);
-  const sourceUrl = `https://x.com/${SOURCE_HANDLE}/status/${tweetId}`;
+  const source = sourceFor(tweet);
+  const sourceUrl = source.username === "unknown" ? `https://x.com/i/web/status/${tweetId}` : `https://x.com/${encodeURIComponent(source.username)}/status/${tweetId}`;
   const sourceCreatedAt = new Date(tweet.created_at || publishedAt).toISOString();
   const attachments = Array.isArray(tweet.media) ? tweet.media : [];
   const coverImage = attachments.find((item) => item.type === "photo" && item.url)?.url
     || attachments.find((item) => item.preview_image_url)?.preview_image_url
     || attachments.find((item) => item.url)?.url || "";
   return {
-    title: article.title, slug: `li-teacher-x-${tweetId}`, summary: article.summary, content: article.content,
+    title: article.title, slug: `${source.slugPrefix}-${tweetId}`, summary: article.summary, content: article.content,
     category_name: CHINA_HOT_CATEGORY, cover_image: coverImage, image_alt: coverImage ? article.title : "", author: "唐人日报编辑部",
     status: "published", visibility: "public", published_at: publishedAt, created_at: publishedAt,
-    source_url: sourceUrl, source_name: SOURCE_NAME, source_account: `@${SOURCE_HANDLE}`, source_level: "priority_social",
-    source_platform: "x", source_post_id: tweetId, source_created_at: sourceCreatedAt, external_id: externalId(tweetId),
-    topic_key: "china", primary_section: "中国热门头条", related_sections: ["中国热门头条"],
+    source_url: sourceUrl, source_name: source.name, source_account: `@${source.username}`, source_level: source.level,
+    source_platform: "x", source_post_id: tweetId, source_created_at: sourceCreatedAt, external_id: externalId(tweet),
+    topic_key: source.topicKey, primary_section: "中国热门头条", related_sections: source.topicKey === REN_ZHENGFEI_TOPIC ? ["中国热门头条", "任正非动态"] : ["中国热门头条"],
     review_status: "automatic_china_hot", automation_source: PIPELINE, ai_confidence: 80, seo_title: article.title,
     seo_description: article.summary, seo_keywords: article.seo_keywords, independent_source_count: 1,
     supporting_sources: [], risk_flags: ["unverified_public_claim"],
@@ -452,13 +530,15 @@ export function buildPublishedArticle(tweet, qualified, article, publishedAt = n
       editorial_expansion_version: EXPANSION_VERSION, image_grounding_used: visualInputs(tweet).length > 0,
       image_count: visualInputs(tweet).length, old_news_checked: true, appears_old_news: false,
       duplicate_check_days: 30,
+      person_topic: source.topicKey === REN_ZHENGFEI_TOPIC ? "任正非" : "",
     },
   };
 }
 
 export function buildReviewDraft(tweet, reason, createdAt = new Date().toISOString()) {
   const tweetId = cleanText(tweet.id, 100);
-  const sourceUrl = `https://x.com/${SOURCE_HANDLE}/status/${tweetId}`;
+  const source = sourceFor(tweet);
+  const sourceUrl = source.username === "unknown" ? `https://x.com/i/web/status/${tweetId}` : `https://x.com/${encodeURIComponent(source.username)}/status/${tweetId}`;
   const rawText = textWithoutLinks(tweet.text);
   const attachments = Array.isArray(tweet.media) ? tweet.media : [];
   const coverImage = attachments.find((item) => item.type === "photo" && item.url)?.url
@@ -467,14 +547,14 @@ export function buildReviewDraft(tweet, reason, createdAt = new Date().toISOStri
   const draftSummary = `自动加工未完成：${draftTitle}。请核对原始材料并重新加工，未经编辑不得发布。`;
   const draftContent = `${rawText}\n\n【编辑提示】此稿未通过自动加工质量检查。发布前必须重写标题和正文，并核对原始材料。`;
   return {
-    title: draftTitle, slug: `li-teacher-x-${tweetId}`, summary: draftSummary,
+    title: draftTitle, slug: `${source.slugPrefix}-${tweetId}`, summary: draftSummary,
     content: draftContent, category_name: CHINA_HOT_CATEGORY, cover_image: coverImage,
     image_alt: coverImage ? draftTitle : "", author: "唐人日报编辑部",
     status: "draft", visibility: "private", published_at: null, created_at: createdAt,
-    source_url: sourceUrl, source_name: SOURCE_NAME, source_account: `@${SOURCE_HANDLE}`,
-    source_level: "priority_social", source_platform: "x", source_post_id: tweetId,
-    source_created_at: new Date(tweet.created_at || createdAt).toISOString(), external_id: externalId(tweetId),
-    topic_key: "china", primary_section: "中国热门头条", related_sections: ["中国热门头条"],
+    source_url: sourceUrl, source_name: source.name, source_account: `@${source.username}`,
+    source_level: source.level, source_platform: "x", source_post_id: tweetId,
+    source_created_at: new Date(tweet.created_at || createdAt).toISOString(), external_id: externalId(tweet),
+    topic_key: source.topicKey, primary_section: "中国热门头条", related_sections: source.topicKey === REN_ZHENGFEI_TOPIC ? ["中国热门头条", "任正非动态"] : ["中国热门头条"],
     review_status: "manual_review", automation_source: PIPELINE, independent_source_count: 1,
     supporting_sources: [], risk_flags: ["manual_review_required"],
     metadata: {
@@ -483,6 +563,7 @@ export function buildReviewDraft(tweet, reason, createdAt = new Date().toISOStri
       manual_publish_allowed: true, publication_blocked_until_edited: true, processing_version: PROCESSING_VERSION,
       category_display_name: "中国热门头条",
       source_text_original: rawText, source_media: attachments,
+      person_topic: source.topicKey === REN_ZHENGFEI_TOPIC ? "任正非" : "",
     },
   };
 }
@@ -502,7 +583,7 @@ async function publishArticle(body, prior = null) {
 }
 
 async function keepEditableDraft(tweet, reason) {
-  const prior = await existingArticle(tweet.id);
+  const prior = await existingArticle(tweet);
   const rawText = textWithoutLinks(tweet.text);
   const legacyRawDraft = prior && prior.status !== "published"
     && cleanText(prior.content, 20_000) === rawText
@@ -537,7 +618,7 @@ async function recoverArchivedBatch() {
       const current = cursor++;
       const { row, tweet } = queue[current];
       try {
-        const prior = await existingArticle(tweet.id);
+        const prior = await existingArticle(tweet);
         if (prior) {
           counters.duplicate += 1;
           await patchCandidate(row.id, { decision: prior.status === "published" ? "published" : "review_required", decision_reason: "文章库已存在同源记录", article_id: prior.id, processed_at: new Date().toISOString() });
@@ -730,17 +811,17 @@ export async function run() {
     if (!qualified.accepted) {
       counters.filtered += 1;
       const reviewInput = { accepted: true, text: textWithoutLinks(tweet.text), title: deriveTitle(tweet.text) };
-      const candidate = await existingCandidate(tweet.id) || await createCandidate(tweet, reviewInput);
+      const candidate = await existingCandidate(tweet) || await createCandidate(tweet, reviewInput);
       await markFilteredCandidate(candidate, tweet, qualified);
       filteredReasons[qualified.reason] = Number(filteredReasons[qualified.reason] || 0) + 1;
       results.push({ tweetId: tweet.id, status: "filtered", reason: qualified.reason });
       continue;
     }
     counters.qualified += 1;
-    const priorCandidate = await existingCandidate(tweet.id);
+    const priorCandidate = await existingCandidate(tweet);
     const retryCandidate = shouldRetryCandidate(priorCandidate, qualified);
     if (priorCandidate && priorCandidate.decision !== "failed" && !retryCandidate) { counters.duplicate += 1; results.push({ tweetId: tweet.id, status: "duplicate-pool", decision: priorCandidate.decision }); continue; }
-    const priorArticle = await existingArticle(tweet.id);
+    const priorArticle = await existingArticle(tweet);
     if (priorArticle?.status === "published" || (priorArticle && !retryCandidate && priorCandidate?.decision !== "failed")) { counters.duplicate += 1; results.push({ tweetId: tweet.id, status: "duplicate-article", articleId: priorArticle.id }); continue; }
     if (counters.published >= MAX_PUBLISH) { results.push({ tweetId: tweet.id, status: "deferred" }); continue; }
     const candidate = priorCandidate || await createCandidate(tweet, qualified);

@@ -18,7 +18,8 @@ if (!base || !key) {
 const STATIC_HUBS = [
   { loc: `${SITE}/community/`, priority: '0.9', changefreq: 'daily' },
   { loc: `${SITE}/immigrate/`, priority: '0.8', changefreq: 'weekly' },
-  { loc: `${SITE}/legal/`, priority: '0.8', changefreq: 'daily' }
+  { loc: `${SITE}/legal/`, priority: '0.8', changefreq: 'daily' },
+  { loc: `${SITE}/ren-zhengfei`, priority: '0.8', changefreq: 'hourly' }
 ];
 
 function loadImmigrationKnowledgeEntries() {
@@ -200,6 +201,8 @@ const categoryUrl = (category) => `${SITE}/${encodeURIComponent(canonicalSection
 
 if (categories.length) {
   const specialRoutes = [
+    '/ren-zhengfei /ren-zhengfei/index.html 200!',
+    '/ren-zhengfei/ /ren-zhengfei/index.html 200!',
     '/ice /topic/ice/live-v6.html 200!',
     '/ice/ /topic/ice/live-v6.html 200!',
     `/ice/news /listing.html?category=${encodeURIComponent('ICE执法动态')} 200!`,

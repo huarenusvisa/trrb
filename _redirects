@@ -88,6 +88,8 @@ https://trrb.net/jobs/* https://huarengongzuo.com/jobs/:splat 301!
 /logo-mark.svg /favicon.svg 301!
 /listing /listing.html 200!
 /trump /trump/index.html 200!
+/ren-zhengfei /ren-zhengfei/index.html 200!
+/ren-zhengfei/ /ren-zhengfei/index.html 200!
 /important /important-news 301!
 /hot /hot-headlines 301!
 /politics /us-politics 301!

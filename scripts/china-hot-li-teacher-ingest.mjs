@@ -2,6 +2,7 @@
 import process from "node:process";
 import { pathToFileURL } from "node:url";
 import chinaHotHeadlines from "../netlify/functions/_shared/china-hot-headlines.js";
+import { findRenEventDuplicate } from "./ren-zhengfei-event-dedupe.mjs";
 
 const { CHINA_HOT_CATEGORY, isChinaHotHeadline } = chinaHotHeadlines;
 const SOURCE_HANDLE = "whyyoutouzhele";
@@ -321,6 +322,16 @@ async function recentChinaArticles() {
   return Array.isArray(rows) ? rows : [];
 }
 
+async function recentRenZhengfeiArticles() {
+  const cutoff = new Date(Date.now() - 180 * 86400_000).toISOString();
+  const rows = await supabase("articles", { query: {
+    select: "id,title,summary,content,topic_key,source_created_at,published_at,metadata",
+    topic_key: `eq.${REN_ZHENGFEI_TOPIC}`, status: "eq.published", visibility: "eq.public",
+    published_at: `gte.${cutoff}`, order: "source_created_at.desc.nullslast,published_at.desc", limit: "1000",
+  } });
+  return Array.isArray(rows) ? rows : [];
+}
+
 function duplicateArticle(article, rows) {
   const source = `${article.title || ""}${article.summary || ""}${article.content || ""}`;
   return rows.find((row) => similarity(source, `${row.title || ""}${row.summary || ""}${row.content || ""}`) >= 0.72) || null;
@@ -529,7 +540,8 @@ export function buildPublishedArticle(tweet, qualified, article, publishedAt = n
       source_public_metrics: tweet.public_metrics || {}, openai_model: OPENAI_MODEL, generated_target: article.target,
       editorial_expansion_version: EXPANSION_VERSION, image_grounding_used: visualInputs(tweet).length > 0,
       image_count: visualInputs(tweet).length, old_news_checked: true, appears_old_news: false,
-      duplicate_check_days: 30,
+      duplicate_check_days: source.topicKey === REN_ZHENGFEI_TOPIC ? 180 : 30,
+      duplicate_policy: source.topicKey === REN_ZHENGFEI_TOPIC ? "ren-event-v1" : "china-content-v1",
       person_topic: source.topicKey === REN_ZHENGFEI_TOPIC ? "任正非" : "",
     },
   };
@@ -802,7 +814,7 @@ export async function run() {
     if (tweet.id && shouldRetryCandidate(row, qualified) && !tweetsById.has(String(tweet.id))) tweetsById.set(String(tweet.id), tweet);
   }
   const tweets = [...tweetsById.values()];
-  const recentArticles = await recentChinaArticles();
+  const [recentArticles, recentRenArticles] = await Promise.all([recentChinaArticles(), recentRenZhengfeiArticles()]);
   const results = [];
   const counters = { fetched: collectedTweets.length, queuedRetries: Math.max(0, tweets.length - collectedTweets.length), qualified: 0, published: 0, duplicate: 0, filtered: 0, review_required: 0, failed: 0 };
   const filteredReasons = {};
@@ -823,6 +835,15 @@ export async function run() {
     if (priorCandidate && priorCandidate.decision !== "failed" && !retryCandidate) { counters.duplicate += 1; results.push({ tweetId: tweet.id, status: "duplicate-pool", decision: priorCandidate.decision }); continue; }
     const priorArticle = await existingArticle(tweet);
     if (priorArticle?.status === "published" || (priorArticle && !retryCandidate && priorCandidate?.decision !== "failed")) { counters.duplicate += 1; results.push({ tweetId: tweet.id, status: "duplicate-article", articleId: priorArticle.id }); continue; }
+    const isRen = cleanText(tweet.topic_key, 100) === REN_ZHENGFEI_TOPIC;
+    const renSourceDuplicate = isRen ? findRenEventDuplicate(qualified.text, recentRenArticles) : null;
+    if (renSourceDuplicate) {
+      const candidate = priorCandidate || await createCandidate(tweet, qualified);
+      counters.duplicate += 1;
+      await patchCandidate(candidate?.id, { decision: "duplicate", decision_reason: `任正非时间线同一事件只保留一条：${renSourceDuplicate.id}`, article_id: renSourceDuplicate.id, processed_at: new Date().toISOString(), ai_payload: { ...(candidate?.ai_payload || {}), status: "duplicate_event", processing_version: PROCESSING_VERSION, duplicate_article_id: renSourceDuplicate.id, duplicate_policy: "ren-event-v1" } });
+      results.push({ tweetId: tweet.id, status: "duplicate-ren-event", articleId: renSourceDuplicate.id });
+      continue;
+    }
     if (counters.published >= MAX_PUBLISH) { results.push({ tweetId: tweet.id, status: "deferred" }); continue; }
     const candidate = priorCandidate || await createCandidate(tweet, qualified);
     try {
@@ -833,7 +854,8 @@ export async function run() {
         results.push({ tweetId: tweet.id, status: "old-news", reason: generated.old_news_reason || "原帖明确在回顾旧事件" });
         continue;
       }
-      const similar = duplicateArticle(generated, recentArticles);
+      const renGeneratedDuplicate = isRen ? findRenEventDuplicate(`${qualified.text}\n${generated.title}\n${generated.summary}`, recentRenArticles) : null;
+      const similar = renGeneratedDuplicate || duplicateArticle(generated, recentArticles);
       if (similar) {
         counters.duplicate += 1;
         await patchCandidate(candidate?.id, { decision: "duplicate", decision_reason: `与近30天已发布中国热门头条重复：${similar.id}`, article_id: similar.id, processed_at: new Date().toISOString(), ai_payload: { ...generated, status: "duplicate", processing_version: PROCESSING_VERSION, duplicate_article_id: similar.id } });
@@ -843,6 +865,7 @@ export async function run() {
       const articleBody = buildPublishedArticle(tweet, qualified, generated);
       const saved = await publishArticle(articleBody, priorArticle);
       recentArticles.unshift({ id: saved?.id, title: generated.title, summary: generated.summary, content: generated.content });
+      if (isRen) recentRenArticles.unshift({ ...articleBody, id: saved?.id });
       await patchCandidate(candidate?.id, { decision: "published", decision_reason: "中国新闻自动扩写并发布", article_id: saved?.id || null, processed_at: new Date().toISOString(), ai_payload: { status: "published", processing_version: PROCESSING_VERSION, title: generated.title, summary: generated.summary, content: generated.content, seo_keywords: generated.seo_keywords, target: generated.target } });
       counters.published += 1; results.push({ tweetId: tweet.id, status: DRY_RUN ? "dry-run" : "published", articleId: saved?.id || null, title: generated.title });
     } catch (error) {

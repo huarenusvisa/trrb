@@ -45,6 +45,8 @@ jobs:
           test -n "$OPENAI_API_KEY"
       - name: Run collector tests
         run: node --test scripts/china-hot-li-teacher-ingest.test.mjs scripts/ren-zhengfei-news.test.mjs
+      - name: Clean duplicate Ren Zhengfei timeline stories
+        run: node scripts/ren-zhengfei-clean-published-duplicates.mjs
       - name: Collect China headlines and publish automatically
         shell: bash
         run: |

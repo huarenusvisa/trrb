@@ -97,14 +97,14 @@
     const body = byId('community-post-reports-body');
     if (!body) return;
     const rows = state.postReports.filter((row) => matches(row.reason,row.status,row.post_id,row.comment_id,row.reporter_user_id));
-    body.innerHTML = rows.map((row) => {
-      const target = row.comment_id ? `评论 ${row.comment_id}` : `帖子 ${row.post_id}`;
+    body.innerHTML = rows.map((r) => {
+      const target = r.comment_id ? `评论 ${esc(r.comment_id)}` : `帖子 ${esc(r.post_id)}`;
       const controls = [
-        row.status !== 'reviewed' ? button('标记已审', { 'post-report-status':'reviewed', 'post-report-id':row.id }) : '',
-        row.status !== 'dismissed' ? button('驳回', { 'post-report-status':'dismissed', 'post-report-id':row.id }) : '',
-        row.status !== 'actioned' ? button('已处置', { 'post-report-status':'actioned', 'post-report-id':row.id }, 'success') : ''
+        r.status !== 'reviewed' ? button('标记已审', { 'post-report-status':'reviewed', 'post-report-id':r.id }) : '',
+        r.status !== 'dismissed' ? button('驳回', { 'post-report-status':'dismissed', 'post-report-id':r.id }) : '',
+        r.status !== 'actioned' ? button('已处置', { 'post-report-status':'actioned', 'post-report-id':r.id }, 'success') : ''
       ].filter(Boolean);
-      return `<tr><td><b>${esc(target)}</b><small class="community-subtext">举报人 ${esc(row.reporter_user_id?.slice(0,8)||'—')}</small></td><td><p>${esc(row.reason)}</p></td><td>${pill(row.status)}</td><td>${esc(dateText(row.created_at))}</td><td>${actions(controls)}</td></tr>`;
+      return `<tr><td><b>${target}</b><small class="community-subtext">举报人 ${esc(r.reporter_user_id?.slice(0,8)||'—')}</small></td><td><p>${esc(r.reason)}</p></td><td>${pill(r.status)}</td><td>${esc(dateText(r.created_at))}</td><td>${actions(controls)}</td></tr>`;
     }).join('') || empty(5,'当前没有社区举报。');
   }
 

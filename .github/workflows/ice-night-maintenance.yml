@@ -53,6 +53,8 @@ jobs:
       ICE_MAX_SOURCE_AGE_HOURS: "12"
       ICE_UNREVIEWED_EXPIRE_HOURS: "12"
       ICE_DEDUPE_HOURS: "720"
+      ICE_HISTORICAL_FINGERPRINT_HOURS: "17520"
+      ICE_PUBLISHED_DEDUPE_DAYS: ${{ github.event_name == 'workflow_dispatch' && '730' || '30' }}
       ICE_STUCK_PROCESSING_MINUTES: "30"
       ICE_MAINTENANCE_BATCH_SIZE: "500"
     steps:
@@ -103,6 +105,9 @@ jobs:
 
       - name: Consolidate duplicate events
         run: node scripts/ice-dedupe-v3.mjs
+
+      - name: Clean existing review queue duplicates and old-news candidates
+        run: node scripts/ice-clean-existing-review-duplicates.mjs
 
       - name: Final 08:00 readiness check
         if: needs.new-york-maintenance-gate.outputs.final_check == 'true'

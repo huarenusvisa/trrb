@@ -28,10 +28,14 @@ env:
   ICE_RECENT_DUPLICATE_WINDOW_MINUTES: "720"
   ICE_ENGLISH_DEDUPE_WINDOW_HOURS: "720"
   ICE_ENGLISH_DEDUPE_CANDIDATE_MINUTES: "750"
-  ICE_ENGLISH_DEDUPE_MAX: "1200"
+  ICE_ENGLISH_DEDUPE_MAX: "2500"
   ICE_OFFICIAL_FILTER_MAX: "1200"
   ICE_PRECOLLECT_MAX: "500"
   ICE_FAST_INTAKE_MAX: "300"
+  ICE_DEDUPE_HOURS: "720"
+  ICE_HISTORICAL_FINGERPRINT_HOURS: "17520"
+  ICE_PUBLISHED_DEDUPE_DAYS: "30"
+  ICE_ENGLISH_DEDUPE_THRESHOLD: "0.46"
 
 jobs:
   automation-gate:
@@ -102,7 +106,8 @@ jobs:
           timeout 75s node scripts/ice-english-pretranslation-dedupe.mjs
           timeout 75s node scripts/ice-precollect-published-dedupe.mjs
           timeout 75s node scripts/ice-fast-intake.mjs
-          timeout 45s node scripts/ice-dedupe-v3.mjs || true
+          timeout 90s node scripts/ice-dedupe-v3.mjs
+          timeout 90s node scripts/ice-clean-existing-review-duplicates.mjs
       - name: Write collection success
         if: success() && steps.window.outputs.allowed == 'true'
         env:

@@ -89,7 +89,7 @@
     el("trump-editor-media").innerHTML = media.length ? media.map((entry) => { const url = entry?.url || entry?.preview_image_url; return url ? `<img src="${esc(url)}" alt="原帖图片" loading="lazy">` : ""; }).join("") : "<p>原帖没有图片。</p>";
     el("trump-editor-image-reviewed").checked = !media.length || payload.image_grounding_used === true;
     el("trump-editor-image-reviewed").disabled = !media.length;
-    el("trump-editor-not-old").checked = payload.old_news_checked === true && payload.appears_old_news !== true;
+    el("trump-editor-not-old").checked = payload.manual_old_news_confirmation === true && payload.appears_old_news !== true;
     el("trump-editor-message").textContent = "";
     el("trump-editor-modal").classList.remove("hidden"); document.body.classList.add("modal-open"); updateTrumpCount();
   }

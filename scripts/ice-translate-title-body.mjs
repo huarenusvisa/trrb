@@ -53,7 +53,7 @@ function needsTranslation(story, sourceLength = 0, mediaCount = 0) {
   const payload = safeJson(story.ai_payload, {});
   const content = safeText(story.content || story.summary, Infinity);
   return !ACCEPTED_VERSIONS.has(payload.translation_version)
-    || payload.translated_to_chinese !== true || payload.old_news_checked !== true
+    || payload.translated_to_chinese !== true
     || !hasChinese(story.title) || !hasChinese(content) || chineseRatio(content) < 0.45
     || (mediaCount > 0 && payload.image_grounding_used !== true);
 }
@@ -92,7 +92,7 @@ async function translate(story, posts, attempt = 0) {
         "字数只能来自来源文字、图片中可核对的事实和verified_editorial_background。禁止用提醒、呼吁、空泛评价、重复句、免责声明或模型记忆凑字；不得虚构抓捕现场、法律文书、犯罪记录、移民身份、国籍、拘留地点或递解结果。",
         "如有图片，必须逐张读取可辨认的文字、人物、地点、标志、物件、数量、颜色和动作，并以‘画面可见’或‘图片文字显示’明确归因；看不清不写。视频仅按静态缩略图处理。",
         "不得根据外貌推断身份、职业、族群、健康、犯罪倾向或动机。",
-        "判断是否为旧闻：只有来源明确写出过去日期、周年、回顾、旧视频或旧照片时appears_old_news才为true，并在old_news_reason写明证据；不得凭模型记忆判断。",
+        `当前日期为${new Date().toISOString().slice(0, 10)}。判断是否为旧闻：只依据来源中明确出现的事件日期、周年、回顾、旧视频或旧照片；事件发生时间明显早于当前报道且没有实质新进展时，appears_old_news必须为true，并在old_news_reason写明来源中的日期证据；不得凭模型记忆判断。`,
         "image_observations用中文概括实际读到的画面信息；无图或无可辨信息则留空。",
         "不得添加评论、立场、免责声明、标签或SEO关键词。"
       ].filter(Boolean).join("\n"),
@@ -120,7 +120,7 @@ async function patchStory(story, translated, posts) {
   const length = bodyLength(content);
   if (!title || !content || !hasChinese(title) || !hasChinese(content)) throw new Error("标题和正文必须为非空中文");
   if (chineseRatio(content) < 0.45) throw new Error("正文中文比例不足，禁止进入发布流程");
-  await sb("ice_stories", { method: "PATCH", query: { id: `eq.${story.id}` }, body: { title, summary: summary || content.slice(0, 180), content, final_title: title, final_summary: summary || content.slice(0, 180), final_content: content, ai_payload: { ...payload, translation_version: VERSION, context_expansion_version: CONTEXT_EXPANSION_VERSION, translated_at: nowIso(), translated_source_count: posts.length, translated_to_chinese: true, source_language: translated.source_language || "unknown", title_length: titleLength(title), body_character_count: length, source_character_count: translated.sourceLength, target_min_chars: null, target_max_chars: null, length_policy: "source-led-unrestricted", image_grounding_used: translated.imageCount > 0, image_count: translated.imageCount, image_observations: safeText(translated.image_observations, 2000), appears_old_news: Boolean(translated.appears_old_news), old_news_reason: safeText(translated.old_news_reason, 1000), old_news_checked: true }, updated_at: nowIso() }, prefer: "return=minimal" });
+  await sb("ice_stories", { method: "PATCH", query: { id: `eq.${story.id}` }, body: { title, summary: summary || content.slice(0, 180), content, final_title: title, final_summary: summary || content.slice(0, 180), final_content: content, ai_payload: { ...payload, translation_version: VERSION, context_expansion_version: CONTEXT_EXPANSION_VERSION, translated_at: nowIso(), translated_source_count: posts.length, translated_to_chinese: true, source_language: translated.source_language || "unknown", title_length: titleLength(title), body_character_count: length, source_character_count: translated.sourceLength, target_min_chars: null, target_max_chars: null, length_policy: "source-led-unrestricted", image_grounding_used: translated.imageCount > 0, image_count: translated.imageCount, image_observations: safeText(translated.image_observations, 2000), appears_old_news: Boolean(translated.appears_old_news), old_news_reason: safeText(translated.old_news_reason, 1000), old_news_checked: false, manual_old_news_confirmation: false }, updated_at: nowIso() }, prefer: "return=minimal" });
 }
 async function main() {
   requireEnvironment();

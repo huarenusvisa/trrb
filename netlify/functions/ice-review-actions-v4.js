@@ -19,7 +19,7 @@ function assertEditorialReady(story, fields, input = {}) {
   const payload = story.ai_payload && typeof story.ai_payload === 'object' ? story.ai_payload : {};
   if (!isIceEnforcementText(fields.title, fields.summary, fields.content)) { const error = new Error('该内容不是明确的ICE执法新闻，不能批准发布'); error.statusCode = 400; throw error; }
   if (!chinese(fields.title) || !chinese(fields.content)) { const error = new Error('标题和正文必须是中文，禁止直接发布英文原文'); error.statusCode = 400; throw error; }
-  if (payload.old_news_checked !== true && input.not_old_news_confirmed !== true) { const error = new Error('尚未完成旧闻核验，不能批准发布'); error.statusCode = 400; throw error; }
+  if (payload.manual_old_news_confirmation !== true && input.not_old_news_confirmed !== true) { const error = new Error('必须由编辑人工确认不是旧闻，不能批准发布'); error.statusCode = 400; throw error; }
   if (payload.appears_old_news === true) { const error = new Error('系统识别为旧闻，不能批准发布'); error.statusCode = 400; throw error; }
   if (Number(payload.image_count || 0) > 0 && payload.image_grounding_used !== true && input.image_reviewed !== true) { const error = new Error('原帖含图片但尚未完成读图核验，不能批准发布'); error.statusCode = 400; throw error; }
 }
@@ -167,8 +167,8 @@ async function approveStory(story, actor, input) {
     reviewed_at: nowIso(),
     ai_payload: {
       ...payload,
-      old_news_checked: payload.old_news_checked === true || input.not_old_news_confirmed === true,
-      manual_old_news_confirmation: input.not_old_news_confirmed === true,
+      old_news_checked: payload.manual_old_news_confirmation === true || input.not_old_news_confirmed === true,
+      manual_old_news_confirmation: payload.manual_old_news_confirmation === true || input.not_old_news_confirmed === true,
       image_grounding_used: payload.image_grounding_used === true || input.image_reviewed === true,
       manual_image_confirmation: input.image_reviewed === true
     }

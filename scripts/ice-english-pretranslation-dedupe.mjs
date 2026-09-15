@@ -5,7 +5,7 @@ const REQUIRED = ["SUPABASE_URL", "SUPABASE_SERVICE_ROLE_KEY"];
 const WINDOW_HOURS = Number(process.env.ICE_ENGLISH_DEDUPE_WINDOW_HOURS || 720);
 const CANDIDATE_MINUTES = Number(process.env.ICE_ENGLISH_DEDUPE_CANDIDATE_MINUTES || 90);
 const MAX_ROWS = Number(process.env.ICE_ENGLISH_DEDUPE_MAX || 2500);
-const THRESHOLD = Number(process.env.ICE_ENGLISH_DEDUPE_THRESHOLD || 0.92);
+const THRESHOLD = Number(process.env.ICE_ENGLISH_DEDUPE_THRESHOLD || 0.46);
 const STOP = new Set(["the","a","an","and","or","of","to","in","on","at","for","from","with","by","is","are","was","were","be","been","being","this","that","these","those","it","its","as","into","over","after","before","during","new","breaking","update","video","watch","ice","immigration","customs","enforcement","agent","agents","officer","officers","federal","official","officials","report","reports","news"]);
 const ACTIONS = [["arrest","arrested","apprehend","apprehended","custody","detain","detained","detention"],["raid","operation","sweep","search warrant"],["shoot","shot","shooting","gunfire","killed","fatal","death","dead","died"],["deport","deported","deportation","removal","removed","repatriation"],["chase","crash","vehicle stop","traffic stop"],["protest","vigil","lawsuit","court","judge","attorney","lawyer"]];
 function requireEnv(){const missing=REQUIRED.filter((n)=>!process.env[n]);if(missing.length)throw new Error(`缺少GitHub Secret：${missing.join(", ")}`)}
@@ -17,7 +17,7 @@ function overlap(a,b){if(!a.size||!b.size)return 0;let c=0;for(const x of a)if(b
 function actionKeys(v){const t=normalize(v),o=new Set();ACTIONS.forEach((g,i)=>{if(g.some((x)=>t.includes(x)))o.add(String(i))});return o}
 function numbers(v){return new Set(normalize(v).match(/\b\d{1,4}\b/g)||[])}
 function properNouns(v){return new Set((safe(v,10000).match(/\b[A-Z][a-z]{2,}(?:\s+[A-Z][a-z]{2,}){0,3}\b/g)||[]).map(normalize).filter(Boolean))}
-function mediaKeys(r){const o=new Set();for(const i of Array.isArray(r?.media)?r.media:[])for(const v of [i?.url,i?.preview_image_url]){const c=safe(v,2000).replace(/[?#].*$/,"");if(c)o.add(c)}return o}
+function mediaKeys(r){const o=new Set();for(const i of Array.isArray(r?.media)?r.media:[])for(const v of [i?.url,i?.preview_image_url]){const c=safe(v,2000).replace(/[?#].*$/,"");if(!c)continue;try{const u=new URL(c);o.add(`${u.hostname}${u.pathname}`.toLowerCase());o.add(u.pathname.split("/").filter(Boolean).at(-1)?.toLowerCase())}catch{o.add(c.toLowerCase())}}return new Set([...o].filter(Boolean))}
 function sameEvent(a,b){const l=normalize(a?.source_text),r=normalize(b?.source_text);if(!l||!r)return false;if(a?.x_post_id&&b?.x_post_id&&String(a.x_post_id)===String(b.x_post_id))return true;if(l===r)return true;if(Math.min(l.length,r.length)>=80&&(l.includes(r)||r.includes(l)))return true;const am=mediaKeys(a),bm=mediaKeys(b);if(am.size&&bm.size&&overlap(am,bm)>0)return true;const score=jaccard(tokens(l),tokens(r));const action=overlap(actionKeys(l),actionKeys(r));const number=overlap(numbers(l),numbers(r));const proper=overlap(properNouns(a?.source_text),properNouns(b?.source_text));return score>=THRESHOLD&&action>0&&((proper>0&&number>0)||proper>=0.5)}
 function quality(r){const trust=Math.max(1,Math.min(9,Number(r?.trust_tier||9)));return (10-trust)*1000+(mediaKeys(r).size?300:0)+Math.min(600,normalize(r?.source_text).length)}
 async function readJson(response){const text=await response.text();if(!text)return null;try{return JSON.parse(text)}catch{return{raw:text}}}

@@ -137,7 +137,7 @@ jobs:
           node scripts/ice-english-pretranslation-dedupe.mjs
           node scripts/ice-precollect-published-dedupe.mjs
           node scripts/ice-fast-intake.mjs
-          node scripts/ice-dedupe-v3.mjs || true
+          node scripts/ice-dedupe-v3.mjs
       - name: AI edit and translate
         if: steps.window.outputs.allowed == 'true' && steps.category.outputs.enabled == 'true' && steps.category.outputs.ai_rewrite == 'true'
         run: |
@@ -152,7 +152,7 @@ jobs:
         run: |
           node scripts/ice-restore-human-approved.mjs || true
           node scripts/ice-cross-language-dedupe.mjs || true
-          node scripts/ice-dedupe-v3.mjs || true
+          node scripts/ice-dedupe-v3.mjs
           node scripts/ice-clean-existing-review-duplicates.mjs || true
           node scripts/ice-trusted-source-promote.mjs
           node scripts/ice-publish-due.mjs

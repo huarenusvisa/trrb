@@ -28,7 +28,7 @@ function safeJson(value, fallback = null) {
 function hasChinese(value) { return /[\u3400-\u9fff]/u.test(String(value || "")); }
 function chineseRatio(value) { const text = String(value || "").replace(/\s+/g, ""); return text ? (text.match(/[\u3400-\u9fff]/gu) || []).length / Array.from(text).length : 0; }
 function hasVisualMedia(post) { const media = safeJson(post?.media, post?.media || []); return (Array.isArray(media) ? media : []).some((item) => item?.url || item?.preview_image_url); }
-function editorialReady(story, post) { const payload = safeJson(story?.ai_payload, story?.ai_payload || {}); return ACCEPTED_EDITORIAL_VERSIONS.has(payload?.translation_version) && payload?.translated_to_chinese === true && payload?.old_news_checked === true && payload?.appears_old_news !== true && hasChinese(story.title) && hasChinese(story.content) && chineseRatio(story.content) >= 0.45 && (!hasVisualMedia(post) || payload?.image_grounding_used === true); }
+function editorialReady(story, post) { const payload = safeJson(story?.ai_payload, story?.ai_payload || {}); return ACCEPTED_EDITORIAL_VERSIONS.has(payload?.translation_version) && payload?.translated_to_chinese === true && payload?.old_news_checked === true && payload?.manual_old_news_confirmation === true && payload?.appears_old_news !== true && hasChinese(story.title) && hasChinese(story.content) && chineseRatio(story.content) >= 0.45 && (!hasVisualMedia(post) || payload?.image_grounding_used === true); }
 function shingles(value) { const text = String(value || "").toLowerCase().replace(/[^a-z0-9\u3400-\u9fff]+/g, ""); const out = new Set(); for (let i = 0; i < text.length - 1; i += 1) out.add(text.slice(i, i + 2)); return out; }
 function similarity(a, b) { const left = shingles(a), right = shingles(b); if (!left.size || !right.size) return 0; let common = 0; for (const token of left) if (right.has(token)) common += 1; return common / (left.size + right.size - common); }
 function isOfficialUrgent(story) {
@@ -209,7 +209,7 @@ async function publish(story) {
         official_source_auto: officialApproved, official_direct_publish: officialApproved, translated_to_chinese: true,
         source_character_count: payload?.source_character_count, target_min_chars: payload?.target_min_chars, target_max_chars: payload?.target_max_chars,
         image_grounding_used: payload?.image_grounding_used === true, image_count: payload?.image_count || 0, image_observations: payload?.image_observations || "",
-        duplicate_check_days: 30, old_news_checked: true, distribution_channels: ["ICE执法动态", "ICE实时追踪"],
+        duplicate_check_days: 730, old_news_checked: true, distribution_channels: ["ICE执法动态", "ICE实时追踪"],
         video_url: video?.url || "", video_poster: video?.poster || "", video_featured: temporaryFeatured, video_featured_until: featuredUntil,
         confirmed_facts: payload?.confirmed_facts || [], unconfirmed_claims: payload?.unconfirmed_claims || [],
         evidence: evidence.map((item) => ({ post_id: item.x_post_id, url: item.x_url, source_type: item.source_type, independence_key: item.independence_key }))

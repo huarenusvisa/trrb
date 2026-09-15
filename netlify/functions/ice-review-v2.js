@@ -133,12 +133,12 @@ function assertEditorialReady(story, title, content, input = {}) {
   const payload = story.ai_payload && typeof story.ai_payload === "object" ? story.ai_payload : {};
   if (!isIceEnforcementText(title, story.summary, content)) throw Object.assign(new Error("该内容不是明确的ICE执法新闻，不能发布到ICE栏目"), { statusCode: 400 });
   if (!chinese(title) || !chinese(content)) throw Object.assign(new Error("标题和正文必须是中文，禁止直接发布英文原文"), { statusCode: 400 });
-  if (payload.old_news_checked !== true && input.not_old_news_confirmed !== true) throw Object.assign(new Error("尚未完成旧闻核验，不能发布"), { statusCode: 400 });
+  if (payload.manual_old_news_confirmation !== true && input.not_old_news_confirmed !== true) throw Object.assign(new Error("必须由编辑人工确认不是旧闻，不能发布"), { statusCode: 400 });
   if (payload.appears_old_news === true) throw Object.assign(new Error("系统识别为旧闻，不能发布"), { statusCode: 400 });
   if (Number(payload.image_count || 0) > 0 && payload.image_grounding_used !== true && input.image_reviewed !== true) throw Object.assign(new Error("原帖含图片但尚未完成读图核验，不能发布"), { statusCode: 400 });
 }
 async function recentSimilarArticle(title, summary, content) {
-  const cutoff = new Date(Date.now() - 30 * 86400000).toISOString();
+  const cutoff = new Date(Date.now() - 730 * 86400000).toISOString();
   const rows = await rest("articles", { query: { select: "id,title,summary,content", topic_key: "eq.ice", status: "eq.published", published_at: `gte.${cutoff}`, order: "published_at.desc", limit: "1000" } });
   const source = `${title}${summary}${content}`;
   return (Array.isArray(rows) ? rows : []).find((article) => similarity(source, `${article.title || ""}${article.summary || ""}${article.content || ""}`) >= 0.72) || null;
@@ -184,8 +184,8 @@ async function updatePublishedArticle(story, actor, fields, input = {}) {
     reviewed_at: time,
     ai_payload: {
       ...payload,
-      old_news_checked: payload.old_news_checked === true || input.not_old_news_confirmed === true,
-      manual_old_news_confirmation: input.not_old_news_confirmed === true,
+      old_news_checked: payload.manual_old_news_confirmation === true || input.not_old_news_confirmed === true,
+      manual_old_news_confirmation: payload.manual_old_news_confirmation === true || input.not_old_news_confirmed === true,
       image_grounding_used: payload.image_grounding_used === true || input.image_reviewed === true,
       manual_image_confirmation: input.image_reviewed === true
     }
@@ -224,7 +224,7 @@ async function publishNow(story, actor, input) {
     evidenceFor(story.id)
   ]);
   const similar = duplicate ? null : similarCandidate;
-  if (similar) throw Object.assign(new Error(`与近30天已发布ICE文章重复，已阻止发布（${similar.id}）`), { statusCode: 409 });
+  if (similar) throw Object.assign(new Error(`与近730天已发布ICE文章重复，已阻止发布（${similar.id}）`), { statusCode: 409 });
   const time = nowIso();
   let articleId = duplicate?.id || null;
 
@@ -308,8 +308,8 @@ async function publishNow(story, actor, input) {
     reviewed_at: time,
     ai_payload: {
       ...(story.ai_payload && typeof story.ai_payload === "object" ? story.ai_payload : {}),
-      old_news_checked: story.ai_payload?.old_news_checked === true || input.not_old_news_confirmed === true,
-      manual_old_news_confirmation: input.not_old_news_confirmed === true,
+      old_news_checked: story.ai_payload?.manual_old_news_confirmation === true || input.not_old_news_confirmed === true,
+      manual_old_news_confirmation: story.ai_payload?.manual_old_news_confirmation === true || input.not_old_news_confirmed === true,
       image_grounding_used: story.ai_payload?.image_grounding_used === true || input.image_reviewed === true,
       manual_image_confirmation: input.image_reviewed === true
     }

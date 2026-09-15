@@ -23,12 +23,28 @@ function overlap(a, b) {
   for (const item of left) if (right.has(item)) common += 1;
   return common / Math.min(left.size, right.size);
 }
+function grams(value, size = 2) {
+  const cleaned = normalize(value)
+    .replace(/\b(?:ice|dhs|ero|hsi)\b/g, " ")
+    .replace(/美国|移民及海关执法局|移民执法|新闻|报道|消息|最新|事件/g, "")
+    .replace(/\s+/g, "");
+  const out = new Set();
+  for (let index = 0; index <= cleaned.length - size; index += 1) out.add(cleaned.slice(index, index + size));
+  return out;
+}
+function gramOverlap(a, b) {
+  const left = grams(a), right = grams(b);
+  if (!left.size || !right.size) return 0;
+  let common = 0;
+  for (const item of left) if (right.has(item)) common += 1;
+  return common / Math.min(left.size, right.size);
+}
 function similar(a, b) {
   const left = normalize(a), right = normalize(b);
   if (!left || !right) return false;
   if (left === right) return true;
   if (Math.min(left.length, right.length) >= 28 && (left.includes(right) || right.includes(left))) return true;
-  return overlap(left, right) >= THRESHOLD;
+  return overlap(left, right) >= THRESHOLD || gramOverlap(left, right) >= 0.34;
 }
 function combined(row) { return [row.title, row.summary, row.content].filter(Boolean).join(" "); }
 function payload(row) { return row?.ai_payload && typeof row.ai_payload === "object" ? row.ai_payload : {}; }
@@ -38,7 +54,10 @@ function fingerprint(row) {
 }
 function sameEvent(a, b) {
   const left = fingerprint(a), right = fingerprint(b);
-  return Boolean(left && right && left === right) || similar(combined(a), combined(b));
+  return Boolean(left && right && left === right)
+    || similar(combined(a), combined(b))
+    || gramOverlap(a.title, b.title) >= 0.38
+    || gramOverlap(`${a.title || ""} ${a.summary || ""}`, `${b.title || ""} ${b.summary || ""}`) >= 0.42;
 }
 function priority(story) {
   const status = { approved: 500, pending_review: 400, pending_corroboration: 300, collecting: 200 }[story.status] || 0;
@@ -58,14 +77,8 @@ async function sb(table, { method = "GET", query = {}, body, prefer = "" } = {})
   for (const [key, value] of Object.entries(query)) if (value !== undefined && value !== null && value !== "") url.searchParams.set(key, String(value));
   return request(url, { method, headers: headers(prefer), body: body === undefined ? undefined : JSON.stringify(body) });
 }
-async function reject(story, reason, duplicateId = null) {
-  await sb("ice_stories", {
-    method: "PATCH", query: { id: `eq.${story.id}` },
-    body: {
-      status: "rejected", human_review_status: "rejected", reviewed_at: new Date().toISOString(), reviewer_email: "system-dedupe@trrb.net",
-      decision_reason: `${story.decision_reason || ""}；${reason}${duplicateId ? `：${duplicateId}` : ""}`, updated_at: new Date().toISOString()
-    }, prefer: "return=minimal"
-  });
+async function removeStory(story) {
+  await sb("ice_stories", { method: "DELETE", query: { id: `eq.${story.id}` }, prefer: "return=minimal" });
 }
 async function resetAutomaticOldNewsConfirmation(story) {
   const current = payload(story);
@@ -78,6 +91,23 @@ async function resetAutomaticOldNewsConfirmation(story) {
   story.ai_payload = { ...current, old_news_checked: false, manual_old_news_confirmation: false };
   return true;
 }
+function isIceArticle(article) {
+  return /\b(?:ICE|DHS|ERO|HSI)\b|移民及海关执法局|移民执法|拘留|遣返|递解/u.test(`${article?.title || ""} ${article?.summary || ""} ${article?.category_name || ""} ${article?.topic_key || ""}`);
+}
+async function loadPublishedArticles(articleCutoff) {
+  const output = [];
+  for (let offset = 0; offset < 20000; offset += 5000) {
+    const page = await sb("articles", { query: {
+      select: "id,title,summary,content,published_at,metadata,topic_key,category_name",
+      status: "eq.published", published_at: `gte.${articleCutoff}`,
+      order: "published_at.desc", limit: "5000", offset: String(offset)
+    } });
+    const rows = Array.isArray(page) ? page : [];
+    output.push(...rows.filter(isIceArticle));
+    if (rows.length < 5000) break;
+  }
+  return output;
+}
 async function main() {
   const missing = REQUIRED.filter((name) => !process.env[name]);
   if (missing.length) throw new Error(`缺少GitHub Secret：${missing.join(", ")}`);
@@ -85,7 +115,7 @@ async function main() {
   const articleCutoff = new Date(Date.now() - PUBLISHED_DAYS * 86400000).toISOString();
   const [storiesRaw, articlesRaw] = await Promise.all([
     sb("ice_stories", { query: { select: "id,title,summary,content,cover_image,first_seen_at,last_seen_at,created_at,status,human_review_status,decision_reason,event_fingerprint,official_source_count,independent_source_count,ai_payload", status: "in.(collecting,pending_review,pending_corroboration,approved)", order: "last_seen_at.desc.nullslast,created_at.desc", limit: "1500" } }),
-    sb("articles", { query: { select: "id,title,summary,content,published_at,metadata", topic_key: "eq.ice", status: "eq.published", published_at: `gte.${articleCutoff}`, order: "published_at.desc", limit: "5000" } })
+    loadPublishedArticles(articleCutoff)
   ]);
   const stories = (Array.isArray(storiesRaw) ? storiesRaw : []).sort((a, b) => priority(b) - priority(a));
   const articles = Array.isArray(articlesRaw) ? articlesRaw : [];
@@ -95,16 +125,16 @@ async function main() {
     if (await resetAutomaticOldNewsConfirmation(story)) resetAutomaticChecks += 1;
     const review = payload(story);
     if (review.appears_old_news === true && review.manual_old_news_confirmation !== true) {
-      await reject(story, `系统已识别为旧闻：${text(review.old_news_reason) || "来源包含旧事件日期或回顾信息"}`);
+      await removeStory(story);
       oldNews += 1;
       continue;
     }
     const seen = story.last_seen_at || story.first_seen_at || story.created_at || "";
-    if (story.status !== "approved" && (!seen || seen < cutoff)) { await reject(story, "超过时限未形成可发布的新信息，自动移出审核队列"); stale += 1; continue; }
+    if (story.status !== "approved" && (!seen || seen < cutoff)) { await removeStory(story); stale += 1; continue; }
     const article = articles.find((item) => sameEvent(story, item));
-    if (article) { await reject(story, "与数据库已发布文章高度相似且无独立新增事实", article.id); publishedDuplicate += 1; continue; }
+    if (article) { await removeStory(story); publishedDuplicate += 1; continue; }
     const existing = kept.find((item) => sameEvent(story, item));
-    if (existing) { await reject(story, "与审核队列中的较新候选高度相似", existing.id); queueDuplicate += 1; continue; }
+    if (existing) { await removeStory(story); queueDuplicate += 1; continue; }
     kept.push(story); retained += 1;
   }
   console.log(JSON.stringify({ stage: "ice-clean-existing-review-duplicates-v3", scanned: stories.length, reset_automatic_old_news_checks: resetAutomaticChecks, removed_old_news: oldNews, removed_stale: stale, removed_published_duplicates: publishedDuplicate, removed_queue_duplicates: queueDuplicate, retained }, null, 2));

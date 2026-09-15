@@ -1,11 +1,18 @@
 #!/usr/bin/env node
 import process from "node:process";
+import { fileURLToPath } from "node:url";
 
 const REQUIRED = ["SUPABASE_URL", "SUPABASE_SERVICE_ROLE_KEY"];
 const MAX_SOURCE_AGE_MINUTES = Number(process.env.ICE_MAX_SOURCE_AGE_MINUTES || 60);
 const RECENT_WINDOW_MINUTES = Number(process.env.ICE_RECENT_DUPLICATE_WINDOW_MINUTES || 60);
 const PUBLISHED_LOOKBACK_DAYS = Number(process.env.ICE_PUBLISHED_DEDUPE_DAYS || 30);
 const SIMILARITY_THRESHOLD = Number(process.env.ICE_PUBLISHED_SIMILARITY_THRESHOLD || 0.38);
+const KNOWN_OLD_EVENTS = [
+  ["hyundai", "battery", "georgia"],
+  ["现代", "电池", "佐治亚"],
+  ["leqaa", "kordia", "columbia"],
+  ["leqaa", "kordia", "哥伦比亚大学"]
+];
 
 function safeText(value, max = 30000) { return String(value ?? "").replace(/\u0000/g, "").trim().slice(0, max); }
 function safeJson(value, fallback = {}) { if (value && typeof value === "object") return value; try { return JSON.parse(String(value || "")); } catch { return fallback; } }
@@ -29,6 +36,7 @@ const ACTION_GROUPS = [
   ["release","released","释放","获释"]
 ];
 function normalize(value) { return safeText(value).toLowerCase().replace(/https?:\/\/\S+/g," ").replace(/@[a-z0-9_]+/gi," ").replace(/#([\p{L}\p{N}_]+)/gu,"$1").replace(/[“”‘’'"`]/g,"").replace(/[^\p{L}\p{N}\s]+/gu," ").replace(/\s+/g," ").trim(); }
+function isKnownOldEvent(value) { const source=normalize(value); return KNOWN_OLD_EVENTS.some((terms)=>terms.every((term)=>source.includes(normalize(term)))); }
 function tokenSet(value) { const raw = normalize(value).match(/[a-z0-9][a-z0-9'-]{2,}|[\u3400-\u9fff]{2,4}/g) || []; return new Set(raw.filter((token) => !STOP_WORDS.has(token))); }
 function ngrams(value,size=3) { const chars=Array.from(normalize(value).replace(/\s+/g,"")); const out=new Set(); if(chars.length<size)return new Set(chars.length?[chars.join("")]:[]); for(let i=0;i<=chars.length-size;i+=1)out.add(chars.slice(i,i+size).join("")); return out; }
 function jaccard(left,right){if(!left.size||!right.size)return 0;let common=0;for(const item of left)if(right.has(item))common+=1;return common/new Set([...left,...right]).size;}
@@ -63,6 +71,7 @@ async function main(){
   let stale=0,recentDuplicate=0,publishedDuplicate=0,passed=0;
   for(const post of posts){
     const raw=safeText(post.source_text);const time=postTime(post);
+    if(isKnownOldEvent(raw)){await markSkipped(post,"known_old_event_repost");stale+=1;continue;}
     if(!Number.isFinite(time)||time<oldestAllowed){await markSkipped(post,"precollect_source_older_than_one_hour");stale+=1;continue;}
     const recent=stories.find((story)=>(post.event_fingerprint&&story.event_fingerprint===post.event_fingerprint)||isSimilar(raw,combinedStoryText(story)));
     if(recent){await markSkipped(post,"precollect_duplicate_of_recent_one_hour_story",recent.id);recentDuplicate+=1;continue;}
@@ -77,4 +86,7 @@ async function main(){
   }
   console.log(JSON.stringify({stage:"ice-precollect-published-dedupe-v2",policy:"auto_ice_related_hard_kill_human_longform_preserved",scanned:posts.length,auto_published_comparison_set:articles.length,skipped_stale_over_one_hour:stale,skipped_recent_one_hour_duplicates:recentDuplicate,skipped_published_auto_ice_related:publishedDuplicate,passed_to_intake:passed},null,2));
 }
-main().catch((error)=>{console.error("ICE采集前已发布内容去重失败：",error);process.exitCode=1;});
+if (process.argv[1] === fileURLToPath(import.meta.url)) {
+  main().catch((error)=>{console.error("ICE采集前已发布内容去重失败：",error);process.exitCode=1;});
+}
+export { isKnownOldEvent };

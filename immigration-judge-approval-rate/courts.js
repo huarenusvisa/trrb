@@ -57,10 +57,28 @@ function courtProfileUrl(row) {
   return `${url.pathname}${url.search}${url.hash}`;
 }
 
+function mapDirectionsUrl(address) {
+  return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(address || '')}`;
+}
+
+function courtLocationMarkup(row) {
+  const locations = Array.isArray(row.court_locations) ? row.court_locations : [];
+  if (!locations.length) {
+    const source = row.court_location_source_url || 'https://www.justice.gov/eoir/immigration-court-operational-status';
+    return `<div class="court-location court-location-missing"><span>EOIR 当前清单未列出实体地址</span><a href="${esc(source)}" target="_blank" rel="noopener noreferrer">核对官方清单 ↗</a></div>`;
+  }
+  const items = locations.map((location) => {
+    const status = String(location.status || '').toUpperCase().includes('OPEN') ? '正常开放' : (location.status || '查看官方状态');
+    return `<div class="court-location-item"><a class="court-address-link" href="${esc(mapDirectionsUrl(location.address))}" target="_blank" rel="noopener noreferrer" aria-label="导航到 ${esc(location.name || row.court_name)}：${esc(location.address)}"><span class="map-pin" aria-hidden="true">⌖</span><span><b>${esc(location.address)}</b><small>地图导航 ↗</small></span></a><a class="court-status" href="${esc(location.official_url || row.court_location_source_url)}" target="_blank" rel="noopener noreferrer">${esc(status)}</a></div>`;
+  }).join('');
+  if (locations.length === 1) return `<div class="court-location">${items}</div>`;
+  return `<details class="court-location court-location-multiple"><summary>${fmt(locations.length)} 个办公地点 · 查看地址/导航</summary><div class="court-location-list">${items}</div></details>`;
+}
+
 function render(list) {
   $('#court-results').innerHTML = list.length ? `
-    <div class="crow chead court-crow outcome-row"><span>法院</span><span>法官</span><span>结案总数</span><span class="verdict-pass">批准</span><span class="verdict-deny">拒绝</span><span class="verdict-other">其他</span><span>裁决批准率</span></div>
-    ${list.map((row) => `<a class="crow court-crow outcome-row" href="${esc(courtProfileUrl(row))}"><span><b>${esc(row.court_name || '未命名法院')}</b><small>FY ${esc(fiscalYear)} · ${esc([row.court_city, row.court_state].filter(Boolean).join(', '))}</small></span><span>${fmt(row.judges)}</span><span>${fmt(row.total_asylum_decisions)}</span><span class="verdict-pass">${fmt(row.grants)}</span><span class="verdict-deny">${fmt(row.denials)}</span><span class="verdict-other">${fmt(row.other_decisions)}</span><span class="rate">${reportableRate(row)}</span></a>`).join('')}
+    <div class="crow chead court-crow outcome-row"><span>法院</span><span>法院地址</span><span>法官</span><span>结案总数</span><span class="verdict-pass">批准</span><span class="verdict-deny">拒绝</span><span class="verdict-other">其他</span><span>裁决批准率</span></div>
+    ${list.map((row) => `<article class="crow court-crow outcome-row"><span class="court-identity"><a class="court-profile-link" href="${esc(courtProfileUrl(row))}"><b>${esc(row.court_name || '未命名法院')}</b><small>FY ${esc(fiscalYear)} · ${esc([row.court_city, row.court_state].filter(Boolean).join(', '))}</small><em>查看法院数据 →</em></a></span><span class="court-address-cell">${courtLocationMarkup(row)}</span><span class="court-metric" data-label="法官">${fmt(row.judges)}</span><span class="court-metric" data-label="结案">${fmt(row.total_asylum_decisions)}</span><span class="court-metric verdict-pass" data-label="批准">${fmt(row.grants)}</span><span class="court-metric verdict-deny" data-label="拒绝">${fmt(row.denials)}</span><span class="court-metric verdict-other" data-label="其他">${fmt(row.other_decisions)}</span><span class="court-metric rate" data-label="批准率">${reportableRate(row)}</span></article>`).join('')}
   ` : '<div class="empty">没有找到匹配法院</div>';
   $('#court-results-status').textContent = `${fmt(list.length)} ${window.AsylumI18n?.t?.('法院') || '法院'}`;
 }

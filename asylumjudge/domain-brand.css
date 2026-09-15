@@ -12,3 +12,26 @@
 @media(max-width:900px){.asylumjudge-domain .judge-brand{height:auto;min-height:118px;display:flex;flex-wrap:wrap;gap:7px 10px;padding:9px 0}.asylumjudge-domain .asylumjudge-logo{order:1}.asylumjudge-domain .language-control{order:2;margin-left:auto}.asylumjudge-domain .language-control label{display:none}.asylumjudge-domain .asylumjudge-primary-nav{order:3;width:100%;margin:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}.asylumjudge-domain .asylumjudge-primary-nav a{display:grid;place-items:center;min-height:38px;padding:7px 4px;text-align:center;font-size:11px;line-height:1.2;background:#f7f8fa;border:1px solid #e4e7ec}.asylumjudge-domain .asylumjudge-primary-nav a.active{background:#14804a;border-color:#14804a;color:#fff}}
 @media(max-width:560px){.asylumjudge-domain .judge-brand{min-height:0;padding:10px 0 9px}.asylumjudge-domain .asylumjudge-primary-nav{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.asylumjudge-domain .asylumjudge-primary-nav a{min-height:44px;font-size:12px;touch-action:manipulation}.asylumjudge-domain .asylumjudge-primary-nav a[data-nav-key="nationality"]{font-size:11.5px}}
 @media(max-width:480px){.asylumjudge-domain .judge-shell{width:min(100% - 24px,1180px)}.asylumjudge-domain .asylumjudge-lockup{width:192px}.asylumjudge-domain .language-control select{width:80px;min-width:80px}}
+
+/* Official immigration tools menu */
+.asylumjudge-domain .nav-tools{position:relative;color:#344054;font-size:13px;font-weight:800}
+.asylumjudge-domain .nav-tools summary{list-style:none;cursor:pointer;white-space:nowrap;padding:10px 24px 10px 9px;border-radius:8px;position:relative}
+.asylumjudge-domain .nav-tools summary::-webkit-details-marker{display:none}
+.asylumjudge-domain .nav-tools summary::after{content:"";position:absolute;right:9px;top:50%;width:6px;height:6px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:translateY(-65%) rotate(45deg)}
+.asylumjudge-domain .nav-tools[open] summary,.asylumjudge-domain .nav-tools summary:hover{background:#edf9f1;color:#0b6639}
+.asylumjudge-domain .nav-tools.active summary{background:#14804a;color:#fff}
+.asylumjudge-domain .nav-tools-panel{position:absolute;z-index:50;top:calc(100% + 10px);right:0;width:270px;padding:8px;background:#fff;border:1px solid #dfe5e1;border-radius:14px;box-shadow:0 18px 48px rgba(16,24,40,.18)}
+.asylumjudge-domain .asylumjudge-primary-nav .nav-tools-panel a{display:flex;align-items:center;justify-content:space-between;min-height:42px;padding:9px 11px;border-radius:8px;font-size:13px;color:#344054;background:transparent;border:0}
+.asylumjudge-domain .asylumjudge-primary-nav .nav-tools-panel a:hover{background:#edf9f1;color:#0b6639}
+.asylumjudge-domain .nav-tools-panel span{margin-left:12px;color:#667085}
+.asylumjudge-domain .nav-tools summary:focus-visible{outline:3px solid #101828;outline-offset:3px}
+@media(max-width:900px){
+  .asylumjudge-domain .asylumjudge-primary-nav .nav-tools{min-width:0}
+  .asylumjudge-domain .asylumjudge-primary-nav .nav-tools summary{display:grid;place-items:center;min-height:38px;padding:7px 20px 7px 4px;text-align:center;font-size:11px;line-height:1.2;background:#f7f8fa;border:1px solid #e4e7ec}
+  .asylumjudge-domain .asylumjudge-primary-nav .nav-tools.active summary{background:#14804a;border-color:#14804a;color:#fff}
+  .asylumjudge-domain .nav-tools-panel{left:0;right:auto;width:min(360px,calc(100vw - 24px));margin-top:7px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px}
+}
+@media(max-width:560px){
+  .asylumjudge-domain .asylumjudge-primary-nav .nav-tools summary{min-height:44px;font-size:12px;touch-action:manipulation}
+  .asylumjudge-domain .nav-tools-panel{grid-template-columns:1fr;max-height:min(65vh,420px);overflow:auto}
+}

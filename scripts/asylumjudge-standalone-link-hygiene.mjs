@@ -4,6 +4,7 @@ import { join } from 'node:path';
 const OUT = join(process.cwd(), '.netlify', 'asylumjudge-bundle', 'public');
 const LEGACY_INTERNAL = new Map([
   ['/asylumjudge/courts', '/courts/'],
+  ['/asylumjudge/tools', '/tools/'],
   ['/asylumjudge/states', '/states/'],
   ['/asylumjudge/nationality', '/nationality/'],
   ['/asylumjudge/methodology', '/methodology/'],
@@ -27,7 +28,7 @@ const BRAND_REPLACEMENTS = new Map([
   ['Tang Ren Daily organizes public data only and provides no legal conclusion for any individual case.', 'AsylumJudge organizes public EOIR immigration-court data and provides no legal conclusion for any individual case.'],
   ['唐人日报仅整理公开数据，不提供针对具体案件的法律结论。', '庇护法官整理美国移民法院公开数据，不提供针对具体案件的法律结论。']
 ]);
-const DYNAMIC_ROUTES = new Set(['/judge', '/court', '/courts', '/states', '/nationality', '/compare', '/methodology', '/community']);
+const DYNAMIC_ROUTES = new Set(['/judge', '/court', '/courts', '/tools', '/states', '/nationality', '/compare', '/methodology', '/community']);
 const LOCALE_DYNAMIC_RE = /^\/(?:en|es|fr|pt-br|hi|zh-hant|ru|ar|tr)\/(?:judge|court)$/;
 const META_SUFFIX = {
   en: 'Compare EOIR asylum approval rates, denial rates, case counts, court assignments, historical trends, and official immigration-judge background data on AsylumJudge.',

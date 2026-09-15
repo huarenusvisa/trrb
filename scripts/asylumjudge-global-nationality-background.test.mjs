@@ -292,7 +292,7 @@ runInNewContext(`${sharedCountryHelpers};
 assert.equal(sharedCountrySandbox.zhChina, '中国', 'shared judge i18n must localize China without confusing its EOIR CH code with Switzerland');
 assert.equal(sharedCountrySandbox.arChina, 'الصين', 'shared judge i18n must localize nationality names outside Chinese locales');
 assert.equal(sharedCountrySandbox.enSwitzerland, 'Switzerland', 'shared judge i18n must preserve the English country name');
-assert.match(sharedI18nClient, /stateName, countryName, regionCodeForNationality, dictionarySize/, 'shared i18n must export country-name localization to judge detail pages');
+assert.match(sharedI18nClient, /stateName, stateSearchNames, countryName, regionCodeForNationality, dictionarySize/, 'shared i18n must export state-search and country-name localization to judge detail pages');
 assert.match(detailClient, /\[nationalityName\(row\), row\.nationality, row\.nationality_code\]/, 'judge nationality search must match localized names while preserving English names and EOIR codes');
 assert.match(detailClient, /FY \$\{esc\(row\.fiscal_year\)\} · \$\{esc\(nationalityName\(row\)\)\}/, 'judge nationality results must safely render the localized country name');
 assert.doesNotMatch(detailClient, /FY \$\{esc\(row\.fiscal_year\)\} · \$\{esc\(row\.nationality\)\}/, 'judge nationality results must not render the raw English country name directly');

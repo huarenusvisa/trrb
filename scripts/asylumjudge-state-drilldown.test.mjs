@@ -52,6 +52,8 @@ assert.equal(courtsResponse.statusCode, 200);
 assert.ok(courtsBody.count > 3);
 assert.equal(courtsBody.courts.every((row) => row.court_state === 'CA'), true, 'CA drill-down must contain only CA courts');
 assert.equal(courtsBody.courts.some((row) => /New York/i.test(row.court_name)), false);
+assert.ok(courtsBody.courts.every((row) => Array.isArray(row.court_locations)), 'court directory API must attach official location arrays');
+assert.ok(courtsBody.courts.some((row) => row.court_locations.length > 0), 'current courts must expose an official street address');
 
 const detailResponse = await handler({ httpMethod: 'GET', queryStringParameters: { mode: 'court-detail', court: 'Shared Court', state: 'CA' } });
 const detailBody = JSON.parse(detailResponse.body);
@@ -116,7 +118,10 @@ assert.match(courtsClient, /if \(!response\.ok\) throw/, 'court listing must tre
 assert.match(statesClient, /const reportableRate = \(row\) => Number\(row\.grants \|\| 0\) \+ Number\(row\.denials \|\| 0\) < 50[\s\S]*\? '—<small>少于50件，不显示<\/small>'[\s\S]*: pct\(row\.adjudicated_approval_rate\)/, 'state listing must suppress approval rates based on fewer than 50 merits decisions');
 assert.match(statesClient, /<span class="rate">\$\{reportableRate\(row\)\}<\/span>/, 'state rows must render the sample-size-aware approval rate');
 assert.match(courtsClient, /const reportableRate = \(row\) => Number\(row\.grants \|\| 0\) \+ Number\(row\.denials \|\| 0\) < 50[\s\S]*\? '—<small>少于50件，不显示<\/small>'[\s\S]*: pct\(row\.adjudicated_approval_rate\)/, 'court listing must suppress approval rates based on fewer than 50 merits decisions');
-assert.match(courtsClient, /<span class="rate">\$\{reportableRate\(row\)\}<\/span>/, 'court rows must render the sample-size-aware approval rate');
+assert.match(courtsClient, /class="court-metric rate"[^>]*>\$\{reportableRate\(row\)\}<\/span>/, 'court rows must render the sample-size-aware approval rate');
+assert.match(courtsClient, /google\.com\/maps\/dir\/\?api=1&destination=/, 'court addresses must open turn-by-turn map directions');
+assert.match(courtsClient, /class="court-address-link"[^>]*target="_blank"[^>]*rel="noopener noreferrer"/, 'court map navigation must open safely in a new tab');
+assert.match(courtsClient, /class="court-profile-link"/, 'court data and map navigation must remain separate valid links');
 assert.match(statesClient, /id="state-retry"[\s\S]*load\(fiscalYear\)/, 'state retry must preserve the selected fiscal year');
 assert.match(statesClient, /async function load\(year = fiscalYear, historyMode = 'replace'\)[\s\S]*fiscalYear = Number\(year\) \|\| fiscalYear;\s*updateYearControls\(\);/, 'state year selection must be retained before a request can fail');
 assert.match(courtsClient, /id="court-retry"[\s\S]*load\(\$\('#court-q'\)\.value\.trim\(\), selectedState\)/, 'court retry must preserve the search and state filters');
@@ -136,12 +141,13 @@ assert.match(courtsHtml, /data-fy="2026"[^>]*aria-pressed="true"[\s\S]*data-fy="
 assert.match(statesHtml, /data-state-year="2026"[^>]*aria-pressed="true"[\s\S]*data-state-year="2025"[^>]*aria-pressed="false"/, 'state year controls must have initial accessible selection state');
 assert.match(courtsHtml, /class="state-year-tabs"[^>]*role="group"[^>]*aria-label="选择财政年度"/, 'court year controls must expose a named group');
 assert.match(statesHtml, /class="state-year-tabs"[^>]*role="group"[^>]*aria-label="选择财政年度"/, 'state year controls must expose a named group');
-assert.match(courtsHtml, /courts\.js\?v=13/, 'court page must load the request-timeout client');
+assert.match(courtsHtml, /courts\.js\?v=14/, 'court page must load the official-address client');
 assert.match(statesHtml, /courts\.css\?v=6[\s\S]*app-i18n\.js\?v=8[\s\S]*states\.js\?v=12/, 'state page must load the request-timeout client');
-assert.match(courtsHtml, /courts\.css\?v=6[\s\S]*app-i18n\.js\?v=8[\s\S]*courts\.js\?v=13/, 'court page must load the request-timeout client');
+assert.match(courtsHtml, /courts\.css\?v=7[\s\S]*app-i18n\.js\?v=8[\s\S]*courts\.js\?v=14/, 'court page must load the official-address directory assets');
 assert.match(courtsCss, /\.state-year-tabs button\{[^}]*height:44px[^}]*touch-action:manipulation/, 'directory fiscal-year filters must provide responsive 44px touch targets');
 assert.match(courtsCss, /\.empty-retry:focus-visible/, 'retry controls must have a visible keyboard focus style');
-assert.match(courtsCss, /\.court-head input:focus-visible,\.court-head button:focus-visible,\.state-year-tabs button:focus-visible,\.crow:not\(\.chead\):focus-visible,\.method-note a:focus-visible\{outline:3px solid #101828;outline-offset:3px\}/, 'directory search, filters, result rows, and methodology links must have a visible keyboard focus style');
+assert.match(courtsCss, /\.court-profile-link:focus-visible,\.court-address-link:focus-visible,\.court-status:focus-visible/, 'court data, map, and official status links must have visible keyboard focus styles');
+assert.match(courtsCss, /#court-results \.court-crow:not\(\.chead\)\{display:grid;grid-template-columns:repeat\(3,minmax\(0,1fr\)\)/, 'court rows must become readable mobile cards');
 assert.match(appI18n, /\['重新尝试','Try again'.*'إعادة المحاولة','Tekrar dene'\]/, 'retry action must be translated in all supported languages');
 assert.match(detailClient, /params\.set\('state', state\)/, 'court detail must preserve state scope');
 assert.match(detailClient, /params\.set\('fy', requestedYear\)/, 'court detail must request the fiscal year selected in the directory');
@@ -163,8 +169,8 @@ assert.match(detailClient, /class="trow thead outcome-row" aria-hidden="true"/, 
 assert.match(detailClient, /const accessibleSummary = `\$\{row\.judge_name\}；\$\{decisionHeading\}[\s\S]*aria-label="\$\{esc\(accessibleSummary\)\}"/, 'each judge profile link must announce every visible metric with its label');
 assert.match(courtDetailPage, /court-detail\.js\?v=7/, 'court detail must load the request-timeout client');
 assert.match(courtDetailPage, /id="loading"[^>]*role="status"[^>]*aria-live="polite"[^>]*aria-busy="true"/, 'court detail loading and failure updates must be announced');
-assert.match(courtDetailPage, /detail\.css\?v=7[\s\S]*domain-brand\.css\?v=8[\s\S]*id="court-back"[\s\S]*id="court-source"[\s\S]*court-detail\.js\?v=7/, 'court detail must load current shared styles, the scope-aware request-timeout client, and expose its context targets');
-assert.match(judgeDetailPage, /detail\.css\?v=7/, 'judge detail must load the current shared detail styles');
+assert.match(courtDetailPage, /detail\.css\?v=7[\s\S]*domain-brand\.css\?v=9[\s\S]*id="court-back"[\s\S]*id="court-source"[\s\S]*court-detail\.js\?v=7/, 'court detail must load current shared styles, the scope-aware request-timeout client, and expose its context targets');
+assert.match(judgeDetailPage, /detail\.css\?v=8/, 'judge detail must load the current shared detail styles');
 assert.match(detailCss, /\.country-tools input:focus-visible,\.country-tools button:focus-visible,\.judge-link:focus-visible,\.detail-webex a:focus-visible,\.background-copy a:focus-visible,\.method-note a:focus-visible\{outline:3px solid #101828;outline-offset:3px\}/, 'detail search, filters, profile rows, and supporting links must have a visible keyboard focus style');
 assert.match(overviewClient, /appPath\('courts'\)\}\?state=/, 'overview state rows must open that state\'s courts directly');
 

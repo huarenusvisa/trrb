@@ -32,7 +32,7 @@ assert.match(html, /id="compare-nationalities"/);
 assert.match(html, /id="compare-backgrounds"/);
 assert.match(html, /app-i18n\.js\?v=8/);
 assert.match(html, /compare\.js\?v=10/);
-assert.match(html, /site\.css\?v=35/, 'comparison page must load the skip-link style under the current cache key');
+assert.match(html, /site\.css\?v=40/, 'comparison page must load the official-tools navigation style under the current cache key');
 assert.match(html, /compare\.css\?v=5/);
 assert.match(html, /compare-focus\.css\?v=1/);
 for (const locale of ['en', 'zh-Hans', 'zh-Hant', 'es', 'fr', 'pt-BR', 'hi', 'ru', 'ar', 'tr']) {

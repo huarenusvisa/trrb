@@ -1,0 +1,1186 @@
+{
+  "generated_at": "2026-09-15T22:32:57.739Z",
+  "source_url": "https://www.justice.gov/eoir/immigration-court-operational-status",
+  "court_code_source_url": "https://www.justice.gov/eoir/policy-manual-eoir/part-VII/appendices/n",
+  "source_notice": "Addresses and operational statuses are a snapshot of the official DOJ/EOIR public directory. Hearing notices remain controlling.",
+  "location_count": 74,
+  "courts": {
+    "ADL": {
+      "code": "ADL",
+      "official_name": "Adelanto",
+      "current_location_status": "listed",
+      "locations": [
+        {
+          "name": "Adelanto",
+          "address": "Adelanto Detention Facility, 10250 Rancho Road, Suite 201A, Adelanto, CA 92301, United States",
+          "status": "OPEN",
+          "official_url": "https://www.justice.gov/eoir/adelanto-immigration-court",
+          "latitude": 34.559425,
+          "longitude": -117.44223
+        }
+      ]
+    },
+    "ANN": {
+      "code": "ANN",
+      "official_name": "Annandale",
+      "current_location_status": "listed",
+      "locations": [
+        {
+          "name": "Annandale",
+          "address": "7619 Little River Turnpike, Suite 400, Annandale, VA 22003, United States",
+          "status": "OPEN",
+          "official_url": "https://www.justice.gov/eoir/annandale-immigration-court",
+          "latitude": 38.83784,
+          "longitude": -77.19822
+        }
+      ]
+    },
+    "ATD": {
+      "code": "ATD",
+      "official_name": "Atlanta - Ted Turner Drive",
+      "current_location_status": "listed",
+      "locations": [
+        {
+          "name": "Atlanta – Ted Turner Drive",
+          "address": "180 Ted Turner Drive, SW, Suite 241, Atlanta, GA 30303, United States",
+          "status": "OPEN",
+          "official_url": "https://www.justice.gov/eoir/atlanta-ted-turner-drive",
+          "latitude": 33.74939,
+          "longitude": -84.39733
+        }
+      ]
+    },
+    "ATL": {
+      "code": "ATL",
+      "official_name": "Atlanta - W. Peachtree Street",
+      "current_location_status": "listed",
+      "locations": [
+        {
+          "name": "Atlanta - W. Peachtree Street",
+          "address": "401 W. Peachtree Street, Suite 2600, Atlanta, GA 30308, United States",
+          "status": "OPEN",
+          "official_url": "https://www.justice.gov/eoir/atlanta-w-peachtree-street",
+          "latitude": 33.76545,
+          "longitude": -84.38706
+        }
+      ]
+    },
+    "AUR": {
+      "code": "AUR",
+      "official_name": "Aurora",
+      "current_location_status": "listed",
+      "locations": [
+        {
+          "name": "Aurora",
+          "address": "3130 N. Oakland Street, Aurora, CO 80010, United States",
+          "status": "OPEN",
+          "official_url": "https://www.justice.gov/eoir/aurora-immigration-court",
+          "latitude": 39.76096,
+          "longitude": -104.849125
+        }
+      ]
+    },
+    "BAL": {
+      "code": "BAL",
+      "official_name": "Baltimore",
+      "current_location_status": "listed",
+      "locations": [
+        {
+          "name": "Baltimore",
+          "address": "31 Hopkins Plaza, Room 440, Baltimore, MD 21201, United States",
+          "status": "OPEN",
+          "official_url": "https://www.justice.gov/eoir/baltimore-immigration-court",
+          "latitude": 39.290882,
+          "longitude": -76.610759
+        }
+      ]
+    },
+    "BTV": {
+      "code": "BTV",
+      "official_name": "Batavia",
+      "current_location_status": "not_listed",
+      "locations": []
+    },
+    "BOS": {
+      "code": "BOS",
+      "official_name": "Boston",
+      "current_location_status": "listed",
+      "locations": [
+        {
+          "name": "Boston",
+          "address": "15 New Sudbury Street, Room 320, Boston, MA 02203, United States",
+          "status": "OPEN",
+          "official_url": "https://www.justice.gov/eoir/boston-immigration-court",
+          "latitude": 42.36144,
+          "longitude": -71.05936
+        }
+      ]
+    },
+    "BUF": {
+      "code": "BUF",
+      "official_name": "Buffalo",
+      "current_location_status": "listed",
+      "locations": [
+        {
+          "name": "Buffalo",
+          "address": "130 Delaware Avenue, Suite 300, Buffalo, NY 14202, United States",
+          "status": "OPEN",
+          "official_url": "https://www.justice.gov/eoir/buffalo-immigration-court",
+          "latitude": 42.8881,
+          "longitude": -78.87817
+        }
+      ]
+    },
+    "CHL": {
+      "code": "CHL",
+      "official_name": "Charlotte",
+      "current_location_status": "listed",
+      "locations": [
+        {
+          "name": "Charlotte",
+          "address": "5701 Executive Center Drive, Suite 400, Charlotte, NC 28212, United States",
+          "status": "OPEN",
+          "official_url": "https://www.justice.gov/eoir/charlotte-immigration-court",
+          "latitude": 35.200495,
+          "longitude": -80.743235
+        }
+      ]
+    },
+    "CHE": {
+      "code": "CHE",
+      "official_name": "Chelmsford",
+      "current_location_status": "listed",
+      "locations": [
+        {
+          "name": "Chelmsford",
+          "address": "150 Apollo Drive, Suite 100, Chelmsford, MA 01824, United States",
+          "status": "OPEN",
+          "official_url": "https://www.justice.gov/eoir/chelmsford-immigration-court",
+          "latitude": 42.599211,
+          "longitude": -71.329577
+        }
+      ]
+    },
+    "CHI": {
+      "code": "CHI",
+      "official_name": "Chicago",
+      "current_location_status": "listed",
+      "locations": [
+        {
+          "name": "Chicago",
+          "address": "55 E. Monroe Street*, Suite 1500, Chicago, IL 60603, United States",
+          "status": "Monroe Street: OPEN · Clark Street: OPEN",
+          "official_url": "https://www.justice.gov/eoir/chicago-immigration-court",
+          "latitude": 41.88041,
+          "longitude": -87.625646
+        }
+      ]
+    },
+    "CLE": {
+      "code": "CLE",
+      "official_name": "Cleveland",
+      "current_location_status": "listed",
+      "locations": [
+        {
+          "name": "Cleveland",
+          "address": "801 W. Superior Avenue, Suite 13 - 100, Cleveland, OH 44113, United States",
+          "status": "OPEN",
+          "official_url": "https://www.justice.gov/eoir/cleveland-immigration-court",
+          "latitude": 41.49673,
+          "longitude": -81.69765
+        }
+      ]
+    },
+    "CCC": {
+      "code": "CCC",
+      "official_name": "Concord",
+      "current_location_status": "listed",
+      "locations": [
+        {
+          "name": "Concord",
+          "address": "1855 Gateway Boulevard, Ste 850, Concord, CA 94520, United States",
+          "status": "OPEN",
+          "official_url": "https://prod.justice.gov/eoir/concord-immigration-court",
+          "latitude": 37.971958,
+          "longitude": -122.042825
+        }
+      ]
+    },
+    "CIC": {
+      "code": "CIC",
+      "official_name": "Conroe",
+      "current_location_status": "listed",
+      "locations": [
+        {
+          "name": "Conroe",
+          "address": "806 Hilbig Road, Conroe, TX 77301, United States",
+          "status": "OPEN",
+          "official_url": "https://www.justice.gov/eoir/conroe-immigration-court",
+          "latitude": 30.33712,
+          "longitude": -95.44269
+        }
+      ]
+    },
+    "DAL": {
+      "code": "DAL",
+      "official_name": "Dallas",
+      "current_location_status": "listed",
+      "locations": [
+        {
+          "name": "Dallas",
+          "address": "1100 Commerce Street, Suite 1060, Dallas, TX 75242, United States",
+          "status": "OPEN",
+          "official_url": "https://www.justice.gov/eoir/dallas-immigration-court",
+          "latitude": 32.778824,
+          "longitude": -96.802121
+        }
+      ]
+    },
+    "DEN": {
+      "code": "DEN",
+      "official_name": "Denver",
+      "current_location_status": "listed",
+      "locations": [
+        {
+          "name": "Denver",
+          "address": "1961 Stout Street, Suite 3101, Denver, CO 80294, United States",
+          "status": "OPEN",
+          "official_url": "https://www.justice.gov/eoir/denver-immigration-court",
+          "latitude": 39.749465,
+          "longitude": -104.98926
+        }
+      ]
+    },
+    "DET": {
+      "code": "DET",
+      "official_name": "Detroit",
+      "current_location_status": "listed",
+      "locations": [
+        {
+          "name": "Detroit",
+          "address": "477 Michigan Avenue, Suite 440, Detroit, MI 48226, United States",
+          "status": "OPEN",
+          "official_url": "https://www.justice.gov/eoir/detroit-immigration-court",
+          "latitude": 42.331173,
+          "longitude": -83.053165
+        }
+      ]
+    },
+    "ELP": {
+      "code": "ELP",
+      "official_name": "El Paso",
+      "current_location_status": "listed",
+      "locations": [
+        {
+          "name": "El Paso",
+          "address": "700 E. San Antonio Avenue, Suite 750, El Paso, TX 79901, United States",
+          "status": "OPEN",
+          "official_url": "https://www.justice.gov/eoir/el-paso-immigration-courts",
+          "latitude": 31.75921,
+          "longitude": -106.48228
+        }
+      ]
+    },
+    "EPD": {
+      "code": "EPD",
+      "official_name": "El Paso Detained",
+      "current_location_status": "listed",
+      "locations": [
+        {
+          "name": "El Paso SPC",
+          "address": "8915 Montana Avenue, Suite 100, El Paso, TX 79925, United States",
+          "status": "OPEN",
+          "official_url": "https://www.justice.gov/eoir/el-paso-spc-0",
+          "latitude": 31.78643,
+          "longitude": -106.41981
+        }
+      ]
+    },
+    "ELZ": {
+      "code": "ELZ",
+      "official_name": "Elizabeth",
+      "current_location_status": "listed",
+      "locations": [
+        {
+          "name": "Elizabeth",
+          "address": "625 Evans Street, Room 148A, Elizabeth, NJ 07201, United States",
+          "status": "OPEN",
+          "official_url": "https://www.justice.gov/eoir/elizabeth-immigration-court",
+          "latitude": 40.6675377,
+          "longitude": -74.1879582
+        }
+      ]
+    },
+    "ELO": {
+      "code": "ELO",
+      "official_name": "Eloy",
+      "current_location_status": "listed",
+      "locations": [
+        {
+          "name": "Eloy",
+          "address": "1705 E. Hanna Road, Suite 366, Eloy, AZ 85131, United States",
+          "status": "OPEN",
+          "official_url": "https://www.justice.gov/eoir/eloy-immigration-court",
+          "latitude": 32.82498,
+          "longitude": -111.68212
+        }
+      ]
+    },
+    "FCI": {
+      "code": "FCI",
+      "official_name": "Falls Church IAC",
+      "current_location_status": "listed",
+      "locations": [
+        {
+          "name": "Falls Church Immigration Adjudication Center",
+          "address": "5107 Leesburg Pike, Falls Church, VA 22041, United States",
+          "status": "OPEN",
+          "official_url": "https://www.justice.gov/eoir/immigration-court-operational-status",
+          "latitude": 38.844145,
+          "longitude": -77.116265
+        }
+      ]
+    },
+    "FLO": {
+      "code": "FLO",
+      "official_name": "Florence",
+      "current_location_status": "listed",
+      "locations": [
+        {
+          "name": "Florence",
+          "address": "3260 N. Pinal Parkway Avenue, Florence, AZ 85132, United States",
+          "status": "OPEN",
+          "official_url": "https://www.justice.gov/eoir/florence-immigration-court",
+          "latitude": 33.06399,
+          "longitude": -111.38141
+        }
+      ]
+    },
+    "BLM": {
+      "code": "BLM",
+      "official_name": "Fort Snelling",
+      "current_location_status": "listed",
+      "locations": [
+        {
+          "name": "Fort Snelling",
+          "address": "1 Federal Drive, Suite 1850, Fort Snelling, MN 55111, United States",
+          "status": "OPEN",
+          "official_url": "https://www.justice.gov/eoir/fort-snelling-immigration-court",
+          "latitude": 44.891303,
+          "longitude": -93.215947
+        }
+      ]
+    },
+    "FTW": {
+      "code": "FTW",
+      "official_name": "Fort Worth IAC",
+      "current_location_status": "listed",
+      "locations": [
+        {
+          "name": "Fort Worth Immigration Adjudication Center",
+          "address": "819 Taylor Street, Suite 600, Fort Worth, TX 76102, United States",
+          "status": "OPEN",
+          "official_url": "https://www.justice.gov/eoir/immigration-court-operational-status",
+          "latitude": 32.750307,
+          "longitude": -97.331465
+        }
+      ]
+    },
+    "HLG": {
+      "code": "HLG",
+      "official_name": "Harlingen",
+      "current_location_status": "listed",
+      "locations": [
+        {
+          "name": "Harlingen",
+          "address": "2009 West Jefferson Avenue, Suite 300, Harlingen, TX 78550, United States",
+          "status": "OPEN",
+          "official_url": "https://www.justice.gov/eoir/harlingen-immigration-court",
+          "latitude": 26.195934,
+          "longitude": -97.712703
+        }
+      ]
+    },
+    "HAR": {
+      "code": "HAR",
+      "official_name": "Hartford",
+      "current_location_status": "listed",
+      "locations": [
+        {
+          "name": "Hartford",
+          "address": "450 Main Street, Room 628, Hartford, CT 06103-3015, United States",
+          "status": "OPEN",
+          "official_url": "https://www.justice.gov/eoir/hartford-immigration-court",
+          "latitude": 41.76124,
+          "longitude": -72.67397
+        }
+      ]
+    },
+    "HON": {
+      "code": "HON",
+      "official_name": "Honolulu",
+      "current_location_status": "listed",
+      "locations": [
+        {
+          "name": "Honolulu",
+          "address": "300 Ala Moana Boulevard, Room 8-112, Honolulu, HI 96850, United States",
+          "status": "OPEN",
+          "official_url": "https://www.justice.gov/eoir/honolulu-immigration-court",
+          "latitude": 21.303486,
+          "longitude": -157.862375
+        }
+      ]
+    },
+    "HOU": {
+      "code": "HOU",
+      "official_name": "Houston – Smith Street",
+      "current_location_status": "listed",
+      "locations": [
+        {
+          "name": "Houston - Jefferson Street Immigration Court",
+          "address": "500 Jefferson Street, Suite 300, Houston, TX 77002, United States",
+          "status": "OPEN",
+          "official_url": "https://www.justice.gov/eoir/houston-jefferson-street-immigration-court",
+          "latitude": 29.752927,
+          "longitude": -95.373833
+        }
+      ]
+    },
+    "HGP": {
+      "code": "HGP",
+      "official_name": "Houston - Greenspoint Park",
+      "current_location_status": "listed",
+      "locations": [
+        {
+          "name": "Houston – Greenspoint Park",
+          "address": "16800 Greenspoint Park Drive, 2nd Floor, Houston, TX 77060, United States",
+          "status": "OPEN",
+          "official_url": "https://www.justice.gov/eoir/houston-greenspoint-park-immigration-court",
+          "latitude": 29.94528,
+          "longitude": -95.40219
+        }
+      ]
+    },
+    "HSG": {
+      "code": "HSG",
+      "official_name": "Houston - S. Gessner Road",
+      "current_location_status": "listed",
+      "locations": [
+        {
+          "name": "Houston – S. Gessner Road",
+          "address": "8701 S. Gessner Road, 10th Floor, Houston, TX 77074, United States",
+          "status": "OPEN",
+          "official_url": "https://www.justice.gov/eoir/houston-south-gessner-road-immigration-court",
+          "latitude": 29.686683,
+          "longitude": -95.528207
+        }
+      ]
+    },
+    "HYA": {
+      "code": "HYA",
+      "official_name": "Hyattsville",
+      "current_location_status": "listed",
+      "locations": [
+        {
+          "name": "Hyattsville",
+          "address": "3311 Toledo Road, Suite 105, Hyattsville, MD 20782, United States",
+          "status": "OPEN",
+          "official_url": "https://www.justice.gov/eoir/hyattsville-immigration-court",
+          "latitude": 38.969531,
+          "longitude": -76.951732
+        }
+      ]
+    },
+    "IMP": {
+      "code": "IMP",
+      "official_name": "Imperial",
+      "current_location_status": "listed",
+      "locations": [
+        {
+          "name": "Imperial",
+          "address": "2409 La Brucherie Road, Imperial, CA 92251, United States",
+          "status": "OPEN",
+          "official_url": "https://www.justice.gov/eoir/imperial-immigration-court",
+          "latitude": 32.82747,
+          "longitude": -115.58002
+        }
+      ]
+    },
+    "INP": {
+      "code": "INP",
+      "official_name": "Indianapolis",
+      "current_location_status": "listed",
+      "locations": [
+        {
+          "name": "Indianapolis",
+          "address": "575 N. Pennsylvania Street, Suite 617, Indianapolis, IN 46204, United States",
+          "status": "OPEN",
+          "official_url": "https://www.justice.gov/eoir/indianapolis-immigration-court",
+          "latitude": 39.774746,
+          "longitude": -86.155077
+        }
+      ]
+    },
+    "KAN": {
+      "code": "KAN",
+      "official_name": "Kansas City",
+      "current_location_status": "listed",
+      "locations": [
+        {
+          "name": "Kansas City",
+          "address": "2345 Grand Boulevard, Suite 525, Kansas City, MO 64108, United States",
+          "status": "OPEN",
+          "official_url": "https://www.justice.gov/eoir/kansas-city-immigration-court",
+          "latitude": 39.10592,
+          "longitude": -94.5825
+        }
+      ]
+    },
+    "KRO": {
+      "code": "KRO",
+      "official_name": "Krome",
+      "current_location_status": "listed",
+      "locations": [
+        {
+          "name": "Miami Krome (Detained)",
+          "address": "Krome North Processing Center, 18201 SW 12th Street, Miami, FL 33194, United States",
+          "status": "OPEN",
+          "official_url": "https://www.justice.gov/eoir/miami-krome-immigration-court",
+          "latitude": 25.75342,
+          "longitude": -80.4864
+        }
+      ]
+    },
+    "LRO": {
+      "code": "LRO",
+      "official_name": "Laredo",
+      "current_location_status": "listed",
+      "locations": [
+        {
+          "name": "Laredo",
+          "address": "1406 Jacaman Road, Suite B, Laredo, TX 78041, United States",
+          "status": "OPEN",
+          "official_url": "https://www.justice.gov/eoir/laredo-immigration-court",
+          "latitude": 27.563073,
+          "longitude": -99.471497
+        }
+      ]
+    },
+    "JNA": {
+      "code": "JNA",
+      "official_name": "LaSalle",
+      "current_location_status": "listed",
+      "locations": [
+        {
+          "name": "LaSalle",
+          "address": "830 Pine Hill Road, P.O. Box 2179, Jena, LA 71342, United States",
+          "status": "OPEN",
+          "official_url": "https://www.justice.gov/eoir/lasalle-immigration-court",
+          "latitude": 31.683227,
+          "longitude": -92.133745
+        }
+      ]
+    },
+    "LVG": {
+      "code": "LVG",
+      "official_name": "Las Vegas",
+      "current_location_status": "listed",
+      "locations": [
+        {
+          "name": "Las Vegas",
+          "address": "110 North City Parkway, Suite 400, Las Vegas, NV 89106, United States",
+          "status": "OPEN",
+          "official_url": "https://www.justice.gov/eoir/las-vegas-immigration-court",
+          "latitude": 36.17418,
+          "longitude": -115.14701
+        }
+      ]
+    },
+    "NLA": {
+      "code": "NLA",
+      "official_name": "Los Angeles - N. Los Angeles Street",
+      "current_location_status": "listed",
+      "locations": [
+        {
+          "name": "Los Angeles – N. Los Angeles Street",
+          "address": "300 North Los Angeles Street, Room 4330, Los Angeles, CA 90012, United States",
+          "status": "OPEN",
+          "official_url": "https://www.justice.gov/eoir/los-angeles-n-los-angeles-street-immigration-court",
+          "latitude": 34.053375,
+          "longitude": -118.240015
+        }
+      ]
+    },
+    "MEM": {
+      "code": "MEM",
+      "official_name": "Memphis",
+      "current_location_status": "listed",
+      "locations": [
+        {
+          "name": "Memphis",
+          "address": "Brinkley Plaza - 80 Monroe Avenue, Suite 501, Memphis, TN 38103, United States",
+          "status": "OPEN · Louisville Hearing Location: OPEN",
+          "official_url": "https://www.justice.gov/eoir/memphis-immigration-court",
+          "latitude": 35.14459,
+          "longitude": -90.053486
+        }
+      ]
+    },
+    "MIA": {
+      "code": "MIA",
+      "official_name": "Miami",
+      "current_location_status": "listed",
+      "locations": [
+        {
+          "name": "Miami",
+          "address": "One Riverview Square, 333 S. Miami Avenue, Suite 700, Miami, FL 33130, United States",
+          "status": "OPEN",
+          "official_url": "https://www.justice.gov/eoir/miami-immigration-court",
+          "latitude": 25.77243,
+          "longitude": -80.19343
+        }
+      ]
+    },
+    "NEW": {
+      "code": "NEW",
+      "official_name": "Newark",
+      "current_location_status": "listed",
+      "locations": [
+        {
+          "name": "Newark",
+          "address": "970 Broad Street, Room 1200, Newark, NJ 07102, United States",
+          "status": "OPEN",
+          "official_url": "https://www.justice.gov/eoir/newark-immigration-court",
+          "latitude": 40.730227,
+          "longitude": -74.174389
+        }
+      ]
+    },
+    "NOL": {
+      "code": "NOL",
+      "official_name": "New Orleans",
+      "current_location_status": "listed",
+      "locations": [
+        {
+          "name": "New Orleans",
+          "address": "One Canal Place, 365 Canal Street, Suite 500, New Orleans, LA 70130, United States",
+          "status": "OPEN",
+          "official_url": "https://www.justice.gov/eoir/new-orleans-immigration-court",
+          "latitude": 29.9515,
+          "longitude": -90.06563
+        }
+      ]
+    },
+    "NYB": {
+      "code": "NYB",
+      "official_name": "New York - Broadway",
+      "current_location_status": "listed",
+      "locations": [
+        {
+          "name": "New York - Broadway",
+          "address": "290 Broadway, Suite 2900, Ted Weiss Federal Building, New York, NY 10007, United States",
+          "status": "OPEN",
+          "official_url": "https://www.justice.gov/eoir/new-york-broadway-immigration-court",
+          "latitude": 40.715094,
+          "longitude": -74.005296
+        }
+      ]
+    },
+    "NYC": {
+      "code": "NYC",
+      "official_name": "New York - Federal Plaza",
+      "current_location_status": "listed",
+      "locations": [
+        {
+          "name": "New York - Federal Plaza",
+          "address": "26 Federal Plaza, 12th Floor, Room 1237, New York, NY 10278, United States",
+          "status": "OPEN",
+          "official_url": "https://www.justice.gov/eoir/new-york-federal-plaza-immigration-court",
+          "latitude": 40.71509,
+          "longitude": -74.003207
+        }
+      ]
+    },
+    "NYV": {
+      "code": "NYV",
+      "official_name": "New York - Varick Street",
+      "current_location_status": "listed",
+      "locations": [
+        {
+          "name": "New York - Varick",
+          "address": "201 Varick Street, 5th Floor, Room 507, New York, NY 10014, United States",
+          "status": "OPEN",
+          "official_url": "https://www.justice.gov/eoir/new-york-varick-immigration-court",
+          "latitude": 40.72833,
+          "longitude": -74.00627
+        }
+      ]
+    },
+    "OAK": {
+      "code": "OAK",
+      "official_name": "Oakdale",
+      "current_location_status": "listed",
+      "locations": [
+        {
+          "name": "Oakdale",
+          "address": "1900 E. Whatley Road, Oakdale, LA 71463, United States",
+          "status": "OPEN",
+          "official_url": "https://www.justice.gov/eoir/oakdale-immigration-court",
+          "latitude": 30.82859,
+          "longitude": -92.64983
+        }
+      ]
+    },
+    "OMA": {
+      "code": "OMA",
+      "official_name": "Omaha",
+      "current_location_status": "listed",
+      "locations": [
+        {
+          "name": "Omaha",
+          "address": "1717 Avenue H, Suite 100, Omaha, NE 68110, United States",
+          "status": "OPEN",
+          "official_url": "https://www.justice.gov/eoir/omaha-immigration-court",
+          "latitude": 41.280575,
+          "longitude": -95.908375
+        }
+      ]
+    },
+    "ORL": {
+      "code": "ORL",
+      "official_name": "Orlando",
+      "current_location_status": "listed",
+      "locations": [
+        {
+          "name": "Orlando",
+          "address": "500 N. Orange Avenue, Suite 1100, Orlando, FL 32801, United States",
+          "status": "OPEN",
+          "official_url": "https://www.justice.gov/eoir/orlando-immigration-court",
+          "latitude": 28.550092,
+          "longitude": -81.379594
+        }
+      ]
+    },
+    "OTM": {
+      "code": "OTM",
+      "official_name": "Otay Mesa",
+      "current_location_status": "listed",
+      "locations": [
+        {
+          "name": "Otay Mesa",
+          "address": "7488 Calzada de la Fuente, San Diego, CA 92154, United States",
+          "status": "OPEN",
+          "official_url": "https://www.justice.gov/eoir/otay-mesa-immigration-court",
+          "latitude": 32.5763,
+          "longitude": -116.91535
+        }
+      ]
+    },
+    "OTO": {
+      "code": "OTO",
+      "official_name": "Otero",
+      "current_location_status": "listed",
+      "locations": [
+        {
+          "name": "Otero",
+          "address": "26 McGregor Range Road, Door #1, Chaparral, NM 88081, United States",
+          "status": "OPEN",
+          "official_url": "https://www.justice.gov/eoir/otero-immigration-court",
+          "latitude": 32.080371,
+          "longitude": -106.281728
+        }
+      ]
+    },
+    "PSD": {
+      "code": "PSD",
+      "official_name": "Pearsall",
+      "current_location_status": "listed",
+      "locations": [
+        {
+          "name": "Pearsall",
+          "address": "566 Veterans Drive, Pearsall, TX 78061, United States",
+          "status": "OPEN",
+          "official_url": "https://www.justice.gov/eoir/pearsall-immigration-court",
+          "latitude": 28.89369,
+          "longitude": -99.12128
+        }
+      ]
+    },
+    "PHI": {
+      "code": "PHI",
+      "official_name": "Philadelphia",
+      "current_location_status": "listed",
+      "locations": [
+        {
+          "name": "Philadelphia",
+          "address": "900 Market Street, Suite 504, Philadelphia, PA 19107, United States",
+          "status": "OPEN",
+          "official_url": "https://www.justice.gov/eoir/philadelphia-pa",
+          "latitude": 39.951342,
+          "longitude": -75.155254
+        }
+      ]
+    },
+    "PHO": {
+      "code": "PHO",
+      "official_name": "Phoenix",
+      "current_location_status": "listed",
+      "locations": [
+        {
+          "name": "Phoenix",
+          "address": "250 N. Seventh Avenue, Suite 300, Phoenix, AZ 85007, United States",
+          "status": "OPEN",
+          "official_url": "https://www.justice.gov/eoir/phoenix-immigration-court",
+          "latitude": 33.45072,
+          "longitude": -112.08326
+        }
+      ]
+    },
+    "PEP": {
+      "code": "PEP",
+      "official_name": "Port Isabel",
+      "current_location_status": "listed",
+      "locations": [
+        {
+          "name": "Port Isabel",
+          "address": "Port Isabel Processing Center, 27991 Buena Vista Boulevard, Los Fresnos, TX 78566, United States",
+          "status": "OPEN",
+          "official_url": "https://www.justice.gov/eoir/los-fresnos-immigration-court",
+          "latitude": 26.07525,
+          "longitude": -97.48007
+        }
+      ]
+    },
+    "POR": {
+      "code": "POR",
+      "official_name": "Portland",
+      "current_location_status": "listed",
+      "locations": [
+        {
+          "name": "Portland",
+          "address": "1220 SW 3rd Avenue, Suite 500, Portland, OR 97204, United States",
+          "status": "OPEN",
+          "official_url": "https://www.justice.gov/eoir/portland-immigration-court",
+          "latitude": 45.51621,
+          "longitude": -122.68074
+        }
+      ]
+    },
+    "RIC": {
+      "code": "RIC",
+      "official_name": "Richmond IAC",
+      "current_location_status": "listed",
+      "locations": [
+        {
+          "name": "Richmond Immigration Adjudication Center",
+          "address": "10 S. 6th Street, Richmond, VA 23219, United States",
+          "status": "OPEN",
+          "official_url": "https://www.justice.gov/eoir/immigration-court-operational-status",
+          "latitude": 37.53942,
+          "longitude": -77.439685
+        }
+      ]
+    },
+    "SMO": {
+      "code": "SMO",
+      "official_name": "Sacramento",
+      "current_location_status": "listed",
+      "locations": [
+        {
+          "name": "Sacramento",
+          "address": "John Moss Federal Building, 650 Capitol Mall, Suite 4-200, Sacramento, CA 95814, United States",
+          "status": "OPEN",
+          "official_url": "https://www.justice.gov/eoir/sacramento-immigration-court",
+          "latitude": 38.577797,
+          "longitude": -121.499946
+        }
+      ]
+    },
+    "SAI": {
+      "code": "SAI",
+      "official_name": "Saipan",
+      "current_location_status": "listed",
+      "locations": [
+        {
+          "name": "Saipan",
+          "address": "Marina Heights II Building, Suite 301, Saipan, MP 96950, United States",
+          "status": "OPEN",
+          "official_url": "https://www.justice.gov/eoir/saipan-immigration-court",
+          "latitude": 15.146185,
+          "longitude": 145.70243
+        }
+      ]
+    },
+    "SLC": {
+      "code": "SLC",
+      "official_name": "Salt Lake City",
+      "current_location_status": "listed",
+      "locations": [
+        {
+          "name": "Salt Lake City",
+          "address": "2975 South Decker Lake Drive, Suite 200, West Valley City, UT 84119-6094, United States",
+          "status": "OPEN",
+          "official_url": "https://www.justice.gov/eoir/salt-lake-city-immigration-court",
+          "latitude": 40.706264,
+          "longitude": -111.946302
+        }
+      ]
+    },
+    "SNA": {
+      "code": "SNA",
+      "official_name": "San Antonio",
+      "current_location_status": "listed",
+      "locations": [
+        {
+          "name": "San Antonio",
+          "address": "800 Dolorosa Street, Suite 300, San Antonio, TX 78207, United States",
+          "status": "OPEN",
+          "official_url": "https://www.justice.gov/eoir/san-antonio-immigration-court",
+          "latitude": 29.423903,
+          "longitude": -98.498903
+        }
+      ]
+    },
+    "SND": {
+      "code": "SND",
+      "official_name": "San Diego",
+      "current_location_status": "listed",
+      "locations": [
+        {
+          "name": "San Diego",
+          "address": "880 Front Street, Suite 4240, San Diego, CA 92101, United States",
+          "status": "OPEN",
+          "official_url": "https://www.justice.gov/eoir/san-diego-immigration-court",
+          "latitude": 32.714367,
+          "longitude": -117.165023
+        }
+      ]
+    },
+    "SFR": {
+      "code": "SFR",
+      "official_name": "San Francisco",
+      "current_location_status": "not_listed",
+      "locations": []
+    },
+    "SAJ": {
+      "code": "SAJ",
+      "official_name": "San Juan",
+      "current_location_status": "listed",
+      "locations": [
+        {
+          "name": "Guaynabo (San Juan)",
+          "address": "#7 Tabonuco Street, Room 401, Guaynabo, PR 00968-4605, United States",
+          "status": "OPEN",
+          "official_url": "https://www.justice.gov/eoir/guaynabo-puerto-rico-immigration-court",
+          "latitude": 18.382385,
+          "longitude": -66.116051
+        }
+      ]
+    },
+    "SNC": {
+      "code": "SNC",
+      "official_name": "Santa Ana",
+      "current_location_status": "listed",
+      "locations": [
+        {
+          "name": "Santa Ana",
+          "address": "1241 East Dyer Road, Suite 200, Santa Ana, CA 92705, United States",
+          "status": "OPEN",
+          "official_url": "https://www.justice.gov/eoir/santa-ana-immigration-court",
+          "latitude": 33.711585,
+          "longitude": -117.85548
+        }
+      ]
+    },
+    "SEA": {
+      "code": "SEA",
+      "official_name": "Seattle",
+      "current_location_status": "listed",
+      "locations": [
+        {
+          "name": "Seattle",
+          "address": "915 2nd Avenue, Suite 613, Seattle, WA 98174, United States",
+          "status": "OPEN",
+          "official_url": "https://www.justice.gov/eoir/seattle-immigration-court",
+          "latitude": 47.604609,
+          "longitude": -122.335459
+        }
+      ]
+    },
+    "STE": {
+      "code": "STE",
+      "official_name": "Sterling",
+      "current_location_status": "listed",
+      "locations": [
+        {
+          "name": "Sterling",
+          "address": "21400 Ridgetop Circle, Suite 200, Sterling, VA 20166, United States",
+          "status": "OPEN",
+          "official_url": "https://www.justice.gov/eoir/sterling-immigration-court",
+          "latitude": 39.0307,
+          "longitude": -77.410255
+        }
+      ]
+    },
+    "SDC": {
+      "code": "SDC",
+      "official_name": "Stewart",
+      "current_location_status": "listed",
+      "locations": [
+        {
+          "name": "Stewart",
+          "address": "146 CCA Road, PO Box 248, Lumpkin, GA 31815, United States",
+          "status": "OPEN",
+          "official_url": "https://www.justice.gov/eoir/lumpkin-immigration-court",
+          "latitude": 32.03411,
+          "longitude": -84.772645
+        }
+      ]
+    },
+    "TAC": {
+      "code": "TAC",
+      "official_name": "Tacoma",
+      "current_location_status": "listed",
+      "locations": [
+        {
+          "name": "Tacoma",
+          "address": "1623 East J Street, Suite 3, Tacoma, WA 98421, United States",
+          "status": "OPEN",
+          "official_url": "https://www.justice.gov/eoir/tacoma-immigration-court",
+          "latitude": 47.249275,
+          "longitude": -122.421727
+        }
+      ]
+    },
+    "TUC": {
+      "code": "TUC",
+      "official_name": "Tucson",
+      "current_location_status": "listed",
+      "locations": [
+        {
+          "name": "Tucson",
+          "address": "300 West Congress St., Suite 300, Tucson, AZ 85701, United States",
+          "status": "OPEN",
+          "official_url": "https://www.justice.gov/eoir/tucson-immigration-court",
+          "latitude": 32.221984,
+          "longitude": -110.975649
+        }
+      ]
+    },
+    "ULS": {
+      "code": "ULS",
+      "official_name": "Ulster",
+      "current_location_status": "listed",
+      "locations": [
+        {
+          "name": "Ulster",
+          "address": "Ulster Correctional Facility, Berme Road, P.O. Box 800, Napanoch, NY 12458, United States",
+          "status": "OPEN",
+          "official_url": "https://www.justice.gov/eoir/ulster-immigration-court",
+          "latitude": 41.74361,
+          "longitude": -74.366875
+        }
+      ]
+    },
+    "VNS": {
+      "code": "VNS",
+      "official_name": "Van Nuys",
+      "current_location_status": "listed",
+      "locations": [
+        {
+          "name": "Los Angeles - Van Nuys Boulevard",
+          "address": "6230 Van Nuys Boulevard, 3rd Floor, Suite 300, Van Nuys, CA 91401, United States",
+          "status": "OPEN",
+          "official_url": "https://www.justice.gov/eoir/los-angeles-van-nuys-boulevard-immigration-court",
+          "latitude": 34.183397,
+          "longitude": -118.448485
+        }
+      ]
+    },
+    "WLA": {
+      "code": "WLA",
+      "official_name": "West Los Angeles",
+      "current_location_status": "listed",
+      "locations": [
+        {
+          "name": "Los Angeles – West Los Angeles",
+          "address": "5245 Pacific Concourse Drive, Los Angeles, CA 90045, United States",
+          "status": "OPEN",
+          "official_url": "https://www.justice.gov/eoir/los-angeles-west-los-angeles-immigration-court",
+          "latitude": 33.928261,
+          "longitude": -118.372508
+        }
+      ]
+    },
+    "LOW": {
+      "code": "LOW",
+      "official_name": "Chelmsford",
+      "current_location_status": "legacy_alias",
+      "successor_code": "CHE",
+      "locations": [
+        {
+          "name": "Chelmsford",
+          "address": "150 Apollo Drive, Suite 100, Chelmsford, MA 01824, United States",
+          "status": "OPEN",
+          "official_url": "https://www.justice.gov/eoir/chelmsford-immigration-court",
+          "latitude": 42.599211,
+          "longitude": -71.329577
+        }
+      ]
+    },
+    "PIS": {
+      "code": "PIS",
+      "official_name": "Port Isabel",
+      "current_location_status": "legacy_alias",
+      "successor_code": "PEP",
+      "locations": [
+        {
+          "name": "Port Isabel",
+          "address": "Port Isabel Processing Center, 27991 Buena Vista Boulevard, Los Fresnos, TX 78566, United States",
+          "status": "OPEN",
+          "official_url": "https://www.justice.gov/eoir/los-fresnos-immigration-court",
+          "latitude": 26.07525,
+          "longitude": -97.48007
+        }
+      ]
+    },
+    "POO": {
+      "code": "POO",
+      "official_name": "Portland",
+      "current_location_status": "legacy_alias",
+      "successor_code": "POR",
+      "locations": [
+        {
+          "name": "Portland",
+          "address": "1220 SW 3rd Avenue, Suite 500, Portland, OR 97204, United States",
+          "status": "OPEN",
+          "official_url": "https://www.justice.gov/eoir/portland-immigration-court",
+          "latitude": 45.51621,
+          "longitude": -122.68074
+        }
+      ]
+    },
+    "WAS": {
+      "code": "WAS",
+      "official_name": "Annandale",
+      "current_location_status": "legacy_alias",
+      "successor_code": "ANN",
+      "locations": [
+        {
+          "name": "Annandale",
+          "address": "7619 Little River Turnpike, Suite 400, Annandale, VA 22003, United States",
+          "status": "OPEN",
+          "official_url": "https://www.justice.gov/eoir/annandale-immigration-court",
+          "latitude": 38.83784,
+          "longitude": -77.19822
+        }
+      ]
+    },
+    "AGA": {
+      "code": "AGA",
+      "official_name": "Hagatna",
+      "current_location_status": "not_listed",
+      "locations": []
+    }
+  }
+}

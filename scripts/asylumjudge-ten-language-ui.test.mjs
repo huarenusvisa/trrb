@@ -57,6 +57,7 @@ const pages = [
   'immigration-judge-approval-rate/index.html',
   'immigration-judge-approval-rate/states.html',
   'immigration-judge-approval-rate/courts.html',
+  'immigration-judge-approval-rate/tools.html',
   'immigration-judge-approval-rate/court-detail.html',
   'immigration-judge-approval-rate/detail.html',
   'immigration-judge-approval-rate/compare.html',
@@ -80,9 +81,11 @@ for (const path of [
   'immigration-judge-approval-rate/methodology.html'
 ]) {
   const html = readFileSync(path, 'utf8');
-  assert.match(html, /domain-brand\.css\?v=8/, `${path} must load the skip-navigation brand stylesheet`);
-  assert.match(html, /domain-brand\.js\?v=11/, `${path} must load the skip-navigation brand client`);
+  assert.match(html, /domain-brand\.css\?v=9/, `${path} must load the official-tools navigation stylesheet`);
+  assert.match(html, /domain-brand\.js\?v=12/, `${path} must load the official-tools navigation client`);
 }
+assert.match(domainBrand, /tools: '移民工具'/, 'shared navigation must translate the official-tools entry');
+assert.match(domainBrand, /https:\/\/acis\.eoir\.justice\.gov\//, 'shared tools menu must include EOIR court-case lookup');
 assert.match(domainBrand, /document\.querySelector\('\.skip-link\[href\^="#"\],\.domain-skip-link\[href\^="#"\]'\)/, 'shared branding must preserve pages that already provide skip navigation');
 assert.match(domainBrand, /if \(!main\.id\) main\.id = 'main-content'/, 'shared branding must provide a stable main-content target');
 assert.match(domainBrand, /main\.setAttribute\('tabindex', '-1'\)/, 'shared branding must make the skip target programmatically focusable');

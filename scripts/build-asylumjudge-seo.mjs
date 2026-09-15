@@ -30,6 +30,7 @@ const copy = {
     states: ['Asylum Approval Rates by U.S. State | AsylumJudge', 'Compare immigration court asylum decisions, grants, denials, other outcomes, and approval rates by state and fiscal year.'],
     nationality: ['Asylum Outcomes by Nationality | AsylumJudge', 'Search U.S. immigration court asylum outcomes by nationality, including approvals, denials, other outcomes, sample sizes, and time trends.'],
     compare: ['Compare U.S. Immigration Judges | Approval Rates & Trends | AsylumJudge', 'Compare 2–4 U.S. immigration judges by asylum approval rate, denial rate, sample size, yearly trend, applicant nationality, and official background.'],
+    tools: ['Official U.S. Immigration Tools | EOIR, ICE & USCIS', 'Open official U.S. government tools for immigration court addresses, EOIR case lookup, ICE detainee search, EOIR-33 address changes, USCIS case status, and EOIR payments.'],
     methodology: ['AsylumJudge Data Sources and Methodology', 'Learn how AsylumJudge calculates asylum approval rates, handles other outcomes and small samples, and identifies official EOIR data sources.'],
     judgeTitle: (name) => `${name} Immigration Judge Approval Rate | AsylumJudge`,
     judgeDescription: (name, court, total) => `View ${name}'s asylum decisions, approval and denial data, ${total} recorded outcomes, court assignment, data period, and official background${court ? ` at ${court}` : ''}.`,
@@ -45,6 +46,7 @@ const copy = {
     states: ['Tasas de aprobación de asilo por estado | AsylumJudge', 'Compare decisiones de asilo, aprobaciones, denegaciones y otros resultados por estado y año fiscal.'],
     nationality: ['Resultados de asilo por nacionalidad | AsylumJudge', 'Busque resultados de asilo por nacionalidad, incluidas aprobaciones, denegaciones, otros resultados, muestras y tendencias.'],
     compare: ['Compare jueces de inmigración de EE. UU. | AsylumJudge', 'Compare entre 2 y 4 jueces por tasa de aprobación, denegación, muestra, tendencia anual, nacionalidad y antecedentes oficiales.'],
+    tools: ['Herramientas oficiales de inmigración de EE. UU. | EOIR, ICE y USCIS', 'Acceda a herramientas oficiales para tribunales, casos EOIR, detenidos de ICE, cambio de dirección, estado USCIS y pagos EOIR.'],
     methodology: ['Fuentes y metodología de AsylumJudge', 'Conozca el cálculo de las tasas, el tratamiento de otros resultados, las muestras pequeñas y las fuentes oficiales de EOIR.'],
     judgeTitle: (name) => `${name}: tasa de aprobación del juez de inmigración | AsylumJudge`,
     judgeDescription: (name, court, total) => `Consulte las decisiones de asilo de ${name}, aprobaciones, denegaciones, ${total} resultados, tribunal, período y antecedentes oficiales${court ? ` en ${court}` : ''}.`,
@@ -60,6 +62,7 @@ const copy = {
     states: ['Taux d’approbation de l’asile par État | AsylumJudge', 'Comparez les décisions d’asile, approbations, refus et autres résultats par État et exercice.'],
     nationality: ['Résultats de l’asile par nationalité | AsylumJudge', 'Recherchez les résultats par nationalité, les approbations, les refus, les autres résultats, les échantillons et les tendances.'],
     compare: ['Comparer les juges de l’immigration américaine | AsylumJudge', 'Comparez 2 à 4 juges selon les approbations, refus, volumes, tendances annuelles, nationalités et parcours officiels.'],
+    tools: ['Outils officiels d’immigration des États-Unis | EOIR, ICE et USCIS', 'Accédez aux outils officiels pour les tribunaux, dossiers EOIR, détenus ICE, changements d’adresse, suivi USCIS et paiements EOIR.'],
     methodology: ['Sources et méthodologie AsylumJudge', 'Découvrez le calcul des taux, le traitement des autres résultats, des petits échantillons et des sources officielles EOIR.'],
     judgeTitle: (name) => `${name} : taux d’approbation du juge | AsylumJudge`,
     judgeDescription: (name, court, total) => `Consultez les décisions d’asile de ${name}, approbations, refus, ${total} résultats, tribunal, période et parcours officiel${court ? ` à ${court}` : ''}.`,
@@ -75,6 +78,7 @@ const copy = {
     states: ['Taxas de aprovação de asilo por estado | AsylumJudge', 'Compare decisões de asilo, aprovações, negativas e outros resultados por estado e ano fiscal.'],
     nationality: ['Resultados de asilo por nacionalidade | AsylumJudge', 'Pesquise aprovações, negativas, outros resultados, amostras e tendências de asilo por nacionalidade.'],
     compare: ['Compare juízes de imigração dos EUA | AsylumJudge', 'Compare de 2 a 4 juízes por aprovação, negativa, amostra, tendência anual, nacionalidade e histórico oficial.'],
+    tools: ['Ferramentas oficiais de imigração dos EUA | EOIR, ICE e USCIS', 'Acesse ferramentas oficiais para tribunais, casos EOIR, detidos do ICE, mudança de endereço, status USCIS e pagamentos EOIR.'],
     methodology: ['Fontes e metodologia do AsylumJudge', 'Veja como as taxas são calculadas e como resultados, amostras pequenas e fontes oficiais do EOIR são tratados.'],
     judgeTitle: (name) => `${name}: taxa de aprovação do juiz | AsylumJudge`,
     judgeDescription: (name, court, total) => `Veja decisões de asilo de ${name}, aprovações, negativas, ${total} resultados, tribunal, período e histórico oficial${court ? ` em ${court}` : ''}.`,
@@ -90,6 +94,7 @@ const copy = {
     states: ['अमेरिकी राज्य के अनुसार शरण अनुमोदन दर | AsylumJudge', 'राज्य और वित्त वर्ष के अनुसार शरण निर्णय, अनुमोदन, अस्वीकृति और अन्य परिणाम देखें।'],
     nationality: ['राष्ट्रीयता के अनुसार शरण परिणाम | AsylumJudge', 'राष्ट्रीयता के अनुसार अनुमोदन, अस्वीकृति, अन्य परिणाम, नमूना आकार और रुझान खोजें।'],
     compare: ['अमेरिकी इमिग्रेशन जज की तुलना | AsylumJudge', '2–4 जजों की अनुमोदन दर, अस्वीकृति, नमूना, वार्षिक रुझान, राष्ट्रीयता और आधिकारिक पृष्ठभूमि की तुलना करें।'],
+    tools: ['आधिकारिक अमेरिकी आव्रजन उपकरण | EOIR, ICE और USCIS', 'अदालत के पते, EOIR केस, ICE हिरासत, पता परिवर्तन, USCIS स्थिति और EOIR भुगतान के आधिकारिक उपकरण खोलें।'],
     methodology: ['AsylumJudge डेटा स्रोत और कार्यप्रणाली', 'अनुमोदन दर, अन्य परिणाम, छोटे नमूनों और आधिकारिक EOIR स्रोतों की कार्यप्रणाली पढ़ें।'],
     judgeTitle: (name) => `${name} इमिग्रेशन जज अनुमोदन दर | AsylumJudge`,
     judgeDescription: (name, court, total) => `${name} के शरण निर्णय, अनुमोदन, अस्वीकृति, ${total} परिणाम, अदालत, डेटा अवधि और आधिकारिक पृष्ठभूमि देखें${court ? ` — ${court}` : ''}।`,
@@ -105,6 +110,7 @@ const copy = {
     states: ['美国各州庇护批准率与移民法院数据｜AsylumJudge', '按州和财政年度比较美国移民法院庇护裁决、批准、拒绝、其他结果与通过率。'],
     nationality: ['各国国籍庇护批准率与裁决趋势｜AsylumJudge', '按国籍查询美国移民法庭庇护批准、拒绝、其他结果、样本量及月度、季度和年度趋势。'],
     compare: ['移民法官对比｜批准率、样本量与年度趋势｜AsylumJudge', '选择2至4名美国移民法官，对比庇护批准率、拒绝率、样本量、年度趋势、申请人国籍和官方任命背景。'],
+    tools: ['美国移民官方查询工具｜EOIR、ICE、USCIS', '集中访问移民法院地址、EOIR上庭案件查询、ICE查人、EOIR-33更改地址、USCIS案件状态和移民法庭缴费等美国政府官方工具。'],
     methodology: ['AsylumJudge数据来源与庇护通过率计算方法', '了解AsylumJudge如何计算庇护批准率、处理其他结果和小样本，以及如何核验EOIR官方数据来源。'],
     judgeTitle: (name) => `${name}移民法官通过率、裁决数据与背景｜AsylumJudge`,
     judgeDescription: (name, court, total) => `查看${name}移民法官的庇护批准、拒绝、${total}件记录结果、数据时间和官方背景${court ? `，现列于${court}` : ''}。`,
@@ -120,6 +126,7 @@ const copy = {
     states: ['美國各州庇護批准率與移民法院資料｜AsylumJudge', '按州和財政年度比較美國移民法院庇護裁決、批准、拒絕、其他結果與批准率。'],
     nationality: ['各國國籍庇護批准率與裁決趨勢｜AsylumJudge', '按國籍查詢美國移民法庭庇護批准、拒絕、其他結果、樣本量及各期間趨勢。'],
     compare: ['移民法官比較｜批准率、樣本與年度趨勢｜AsylumJudge', '選擇2至4名美國移民法官，比較庇護批准率、拒絕率、樣本、年度趨勢、申請人國籍和官方任命背景。'],
+    tools: ['美國移民官方查詢工具｜EOIR、ICE、USCIS', '集中前往移民法院地址、EOIR案件查詢、ICE查人、EOIR-33更改地址、USCIS案件狀態和移民法庭繳費等官方工具。'],
     methodology: ['AsylumJudge資料來源與庇護批准率計算方法', '了解AsylumJudge如何計算庇護批准率、處理其他結果和小樣本，以及核驗EOIR官方來源。'],
     judgeTitle: (name) => `${name}移民法官批准率、裁決資料與背景｜AsylumJudge`,
     judgeDescription: (name, court, total) => `查看${name}移民法官的庇護批准、拒絕、${total}件記錄結果、資料期間和官方背景${court ? `，現列於${court}` : ''}。`,
@@ -135,6 +142,7 @@ const copy = {
     states: ['Одобрение убежища по штатам США | AsylumJudge', 'Сравните решения об убежище, одобрения, отказы и другие исходы по штатам и финансовым годам.'],
     nationality: ['Результаты убежища по гражданству | AsylumJudge', 'Ищите одобрения, отказы, другие исходы, размеры выборок и тенденции по гражданству.'],
     compare: ['Сравнение иммиграционных судей США | AsylumJudge', 'Сравните 2–4 судей по доле одобрений, отказам, выборке, годовым тенденциям, гражданству и официальной биографии.'],
+    tools: ['Официальные иммиграционные сервисы США | EOIR, ICE и USCIS', 'Откройте официальные сервисы адресов судов, дел EOIR, поиска ICE, смены адреса, статуса USCIS и платежей EOIR.'],
     methodology: ['Источники и методика AsylumJudge', 'Узнайте о расчёте долей, других исходах, малых выборках и официальных источниках EOIR.'],
     judgeTitle: (name) => `${name}: одобрение убежища иммиграционным судьёй | AsylumJudge`,
     judgeDescription: (name, court, total) => `Решения ${name}: одобрения, отказы, ${total} исходов, суд, период и официальная биография${court ? ` — ${court}` : ''}.`,
@@ -150,6 +158,7 @@ const copy = {
     states: ['نسب الموافقة على اللجوء حسب الولاية | AsylumJudge', 'قارن قرارات اللجوء والموافقات والرفض والنتائج الأخرى حسب الولاية والسنة المالية.'],
     nationality: ['نتائج اللجوء حسب الجنسية | AsylumJudge', 'ابحث عن الموافقات والرفض والنتائج الأخرى وأحجام العينات والاتجاهات حسب الجنسية.'],
     compare: ['مقارنة قضاة الهجرة الأمريكية | AsylumJudge', 'قارن بين قاضيين إلى أربعة حسب الموافقات والرفض وحجم العينة والاتجاه السنوي والجنسية والسيرة الرسمية.'],
+    tools: ['أدوات الهجرة الأمريكية الرسمية | EOIR وICE وUSCIS', 'افتح الأدوات الرسمية لعناوين المحاكم وقضايا EOIR ومحتجزي ICE وتغيير العنوان وحالة USCIS ومدفوعات EOIR.'],
     methodology: ['مصادر ومنهجية AsylumJudge', 'تعرّف إلى حساب النسب والنتائج الأخرى والعينات الصغيرة ومصادر EOIR الرسمية.'],
     judgeTitle: (name) => `${name}: نسبة موافقة قاضي الهجرة | AsylumJudge`,
     judgeDescription: (name, court, total) => `اعرض قرارات ${name} والموافقات والرفض و${total} نتيجة والمحكمة والفترة والسيرة الرسمية${court ? ` في ${court}` : ''}.`,
@@ -165,6 +174,7 @@ const copy = {
     states: ['ABD eyaletlerine göre sığınma onay oranları | AsylumJudge', 'Eyalet ve mali yıla göre sığınma kararlarını, onayları, retleri ve diğer sonuçları karşılaştırın.'],
     nationality: ['Uyruğa göre sığınma sonuçları | AsylumJudge', 'Uyruğa göre onay, ret, diğer sonuçlar, örneklem büyüklüğü ve eğilimleri arayın.'],
     compare: ['ABD göçmenlik hâkimlerini karşılaştırın | AsylumJudge', '2–4 hâkimi onay, ret, örneklem, yıllık eğilim, uyruk ve resmî geçmiş açısından karşılaştırın.'],
+    tools: ['Resmî ABD göçmenlik araçları | EOIR, ICE ve USCIS', 'Mahkeme adresleri, EOIR dosyaları, ICE tutuklu arama, adres değişikliği, USCIS durumu ve EOIR ödemeleri için resmî araçları açın.'],
     methodology: ['AsylumJudge veri kaynakları ve yöntemi', 'Oran hesaplamasını, diğer sonuçları, küçük örneklemleri ve resmî EOIR kaynaklarını inceleyin.'],
     judgeTitle: (name) => `${name} göçmenlik hâkimi onay oranı | AsylumJudge`,
     judgeDescription: (name, court, total) => `${name} için sığınma kararları, onaylar, retler, ${total} sonuç, mahkeme, dönem ve resmî geçmiş${court ? ` — ${court}` : ''}.`,
@@ -295,7 +305,7 @@ function fillElement(html, id, content) {
 }
 
 function localizeNavigation(html, locale) {
-  const legacy = { '': '', 'index.html': '', 'courts.html': 'courts', 'states.html': 'states', 'china-dashboard.html': 'nationality', 'compare.html': 'compare', 'methodology.html': 'methodology' };
+  const legacy = { '': '', 'index.html': '', 'courts.html': 'courts', 'tools.html': 'tools', 'states.html': 'states', 'china-dashboard.html': 'nationality', 'compare.html': 'compare', 'methodology.html': 'methodology' };
   return html.replace(/(<a\b[^>]*\bhref=")([^"#]+)(")/g, (match, before, href, after) => {
     if (!href.startsWith('/') || href.startsWith('//')) return match;
     const url = new URL(href, ORIGIN);
@@ -305,7 +315,7 @@ function localizeNavigation(html, locale) {
       if (!(key in legacy)) return match;
       route = legacy[key];
     }
-    if (!['', 'courts', 'states', 'nationality', 'compare', 'judge-backgrounds', 'methodology'].includes(route)) return match;
+    if (!['', 'courts', 'tools', 'states', 'nationality', 'compare', 'judge-backgrounds', 'methodology'].includes(route)) return match;
     return before + (route === 'methodology' ? '/methodology/' : localizedPath(locale, route)) + url.search + url.hash + after;
   });
 }
@@ -582,12 +592,13 @@ const sitemapXml = (rows) => `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xm
 
 export async function buildAsylumJudgeSeo({ root, output }) {
   const api = process.env.ASYLUMJUDGE_SEO_API || DEFAULT_API;
-  const [homeTemplate, judgeTemplate, courtTemplate, nationalityTemplate, courtsTemplate, statesTemplate, compareTemplate, methodologyTemplate, backgroundTemplate, backgroundText] = await Promise.all([
+  const [homeTemplate, judgeTemplate, courtTemplate, nationalityTemplate, courtsTemplate, toolsTemplate, statesTemplate, compareTemplate, methodologyTemplate, backgroundTemplate, backgroundText] = await Promise.all([
     readFile(join(root, 'asylumjudge', 'index.html'), 'utf8'),
     readFile(join(root, 'immigration-judge-approval-rate', 'detail.html'), 'utf8'),
     readFile(join(root, 'immigration-judge-approval-rate', 'court-detail.html'), 'utf8'),
     readFile(join(root, 'immigration-judge-approval-rate', 'china-dashboard.html'), 'utf8'),
     readFile(join(root, 'immigration-judge-approval-rate', 'courts.html'), 'utf8'),
+    readFile(join(root, 'immigration-judge-approval-rate', 'tools.html'), 'utf8'),
     readFile(join(root, 'immigration-judge-approval-rate', 'states.html'), 'utf8'),
     readFile(join(root, 'immigration-judge-approval-rate', 'compare.html'), 'utf8'),
     readFile(join(root, 'immigration-judge-approval-rate', 'methodology.html'), 'utf8'),
@@ -611,6 +622,7 @@ export async function buildAsylumJudgeSeo({ root, output }) {
   const staticDefinitions = [
     ['', homeTemplate, 'home'],
     ['courts', courtsTemplate, 'courts'],
+    ['tools', toolsTemplate, 'tools'],
     ['states', statesTemplate, 'states'],
     ['nationality', nationalityTemplate, 'nationality'],
     ['compare', compareTemplate, 'compare'],

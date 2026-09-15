@@ -13,6 +13,7 @@ const nationalityPeriodShards = [
 const judgeBackgrounds = require('../../data/immigration-judge-backgrounds.json');
 const webexDirectory = require('../../data/eoir-webex-links.json');
 const statePeriods = require('../../data/immigration-judge-state-periods.json');
+const courtLocationDirectory = require('../../data/eoir-court-locations.json');
 const trendIndex = require('../../data/immigration-judge-trends.json');
 const trendShards = [
   require('../../data/immigration-judge-trends-1.json'),
@@ -47,6 +48,18 @@ const out = (status, body) => ({
 const num = (v) => Number(v || 0);
 const nationalityCatalog = nationalityPeriodShards.flatMap((shard) => Array.isArray(shard.countries) ? shard.countries : []);
 const nationalityPeriods = { ...nationalityPeriodIndex, countries: nationalityCatalog };
+
+function courtLocationFields(courtCode) {
+  const code = String(courtCode || '').trim().toUpperCase();
+  const court = courtLocationDirectory.courts?.[code];
+  return {
+    court_location_status: court?.current_location_status || 'not_listed',
+    court_official_name: court?.official_name || null,
+    court_locations: court?.locations || [],
+    court_location_source_url: courtLocationDirectory.source_url,
+    court_location_checked_at: courtLocationDirectory.generated_at
+  };
+}
 
 function normalizedName(value) {
   return String(value || '')
@@ -437,7 +450,10 @@ exports.handler = async (event) => {
         .map((row) => {
           const period = (row.yearly || []).find((item) => Number(item.fiscal_year) === fiscalYear);
           const city = String(row.court_name || '').replace(/\s*\([^)]*\)\s*$/, '');
-          return period ? derived({ ...period, court_name: row.court_name, court_city: city, court_state: row.state, court_code: row.court_code }) : null;
+          return period ? {
+            ...derived({ ...period, court_name: row.court_name, court_city: city, court_state: row.state, court_code: row.court_code }),
+            ...courtLocationFields(row.court_code)
+          } : null;
         })
         .filter(Boolean)
         .sort((a, b) => b.total_asylum_decisions - a.total_asylum_decisions);
@@ -484,7 +500,14 @@ exports.handler = async (event) => {
       return out(200, {
         fiscal_year: fiscalYear,
         judge_list_scope: staticRows.length ? 'fiscal_year' : 'all_time_profiles',
-        court: { court_name: officialCourt?.court_name || rows[0].court_name, court_city: rows[0].court_city || String(court).replace(/\s*\([^)]*\)\s*$/, ''), court_state: officialCourt?.state || rows[0].court_state, ...derived(courtPeriod || aggregate(judges)) },
+        court: {
+          court_name: officialCourt?.court_name || rows[0].court_name,
+          court_city: rows[0].court_city || String(court).replace(/\s*\([^)]*\)\s*$/, ''),
+          court_state: officialCourt?.state || rows[0].court_state,
+          court_code: officialCourt?.court_code || null,
+          ...derived(courtPeriod || aggregate(judges)),
+          ...courtLocationFields(officialCourt?.court_code)
+        },
         judges,
         ...(await provenance())
       });

@@ -47,6 +47,7 @@ https://asylumjudge.com/judge /immigration-judge-approval-rate/detail.html 200!
 https://asylumjudge.com/judge-backgrounds /asylumjudge/judge-backgrounds.html 200!
 https://asylumjudge.com/court /immigration-judge-approval-rate/court-detail.html 200!
 https://asylumjudge.com/courts /immigration-judge-approval-rate/courts.html 200!
+https://asylumjudge.com/tools /immigration-judge-approval-rate/tools.html 200!
 https://asylumjudge.com/states /immigration-judge-approval-rate/states.html 200!
 https://asylumjudge.com/nationality /immigration-judge-approval-rate/china-dashboard.html 200!
 https://asylumjudge.com/china /nationality?country=China 301!
@@ -56,6 +57,7 @@ https://asylumjudge.com/methodology /immigration-judge-approval-rate/methodology
 /asylumjudge/judge https://asylumjudge.com/judge 301!
 /asylumjudge/court https://asylumjudge.com/court 301!
 /asylumjudge/courts https://asylumjudge.com/courts 301!
+/asylumjudge/tools https://asylumjudge.com/tools 301!
 /asylumjudge/states https://asylumjudge.com/states 301!
 /asylumjudge/nationality https://asylumjudge.com/nationality 301!
 /asylumjudge/china https://asylumjudge.com/nationality?country=China 301!
@@ -67,6 +69,7 @@ https://asylumjudge.com/methodology /immigration-judge-approval-rate/methodology
 /immigration-judge-approval-rate/detail.html https://asylumjudge.com/judge 301!
 /immigration-judge-approval-rate/court-detail.html https://asylumjudge.com/court 301!
 /immigration-judge-approval-rate/courts.html https://asylumjudge.com/courts 301!
+/immigration-judge-approval-rate/tools.html https://asylumjudge.com/tools 301!
 /immigration-judge-approval-rate/states.html https://asylumjudge.com/states 301!
 /immigration-judge-approval-rate/china-dashboard.html https://asylumjudge.com/nationality 301!
 /immigration-judge-approval-rate/methodology.html https://asylumjudge.com/methodology 301!
@@ -88,8 +91,6 @@ https://trrb.net/jobs/* https://huarengongzuo.com/jobs/:splat 301!
 /logo-mark.svg /favicon.svg 301!
 /listing /listing.html 200!
 /trump /trump/index.html 200!
-/ren-zhengfei /ren-zhengfei/index.html 200!
-/ren-zhengfei/ /ren-zhengfei/index.html 200!
 /important /important-news 301!
 /hot /hot-headlines 301!
 /politics /us-politics 301!
@@ -126,5 +127,7 @@ https://trrb.net/marketplace https://huarengongzuo.com/ershou/ 301!
 https://trrb.net/marketplace/ https://huarengongzuo.com/ershou/ 301!
 https://trrb.net/classifieds https://huarengongzuo.com/ershou/ 301!
 https://trrb.net/classifieds/ https://huarengongzuo.com/ershou/ 301!
+/ren-zhengfei /ren-zhengfei/index.html 200!
+/ren-zhengfei/ /ren-zhengfei/index.html 200!
 /us-politics /listing.html?category=%E7%BE%8E%E5%9B%BD%E6%97%B6%E6%94%BF 200
 /us-crime /listing.html?category=%E7%BE%8E%E5%9B%BD%E8%AD%A6%E6%83%85 200

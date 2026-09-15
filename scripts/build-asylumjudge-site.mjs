@@ -95,6 +95,7 @@ https://www.immigrationjudge.us/* https://asylumjudge.com/:splat 301!
 /immigration-judge-approval-rate/detail.html /judge 301!
 /immigration-judge-approval-rate/court-detail.html /court 301!
 /immigration-judge-approval-rate/courts.html /courts/ 301!
+/immigration-judge-approval-rate/tools.html /tools/ 301!
 /immigration-judge-approval-rate/states.html /states/ 301!
 /immigration-judge-approval-rate/china-dashboard.html /nationality/ 301!
 /immigration-judge-approval-rate/compare.html /compare/ 301!
@@ -105,6 +106,8 @@ https://www.immigrationjudge.us/* https://asylumjudge.com/:splat 301!
 /states /states/ 301!
 /nationality /nationality/ 301!
 /compare /compare/ 301!
+/compare /immigration-judge-approval-rate/compare.html 200
+/compare/ /immigration-judge-approval-rate/compare.html 200
 /judge-backgrounds /judge-backgrounds/ 301!
 /china /nationalities/china--ch/ 301!
 /methodology /methodology/ 301!

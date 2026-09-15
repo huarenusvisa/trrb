@@ -1,0 +1,40 @@
+name: ICE现有重复候选一次性清理
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/ice-cleanup-once-20260915.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: trrb-ice-cleanup-once-20260915
+  cancel-in-progress: false
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      ICE_DEDUPE_HOURS: "720"
+      ICE_PUBLISHED_DEDUPE_DAYS: "730"
+      ICE_MAX_SOURCE_AGE_MINUTES: "720"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Validate cleanup code
+        run: |
+          node --check scripts/ice-dedupe-v3.mjs
+          node --check scripts/ice-clean-existing-review-duplicates.mjs
+      - name: Remove current duplicate and old-news candidates
+        run: |
+          node scripts/ice-dedupe-v3.mjs
+          node scripts/ice-clean-existing-review-duplicates.mjs
+      - name: Confirm collector remained untouched
+        run: echo "本任务只清理Supabase候选队列；未调用X、未调用OpenAI、未启动采集机器人。"

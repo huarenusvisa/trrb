@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import test from "node:test";
 import { buildCandidate, buildPublishedArticle, isRenZhengfeiTweet, qualifyTweet, targetLength } from "./china-hot-li-teacher-ingest.mjs";
+import { findRenEventDuplicate, hasSubstantiveRenUpdate, sameRenEvent } from "./ren-zhengfei-event-dedupe.mjs";
 
 const renTweet = {
   id: "2099504575149642078",
@@ -29,6 +30,15 @@ test("任正非全站关键词内容进入原中国热门头条流水线", () =>
   assert.equal(candidate.ai_payload.topic_key, "ren-zhengfei");
 });
 
+test("任正非时间线按事件去重，但保留官方回应和真实进展", () => {
+  const rumor = { id: "published-rumor", title: "网传任正非已经出逃海外", summary: "多个账号转述任正非疑似跑路的传闻。", metadata: { source_text_original: "网传任正非已经离开中国，疑似跑路海外。" } };
+  assert.equal(sameRenEvent("消息称华为创始人任正非出逃，已经跑路海外", rumor), true);
+  assert.equal(findRenEventDuplicate("换一个账号转发：任正非疑似逃离中国", [rumor])?.id, "published-rumor");
+  assert.equal(hasSubstantiveRenUpdate("华为今日回应并否认任正非出逃传闻", rumor.metadata.source_text_original), true);
+  assert.equal(sameRenEvent("华为今日回应并否认任正非出逃传闻", rumor), false);
+  assert.equal(sameRenEvent("任正非9月15日在深圳公开露面", rumor), false);
+});
+
 test("任正非发布稿带稳定主题标记并留在中国热门头条", () => {
   const qualified = qualifyTweet(renTweet);
   const article = buildPublishedArticle(renTweet, qualified, {
@@ -42,6 +52,8 @@ test("任正非发布稿带稳定主题标记并留在中国热门头条", () =>
   assert.equal(article.topic_key, "ren-zhengfei");
   assert.equal(article.slug, "ren-zhengfei-x-2099504575149642078");
   assert.equal(article.metadata.person_topic, "任正非");
+  assert.equal(article.metadata.duplicate_check_days, 180);
+  assert.equal(article.metadata.duplicate_policy, "ren-event-v1");
   assert.deepEqual(article.related_sections, ["中国热门头条", "任正非动态"]);
 });
 
@@ -55,6 +67,7 @@ test("任正非时间线使用主题键并按原始消息时间倒序", () => {
   assert.match(timeline, /source_created_at\.desc\.nullslast/);
   assert.ok(seeds.indexOf("2099687565767131308") < seeds.indexOf("2099441894149198225"), "手工加入的原帖应按发布时间倒序排列");
   assert.match(timeline, /fetchedIds/);
+  assert.match(timeline, /dedupeFetched/);
   assert.match(timeline, /local_path/);
   assert.match(timeline, /https\?:\\\/\\\/\|\\\//, "时间线应支持站内托管图片");
   assert.match(html, /<h1>任正非真的跑了吗？<\/h1>/);

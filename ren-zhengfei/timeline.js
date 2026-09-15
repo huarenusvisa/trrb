@@ -14,6 +14,35 @@
     return new Intl.DateTimeFormat("zh-CN", { timeZone:"America/New_York", year:"numeric", month:"2-digit", day:"2-digit", hour:"2-digit", minute:"2-digit" }).format(date);
   }
   function usableImage(value) { return /^(?:https?:\/\/|\/)/i.test(String(value || "")) && !/(placeholder|category-placeholders)/i.test(String(value || "")); }
+  function timelineSimilarity(leftValue, rightValue) {
+    const clean = (value) => String(value || "").toLowerCase().replace(/任正非|ren\s+zhengfei|华为|huawei|新闻|消息|最新|网传|据称|相关|近日|视频|照片/gi, "").replace(/[^a-z0-9\u3400-\u9fff]+/gi, "");
+    const grams = (value) => { const out = new Set(); for (let i = 0; i < value.length - 1; i += 1) out.add(value.slice(i, i + 2)); return out; };
+    const left = clean(leftValue), right = clean(rightValue);
+    if (!left || !right) return 0;
+    if (left === right || (Math.min(left.length, right.length) >= 16 && (left.includes(right) || right.includes(left)))) return 1;
+    const a = grams(left), b = grams(right); let common = 0;
+    for (const item of a) if (b.has(item)) common += 1;
+    return a.size && b.size ? common / Math.min(a.size, b.size) : 0;
+  }
+  function duplicateTimelineItem(item, kept) {
+    const current = `${item.title || ""} ${item.summary || ""}`;
+    const runaway = /跑路|出逃|逃跑|逃离|离境|移居|流亡|fled|flee|escape|runaway|exile/i.test(current);
+    const update = /回应|否认|辟谣|澄清|证实|声明|官方答复|露面|现身|出席|到访|会见|行程|调查|起诉|法院|监管|制裁/i.test(current);
+    return kept.some((prior) => {
+      const previous = `${prior.title || ""} ${prior.summary || ""}`;
+      const sameRunaway = runaway && /跑路|出逃|逃跑|逃离|离境|移居|流亡|fled|flee|escape|runaway|exile/i.test(previous);
+      const newUpdate = update && !/回应|否认|辟谣|澄清|证实|声明|官方答复|露面|现身|出席|到访|会见|行程|调查|起诉|法院|监管|制裁/i.test(previous);
+      return !newUpdate && (sameRunaway || timelineSimilarity(current, previous) >= 0.46);
+    });
+  }
+  function dedupeFetched(items, protectedItems = []) {
+    const comparison = [...protectedItems]; const kept = [];
+    for (const item of items) {
+      if (duplicateTimelineItem(item, comparison)) continue;
+      kept.push(item); comparison.push(item);
+    }
+    return kept;
+  }
   function articleHref(item) {
     if (item.local_path) return item.local_path;
     if (typeof window.TRRB_articleUrl === "function") return window.TRRB_articleUrl({ ...item, category: item.category_name, topicKey: "ren-zhengfei" });
@@ -48,7 +77,13 @@
       const fetched = Array.isArray(data) ? data : [];
       const seeds = Array.isArray(window.TRRB_REN_ZHENGFEI_SEED_POSTS) ? window.TRRB_REN_ZHENGFEI_SEED_POSTS : [];
       const fetchedIds = new Set(fetched.map((item) => String(item.source_post_id || "")).filter(Boolean));
-      rows = [...fetched, ...seeds.filter((item) => !fetchedIds.has(String(item.source_post_id || "")))].sort((a, b) => {
+      const orderedFetched = [...fetched].sort((a, b) => {
+        const left = new Date(a.source_created_at || a.published_at || a.created_at || 0).getTime();
+        const right = new Date(b.source_created_at || b.published_at || b.created_at || 0).getTime();
+        return right - left;
+      });
+      const uniqueSeeds = seeds.filter((item) => !fetchedIds.has(String(item.source_post_id || "")));
+      rows = [...dedupeFetched(orderedFetched, uniqueSeeds), ...uniqueSeeds].sort((a, b) => {
         const left = new Date(a.source_created_at || a.published_at || a.created_at || 0).getTime();
         const right = new Date(b.source_created_at || b.published_at || b.created_at || 0).getTime();
         return right - left;

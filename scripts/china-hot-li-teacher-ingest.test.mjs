@@ -69,7 +69,7 @@ test("中国热门头条按内容查重并执行旧闻门禁", () => {
   const script = fs.readFileSync(new URL("./china-hot-li-teacher-ingest.mjs", import.meta.url), "utf8");
   assert.match(script, /appears_old_news/);
   assert.match(script, /old_news_checked: true/);
-  assert.match(script, /duplicate_check_days: 30/);
+  assert.match(script, /duplicate_check_days: source\.topicKey === REN_ZHENGFEI_TOPIC \? 180 : 30/);
   assert.match(script, /与近30天已发布中国热门头条重复/);
 });
 
@@ -81,6 +81,7 @@ test("发布稿自动公开且不在前台暴露抓取来源", () => {
   assert.equal(article.metadata.automatic_publish, true);
   assert.equal(article.metadata.unverified_public_claim, true);
   assert.equal(article.metadata.public_source_attribution, false);
+  assert.equal(article.metadata.duplicate_check_days, 30);
   assert.doesNotMatch(article.content, /李老师|X平台|x\.com/);
 });
 

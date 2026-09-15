@@ -8,3 +8,5 @@
 2026-09-15: redeploy verified meta-description, unique-title, sitemap and internal-link SEO output; central robot now dispatches all AsylumJudge canonical URLs to Bing/IndexNow.
 
 2026-09-15: publish official immigration tools hub, EOIR court-case lookup, and nationwide court address/map navigation sourced from the DOJ/EOIR directory.
+
+2026-09-15: publish Chinese/English search-intent pages for immigration judges, EOIR case status, ICE detainee lookup, EOIR-33 address changes, USCIS case status and immigration-court asylum-fee payments; refresh Google Search Console, Bing Webmaster and IndexNow through the existing central SEO workflow.

@@ -26,7 +26,7 @@ export const SEO_LOCALES = [
 const copy = {
   en: {
     home: ['U.S. Immigration Judge Approval Rates & Court Data | AsylumJudge', 'Search U.S. immigration judges, immigration courts, state asylum data, nationality outcomes, approval rates, denial rates, case counts, and official judge backgrounds.'],
-    courts: ['U.S. Immigration Court Asylum Approval Rates | AsylumJudge', 'Compare asylum decisions, approval rates, denial rates, judges, and case counts across U.S. immigration courts.'],
+    courts: ['U.S. Immigration Court Addresses, Judges & Asylum Rates | AsylumJudge', 'Find official U.S. immigration court addresses and map directions, then compare immigration judges, asylum decisions, approval rates, denial rates, and case counts.'],
     states: ['Asylum Approval Rates by U.S. State | AsylumJudge', 'Compare immigration court asylum decisions, grants, denials, other outcomes, and approval rates by state and fiscal year.'],
     nationality: ['Asylum Outcomes by Nationality | AsylumJudge', 'Search U.S. immigration court asylum outcomes by nationality, including approvals, denials, other outcomes, sample sizes, and time trends.'],
     compare: ['Compare U.S. Immigration Judges | Approval Rates & Trends | AsylumJudge', 'Compare 2–4 U.S. immigration judges by asylum approval rate, denial rate, sample size, yearly trend, applicant nationality, and official background.'],
@@ -106,7 +106,7 @@ const copy = {
   },
   'zh-Hans': {
     home: ['美国移民法官通过率｜法官、法院与庇护裁决数据', '查询美国移民法官、移民法院、各州及不同国籍的庇护批准率、拒绝率、案件样本量、数据时间和法官官方背景。'],
-    courts: ['美国移民法院庇护通过率查询｜AsylumJudge', '比较美国各移民法院的法官人数、庇护裁决量、批准、拒绝、其他结果和裁决批准率。'],
+    courts: ['美国移民法院地址、地图导航与庇护通过率｜AsylumJudge', '查询全美移民法院官方地址并打开地图导航，同时比较各法院法官人数、庇护裁决量、批准、拒绝和裁决批准率。'],
     states: ['美国各州庇护批准率与移民法院数据｜AsylumJudge', '按州和财政年度比较美国移民法院庇护裁决、批准、拒绝、其他结果与通过率。'],
     nationality: ['各国国籍庇护批准率与裁决趋势｜AsylumJudge', '按国籍查询美国移民法庭庇护批准、拒绝、其他结果、样本量及月度、季度和年度趋势。'],
     compare: ['移民法官对比｜批准率、样本量与年度趋势｜AsylumJudge', '选择2至4名美国移民法官，对比庇护批准率、拒绝率、样本量、年度趋势、申请人国籍和官方任命背景。'],

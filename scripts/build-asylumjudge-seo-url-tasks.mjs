@@ -7,7 +7,17 @@ const SOURCE = join(ROOT, 'asylumjudge', 'seo-url-tasks.json');
 const ORIGIN = 'https://asylumjudge.com';
 const ADDED = new Set([
   ORIGIN + '/asylum-judge-approval-rate/',
-  ORIGIN + '/en/asylum-judge-rating/'
+  ORIGIN + '/en/asylum-judge-rating/',
+  ORIGIN + '/eoir-case-status/',
+  ORIGIN + '/en/eoir-case-status/',
+  ORIGIN + '/ice-detainee-locator/',
+  ORIGIN + '/en/ice-detainee-locator/',
+  ORIGIN + '/eoir-33-change-address/',
+  ORIGIN + '/en/eoir-33-change-address/',
+  ORIGIN + '/uscis-case-status/',
+  ORIGIN + '/en/uscis-case-status/',
+  ORIGIN + '/immigration-court-asylum-fee/',
+  ORIGIN + '/en/immigration-court-asylum-fee/'
 ]);
 const SITEMAPS = [
   ORIGIN + '/sitemap.xml',

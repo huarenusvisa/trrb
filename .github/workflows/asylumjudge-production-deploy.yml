@@ -69,7 +69,10 @@ jobs:
       - name: Finalize meta descriptions after hygiene
         run: node scripts/asylumjudge-meta-description-finalize.mjs
       - name: Verify sitemap and canonical SEO contract
-        run: node scripts/asylumjudge-seo.test.mjs
+        run: |
+          node scripts/asylumjudge-seo.test.mjs
+          node scripts/asylumjudge-tool-search-intent.test.mjs
+          node scripts/asylumjudge-search-engine-ops.test.mjs
       - name: Verify multilingual, branding and search-intent regression contract
         run: node scripts/asylumjudge-production-regression.test.mjs
       - name: Verify state categories and annual comparison
@@ -115,7 +118,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          paths=("/states/" "/en/states/" "/states/california/" "/en/states/california/" "/en/states/new-york/" "/judge-approval-rates/" "/en/judge-approval-rates/" "/" "/en/" "/es/" "/fr/" "/pt-br/" "/hi/" "/zh-hant/" "/ru/" "/ar/" "/tr/" "/asylum-judge-approval-rate/" "/en/asylum-judge-rating/" "/en/judge-backgrounds/" "/methodology/")
+          paths=("/states/" "/en/states/" "/states/california/" "/en/states/california/" "/en/states/new-york/" "/judge-approval-rates/" "/en/judge-approval-rates/" "/" "/en/" "/es/" "/fr/" "/pt-br/" "/hi/" "/zh-hant/" "/ru/" "/ar/" "/tr/" "/asylum-judge-approval-rate/" "/en/asylum-judge-rating/" "/eoir-case-status/" "/en/eoir-case-status/" "/ice-detainee-locator/" "/en/ice-detainee-locator/" "/eoir-33-change-address/" "/en/eoir-33-change-address/" "/uscis-case-status/" "/en/uscis-case-status/" "/immigration-court-asylum-fee/" "/en/immigration-court-asylum-fee/" "/en/judge-backgrounds/" "/methodology/")
           for path in "${paths[@]}"; do
             code=$(curl -sS -L -o /tmp/asylumjudge-live.html -w '%{http_code}' "https://asylumjudge.com${path}")
             if [ "$code" != "200" ]; then echo "Live verification failed: ${path} returned ${code}" >&2; exit 1; fi

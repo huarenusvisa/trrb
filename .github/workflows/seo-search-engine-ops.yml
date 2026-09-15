@@ -26,6 +26,8 @@ on:
       - 'huarengongzuo/seo/tasks.json'
       - 'scripts/asylumjudge-live-seo-audit.mjs'
       - 'scripts/submit-asylumjudge-indexnow.mjs'
+      - 'scripts/asylumjudge-search-engine-ops.mjs'
+      - 'scripts/asylumjudge-search-intent-pages.mjs'
       - 'scripts/asylumjudge-indexing-hygiene.mjs'
       - 'scripts/build-asylumjudge-site.mjs'
       - 'scripts/build-asylumjudge-seo.mjs'
@@ -147,7 +149,7 @@ jobs:
     needs: automation-gate
     if: ${{ needs.automation-gate.outputs.allowed == 'true' }}
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 35
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -163,6 +165,8 @@ jobs:
         id: contract
         run: |
           node scripts/asylumjudge-seo.test.mjs
+          node scripts/asylumjudge-tool-search-intent.test.mjs
+          node scripts/asylumjudge-search-engine-ops.test.mjs
           node scripts/asylumjudge-seo-url-tasks.test.mjs
       - name: Block multilingual duplicate-canonical regression
         id: multilingual
@@ -184,9 +188,49 @@ jobs:
           }
           console.log(`AsylumJudge indexing guard passed: ${report.localized_pages} localized pages; ${highCjk} high-CJK warnings.`);
           NODE
+      - name: Wait for new AsylumJudge priority pages to reach production
+        id: production_routes
+        shell: bash
+        run: |
+          set -euo pipefail
+          paths=(
+            "/eoir-case-status/"
+            "/ice-detainee-locator/"
+            "/eoir-33-change-address/"
+            "/uscis-case-status/"
+            "/immigration-court-asylum-fee/"
+          )
+          for attempt in $(seq 1 90); do
+            ready=true
+            for path in "${paths[@]}"; do
+              html="$(curl -fsSL --max-time 20 -H 'Cache-Control: no-cache' "https://asylumjudge.com${path}?seo_wait=${GITHUB_RUN_ID}-${attempt}" 2>/dev/null || true)"
+              if [[ "$html" != *'data-search-intent-page='* ]]; then ready=false; break; fi
+            done
+            if [ "$ready" = true ]; then
+              echo 'AsylumJudge priority SEO pages are live.'
+              exit 0
+            fi
+            echo "Waiting for AsylumJudge priority SEO pages: attempt ${attempt}/90"
+            sleep 10
+          done
+          echo 'AsylumJudge priority SEO pages did not reach production within 15 minutes.' >&2
+          exit 1
       - name: Submit all AsylumJudge canonical URLs to Bing and other IndexNow engines
         id: indexnow
         run: node scripts/submit-asylumjudge-indexnow.mjs
+      - name: Install Google Search Console client for AsylumJudge
+        id: install_google_asylumjudge
+        run: npm install --no-save googleapis@144
+      - name: Update Google Search Console and Bing Webmaster for AsylumJudge
+        id: asylumjudge_search_ops
+        env:
+          ASYLUMJUDGE_GOOGLE_SEARCH_CONSOLE_SITE_URL: ${{ vars.ASYLUMJUDGE_GOOGLE_SEARCH_CONSOLE_SITE_URL || 'https://asylumjudge.com/' }}
+          GOOGLE_SEARCH_CONSOLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SEARCH_CONSOLE_SERVICE_ACCOUNT_JSON }}
+          BING_WEBMASTER_API_KEY: ${{ secrets.BING_WEBMASTER_API_KEY }}
+          SEO_WRITE_MODE: 'true'
+          SEO_REQUIRE_GOOGLE: 'true'
+          SEO_REQUIRE_BING: 'true'
+        run: node scripts/asylumjudge-search-engine-ops.mjs
       - name: Audit the live AsylumJudge site for canonical, noindex, redirects and 404s
         id: live_audit
         env:
@@ -211,6 +255,7 @@ jobs:
           name: asylumjudge-seo-robot-report
           path: |
             asylumjudge-live-seo-report.json
+            asylumjudge-search-engine-ops-report.json
             .netlify/asylumjudge-bundle/public/asylumjudge-indexing-hygiene.json
             central-seo-task-report.json
             central-seo-dispatch-plan.json
@@ -225,5 +270,5 @@ jobs:
           AUTOMATION_NOTIFICATION_TITLE: AsylumJudge SEO机器人执行失败
           AUTOMATION_NOTIFICATION_MESSAGE: '移民法官 SEO 任务执行失败，请查看本次 GitHub Actions 日志。'
           AUTOMATION_FAILURE_RESULTS: ${{ toJSON(steps) }}
-          AUTOMATION_FAILURE_LABELS: '{"build":"网站 SEO 构建","materialize":"生成 SEO 任务清单","contract":"站点地图及任务清单检查","multilingual":"多语言重复内容检查","indexnow":"Bing/IndexNow 全量 canonical URL 提交","live_audit":"线上 canonical、noindex、重定向及404检查","task_pool":"中央任务清单校验及入队"}'
+          AUTOMATION_FAILURE_LABELS: '{"build":"网站 SEO 构建","materialize":"生成 SEO 任务清单","contract":"站点地图及任务清单检查","multilingual":"多语言重复内容检查","indexnow":"Bing/IndexNow 全量 canonical URL 提交","production_routes":"等待重点 SEO 页面上线","install_google_asylumjudge":"安装 Google Search Console 客户端","asylumjudge_search_ops":"Google Search Console 与 Bing Webmaster 更新","live_audit":"线上 canonical、noindex、重定向及404检查","task_pool":"中央任务清单校验及入队"}'
         run: node scripts/automation-notify.mjs

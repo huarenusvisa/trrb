@@ -14,7 +14,7 @@ const renTweet = {
   source_level: "verified_social",
   source_verified: true,
   topic_key: "ren-zhengfei",
-  media: [],
+  media: [{ type: "photo", url: "https://pbs.twimg.com/media/ren-event.jpg" }],
 };
 
 test("任正非全站关键词内容进入原中国热门头条流水线", () => {
@@ -44,7 +44,8 @@ test("任正非发布稿带稳定主题标记并留在中国热门头条", () =>
   const article = buildPublishedArticle(renTweet, qualified, {
     title: "任正非谈华为研发与人才培养",
     summary: "任正非在公开交流中谈到华为研发与人才培养安排。",
-    content: "任正非在公开交流中谈到华为研发与人才培养安排。",
+    content: "任正非在公开交流中谈到华为研发与人才培养安排。" + Array.from({length: 800}, (_,i) => String.fromCharCode(0x4e00+i)).join(""),
+    editorial_review: { single_event: true, grounded: true, sufficient: true, image_relevant: true, cover_index: 0, image_description: "公开交流活动现场", reason: "材料支持" },
     seo_keywords: "任正非,华为,研发,人才",
     target: targetLength(),
   }, "2026-09-15T00:00:00.000Z");

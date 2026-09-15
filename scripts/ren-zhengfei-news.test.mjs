@@ -52,7 +52,10 @@ test("任正非时间线使用主题键并按原始消息时间倒序", () => {
   const workflow = fs.readFileSync(new URL("../.github/workflows/china-hot-li-teacher-ingest.yml", import.meta.url), "utf8");
   assert.match(timeline, /topic_key.*eq\.ren-zhengfei/s);
   assert.match(timeline, /source_created_at\.desc\.nullslast/);
-  assert.match(html, /任正非新闻时间线/);
+  assert.match(html, /<h1>任正非真的跑了吗？<\/h1>/);
+  assert.doesNotMatch(html, /REN ZHENGFEI NEWS|来自 X 公开信息源/);
+  assert.match(html, /property="og:image" content="https:\/\/trrb\.net\/assets\/people\/ren-zhengfei-xi-news-hero\.jpg/);
+  assert.match(html, /name="twitter:card" content="summary_large_image"/);
   assert.match(redirects, /^\/ren-zhengfei \/ren-zhengfei\/index\.html 200!$/m);
   assert.match(workflow, /REN_ZHENGFEI_MAX_FETCH/);
   assert.doesNotMatch(workflow, /schedule:/);

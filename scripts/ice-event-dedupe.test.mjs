@@ -1,6 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { eventSignature, hasMaterialUpdate } from "./ice-fast-intake.mjs";
+import { isKnownOldEvent } from "./ice-precollect-published-dedupe.mjs";
 
 test("reposts on different days keep the same event fingerprint", () => {
   const base = {
@@ -32,4 +33,10 @@ test("repeated wording is discarded while substantive updates are retained", () 
   };
   assert.equal(hasMaterialUpdate({ source_text: "ICE arrested John Sample in Atlanta in an operation involving 12 people." }, story), false);
   assert.equal(hasMaterialUpdate({ source_text: "Update: ICE confirmed John Sample was released and 18 people were involved." }, story), true);
+});
+
+test("confirmed historical Georgia and Leqaa Kordia reposts are blocked before AI", () => {
+  assert.equal(isKnownOldEvent("ICE raid at the Hyundai battery plant in Georgia detained 475 people"), true);
+  assert.equal(isKnownOldEvent("ICE arrested Columbia protester Leqaa Kordia after her visa was revoked"), true);
+  assert.equal(isKnownOldEvent("ICE announced a new operation in Boston today"), false);
 });

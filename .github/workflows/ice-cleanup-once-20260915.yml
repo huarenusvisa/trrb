@@ -32,8 +32,10 @@ jobs:
         run: |
           node --check scripts/ice-dedupe-v3.mjs
           node --check scripts/ice-clean-existing-review-duplicates.mjs
+          node --check scripts/ice-delete-confirmed-old-news-20260915.mjs
       - name: Remove current duplicate and old-news candidates
         run: |
+          node scripts/ice-delete-confirmed-old-news-20260915.mjs
           node scripts/ice-dedupe-v3.mjs
           node scripts/ice-clean-existing-review-duplicates.mjs
       - name: Confirm collector remained untouched

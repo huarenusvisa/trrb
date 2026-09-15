@@ -4,3 +4,5 @@
 2026-09-14: remove forced trailing-slash self redirects detected during live verification.
 
 2026-09-14 Publish state landing pages and fiscal-year approval-rate comparison with verified annual samples.
+
+2026-09-15: redeploy verified meta-description, unique-title, sitemap and internal-link SEO output; central robot now dispatches all AsylumJudge canonical URLs to Bing/IndexNow.

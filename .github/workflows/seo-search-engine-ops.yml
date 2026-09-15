@@ -184,6 +184,9 @@ jobs:
           }
           console.log(`AsylumJudge indexing guard passed: ${report.localized_pages} localized pages; ${highCjk} high-CJK warnings.`);
           NODE
+      - name: Submit all AsylumJudge canonical URLs to Bing and other IndexNow engines
+        id: indexnow
+        run: node scripts/submit-asylumjudge-indexnow.mjs
       - name: Audit the live AsylumJudge site for canonical, noindex, redirects and 404s
         id: live_audit
         env:
@@ -222,5 +225,5 @@ jobs:
           AUTOMATION_NOTIFICATION_TITLE: AsylumJudge SEO机器人执行失败
           AUTOMATION_NOTIFICATION_MESSAGE: '移民法官 SEO 任务执行失败，请查看本次 GitHub Actions 日志。'
           AUTOMATION_FAILURE_RESULTS: ${{ toJSON(steps) }}
-          AUTOMATION_FAILURE_LABELS: '{"build":"网站 SEO 构建","materialize":"生成 SEO 任务清单","contract":"站点地图及任务清单检查","multilingual":"多语言重复内容检查","live_audit":"线上 canonical、noindex、重定向及404检查","task_pool":"中央任务清单校验及入队"}'
+          AUTOMATION_FAILURE_LABELS: '{"build":"网站 SEO 构建","materialize":"生成 SEO 任务清单","contract":"站点地图及任务清单检查","multilingual":"多语言重复内容检查","indexnow":"Bing/IndexNow 全量 canonical URL 提交","live_audit":"线上 canonical、noindex、重定向及404检查","task_pool":"中央任务清单校验及入队"}'
         run: node scripts/automation-notify.mjs

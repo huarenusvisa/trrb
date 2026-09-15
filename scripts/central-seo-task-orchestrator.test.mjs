@@ -124,7 +124,9 @@ try {
   if (originalKey === undefined) delete process.env.SUPABASE_SERVICE_ROLE_KEY; else process.env.SUPABASE_SERVICE_ROLE_KEY = originalKey;
 }
 const jobsWorkflow = await readFile('.github/workflows/huarengongzuo-google-jobs-submit.yml', 'utf8');
-assert.doesNotMatch(centralWorkflow, /node scripts\/submit-asylumjudge-indexnow\.mjs/, 'AsylumJudge must not bypass the central task pool');
+const asylumProductionWorkflow = await readFile('.github/workflows/asylumjudge-production-deploy.yml', 'utf8');
+assert.match(centralWorkflow, /node scripts\/submit-asylumjudge-indexnow\.mjs/, 'the central SEO robot must dispatch AsylumJudge canonical URLs to IndexNow');
+assert.doesNotMatch(asylumProductionWorkflow, /node scripts\/submit-asylumjudge-indexnow\.mjs/, 'AsylumJudge production deploy must not bypass the central task pool');
 assert.doesNotMatch(jobsWorkflow, /workflow_run:|schedule:/, 'Huaren Gongzuo must not schedule an independent SEO robot');
 assert.doesNotMatch(jobsWorkflow, /node scripts\/huarengongzuo-google-jobs-submit\.mjs/, 'Huaren Gongzuo must not submit outside the central robot');
 

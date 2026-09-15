@@ -18,6 +18,13 @@ const ATS_SOURCES = [
   { type: "lever", key: "lever_distro", board: "distro" },
   { type: "lever", key: "lever_springoakliving", board: "springoakliving" },
 ];
+const SOURCE_REGISTRATIONS = [
+  { source_key: SOURCE_KEY, company_name: "500工作网", source_type: "structured_web", board_token: null, source_url: `${SOURCE_ORIGIN}/` },
+  ...ATS_SOURCES.map((source) => ({
+    source_key: source.key, company_name: source.board, source_type: source.type === "lever" ? "api" : source.type, board_token: source.board,
+    source_url: source.type === "greenhouse" ? `https://job-boards.greenhouse.io/${source.board}` : `https://jobs.lever.co/${source.board}`,
+  })),
+];
 const USER_AGENT = "TangDailyJobsBot/1.0 (+https://huarengongzuo.com/)";
 const NOW = new Date();
 const NOW_ISO = NOW.toISOString();
@@ -266,6 +273,34 @@ function sha256(value) {
   return crypto.createHash("sha256").update(JSON.stringify(value)).digest("hex");
 }
 
+async function ensureSourceRegistry(request = rest) {
+  // Insert missing parents before any raw rows, preserving existing settings.
+  await request("job_source_registry", "on_conflict=source_key", {
+    method: "POST", body: SOURCE_REGISTRATIONS,
+    prefer: "resolution=ignore-duplicates,return=minimal",
+  });
+  const rows = await request("job_source_registry", `select=source_key,is_enabled&source_key=in.(${SOURCE_REGISTRATIONS.map((source) => source.source_key).join(",")})`);
+  const registered = new Map((rows || []).map((row) => [row.source_key, row.is_enabled]));
+  const missing = SOURCE_REGISTRATIONS.filter((source) => !registered.has(source.source_key));
+  if (missing.length) throw new Error(`Missing job source registrations: ${missing.map((source) => source.source_key).join(", ")}`);
+  return new Set([...registered].filter(([, enabled]) => enabled === true).map(([key]) => key));
+}
+
+async function fetchChineseCandidates({ discover = discoverUrls, fetchPage = fetchText } = {}) {
+  let urls = [];
+  try {
+    urls = await discover();
+    const fetched = await mapLimit(urls, 3, async (url) => normalizeCandidate(url, await fetchPage(url)));
+    return {
+      discovered: urls.length, candidates: fetched.filter((item) => !item?.error),
+      failures: fetched.filter((item) => item?.error),
+      error: urls.length ? null : "Source discovery returned no candidate URLs",
+    };
+  } catch (error) {
+    return { discovered: urls.length, candidates: [], failures: [], error: String(error?.message || error) };
+  }
+}
+
 async function mapLimit(items, limit, worker) {
   const output = new Array(items.length);
   let cursor = 0;
@@ -327,6 +362,12 @@ function normalizeCandidate(url, html) {
   return { sourceKey: SOURCE_KEY, externalId, url, payload, errors, payloadHash: sha256(payload) };
 }
 
+function normalizeEmploymentType(value) {
+  const normalized = String(value || "").trim().toLowerCase().replace(/[\s-]+/g, "_");
+  if (["full_time", "part_time", "contract", "temporary", "internship", "unspecified"].includes(normalized)) return normalized;
+  return "unspecified";
+}
+
 function normalizeAtsCandidate(source, job) {
   const greenhouse = source.type === "greenhouse";
   const title = decodeHtml(greenhouse ? job.title : job.text).slice(0, 120);
@@ -339,7 +380,7 @@ function normalizeAtsCandidate(source, job) {
   const payload = {
     title, description, category_slug: category, country_code: "US",
     state_code: location?.state_code || null, city: location?.city || null,
-    employment_type: greenhouse ? "unspecified" : (job.categories?.commitment || "unspecified"),
+    employment_type: normalizeEmploymentType(greenhouse ? null : job.categories?.commitment),
     work_mode: /remote/i.test(`${locationText} ${job.workplaceType || ""}`) ? "remote" : "onsite",
     company_name: source.board, contact_method: null, contact_value: null, contact_public: false,
     application_url: applicationUrl, source_published_at: sourceDate,
@@ -355,8 +396,8 @@ function safeHttpUrl(value) {
   catch { return ""; }
 }
 
-async function fetchEnglishCandidates() {
-  const groups = await mapLimit(ATS_SOURCES, 2, async (source) => {
+async function fetchEnglishCandidates(sources = ATS_SOURCES) {
+  const groups = await mapLimit(sources, 2, async (source) => {
     try {
       const endpoint = source.type === "greenhouse"
         ? `https://boards-api.greenhouse.io/v1/boards/${source.board}/jobs?content=true`
@@ -375,7 +416,7 @@ async function fetchEnglishCandidates() {
     }
   });
   const reports = groups.map((group, index) => group?.source_key ? group : {
-    source_key: ATS_SOURCES[index].key,
+    source_key: sources[index].key,
     discovered: 0,
     candidates: [],
     error: String(group?.error || "unknown_source_error"),
@@ -504,24 +545,26 @@ async function main() {
     sources: {},
   };
   try {
-    const urls = await discoverUrls();
-    summary.discovered = urls.length;
-    summary.sources[SOURCE_KEY] = { ...emptySourceSummary(), discovered: urls.length };
-    if (urls.length < 50) throw new Error(`Source discovery returned only ${urls.length} candidate URLs`);
-
-    const fetched = await mapLimit(urls, 3, async (url) => normalizeCandidate(url, await fetchText(url)));
-    const chineseCandidates = fetched.filter((item) => !item?.error);
-    const english = await fetchEnglishCandidates();
-    const candidates = [...chineseCandidates, ...english.candidates];
-    summary.sources[SOURCE_KEY].fetched = chineseCandidates.length;
+    const enabledSources = await ensureSourceRegistry();
+    const chinese = enabledSources.has(SOURCE_KEY)
+      ? await fetchChineseCandidates()
+      : { discovered: 0, candidates: [], failures: [], error: null };
+    summary.discovered = chinese.discovered;
+    if (enabledSources.has(SOURCE_KEY)) summary.sources[SOURCE_KEY] = {
+      ...emptySourceSummary(), discovered: chinese.discovered, fetched: chinese.candidates.length, error: chinese.error,
+    };
+    if (chinese.error) summary.source_errors += 1;
+    const english = await fetchEnglishCandidates(ATS_SOURCES.filter((source) => enabledSources.has(source.key)));
+    const candidates = [...chinese.candidates, ...english.candidates];
     for (const report of english.sources) {
       summary.sources[report.source_key] = { ...emptySourceSummary(), ...report };
       summary.discovered += report.discovered;
       if (report.error) summary.source_errors += 1;
     }
     summary.fetched = candidates.length;
-    summary.fetch_errors = fetched.length - chineseCandidates.length;
-    for (const failed of fetched.filter((item) => item?.error).slice(0, 10)) console.error("FETCH_ERROR", failed.url, failed.error);
+    summary.fetch_errors = chinese.failures.length;
+    for (const failed of chinese.failures.slice(0, 10)) console.error("FETCH_ERROR", failed.url, failed.error);
+    if (chinese.error) console.error("SOURCE_ERROR", SOURCE_KEY, chinese.error);
     for (const report of english.sources.filter((item) => item.error)) console.error("SOURCE_ERROR", report.source_key, report.error);
 
     for (let offset = 0; offset < candidates.length; offset += STORE_BATCH_SIZE) {
@@ -540,14 +583,15 @@ async function main() {
     const allowedWriteErrors = Math.max(MIN_WRITE_ERROR_THRESHOLD, Math.ceil(summary.fetched * MAX_WRITE_ERROR_RATE));
     summary.allowed_write_errors = allowedWriteErrors;
     summary.completed_at = new Date().toISOString();
-    await rest("job_source_registry", `source_key=eq.${SOURCE_KEY}`, { method: "PATCH", body: {
-      last_checked_at: NOW_ISO,
-      last_success_at: NOW_ISO,
-      last_error: summary.fetch_errors || summary.source_errors || summary.write_errors
-        ? `partial: fetch_errors=${summary.fetch_errors}, source_errors=${summary.source_errors}, write_errors=${summary.write_errors}`
-        : null,
-      updated_at: NOW_ISO,
-    } });
+    for (const [sourceKey, report] of Object.entries(summary.sources)) {
+      const fetchErrors = sourceKey === SOURCE_KEY ? summary.fetch_errors : 0;
+      await rest("job_source_registry", `source_key=eq.${sourceKey}`, { method: "PATCH", body: {
+        last_checked_at: NOW_ISO,
+        ...(!report.error && report.fetched > 0 && !report.write_errors && !fetchErrors ? { last_success_at: NOW_ISO } : {}),
+        last_error: report.error || (report.write_errors || fetchErrors ? `partial: fetch_errors=${fetchErrors}, write_errors=${report.write_errors}` : null),
+        updated_at: NOW_ISO,
+      } });
+    }
     console.log(`JOBS_INGEST_SUMMARY ${JSON.stringify(summary)}`);
     const handled = summary.published + summary.repaired + summary.existing + summary.rejected;
     if (summary.fetched < 50 || handled === 0 || summary.write_errors > allowedWriteErrors) process.exitCode = 1;
@@ -560,4 +604,4 @@ async function main() {
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) await main();
 
-export { normalizeAtsCandidate, normalizeCandidate, pickCategory, pickEnglishLocation };
+export { ensureSourceRegistry, fetchChineseCandidates, normalizeAtsCandidate, normalizeCandidate, pickCategory, pickEnglishLocation };

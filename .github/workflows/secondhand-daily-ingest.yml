@@ -1,6 +1,12 @@
 name: SECONDHAND Daily Ingest
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/secondhand-daily-ingest.mjs'
+      - 'scripts/secondhand-daily-ingest.test.mjs'
+      - '.github/workflows/secondhand-daily-ingest.yml'
   workflow_call:
 
 permissions:
@@ -23,11 +29,15 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "22.13.0"
+      - name: Read existing automation switches
+        id: gate
+        run: node scripts/automation-gate.mjs
       - name: Verify and test secondhand ingestion
         run: |
           node --check scripts/secondhand-daily-ingest.mjs
           node scripts/secondhand-daily-ingest.test.mjs
       - name: Collect, validate and publish eligible secondhand listings
+        if: ${{ steps.gate.outputs.global == 'true' && steps.gate.outputs.secondhand == 'true' }}
         shell: bash
         run: |
           set -o pipefail

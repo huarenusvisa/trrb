@@ -175,11 +175,11 @@ function extractLocationHint(text) {
   return text.match(/(?:所在地区|所在区域|地区)\s*[:：]\s*(.{1,60}?)(?=类别|分类|发布时间|发布日期|详细描述|联系方式|电话|$)/i)?.[1]?.trim() || "";
 }
 
-function normalizeCandidate(source, url, html) {
+function normalizeCandidate(source, url, html, now = NOW) {
   const text = decodeHtml(html);
   const title = pickTitle(html, text);
   const published = pickPublishedAt(text);
-  const ageDays = published ? (NOW.getTime() - published.getTime()) / 86400000 : null;
+  const ageDays = published ? (now.getTime() - published.getTime()) / 86400000 : null;
   const section = extractListingSection(text, title);
   const description = extractDescription(section);
   const contact = pickContact(section);

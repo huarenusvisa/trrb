@@ -13,10 +13,17 @@ const source = { key: "fixture", name: "测试来源", origin: "https://example.
 const html = `<!doctype html><title>九成新双人沙发 - 华人论坛</title><h1>九成新双人沙发</h1>
   <div>发布于: 2026/08/25</div><div>所在地区: 法拉盛</div><div>详细描述 搬家出售九成新双人沙发，$80，自取。电话917-555-1212
   <img src="https://example.com/upload/sofa.jpg"> 联系时请一定说明</div>`;
-const candidate = normalizeCandidate(source, "https://example.com/f/page_viewtopic/t_123.html", html);
+const url = "https://example.com/f/page_viewtopic/t_123.html";
+const candidate = normalizeCandidate(source, url, html, new Date("2026-08-26T00:00:00Z"));
 assert.equal(candidate.payload.category_slug, "moving");
 assert.equal(candidate.payload.price, 80);
 assert.equal(candidate.payload.location_label, "法拉盛 · NY");
 assert.equal(candidate.errors.length, 0);
+
+// The fixture clock stays fixed; production must still reject stale listings.
+assert.deepEqual(normalizeCandidate(source, url, html, new Date("2026-09-08T00:00:00Z")).errors, []);
+assert.deepEqual(normalizeCandidate(source, url, html, new Date("2026-09-08T00:00:00.001Z")).errors, ["stale_or_missing_date"]);
+assert.deepEqual(normalizeCandidate(source, url, html, new Date("2026-09-15T00:00:00Z")).errors, ["stale_or_missing_date"]);
+assert.deepEqual(normalizeCandidate(source, url, html, new Date("2026-08-23T00:00:00Z")).errors, ["stale_or_missing_date"]);
 
 console.log("secondhand daily ingest tests: PASS");

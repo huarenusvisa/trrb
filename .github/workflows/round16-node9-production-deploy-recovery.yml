@@ -12,6 +12,7 @@ on:
       - 'netlify.toml'
       - '*.js'
       - '*.css'
+      - 'admin/**'
       - 'asylumjudge/**'
       - 'huarengongzuo/**'
       - 'seo/**'

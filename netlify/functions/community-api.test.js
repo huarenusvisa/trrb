@@ -90,3 +90,10 @@ test('community comment reports remain a distinct action contract', () => {
   assert.match(source, /comment\.user_id === user\.id/);
   assert.match(source, /resolution=ignore-duplicates/);
 });
+
+test('community admin keeps reported comment targets visible after the dashboard redesign', () => {
+  const source = require('node:fs').readFileSync(require.resolve('../../admin/community-center.js'), 'utf8');
+  assert.match(source, /评论 \$\{esc\(r\.comment_id\)\}/);
+  assert.match(source, /trrb:admin-page-shown/);
+  assert.match(source, /event\.detail\?\.page==='community'/);
+});

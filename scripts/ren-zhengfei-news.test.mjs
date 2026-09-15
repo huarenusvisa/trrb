@@ -83,7 +83,7 @@ test("赛力斯与华为合作调整新闻进入任正非时间线", () => {
   const seeds = fs.readFileSync(new URL("../ren-zhengfei/seed-posts.js", import.meta.url), "utf8");
   const page = fs.readFileSync(new URL("../ren-zhengfei/posts/seres-huawei-separation-20260915/index.html", import.meta.url), "utf8");
   assert.match(seeds, /赛力斯主动与华为切割，疑似佐证任正非跑路？/);
-  assert.match(page, /assets\/ren-zhengfei\/posts\/seres-huawei-separation-20260915\/cover\.png/);
+  assert.match(page, /assets\/ren-zhengfei\/posts\/seres-huawei-separation-20260915\/cover-v2\.jpeg/);
   assert.match(page, /真实性提示/);
   assert.match(page, /property="og:image"/);
 });

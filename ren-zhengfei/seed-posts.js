@@ -8,7 +8,7 @@ window.TRRB_REN_ZHENGFEI_SEED_POSTS = [
     published_at: "2026-09-15T02:32:07.000Z",
     title: "赛力斯主动与华为切割，疑似佐证任正非跑路？",
     summary: "华为与赛力斯合作据报将转为轻资产模式，产品、营销、销售和服务改由赛力斯主导。部分网友将此与任正非出境传闻联系，但目前没有证据证明两者存在因果关系。",
-    cover_image: "/assets/ren-zhengfei/posts/seres-huawei-separation-20260915/cover.png",
+    cover_image: "/assets/ren-zhengfei/posts/seres-huawei-separation-20260915/cover-v2.jpeg",
     local_path: "/ren-zhengfei/posts/seres-huawei-separation-20260915/"
   },
   {

@@ -17,13 +17,13 @@ const REN_ZHENGFEI_QUERY = '("任正非" OR "Ren Zhengfei") -is:retweet -is:repl
 // retry, repair, clean or publish Ren Zhengfei items until a future explicit instruction.
 const REN_ZHENGFEI_COLLECTION_ENABLED = false;
 const PIPELINE = "china-hot-li-teacher-v2";
-const PROCESSING_VERSION = "china-300-600-image-v5";
+const PROCESSING_VERSION = "china-300-600-db-v6";
 const WARNING = "真实性提示：本文所述信息可能尚未获得独立核实，部分细节可能存在偏差，请以权威部门后续通报为准。";
 const DRY_RUN = process.argv.includes("--dry-run");
 const RECOVER_ARCHIVED = process.argv.includes("--recover-archived");
 const REPAIR_TODAY = process.argv.includes("--repair-today");
 const REPAIR_SINCE = cleanText(process.env.CHINA_HOT_REPAIR_SINCE || "2026-08-24T00:00:00Z", 100);
-const EXPANSION_VERSION = "china-300-600-image-v5";
+const EXPANSION_VERSION = "china-300-600-db-v6";
 const LOOKBACK_HOURS = intEnv("LI_TEACHER_LOOKBACK_HOURS", 6, 3, 24);
 const MAX_FETCH = intEnv("LI_TEACHER_MAX_FETCH", 100, 10, 200);
 const REN_ZHENGFEI_MAX_FETCH = intEnv("REN_ZHENGFEI_MAX_FETCH", 300, 10, 500);
@@ -736,7 +736,7 @@ export function buildPublishedArticle(tweet, qualified, article, publishedAt = n
       public_source_attribution: true, source_text_original: qualified.text, source_media: attachments,
       requires_editor_review: tweet.requires_editor_review === true, source_links: tweet.source_links || [], source_reference: tweet.source_reference || "", source_public_metrics: tweet.public_metrics || {}, openai_model: OPENAI_MODEL, generated_target: article.target,
       editorial_expansion_version: EXPANSION_VERSION, image_grounding_used: visualInputs(tweet).length > 0,
-      context_research: tweet.context_research || null, editorial_review: article.editorial_review, body_character_count: bodyCharacterCount(article.content),
+      context_research_attempted: tweet.context_research_attempted === true, context_research: tweet.context_research || null, editorial_review: article.editorial_review, body_character_count: bodyCharacterCount(article.content),
       image_evidence: article.image_evidence || [], image_count: visualInputs(tweet).length, old_news_checked: true, appears_old_news: false,
       duplicate_check_days: source.topicKey === REN_ZHENGFEI_TOPIC ? 180 : 30,
       duplicate_policy: source.topicKey === REN_ZHENGFEI_TOPIC ? "ren-event-v1" : "china-cross-source-event-v2",
@@ -976,7 +976,7 @@ async function repairTodayBatch() {
           image_grounding_used: visualInputs(tweet).length > 0,
           repaired_at: new Date().toISOString(), openai_model: OPENAI_MODEL,
           generated_target: article.target,
-          context_research: tweet.context_research || null, editorial_review: article.editorial_review, body_character_count: bodyCharacterCount(article.content),
+          context_research_attempted: tweet.context_research_attempted === true, context_research: tweet.context_research || null, editorial_review: article.editorial_review, body_character_count: bodyCharacterCount(article.content),
         };
         if (!DRY_RUN) await supabase("articles", {
           method: "PATCH", query: { id: `eq.${row.id}` }, prefer: "return=minimal",

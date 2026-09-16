@@ -22,7 +22,7 @@ test("中国新闻及中国政治人物内容进入中国热门头条池", () =>
   assert.equal(candidate.proposed_section, "中国热门头条");
   assert.equal(candidate.decision, "processing");
   assert.equal(candidate.pipeline, "china-hot-li-teacher-v2");
-  assert.equal(candidate.ai_payload.processing_version, "china-300-600-image-v5");
+  assert.equal(candidate.ai_payload.processing_version, "china-300-600-db-v6");
 });
 
 test("中国热门头条采用300至600字目标且不截断事实", () => {
@@ -226,7 +226,7 @@ test("自动失败草稿可有界重试，人工复核决定不会被自动覆�
   assert.equal(shouldRetryCandidate({
     decision: "review_required",
     decision_reason: "自动扩写或发布失败：生成稿未明确中国新闻主体；保留为可编辑草稿，由编辑决定是否发布",
-    ai_payload: { processing_version: "china-300-600-image-v5", automatic_retry_attempts: 3 },
+    ai_payload: { processing_version: "china-300-600-db-v6", automatic_retry_attempts: 3 },
   }, qualified), false);
   assert.equal(shouldRetryCandidate({
     decision: "review_required",

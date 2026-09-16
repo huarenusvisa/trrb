@@ -20,8 +20,9 @@
       event.preventDefault();
       if (form.dataset.sending || !form.reportValidity()) return;
       const data = new FormData(form);
-      data.set('form-name', form.name);
-      const tip = form.name === 'news-tip';
+      const formName = form.getAttribute('name');
+      data.set('form-name', formName);
+      const tip = formName === 'news-tip';
       if (tip && !String(data.get('message') || '').trim()) { status.textContent = '请填写线索内容。'; return; }
       const file = data.get('attachment');
       if (file instanceof File && file.size > 7 * 1024 * 1024) { status.textContent = '附件请小于7MB，文字内容已保留。'; return; }

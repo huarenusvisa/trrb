@@ -1,5 +1,6 @@
 (function () {
   const fallbackRules = {
+    xi: /习近平|習近平|Xi\s+Jinping/i,
     trump: /特朗普|川普|Donald\s+Trump/i,
     ice: /\bICE\b|Immigration and Customs Enforcement|移民与海关执法局|移民及海关执法局|ICE执法/i,
     election: /中期选举|选举|初选|参议员竞选|众议员竞选|关键州|选情/i
@@ -125,6 +126,8 @@
     const articles = Array.isArray(source) ? source : [];
     document.querySelectorAll('[data-topic-latest]').forEach(function (el) {
       const key = el.getAttribute('data-topic-latest');
+      // The live topic feed owns this card; home article refreshes must not replace its newer headline.
+      if (key === 'xi') return;
       const match = articles.find(function (article) {
         return matchesTopic(key, article);
       });

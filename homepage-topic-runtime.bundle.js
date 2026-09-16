@@ -473,7 +473,11 @@ return "2026中期选举竞争升温";
     const select = "id,title,content,topic_key,published_at,created_at,status";
     const url = new URL(`${SUPABASE_URL}/rest/v1/articles`);
     url.searchParams.set("select", select);
-    url.searchParams.set("topic_key", `eq.${topic}`);
+    if (topic === "xi") {
+      url.searchParams.set("or", "(title.ilike.*习近平*,summary.ilike.*习近平*,title.ilike.*習近平*,summary.ilike.*習近平*)");
+    } else {
+      url.searchParams.set("topic_key", `eq.${topic}`);
+    }
     url.searchParams.set("status", "eq.published");
     url.searchParams.set("order", "published_at.desc.nullslast,created_at.desc");
     url.searchParams.set("limit", "1");
@@ -517,7 +521,8 @@ return "2026中期选举竞争升温";
   async function loadTopicFeed() {
     syncFinanceCard();
     const fallback = await loadFallback();
-    await Promise.all(["trump", "ice"].map(async (topic) => {
+    const visibleTopics = ["trump", "ice", "xi"].filter((topic) => document.querySelector(`[data-topic-latest="${topic}"]`));
+    await Promise.all(visibleTopics.map(async (topic) => {
       try {
         const live = await fetchLatestTopic(topic);
         render(topic, live || fallback.find((item) => item?.topic === topic));

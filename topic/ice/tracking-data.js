@@ -16,10 +16,19 @@
       location:clean(meta.location_text||meta.location||[meta.city||row.city,meta.state_code||row.state].filter(Boolean).join(', ')),
       event_key:meta.event_id||meta.event_key||'',source_url:clean(row.source_url)};
   }
+  function sourceKey(row) {
+    if(row.event_key)return clean(row.event_key);
+    try { const url=new URL(row.source_url);
+      for(const key of [...url.searchParams.keys()])if(/^utm_|^(s|t|fbclid|gclid)$/i.test(key))url.searchParams.delete(key);
+      url.hash='';
+      if(/^\/(?:news|newsroom|press-releases)?\/?$/.test(url.pathname)&&!url.search)return '';
+      return url.href;
+    } catch{return '';}
+  }
   function dedupe(rows) {
     const ids=new Set(), events=new Set(), titles=new Set();
     return rows.filter(row=>{
-      const id=clean(row.id), event=clean(row.event_key||row.source_url).replace(/[?#].*$/,''), title=clean(row.title).replace(/[\s\p{P}]/gu,'').toLowerCase();
+      const id=clean(row.id), event=sourceKey(row), title=clean(row.title).replace(/[\s\p{P}]/gu,'').toLowerCase();
       if(id&&ids.has(id)||event&&events.has(event)||title&&titles.has(title))return false;
       if(id)ids.add(id);if(event)events.add(event);if(title)titles.add(title);return true;
     });

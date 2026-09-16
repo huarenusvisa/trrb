@@ -32,3 +32,9 @@
 #sections-grid #judge-home-hub .judge-state-bar{display:none}
 #sections-grid #judge-home-hub .judge-state-note{display:none}
 @media(max-width:767px){#sections-grid{gap:12px}#sections-grid>.news-box{padding:12px!important}#sections-grid>.news-box>header h2{font-size:18px!important}}
+#sections-grid #judge-home-hub .judge-state-dashboard{padding:8px}
+#sections-grid #judge-home-hub .judge-state-leader{padding:6px 8px;margin-bottom:6px}
+#sections-grid #judge-home-hub .judge-state-list{row-gap:3px}
+#sections-grid #judge-home-hub .judge-state-row{padding-bottom:2px}
+#sections-grid #judge-home-hub .judge-action-grid strong{font-size:12px!important;white-space:nowrap}
+#sections-grid #judge-home-hub .judge-action-grid a{min-height:40px!important;box-sizing:border-box}

@@ -44,7 +44,7 @@ if (!html.includes('article-route-runtime.js')) {
 // renderer after the underlying file changed.
 const coreVersions = new Map([
   ['article-live-neighbors.js', '20260916-editorial-1'],
-  ['homepage-secondary-hubs.bundle.js', '20260916-compact-2'],
+  ['homepage-secondary-hubs.bundle.js', '20260916-compact-3'],
   ['homepage-topic-runtime.bundle.js', '20260916-editorial-1'],
   ['article-route-runtime.js', '20260916-category-alias'],
   ['homepage-ranking.js', '20260823-rank-whitelist-1'],

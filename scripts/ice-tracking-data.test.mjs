@@ -9,3 +9,7 @@ test('cumulative and daily average headlines cannot inflate 24h people totals',(
 test('same source/event is counted once; distinct events remain',()=>{
   const rows=[{id:'1',title:'第一篇',source_url:'https://x.com/u/status/1'},{id:'2',title:'转载第一篇',source_url:'https://x.com/u/status/1?s=20'},{id:'3',title:'第二篇',source_url:'https://x.com/u/status/2'}];assert.equal(dedupe(rows).length,2);
 });
+
+test('homepage source links and distinct article IDs in query strings do not erase events',()=>{
+assert.equal(dedupe([{id:'1',title:'甲',source_url:'https://agency.test/newsroom'},{id:'2',title:'乙',source_url:'https://agency.test/newsroom'},{id:'3',title:'丙',source_url:'https://paper.test/?p=1'},{id:'4',title:'丁',source_url:'https://paper.test/?p=2'}]).length,4);
+});

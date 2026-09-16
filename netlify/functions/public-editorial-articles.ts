@@ -1,3 +1,4 @@
+import {loadChinaPeople,CHINA_PEOPLE_QUERY} from '../shared/china-person-registry.mjs';
 import { rest } from './_shared/supabase-admin.js';
 import { POLITICS_FILTER, ENFORCEMENT_FILTER, editorialTopics, isChinaPolitical } from '../shared/editorial-topics.mjs';
 import policy from '../../article-editorial-policy.js';
@@ -16,6 +17,7 @@ export default async (request: Request) => {
   const offset = Math.max(0, number(params.get('offset'),0));
   const q = (params.get('q') || '').replace(/[(),*]/g,' ').trim().slice(0,120);
   try {
+    await loadChinaPeople(()=>rest('china_political_people',{query:CHINA_PEOPLE_QUERY}));
     const query: Record<string,string> = {
       select:'id,title,slug,summary,content,category_name,topic_key,cover_image,author,published_at,created_at,publication_scope:metadata->>publication_scope',
       status:'eq.published', visibility:'eq.public', published_at:`lte.${new Date().toISOString()}`,

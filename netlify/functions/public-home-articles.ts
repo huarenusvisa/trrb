@@ -1,3 +1,4 @@
+import {loadChinaPeople,CHINA_PEOPLE_QUERY} from '../shared/china-person-registry.mjs';
 import policy from "../../article-editorial-policy.js";
 import { rest } from "./_shared/supabase-admin.js";
 import { isIceEnforcementText } from "./_shared/ice-enforcement.js";
@@ -29,6 +30,7 @@ export default async (event: Request) => {
   if (event.method !== "GET") return json(405, { error: "Method not allowed" });
 
   try {
+    await loadChinaPeople(()=>rest('china_political_people',{query:CHINA_PEOPLE_QUERY}));
     const { editorialTopics } = await import("../shared/editorial-topics.mjs");
     const requested = Number(new URL(event.url).searchParams.get("limit") || 120);
     const limit = Math.min(Math.max(Number.isFinite(requested) ? requested : 120, 1), 200);

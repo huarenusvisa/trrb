@@ -1,3 +1,4 @@
+import {loadChinaPeople,CHINA_PEOPLE_QUERY} from '../shared/china-person-registry.mjs';
 import { ELECTION_FILTER, POLITICS_FILTER, XI_FILTER, ICE_FILTER, ENFORCEMENT_FILTER, POLITICS_VIEWS, termFilter, isChinaPolitical } from "../shared/editorial-topics.mjs";
 const SITE = "https://trrb.net";
 const PAGE_SIZE = 20;
@@ -70,6 +71,16 @@ export default async (request: Request, context: any) => {
     const env = (globalThis as any).Netlify?.env || (globalThis as any).Deno?.env;
     const base = (env?.get("SUPABASE_URL") || "").replace(/\/+$/, "");
     const key = env?.get("SUPABASE_ANON_KEY") || env?.get("SUPABASE_SERVICE_ROLE_KEY") || "";
+    if (path === '/china-politics') {
+      const registryKey = env?.get('SUPABASE_SERVICE_ROLE_KEY');
+      if (registryKey) await loadChinaPeople(async()=>{
+        const url = new URL(base+'/rest/v1/china_political_people');
+        for (const [key,value] of Object.entries(CHINA_PEOPLE_QUERY)) url.searchParams.set(key,String(value));
+        const response = await fetch(url,{headers:{apikey:registryKey,Authorization:`Bearer ${registryKey}`},signal:AbortSignal.timeout(5000)});
+        if(!response.ok) throw new Error(`Registry HTTP ${response.status}`);
+        return response.json();
+      });
+    }
     if (!base || !key) throw new Error("Missing data configuration");
     const endpoint = new URL(`${base}/rest/v1/articles`);
     Object.entries({

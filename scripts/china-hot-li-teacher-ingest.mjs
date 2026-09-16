@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import process from "node:process";
-import {collectChinaMediaPosts, chinaMediaSource} from "./china-x-sources.mjs";
+import {loadChinaPeople,CHINA_PEOPLE_QUERY,findChinaPeople,CHINA_REGISTRY_VERSION} from "../netlify/shared/china-person-registry.mjs";
+import {collectChinaMediaPosts, chinaMediaSource, politicalReviewReason} from "./china-x-sources.mjs";
 import { researchEvent, contextRetryEligible } from "./china-context-research.mjs";
 import { pathToFileURL } from "node:url";
 import { editorialTopics, politicalSections, isChinaPolitical } from "../netlify/shared/editorial-topics.mjs";
@@ -143,7 +144,7 @@ export function qualifyTweet(tweet) {
   if (/^RT\s+@/i.test(text)) return { accepted: false, reason: "retweet" };
   if (isHeadlineDigest(text)) return { accepted: false, reason: "headline-digest" };
   const title = deriveTitle(text);
-  if (!isChinaHotHeadline(title, text) && !isChinaPolitical({title,summary:text}) && !(chinaMediaSource(tweet.source_username) && /\b(?:China|Chinese|Beijing|Xi Jinping|Hong Kong)\b/i.test(text)) && !isSourceSocialReport(title, text)) return { accepted: false, reason: "outside-china-hot" };
+  if (!isChinaHotHeadline(title, text) && !isChinaPolitical({title,summary:text}) && !findChinaPeople(text).length && !(chinaMediaSource(tweet.source_username) && /\b(?:China|Chinese|Beijing|Xi Jinping|Hong Kong)\b/i.test(text)) && !isSourceSocialReport(title, text)) return { accepted: false, reason: "outside-china-hot" };
   return { accepted: true, reason: "china-news", text, title };
 }
 
@@ -305,7 +306,7 @@ async function collectXPosts() {
   try { liTeacher = await collectLiTeacherPosts(); } catch (error) { console.warn(JSON.stringify({event:"china-media-source-unavailable",handle:SOURCE_HANDLE,reason:String(error?.message || error).slice(0,200)})); }
   const renZhengfei = REN_ZHENGFEI_COLLECTION_ENABLED ? await collectRenZhengfeiPosts() : [];
   const seen = new Set();
-  const publishers = await collectChinaMediaPosts({request,readJson,bearer:bearerToken(),lookbackHours:LOOKBACK_HOURS,mediaFor});
+  const publishers = await collectChinaMediaPosts({request,readJson,bearer:bearerToken(),lookbackHours:LOOKBACK_HOURS,mediaFor,includeMonitors:true});
   return [...liTeacher, ...publishers, ...renZhengfei].filter((tweet) => {
     const id = cleanText(tweet?.id, 100);
     if (!id || seen.has(id) || isRenZhengfeiCollectionPaused(tweet)) return false;
@@ -486,7 +487,7 @@ function tweetFromCandidate(row) {
     public_metrics: payload.source_public_metrics || payload.public_metrics || {},
     media: payload.source_media || payload.media || [], candidateId: row.id,
     source_username: payload.source_username || "", source_name: payload.source_name || "",
-    source_links: payload.source_links || [], source_reference: payload.source_reference || "", source_level: payload.source_level || "", source_verified: Boolean(payload.source_verified),
+    requires_editor_review: payload.requires_editor_review === true, source_links: payload.source_links || [], source_reference: payload.source_reference || "", source_level: payload.source_level || "", source_verified: Boolean(payload.source_verified),
     topic_key: payload.topic_key || (String(row.external_id || "").startsWith("x:ren-zhengfei:") ? REN_ZHENGFEI_TOPIC : "china"),
     external_id: row.external_id,
   };
@@ -501,7 +502,7 @@ export function buildCandidate(tweet, qualified, collectedAt = new Date().toISOS
     external_id: externalId(tweet), pipeline: PIPELINE, source_url: sourceUrl,
     source_account: `@${source.username}`, source_name: source.name, source_level: source.level,
     raw_text: qualified.text,
-    raw_payload: { tweet_id: tweetId, source_created_at: tweet.created_at || collectedAt, lang: tweet.lang || "zh", public_metrics: tweet.public_metrics || {}, media: tweet.media || [], source_links: tweet.source_links || [], source_reference: tweet.source_reference || "", source_username: source.username, source_name: source.name, source_level: source.level, source_verified: Boolean(tweet.source_verified), topic_key: source.topicKey },
+    raw_payload: { tweet_id: tweetId, china_person_ids: findChinaPeople(tweet.text).map(p=>p.person_key), source_created_at: tweet.created_at || collectedAt, lang: tweet.lang || "zh", public_metrics: tweet.public_metrics || {}, media: tweet.media || [], requires_editor_review: tweet.requires_editor_review === true, source_links: tweet.source_links || [], source_reference: tweet.source_reference || "", source_username: source.username, source_name: source.name, source_level: source.level, source_verified: Boolean(tweet.source_verified), topic_key: source.topicKey },
     ai_payload: { status: "queued", processing_version: PROCESSING_VERSION, proposed_title: qualified.title, target_min_chars: target.min, target_max_chars: target.max, topic_key: source.topicKey },
     proposed_section: "中国热门头条", confidence: 80, decision: "processing", decision_reason: "中国新闻候选，自动扩写发布中",
     collected_at: collectedAt, created_at: collectedAt, updated_at: collectedAt,
@@ -581,6 +582,8 @@ function visualContext(tweet) {
 }
 
 export async function generateArticle(qualified, tweet, attempt = 0, previous = null, mode = "report") {
+  const politicalHold = politicalReviewReason(tweet);
+  if (politicalHold) throw qualityError(`政治线索待核查：${politicalHold}`);
   if (isHeadlineDigest(qualified.text)) throw qualityError("原文是多主题视频宣传标题，不能扩写为新闻");
   if (!usableMedia(tweet).length) throw qualityError("原始素材没有可供核对的合适配图，补齐图片后再加工");
   const brief = mode === "brief";
@@ -724,13 +727,14 @@ export function buildPublishedArticle(tweet, qualified, article, publishedAt = n
       category_display_name: "中国热门头条", unverified_public_claim: true, content_warning: WARNING,
       category_policy_version: "source-social-v3",
       editorial_topics: editorialTopics(article),
+      china_politics_eligible: isChinaPolitical(article), china_person_ids: findChinaPeople(`${article.title} ${article.summary}`).map(p=>p.person_key), china_registry_version: CHINA_REGISTRY_VERSION,
       source_category_qualified: qualified.accepted === true && (
         isChinaHotHeadline(article.title, article.content)
         || isChinaPolitical(article)
         || (isSourceSocialReport(qualified.title, qualified.text) && isSourceSocialReport(article.title, article.content))
       ),
       public_source_attribution: true, source_text_original: qualified.text, source_media: attachments,
-      source_links: tweet.source_links || [], source_reference: tweet.source_reference || "", source_public_metrics: tweet.public_metrics || {}, openai_model: OPENAI_MODEL, generated_target: article.target,
+      requires_editor_review: tweet.requires_editor_review === true, source_links: tweet.source_links || [], source_reference: tweet.source_reference || "", source_public_metrics: tweet.public_metrics || {}, openai_model: OPENAI_MODEL, generated_target: article.target,
       editorial_expansion_version: EXPANSION_VERSION, image_grounding_used: visualInputs(tweet).length > 0,
       context_research: tweet.context_research || null, editorial_review: article.editorial_review, body_character_count: bodyCharacterCount(article.content),
       image_evidence: article.image_evidence || [], image_count: visualInputs(tweet).length, old_news_checked: true, appears_old_news: false,
@@ -1000,6 +1004,7 @@ async function repairTodayBatch() {
 
 export async function run() {
   requiredEnvironment();
+  await loadChinaPeople(()=>supabase("china_political_people",{query:CHINA_PEOPLE_QUERY}),{force:true});
   if (REPAIR_TODAY) {
     const report = await repairTodayBatch();
     report.chrt = await syncPublishedArticlesToChrt();
@@ -1049,6 +1054,14 @@ export async function run() {
     if (priorCandidate && priorCandidate.decision !== "failed" && !retryCandidate) { counters.duplicate += 1; results.push({ tweetId: tweet.id, status: "duplicate-pool", decision: priorCandidate.decision }); continue; }
     const priorArticle = await existingArticle(tweet);
     if (priorArticle?.status === "published" || (priorArticle && !retryCandidate && priorCandidate?.decision !== "failed")) { counters.duplicate += 1; results.push({ tweetId: tweet.id, status: "duplicate-article", articleId: priorArticle.id }); continue; }
+    const politicalHold = politicalReviewReason(tweet);
+    if (politicalHold) {
+      const candidate = priorCandidate || await createCandidate(tweet, qualified);
+      const draft = await requireManualReview(candidate, tweet, `政治线索待核查：${politicalHold}`, {quality_hold:true,automatic_retry_exhausted:true,automatic_publish_blocked:true,evidence_status:'unverified_lead'});
+      counters.review_required += 1;
+      results.push({tweetId:tweet.id,status:'political-review-required',articleId:draft?.id || null});
+      continue;
+    }
     const isRen = cleanText(tweet.topic_key, 100) === REN_ZHENGFEI_TOPIC;
     const renSourceDuplicate = isRen ? findRenEventDuplicate(qualified.text, recentRenArticles) : null;
     if (renSourceDuplicate) {

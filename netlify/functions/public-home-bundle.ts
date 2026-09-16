@@ -1,3 +1,4 @@
+import {loadChinaPeople,CHINA_PEOPLE_QUERY} from '../shared/china-person-registry.mjs';
 import policy from "../../article-editorial-policy.js";
 import { rest } from "./_shared/supabase-admin.js";
 import { isChinaHotCategory, isChinaHotHeadline } from "./_shared/china-hot-headlines.js";
@@ -58,6 +59,7 @@ export default async (event: Request) => {
   if (event.method !== "GET") return response(405, { error: "Method not allowed" });
 
   try {
+    await loadChinaPeople(()=>rest('china_political_people',{query:CHINA_PEOPLE_QUERY}));
     const globalLimit = Math.min(Math.max(Number(new URL(event.url).searchParams.get("limit") || 200), 20), 200);
     const perCategory = Math.min(Math.max(Number(new URL(event.url).searchParams.get("per_category") || 12), 3), 20);
 

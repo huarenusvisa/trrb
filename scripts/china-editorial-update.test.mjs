@@ -2,16 +2,29 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {isChinaPolitical,editorialTopics,POLITICS_FILTER} from '../netlify/shared/editorial-topics.mjs';
 import {generateArticle,qualifyTweet,buildPublishedArticle,sourceFor,parseModelJson,eventDuplicate} from './china-hot-li-teacher-ingest.mjs';
-import {collectChinaMediaPosts,CHINA_X_SOURCES} from './china-x-sources.mjs';
+import {collectChinaMediaPosts,CHINA_X_SOURCES,CHINA_X_MONITORS,chinaMediaQuery,politicalReviewReason} from './china-x-sources.mjs';
 const body='重庆学校发布开学通知。'+Array.from({length:430},(_,i)=>String.fromCharCode(0x4e00+i)).join('');
 const source={id:'12345',text:'重庆学校今日公布开学安排，通知说明报到时间及校方调整安排。',created_at:new Date().toISOString(),media:[{type:'photo',url:'https://pbs.twimg.com/media/test.jpg'}]};
 const draft={title:'重庆学校公布开学安排',summary:'学校通知载明报到时间与调整安排。',content:body,source_sufficient:true,appears_old_news:false,old_news_reason:'',rejection_reason:'',seo_keywords:'重庆,开学',image_evidence:[{image_index:0,visible_text:'开学通知'}]};
 const verdict={single_event:true,grounded:true,sufficient:true,image_relevant:true,cover_index:0,image_description:'学校开学通知截图',fresh_hot_event:true,freshness_evidence:'原帖及学校通知明确是今日公布的新安排',reason:''};
 test('politics excludes community activity, corporate/school trivia and foreign personnel news',()=>{
- for(const title of ['王岐山大秘毕井泉受贿案宣判','薄熙来近况传闻引发议论','张又侠相关军队政变传闻待核实','重庆副市长被开除党籍','省委书记履新','习近平出席政治局会议']) assert.equal(isChinaPolitical({title}),true,title);
- for(const title of ['洛杉矶华人招募参加习近平访美欢迎活动','中共统战部在大连举办民营企业美食节','牡丹江企业欠薪引发关注','高中教学楼安装栅栏','美国部长任命公布','台湾官员落马','康威市长疑似被ICE误捕传闻尚未证实','ICE扩招压力引爆审查危机！17年资深官员揭招聘内幕','厦门城市职业学院南校区楼梯口墙面贴习近平重要讲话摘录','上海因私出入境服务行业协会召开会议研讨国务院出入境新规']) assert.equal(isChinaPolitical({title}),false,title);
+ for(const title of ['王岐山大秘毕井泉受贿案宣判','薄熙来近况传闻引发议论','张又侠相关军队政变传闻待核实','应急管理部原党委书记、部长王祥喜被开除党籍','省委书记履新','习近平出席政治局会议']) assert.equal(isChinaPolitical({title}),true,title);
+ for(const title of ['洛杉矶华人招募参加习近平访美欢迎活动','中共统战部在大连举办民营企业美食节','牡丹江企业欠薪引发关注','高中教学楼安装栅栏','美国部长任命公布','台湾官员落马','重庆副市长被开除党籍','某县党委书记被查','康威市长疑似被ICE误捕传闻尚未证实','ICE扩招压力引爆审查危机！17年资深官员揭招聘内幕','厦门城市职业学院南校区楼梯口墙面贴习近平重要讲话摘录','上海因私出入境服务行业协会召开会议研讨国务院出入境新规']) assert.equal(isChinaPolitical({title}),false,title);
  assert.deepEqual(editorialTopics({title:'洛杉矶华人招募参加习近平访美欢迎活动'}),['xi']);
  assert.ok(encodeURIComponent(POLITICS_FILTER).length<7500);
+});
+test('homepage screenshot: US titles and summaries do not create China political membership',()=>{
+ const rows=[
+ {title:'马西提出8项弹劾条款，五角大楼迅速回应力挺赫格塞斯',summary:'肯塔基州共和党众议员提出针对国防部长的条款，指控违反战争权力决议。'},
+ {title:'布兰奇回应小特朗普婚礼资金争议，司法部不太可能调查',summary:'美国司法部长表示目前不太可能启动调查。'},
+ {title:'特朗普移民政策遭司法阻击！穆林公开怒批奥巴马、拜登任命法官',summary:'美国国土安全部长批评部分法官。'},
+ {title:'英国国防部长被调查',summary:'英国国防部宣布调查部长。'}
+ ];
+ for(const row of rows)assert.equal(isChinaPolitical(row),false,row.title);
+ assert.equal(isChinaPolitical({title:'中共中央办公厅主任出席重要会议'}),true);
+ assert.equal(isChinaPolitical({title:'重庆市长获任新职'}),false); // Unknown event phrasing fails conservatively.
+ assert.equal(isChinaPolitical({title:'重庆市长调任'}),true);
+ assert.equal(isChinaPolitical({title:'美国议员批评习近平政策'}),true);
 });
 test('430-character grounded article publishes in topic only without an 800-character rewrite',async t=>{
  let writes=0,reviews=0;
@@ -39,4 +52,19 @@ test('cross-source dedupe checks facts and allows substantive follow-up',async t
  const current={title:'河南超市购物卡事件后续，储户再次聚集',summary:'河南超市购物卡兑付风波，储户再次聚集并质疑方案。',content:'材料明确记载次日再次聚集的新行动。'};
  let duplicate='';t.mock.method(globalThis,'fetch',async()=>Response.json({output_text:JSON.stringify({duplicate_id:duplicate,reason:duplicate?'同一事件仅更换媒体':'输入记载次日的新行动'})}));
  assert.equal(await eventDuplicate(current,[prior]),null);duplicate='prior';assert.equal((await eventDuplicate(current,[prior])).id,'prior');
+});
+
+test('targeted source search covers named leaders and holds social/health/coup leads for review',async()=>{
+ for(const source of [...CHINA_X_SOURCES,...CHINA_X_MONITORS]) {const q=chinaMediaQuery(source);assert.ok(q.length<512);assert.match(q,/李强/);assert.match(q,/省委书记/);}
+ assert.ok(CHINA_X_SOURCES.some(s=>s.handle==='VOAChinese'));
+ assert.ok(politicalReviewReason({source_username:'WanjunXie',text:'习近平被送医的说法'}));
+ assert.ok(politicalReviewReason({source_username:'chinesehotnews',text:'各派达成共识'}));
+ assert.ok(politicalReviewReason({source_username:'bbcchinese',text:'网传习近平病危'}));
+ assert.equal(politicalReviewReason({source_username:'bbcchinese',text:'省委书记任免公告'}),'');
+ await assert.rejects(generateArticle(qualifyTweet(source),{...source,source_username:'WanjunXie'}),/政治线索待核查/);
+ const tweets=await collectChinaMediaPosts({includeMonitors:true,bearer:'test',mediaFor:()=>[],readJson:r=>r.json(),request:async url=>{
+  const handle=new URL(url).searchParams.get('query').match(/^from:(\w+)/)[1];return Response.json({data:[{id:handle,author_id:'x',text:'习近平政治动态'}],includes:{users:[{id:'x',username:handle}]}});
+ }});
+ assert.equal(tweets.filter(t=>t.requires_editor_review).length,2);
+ assert.ok(tweets.filter(t=>t.requires_editor_review).every(t=>t.source_level==='social_monitor'));
 });

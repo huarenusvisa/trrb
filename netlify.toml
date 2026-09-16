@@ -108,6 +108,12 @@
 
 # Round 12: exact fallbacks for legacy July files that are referenced by archived article data but no longer exist on disk.
 [[redirects]]
+  from = "/news/trump/2026/07/10/trump-2075636249096806855.html"
+  to = "/trump/特朗普驱逐明尼苏达被赦免儿童强奸犯"
+  status = 301
+  force = true
+
+[[redirects]]
   from = "/assets/news-images/2026/07/image-315.png"
   to = "/assets/category-placeholders/generic.svg"
   status = 200

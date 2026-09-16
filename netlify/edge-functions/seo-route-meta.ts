@@ -120,7 +120,7 @@ function immigrationCenterSeo(url: URL): Seo {
   if (!category) {
     return {
       title: "移民美国知识库 - 唐人日报",
-      description: "唐人日报移民美国知识库，按赴美留学、赴美工作、职业移民、家庭移民、人道主义庇护、境内身份转换和入籍美国公民分类整理。",
+      description: "唐人日报移民美国知识库，按赴美留学、赴美工作、职业移民、家庭移民、人道主义庇护、境内身份转换和入籍美国公民分类整理。选择赴美目标，浏览具体签证或身份路径的申请资格、办理流程、材料准备、时间节点和常见问题，并结合相关政策新闻查找需要的信息。",
       canonical: `${SITE}/immigrate/`,
       robots: "noindex,follow,noarchive"
     };
@@ -157,7 +157,7 @@ function routeSeo(url: URL): Seo | null {
   if (path === "/") {
     return {
       title: "唐人日报 Tang Ren Daily - 中美新闻实时播报",
-      description: "唐人日报立足美国，服务华人，聚焦美国时政、移民新闻、中国官场、美国警情、ICE执法动态、庇护百科等内容。",
+      description: "唐人日报立足美国，服务华人，提供美国时政、中国热门头条、美国警情、移民政策与ICE执法动态。读者可浏览最新新闻与事件后续，查询移民法官庇护通过率，阅读签证、绿卡和入籍知识，并使用招聘求职、移民社区及电子报入口，按栏目寻找相关报道与实用信息。",
       canonical: `${SITE}/`
     };
   }
@@ -181,7 +181,7 @@ function routeSeo(url: URL): Seo | null {
   if (path === "/immigrate" || path === "/immigrate/index.html") {
     return {
       title: "移民美国知识库 - 唐人日报",
-      description: "唐人日报移民美国知识库，按赴美留学、赴美工作、职业移民、家庭移民、人道主义庇护、境内身份转换和入籍美国公民分类整理。",
+      description: "唐人日报移民美国知识库，按赴美留学、赴美工作、职业移民、家庭移民、人道主义庇护、境内身份转换和入籍美国公民分类整理。选择赴美目标，浏览具体签证或身份路径的申请资格、办理流程、材料准备、时间节点和常见问题，并结合相关政策新闻查找需要的信息。",
       canonical: `${SITE}/immigrate/`
     };
   }
@@ -189,7 +189,7 @@ function routeSeo(url: URL): Seo | null {
   if (path === "/trump" || path === "/trump/index.html") {
     return {
       title: "特朗普本人实时动态｜唐人日报",
-      description: "实时聚合特朗普本人公开讲话、政策决定、会见访问、竞选活动和社交平台发言，不收录其子女及家族成员新闻。",
+      description: "唐人日报特朗普实时动态，汇集特朗普本人的公开讲话、政策决定、会见访问、竞选活动和社交平台发言。按时间浏览相关新闻，查看事件背景、原始来源与后续报道，了解涉及美国政治、移民和国际事务的公开动向。可从专题进入完整文章并继续阅读相关内容。",
       canonical: `${SITE}/trump`
     };
   }

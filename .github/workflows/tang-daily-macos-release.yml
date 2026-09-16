@@ -1,0 +1,79 @@
+name: Tang Daily macOS Release
+on:
+  push:
+    branches: [main]
+    paths: ['apps/macos/**', 'scripts/macos/**', '.github/workflows/tang-daily-macos-release.yml']
+  workflow_dispatch:
+    inputs:
+      upload:
+        type: boolean
+        default: false
+        description: Upload verified Mac package to App Store Connect
+permissions:
+  contents: read
+concurrency:
+  group: tang-daily-macos-release
+  cancel-in-progress: false
+jobs:
+  macos:
+    runs-on: macos-15
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+      - name: Generate native desktop project
+        run: |
+          brew install xcodegen
+          python3 scripts/macos/icons.py
+          xcodegen generate --spec apps/macos/project.yml
+      - name: Build and validate universal desktop app
+        run: |
+          xcodebuild -project apps/macos/TangDailyMac.xcodeproj -scheme TangDailyMac -configuration Release -derivedDataPath "$RUNNER_TEMP/mac-build" CODE_SIGNING_ALLOWED=NO build > "$RUNNER_TEMP/mac-build.log" 2>&1 || { tail -80 "$RUNNER_TEMP/mac-build.log"; exit 1; }
+          lipo -verify_arch arm64 x86_64 "$RUNNER_TEMP/mac-build/Build/Products/Release/TangDailyMac.app/Contents/MacOS/TangDailyMac"
+          plutil -lint apps/macos/Info.plist apps/macos/TangDaily.entitlements apps/macos/Resources/PrivacyInfo.xcprivacy
+      - name: Capture actual desktop application
+        run: |
+          mkdir -p mac-artifacts/screenshots
+          APP="$RUNNER_TEMP/mac-build/Build/Products/Release/TangDailyMac.app"
+          codesign --force --deep --sign - "$APP"
+          open -n "$APP"
+          sleep 20
+          PID=$(pgrep -x TangDailyMac | head -1)
+          WINDOW=$(swift scripts/macos/capture.swift "$PID")
+          screencapture -x -o -l "$WINDOW" mac-artifacts/screenshots/01-news.png
+          kill "$PID"
+          ditto -c -k --keepParent "$APP" mac-artifacts/TangDailyMac-validation.zip
+      - name: Verify existing Apple signing access
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+        run: node scripts/macos/credentials.mjs
+      - name: Archive signed Mac application
+        run: |
+          xcodebuild -project apps/macos/TangDailyMac.xcodeproj -scheme TangDailyMac -configuration Release -archivePath "$RUNNER_TEMP/TangDailyMac.xcarchive" -destination 'generic/platform=macOS' -allowProvisioningUpdates -authenticationKeyPath "$ASC_KEY_PATH" -authenticationKeyID "$ASC_KEY_ID" -authenticationKeyIssuerID "$ASC_ISSUER_ID" archive > "$RUNNER_TEMP/mac-archive.log" 2>&1 || { tail -80 "$RUNNER_TEMP/mac-archive.log"; exit 1; }
+          cat > "$RUNNER_TEMP/mac-export.plist" <<'PLIST'
+          <?xml version="1.0" encoding="UTF-8"?><plist version="1.0"><dict><key>method</key><string>app-store-connect</string><key>teamID</key><string>ZJ2LNXPXH3</string><key>signingStyle</key><string>automatic</string><key>destination</key><string>export</string></dict></plist>
+          PLIST
+          xcodebuild -exportArchive -archivePath "$RUNNER_TEMP/TangDailyMac.xcarchive" -exportPath mac-artifacts/package -exportOptionsPlist "$RUNNER_TEMP/mac-export.plist" -allowProvisioningUpdates -authenticationKeyPath "$ASC_KEY_PATH" -authenticationKeyID "$ASC_KEY_ID" -authenticationKeyIssuerID "$ASC_ISSUER_ID"
+      - name: Upload validated package
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.upload }}
+        run: |
+          mkdir -p "$HOME/.appstoreconnect/private_keys"
+          cp "$ASC_KEY_PATH" "$HOME/.appstoreconnect/private_keys/"
+          PACKAGE=$(find mac-artifacts/package -name '*.pkg' -maxdepth 1 -print -quit)
+          test -n "$PACKAGE"
+          xcrun altool --validate-app -f "$PACKAGE" -t macos --apiKey "$ASC_KEY_ID" --apiIssuer "$ASC_ISSUER_ID"
+          xcrun altool --upload-app -f "$PACKAGE" -t macos --apiKey "$ASC_KEY_ID" --apiIssuer "$ASC_ISSUER_ID"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: tang-daily-macos
+          path: mac-artifacts/
+          if-no-files-found: warn
+          retention-days: 7
+      - name: Remove temporary signing material
+        if: always()
+        run: |
+          rm -rf "$RUNNER_TEMP/tang-mac-auth"
+          if [ -n "${ASC_KEY_ID:-}" ]; then rm -f "$HOME/.appstoreconnect/private_keys/AuthKey_${ASC_KEY_ID}.p8"; fi

@@ -1,0 +1,36 @@
+name: TangDailyMac
+options:
+  bundleIdPrefix: com.tangrenribao
+  deploymentTarget:
+    macOS: '13.0'
+settings:
+  base:
+    SWIFT_VERSION: '5.0'
+    DEVELOPMENT_TEAM: ZJ2LNXPXH3
+    MARKETING_VERSION: '1.0'
+    CURRENT_PROJECT_VERSION: '1'
+    CODE_SIGN_STYLE: Automatic
+    ENABLE_HARDENED_RUNTIME: YES
+    ENABLE_APP_SANDBOX: YES
+    GENERATE_INFOPLIST_FILE: NO
+    ARCHS: 'arm64 x86_64'
+    ONLY_ACTIVE_ARCH: NO
+targets:
+  TangDailyMac:
+    type: application
+    platform: macOS
+    sources: [Sources, Resources]
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.tangrenribao.iosapp
+        PRODUCT_NAME: TangDailyMac
+        INFOPLIST_FILE: Info.plist
+        CODE_SIGN_ENTITLEMENTS: TangDaily.entitlements
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+schemes:
+  TangDailyMac:
+    build:
+      targets:
+        TangDailyMac: all
+    archive:
+      config: Release

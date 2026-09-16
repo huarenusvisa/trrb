@@ -5,10 +5,10 @@ name: Current Tang Daily native store screenshots
     clearState: true
 - extendedWaitUntil:
     visible:
-      id: home-language-zh-Hans
+      id: home-language-zh-CN
     timeout: 30000
 - tapOn:
-    id: home-language-zh-Hans
+    id: home-language-zh-CN
 - extendedWaitUntil:
     visible:
       id: home-important-carousel

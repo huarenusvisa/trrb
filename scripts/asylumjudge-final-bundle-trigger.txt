@@ -10,3 +10,5 @@
 2026-09-15: publish official immigration tools hub, EOIR court-case lookup, and nationwide court address/map navigation sourced from the DOJ/EOIR directory.
 
 2026-09-15: publish Chinese/English search-intent pages for immigration judges, EOIR case status, ICE detainee lookup, EOIR-33 address changes, USCIS case status and immigration-court asylum-fee payments; refresh Google Search Console, Bing Webmaster and IndexNow through the existing central SEO workflow.
+
+2026-09-16: add voluntary site support with side-by-side desktop Zelle/Alipay QR codes and mobile payment tabs/swipe.

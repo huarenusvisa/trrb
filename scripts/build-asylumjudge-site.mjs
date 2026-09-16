@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url';
 import { buildAsylumJudgeSeo } from './build-asylumjudge-seo.mjs';
 import { applyAsylumJudgeIndexingHygiene } from './asylumjudge-indexing-hygiene.mjs';
 import { applyAsylumJudgeSearchIntent } from './asylumjudge-search-intent-pages.mjs';
+import { applyAsylumJudgeSupport } from './asylumjudge-support.mjs';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const bundle = join(root, '.netlify', 'asylumjudge-bundle');
@@ -44,6 +45,7 @@ await applyAsylumJudgeSearchIntent({ root, output });
 // hierarchy of indexable detail pages, remove low-priority translated details
 // from sitemaps, and add citeable Dataset metadata.
 await import('./asylumjudge-search-quality.mjs');
+await applyAsylumJudgeSupport({ output });
 
 const localePrefixes = ['en', 'es', 'fr', 'pt-br', 'hi', 'zh-hant', 'ru', 'ar', 'tr'];
 const localizedRewrites = localePrefixes.flatMap((locale) => [

@@ -6,7 +6,9 @@ export function isChinaPolitical(row) {
   const title = String(row?.title || '');
   const text = `${title} ${row?.summary || row?.excerpt || ''}`;
   if (POLITICAL_NOISE.some(term => title.includes(term))) return false;
-  const foreign = /美国|美國|英国|英國|日本|韩国|韓國|印度|台湾|台灣|臺灣|加拿大|澳大利亚|澳大利亞|法国|法國|德国|德國|以色列/;
+  // Reproducing a speech in a classroom or trade group is not a political development.
+  if (/校区|校區|学校|學校|学院|學院|中学|中學|小学|小學|教材|电子念珠|電子念珠|行业协会|行業協會|企业培训|企業培訓/.test(title) && !/任免|任命|免职|免職|撤职|撤職|被查|落马|落馬|受贿|受賄|开除|開除|判刑|宣判|政变|政變/.test(title)) return false;
+  const foreign = /美国|美國|英国|英國|日本|韩国|韓國|印度|台湾|台灣|臺灣|加拿大|澳大利亚|澳大利亞|法国|法國|德国|德國|以色列|\bICE\b|\bDHS\b|\bCBP\b|\bFBI\b/i;
   const chinaCore = /中国|中國|中共|习近平|習近平|李强|李強|薄熙来|薄熙來|王岐山|张又侠|張又俠|中央军委|中央軍委/;
   if (foreign.test(title) && !chinaCore.test(title)) return false;
   return POLITICS_TERMS.some(term => text.includes(term)) && POLITICAL_EVENTS.some(term => text.includes(term));

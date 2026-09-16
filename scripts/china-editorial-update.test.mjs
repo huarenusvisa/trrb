@@ -9,7 +9,7 @@ const draft={title:'重庆学校公布开学安排',summary:'学校通知载明�
 const verdict={single_event:true,grounded:true,sufficient:true,image_relevant:true,cover_index:0,image_description:'学校开学通知截图',fresh_hot_event:true,freshness_evidence:'原帖及学校通知明确是今日公布的新安排',reason:''};
 test('politics excludes community activity, corporate/school trivia and foreign personnel news',()=>{
  for(const title of ['王岐山大秘毕井泉受贿案宣判','薄熙来近况传闻引发议论','张又侠相关军队政变传闻待核实','重庆副市长被开除党籍','省委书记履新','习近平出席政治局会议']) assert.equal(isChinaPolitical({title}),true,title);
- for(const title of ['洛杉矶华人招募参加习近平访美欢迎活动','中共统战部在大连举办民营企业美食节','牡丹江企业欠薪引发关注','高中教学楼安装栅栏','美国部长任命公布','台湾官员落马']) assert.equal(isChinaPolitical({title}),false,title);
+ for(const title of ['洛杉矶华人招募参加习近平访美欢迎活动','中共统战部在大连举办民营企业美食节','牡丹江企业欠薪引发关注','高中教学楼安装栅栏','美国部长任命公布','台湾官员落马','康威市长疑似被ICE误捕传闻尚未证实','ICE扩招压力引爆审查危机！17年资深官员揭招聘内幕','厦门城市职业学院南校区楼梯口墙面贴习近平重要讲话摘录','上海因私出入境服务行业协会召开会议研讨国务院出入境新规']) assert.equal(isChinaPolitical({title}),false,title);
  assert.deepEqual(editorialTopics({title:'洛杉矶华人招募参加习近平访美欢迎活动'}),['xi']);
  assert.ok(encodeURIComponent(POLITICS_FILTER).length<7500);
 });

@@ -11,7 +11,7 @@ permissions:
   actions: read
 concurrency:
   group: tang-daily-store-screenshots
-  cancel-in-progress: false
+  cancel-in-progress: true
 jobs:
   build:
     runs-on: ubuntu-latest

@@ -22,7 +22,7 @@ test("中国新闻及中国政治人物内容进入中国热门头条池", () =>
   assert.equal(candidate.proposed_section, "中国热门头条");
   assert.equal(candidate.decision, "processing");
   assert.equal(candidate.pipeline, "china-hot-li-teacher-v2");
-  assert.equal(candidate.ai_payload.processing_version, "single-event-800-image-v1");
+  assert.equal(candidate.ai_payload.processing_version, "single-event-800-context-v2");
 });
 
 test("正文要求至少800字且不通过截断限制长稿", () => {
@@ -152,6 +152,7 @@ test("短稿和缺图在发布前拦截，合格稿必须通过独立事实与�
   t.mock.method(globalThis, "fetch", async (_url, options) => {
     requests += 1;
     const input = JSON.parse(options.body);
+    if (input.tools) return new Response(JSON.stringify({output: []}), {status: 200});
     const reviewing = input.text.format.name === "china_hot_editorial_review";
     if (!reviewing) {
       assert.match(input.instructions, /至少800/);
@@ -164,7 +165,7 @@ test("短稿和缺图在发布前拦截，合格稿必须通过独立事实与�
   assert.equal(requests, 0, "缺图不浪费模型调用");
   generated = { ...generated, content: "重庆学校公布开学安排。" };
   await assert.rejects(generateArticle(qualified, tweet), /至少需要800字/);
-  assert.equal(requests, 1, "短稿不通过反复重试凑字");
+  assert.equal(requests, 2, "短稿先进行一次资料检索，没有可核查来源则不反复凑字");
   generated = { ...generated, source_sufficient: false, rejection_reason: "只有标题，缺少报道事实" };
   await assert.rejects(generateArticle(qualified, tweet), /缺少报道事实/);
   generated = { ...generated, source_sufficient: true, content: qualityBody };
@@ -222,7 +223,7 @@ test("自动失败草稿可有界重试，人工复核决定不会被自动覆�
   assert.equal(shouldRetryCandidate({
     decision: "review_required",
     decision_reason: "自动扩写或发布失败：生成稿未明确中国新闻主体；保留为可编辑草稿，由编辑决定是否发布",
-    ai_payload: { processing_version: "single-event-800-image-v1", automatic_retry_attempts: 3 },
+    ai_payload: { processing_version: "single-event-800-context-v2", automatic_retry_attempts: 3 },
   }, qualified), false);
   assert.equal(shouldRetryCandidate({
     decision: "review_required",
@@ -335,4 +336,27 @@ test('中国企业、消费、香港和海外华人报道属于栏目范围', ()
     '博主晒出带有南通中集标签的工资条，累计出勤352小时。'
   ]) assert.equal(qualifyTweet({ id: 'china-related', text }).accepted, true, text);
   assert.equal(qualifyTweet({ id: 'unrelated', text: '德国一家餐厅宣布调整营业时间。' }).accepted, false);
+});
+
+
+test("短稿检索同一事件背景，扩写后将资料交给独立质检并保存来源", async (t) => {
+  const tweet = { ...chinaTweet, text: qualityBody };
+  const source = {url: "https://example.com/original-report", title: "原始报道"};
+  let writes = 0, researches = 0, reviews = 0;
+  t.mock.method(globalThis, "fetch", async (_url, options) => {
+    const input = JSON.parse(options.body);
+    if (input.tools) { researches++;
+      assert.equal(input.tools[0].type, "web_search");
+      return Response.json({output: [{type:"web_search_call",status:"completed"},{type:"message",content:[{type:"output_text",text:"学校公布同一事件的详细安排与后续，以原始报道为据。",annotations:[{type:"url_citation",...source}]}]}]});
+    }
+    if (input.text.format.name === "china_hot_editorial_review") {
+      reviews++; assert.match(JSON.stringify(input.input), /original-report/);
+      return Response.json({output_text: JSON.stringify(editorial_review)});
+    }
+    writes++; if (writes > 1) assert.match(JSON.stringify(input.input), /original-report/);
+    return Response.json({output_text: JSON.stringify({title:"重庆学校开学安排",summary:"学校公布时间安排",content:writes===1?"重庆学校公布开学安排。":qualityBody,seo_keywords:"重庆",appears_old_news:false,old_news_reason:"",source_sufficient:true,rejection_reason:""})});
+  });
+  const article=await generateArticle(qualifyTweet(tweet),tweet);
+  assert.equal(writes,2);assert.equal(researches,1);assert.equal(reviews,1);
+  assert.deepEqual(buildPublishedArticle(tweet,qualifyTweet(tweet),article).supporting_sources,[source]);
 });

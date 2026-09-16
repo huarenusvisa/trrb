@@ -37,7 +37,7 @@
     .load-more{cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
     .load-more:active{transform:scale(.985)}
   </style>
-</head>
+<style>.ice-embedded .ice-topbar{display:none}.ice-embedded .ice-page{padding-top:12px}.ice-embedded .ice-panel{margin-top:0}</style><script defer src="/topic/ice/embed.js?v=20260916-1"></script></head>
 <body>
   <header class="ice-topbar">
     <a class="ice-brand" href="/"><span>唐</span>人日报</a>
@@ -54,7 +54,7 @@
         </button>
       </div>
 
-      <p class="ice-intro">聚合ICE、DHS、HSI、CBP及地方执法公开信息。人数包含明确数字及保守估算值，仅用于趋势参考；页面每分钟自动读取最新发布内容。</p>
+      <p class="ice-intro">聚合ICE、DHS、HSI、CBP及地方执法公开信息。按报道发布时间筛选，人数包含明确数字及保守估算值，累计与日均数字不计入；不是全美实际执法总人数。页面每分钟读取最新发布内容。</p>
 
       <div class="ice-stats">
         <article><span class="stat-icon people">●</span><div><b id="people-stat-label">近24小时涉及人数</b><strong id="today-count">0人</strong><small id="stats-note">根据已发布信息自动汇总</small></div></article>
@@ -101,7 +101,9 @@
 
   <script defer src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script defer src="/article-route-runtime.js?v=20260813-1"></script>
-  <script defer src="/topic/ice/ice.js?v=20260910-people-large-v1"></script>
+  <script defer src="/topic/ice/people-count.js?v=20260916-1"></script>
+  <script defer src="/topic/ice/tracking-data.js?v=20260916-1"></script>
+  <script defer src="/topic/ice/ice.js?v=20260916-tracking-1"></script>
   <script defer src="/topic/ice/ice-load-more-fix.js?v=20260725-1"></script>
   <script defer src="/topic/ice/report.js?v=20260822-people-v1"></script>
   <script defer src="/topic/ice/ice-share.js?v=20260725-4"></script>

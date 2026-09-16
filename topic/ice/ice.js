@@ -100,16 +100,14 @@
   }
   function mapArticle(row) {
     const metadata = parseMetadata(row.metadata);
-    const fallback = textCount(`${row.title || ""} ${row.summary || ""} ${row.content || ""}`);
-    const candidates = [metadata.people_count, metadata.detained_count, metadata.arrested_count, metadata.removed_count, row.arrest_count]
-      .map(Number)
-      .filter((n) => Number.isFinite(n) && n > 0 && n <= MAX_SINGLE_EVENT);
-    const people = candidates.length ? Math.max(...candidates) : fallback.value;
+    const counted = window.TRRBIceData.normalizeRow(row);
+    const people = counted.people;
     const city = metadata.city || row.city || "";
     const state = metadata.state_code || row.state || "";
     const location = metadata.location_text || metadata.location || [city, state].filter(Boolean).join(", ");
     const item = {
       id: row.id,
+      source_url: row.source_url, event_key: counted.event_key, aggregate_statistic: counted.aggregate_statistic,
       title: row.title || "ICE执法动态",
       summary: row.summary || String(row.content || "").replace(/\s+/g, " ").slice(0, 220),
       content: row.content || "",
@@ -121,8 +119,8 @@
       city,
       state,
       people,
-      estimated: Boolean(metadata.people_count_estimated || metadata.estimated_count || (!candidates.length && fallback.estimated)),
-      people_count_type: metadata.people_count_type || (!candidates.length ? fallback.kind : (metadata.people_count_estimated || metadata.estimated_count ? "estimated" : "exact")),
+      estimated: counted.estimated,
+      people_count_type: counted.people_count_type,
       lat: metadata.lat ?? metadata.latitude,
       lng: metadata.lng ?? metadata.longitude,
       event_type: metadata.event_type || ""
@@ -172,10 +170,10 @@
   function rangeHours() { return { "24h": 24, "7d": 168, "30d": 720 }[currentRange] || 24; }
   function withinRange(item) {
     const time = itemTime(item);
-    return Boolean(time) && (currentRange === "all" || Date.now() - time.getTime() <= rangeHours() * 3600000);
+    return Boolean(time) && (currentRange === "all" || Date.now() >= time.getTime() && Date.now() - time.getTime() <= rangeHours() * 3600000);
   }
   function rangeData(ignoreType = false) {
-    return allData.filter((item) => withinRange(item) && (ignoreType || currentType === "all" || item.type === currentType));
+    return window.TRRBIceData.dedupe(allData).filter((item) => withinRange(item) && (ignoreType || currentType === "all" || item.type === currentType));
   }
   function rangeLabel() { return { "24h": "近24小时", "7d": "近7天", "30d": "近30天", all: "全部历史" }[currentRange] || "近24小时"; }
   function updateStats() {
@@ -183,11 +181,11 @@
     const people = items.reduce((sum, item) => sum + Math.max(0, Number(item.people || 0)), 0);
     const estimated = items.some((item) => item.estimated && item.people > 0);
     const locations = new Set(items.map((item) => normalize(item.location || item.city || item.state)).filter(Boolean));
-    if (el("people-stat-label")) el("people-stat-label").textContent = `${rangeLabel()}涉及人数`;
+    if (el("people-stat-label")) el("people-stat-label").textContent = `${rangeLabel()}报道涉及人数`;
     if (el("places-stat-label")) el("places-stat-label").textContent = `${rangeLabel()}涉及地点`;
     if (el("today-count")) el("today-count").textContent = `${estimated ? "约" : ""}${people}人`;
     if (el("today-places")) el("today-places").textContent = `${locations.size}处`;
-    if (el("stats-note")) el("stats-note").textContent = estimated ? "含保守估算值，数据仅供参考" : "根据已发布信息自动汇总";
+    if (el("stats-note")) el("stats-note").textContent = "按报道发布时间汇总；累计与日均数字不计入，含估算时标注约";
   }
   function formatTime(item) {
     const time = itemTime(item);

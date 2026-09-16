@@ -5,3 +5,30 @@
 .jobs-knowledge-card{gap:8px}.jobs-position-intro{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:1px 2px;color:#667085}.jobs-position-intro b{font-size:13px;color:#222}.jobs-position-intro span{font-size:10px;text-align:right}.jobs-position-grid{align-content:start}.jobs-position-grid .job-position-card{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:3px;min-height:58px;padding-right:28px}.jobs-position-grid .job-position-card strong{font-size:14px;line-height:1.2}.jobs-position-grid .job-position-card small{display:block;color:#667085;font-size:10px;font-weight:600;line-height:1.25}.jobs-knowledge-card .legal-hub-all{margin-top:2px}
 
 @media(max-width:767px){.immigration-hub-head h2{font-size:23px}.immigration-hub-feature{min-height:54px;padding:10px 12px}.immigration-hub-feature strong{font-size:15px}.immigration-hub-grid{grid-template-columns:1fr 1fr;gap:7px}.immigration-hub-grid a{min-height:44px;padding:8px 24px 8px 9px}.immigration-hub-grid strong{font-size:13px}.immigration-hub-all{padding:8px}.legal-knowledge-card .legal-hub-head h2{font-size:20px}.legal-knowledge-card .legal-hub-feature strong{font-size:14px}.judge-home-dashboard{grid-template-columns:96px minmax(0,1fr);min-height:108px;padding:8px;gap:7px}.judge-home-stat{padding:7px}.judge-home-stat strong{font-size:24px}.judge-home-chart{height:62px}.judge-action-grid a{min-height:40px}.jobs-position-grid .job-position-card{min-height:54px}.jobs-position-intro span{font-size:9px}}
+
+/* Unified editorial cards: natural row heights and the Asylum Judge visual language. */
+#sections-grid{align-content:start;grid-auto-rows:auto;gap:16px}
+#sections-grid>.news-box{height:auto!important;min-height:0!important;max-height:none!important;align-self:stretch;padding:12px!important;box-sizing:border-box}
+#sections-grid>.news-box>header{min-height:26px;margin:0 0 9px!important;gap:8px;align-items:center}
+#sections-grid>.news-box>header h2{font-size:18px!important;line-height:1.35!important;letter-spacing:0!important;white-space:nowrap;padding-left:9px}
+#sections-grid>.news-box>header>a{font-size:12px!important;font-weight:500;white-space:nowrap}
+#sections-grid .immigration-hub-feature,#sections-grid .community-home-feature{min-height:44px!important;padding:9px 11px!important;margin:0!important;box-sizing:border-box}
+#sections-grid .immigration-hub-feature strong,#sections-grid .community-home-feature strong{font-size:14px!important;line-height:1.4!important}
+#sections-grid .immigration-hub-grid a,#sections-grid .community-home-grid a{min-height:40px!important;padding-top:8px;padding-bottom:8px}
+#sections-grid .immigration-hub-grid strong,#sections-grid .community-home-grid strong{font-size:13px!important;line-height:1.4!important}
+#sections-grid .immigration-hub-all,#sections-grid .community-home-all{margin-top:0!important;padding:8px!important;font-size:13px!important;line-height:1.4}
+#sections-grid #judge-home-hub .immigration-hub-feature{background:#fff2f3;color:#b80d16;border:1px solid #f3d6d9;border-radius:8px}
+#sections-grid #judge-home-hub .judge-state-dashboard{display:block;min-height:0;padding:10px;border:1px solid #e4e7ec;border-radius:10px;background:#fff}
+#sections-grid #judge-home-hub .judge-state-leader{display:grid;grid-template-columns:1fr auto;column-gap:8px;padding:8px 10px;margin-bottom:8px;background:#fff6f6;border-radius:8px}
+#sections-grid #judge-home-hub .judge-state-leader>span{font-size:10px}
+#sections-grid #judge-home-hub .judge-state-leader>b{font-size:13px;line-height:1.3;white-space:normal;margin:2px 0}
+#sections-grid #judge-home-hub .judge-state-leader>strong{grid-column:2;grid-row:1/3;align-self:center;font-size:25px;color:#b80d16}
+#sections-grid #judge-home-hub .judge-state-leader>small{grid-column:1/-1;margin:2px 0 0;font-size:10px}
+#sections-grid #judge-home-hub .judge-state-head{margin-bottom:6px}
+#sections-grid #judge-home-hub .judge-state-head b{font-size:11px;line-height:1.35}
+#sections-grid #judge-home-hub .judge-state-list{display:grid;grid-template-columns:1fr 1fr;gap:5px 10px}
+#sections-grid #judge-home-hub .judge-state-row{grid-template-columns:1fr auto;gap:4px;padding-bottom:4px;border-bottom:1px solid #f0f1f3;font-size:11px;line-height:1.35}
+#sections-grid #judge-home-hub .judge-state-row b{font-size:11px}
+#sections-grid #judge-home-hub .judge-state-bar{display:none}
+#sections-grid #judge-home-hub .judge-state-note{display:none}
+@media(max-width:767px){#sections-grid{gap:12px}#sections-grid>.news-box{padding:12px!important}#sections-grid>.news-box>header h2{font-size:18px!important}}

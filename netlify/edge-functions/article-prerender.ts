@@ -271,6 +271,8 @@ function injectBody(html: string, article: any, canonical: string) {
   const warning = article?.metadata?.unverified_public_claim
     ? clean(article?.metadata?.content_warning) || "真实性提示：本文所述信息可能尚未获得独立核实，部分细节可能存在偏差，请以权威部门后续通报为准。"
     : "";
+  const researchSources = (article.metadata?.context_research?.sources || []).filter((item: any) => /^https?:\/\//.test(item?.url || "")).slice(0, 12);
+  const researchLinks = researchSources.length ? `<aside class="article-research-sources"><h2 style="font-size:16px">报道背景与资料来源</h2><ul>${researchSources.map((item: any) => `<li><a href="${esc(item.url)}" target="_blank" rel="noopener noreferrer">${esc(item.title || item.url)}</a></li>`).join("")}</ul></aside>` : "";
   const prerender = `<a class="back-link" href="/">返回首页</a>
       <header class="article-header">
         <span class="tag">${esc(displayCategory)}</span>
@@ -281,6 +283,7 @@ function injectBody(html: string, article: any, canonical: string) {
       ${image ? `<img class="article-image" src="${esc(image)}" loading="eager" fetchpriority="high" alt="${esc(title)}" />` : ""}
       ${warning ? `<aside class="article-content-warning">${esc(warning)}</aside>` : ""}
       <div class="article-body">${paragraphs.map((p) => `<p>${esc(p)}</p>`).join("")}</div>
+      ${researchLinks}
       <nav class="article-neighbors" aria-label="上一篇和下一篇"></nav>
       <section class="related-news" hidden><h2>延伸阅读</h2><div class="related-carousel" aria-label="延伸阅读文章"><div class="related-track"></div></div></section>`;
   const data = `<script id="trrb-prerendered-article" type="application/json">${escJson(article)}</script>`;

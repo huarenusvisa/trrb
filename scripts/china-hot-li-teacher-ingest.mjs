@@ -9,6 +9,9 @@ const SOURCE_HANDLE = "whyyoutouzhele";
 const SOURCE_NAME = "李老师不是你老师";
 const REN_ZHENGFEI_TOPIC = "ren-zhengfei";
 const REN_ZHENGFEI_QUERY = '("任正非" OR "Ren Zhengfei") -is:retweet -is:reply';
+// Editorial hold: keep the existing topic pages and articles, but do not search,
+// retry, repair, clean or publish Ren Zhengfei items until a future explicit instruction.
+const REN_ZHENGFEI_COLLECTION_ENABLED = false;
 const PIPELINE = "china-hot-li-teacher-v2";
 const PROCESSING_VERSION = "single-event-800-image-v1";
 const WARNING = "真实性提示：本文所述信息可能尚未获得独立核实，部分细节可能存在偏差，请以权威部门后续通报为准。";
@@ -241,6 +244,13 @@ export function isRenZhengfeiTweet(tweet) {
     && !/(招聘|招募|代购|抽奖|返现|博彩|赌场|色情|约炮|币圈喊单|课程报名)/i.test(text);
 }
 
+export function isRenZhengfeiCollectionPaused(tweet = {}) {
+  if (REN_ZHENGFEI_COLLECTION_ENABLED) return false;
+  return cleanText(tweet.topic_key, 100) === REN_ZHENGFEI_TOPIC
+    || String(tweet.external_id || "").startsWith("x:ren-zhengfei:")
+    || /任正非|Ren\s+Zhengfei/i.test(textWithoutLinks(tweet.text));
+}
+
 async function collectRenZhengfeiPosts() {
   const collected = [];
   let nextToken = "";
@@ -278,11 +288,12 @@ async function collectRenZhengfeiPosts() {
 }
 
 async function collectXPosts() {
-  const [liTeacher, renZhengfei] = await Promise.all([collectLiTeacherPosts(), collectRenZhengfeiPosts()]);
+  const liTeacher = await collectLiTeacherPosts();
+  const renZhengfei = REN_ZHENGFEI_COLLECTION_ENABLED ? await collectRenZhengfeiPosts() : [];
   const seen = new Set();
   return [...liTeacher, ...renZhengfei].filter((tweet) => {
     const id = cleanText(tweet?.id, 100);
-    if (!id || seen.has(id)) return false;
+    if (!id || seen.has(id) || isRenZhengfeiCollectionPaused(tweet)) return false;
     seen.add(id);
     return true;
   });
@@ -718,7 +729,8 @@ async function requireManualReview(candidate, tweet, reason, retry = null) {
 
 async function recoverArchivedBatch() {
   const rows = await archivedCandidates();
-  const queue = rows.map((row) => ({ row, tweet: tweetFromCandidate(row) }));
+  const queue = rows.map((row) => ({ row, tweet: tweetFromCandidate(row) }))
+    .filter(({ tweet }) => !isRenZhengfeiCollectionPaused(tweet));
   const results = [];
   const counters = { fetched: queue.length, qualified: 0, published: 0, duplicate: 0, review_required: 0, failed: 0 };
   let cursor = 0;
@@ -774,13 +786,14 @@ async function recoverArchivedBatch() {
 
 async function repairablePublishedArticles() {
   const rows = await supabase("articles", { query: {
-    select: "id,title,summary,content,seo_keywords,source_post_id,source_created_at,created_at,metadata",
+    select: "id,title,summary,content,seo_keywords,source_post_id,source_created_at,created_at,topic_key,metadata",
     automation_source: `eq.${PIPELINE}`, category_name: "in.(热门头条,中国热门头条)",
     status: "eq.published", visibility: "eq.public", created_at: `gte.${REPAIR_SINCE}`,
     order: "created_at.asc", limit: "200",
   } });
   return (Array.isArray(rows) ? rows : []).filter((row) => (
-    row?.metadata?.automatic_publish === true
+    row?.topic_key !== REN_ZHENGFEI_TOPIC
+    && row?.metadata?.automatic_publish === true
     && row?.metadata?.editorial_expansion_version !== EXPANSION_VERSION
   ));
 }
@@ -813,12 +826,12 @@ export function buildChrtRecord(row) {
 async function recentPublishedArticlesForChrt() {
   const since = new Date(Date.now() - CHRT_SYNC_LOOKBACK_HOURS * 3_600_000).toISOString();
   const rows = await supabase("articles", { query: {
-    select: "id,title,summary,content,category_name,source_url,source_account,source_platform,source_post_id,source_created_at,created_at,primary_section,metadata",
+    select: "id,title,summary,content,category_name,source_url,source_account,source_platform,source_post_id,source_created_at,created_at,primary_section,topic_key,metadata",
     automation_source: `eq.${PIPELINE}`, source_platform: "eq.x",
     status: "eq.published", visibility: "eq.public", created_at: `gte.${since}`,
     order: "created_at.asc", limit: "500",
   } });
-  return Array.isArray(rows) ? rows : [];
+  return (Array.isArray(rows) ? rows : []).filter((row) => row.topic_key !== REN_ZHENGFEI_TOPIC);
 }
 
 async function syncPublishedArticlesToChrt() {
@@ -911,11 +924,13 @@ export async function run() {
   const tweetsById = new Map(collectedTweets.map((tweet) => [String(tweet.id), tweet]));
   for (const row of retryRows) {
     const tweet = tweetFromCandidate(row);
+    if (isRenZhengfeiCollectionPaused(tweet)) continue;
     const qualified = qualifyTweet(tweet);
     if (tweet.id && shouldRetryCandidate(row, qualified) && !tweetsById.has(String(tweet.id))) tweetsById.set(String(tweet.id), tweet);
   }
   const tweets = [...tweetsById.values()];
-  const [recentArticles, recentRenArticles] = await Promise.all([recentChinaArticles(), recentRenZhengfeiArticles()]);
+  const recentArticles = await recentChinaArticles();
+  const recentRenArticles = [];
   const results = [];
   const counters = { fetched: collectedTweets.length, queuedRetries: Math.max(0, tweets.length - collectedTweets.length), qualified: 0, published: 0, duplicate: 0, filtered: 0, review_required: 0, failed: 0 };
   const filteredReasons = {};
@@ -993,7 +1008,7 @@ export async function run() {
     }
   }
   const chrt = await syncPublishedArticlesToChrt();
-  const report = { pipeline: PIPELINE, processingVersion: PROCESSING_VERSION, mode: DRY_RUN ? "dry-run" : "auto-publish", checkedAt: new Date().toISOString(), lookbackHours: LOOKBACK_HOURS, ...counters, filteredReasons, chrt, results };
+  const report = { pipeline: PIPELINE, processingVersion: PROCESSING_VERSION, renZhengfeiCollection: "paused_by_editor", mode: DRY_RUN ? "dry-run" : "auto-publish", checkedAt: new Date().toISOString(), lookbackHours: LOOKBACK_HOURS, ...counters, filteredReasons, chrt, results };
   console.log(JSON.stringify(report, null, 2));
   if (counters.failed) throw new Error("本轮仍有中国热门头条未能发布或保留为可编辑草稿");
   return report;

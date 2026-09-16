@@ -24,8 +24,7 @@ jobs:
       # 定时任务可能延迟；回看24小时并依靠原帖ID、旧闻检查和近30天语义查重补漏。
       LI_TEACHER_LOOKBACK_HOURS: ${{ inputs.lookback_hours || '24' }}
       LI_TEACHER_MAX_FETCH: ${{ inputs.recover_archived && '200' || '100' }}
-      # 任正非采用全站关键词检索并翻页；仍与中国热门头条共用同一发布流水线。
-      REN_ZHENGFEI_MAX_FETCH: "300"
+      # 任正非专题按编辑要求暂停；即使本工作流手动开启，也不再搜索或更新该专题。
       LI_TEACHER_MAX_PUBLISH: ${{ inputs.recover_archived && '150' || '20' }}
       LI_TEACHER_PUBLISH_CONCURRENCY: "8"
       CHINA_HOT_REPAIR_SINCE: "2026-08-24T00:00:00Z"
@@ -45,8 +44,6 @@ jobs:
           test -n "$OPENAI_API_KEY"
       - name: Run collector tests
         run: node --test scripts/china-hot-li-teacher-ingest.test.mjs scripts/ren-zhengfei-news.test.mjs
-      - name: Clean duplicate Ren Zhengfei timeline stories
-        run: node scripts/ren-zhengfei-clean-published-duplicates.mjs
       - name: Collect China headlines and publish automatically
         shell: bash
         run: |

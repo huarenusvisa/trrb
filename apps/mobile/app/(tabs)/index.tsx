@@ -17,12 +17,12 @@ const HOME_NAV_ITEMS = [
   { category: '热门头条', labelKey: 'home.navHot' },
   { category: '美国时政', labelKey: 'home.navUsPolitics' },
   { category: '中国政治', labelKey: 'home.navChinaPolitics' },
-  { category: '移民法官通过率', labelKey: 'home.portalJudgesTitle', url: 'https://asylumjudge.com/' },
+  { category: '移民法官通过率', labelKey: 'home.portalJudgesTitle', route: '/(tabs)/legal' },
   { category: '移民美国', labelKey: 'home.portalImmigrationTitle', route: '/immigration' },
   { category: '移民社区', labelKey: 'home.portalCommunityTitle', route: '/community' },
   { category: '招聘求职', labelKey: 'home.navJobs', route: '/(tabs)/immigration' },
   { category: '美国执法与警情', labelKey: 'home.navEnforcement' },
-] as const satisfies ReadonlyArray<{ category: string; labelKey: MessageKey; route?: '/(tabs)/immigration' | '/immigration' | '/community'; url?: string }>;
+] as const satisfies ReadonlyArray<{ category: string; labelKey: MessageKey; route?: '/(tabs)/legal' | '/(tabs)/immigration' | '/immigration' | '/community'; url?: string }>;
 const ONBOARDING_LANGUAGES: { locale: SupportedLocale; label: string }[] = [
   { locale: 'zh-CN', label: '简体' },
   { locale: 'zh-TW', label: '繁體' },
@@ -72,7 +72,7 @@ const portalSections = [
     actionKey: 'home.portalJudgesAction',
     bannerKey: 'home.portalJudgesBanner',
     itemKeys: ['home.portalJudgesSearch', 'home.portalJudgesCourts', 'home.portalJudgesStates', 'home.portalJudgesNationalities'],
-    url: 'https://asylumjudge.com/',
+    route: '/(tabs)/legal',
   },
   {
     key: 'immigration',
@@ -333,7 +333,7 @@ export default function HomeScreen() {
   const openTopic = (url: string, label: string) => { void openExternal(url, label); };
   const openPortal = (section: (typeof portalSections)[number]) => {
     if (section.key === 'jobs') router.navigate('/(tabs)/immigration');
-    else if ('url' in section) void openExternal(section.url, t(section.titleKey));
+    else if (section.key === 'judges') router.navigate('/(tabs)/legal');
     else router.push(section.route as '/immigration' | '/legal' | '/jobs' | '/community');
   };
 
@@ -406,7 +406,6 @@ export default function HomeScreen() {
               style={styles.navItem}
               onPress={() => {
                 if ('route' in item) router.navigate(item.route);
-                else if ('url' in item) void openExternal(item.url, t(item.labelKey));
                 else openCategory(item.category);
               }}
             >
@@ -563,16 +562,16 @@ export default function HomeScreen() {
         {showDeferredServices ? (
           <>
             {portalSections.map((section) => (
-              <View key={section.key} testID={`home-portal-${section.key}`} style={styles.portalCard}>
+              <View key={section.key} testID={`home-portal-${section.key}`} style={[styles.portalCard, section.key === 'judges' && styles.judgeCard]}>
                 <View style={styles.portalHead}>
-                  <View style={styles.portalTitleWrap}><View style={styles.portalAccent} /><Text accessibilityRole={section.key === 'jobs' ? 'link' : undefined} onPress={section.key === 'jobs' ? () => openPortal(section) : undefined} style={styles.portalTitle}>{t(section.titleKey)}</Text></View>
-                  <Pressable accessibilityRole="link" accessibilityLabel={t('home.openPortalA11y', { title: t(section.titleKey) })} accessibilityState={{ disabled: externalBusy }} disabled={externalBusy} onPress={() => openPortal(section)}><Text style={styles.portalAction}>{t(section.actionKey)}</Text></Pressable>
+                  <View style={styles.portalTitleWrap}><View style={[styles.portalAccent, section.key === 'judges' && styles.judgeAccent]} /><Text accessibilityRole={['jobs', 'judges'].includes(section.key) ? 'link' : undefined} onPress={['jobs', 'judges'].includes(section.key) ? () => openPortal(section) : undefined} style={styles.portalTitle}>{t(section.titleKey)}</Text></View>
+                  <Pressable accessibilityRole="link" accessibilityLabel={t('home.openPortalA11y', { title: t(section.titleKey) })} accessibilityState={{ disabled: externalBusy }} disabled={externalBusy} onPress={() => openPortal(section)}><Text style={[styles.portalAction, section.key === 'judges' && styles.judgeLink]}>{t(section.actionKey)}</Text></Pressable>
                 </View>
                 <Pressable accessibilityRole="link" accessibilityLabel={t('home.openPortalA11y', { title: t(section.titleKey) })} accessibilityState={{ disabled: externalBusy }} disabled={externalBusy} style={[styles.portalBanner, section.key === 'judges' && styles.judgeBanner]} onPress={() => openPortal(section)}><Text style={[styles.portalBannerText, section.key === 'judges' && styles.judgeBannerText]}>{t(section.bannerKey)}</Text></Pressable>
                 <View style={styles.portalGrid}>
                   {section.itemKeys.map((itemKey, index) => (
-                    <Pressable key={itemKey} accessibilityRole="link" accessibilityLabel={t('home.openPortalItemA11y', { item: t(itemKey) })} accessibilityState={{ disabled: externalBusy }} disabled={externalBusy} style={[styles.portalItem, section.itemKeys.length % 2 === 1 && index === section.itemKeys.length - 1 && styles.portalItemWide]} onPress={() => openPortal(section)}>
-                      <Text style={styles.portalItemText}>{t(itemKey)}</Text><Text style={styles.portalArrow}>›</Text>
+                    <Pressable key={itemKey} accessibilityRole="link" accessibilityLabel={t('home.openPortalItemA11y', { item: t(itemKey) })} accessibilityState={{ disabled: externalBusy }} disabled={externalBusy} style={[styles.portalItem, section.key === 'judges' && styles.judgeItem, section.itemKeys.length % 2 === 1 && index === section.itemKeys.length - 1 && styles.portalItemWide]} onPress={() => openPortal(section)}>
+                      <Text style={styles.portalItemText}>{t(itemKey)}</Text><Text style={[styles.portalArrow, section.key === 'judges' && styles.judgeLink]}>›</Text>
                     </Pressable>
                   ))}
                 </View>
@@ -689,8 +688,12 @@ const styles = StyleSheet.create({
   portalAction: { color: '#667085', fontSize: 12, fontWeight: '800' },
   portalBanner: { minHeight: 48, borderRadius: 9, backgroundColor: '#ca0000', paddingHorizontal: 13, justifyContent: 'center', marginBottom: 10 },
   portalBannerText: { color: '#fff', fontSize: 13, lineHeight: 19, fontWeight: '900' },
-  judgeBanner: { backgroundColor: '#fff3f5', borderWidth: 1, borderColor: '#ffd2d8' },
-  judgeBannerText: { color: '#bd1018' },
+  judgeCard: { borderColor: '#d8e8de' },
+  judgeAccent: { backgroundColor: '#14804a' },
+  judgeLink: { color: '#14804a' },
+  judgeItem: { borderColor: '#d8e8de', backgroundColor: '#fff' },
+  judgeBanner: { backgroundColor: '#edf9f1', borderWidth: 1, borderColor: '#d8e8de' },
+  judgeBannerText: { color: '#0b6639' },
   portalGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
   portalItem: { width: '48.5%', minHeight: 44, borderRadius: 8, borderWidth: 1, borderColor: '#e4e7ec', paddingHorizontal: 11, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
   portalItemWide: { width: '100%' },

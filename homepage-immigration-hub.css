@@ -48,3 +48,19 @@
 #sections-grid #judge-home-hub .judge-state-head{margin-bottom:4px}
 #sections-grid #judge-home-hub .judge-action-grid{gap:6px}
 #sections-grid #judge-home-hub .judge-action-grid a{min-height:36px!important;padding:6px 18px 6px 8px}
+
+/* Match the Asylum Judge approval palette on phone/tablet entry cards. */
+@media(max-width:900px){
+ #sections-grid #judge-home-hub{border-color:#d8e8de}
+ #sections-grid #judge-home-hub h2{border-left-color:#14804a}
+ #sections-grid #judge-home-hub h2 a{color:inherit;text-decoration:none}
+ #sections-grid #judge-home-hub .immigration-hub-head>a,
+ #sections-grid #judge-home-hub .judge-action-grid a>span,
+ #sections-grid #judge-home-hub .judge-state-row b,
+ #sections-grid #judge-home-hub .judge-state-leader>strong{color:#14804a}
+ #sections-grid #judge-home-hub .immigration-hub-feature{background:#edf9f1;color:#0b6639;border-color:#d8e8de}
+ #sections-grid #judge-home-hub .judge-state-leader{background:#edf9f1}
+ #sections-grid #judge-home-hub .judge-action-grid a{border-color:#d8e8de}
+ #sections-grid #judge-home-hub a:focus-visible{outline:2px solid #14804a;outline-offset:2px}
+}
+#sections-grid #judge-home-hub h2 a{color:inherit;text-decoration:none}

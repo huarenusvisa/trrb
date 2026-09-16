@@ -392,7 +392,7 @@ test('localizes homepage portals, reader services and footer without changing de
   assert.match(home, /t\(itemKey\)/);
   assert.match(home, /<ReaderServices \/>/);
   assert.match(home, /accessibilityLabel=\{t\('home\.openPortalItemA11y'/);
-  for (const destination of ['https://asylumjudge.com/', "route: '/immigration'", "route: '/legal'", "route: '/jobs'", "route: '/community'"]) {
+  for (const destination of ["route: '/(tabs)/legal'", "route: '/immigration'", "route: '/legal'", "route: '/(tabs)/immigration'", "route: '/community'"]) {
     assert.ok(home.includes(destination), `homepage destination must remain ${destination}`);
   }
   assert.doesNotMatch(home, /styles\.footerText}>立足美国 · 服务华人/);

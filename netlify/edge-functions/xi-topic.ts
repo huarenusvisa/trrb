@@ -1,12 +1,13 @@
-import { POLITICS_FILTER, XI_FILTER, ICE_FILTER, ENFORCEMENT_FILTER, POLITICS_VIEWS, termFilter } from "../shared/editorial-topics.mjs";
+import { ELECTION_FILTER, POLITICS_FILTER, XI_FILTER, ICE_FILTER, ENFORCEMENT_FILTER, POLITICS_VIEWS, termFilter } from "../shared/editorial-topics.mjs";
 const SITE = "https://trrb.net";
 const PAGE_SIZE = 20;
 const ROUTES: Record<string, any> = {
+  "/topic/midterm-elections": {name:"2026中期选举实时动态", eyebrow:"美国选举 · MIDTERMS 2026", intro:"追踪国会席位争夺、关键州选情、党内初选与投票规则。按时间阅读相关新闻，了解竞选进展与事件背景。", description:"唐人日报2026美国中期选举专题，汇集参众两院席位争夺、关键州竞选、党内初选、选区划分与投票规则报道。按发布时间浏览相关新闻摘要，通过原文查看来源和背景，使用分页继续阅读本轮选举的历史报道。", filter:ELECTION_FILTER, views:{}},
   "/topic/xi-jinping": {name:"习近平专题", eyebrow:"人物专题 · XI JINPING", intro:"追踪相关新闻、公开活动、政策动向与事件后续。结合报道摘要与原文，了解事件的来龙去脉。", description:"唐人日报习近平专题，汇集与习近平直接相关的已发布新闻、公开活动、政策动向与事件后续。按发布时间浏览报道摘要，进入原文了解背景与来源，并通过分页继续阅读历史报道。", filter:XI_FILTER, views:{}},
   "/china-politics": {name:"中国政治", eyebrow:"中国政治 · CHINA POLITICS", intro:"关注领导人动态、人事任免、机构变化与事件后续。结合原文来源阅读报道，区分事实、转述与分析。", description:"唐人日报中国政治栏目，汇集领导人公开活动、人事任免、调查通报和政策动向。按发布时间查看新闻摘要、背景与后续报道，浏览领导人动态、人事任免及政治观察，进入原文核对信息来源。", filter:POLITICS_FILTER, views:POLITICS_VIEWS},
   "/us-enforcement": {name:"美国执法与警情", eyebrow:"美国执法 · PUBLIC SAFETY", intro:"汇集ICE执法、移民拘留与遣返，以及美国警方执法和案件进展。按领域浏览相关新闻与后续报道。", description:"唐人日报美国执法与警情，汇集ICE执法、拘留、遣返及美国警方执法和案件进展。分别浏览ICE执法和美国警情，查看新闻摘要、发布时间及事件后续，并从原文了解来源与背景。", filter:ENFORCEMENT_FILTER, views:{ice:{label:"ICE执法"},crime:{label:"美国警情"}}}
 };
-export const config = { path: ["/topic/xi-jinping", "/topic/xi-jinping/", "/topic/xi-jinping/index.html", "/china-politics", "/china-politics/", "/china-politics/index.html", "/us-enforcement", "/us-enforcement/", "/us-enforcement/index.html"] };
+export const config = { path: ["/topic/midterm-elections", "/topic/midterm-elections/", "/topic/midterm-elections/index.html", "/topic/xi-jinping", "/topic/xi-jinping/", "/topic/xi-jinping/index.html", "/china-politics", "/china-politics/", "/china-politics/index.html", "/us-enforcement", "/us-enforcement/", "/us-enforcement/index.html"] };
 const SECTIONS: Record<string, string> = {
   "重要新闻": "important-news", "热门头条": "hot-headlines", "中国热门头条": "hot-headlines",
   "美国时政": "us-politics", "美国警情": "us-crime", "中国官场": "china-officialdom",
@@ -81,6 +82,7 @@ export default async (request: Request, context: any) => {
     if (path === "/china-politics" && selectedView) endpoint.searchParams.set("and", `(or${termFilter(selectedView.terms)})`);
     if (path === "/us-enforcement" && view === "ice") endpoint.searchParams.set("or", ICE_FILTER);
     if (path === "/us-enforcement" && view === "crime") endpoint.searchParams.set("category_name", "eq.美国警情");
+    if (path === "/topic/midterm-elections") endpoint.searchParams.set("and", `(published_at.gte.2026-01-01T00:00:00Z,published_at.lte.${new Date().toISOString()})`);
     const result = await fetch(endpoint, { headers: { apikey: key, Authorization: `Bearer ${key}`, Accept: "application/json" }, signal: AbortSignal.timeout(8000) });
     if (!result.ok) throw new Error(`Topic data ${result.status}`);
     const rows = await result.json();

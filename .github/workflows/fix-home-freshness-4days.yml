@@ -19,7 +19,7 @@ jobs:
           grep -F 'const HOME_MAX_AGE_MS = 4 * 24 * 60 * 60 * 1000;' articles-home.js
           grep -F 'const HOME_MAX_AGE_MS = 4 * 24 * 60 * 60 * 1000;' homepage-refresh-guard.js
           grep -F '4d-core-plus-category-supplements' homepage-refresh-guard.js
-          grep -F 'sparseCategories' netlify/functions/public-home-bundle.js
+          grep -F 'sparseCategories' netlify/functions/public-home-bundle.ts
           ! grep -F 'const HOME_MAX_AGE_MS = 14 * 24 * 60 * 60 * 1000;' articles-home.js
           echo 'HOME_CORE_FRESHNESS_DAYS=4'
           echo 'SPARSE_CATEGORY_SUPPLEMENTS_PRESERVED=true'

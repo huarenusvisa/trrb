@@ -1,8 +1,8 @@
 import fs from 'node:fs';
 
 const checks = [
-  ['netlify/functions/public-home-bundle.js', ['visibility: "eq.public"']],
-  ['netlify/functions/public-home-articles.js', ['visibility: "eq.public"']],
+  ['netlify/functions/public-home-bundle.ts', ['visibility: "eq.public"']],
+  ['netlify/functions/public-home-articles.ts', ['visibility: "eq.public"']],
   ['netlify/functions/public-category-page.js', ['url.searchParams.set("visibility", "eq.public")']],
   ['netlify/functions/public-article.js', ["visibility: 'eq.public'"]],
   ['netlify/functions/public-articles.js', ['visibility: "eq.public"']],

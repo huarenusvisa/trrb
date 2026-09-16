@@ -44,7 +44,7 @@ assert.ok(selected.every((item) => now - Date.parse(item.published_at) <= rankin
 
 const home = fs.readFileSync(new URL("../articles-home.js", import.meta.url), "utf8");
 const compat = fs.readFileSync(new URL("../articles-home-live-fix.js", import.meta.url), "utf8");
-const bundle = fs.readFileSync(new URL("../netlify/functions/public-home-bundle.js", import.meta.url), "utf8");
+const bundle = fs.readFileSync(new URL("../netlify/functions/public-home-bundle.ts", import.meta.url), "utf8");
 const index = fs.readFileSync(new URL("../index.html", import.meta.url), "utf8");
 const snapshot = fs.readFileSync(new URL("./inject-static-news-links.mjs", import.meta.url), "utf8");
 

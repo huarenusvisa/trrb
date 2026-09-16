@@ -44,17 +44,17 @@ if (!html.includes('article-route-runtime.js')) {
 // renderer after the underlying file changed.
 const coreVersions = new Map([
   ['article-live-neighbors.js', '20260916-editorial-1'],
-  ['homepage-secondary-hubs.bundle.js', '20260916-compact-3'],
-  ['homepage-topic-runtime.bundle.js', '20260916-editorial-1'],
+  ['homepage-secondary-hubs.bundle.js', '20260916-compact-4'],
+  ['homepage-topic-runtime.bundle.js', '20260916-placement-1'],
   ['article-route-runtime.js', '20260916-category-alias'],
-  ['homepage-ranking.js', '20260823-rank-whitelist-1'],
-  ['articles-home.js', '20260916-editorial-1'],
+  ['homepage-ranking.js', '20260916-placement-1'],
+  ['articles-home.js', '20260916-placement-1'],
   ['ice-home-unify.js', '20260916-editorial-1'],
-  ['topic-focus.js', '20260916-editorial-1'],
-  ['homepage-refresh-guard.js', '20260916-editorial-1'],
+  ['topic-focus.js', '20260916-election-1'],
+  ['homepage-refresh-guard.js', '20260916-placement-1'],
   ['homepage-immigration-hub.js', '20260819-reuse-bundle-2'],
   ['jobs-home.js', '20260821-dedicated-card-1'],
-  ['articles-home-live-fix.js', '20260916-editorial-1'],
+  ['articles-home-live-fix.js', '20260916-placement-1'],
   ['category-runtime-v3.js', '20260916-editorial-1'],
   ['homepage-startup-stability.js', '20260822-hotfix-1']
 ]);

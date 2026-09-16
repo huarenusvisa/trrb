@@ -129,6 +129,9 @@ function mapLiveArticle(row) {
     title: row.title || "",
     slug: row.slug || "",
     editorial_topics: Array.isArray(row.editorial_topics) ? row.editorial_topics : [],
+      publication_scope: row.publication_scope || "standard",
+      body_character_count: row.body_character_count, editorial_policy_version: row.editorial_policy_version,
+      longform_chars: Number(row.longform_chars || 0),
     categoryId: row.category_id || "",
     category_id: row.category_id || "",
     topicKey: row.topic_key || "",
@@ -215,9 +218,10 @@ function renderHome(articles, focusArticles = null) {
   if (!Array.isArray(articles) || articles.length === 0) return;
   const sorted = articles.slice().sort((a, b) => articleTimestamp(b) - articleTimestamp(a));
   window.TRRB_LAST_HOME_ARTICLES = sorted;
-  const hotArticles = sorted.filter((article) => normalizeCategory(article.category) === "热门头条");
-  renderTicker((hotArticles.length ? hotArticles : sorted).slice(0, 12));
-  const visualArticles = sorted.filter(hasRealImage);
+  const general = sorted.filter(article => !window.TRRBEditorialPolicy.topicOnly(article));
+  const hotArticles = general.filter((article) => normalizeCategory(article.category) === "热门头条");
+  renderTicker((hotArticles.length ? hotArticles : general).slice(0, 12));
+  const visualArticles = general.filter(hasRealImage);
   if (Array.isArray(focusArticles)) {
     if (focusArticles.length) {
       renderHeroCarousel(focusArticles.slice(0, 5));
@@ -227,9 +231,9 @@ function renderHome(articles, focusArticles = null) {
     }
     document.documentElement.dataset.homeFocusAtomic = "true";
   }
-  renderTopList((visualArticles.length >= 10 ? visualArticles : sorted).slice(0, 10));
+  renderTopList((visualArticles.length >= 10 ? visualArticles : general).slice(0, 10));
   renderSections(sorted);
-  renderRank(sorted);
+  renderRank(general);
   if (typeof window.TRRB_renderTopicFocus === "function") window.TRRB_renderTopicFocus(sorted);
 }
 
@@ -280,14 +284,17 @@ function imageAttrs(article, options = {}) {
 }
 
 function renderTicker(articles) {
+  articles = articles.filter(article => !window.TRRBEditorialPolicy?.topicOnly(article));
   const root = document.querySelector("#ticker");
   if (!root) return;
   const items = articles.map((article) => `<a href="${articleUrl(article)}">${escapeHtml(article.title)}</a>`).join("");
   root.innerHTML = `<div class="ticker-track">${items}${items}</div>`;
 }
 function renderHeroCarousel(articles) {
+  articles = articles.filter(article => window.TRRBEditorialPolicy?.importantEligible(article));
   const hero = document.querySelector("#hero");
   if (!hero) return;
+  if (!articles.length) { hero.innerHTML = '<div class="hero-focus-empty" role="status">今日暂无符合条件的要闻</div>'; return; }
   hero.innerHTML = articles.map(renderHeroSlide).join("") + renderHeroDots(articles.length);
   startHeroCarousel(hero);
 }
@@ -325,6 +332,7 @@ function startHeroCarousel(hero) {
 }
 
 function renderTopList(articles) {
+  articles = articles.filter(article => !window.TRRBEditorialPolicy?.topicOnly(article));
   const root = document.querySelector("#top-list");
   if (!root) return;
   const items = articles.map((article, index) => `<article><b>${index + 1}</b><img ${imageAttrs(article, { width: 208, height: 148 })} alt="" /><h2><a href="${articleUrl(article)}">${escapeHtml(article.title)}</a></h2></article>`).join("");
@@ -425,6 +433,7 @@ function rankLabel(article) {
   return raw;
 }
 function renderRank(articles) {
+  articles = articles.filter(article => !window.TRRBEditorialPolicy?.topicOnly(article));
   const rankRoot = document.querySelector("#rank-list");
   const switchBtn = document.querySelector("#rank-switch");
   if (!rankRoot || !switchBtn) return;

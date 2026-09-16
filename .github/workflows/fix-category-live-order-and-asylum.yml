@@ -18,9 +18,9 @@ jobs:
           set -euo pipefail
           grep -q 'fetchLivePublishedArticles(200, category)' listing.js
           grep -q 'articleTimestamp(b)-articleTimestamp(a)' listing.js
-          grep -q 'query.category_name' netlify/functions/public-home-articles.js
-          grep -q 'sparseCategories' netlify/functions/public-home-bundle.js
-          grep -q 'database_queries' netlify/functions/public-home-bundle.js
+          grep -q 'query.category_name' netlify/functions/public-home-articles.ts
+          grep -q 'sparseCategories' netlify/functions/public-home-bundle.ts
+          grep -q 'database_queries' netlify/functions/public-home-bundle.ts
           grep -q '4d-core-plus-category-supplements' homepage-refresh-guard.js
           grep -q 'data-seo-category-snapshot' netlify/edge-functions/category-prerender.ts
           grep -q 'prettyCategoryByPath' listing-seo.js

@@ -7,8 +7,8 @@ import fs from 'node:fs';
 const files = {
   listing: fs.readFileSync('listing.js', 'utf8'),
   listingHtml: fs.readFileSync('listing.html', 'utf8'),
-  publicArticles: fs.readFileSync('netlify/functions/public-home-articles.js', 'utf8'),
-  bundle: fs.readFileSync('netlify/functions/public-home-bundle.js', 'utf8'),
+  publicArticles: fs.readFileSync('netlify/functions/public-home-articles.ts', 'utf8'),
+  bundle: fs.readFileSync('netlify/functions/public-home-bundle.ts', 'utf8'),
   categoryEdge: fs.readFileSync('netlify/edge-functions/category-prerender.ts', 'utf8')
 };
 

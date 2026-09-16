@@ -70,7 +70,7 @@
         <a href="https://asylumjudge.com/states"><strong>按州查看</strong><span aria-hidden="true">›</span></a>
         <a href="https://asylumjudge.com/nationality"><strong>各国国籍批准率</strong><span aria-hidden="true">›</span></a>
       </div>
-      <a class="immigration-hub-all legal-hub-all" href="https://asylumjudge.com/methodology">查看数据口径说明</a>`;
+`;
   }
 
   function installStateStyles() {
@@ -277,7 +277,6 @@
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start, { once: true });
   else start();
 })();
-
 
 /* bundled source: jobs-home.js */
 (() => {

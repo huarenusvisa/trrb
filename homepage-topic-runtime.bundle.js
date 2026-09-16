@@ -588,7 +588,7 @@ return "2026中期选举竞争升温";
       .filter((item) => String(item?.category || item?.category_name || "").trim() === "美国时政")
       .filter((item) => {
         const body = Array.isArray(item?.body) ? item.body.join("") : "";
-        return body.replace(/\s+/g, "").length >= 1500;
+        return window.TRRBEditorialPolicy?.importantEligible({...item, content: body}) === true;
       })
       .slice(0, 5);
     if (!candidates.length) return false;
@@ -639,4 +639,3 @@ return "2026中期选举竞争升温";
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start, { once: true });
   else start();
 })();
-

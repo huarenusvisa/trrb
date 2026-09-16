@@ -95,7 +95,7 @@ function articleTimestamp(item) {
 async function fetchLiveSearchArticles(query, limit = 240) {
   const normalized = String(query || "").trim().slice(0, 120).replace(/[%*(),]/g, " ").replace(/\s+/g, " ");
   if (!normalized) return [];
-  const cacheKey = `trrb-search-v1-${normalized.toLowerCase()}-${limit}`;
+  const cacheKey = `trrb-search-v2-${normalized.toLowerCase()}-${limit}`;
   const cached = readLiveCache(cacheKey);
   if (cached) return cached;
 
@@ -103,6 +103,7 @@ async function fetchLiveSearchArticles(query, limit = 240) {
   const url = new URL(`${TRRB_SUPABASE_URL}/rest/v1/articles`);
   url.searchParams.set("select", select);
   url.searchParams.set("status", "eq.published");
+  url.searchParams.set("visibility", "eq.public");
   const pattern = `*${normalized}*`;
   url.searchParams.set("or", `(title.ilike.${pattern},summary.ilike.${pattern},content.ilike.${pattern})`);
   url.searchParams.set("order", "published_at.desc.nullslast,created_at.desc");
@@ -112,7 +113,7 @@ async function fetchLiveSearchArticles(query, limit = 240) {
     cache: "no-store",
     headers: { apikey: TRRB_SUPABASE_KEY, Authorization: `Bearer ${TRRB_SUPABASE_KEY}`, Accept: "application/json" }
   }, 9000);
-  const articles = (Array.isArray(rows) ? rows : []).map(mapLiveArticle);
+  const articles = (Array.isArray(rows) ? rows : []).map(row => ({...mapLiveArticle(row), matchedSearch: normalized.toLowerCase()}));
   writeLiveCache(cacheKey, articles);
   return articles;
 }
@@ -229,6 +230,11 @@ async function initListing() {
     renderListingDataset(live, category, query, page);
   } catch (error) {
     console.warn("Live articles unavailable", error);
+    if (searchMode) {
+      const grid = document.querySelector("#listing-grid");
+      if (grid) grid.innerHTML = '<div class="empty-list" role="status">搜索暂时无法加载，请稍后刷新重试。</div>';
+      return;
+    }
     // Keep the server-rendered category snapshot intact when live refresh fails.
     if (category && currentCategoryPath && document.querySelector('[data-seo-category-snapshot="edge"]')) return;
     renderArticles([], page);
@@ -262,7 +268,7 @@ function filterArticles(articles, category, query) {
     const articleCategory = String(article?.category || article?.category_name || "").trim();
     const iceCategoryMatch = category === "ICE执法动态" && (topic === "ice" || ["ICE执法动态", "ICE执法", "驱逐快报"].includes(articleCategory));
     const categoryMatch = !category || articleCategory === category || iceCategoryMatch;
-    const queryMatch = !normalizedQuery || [article.title, article.excerpt, articleCategory, article.date].filter(Boolean).join(" ").toLowerCase().includes(normalizedQuery);
+    const queryMatch = !normalizedQuery || article.matchedSearch === normalizedQuery || [article.title, article.excerpt, articleCategory, article.date].filter(Boolean).join(" ").toLowerCase().includes(normalizedQuery);
     return categoryMatch && queryMatch;
   }).sort((a,b) => articleTimestamp(b)-articleTimestamp(a));
 }

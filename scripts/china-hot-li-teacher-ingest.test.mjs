@@ -22,7 +22,7 @@ test("中国新闻及中国政治人物内容进入中国热门头条池", () =>
   assert.equal(candidate.proposed_section, "中国热门头条");
   assert.equal(candidate.decision, "processing");
   assert.equal(candidate.pipeline, "china-hot-li-teacher-v2");
-  assert.equal(candidate.ai_payload.processing_version, "single-event-800-context-v3");
+  assert.equal(candidate.ai_payload.processing_version, "single-event-800-context-v4");
 });
 
 test("正文要求至少800字且不通过截断限制长稿", () => {
@@ -223,7 +223,7 @@ test("自动失败草稿可有界重试，人工复核决定不会被自动覆�
   assert.equal(shouldRetryCandidate({
     decision: "review_required",
     decision_reason: "自动扩写或发布失败：生成稿未明确中国新闻主体；保留为可编辑草稿，由编辑决定是否发布",
-    ai_payload: { processing_version: "single-event-800-context-v3", automatic_retry_attempts: 3 },
+    ai_payload: { processing_version: "single-event-800-context-v4", automatic_retry_attempts: 3 },
   }, qualified), false);
   assert.equal(shouldRetryCandidate({
     decision: "review_required",
@@ -359,4 +359,39 @@ test("短稿检索同一事件背景，扩写后将资料交给独立质检并�
   const article=await generateArticle(qualifyTweet(tweet),tweet);
   assert.equal(writes,2);assert.equal(researches,1);assert.equal(reviews,1);
   assert.deepEqual(buildPublishedArticle(tweet,qualifyTweet(tweet),article).supporting_sources,[source]);
+});
+
+test('无法可靠扩至800字的新热点经过独立核对可发布为选题短讯', async t => {
+ const tweet={...chinaTweet,created_at:new Date().toISOString()};
+ const brief={title:'重庆学校调整开学安排',summary:'校方发布高温期间的教学通知。',content:chinaTweet.text,seo_keywords:'重庆,学校',appears_old_news:false,old_news_reason:'',source_sufficient:true,rejection_reason:''};
+ let writes=0,researches=0,reviews=0;
+ t.mock.method(globalThis,'fetch',async(_url,options)=>{
+  const input=JSON.parse(options.body);
+  if(input.tools){researches++;return Response.json({output:[]});}
+  if(input.text.format.name==='china_hot_editorial_review'){
+   reviews++;assert.match(input.instructions,/短讯例外/);
+   return Response.json({output_text:JSON.stringify({...editorial_review,fresh_hot_event:true,freshness_evidence:'测试材料明确记载学校今日公布新的开学安排'})});
+  }
+  writes++;return Response.json({output_text:JSON.stringify(writes===1?{...brief,content:'',source_sufficient:false,rejection_reason:'素材不足以扩写800字'}:brief)});
+ });
+ const qualified=qualifyTweet(tweet);const generated=await generateArticle(qualified,tweet);
+ assert.equal(researches,1);assert.equal(writes,2);assert.equal(reviews,1);
+ assert.equal(generated.publication_scope,'topic_only');
+ const saved=buildPublishedArticle(tweet,qualified,generated);
+ assert.equal(saved.category_name,'热门头条');assert.equal(saved.status,'published');
+ assert.equal(saved.metadata.publication_scope,'topic_only');assert.equal(saved.metadata.homepage_focus_override,'exclude');
+ assert.ok(saved.metadata.body_character_count<800);
+ for(const patch of [{fresh_hot_event:false},{freshness_evidence:''},{grounded:false}]){
+  assert.throws(()=>buildPublishedArticle(tweet,qualified,{...generated,editorial_review:{...generated.editorial_review,...patch}}),/采编质量拦截/);
+ }
+ assert.throws(()=>buildPublishedArticle({...tweet,created_at:new Date(Date.now()-73*3600000).toISOString()},qualified,generated),/短讯仅限/);
+ assert.throws(()=>buildPublishedArticle({...tweet,context_research_attempted:false},qualified,generated),/短讯仅限/);
+ assert.throws(()=>buildPublishedArticle({...tweet,created_at:new Date(Date.now()+3600000).toISOString()},qualified,generated),/短讯仅限/);
+});
+
+test('同一新闻不能用短讯版本绕过长稿去重', async()=>{
+ const {duplicateArticle}=await import('./china-hot-li-teacher-ingest.mjs');
+ const brief={title:'重庆某中学发布高温期开学安排调整通知',summary:'学校公布新学期开学安排',content:'学校公布新学期开学安排，调整报到时间。'};
+ assert.equal(duplicateArticle(brief,[{...brief,id:'existing',content:qualityBody}]).id,'existing');
+ assert.equal(duplicateArticle(brief,[{id:'other',title:'重庆地铁线路恢复运营',summary:'运营部门公布班次',content:'地铁班次已经调整。'}]),null);
 });

@@ -22,6 +22,9 @@
     return {
       id: row.id,
       editorial_topics: Array.isArray(row.editorial_topics) ? row.editorial_topics : [],
+      publication_scope: row.publication_scope || "standard",
+      body_character_count: row.body_character_count, editorial_policy_version: row.editorial_policy_version,
+      longform_chars: Number(row.longform_chars || 0),
       title: row.title || "",
       slug: row.slug || "",
       category: row.category_name || row.category || "新闻",

@@ -1,20 +1,20 @@
-const { rest } = require("./_shared/supabase-admin");
-const { isChinaHotCategory, isChinaHotHeadline } = require("./_shared/china-hot-headlines");
+import policy from "../../article-editorial-policy.js";
+import { rest } from "./_shared/supabase-admin.js";
+import { isChinaHotCategory, isChinaHotHeadline } from "./_shared/china-hot-headlines.js";
 
 const CORE_CATEGORIES = ["热门头条", "美国时政", "美国警情", "移民美国", "ICE执法动态"];
 const RETIRED_HOME_CATEGORIES = new Set(["重要新闻", "中国官场", "庇护百科"]);
 const HOME_MAX_AGE_MS = 4 * 24 * 60 * 60 * 1000;
 
 function response(statusCode, body) {
-  return {
-    statusCode,
+  return new Response(statusCode === 204 ? null : JSON.stringify(body), {
+    status: statusCode,
     headers: {
       "Content-Type": "application/json; charset=utf-8",
       "Cache-Control": "no-store, max-age=0",
       "X-Content-Type-Options": "nosniff"
-    },
-    body: JSON.stringify(body)
-  };
+    }
+  });
 }
 
 function timeOf(row) {
@@ -28,7 +28,7 @@ function homeCutoffIso() {
 
 async function fetchArticles(limit, category = "") {
   const query = {
-    select: "id,title,slug,summary,content,category_id,category_name,topic_key,cover_image,author,status,visibility,published_at,created_at,is_breaking,rank_score",
+    select: "id,title,slug,summary,content,category_id,category_name,topic_key,cover_image,author,status,visibility,published_at,created_at,is_breaking,rank_score,publication_scope:metadata->>publication_scope",
     status: "eq.published",
     visibility: "eq.public",
     published_at: `gte.${homeCutoffIso()}`,
@@ -53,18 +53,18 @@ function categoryCounts(rows) {
   return counts;
 }
 
-exports.handler = async (event) => {
-  if (event.httpMethod === "OPTIONS") return response(204, {});
-  if (event.httpMethod !== "GET") return response(405, { error: "Method not allowed" });
+export default async (event: Request) => {
+  if (event.method === "OPTIONS") return response(204, {});
+  if (event.method !== "GET") return response(405, { error: "Method not allowed" });
 
   try {
-    const globalLimit = Math.min(Math.max(Number(event.queryStringParameters?.limit || 200), 20), 200);
-    const perCategory = Math.min(Math.max(Number(event.queryStringParameters?.per_category || 12), 3), 20);
+    const globalLimit = Math.min(Math.max(Number(new URL(event.url).searchParams.get("limit") || 200), 20), 200);
+    const perCategory = Math.min(Math.max(Number(new URL(event.url).searchParams.get("per_category") || 12), 3), 20);
 
     const { editorialTopics, POLITICS_FILTER } = await import("../shared/editorial-topics.mjs");
     const globalRows = await fetchArticles(globalLimit);
     const politicalRows = await rest("articles", {query: {
-      select: "id,title,slug,summary,category_name,topic_key,cover_image,author,status,visibility,published_at,created_at",
+      select: "id,title,slug,summary,content,category_name,topic_key,cover_image,author,status,visibility,published_at,created_at,publication_scope:metadata->>publication_scope",
       status: "eq.published", visibility: "eq.public", published_at: `gte.${homeCutoffIso()}`,
       or: POLITICS_FILTER, order: "published_at.desc.nullslast,created_at.desc", limit: String(perCategory)
     }}).catch(() => []);
@@ -83,7 +83,7 @@ exports.handler = async (event) => {
         return true;
       })
       .sort((a, b) => timeOf(b) - timeOf(a))
-      .map(row => ({ ...row, editorial_topics: editorialTopics(row) }));
+      .map(row => ({ ...row, body_character_count: policy.bodyCharacterCount(row.content), editorial_policy_version: policy.VERSION, editorial_topics: editorialTopics(row) }));
 
     return response(200, {
       mode: "homepage",
@@ -100,3 +100,5 @@ exports.handler = async (event) => {
     return response(error.statusCode || 500, { error: error.message || String(error) });
   }
 };
+
+export const config = {};

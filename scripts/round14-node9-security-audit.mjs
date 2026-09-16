@@ -27,7 +27,7 @@ const blockedPublicPaths=[
   '/.github/workflows/round14-node7-core-web-vitals.yml',
   '/scripts/round14-node7-core-web-vitals-audit.mjs',
   '/netlify/edge-functions/article-prerender.ts',
-  '/netlify/functions/public-home-bundle.js',
+  '/netlify/functions/public-home-bundle.ts',
   '/SUPABASE-ICE-MULTISOURCE.sql',
   '/README-ICE-SNAPSHOT-V2.md',
   '/FIX-REPORT-v29.7.txt',

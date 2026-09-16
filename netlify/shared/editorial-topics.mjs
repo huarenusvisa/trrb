@@ -22,3 +22,7 @@ export function politicalSections(row) {
   const topics = editorialTopics(row);
   return ['中国热门头条', ...(topics.includes('china-politics') ? ['中国政治'] : []), ...(topics.includes('xi') ? ['习近平专题'] : [])];
 }
+
+// Midterm hub is a collection; source categories and article URLs stay intact.
+export const ELECTION_TERMS = ['中期选举','中期選舉','初选','选战','参院战','选情','控制权争夺','关键战场','选区重划','邮寄选票','选民登记'];
+export const ELECTION_FILTER = `(topic_key.eq.election,and(or(category_name.eq.美国时政,topic_key.eq.trump,topic_key.eq.ice),or${termFilter(ELECTION_TERMS)}))`;

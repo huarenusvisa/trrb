@@ -11,7 +11,7 @@ const files = {
   guard: fs.readFileSync('homepage-refresh-guard.js', 'utf8'),
   hub: fs.readFileSync('homepage-immigration-hub.js', 'utf8'),
   shim: fs.readFileSync('articles-home-live-fix.js', 'utf8'),
-  bundle: fs.readFileSync('netlify/functions/public-home-bundle.js', 'utf8'),
+  bundle: fs.readFileSync('netlify/functions/public-home-bundle.ts', 'utf8'),
   optimizer: fs.readFileSync('scripts/optimize-homepage-performance.mjs', 'utf8')
 };
 

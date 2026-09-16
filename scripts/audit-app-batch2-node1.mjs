@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 
 const mobile = fs.readFileSync('apps/mobile/src/api/trrb.ts','utf8');
-const homeApi = fs.readFileSync('netlify/functions/public-home-articles.js','utf8');
+const homeApi = fs.readFileSync('netlify/functions/public-home-articles.ts','utf8');
 const checks = [
   ['mobile uses production TRRB functions host', /https:\/\/trrb\.net\/\.netlify\/functions/.test(mobile)],
   ['mobile home reads public-home-articles', /public-home-articles/.test(mobile)],

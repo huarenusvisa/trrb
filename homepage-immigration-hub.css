@@ -38,3 +38,13 @@
 #sections-grid #judge-home-hub .judge-state-row{padding-bottom:2px}
 #sections-grid #judge-home-hub .judge-action-grid strong{font-size:12px!important;white-space:nowrap}
 #sections-grid #judge-home-hub .judge-action-grid a{min-height:40px!important;box-sizing:border-box}
+
+/* Compact judge card: no redundant footer; keep row alignment and readable labels. */
+#sections-grid #judge-home-hub{gap:7px;padding:10px}
+#sections-grid #judge-home-hub .immigration-hub-feature{min-height:38px;padding:7px 9px}
+#sections-grid #judge-home-hub .judge-state-dashboard{padding:6px}
+#sections-grid #judge-home-hub .judge-state-leader{padding:5px 7px;margin-bottom:5px}
+#sections-grid #judge-home-hub .judge-state-leader>strong{font-size:23px}
+#sections-grid #judge-home-hub .judge-state-head{margin-bottom:4px}
+#sections-grid #judge-home-hub .judge-action-grid{gap:6px}
+#sections-grid #judge-home-hub .judge-action-grid a{min-height:36px!important;padding:6px 18px 6px 8px}

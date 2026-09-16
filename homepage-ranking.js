@@ -68,6 +68,7 @@
     return (Array.isArray(items) ? items : [])
       .filter((item) => item?.title && isPublicPublished(item))
       .filter(isAllowedRankCategory)
+      .filter(item => (item.publication_scope || item.metadata?.publication_scope) !== "topic_only")
       .filter((item) => {
         const time = articleTime(item);
         const age = now - time;

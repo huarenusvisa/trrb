@@ -1,5 +1,6 @@
-const { rest } = require("./_shared/supabase-admin");
-const { isIceEnforcementText } = require("./_shared/ice-enforcement");
+import policy from "../../article-editorial-policy.js";
+import { rest } from "./_shared/supabase-admin.js";
+import { isIceEnforcementText } from "./_shared/ice-enforcement.js";
 
 const HOME_MAX_AGE_HOURS = 96;
 const HOME_MAX_AGE_MS = HOME_MAX_AGE_HOURS * 60 * 60 * 1000;
@@ -16,15 +17,14 @@ const HIGH_IMPACT_RULES = [
 ];
 
 function response(statusCode, body) {
-  return {
-    statusCode,
+  return new Response(statusCode === 204 ? null : JSON.stringify(body), {
+    status: statusCode,
     headers: {
       "Content-Type": "application/json; charset=utf-8",
       "Cache-Control": "no-store, max-age=0",
       "X-Content-Type-Options": "nosniff"
-    },
-    body: JSON.stringify(body)
-  };
+    }
+  });
 }
 
 function timeOf(row) {
@@ -37,13 +37,7 @@ function overrideOf(row) {
   return String(metadata.homepage_focus_override || "auto").trim().toLowerCase();
 }
 
-function textLength(value) {
-  return String(value || "")
-    .replace(/<[^>]*>/g, "")
-    .replace(/\s+/g, "")
-    .trim()
-    .length;
-}
+const textLength = policy.bodyCharacterCount;
 
 function isManualFocus(row) {
   return overrideOf(row) === MANUAL_FORCE;
@@ -57,7 +51,7 @@ function isIceFocusCandidate(row) {
 }
 
 function isEligibleLongform(row) {
-  if (textLength(row?.content) < MIN_LONGFORM_CHARS) return false;
+  if (!policy.importantEligible(row)) return false;
   if (isManualFocus(row)) return true;
   return String(row?.category_name || "").trim() === "美国时政" || isIceFocusCandidate(row);
 }
@@ -95,13 +89,15 @@ function publicArticle(row) {
   return {
     ...article,
     longform_chars: textLength(content),
+    body_character_count: textLength(content), editorial_policy_version: policy.VERSION,
+    publication_scope: row.publication_scope || row.metadata?.publication_scope || "standard",
     homepage_focus_source: isManualFocus(row) ? "editor" : isIceFocusCandidate(row) ? "ICE执法动态" : "美国时政"
   };
 }
 
-exports.handler = async (event) => {
-  if (event.httpMethod === "OPTIONS") return response(204, {});
-  if (event.httpMethod !== "GET") return response(405, { error: "Method not allowed" });
+export default async (event: Request) => {
+  if (event.method === "OPTIONS") return response(204, {});
+  if (event.method !== "GET") return response(405, { error: "Method not allowed" });
 
   try {
     const cutoff = new Date(Date.now() - HOME_MAX_AGE_MS).toISOString();
@@ -147,7 +143,7 @@ exports.handler = async (event) => {
 
     const now = Date.now();
     const articles = (Array.isArray(rows) ? rows : [])
-      .filter((row) => timeOf(row) >= now - HOME_MAX_AGE_MS)
+      .filter((row) => timeOf(row) >= now - HOME_MAX_AGE_MS && timeOf(row) <= now)
       .filter(isEligibleLongform)
       .map((row) => ({ ...row, homepage_focus_score: Math.round(scoreRow(row, now)) }))
       .filter((row) => row.homepage_focus_score > -1000)
@@ -172,3 +168,5 @@ exports.handler = async (event) => {
     return response(error.statusCode || 500, { error: error.message || String(error) });
   }
 };
+
+export const config = {};

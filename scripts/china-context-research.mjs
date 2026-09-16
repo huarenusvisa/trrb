@@ -15,7 +15,7 @@ export function citedResearch(response) {
   if (!sources.size || !texts.join('').trim()) return null;
   return {text: texts.join('\n').slice(0, 16000), sources: [...sources.values()].slice(0, 12)};
 }
-export function contextRetryEligible(candidate, now = Date.now(), version = 'single-event-800-context-v3') {
+export function contextRetryEligible(candidate, now = Date.now(), version = 'single-event-800-context-v4') {
   const payload = candidate?.ai_payload || {};
   const date = Date.parse(candidate?.raw_payload?.source_created_at || candidate?.collected_at || '');
   return candidate?.decision === 'review_required' && payload.quality_hold === true

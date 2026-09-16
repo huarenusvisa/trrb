@@ -1,22 +1,22 @@
-const { rest } = require("./_shared/supabase-admin");
-const { isIceEnforcementText } = require("./_shared/ice-enforcement");
-const { isUsImmigrationText } = require("./_shared/us-immigration-category");
-const { isChinaHotCategory, isChinaHotHeadline } = require("./_shared/china-hot-headlines");
+import policy from "../../article-editorial-policy.js";
+import { rest } from "./_shared/supabase-admin.js";
+import { isIceEnforcementText } from "./_shared/ice-enforcement.js";
+import { isUsImmigrationText } from "./_shared/us-immigration-category.js";
+import { isChinaHotCategory, isChinaHotHeadline } from "./_shared/china-hot-headlines.js";
 
 const HOME_MAX_AGE_MS = 4 * 24 * 60 * 60 * 1000;
 
 function json(statusCode, body) {
-  return {
-    statusCode,
+  return new Response(statusCode === 204 ? null : JSON.stringify(body), {
+    status: statusCode,
     headers: {
       "Content-Type": "application/json; charset=utf-8",
       "Cache-Control": "no-store, no-cache, must-revalidate, max-age=0",
       Pragma: "no-cache",
       Expires: "0",
       "X-Content-Type-Options": "nosniff"
-    },
-    body: JSON.stringify(body)
-  };
+    }
+  });
 }
 
 function articleTime(row) {
@@ -24,18 +24,18 @@ function articleTime(row) {
   return Number.isFinite(time) ? time : 0;
 }
 
-exports.handler = async (event) => {
-  if (event.httpMethod === "OPTIONS") return json(204, {});
-  if (event.httpMethod !== "GET") return json(405, { error: "Method not allowed" });
+export default async (event: Request) => {
+  if (event.method === "OPTIONS") return json(204, {});
+  if (event.method !== "GET") return json(405, { error: "Method not allowed" });
 
   try {
     const { editorialTopics } = await import("../shared/editorial-topics.mjs");
-    const requested = Number(event.queryStringParameters?.limit || 120);
+    const requested = Number(new URL(event.url).searchParams.get("limit") || 120);
     const limit = Math.min(Math.max(Number.isFinite(requested) ? requested : 120, 1), 200);
-    const category = String(event.queryStringParameters?.category || "").trim().slice(0, 80);
+    const category = String(new URL(event.url).searchParams.get("category") || "").trim().slice(0, 80);
     const cutoffMs = Date.now() - HOME_MAX_AGE_MS;
     const query = {
-      select: "id,title,slug,summary,content,category_id,category_name,topic_key,cover_image,author,status,visibility,published_at,created_at",
+      select: "id,title,slug,summary,content,category_id,category_name,topic_key,cover_image,author,status,visibility,published_at,created_at,publication_scope:metadata->>publication_scope",
       status: "eq.published",
       visibility: "eq.public",
       published_at: `gte.${new Date(cutoffMs).toISOString()}`,
@@ -62,10 +62,12 @@ exports.handler = async (event) => {
       freshness_hours: 96,
       generated_at: new Date().toISOString(),
       count: articles.length,
-      articles: articles.map(row => ({...row, editorial_topics: editorialTopics(row)}))
+      articles: articles.map(row => ({...row, body_character_count: policy.bodyCharacterCount(row.content), editorial_policy_version: policy.VERSION, editorial_topics: editorialTopics(row)}))
     });
   } catch (error) {
     console.error("Public home articles error:", error);
     return json(error.statusCode || 500, { error: error.message || String(error) });
   }
 };
+
+export const config = {};

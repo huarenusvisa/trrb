@@ -3,7 +3,7 @@
     xi: /习近平|習近平|Xi\s+Jinping/i,
     trump: /特朗普|川普|Donald\s+Trump/i,
     ice: /\bICE\b|Immigration and Customs Enforcement|移民与海关执法局|移民及海关执法局|ICE执法/i,
-    election: /中期选举|选举|初选|参议员竞选|众议员竞选|关键州|选情/i
+    election: /中期选举|中期選舉|初选|选战|参院战|选情|控制权争夺|关键战场|选区重划|邮寄选票|选民登记/i
   };
   const UUID_RE = /^[0-9a-f]{8}-[0-9a-f-]{27,}$/i;
   const sections = {
@@ -31,6 +31,7 @@
   function matchesTopic(key, article) {
     const topic = topicKey(article);
     const category = categoryOf(article);
+    if (key === 'election') return topic === 'election' || ((category === '美国时政' || ['trump','ice'].includes(topic)) && fallbackRules.election.test(topicText(article)));
     if (key === 'trump') {
       if (topic === 'trump') return true;
       if (topic && topic !== 'trump') return false;

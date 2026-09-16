@@ -1,4 +1,4 @@
-import { ELECTION_FILTER, POLITICS_FILTER, XI_FILTER, ICE_FILTER, ENFORCEMENT_FILTER, POLITICS_VIEWS, termFilter } from "../shared/editorial-topics.mjs";
+import { ELECTION_FILTER, POLITICS_FILTER, XI_FILTER, ICE_FILTER, ENFORCEMENT_FILTER, POLITICS_VIEWS, termFilter, isChinaPolitical } from "../shared/editorial-topics.mjs";
 const SITE = "https://trrb.net";
 const PAGE_SIZE = 20;
 const ROUTES: Record<string, any> = {
@@ -88,7 +88,7 @@ export default async (request: Request, context: any) => {
     const rows = await result.json();
     if (!Array.isArray(rows)) throw new Error("Invalid topic data");
     if (!rows.length) return errorPage(request, 404, page > 1 ? "该专题分页不存在" : "相关报道正在整理中", path);
-    const articles = rows.slice(0, PAGE_SIZE);
+    const articles = rows.slice(0, PAGE_SIZE).filter(row => path !== "/china-politics" || isChinaPolitical(row));
     const hasNext = rows.length > PAGE_SIZE;
     const canonical = `${SITE}${pageUrl(path, page, view)}`;
     const title = `${route.name}${selectedView ? ` · ${selectedView.label}` : ""}${page > 1 ? ` 第${page}页` : ""}｜唐人日报`;

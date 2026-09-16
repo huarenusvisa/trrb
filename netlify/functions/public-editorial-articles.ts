@@ -1,5 +1,5 @@
 import { rest } from './_shared/supabase-admin.js';
-import { POLITICS_FILTER, ENFORCEMENT_FILTER, editorialTopics } from '../shared/editorial-topics.mjs';
+import { POLITICS_FILTER, ENFORCEMENT_FILTER, editorialTopics, isChinaPolitical } from '../shared/editorial-topics.mjs';
 import policy from '../../article-editorial-policy.js';
 
 function json(status: number, body: unknown) {
@@ -23,7 +23,8 @@ export default async (request: Request) => {
     };
     if(q) query.and = `(or(title.ilike.*${q}*,summary.ilike.*${q}*))`;
     const rows = await rest('articles',{query});
-    const articles = (Array.isArray(rows) ? rows : []).map(({content,...row}) => ({...row, editorial_topics:editorialTopics(row),body_character_count:policy.bodyCharacterCount(content),editorial_policy_version:policy.VERSION}));
-    return json(200,{articles,category,q:q || null,offset,limit,has_more:articles.length === limit,next_offset:articles.length === limit ? offset+limit : null,generated_at:new Date().toISOString()});
+    const rawRows = Array.isArray(rows) ? rows : [];
+    const articles = rawRows.filter(row => category !== '中国政治' || isChinaPolitical(row)).map(({content,...row}) => ({...row, editorial_topics:editorialTopics(row),body_character_count:policy.bodyCharacterCount(content),editorial_policy_version:policy.VERSION}));
+    return json(200,{articles,category,q:q || null,offset,limit,has_more:rawRows.length === limit,next_offset:rawRows.length === limit ? offset+limit : null,generated_at:new Date().toISOString()});
   } catch(error) { console.error('Editorial articles API failed',error); return json(503,{error:'新闻暂时无法加载，请稍后重试'}); }
 };

@@ -43,7 +43,7 @@ jobs:
           if [[ "${{ inputs.recover_archived }}" != "true" && "${{ inputs.repair_today }}" != "true" ]]; then test -n "$X_BEARER_TOKEN"; fi
           test -n "$OPENAI_API_KEY"
       - name: Run collector tests
-        run: node --test scripts/china-hot-li-teacher-ingest.test.mjs scripts/china-context-research.test.mjs scripts/ren-zhengfei-news.test.mjs scripts/article-editorial-policy.test.mjs
+        run: node --test scripts/china-hot-li-teacher-ingest.test.mjs scripts/china-context-research.test.mjs scripts/china-editorial-update.test.mjs scripts/ren-zhengfei-news.test.mjs scripts/article-editorial-policy.test.mjs
       - name: Collect China headlines and publish automatically
         shell: bash
         run: |

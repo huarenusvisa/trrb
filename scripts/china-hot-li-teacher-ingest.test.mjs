@@ -22,12 +22,12 @@ test("中国新闻及中国政治人物内容进入中国热门头条池", () =>
   assert.equal(candidate.proposed_section, "中国热门头条");
   assert.equal(candidate.decision, "processing");
   assert.equal(candidate.pipeline, "china-hot-li-teacher-v2");
-  assert.equal(candidate.ai_payload.processing_version, "single-event-800-context-v4");
+  assert.equal(candidate.ai_payload.processing_version, "china-300-600-image-v5");
 });
 
-test("正文要求至少800字且不通过截断限制长稿", () => {
+test("中国热门头条采用300至600字目标且不截断事实", () => {
   for (const source of ["短文", "中".repeat(300), "中".repeat(1200)]) {
-    assert.deepEqual(targetLength(source, 1), { min: 800, max: null, band: "正文至少800个中文字符，禁止凑字" });
+    assert.deepEqual(targetLength(source, 1), { min: 300, max: 600, band: "正文300至600个中文字符，依据同一事件素材，不凑字" });
   }
 });
 
@@ -77,14 +77,14 @@ test("中国热门头条按内容查重并执行旧闻门禁", () => {
   assert.match(script, /与近30天已发布中国热门头条重复/);
 });
 
-test("发布稿自动公开且不在前台暴露抓取来源", () => {
+test("发布稿保留媒体归因及原帖证据", () => {
   const qualified = qualifyTweet(chinaTweet);
   const article = buildPublishedArticle(chinaTweet, qualified, { title: "重庆一所中学因高温调整开学安排", summary: "重庆当地一所中学发布通知，调整开学安排。", content: qualityBody, editorial_review, seo_keywords: "重庆,高温,开学", target: targetLength(qualified.text) }, "2026-08-23T09:00:00.000Z");
   assert.equal(article.status, "published");
   assert.equal(article.visibility, "public");
   assert.equal(article.metadata.automatic_publish, true);
   assert.equal(article.metadata.unverified_public_claim, true);
-  assert.equal(article.metadata.public_source_attribution, false);
+  assert.equal(article.metadata.public_source_attribution, true);
   assert.equal(article.metadata.duplicate_check_days, 30);
   assert.doesNotMatch(article.content, /李老师|X平台|x\.com/);
 });
@@ -158,7 +158,7 @@ test("短稿和缺图在发布前拦截，合格稿必须通过独立事实与�
     if (input.tools) return new Response(JSON.stringify({output: []}), {status: 200});
     const reviewing = input.text.format.name === "china_hot_editorial_review";
     if (!reviewing) {
-      assert.match(input.instructions, /至少800/);
+      assert.match(input.instructions, /至少300/);
       assert.match(input.instructions, /不得拼接不同事件/);
       assert.ok(input.max_output_tokens >= 5000);
     }
@@ -167,7 +167,7 @@ test("短稿和缺图在发布前拦截，合格稿必须通过独立事实与�
   await assert.rejects(generateArticle(qualified, { ...tweet, media: [] }), /合适配图/);
   assert.equal(requests, 0, "缺图不浪费模型调用");
   generated = { ...generated, content: "重庆学校公布开学安排。" };
-  await assert.rejects(generateArticle(qualified, tweet), /至少需要800字/);
+  await assert.rejects(generateArticle(qualified, tweet), /至少需要300字/);
   assert.equal(requests, 2, "短稿先进行一次资料检索，没有可核查来源则不反复凑字");
   generated = { ...generated, source_sufficient: false, rejection_reason: "只有标题，缺少报道事实" };
   await assert.rejects(generateArticle(qualified, tweet), /缺少报道事实/);
@@ -195,7 +195,7 @@ test("发布边界不能绕过长度、质检及选图要求", () => {
   const chars = Array.from({ length: 800 }, (_, i) => String.fromCharCode(0x4e00 + i)).join("");
   assert.equal(bodyCharacterCount(`<p>${chars}</p>`), 800);
   assert.equal(bodyCharacterCount(`正文<img alt="${chars}" src="https://example.com/cover.jpg">`), 2);
-  assert.throws(() => assertPublicationQuality(chinaTweet, { ...article, content: chars.slice(0,799) }), /至少需要800/);
+  assert.throws(() => assertPublicationQuality(chinaTweet, { ...article, content: chars.slice(0,299) }), /至少需要300/);
   assert.equal(assertPublicationQuality(chinaTweet, { ...article, content: chars }), chinaTweet.media[0].url);
   assert.throws(() => assertPublicationQuality(chinaTweet, { ...article, content: "重庆地铁恢复正常运行，现场乘客陆续进站。".repeat(80) }), /重复句/);
   assert.throws(() => assertPublicationQuality(chinaTweet, { ...article, editorial_review: undefined }), /缺少单一主题/);
@@ -226,7 +226,7 @@ test("自动失败草稿可有界重试，人工复核决定不会被自动覆�
   assert.equal(shouldRetryCandidate({
     decision: "review_required",
     decision_reason: "自动扩写或发布失败：生成稿未明确中国新闻主体；保留为可编辑草稿，由编辑决定是否发布",
-    ai_payload: { processing_version: "single-event-800-context-v4", automatic_retry_attempts: 3 },
+    ai_payload: { processing_version: "china-300-600-image-v5", automatic_retry_attempts: 3 },
   }, qualified), false);
   assert.equal(shouldRetryCandidate({
     decision: "review_required",

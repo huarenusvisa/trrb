@@ -14,7 +14,7 @@ test('only recent automated length holds retry once; manual, old and current-ver
   assert.equal(contextRetryEligible({...row,decision:'rejected'},now),false);
   assert.equal(contextRetryEligible({...row,decision_reason:'人工审核:正文仅440字'},now),false);
   assert.equal(contextRetryEligible({...row,collected_at:'2026-08-01'},now),false);
-  assert.equal(contextRetryEligible({...row,ai_payload:{quality_hold:true,processing_version:'single-event-800-context-v4'}},now),false);
+  assert.equal(contextRetryEligible({...row,ai_payload:{quality_hold:true,processing_version:'china-300-600-image-v5'}},now),false);
 });
 
 test('only retrieved same-conversation public replies can be attributed, never counted as verified facts',async()=>{

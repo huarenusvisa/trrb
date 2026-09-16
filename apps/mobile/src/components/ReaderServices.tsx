@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { ActivityIndicator, KeyboardAvoidingView, Modal, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { ActivityIndicator, KeyboardAvoidingView, Modal, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, useWindowDimensions, View } from 'react-native';
 import { Image } from 'expo-image';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useI18n } from '../i18n/I18nProvider';
@@ -8,6 +8,8 @@ import { ReaderServiceError, subscribeReader, submitReaderTip } from '../api/rea
 export function ReaderServices() {
   const { t } = useI18n();
   const insets = useSafeAreaInsets();
+  const {width:windowWidth,height:windowHeight} = useWindowDimensions();
+  const qrPreviewHeight = Math.max(80,Math.min(400,(windowWidth-68)*1134/888,windowHeight-insets.top-insets.bottom-220));
   const [email,setEmail] = useState('');
   const [subscribing,setSubscribing] = useState(false);
   const [subStatus,setSubStatus] = useState<'email'|'failed'|'success'|''>('');
@@ -17,6 +19,8 @@ export function ReaderServices() {
   const [contact,setContact] = useState('');
   const [sending,setSending] = useState(false);
   const [tipStatus,setTipStatus] = useState<'message'|'failed'|'success'|''>('');
+  const [qrOpen,setQrOpen] = useState(false);
+  const [qrPreviewFailed,setQrPreviewFailed] = useState(false);
   const [qrFailed,setQrFailed] = useState(false);
   const [qrAttempt,setQrAttempt] = useState(0);
   const subscriptionLock = useRef(false);
@@ -50,11 +54,27 @@ export function ReaderServices() {
       </View>
       {subStatus ? <Text accessibilityLiveRegion="polite" style={subStatus === 'success' ? styles.success : styles.error}>{t(subStatus === 'success' ? 'reader.subscribed' : subStatus === 'email' ? 'reader.invalidEmail' : 'reader.failed')}</Text> : null}
     </View>
-    <View style={styles.section}>
-      <Text style={styles.title}>{t('home.readerGroupTitle')}</Text>
-      <Text style={styles.subtitle}>{t('reader.qrHint')}</Text>
-      {qrFailed ? <Pressable accessibilityRole="button" style={styles.retry} onPress={() => {setQrAttempt(value => value+1);setQrFailed(false);}}><Text style={styles.error}>{t('reader.retryQr')}</Text></Pressable> : <Image key={qrAttempt} testID="reader-wechat-qr" accessible accessibilityLabel={t('reader.qrLabel')} source={{uri:`https://trrb.net/assets/reader-group-qr.jpeg?v=31.9&retry=${qrAttempt}`}} contentFit="contain" style={styles.qr} onError={() => setQrFailed(true)} />}
+    <View style={[styles.section,styles.groupRow]}>
+      <View style={styles.groupCopy}>
+        <Text style={styles.title}>{t('home.readerGroupTitle')}</Text>
+        <Text style={styles.subtitle}>{t('reader.qrShortHint')}</Text>
+      </View>
+      {qrFailed ? <Pressable accessibilityRole="button" style={styles.qrRetry} onPress={() => {setQrAttempt(value => value+1);setQrFailed(false);}}><Text style={styles.error}>{t('reader.retryQr')}</Text></Pressable> : <Pressable testID="reader-open-qr" accessibilityRole="button" accessibilityLabel={t('reader.enlargeQr')} style={styles.qrButton} onPress={() => {setQrPreviewFailed(false);setQrOpen(true);}}>
+        <Image key={qrAttempt} testID="reader-wechat-qr" accessible={false} source={{uri:`https://trrb.net/assets/reader-group-qr.jpeg?v=31.9&retry=${qrAttempt}`}} contentFit="contain" style={styles.qr} onError={() => setQrFailed(true)} />
+        <Text style={styles.qrCaption}>{t('reader.enlargeQr')}</Text>
+      </Pressable>}
     </View>
+    <Modal visible={qrOpen} transparent animationType="fade" onRequestClose={() => setQrOpen(false)}>
+      <View style={[styles.backdrop,{paddingTop:insets.top+12,paddingBottom:insets.bottom+12}]}>
+        <View accessibilityViewIsModal style={styles.dialog}>
+          <View style={styles.dialogHead}><Text accessibilityRole="header" style={styles.title}>{t('home.readerGroupTitle')}</Text><Pressable accessibilityRole="button" accessibilityLabel={t('reader.close')} style={styles.close} onPress={() => setQrOpen(false)}><Text style={styles.closeText}>×</Text></Pressable></View>
+          <ScrollView contentContainerStyle={styles.qrDialogBody}>
+            {qrPreviewFailed ? <Pressable accessibilityRole="button" style={styles.retry} onPress={() => {setQrAttempt(value => value+1);setQrPreviewFailed(false);}}><Text style={styles.error}>{t('reader.retryQr')}</Text></Pressable> : <Image key={qrAttempt} testID="reader-wechat-qr-preview" accessible accessibilityLabel={t('reader.qrLabel')} source={{uri:`https://trrb.net/assets/reader-group-qr.jpeg?v=31.9&retry=${qrAttempt}`}} contentFit="contain" style={{width:qrPreviewHeight*888/1134,height:qrPreviewHeight,alignSelf:'center'}} onError={() => setQrPreviewFailed(true)} />}
+            <Text style={styles.subtitle}>{t('reader.qrHint')}</Text>
+          </ScrollView>
+        </View>
+      </View>
+    </Modal>
     <View style={styles.lastSection}>
       <View style={styles.tipRow}><View style={styles.tipCopy}><Text style={styles.title}>{t('home.readerTipsTitle')}</Text><Text style={styles.subtitle}>{t('reader.tipIntro')}</Text></View>
       <Pressable ref={tipButton} testID="reader-open-tip" accessibilityRole="button" style={styles.tipButton} onPress={() => {setTipOpen(true);setTipStatus('');}}><Text style={styles.tipButtonText}>{t('home.readerTipsAction')}</Text></Pressable></View>
@@ -84,7 +104,7 @@ const styles = StyleSheet.create({
  title:{color:'#101828',fontSize:17,fontWeight:'800'},subtitle:{color:'#667085',fontSize:12,lineHeight:18,marginTop:5},
  emailRow:{flexDirection:'row',flexWrap:'wrap',gap:8,marginTop:10},email:{flexGrow:1,flexBasis:180},input:{minHeight:44,borderWidth:1,borderColor:'#cbd2dc',borderRadius:7,paddingHorizontal:10,paddingVertical:10,fontSize:14,color:'#101828',backgroundColor:'#fff'},
  button:{minHeight:44,paddingHorizontal:14,paddingVertical:10,backgroundColor:'#c8211e',borderRadius:7,alignItems:'center',justifyContent:'center'},buttonText:{fontSize:13,color:'#fff',fontWeight:'800'},disabled:{opacity:0.55},
- qr:{width:'100%',maxWidth:260,aspectRatio:888/1134,alignSelf:'center',marginTop:8,backgroundColor:'#fff'},retry:{minHeight:100,alignItems:'center',justifyContent:'center'},
+ groupRow:{flexDirection:'row',alignItems:'center',gap:12},groupCopy:{flex:1,minWidth:0},qrButton:{width:88,flexShrink:0,alignItems:'center'},qr:{width:88,height:112,backgroundColor:'#fff'},qrCaption:{color:'#c8211e',fontSize:11,lineHeight:16,textAlign:'center'},qrRetry:{width:88,minHeight:112,justifyContent:'center'},qrDialogBody:{padding:18},retry:{minHeight:100,alignItems:'center',justifyContent:'center'},
  tipRow:{flexDirection:'row',alignItems:'center',gap:12},tipCopy:{flex:1},tipButton:{minHeight:44,justifyContent:'center',paddingHorizontal:6},tipButtonText:{color:'#c8211e',fontSize:13,fontWeight:'800'},
  backdrop:{flex:1,backgroundColor:'rgba(16,24,40,0.5)',paddingHorizontal:16,justifyContent:'center'},dialog:{backgroundColor:'#fff',borderRadius:14,maxHeight:'100%',width:'100%',maxWidth:540,alignSelf:'center'},dialogHead:{flexDirection:'row',alignItems:'center',justifyContent:'space-between',paddingLeft:18,paddingRight:8,borderBottomWidth:StyleSheet.hairlineWidth,borderBottomColor:'#eaecf0'},close:{width:44,height:48,alignItems:'center',justifyContent:'center'},closeText:{fontSize:28,color:'#667085'},dialogBody:{padding:18,gap:10},label:{fontSize:13,fontWeight:'700',color:'#344054'},message:{minHeight:150},success:{fontSize:13,lineHeight:20,color:'#157347',marginTop:8},error:{fontSize:13,lineHeight:20,color:'#b42318',marginTop:8},
 });

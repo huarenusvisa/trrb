@@ -97,7 +97,7 @@
     ];
     return `<details class="nav-tools ${activeKey() === 'tools' ? 'active' : ''}"><summary data-nav-key="tools">${labels[locale].tools}</summary><div class="nav-tools-panel">${links.map(([href, label, external]) => `<a href="${href}"${external ? ' target="_blank" rel="noopener noreferrer"' : ''}>${label}${external ? '<span aria-hidden="true">↗</span>' : ''}</a>`).join('')}</div></details>`;
   };
-  const navigationMarkup = () => `<a data-nav-key="home" class="${isHome() ? 'active' : ''}"${isHome() ? ' aria-current="page"' : ''} href="${homeHref()}">${homeLabels[locale]}</a>` + ['judges', 'courts', 'states', 'nationality'].map((key) => `<a data-nav-key="${key}" class="${activeKey() === key ? 'active' : ''}" href="${routeHref(key)}">${labels[locale][key]}</a>`).join('') + toolMenuMarkup() + `<a data-nav-key="community" href="${routeHref('community')}">${labels[locale].community}</a>`;
+  const navigationMarkup = () => ['judges', 'courts', 'states', 'nationality'].map((key) => `<a data-nav-key="${key}" class="${activeKey() === key ? 'active' : ''}" href="${routeHref(key)}">${labels[locale][key]}</a>`).join('') + toolMenuMarkup() + `<a data-nav-key="community" href="${routeHref('community')}">${labels[locale].community}</a>`;
   const languageMarkup = (id = 'language-select') => `<label for="${id}" data-language-label>${labels[locale].language}</label><select id="${id}" aria-label="${labels[locale].language}">${options}</select>`;
   const applyNavigationLabels = () => {
     const set = labels[locale] || labels['zh-Hans'];

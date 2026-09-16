@@ -18,3 +18,5 @@
 2026-09-16: compact desktop support card and remove the permanent nationality navigation highlight; highlight only the current page.
 
 2026-09-16: restore trend/search and national overview at the top of the homepage; place state shortcuts below the dashboard and compact support below the right-hand overview.
+
+2026-09-16: remove redundant Home navigation, tighten dashboard spacing, and move compact payment codes beside search city shortcuts.

@@ -37,8 +37,8 @@ export async function applyAsylumJudgeSupport({ output }) {
       html = html.replace(category, '');
       html = html.replace('<section id="all-judges"', `${category}\n<section id="all-judges"`);
     }
-    html = html.replace(/(<aside class="snapshot"[\s\S]*?<\/aside>)/, `<div class="home-overview">$1${card}</div>`);
-    html = html.replace('</head>','<link rel="stylesheet" href="/asylumjudge/support.css?v=3"><script src="/asylumjudge/support.js?v=1" defer></script></head>');
+    html = html.replace(/(<div class="quick"[\s\S]*?<\/div>)/, `<div class="search-tools">$1${card}</div>`);
+    html = html.replace('</head>','<link rel="stylesheet" href="/asylumjudge/support.css?v=4"><script src="/asylumjudge/support.js?v=1" defer></script></head>');
     html = html.replace('</body>',`${dialog}</body>`);
     await writeFile(file, html);
   }

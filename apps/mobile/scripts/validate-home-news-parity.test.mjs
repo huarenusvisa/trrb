@@ -17,7 +17,8 @@ test('keeps the App homepage on the PC mobile content structure', () => {
     assert.ok(next > position, `${marker} must remain in canonical homepage order`);
     position = next;
   }
-  assert.match(home, /titleKey: 'home\.topicFinanceTitle'/);
+  assert.match(home, /titleKey: 'home\.topicXiTitle'/);
+  assert.doesNotMatch(home, /topicFinanceTitle|trrb\.net\/niulai/);
   assert.match(home, /newsSections = \[\s*\{ key: 'china-hot', titleKey: 'home\.sectionChinaHot', category: '热门头条'/);
   for (const section of ['移民法官通过率', '移民美国', '美国判例与新规', '招聘求职', '移民社区', '订阅每日快报', '加入读者群', '投稿爆料']) {
     assert.ok(i18n.includes(section), `${section} must stay in the localized App homepage content`);
@@ -25,7 +26,8 @@ test('keeps the App homepage on the PC mobile content structure', () => {
   for (const marker of ['home.portalJudgesTitle', 'home.portalImmigrationTitle', 'home.portalLegalTitle', 'home.portalJobsTitle', 'home.portalCommunityTitle', 'home.readerSubscribeTitle', 'home.readerGroupTitle', 'home.readerTipsTitle']) {
     assert.ok(home.includes(marker), `${marker} must stay on the App homepage`);
   }
-  assert.match(api, /public-home-articles/);
+  assert.match(api, /public-home-bundle/);
+  assert.match(home, /fetchHomepageBundle\(\)/);
 });
 
 
@@ -76,37 +78,28 @@ test('keeps category labels at the page level and rotates important news on the 
   assert.match(categoryFlow, /id: "home-nav-important"/);
   assert.match(categoryFlow, /id: "category-screen-title"/);
   assert.doesNotMatch(categoryFlow, /visible: "重要新闻"|text: "重要新闻"/);
-  for (const category of ['重要新闻', '热门头条', '美国时政', '美国警情', '招聘求职', 'ICE执法动态']) {
+  for (const category of ['重要新闻', '热门头条', '美国时政', '中国政治', '招聘求职', '美国执法与警情']) {
     assert.match(home, new RegExp(`category: '${category}'`));
   }
 });
 
-test('keeps ICE in its designated sections, ranking, nav and qualified focus carousel', () => {
+test('merged enforcement, Xi and election topics stay aligned with PC without losing ICE map', () => {
   const home = read('app/(tabs)/index.tsx');
   const api = read('src/api/trrb.ts');
-  const focus = fs.readFileSync(new URL('../../../netlify/functions/public-home-focus.js', import.meta.url), 'utf8');
-  const publicArticles = fs.readFileSync(new URL('../../../netlify/functions/public-articles.js', import.meta.url), 'utf8');
-  assert.doesNotMatch(home, /中国官场/);
-  assert.match(home, /key: 'ice',[\s\S]*?titleKey: 'home\.topicIceTitle'/);
-  assert.match(home, /key: 'ice-news', titleKey: 'home\.sectionIce', category: 'ICE执法动态'/);
-  assert.equal((home.match(/category: 'ICE执法动态'/g) || []).length, 2);
-  assert.equal((home.match(/titleKey: 'home\.topicIceTitle'/g) || []).length, 1);
+  assert.match(home, /key: 'xi',[\s\S]*?titleKey: 'home\.topicXiTitle'/);
+  assert.match(home, /key: 'us-enforcement'/);
+  assert.match(home, /key: 'china-politics'/);
+  assert.match(home, /https:\/\/trrb.net\/ice/);
+  assert.match(home, /topic\/midterm-elections/);
+  assert.match(home, /topic\/xi-jinping/);
   assert.match(home, /rankCategories[^;]*'ICE执法动态'/s);
-  assert.match(home, /const rankItems = useMemo[\s\S]*?return articles[\s\S]*?rankCategories\.has/);
-  assert.match(home, /HOME_NAV_ITEMS[^;]*'ICE执法动态'/s);
-  assert.match(api, /export async function fetchHomepageFocus/);
-  assert.match(home, /fetchHomepageFocus\(\)\.catch/);
-  assert.match(home, /const importantCarousel = useMemo[\s\S]*?return focusArticles\.filter/);
-  assert.match(focus, /MIN_LONGFORM_CHARS = 1500/);
-  assert.match(focus, /isIceEnforcementText/);
-  assert.match(focus, /textLength\(row\?\.content\) < MIN_LONGFORM_CHARS/);
-  assert.match(focus, /b\.homepage_focus_score - a\.homepage_focus_score/);
-  assert.match(publicArticles, /category === "ICE执法动态"/);
-  assert.match(publicArticles, /topic_key\.eq\.ice/);
-  assert.match(publicArticles, /isIceEnforcementText/);
-  assert.match(home, /const homepageArticles = useMemo\(\(\) => articles\.filter\(\(item\) => !isHiddenHomepageCategory/);
-  assert.match(home, /value\.startsWith\('中国官'\)[^;]*\/ICE\/i\.test\(value\)/);
-  assert.match(home, /section\.key === 'ice-news' \? articles : homepageArticles/);
+  assert.match(home, /importantHomepageEligible\(item\)/);
+  assert.match(home, /globalHomepageEligible\(item\)/);
+  assert.match(home, /homepageSectionMatches\(item, section.key, section.aliases\)/);
+  assert.match(api, /public-editorial-articles/);
+  assert.match(home, /useForegroundRetry\(true, retryHome/);
+  const nav = home.slice(home.indexOf('const HOME_NAV_ITEMS'), home.indexOf('const ONBOARDING_LANGUAGES'));
+  assert.doesNotMatch(nav, /习近平|topicXi/);
 });
 
 test('renders continuous previous and next official-news navigation', () => {

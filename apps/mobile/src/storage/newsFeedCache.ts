@@ -8,7 +8,8 @@ import {
   parseNewsFeedCache,
 } from './news-feed-cache-core';
 
-const HOME_KEY = 'trrb.news.feed.v1.home';
+// Discard pre-parity snapshots that lack topic membership and placement metadata.
+const HOME_KEY = 'trrb.news.feed.v2.home';
 const LIST_PREFIX = 'trrb.news.feed.v1.list.';
 
 function listKey(category?: string, q?: string) {

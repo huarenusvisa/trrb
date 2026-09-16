@@ -367,7 +367,7 @@ test('localizes homepage topic entries and legal detail chrome while preserving 
   const home = read('app/(tabs)/index.tsx');
   const legal = read('app/legal/[id].tsx');
   for (const source of [home, legal]) assert.match(source, /useI18n\(\)/);
-  for (const key of ['home.topicsHeading', 'home.topicTrumpTitle', 'home.topicIceSubtitle', 'home.topicFinanceTitle', 'home.topicLoading', 'home.openTopicA11y']) {
+  for (const key of ['home.topicsHeading', 'home.topicTrumpTitle', 'home.topicXiSubtitle', 'home.topicXiTitle', 'home.topicLoading', 'home.openTopicA11y']) {
     assert.ok(home.includes(`'${key}'`), `homepage topics must translate ${key}`);
   }
   for (const key of ['legal.detailLoading', 'legal.detailDocket', 'legal.detailChineseAnalysis', 'legal.detailAnalysisUnavailable', 'legal.detailOpenOfficial', 'legal.detailShare']) {
@@ -400,7 +400,7 @@ test('localizes homepage portals, reader services and footer without changing de
 
 test('localizes homepage navigation, rankings, weather and network recovery', () => {
   const home = read('app/(tabs)/index.tsx');
-  for (const key of ['home.brand', 'home.locationNewYork', 'home.navImportant', 'home.navJobs', 'home.hot', 'home.importantNews', 'home.ranking24h', 'home.sectionChinaHot', 'home.sectionIce', 'home.weatherUnknown', 'home.weatherThunderstorm', 'home.offline', 'home.slowRefresh']) {
+  for (const key of ['home.brand', 'home.locationNewYork', 'home.navImportant', 'home.navJobs', 'home.hot', 'home.importantNews', 'home.ranking24h', 'home.sectionChinaHot', 'home.navEnforcement', 'home.weatherUnknown', 'home.weatherThunderstorm', 'home.offline', 'home.slowRefresh']) {
     assert.ok(home.includes(`'${key}'`), `homepage chrome must translate ${key}`);
   }
   assert.match(home, /openCategory\(item\.category\)/);

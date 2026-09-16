@@ -2,7 +2,8 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { AccessibilityInfo, ActivityIndicator, InteractionManager, Linking, Pressable, RefreshControl, ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import { router } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { fetchArticles, fetchHomepageFocus, homepageSupplementGaps, NewsArticle, sortNewestFirst } from '../../src/api/trrb';
+import { fetchHomepageBundle, fetchHomepageFocus, NewsArticle } from '../../src/api/trrb';
+import { globalHomepageEligible, importantHomepageEligible, homepageSectionMatches } from '../../src/news/home-editorial-policy';
 import { NewsImage, prefetchNewsImages } from '../../src/components/NewsImage';
 import { useForegroundRetry } from '../../src/hooks/useForegroundRetry';
 import { useI18n } from '../../src/i18n/I18nProvider';
@@ -14,10 +15,13 @@ const HOME_NAV_ITEMS = [
   { category: '重要新闻', labelKey: 'home.navImportant' },
   { category: '热门头条', labelKey: 'home.navHot' },
   { category: '美国时政', labelKey: 'home.navUsPolitics' },
-  { category: '美国警情', labelKey: 'home.navUsSafety' },
+  { category: '中国政治', labelKey: 'home.navChinaPolitics' },
+  { category: '移民法官通过率', labelKey: 'home.portalJudgesTitle', url: 'https://asylumjudge.com/' },
+  { category: '移民美国', labelKey: 'home.portalImmigrationTitle', route: '/immigration' },
+  { category: '移民社区', labelKey: 'home.portalCommunityTitle', route: '/community' },
   { category: '招聘求职', labelKey: 'home.navJobs', route: '/jobs' },
-  { category: 'ICE执法动态', labelKey: 'home.navIce' },
-] as const satisfies ReadonlyArray<{ category: string; labelKey: MessageKey; route?: '/jobs' }>;
+  { category: '美国执法与警情', labelKey: 'home.navEnforcement' },
+] as const satisfies ReadonlyArray<{ category: string; labelKey: MessageKey; route?: '/jobs' | '/immigration' | '/community'; url?: string }>;
 const ONBOARDING_LANGUAGES: { locale: SupportedLocale; label: string }[] = [
   { locale: 'zh-CN', label: '简体' },
   { locale: 'zh-TW', label: '繁體' },
@@ -28,8 +32,8 @@ const rankCategories = new Set(['热门头条', '中国热门头条', '美国时
 const newsSections = [
   { key: 'china-hot', titleKey: 'home.sectionChinaHot', category: '热门头条', aliases: ['热门头条', '中国热门头条'] },
   { key: 'us-politics', titleKey: 'home.sectionUsPolitics', category: '美国时政', aliases: ['美国时政'] },
-  { key: 'ice-news', titleKey: 'home.sectionIce', category: 'ICE执法动态', aliases: ['ICE执法动态', 'ICE执法', 'ICE执法追踪', 'ICE新闻', '驱逐快报'] },
-  { key: 'us-crime', titleKey: 'home.sectionUsSafety', category: '美国警情', aliases: ['美国警情'] },
+  { key: 'us-enforcement', titleKey: 'home.navEnforcement', category: '美国执法与警情', aliases: ['美国警情', 'ICE执法动态', 'ICE执法', 'ICE执法追踪', 'ICE新闻', '驱逐快报'] },
+  { key: 'china-politics', titleKey: 'home.navChinaPolitics', category: '中国政治', aliases: ['中国政治'] },
 ] as const satisfies ReadonlyArray<{ key: string; titleKey: MessageKey; category: string; aliases: readonly string[] }>;
 
 const topicCards = [
@@ -42,12 +46,12 @@ const topicCards = [
     url: 'https://trrb.net/trump',
   },
   {
-    key: 'ice',
-    titleKey: 'home.topicIceTitle',
-    subtitleKey: 'home.topicIceSubtitle',
+    key: 'xi',
+    titleKey: 'home.topicXiTitle',
+    subtitleKey: 'home.topicXiSubtitle',
     statusKey: 'home.topicAutoUpdate',
-    image: 'https://trrb.net/assets/topic-focus/ice-badge.jpg?v=30',
-    url: 'https://trrb.net/ice',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/c/cc/Xi_Jinping_March_2017.jpg',
+    url: 'https://trrb.net/topic/xi-jinping',
   },
   {
     key: 'election',
@@ -55,17 +59,10 @@ const topicCards = [
     subtitleKey: 'home.topicElectionSubtitle',
     statusKey: 'home.topicLiveUpdate',
     image: 'https://trrb.net/assets/topic-focus/election-ballot.jpg?v=30',
-    url: 'https://trrb.net/listing.html?q=%E4%B8%AD%E6%9C%9F%E9%80%89%E4%B8%BE',
+    url: 'https://trrb.net/topic/midterm-elections',
   },
-  {
-    key: 'finance',
-    titleKey: 'home.topicFinanceTitle',
-    subtitleKey: 'home.topicFinanceSubtitle',
-    statusKey: 'home.syncedWithWeb',
-    image: 'https://trrb.net/.netlify/images?url=%2Fassets%2Ftopic-focus%2Ffinance-market.svg&fm=png&w=420',
-    url: 'https://trrb.net/niulai/',
-  },
-] as const satisfies ReadonlyArray<{ key: 'trump' | 'ice' | 'election' | 'finance'; titleKey: MessageKey; subtitleKey: MessageKey; statusKey: MessageKey; image: string; url: string }>;
+
+] as const satisfies ReadonlyArray<{ key: 'trump' | 'xi' | 'election'; titleKey: MessageKey; subtitleKey: MessageKey; statusKey: MessageKey; image: string; url: string }>;
 
 const portalSections = [
   {
@@ -147,11 +144,6 @@ function articleDate(item: NewsArticle, locale: string) {
   return shortDate(item.published_at || item.created_at, locale);
 }
 
-function isHiddenHomepageCategory(category?: string) {
-  const value = String(category || '').trim();
-  return value.startsWith('中国官') || value === '驱逐快报' || /ICE/i.test(value);
-}
-
 export default function HomeScreen() {
   const { languageChoicePending, locale, setPreference, t } = useI18n();
   const insets = useSafeAreaInsets();
@@ -199,7 +191,7 @@ export default function HomeScreen() {
     try {
       setError('');
       const [global, focusResult] = await Promise.all([
-        fetchArticles({ limit: 120 }),
+        fetchHomepageBundle(),
         fetchHomepageFocus().catch(() => null),
       ]);
       if (sequence !== loadSequence.current) return;
@@ -215,20 +207,6 @@ export default function HomeScreen() {
       if (!restoreCache) AccessibilityInfo.announceForAccessibility(t('home.refreshSucceeded'));
       void cacheHomeFeed(global, focus).catch(() => undefined);
 
-      // The canonical PC feed paints first. Category supplements fill gaps only
-      // after the first usable homepage is already visible.
-      const supplementCategories = homepageSupplementGaps(global);
-      const supplements = await Promise.all(supplementCategories.map((category) => fetchArticles({ category, limit: 12 }).catch(() => [])));
-      if (sequence !== loadSequence.current) return;
-      const seen = new Set<string>();
-      const merged = sortNewestFirst([...global, ...supplements.flat()]).filter((item) => {
-        const key = String(item.id);
-        if (!key || seen.has(key)) return false;
-        seen.add(key);
-        return true;
-      });
-      setArticles(merged);
-      void cacheHomeFeed(merged, focus).catch(() => undefined);
     } catch {
       if (sequence !== loadSequence.current) return;
       setError(restored || articles.length > 0 ? 'offline' : 'loadFailed');
@@ -267,7 +245,7 @@ export default function HomeScreen() {
     return () => task.cancel();
   }, []);
 
-  const hotHeadlines = useMemo(() => articles.filter((item) => ['热门头条', '中国热门头条'].includes(String(item.category_name || ''))).slice(0, 12), [articles]);
+  const hotHeadlines = useMemo(() => articles.filter((item) => globalHomepageEligible(item)).filter((item) => ['热门头条', '中国热门头条'].includes(String(item.category_name || ''))).slice(0, 12), [articles]);
   const activeHot = hotHeadlines.length ? hotHeadlines[hotIndex % hotHeadlines.length] : null;
 
   useEffect(() => {
@@ -276,10 +254,9 @@ export default function HomeScreen() {
     return () => clearInterval(timer);
   }, [hotHeadlines.length]);
 
-  const homepageArticles = useMemo(() => articles.filter((item) => !isHiddenHomepageCategory(item.category_name)), [articles]);
   const importantCarousel = useMemo(() => {
     const seen = new Set<string>();
-    return focusArticles.filter((item) => {
+    return focusArticles.filter((item) => importantHomepageEligible(item)).filter((item) => {
       const key = String(item.id);
       if (!key || seen.has(key)) return false;
       seen.add(key);
@@ -303,6 +280,7 @@ export default function HomeScreen() {
   const rankItems = useMemo(() => {
     const cutoff = Date.now() - 24 * 60 * 60 * 1000;
     return articles
+      .filter((item) => globalHomepageEligible(item))
       .filter((item) => rankCategories.has(String(item.category_name || '').trim()))
       .filter((item) => {
         const time = Date.parse(item.published_at || item.created_at || '');
@@ -312,10 +290,10 @@ export default function HomeScreen() {
   }, [articles]);
   const categoryGroups = useMemo(() => newsSections.map((section) => ({
     ...section,
-    items: (section.key === 'ice-news' ? articles : homepageArticles)
-      .filter((item) => section.aliases.some((alias) => alias === String(item.category_name || '')))
+    items: articles
+      .filter((item) => homepageSectionMatches(item, section.key, section.aliases))
       .slice(0, 6),
-  })), [articles, homepageArticles]);
+  })), [articles]);
   const imagePrefetchQueue = useMemo(() => [
     ...importantCarousel.slice(1, 3).map((item) => item.cover_image),
     ...categoryGroups.map((section) => section.items[0]?.cover_image),
@@ -331,9 +309,8 @@ export default function HomeScreen() {
 
   const topicLatest = useMemo(() => ({
     trump: articles.find((item) => item.title.includes('特朗普')),
-    ice: articles.find((item) => /ICE|移民执法|驱逐/i.test(`${item.category_name || ''} ${item.title}`)),
+    xi: articles.find((item) => item.editorial_topics?.includes('xi')), 
     election: articles.find((item) => item.title.includes('中期选举') || item.title.includes('选举')),
-    finance: articles.find((item) => /财经|股市|美股|基金|ETF/i.test(item.title)),
   }), [articles]);
   const titleFor = (article: NewsArticle) => article.title;
   const weatherInfo = weatherLabel(weather.code, weather.isDay);
@@ -369,7 +346,8 @@ export default function HomeScreen() {
     void loadWeather();
   };
 
-  useForegroundRetry(Boolean(error), retryHome);
+  // Refresh on every foreground return, even when the previous request succeeded.
+  useForegroundRetry(true, retryHome, 750, 60_000);
 
   const homeCacheIsStale = cacheSavedAt !== null && isNewsFeedCacheStale(cacheSavedAt);
   const homeCacheStatus = cacheSavedAt === null ? '' : t(homeCacheIsStale ? 'home.cachedStale' : 'home.cachedAt', {
@@ -431,6 +409,7 @@ export default function HomeScreen() {
               style={styles.navItem}
               onPress={() => {
                 if ('route' in item) router.push(item.route);
+                else if ('url' in item) void openExternal(item.url, t(item.labelKey));
                 else openCategory(item.category);
               }}
             >
@@ -544,7 +523,7 @@ export default function HomeScreen() {
           {topicCards.map((topic) => {
             const latest = topicLatest[topic.key];
             return (
-              <Pressable key={topic.key} accessibilityRole="link" accessibilityLabel={t('home.openTopicA11y', { title: t(topic.titleKey) })} accessibilityState={{ disabled: externalBusy }} disabled={externalBusy} style={styles.focusCard} onPress={() => openTopic(topic.url, t(topic.titleKey))}>
+              <Pressable key={topic.key} accessibilityRole="link" accessibilityLabel={t('home.openTopicA11y', { title: t(topic.titleKey) })} accessibilityState={{ disabled: externalBusy }} disabled={externalBusy} style={[styles.focusCard, topic.key === 'trump' ? styles.focusTrump : topic.key === 'xi' ? styles.focusXi : styles.focusElection]} onPress={() => openTopic(topic.url, t(topic.titleKey))}>
                 <NewsImage uri={showDeferredImages ? topic.image : undefined} style={styles.focusImage} testID={`home-topic-image-${topic.key}`} priority="low" />
                 <View style={styles.focusBody}>
                   <Text style={styles.focusTitle}>{t(topic.titleKey)}</Text>
@@ -572,6 +551,7 @@ export default function HomeScreen() {
                 <NewsImage uri={showDeferredImages ? first.cover_image : undefined} style={styles.categoryLeadImage} testID={`home-category-image-${key}`} priority="low" />
                 <Text style={styles.categoryLeadTitle} numberOfLines={3}>{titleFor(first)}</Text>
               </Pressable>
+              {key === 'us-enforcement' ? <Pressable accessibilityRole="link" style={styles.iceMapLink} onPress={() => openTopic('https://trrb.net/ice', t('home.iceMap'))}><Text style={styles.iceMapText}>{t('home.iceMap')} →</Text></Pressable> : null}
               {rest.map((item) => (
                 <Pressable key={String(item.id)} style={styles.textNewsRow} onPress={() => openArticle(item)}>
                   <View style={styles.newsDot} />
@@ -591,7 +571,7 @@ export default function HomeScreen() {
                   <View style={styles.portalTitleWrap}><View style={styles.portalAccent} /><Text style={styles.portalTitle}>{t(section.titleKey)}</Text></View>
                   <Pressable accessibilityRole="link" accessibilityLabel={t('home.openPortalA11y', { title: t(section.titleKey) })} accessibilityState={{ disabled: externalBusy }} disabled={externalBusy} onPress={() => openPortal(section)}><Text style={styles.portalAction}>{t(section.actionKey)}</Text></Pressable>
                 </View>
-                <Pressable accessibilityRole="link" accessibilityLabel={t('home.openPortalA11y', { title: t(section.titleKey) })} accessibilityState={{ disabled: externalBusy }} disabled={externalBusy} style={styles.portalBanner} onPress={() => openPortal(section)}><Text style={styles.portalBannerText}>{t(section.bannerKey)}</Text></Pressable>
+                <Pressable accessibilityRole="link" accessibilityLabel={t('home.openPortalA11y', { title: t(section.titleKey) })} accessibilityState={{ disabled: externalBusy }} disabled={externalBusy} style={[styles.portalBanner, section.key === 'judges' && styles.judgeBanner]} onPress={() => openPortal(section)}><Text style={[styles.portalBannerText, section.key === 'judges' && styles.judgeBannerText]}>{t(section.bannerKey)}</Text></Pressable>
                 <View style={styles.portalGrid}>
                   {section.itemKeys.map((itemKey, index) => (
                     <Pressable key={itemKey} accessibilityRole="link" accessibilityLabel={t('home.openPortalItemA11y', { item: t(itemKey) })} accessibilityState={{ disabled: externalBusy }} disabled={externalBusy} style={[styles.portalItem, section.itemKeys.length % 2 === 1 && index === section.itemKeys.length - 1 && styles.portalItemWide]} onPress={() => openPortal(section)}>
@@ -599,7 +579,6 @@ export default function HomeScreen() {
                     </Pressable>
                   ))}
                 </View>
-                <Pressable accessibilityRole="link" accessibilityLabel={t('home.openPortalA11y', { title: t(section.titleKey) })} accessibilityState={{ disabled: externalBusy }} disabled={externalBusy} style={styles.portalMore} onPress={() => openPortal(section)}><Text style={styles.portalMoreText}>{t(section.actionKey)}</Text></Pressable>
               </View>
             ))}
 
@@ -690,7 +669,10 @@ const styles = StyleSheet.create({
   rankNo: { width: 31, color: '#98a2b3', fontSize: 13, fontWeight: '900' },
   rankNoHot: { color: '#c8211e' },
   rankTitle: { flex: 1, color: '#101828', fontSize: 13, lineHeight: 18, fontWeight: '700' },
-  focusCard: { minHeight: 92, flexDirection: 'row', alignItems: 'center', paddingVertical: 9, borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: '#eaecf0' },
+  focusCard: { minHeight: 92, borderRadius: 12, paddingHorizontal: 9, marginBottom: 8, flexDirection: 'row', alignItems: 'center', paddingVertical: 9, borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: '#eaecf0' },
+  focusTrump: { backgroundColor: '#fff0f2', borderColor: '#ffd5dc' },
+  focusXi: { backgroundColor: '#eef6ff', borderColor: '#c8deff' },
+  focusElection: { backgroundColor: '#effcf7', borderColor: '#bde9d8' },
   focusImage: { width: 68, height: 76, borderRadius: 7, backgroundColor: '#eaecf0' },
   focusBody: { flex: 1, paddingHorizontal: 10 },
   focusTitle: { color: '#101828', fontSize: 14, fontWeight: '900' },
@@ -707,16 +689,20 @@ const styles = StyleSheet.create({
   newsDot: { width: 4, height: 4, borderRadius: 2, backgroundColor: '#c8211e', marginRight: 7 },
   textNewsTitle: { flex: 1, color: '#344054', fontSize: 13, lineHeight: 18, fontWeight: '700' },
   textNewsDate: { color: '#98a2b3', fontSize: 9, marginLeft: 8 },
+  iceMapLink: { minHeight: 44, justifyContent: 'center', backgroundColor: '#eef5ff', borderRadius: 7, paddingHorizontal: 10, marginBottom: 6 },
+  iceMapText: { color: '#19538e', fontSize: 13, fontWeight: '700' },
   portalCard: { backgroundColor: '#fff', borderRadius: 10, padding: 12, marginBottom: 12, borderWidth: StyleSheet.hairlineWidth, borderColor: '#e4e7ec' },
-  portalHead: { minHeight: 35, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 },
+  portalHead: { minHeight: 31, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 },
   portalTitleWrap: { flexDirection: 'row', alignItems: 'center', flex: 1 },
-  portalAccent: { width: 4, height: 27, backgroundColor: '#d71920', marginRight: 10 },
-  portalTitle: { color: '#101828', fontSize: 20, fontWeight: '900' },
+  portalAccent: { width: 3, height: 23, backgroundColor: '#d71920', marginRight: 10 },
+  portalTitle: { color: '#101828', fontSize: 17, fontWeight: '900' },
   portalAction: { color: '#667085', fontSize: 12, fontWeight: '800' },
-  portalBanner: { minHeight: 66, borderRadius: 9, backgroundColor: '#ca0000', paddingHorizontal: 13, justifyContent: 'center', marginBottom: 10 },
-  portalBannerText: { color: '#fff', fontSize: 15, lineHeight: 21, fontWeight: '900' },
+  portalBanner: { minHeight: 48, borderRadius: 9, backgroundColor: '#ca0000', paddingHorizontal: 13, justifyContent: 'center', marginBottom: 10 },
+  portalBannerText: { color: '#fff', fontSize: 13, lineHeight: 19, fontWeight: '900' },
+  judgeBanner: { backgroundColor: '#fff3f5', borderWidth: 1, borderColor: '#ffd2d8' },
+  judgeBannerText: { color: '#bd1018' },
   portalGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
-  portalItem: { width: '48.5%', minHeight: 58, borderRadius: 8, borderWidth: 1, borderColor: '#e4e7ec', paddingHorizontal: 11, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+  portalItem: { width: '48.5%', minHeight: 44, borderRadius: 8, borderWidth: 1, borderColor: '#e4e7ec', paddingHorizontal: 11, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
   portalItemWide: { width: '100%' },
   portalItemText: { flex: 1, color: '#101828', fontSize: 13, fontWeight: '800' },
   portalArrow: { color: '#d71920', fontSize: 22, marginLeft: 5 },

@@ -95,8 +95,18 @@ jobs:
           NODE
           npm run config:check
 
+      - name: Validate shared homepage and article placement
+        run: |
+          npm run typecheck
+          npm run test:news-parity
+          npm run test:i18n
+
       - name: Preflight Tang Daily iOS JavaScript bundle
         run: npx expo export --platform ios --output-dir /tmp/tang-daily-ios-preflight --clear
+
+      - name: Publish compatible Tang Daily homepage update
+        if: ${{ github.event_name == 'push' || inputs.release_action == 'build-and-upload' }}
+        run: eas update --channel production --environment production --platform all --message "Sync PC and App homepage $GITHUB_SHA" --non-interactive
 
       - name: Build Tang Daily iOS
         id: eas_build

@@ -6,6 +6,10 @@ export type NewsArticle = {
   content?: string;
   category_name?: string;
   topic_key?: string;
+  editorial_topics?: string[];
+  publication_scope?: string;
+  body_character_count?: number;
+  editorial_policy_version?: string;
   cover_image?: string;
   author?: string;
   published_at?: string;
@@ -130,6 +134,13 @@ export async function fetchArticles(options: { category?: string; limit?: number
   return articles as NewsArticle[];
 }
 
+// Same feed and category supplements as the PC homepage.
+export async function fetchHomepageBundle(): Promise<NewsArticle[]> {
+  const payload = await requestJson(`${API_BASE}/public-home-bundle?limit=200&per_category=12`);
+  if (!Array.isArray(payload?.articles)) throw new Error('首页数据格式异常');
+  return payload.articles;
+}
+
 export function homepageSupplementGaps(items: NewsArticle[]) {
   return HOMEPAGE_SUPPLEMENT_RULES
     .filter((rule) => items.filter((item) => {
@@ -151,7 +162,12 @@ export async function fetchArticlePage(options: { category?: string; q?: string;
   if (options.category) params.set('category', options.category);
   if (options.q) params.set('q', options.q.trim());
 
-  const payload = await requestJson(`${API_BASE}/public-articles?${params.toString()}`);
+  if (options.category === '重要新闻') {
+    const articles = options.offset ? [] : await fetchHomepageFocus();
+    return { articles, offset: options.offset || 0, limit: articles.length, next_offset: null, has_more: false, category: options.category };
+  }
+  const endpoint = ['中国政治', '美国执法与警情'].includes(options.category || '') ? 'public-editorial-articles' : 'public-articles';
+  const payload = await requestJson(`${API_BASE}/${endpoint}?${params.toString()}`);
   return {
     articles: Array.isArray(payload?.articles) ? payload.articles : [],
     offset: Number(payload?.offset || 0),

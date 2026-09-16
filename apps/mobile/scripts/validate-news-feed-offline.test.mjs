@@ -10,7 +10,7 @@ const i18n = await readFile(new URL('../src/i18n/i18n-core.ts', import.meta.url)
 
 test('restores homepage and list snapshots before refreshing official news', () => {
   assert.match(home, /readCachedHomeFeedEnvelope/);
-  assert.match(home, /cacheHomeFeed\(merged, focus\)/);
+  assert.match(home, /cacheHomeFeed\(global, focus\)/);
   assert.match(list, /readCachedNewsPageEnvelope\(category, q\)/);
   assert.match(list, /cacheNewsPage\(category, q, merged/);
   assert.match(home, /t\(error === 'offline' \? 'home\.offline' : 'home\.loadFailed'\)/);
@@ -75,22 +75,11 @@ test('defers below-the-fold service modules until the first interaction settles'
   assert.match(home, /showDeferredServices[\s\S]*portalSections\.map/);
 });
 
-test('paints the canonical feed before loading supplements and prefetches only a small image queue', () => {
-  const firstPaint = home.indexOf('setArticles(global)');
-  const supplements = home.indexOf('const supplementCategories = homepageSupplementGaps(global)');
-  assert.ok(firstPaint >= 0 && supplements > firstPaint);
-  assert.match(home, /sequence !== loadSequence\.current/);
+test('uses the PC bundle with server-side supplements and a bounded image queue', () => {
+  assert.match(home, /fetchHomepageBundle\(\)/);
+  assert.match(home, /setArticles\(global\)/);
+  assert.doesNotMatch(home, /homepageSupplementGaps\(/);
   assert.match(home, /prefetchNewsImages\(imagePrefetchQueue, 6\)/);
-  assert.match(image, /ExpoImage\.prefetch\(unique, 'memory-disk'\)/);
-  assert.match(image, /\.slice\(0, limit\)/);
-});
-
-test('explains slow initial and refresh requests without clearing visible news', () => {
-  assert.match(home, /setTimeout[\s\S]*setSlowLoading\(true\)[\s\S]*4000/);
-  assert.match(home, /t\('home\.slowLoading'\)/);
-  assert.match(home, /t\('home\.slowRefresh'\)/);
-  assert.match(i18n, /'home\.slowLoading': '当前网络较慢，仍在尝试读取最新新闻/);
-  assert.match(i18n, /'home\.slowRefresh': '当前网络较慢，已保留现有新闻/);
   assert.match(home, /clearTimeout\(slowTimer\)/);
 });
 
@@ -99,7 +88,7 @@ test('retries failed feeds after foreground recovery and exposes accessible retr
   assert.match(foregroundRetry, /state !== 'active'/);
   assert.match(foregroundRetry, /DEFAULT_DELAY_MS = 750/);
   assert.match(foregroundRetry, /DEFAULT_COOLDOWN_MS = 10_000/);
-  assert.match(home, /useForegroundRetry\(Boolean\(error\), retryHome\)/);
+  assert.match(home, /useForegroundRetry\(true, retryHome, 750, 60_000\)/);
   assert.match(list, /useForegroundRetry\(Boolean\(error\), retryList\)/);
   assert.match(home, /testID="home-network-retry"[\s\S]*accessibilityRole="button"/);
   assert.match(list, /testID="category-network-retry"[\s\S]*accessibilityRole="button"/);

@@ -151,6 +151,8 @@ test("短稿和缺图在发布前拦截，合格稿必须通过独立事实与�
   let verdict = editorial_review;
   let requests = 0;
   t.mock.method(globalThis, "fetch", async (_url, options) => {
+    // CI has an X token; local runs may not. Model-call budget excludes optional thread reads.
+    if (String(_url).startsWith("https://api.x.com/")) return new Response(JSON.stringify({ data: [] }), {status: 200});
     requests += 1;
     const input = JSON.parse(options.body);
     if (input.tools) return new Response(JSON.stringify({output: []}), {status: 200});

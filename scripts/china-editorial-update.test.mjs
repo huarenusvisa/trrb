@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {isChinaPolitical,editorialTopics,POLITICS_FILTER} from '../netlify/shared/editorial-topics.mjs';
 import {generateArticle,qualifyTweet,buildPublishedArticle,sourceFor,parseModelJson,eventDuplicate} from './china-hot-li-teacher-ingest.mjs';
 import {collectChinaMediaPosts,CHINA_X_SOURCES,CHINA_X_MONITORS,chinaMediaQuery,politicalReviewReason} from './china-x-sources.mjs';
-const body='重庆学校发布开学通知。'+Array.from({length:430},(_,i)=>String.fromCharCode(0x4e00+i)).join('');
+const body='重庆学校发布开学通知。'+Array.from({length:630},(_,i)=>String.fromCharCode(0x4e00+i)).join('');
 const source={id:'12345',text:'重庆学校今日公布开学安排，通知说明报到时间及校方调整安排。',created_at:new Date().toISOString(),media:[{type:'photo',url:'https://pbs.twimg.com/media/test.jpg'}]};
 const draft={title:'重庆学校公布开学安排',summary:'学校通知载明报到时间与调整安排。',content:body,source_sufficient:true,appears_old_news:false,old_news_reason:'',rejection_reason:'',seo_keywords:'重庆,开学',image_evidence:[{image_index:0,visible_text:'开学通知'}]};
 const verdict={single_event:true,grounded:true,sufficient:true,image_relevant:true,cover_index:0,image_description:'学校开学通知截图',fresh_hot_event:true,freshness_evidence:'原帖及学校通知明确是今日公布的新安排',reason:''};
@@ -26,9 +26,9 @@ test('homepage screenshot: US titles and summaries do not create China political
  assert.equal(isChinaPolitical({title:'重庆市长调任'}),true);
  assert.equal(isChinaPolitical({title:'美国议员批评习近平政策'}),true);
 });
-test('430-character grounded article publishes in topic only without an 800-character rewrite',async t=>{
+test('630-character grounded article publishes in topic only without an 800-character rewrite',async t=>{
  let writes=0,reviews=0;
- t.mock.method(globalThis,'fetch',async(_url,options)=>{const input=JSON.parse(options.body);assert.equal(input.tools,undefined);if(input.text.format.name==='china_hot_editorial_review'){reviews++;return Response.json({output_text:JSON.stringify(verdict)});}writes++;assert.match(input.instructions,/300至600/);return Response.json({output_text:JSON.stringify(draft)});});
+ t.mock.method(globalThis,'fetch',async(_url,options)=>{const input=JSON.parse(options.body);assert.equal(input.tools,undefined);if(input.text.format.name==='china_hot_editorial_review'){reviews++;return Response.json({output_text:JSON.stringify(verdict)});}writes++;assert.match(input.instructions,/600至3500/);return Response.json({output_text:JSON.stringify(draft)});});
  const qualified=qualifyTweet(source);const article=await generateArticle(qualified,{...source});const row=buildPublishedArticle(source,qualified,article);
  assert.equal(writes,1);assert.equal(reviews,1);assert.equal(row.status,'published');assert.equal(row.metadata.publication_scope,'topic_only');assert.equal(row.metadata.homepage_focus_override,'exclude');assert.deepEqual(row.metadata.image_evidence,draft.image_evidence);
 });
@@ -67,4 +67,48 @@ test('targeted source search covers named leaders and holds social/health/coup l
  }});
  assert.equal(tweets.filter(t=>t.requires_editor_review).length,2);
  assert.ok(tweets.filter(t=>t.requires_editor_review).every(t=>t.source_level==='social_monitor'));
+});
+
+test('defense meeting and Taiwan arms story are collected and published under US politics, not China', async t => {
+ const texts=[
+  '德国国防部长皮斯托里乌斯与美国战争部长赫格塞斯在华盛顿会晤，讨论跨大西洋合作和武器产量。',
+  '美国军售台湾的MQ-9B海上卫士无人机9月14日在台湾东部首次飞行测试，将用于情报、监视和侦察中国军舰及海警船。'
+ ];
+ for(const text of texts){
+  const tweet={...source,text,source_username:'bbcchinese',source_name:'BBC News 中文'};
+  const q=qualifyTweet(tweet);assert.equal(q.accepted,true);assert.equal(q.route,'us-politics');
+  const article={...draft,title:text.split('，')[0],summary:'两国部长讨论军工合作与供给安排。',content:text+body,publication_scope:'topic_only',editorial_review:verdict};
+  const row=buildPublishedArticle(tweet,q,article);
+  assert.equal(row.category_name,'美国时政');assert.equal(row.primary_section,'美国时政');assert.equal(row.topic_key,'us-politics');
+  assert.deepEqual(row.related_sections,['美国时政']);assert.deepEqual(row.metadata.editorial_topics,[]);assert.equal(row.metadata.china_politics_eligible,false);assert.equal(row.metadata.source_category_qualified,false);
+ }
+ assert.equal(qualifyTweet({...source,text:'习近平会见美国国防部长，双方讨论军事沟通。'}).route,'china');
+ assert.equal(qualifyTweet({...source,text:'台海解放军与台湾军舰发生近距离接触。'}).route,'china');
+ assert.equal(qualifyTweet({...source,text:'美国餐厅推出周末美食优惠。'}).accepted,false);
+});
+
+test('US copy completes the same writer and independent review, preserving real attribution',async t=>{
+ const tweet={...source,text:'美国国防部长赫格塞斯与德国国防部长会晤，讨论北约国防合作。'};
+ const generated={...draft,title:'美德国防部长讨论北约合作',summary:'双方围绕武器供应与联合生产进行交流。',content:'美国国防部长赫格塞斯与德国国防部长举行会谈。'+body};
+ t.mock.method(globalThis,'fetch',async(_url,options)=>{
+  const input=JSON.parse(options.body);
+  if(input.text.format.name==='china_hot_editorial_review'){
+    assert.match(input.instructions,/虚构媒体、内部人员、知情人士/);
+    return Response.json({output_text:JSON.stringify(verdict)});
+  }
+  assert.match(input.instructions,/600至3500/);assert.match(input.instructions,/普通账号只能写某账号发文称/);
+  return Response.json({output_text:JSON.stringify(generated)});
+ });
+ const q=qualifyTweet(tweet);const article=await generateArticle(q,tweet);
+ assert.equal(buildPublishedArticle(tweet,q,article).category_name,'美国时政');
+});
+
+test('oversize output cannot be published and fresh rejected routing records alone can retry',async()=>{
+ const {assertPublicationQuality,shouldRetryCandidate}=await import('./china-hot-li-teacher-ingest.mjs');
+ const long='美国国防部长举行会谈。'+Array.from({length:3501},(_,i)=>String.fromCharCode(0x4e00+i)).join('');
+ assert.throws(()=>assertPublicationQuality(source,{...draft,content:long,editorial_review:verdict}),/超过3500/);
+ const now=Date.now();const q=qualifyTweet({...source,text:'美国国防部长在华盛顿会见德国国防部长。'});
+ const row={decision:'rejected',article_id:null,collected_at:new Date(now).toISOString(),decision_reason:'自动分类过滤：不属于中国热门头条栏目；未创建或发布文章',ai_payload:{status:'filtered',filter_reason:'outside-china-hot'}};
+ assert.equal(shouldRetryCandidate(row,q,now),true);
+ for(const patch of [{decision_reason:'人工拒绝'},{article_id:'published'},{collected_at:new Date(now-73*3600000).toISOString()},{decision:'duplicate'}])assert.equal(shouldRetryCandidate({...row,...patch},q,now),false);
 });

@@ -562,16 +562,16 @@ export default function HomeScreen() {
         {showDeferredServices ? (
           <>
             {portalSections.map((section) => (
-              <View key={section.key} testID={`home-portal-${section.key}`} style={[styles.portalCard, section.key === 'judges' && styles.judgeCard]}>
+              <View key={section.key} testID={`home-portal-${section.key}`} style={[styles.portalCard, ['judges', 'jobs'].includes(section.key) && styles.judgeCard]}>
                 <View style={styles.portalHead}>
-                  <View style={styles.portalTitleWrap}><View style={[styles.portalAccent, section.key === 'judges' && styles.judgeAccent]} /><Text accessibilityRole={['jobs', 'judges'].includes(section.key) ? 'link' : undefined} onPress={['jobs', 'judges'].includes(section.key) ? () => openPortal(section) : undefined} style={styles.portalTitle}>{t(section.titleKey)}</Text></View>
-                  <Pressable accessibilityRole="link" accessibilityLabel={t('home.openPortalA11y', { title: t(section.titleKey) })} accessibilityState={{ disabled: externalBusy }} disabled={externalBusy} onPress={() => openPortal(section)}><Text style={[styles.portalAction, section.key === 'judges' && styles.judgeLink]}>{t(section.actionKey)}</Text></Pressable>
+                  <View style={styles.portalTitleWrap}><View style={[styles.portalAccent, ['judges', 'jobs'].includes(section.key) && styles.judgeAccent]} /><Text accessibilityRole={['jobs', 'judges'].includes(section.key) ? 'link' : undefined} onPress={['jobs', 'judges'].includes(section.key) ? () => openPortal(section) : undefined} style={styles.portalTitle}>{t(section.titleKey)}</Text></View>
+                  <Pressable accessibilityRole="link" accessibilityLabel={t('home.openPortalA11y', { title: t(section.titleKey) })} accessibilityState={{ disabled: externalBusy }} disabled={externalBusy} onPress={() => openPortal(section)}><Text style={[styles.portalAction, ['judges', 'jobs'].includes(section.key) && styles.judgeLink]}>{t(section.actionKey)}</Text></Pressable>
                 </View>
-                <Pressable accessibilityRole="link" accessibilityLabel={t('home.openPortalA11y', { title: t(section.titleKey) })} accessibilityState={{ disabled: externalBusy }} disabled={externalBusy} style={[styles.portalBanner, section.key === 'judges' && styles.judgeBanner]} onPress={() => openPortal(section)}><Text style={[styles.portalBannerText, section.key === 'judges' && styles.judgeBannerText]}>{t(section.bannerKey)}</Text></Pressable>
+                <Pressable accessibilityRole="link" accessibilityLabel={t('home.openPortalA11y', { title: t(section.titleKey) })} accessibilityState={{ disabled: externalBusy }} disabled={externalBusy} style={[styles.portalBanner, ['judges', 'jobs'].includes(section.key) && styles.judgeBanner]} onPress={() => openPortal(section)}><Text style={[styles.portalBannerText, ['judges', 'jobs'].includes(section.key) && styles.judgeBannerText]}>{t(section.bannerKey)}</Text></Pressable>
                 <View style={styles.portalGrid}>
                   {section.itemKeys.map((itemKey, index) => (
-                    <Pressable key={itemKey} accessibilityRole="link" accessibilityLabel={t('home.openPortalItemA11y', { item: t(itemKey) })} accessibilityState={{ disabled: externalBusy }} disabled={externalBusy} style={[styles.portalItem, section.key === 'judges' && styles.judgeItem, section.itemKeys.length % 2 === 1 && index === section.itemKeys.length - 1 && styles.portalItemWide]} onPress={() => openPortal(section)}>
-                      <Text style={styles.portalItemText}>{t(itemKey)}</Text><Text style={[styles.portalArrow, section.key === 'judges' && styles.judgeLink]}>›</Text>
+                    <Pressable key={itemKey} accessibilityRole="link" accessibilityLabel={t('home.openPortalItemA11y', { item: t(itemKey) })} accessibilityState={{ disabled: externalBusy }} disabled={externalBusy} style={[styles.portalItem, ['judges', 'jobs'].includes(section.key) && styles.judgeItem, section.itemKeys.length % 2 === 1 && index === section.itemKeys.length - 1 && styles.portalItemWide]} onPress={() => openPortal(section)}>
+                      <Text style={styles.portalItemText}>{t(itemKey)}</Text><Text style={[styles.portalArrow, ['judges', 'jobs'].includes(section.key) && styles.judgeLink]}>›</Text>
                     </Pressable>
                   ))}
                 </View>

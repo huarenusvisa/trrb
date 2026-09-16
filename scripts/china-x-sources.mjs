@@ -22,6 +22,7 @@ export function chinaMediaQuery(source) {
 }
 export function chinaMediaQueries(source) {
  const queries=[chinaMediaQuery(source)];
+ if (!source.reviewOnly) queries.push(`from:${source.handle} (美国 OR 美國 OR 美方 OR 白宫 OR 白宮 OR 五角大楼 OR 五角大樓 OR 特朗普 OR 川普 OR Taiwan OR TaiwanStrait OR 台海 OR 军售 OR 軍售 OR Pentagon OR Hegseth OR "White House") -is:retweet -is:reply`);
  const prefix=`from:${source.handle} (`; const suffix=') -is:retweet -is:reply';
  let terms=[];
  for(const name of chinaPersonNames()) {

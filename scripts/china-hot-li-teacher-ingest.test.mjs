@@ -22,12 +22,12 @@ test("中国新闻及中国政治人物内容进入中国热门头条池", () =>
   assert.equal(candidate.proposed_section, "中国热门头条");
   assert.equal(candidate.decision, "processing");
   assert.equal(candidate.pipeline, "china-hot-li-teacher-v2");
-  assert.equal(candidate.ai_payload.processing_version, "china-300-600-db-v6");
+  assert.equal(candidate.ai_payload.processing_version, "political-routing-600-3500-v7");
 });
 
-test("中国热门头条采用300至600字目标且不截断事实", () => {
+test("中国热门头条采用600至3500字目标且不截断事实", () => {
   for (const source of ["短文", "中".repeat(300), "中".repeat(1200)]) {
-    assert.deepEqual(targetLength(source, 1), { min: 300, max: 600, band: "正文300至600个中文字符，依据同一事件素材，不凑字" });
+    assert.deepEqual(targetLength(source, 1), { min: 600, max: 3500, band: "正文600至3500个中文字符，依据同一事件素材，不凑字" });
   }
 });
 
@@ -158,7 +158,7 @@ test("短稿和缺图在发布前拦截，合格稿必须通过独立事实与�
     if (input.tools) return new Response(JSON.stringify({output: []}), {status: 200});
     const reviewing = input.text.format.name === "china_hot_editorial_review";
     if (!reviewing) {
-      assert.match(input.instructions, /至少300/);
+      assert.match(input.instructions, /至少600/);
       assert.match(input.instructions, /不得拼接不同事件/);
       assert.ok(input.max_output_tokens >= 5000);
     }
@@ -167,7 +167,7 @@ test("短稿和缺图在发布前拦截，合格稿必须通过独立事实与�
   await assert.rejects(generateArticle(qualified, { ...tweet, media: [] }), /合适配图/);
   assert.equal(requests, 0, "缺图不浪费模型调用");
   generated = { ...generated, content: "重庆学校公布开学安排。" };
-  await assert.rejects(generateArticle(qualified, tweet), /至少需要300字/);
+  await assert.rejects(generateArticle(qualified, tweet), /至少需要600字/);
   assert.equal(requests, 2, "短稿先进行一次资料检索，没有可核查来源则不反复凑字");
   generated = { ...generated, source_sufficient: false, rejection_reason: "只有标题，缺少报道事实" };
   await assert.rejects(generateArticle(qualified, tweet), /缺少报道事实/);
@@ -195,7 +195,7 @@ test("发布边界不能绕过长度、质检及选图要求", () => {
   const chars = Array.from({ length: 800 }, (_, i) => String.fromCharCode(0x4e00 + i)).join("");
   assert.equal(bodyCharacterCount(`<p>${chars}</p>`), 800);
   assert.equal(bodyCharacterCount(`正文<img alt="${chars}" src="https://example.com/cover.jpg">`), 2);
-  assert.throws(() => assertPublicationQuality(chinaTweet, { ...article, content: chars.slice(0,299) }), /至少需要300/);
+  assert.throws(() => assertPublicationQuality(chinaTweet, { ...article, content: chars.slice(0,299) }), /至少需要600/);
   assert.equal(assertPublicationQuality(chinaTweet, { ...article, content: chars }), chinaTweet.media[0].url);
   assert.throws(() => assertPublicationQuality(chinaTweet, { ...article, content: "重庆地铁恢复正常运行，现场乘客陆续进站。".repeat(80) }), /重复句/);
   assert.throws(() => assertPublicationQuality(chinaTweet, { ...article, editorial_review: undefined }), /缺少单一主题/);
@@ -226,7 +226,7 @@ test("自动失败草稿可有界重试，人工复核决定不会被自动覆�
   assert.equal(shouldRetryCandidate({
     decision: "review_required",
     decision_reason: "自动扩写或发布失败：生成稿未明确中国新闻主体；保留为可编辑草稿，由编辑决定是否发布",
-    ai_payload: { processing_version: "china-300-600-db-v6", automatic_retry_attempts: 3 },
+    ai_payload: { processing_version: "political-routing-600-3500-v7", automatic_retry_attempts: 3 },
   }, qualified), false);
   assert.equal(shouldRetryCandidate({
     decision: "review_required",
@@ -291,7 +291,7 @@ test('截图中的单位限制出境和校园栅栏报道不再因缺少地名�
   for (const tweet of socialExamples) {
     const qualified = qualifyTweet(tweet);
     assert.equal(qualified.accepted, true, tweet.id);
-    assert.equal(shouldRetryCandidate({ decision: 'rejected', article_id: null,
+    assert.equal(shouldRetryCandidate({ decision: 'rejected', article_id: null, collected_at: new Date().toISOString(),
       decision_reason: '自动分类过滤：不属于中国热门头条栏目；未创建或发布文章',
       ai_payload: { status: 'filtered', filter_reason: 'outside-china-hot' }
     }, qualified), true);

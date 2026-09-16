@@ -1,0 +1,50 @@
+appId: com.tangrenribao.iosapp
+name: Current Tang Daily native store screenshots
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible:
+      id: home-language-zh-Hans
+    timeout: 30000
+- tapOn:
+    id: home-language-zh-Hans
+- extendedWaitUntil:
+    visible:
+      id: home-important-carousel
+    timeout: 60000
+- waitForAnimationToEnd
+- takeScreenshot: ${CAPTURE_DIR}/01-home
+- scrollUntilVisible:
+    element:
+      id: home-topics
+    direction: DOWN
+    timeout: 30000
+- waitForAnimationToEnd
+- takeScreenshot: ${CAPTURE_DIR}/02-topics
+- tapOn:
+    id: tab-immigration
+- extendedWaitUntil:
+    notVisible: 正在打开华人工作网…
+    timeout: 60000
+- assertNotVisible: 华人工作网暂时无法打开
+- waitForAnimationToEnd
+- takeScreenshot: ${CAPTURE_DIR}/03-jobs
+- tapOn:
+    id: tab-legal
+- extendedWaitUntil:
+    visible:
+      id: judge-portal-webview
+    timeout: 60000
+- waitForAnimationToEnd
+- assertNotVisible:
+    id: judge-portal-link-error
+- takeScreenshot: ${CAPTURE_DIR}/04-judges
+- tapOn:
+    id: tab-america
+- extendedWaitUntil:
+    notVisible: 正在打开唐人社区…
+    timeout: 60000
+- assertNotVisible: 唐人社区暂时无法打开
+- waitForAnimationToEnd
+- takeScreenshot: ${CAPTURE_DIR}/05-community

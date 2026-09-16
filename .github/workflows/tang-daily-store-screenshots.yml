@@ -1,0 +1,84 @@
+name: Tang Daily Store Screenshots
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/tang-daily-store-screenshots.yml'
+      - 'scripts/store-capture/**'
+permissions:
+  contents: read
+concurrency:
+  group: tang-daily-store-screenshots
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+      - uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+      - name: Build real simulator app
+        working-directory: apps/mobile
+        run: |
+          npm ci
+          eas build --platform ios --profile e2e-test --non-interactive --json > /tmp/store-build.json
+          node - <<'NODE'
+          const fs = require('fs');
+          const builds = JSON.parse(fs.readFileSync('/tmp/store-build.json', 'utf8'));
+          const build = builds[0];
+          if (build.status !== 'FINISHED' || !build.artifacts?.buildUrl) throw new Error('Simulator build incomplete');
+          fetch(build.artifacts.buildUrl).then(async response => {
+            if (!response.ok) throw new Error('Simulator artifact download failed');
+            fs.writeFileSync('/tmp/store-simulator.tar.gz', Buffer.from(await response.arrayBuffer()));
+            fs.writeFileSync('/tmp/store-build-evidence.json', JSON.stringify({id:build.id,commit:process.env.GITHUB_SHA,version:build.appVersion}, null, 2));
+          }).catch(error => { console.error(error); process.exit(1); });
+          NODE
+      - uses: actions/upload-artifact@v4
+        with:
+          name: store-simulator
+          path: |
+            /tmp/store-simulator.tar.gz
+            /tmp/store-build-evidence.json
+          retention-days: 7
+  capture:
+    needs: build
+    runs-on: macos-15
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      matrix:
+        family: [iphone, ipad]
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/download-artifact@v4
+        with:
+          name: store-simulator
+          path: /tmp/store-app
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Install screenshot automation
+        run: curl -fsSL https://get.maestro.mobile.dev | bash
+      - name: Capture actual app UI
+        env:
+          DEVICE_FAMILY: ${{ matrix.family }}
+        run: |
+          mkdir -p /tmp/store-app/unpacked captures
+          tar -xzf /tmp/store-app/store-simulator.tar.gz -C /tmp/store-app/unpacked
+          python3 scripts/store-capture/capture.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: store-raw-${{ matrix.family }}
+          path: |
+            captures/
+            /tmp/store-app/store-build-evidence.json
+          retention-days: 30

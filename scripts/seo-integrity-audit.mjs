@@ -11,6 +11,9 @@ const INTENTIONAL_NOINDEX_HTML = new Set([
 ]);
 const DYNAMIC_SEO_HTML = new Set(["article.html", "listing.html", "legal/detail.html"]);
 const STRICT_INDEXABLE_SEO_GATE = "STRICT_INDEXABLE_SEO_GATE_V2";
+// These exact routes are served by a registered Edge collection renderer.
+// Validate the handler below rather than treating every /topic/* path as valid.
+const EDGE_COLLECTION_ROUTES = new Set(["topic/xi-jinping", "china-politics", "us-enforcement"]);
 const ROUTE_PREFIXES = new Set([
   "ice", "trump", "immigrate", "important-news", "hot-headlines", "us-politics", "compare",
   "us-crime", "china-officialdom", "asylum", "asylumjudge", "immigration", "deport", "expose", "community", "jobs", "niulai", "ershou", "news"
@@ -72,7 +75,7 @@ function isCleanRouteTarget(target) {
   const route = target.endsWith("/index.html") ? target.slice(0, -"/index.html".length) : target;
   if (path.posix.extname(route)) return false;
   const first = route.split("/").filter(Boolean)[0] || "";
-  return ROUTE_PREFIXES.has(first);
+  return ROUTE_PREFIXES.has(first) || EDGE_COLLECTION_ROUTES.has(route);
 }
 
 function escapeRegex(value) {
@@ -116,6 +119,12 @@ function isRedirectBacked(raw, matchers) {
   return route.startsWith("/") && matchers.some((pattern) => pattern.test(route));
 }
 
+const collectionHandler = await readFile(path.join(ROOT, "netlify/edge-functions/xi-topic.ts"), "utf8");
+for (const route of EDGE_COLLECTION_ROUTES) {
+  if (!collectionHandler.includes(`"/${route}":`) || !collectionHandler.includes("export const config") || !collectionHandler.includes("Object.keys(ROUTES)")) {
+    errors.push(`Edge collection route has no registered handler: /${route}`);
+  }
+}
 const files = await walk();
 const internalRedirectMatchers = await loadInternalRedirectMatchers();
 const htmlFiles = files.filter((f) => f.endsWith(".html") && !/(?:^|\/)google[a-z0-9]+\.html$/i.test(rel(f)));

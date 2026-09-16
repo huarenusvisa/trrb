@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import process from "node:process";
 import { pathToFileURL } from "node:url";
+import { editorialTopics, politicalSections } from "../netlify/shared/editorial-topics.mjs";
 import chinaHotHeadlines from "../netlify/functions/_shared/china-hot-headlines.js";
 import { findRenEventDuplicate } from "./ren-zhengfei-event-dedupe.mjs";
 
@@ -552,7 +553,8 @@ export async function generateArticle(qualified, tweet, attempt = 0, previous = 
         "标题简洁概括新闻事实，不设字数门槛，不得复制整段原文，不得以日期开头。摘要、标题和正文不得三段重复。",
         "对未核实说法准确注明来自发帖者、截图、目击者或公开通报；不要反复写“尚待核实”。",
         "必须检查是否为旧闻。只有原文或图片明确显示过去日期、周年、回顾、旧视频、旧照片或旧事件重新传播时，appears_old_news才为true，并在old_news_reason写明证据；不得凭模型记忆判断。",
-        "正文和标题不得出现媒体名称、社交平台名称、账号名称、抓取方式或原始链接，不写‘李老师’或‘X平台’。",
+        "政治报道必须区分已确认事实、具名媒体报道和分析推测。任免、调查只写材料直接支持的结论；缺席活动不等于失势，转发同一说法不是独立证实。",
+        "引用尚未证实的人事或政治斗争说法时，保留输入材料中的具名来源及其不确定性；不得把推测改写为事实。不要描述抓取方式，不要虚构来源。",
         "禁止写任何提醒、呼吁、警惕、号召、建议、启示、意义、必要性、重要性、重视、决心、严厉打击等套话。不要评论，不要像广告或宣传稿。",
         "content字段只能是正文，不得在正文末尾添加关键词、标签、SEO词、来源栏或说明栏；seo_keywords只能放在单独的seo_keywords字段。",
         "不要在正文重复真实性提示，页面会另行统一展示。不要使用Markdown标题。信息不足时拒绝成稿并说明原因，不能发布短讯，也不能为达到800字编造。",
@@ -630,7 +632,7 @@ export function buildPublishedArticle(tweet, qualified, article, publishedAt = n
     status: "published", visibility: "public", published_at: publishedAt, created_at: publishedAt,
     source_url: sourceUrl, source_name: source.name, source_account: `@${source.username}`, source_level: source.level,
     source_platform: "x", source_post_id: tweetId, source_created_at: sourceCreatedAt, external_id: externalId(tweet),
-    topic_key: source.topicKey, primary_section: "中国热门头条", related_sections: source.topicKey === REN_ZHENGFEI_TOPIC ? ["中国热门头条", "任正非动态"] : ["中国热门头条"],
+    topic_key: source.topicKey, primary_section: "中国热门头条", related_sections: source.topicKey === REN_ZHENGFEI_TOPIC ? ["中国热门头条", "任正非动态"] : politicalSections(article),
     review_status: "automatic_china_hot", automation_source: PIPELINE, ai_confidence: 80, seo_title: article.title,
     seo_description: article.summary, seo_keywords: article.seo_keywords, independent_source_count: 1,
     supporting_sources: [], risk_flags: ["unverified_public_claim"],
@@ -638,6 +640,7 @@ export function buildPublishedArticle(tweet, qualified, article, publishedAt = n
       collector: PIPELINE, automatic_publish: true, manual_review_required: false, review_status: "auto_published",
       category_display_name: "中国热门头条", unverified_public_claim: true, content_warning: WARNING,
       category_policy_version: "source-social-v3",
+      editorial_topics: editorialTopics(article),
       source_category_qualified: qualified.accepted === true && (
         isChinaHotHeadline(article.title, article.content)
         || (isSourceSocialReport(qualified.title, qualified.text) && isSourceSocialReport(article.title, article.content))
@@ -673,7 +676,7 @@ export function buildReviewDraft(tweet, reason, createdAt = new Date().toISOStri
     source_url: sourceUrl, source_name: source.name, source_account: `@${source.username}`,
     source_level: source.level, source_platform: "x", source_post_id: tweetId,
     source_created_at: new Date(tweet.created_at || createdAt).toISOString(), external_id: externalId(tweet),
-    topic_key: source.topicKey, primary_section: "中国热门头条", related_sections: source.topicKey === REN_ZHENGFEI_TOPIC ? ["中国热门头条", "任正非动态"] : ["中国热门头条"],
+    topic_key: source.topicKey, primary_section: "中国热门头条", related_sections: source.topicKey === REN_ZHENGFEI_TOPIC ? ["中国热门头条", "任正非动态"] : politicalSections({title: draftTitle, summary: rawText}),
     review_status: "manual_review", automation_source: PIPELINE, independent_source_count: 1,
     supporting_sources: [], risk_flags: ["manual_review_required"],
     metadata: {

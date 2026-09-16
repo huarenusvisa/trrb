@@ -528,12 +528,6 @@
       const normalizedArticles = (Array.isArray(articles) ? articles : []).map((item) => {
         const primaryCategory = normalizeCategory(item?.category || item?.category_name);
 
-        // ICE is secondary topic membership. Only the ICE card receives an ICE
-        // category projection; primary-category cards keep their original placement.
-        if (category === ICE_CATEGORY && isIceArticle(item)) {
-          return { ...item, category: ICE_CATEGORY, primary_category: primaryCategory };
-        }
-
         return { ...item, category: primaryCategory };
       });
 

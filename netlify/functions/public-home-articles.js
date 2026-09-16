@@ -29,6 +29,7 @@ exports.handler = async (event) => {
   if (event.httpMethod !== "GET") return json(405, { error: "Method not allowed" });
 
   try {
+    const { editorialTopics } = await import("../shared/editorial-topics.mjs");
     const requested = Number(event.queryStringParameters?.limit || 120);
     const limit = Math.min(Math.max(Number.isFinite(requested) ? requested : 120, 1), 200);
     const category = String(event.queryStringParameters?.category || "").trim().slice(0, 80);
@@ -61,7 +62,7 @@ exports.handler = async (event) => {
       freshness_hours: 96,
       generated_at: new Date().toISOString(),
       count: articles.length,
-      articles
+      articles: articles.map(row => ({...row, editorial_topics: editorialTopics(row)}))
     });
   } catch (error) {
     console.error("Public home articles error:", error);

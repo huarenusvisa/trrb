@@ -2,6 +2,7 @@
 // Broad section names and country names are not evidence of a relationship.
 const STOP = new Set(('美国 中国 华人 新闻 报道 唐人 日报 最新 今日 日前 近日 当地 记者 表示 认为 相关 事件 情况 问题 发生 进行 发布 公布 引发 关注 网友 视频 消息 社会 人员 政府 工作 可能 已经 目前 因为 这个 一个 他们 我们 以及 之后 此前 此次 当天 今年 去年 纽约 加州 特朗普 川普 总统 法官 法院 警方 学生 学校 公司 员工 移民 拘留 逮捕 ICE FBI DHS Trump the and for with from that this').toLowerCase().split(/\s+/));
 for (const word of '持有 管制 规定 信息 官员 涉嫌 意图 分发 公布 提供 拘捕 非法 年度 计划 宣布 洛杉矶 洛杉 西雅图 西雅 德州 加利福尼亚 佛罗里达 弗吉尼亚 吉尼亚 萨尔瓦多 萨尔 瓦多 形容 密集 教学 人民 通过 要求 决定 未来 继续'.split(' ')) STOP.add(word);
+for (const word of '习近平 習近平 习近 近平 总书记 国家主席 政治局 常委 中共 人事 任免 任命 免职 政治斗争'.split(' ')) STOP.add(word);
 const NAMES = ['胖东来', '于东来', '南通中集', '奥斯马', 'Ticketmaster', 'Live Nation', 'USCIS', 'EOIR'];
 const FACETS = [
   ['庇护工卡与时钟', /庇护.{0,12}(时钟|停表|工卡)|(?:i[- ]?765|c08|ead).{0,20}(庇护|时钟|停表)/i],
@@ -65,7 +66,7 @@ export function rankRelated(anchor, candidates, { seen = [], last = anchor, limi
     const specific = titles.filter(term => term.length >= 3);
     if (!facets.length && !(common.length >= 3 && titles.length >= 2) && !specific.length) return null;
     const score = common.reduce((sum, term) => sum + Math.log(2 + publicRows.length / (1 + (frequency.get(term) || 0))) * (titles.includes(term) ? 2 : 1), 0) + facets.length * 7;
-    return { score, reason: facets[0] ? `相关主题：${facets[0]}` : '相关报道' };
+    return { score, reason: facets[0] ? `相关主题：${facets[0]}` : `关联线索：${specific.slice(0, 2).join('、') || titles.slice(0, 2).join('、')}` };
   }
   const ranked = publicRows.flatMap(article => {
     if (excluded.has(String(article.id)) || titleKey(article) === titleKey(anchor) || titleKey(article) === titleKey(last)) return [];

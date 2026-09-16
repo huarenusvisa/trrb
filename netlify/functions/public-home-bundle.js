@@ -61,7 +61,13 @@ exports.handler = async (event) => {
     const globalLimit = Math.min(Math.max(Number(event.queryStringParameters?.limit || 200), 20), 200);
     const perCategory = Math.min(Math.max(Number(event.queryStringParameters?.per_category || 12), 3), 20);
 
+    const { editorialTopics, POLITICS_FILTER } = await import("../shared/editorial-topics.mjs");
     const globalRows = await fetchArticles(globalLimit);
+    const politicalRows = await rest("articles", {query: {
+      select: "id,title,slug,summary,category_name,topic_key,cover_image,author,status,visibility,published_at,created_at",
+      status: "eq.published", visibility: "eq.public", published_at: `gte.${homeCutoffIso()}`,
+      or: POLITICS_FILTER, order: "published_at.desc.nullslast,created_at.desc", limit: String(perCategory)
+    }}).catch(() => []);
     const counts = categoryCounts(globalRows);
     const sparseCategories = CORE_CATEGORIES.filter((category) => (counts.get(category) || 0) < perCategory);
     const supplements = await Promise.all(
@@ -69,21 +75,22 @@ exports.handler = async (event) => {
     );
 
     const seen = new Set();
-    const articles = [globalRows, ...supplements].flat()
+    const articles = [globalRows, politicalRows, ...supplements].flat()
       .filter((row) => {
         const id = String(row?.id || "").trim();
         if (!id || seen.has(id)) return false;
         seen.add(id);
         return true;
       })
-      .sort((a, b) => timeOf(b) - timeOf(a));
+      .sort((a, b) => timeOf(b) - timeOf(a))
+      .map(row => ({ ...row, editorial_topics: editorialTopics(row) }));
 
     return response(200, {
       mode: "homepage",
       freshness_hours: 96,
       generated_at: new Date().toISOString(),
       count: articles.length,
-      database_queries: 1 + sparseCategories.length,
+      database_queries: 2 + sparseCategories.length,
       supplemented_categories: sparseCategories,
       retired_home_categories: [...RETIRED_HOME_CATEGORIES],
       articles

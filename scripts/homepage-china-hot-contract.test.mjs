@@ -15,8 +15,8 @@ assert.match(refresh, /hot\.querySelector\("\.section-lead"\)/);
 assert.match(refresh, /function repairChinaHotSection\(articles\)/);
 assert.match(refresh, /forceRender \|\| signature !== lastRenderSignature/);
 assert.match(startup, /root\?\.querySelector\("#hot"\)/);
-assert.match(optimizer, /\['articles-home\.js', '20260822-hotfix-1'\]/);
-assert.match(optimizer, /\['homepage-refresh-guard\.js', '20260822-hotfix-1'\]/);
+assert.match(optimizer, /\['articles-home\.js', '20260916-editorial-1'\]/);
+assert.match(optimizer, /\['homepage-refresh-guard\.js', '20260916-editorial-1'\]/);
 assert.match(optimizer, /\['homepage-startup-stability\.js', '20260822-hotfix-1'\]/);
 
 console.log("homepage China hot-headlines ownership contract passed");

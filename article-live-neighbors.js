@@ -189,7 +189,7 @@
     const track = root?.querySelector(".related-track");
     if (!root || !nav || !relatedSection || !track) return;
     root.dataset.relatedOwner = "continuous";
-    const engine = await import("/article-related-ranking.mjs?v=20260914-1");
+    const engine = await import("/article-related-ranking.mjs?v=20260916-editorial-1");
     let embedded = null;
     try { embedded = JSON.parse(document.querySelector("#trrb-prerendered-article")?.textContent || "null"); } catch {}
     const [current, latest] = await Promise.all([

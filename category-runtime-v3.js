@@ -44,7 +44,11 @@
     }
   }
 
+  function publicNavigation(channels) {
+    return channels.map(item => item.name === "美国警情" ? {...item, name:"中国政治", href:"/china-politics"} : ["ICE执法动态", "ICE执法"].includes(item.name) ? {...item, name:"美国执法与警情", href:"/us-enforcement"} : item);
+  }
   function renderNavigation(channels) {
+    channels = publicNavigation(channels);
     const nav = document.querySelector("#site-navigation .nav-inner");
     if (!nav) return;
 
@@ -79,6 +83,7 @@
   }
 
   function renderFooter(channels) {
+    channels = publicNavigation(channels);
     const heading = [...document.querySelectorAll("footer h3")].find((node) => node.textContent.trim() === "栏目导航");
     const section = heading?.parentElement;
     if (!section) return;

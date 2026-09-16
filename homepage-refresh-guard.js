@@ -28,6 +28,7 @@
   function normalizeRow(row) {
     return {
       id: row.id,
+      editorial_topics: Array.isArray(row.editorial_topics) ? row.editorial_topics : [],
       title: row.title || "",
       slug: row.slug || "",
       categoryId: row.category_id || "",

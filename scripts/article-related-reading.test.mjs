@@ -42,3 +42,10 @@ test('real headlines about controlled substances do not match drone possession r
   const result = rankRelated(anchor, [a('b', '北京无人机管理规定11月实施 禁止持有存放无人机'), a('c', '德州ICE拘捕逃避遣返26年古巴毒贩')], { now });
   assert.deepEqual(result.map(x => x.article.id), ['c']);
 });
+
+test('a shared political leader alone does not connect unrelated events', () => {
+  const anchor = a('a', '习近平访问西班牙讨论关税政策');
+  const rows = [a('b', '习近平观看学校文艺演出'), a('c', '西班牙回应关税政策谈判进展')];
+  const result = rankRelated(anchor, rows, {now});
+  assert.deepEqual(result.map(x => x.article.id), ['c']);
+});

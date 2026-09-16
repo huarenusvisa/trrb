@@ -30,8 +30,15 @@ export async function applyAsylumJudgeSupport({ output }) {
     let html = await readFile(file,'utf8');
     if (html.includes('id="site-support-dialog"')) continue;
     const {card,dialog} = supportMarkup(locale);
-    html = html.replace(/<h1\b[^>]*>([\s\S]*?)<\/h1>/, (_, title) => `<div class="shell support-home-heading"><h1>${title}</h1>${card}</div>`);
-    html = html.replace('</head>','<link rel="stylesheet" href="/asylumjudge/support.css?v=2"><script src="/asylumjudge/support.js?v=1" defer></script></head>');
+    // Keep the original trend/search + national overview as the first visible content.
+    html = html.replace(/<h1\b[^>]*>([\s\S]*?)<\/h1>/, (_, title) => `<h1 class="sr-only">${title}</h1>`);
+    const category = html.match(/<section\b[^>]*data-category-home[^>]*>[\s\S]*?<\/section>/)?.[0];
+    if (category) {
+      html = html.replace(category, '');
+      html = html.replace('<section id="all-judges"', `${category}\n<section id="all-judges"`);
+    }
+    html = html.replace(/(<aside class="snapshot"[\s\S]*?<\/aside>)/, `<div class="home-overview">$1${card}</div>`);
+    html = html.replace('</head>','<link rel="stylesheet" href="/asylumjudge/support.css?v=3"><script src="/asylumjudge/support.js?v=1" defer></script></head>');
     html = html.replace('</body>',`${dialog}</body>`);
     await writeFile(file, html);
   }

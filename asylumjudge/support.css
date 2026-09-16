@@ -2,3 +2,6 @@
 
 /* Compact desktop card: keep the homepage content near the title. Full-size codes and the contribution notice open in the dialog. */
 @media(min-width:768px){.support-home-heading{grid-template-columns:minmax(0,1fr) 320px;gap:20px;padding-bottom:0}.site-support{display:grid;grid-template-columns:minmax(0,1fr) 186px;column-gap:10px;align-items:center;padding:10px;border-radius:12px;min-height:122px}.support-heading{grid-column:1;grid-row:1;align-self:end}.support-heading strong{font-size:15px}.support-heading p{font-size:11px;line-height:1.4;margin:5px 0 0}.support-desktop-codes{grid-column:2;grid-row:1 / 3;gap:6px}.support-desktop-codes button{padding:4px;font-size:11px;line-height:1.2;gap:2px;border-radius:7px}.support-desktop-codes .support-qr{width:80px}.support-desktop-note{grid-column:1;grid-row:2;align-self:start;font-size:9px;line-height:1.4;margin-top:5px;overflow-wrap:anywhere}}
+
+/* Restore the original dashboard-first homepage; support stays below the right-hand overview. */
+.hero-grid{align-items:start}.home-overview{min-width:0}.home-overview>.site-support{margin-top:12px;width:100%;box-sizing:border-box}@media(min-width:768px){.home-overview>.site-support{width:min(100%,320px);margin-inline-start:auto}}

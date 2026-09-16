@@ -22,3 +22,14 @@ test('only retrieved same-conversation public replies can be attributed, never c
  const payload={data:[{id:'11',conversation_id:'10',author_id:'1',text:'这是一段足够长的原发帖人后续回应，需要保留明确的来源归因。'},{id:'12',conversation_id:'10',author_id:'2',text:'这是一段足够长的读者个人观点，不能被当成已经证实的事实。'},{id:'13',conversation_id:'99',author_id:'2',text:'这是另一个事件的评论，不能混入当前报道和背景材料之中。'}],includes:{users:[{id:'1',username:'source'},{id:'2',username:'reader'}]}};
  const rows=threadMaterials(payload,'10','source');assert.equal(rows.length,2);assert.equal(rows[0].kind,'author_followup_unverified');assert.equal(rows[1].kind,'comment_opinion_unverified');assert.equal(rows[1].url,'https://x.com/i/web/status/12');
 });
+
+
+test('bulk length holds re-enter research only with original media, freshness and active topic', () => {
+  const now = Date.parse('2026-09-16T20:00:00Z');
+  const row = {decision:'review_required', decision_reason:'采编质量拦截：原发布稿不足800字或无配图，已转回待编辑；禁止无新素材自动重试', collected_at:'2026-09-15T12:00:00Z', ai_payload:{quality_hold:true,processing_version:'single-event-800-image-v1'}, raw_payload:{topic_key:'china',media:[{url:'https://example.com/original.jpg'}]}};
+  assert.equal(contextRetryEligible(row,now),true);
+  assert.equal(contextRetryEligible({...row,raw_payload:{media:[]}},now),false);
+  assert.equal(contextRetryEligible({...row,raw_payload:{...row.raw_payload,topic_key:'ren-zhengfei'}},now),false);
+  assert.equal(contextRetryEligible({...row,decision_reason:'人工拒绝：不足800字'},now),false);
+  assert.equal(contextRetryEligible({...row,collected_at:'2026-09-01'},now),false);
+});

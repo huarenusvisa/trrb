@@ -144,7 +144,8 @@ test("直接涉及中国的跨国新闻进入中国热门，纯美国新闻仍�
 });
 
 test("短稿和缺图在发布前拦截，合格稿必须通过独立事实与图片复核", async (t) => {
-  const tweet = { ...chinaTweet, text: qualityBody };
+  // This case verifies the long-report path; fresh brief fallback is tested separately.
+  const tweet = { ...chinaTweet, text: qualityBody, created_at: "2000-01-01T00:00:00Z" };
   const qualified = qualifyTweet(tweet);
   let generated = { title: "重庆学校开学安排", summary: "学校公布时间安排", content: qualityBody, seo_keywords: "重庆", appears_old_news: false, old_news_reason: "", source_sufficient: true, rejection_reason: "" };
   let verdict = editorial_review;

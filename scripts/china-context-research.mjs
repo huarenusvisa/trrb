@@ -18,12 +18,18 @@ export function citedResearch(response) {
 export function contextRetryEligible(candidate, now = Date.now(), version = 'single-event-800-context-v4') {
   const payload = candidate?.ai_payload || {};
   const date = Date.parse(candidate?.raw_payload?.source_created_at || candidate?.collected_at || '');
+  const reason = candidate?.decision_reason || '';
+  const media = candidate?.raw_payload?.source_media || candidate?.raw_payload?.media || [];
+  const bulkLengthHold = reason === '采编质量拦截：原发布稿不足800字或无配图，已转回待编辑；禁止无新素材自动重试'
+    && media.some(item => /^https?:\/\//.test(item.url || item.preview_image_url || ''));
+  const automatedLengthHold = /^自动扩写或发布失败[:：]/.test(reason)
+    && /正文仅|至少需要800字|素材不足|材料不足|缺少.*事实/.test(reason)
+    && !/旧闻|缺图|配图|多主题|人工|编辑拒绝/.test(reason);
   return candidate?.decision === 'review_required' && payload.quality_hold === true
+    && candidate?.raw_payload?.topic_key !== 'ren-zhengfei'
     && payload.processing_version !== version
     && now - date >= 0 && now - date <= 72 * 3600000
-    && /^自动扩写或发布失败[:：]/.test(candidate.decision_reason || '')
-    && /正文仅|至少需要800字|素材不足|材料不足|缺少.*事实/.test(candidate.decision_reason || '')
-    && !/旧闻|缺图|配图|多主题|人工|编辑拒绝/.test(candidate.decision_reason || '');
+    && (automatedLengthHold || bulkLengthHold);
 }
 export function threadMaterials(payload, rootId, sourceUsername = '') {
   const users = new Map((payload?.includes?.users || []).map(user => [user.id, user.username]));

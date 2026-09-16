@@ -445,14 +445,14 @@ async function reprocessableCandidates() {
   const rows = await supabase("news_candidates", { query: {
     select: "id,external_id,raw_text,raw_payload,decision,decision_reason,article_id,ai_payload,collected_at,updated_at",
     pipeline: "like.china-hot-li-teacher-v*", decision: "in.(failed,review_required)",
-    or: `(ai_payload->>quality_hold.is.null,ai_payload->>quality_hold.eq.false,ai_payload->>processing_version.neq.${PROCESSING_VERSION})`,
-    updated_at: `gte.${since}`, order: "updated_at.desc", limit: String(MAX_FETCH),
+    and: `(or(raw_payload->>topic_key.is.null,raw_payload->>topic_key.neq.ren-zhengfei),or(ai_payload->>quality_hold.is.null,ai_payload->>quality_hold.eq.false,ai_payload->>processing_version.neq.${PROCESSING_VERSION}))`,
+    updated_at: `gte.${since}`, order: "collected_at.desc,id.desc", limit: String(Math.min(1000, MAX_FETCH * 10)),
   } });
   const filtered = await supabase("news_candidates", { query: {
     select: "id,external_id,raw_text,raw_payload,decision,decision_reason,article_id,ai_payload,collected_at,updated_at",
     pipeline: "like.china-hot-li-teacher-v*", decision: "eq.rejected", article_id: "is.null",
     "ai_payload->>status": "eq.filtered", "ai_payload->>filter_reason": "eq.outside-china-hot",
-    updated_at: `gte.${since}`, order: "updated_at.desc", limit: String(MAX_FETCH),
+    updated_at: `gte.${since}`, order: "collected_at.desc,id.desc", limit: String(Math.min(1000, MAX_FETCH * 10)),
   } });
   return [...(Array.isArray(rows) ? rows : []), ...(Array.isArray(filtered) ? filtered : [])];
 }

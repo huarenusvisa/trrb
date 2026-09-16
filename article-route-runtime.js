@@ -12,6 +12,7 @@
   const FALLBACK_CATEGORY_SLUGS = {
     '重要新闻': 'important-news',
     '热门头条': 'hot-headlines',
+    '中国热门头条': 'hot-headlines',
     '美国时政': 'us-politics',
     '美国警情': 'us-crime',
     '中国官场': 'china-officialdom',

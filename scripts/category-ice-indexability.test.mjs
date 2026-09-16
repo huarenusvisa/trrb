@@ -12,7 +12,7 @@ import { hasNoindex } from './seo-live-page-policy.mjs';
 const root = fileURLToPath(new URL('../', import.meta.url));
 const template = '<html><head><title>Listing</title><meta name="robots" content="noindex"></head><body><h1 id="listing-title">Listing</h1><div class="listing-grid" id="listing-grid"></div><nav class="pagination" id="pagination" aria-label="分页"></nav></body></html>';
 const context = { next: async () => new Response('fallback', { status: 404 }) };
-function fixture(t, { empty = false, unavailable = false } = {}) {
+function fixture(t, { empty = false, unavailable = false, categoryName = '热门头条' } = {}) {
   const originalDeno = globalThis.Deno;
   globalThis.Deno = { env: { get: key => key === 'SUPABASE_URL' ? 'https://database.test' : 'fixture-key' } };
   t.after(() => { globalThis.Deno = originalDeno; });
@@ -22,7 +22,7 @@ function fixture(t, { empty = false, unavailable = false } = {}) {
     if (url.pathname === '/.netlify/functions/public-category-page') {
       if (unavailable) return new Response('unavailable', { status: 503 });
       return Response.json({ total: empty ? 0 : 1, total_pages: empty ? 0 : 1,
-        articles: empty ? [] : [{ id: '1', slug: 'brief', title: '已确认的短讯', summary: '新闻事实。', category_name: '热门头条' }] });
+        articles: empty ? [] : [{ id: '1', slug: 'brief', title: '已确认的短讯', summary: '新闻事实。', category_name: categoryName }] });
     }
     assert.equal(url.pathname, '/listing.html');
     return new Response(template, { headers: {
@@ -31,6 +31,15 @@ function fixture(t, { empty = false, unavailable = false } = {}) {
     } });
   });
 }
+
+test('renamed China category uses canonical article links in cards and structured data', async t => {
+  fixture(t, { categoryName: '中国热门头条' });
+  const response = await categoryPage(new Request('https://trrb.net/hot-headlines'), context);
+  const html = await response.text();
+  assert.match(html, /href="\/hot-headlines\/brief"/);
+  assert.match(html, /"url":"https:\/\/trrb.net\/hot-headlines\/brief"/);
+  assert.doesNotMatch(html, /\/news\/brief/);
+});
 
 for (const method of ['GET', 'HEAD']) {
   test(`${method}: public categories do not inherit template noindex headers`, async t => {

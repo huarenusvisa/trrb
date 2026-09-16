@@ -27,7 +27,7 @@
     if (window.__TRRB_ARTICLE_ROUTE_RUNTIME__ || document.querySelector('script[data-trrb-article-route-runtime]')) return;
     window.__TRRB_ARTICLE_ROUTE_RUNTIME__ = true;
     const script = document.createElement("script");
-    script.src = "/article-route-runtime.js?v=20260813-1";
+    script.src = "/article-route-runtime.js?v=20260916-category-alias";
     script.async = true;
     script.dataset.trrbArticleRouteRuntime = "true";
     document.head.appendChild(script);
@@ -263,7 +263,7 @@
   window.TRRB_categoryPlaceholder = categoryPlaceholder;
   window.TRRB_updateTopbar = updateTopbar;
   window.TRRB_installNewsMediaStyles = installNewsMediaStyles;
-  window.TRRB_applyImageFallback = applyImageFallback;
+  window.TRRB_applyImageFallback = hideUnavailableImage;
   installNewsMediaStyles();
   installArticleRouteRuntime();
   installGlobalImageFallback();

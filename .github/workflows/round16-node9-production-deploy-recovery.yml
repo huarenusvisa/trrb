@@ -205,6 +205,10 @@ jobs:
           echo 'Current production SHA acceptance timed out.'
           exit 1
 
+      - name: 验收新闻栏目与专题正文
+        if: env.SKIP_DEPLOY != 'true'
+        run: node scripts/editorial-production-check.mjs
+
       - name: 标记生产 SHA 已验收
         if: ${{ success() && env.SKIP_DEPLOY != 'true' }}
         shell: bash

@@ -13,6 +13,7 @@ test('political topics add membership without moving or duplicating article iden
   assert.deepEqual(politicalSections(row), ['中国热门头条','中国政治','习近平专题']);
   assert.deepEqual(editorialTopics({title:'胖东来员工工资调整'}), []);
   assert.deepEqual(editorialTopics({title:'省委书记履新'}), ['china-politics']);
+  assert.deepEqual(editorialTopics({title:'李强会见来访代表团'}), ['china-politics']);
   assert.equal(JSON.stringify(row), before);
 });
 test('homepage combines enforcement, separates politics, and preserves original article links', () => {

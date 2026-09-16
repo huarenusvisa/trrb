@@ -6,7 +6,7 @@ const ROUTES: Record<string, any> = {
   "/china-politics": {name:"中国政治", eyebrow:"中国政治 · CHINA POLITICS", intro:"关注领导人动态、人事任免、机构变化与事件后续。结合原文来源阅读报道，区分事实、转述与分析。", description:"唐人日报中国政治栏目，汇集领导人公开活动、人事任免、调查通报和政策动向。按发布时间查看新闻摘要、背景与后续报道，浏览领导人动态、人事任免及政治观察，进入原文核对信息来源。", filter:POLITICS_FILTER, views:POLITICS_VIEWS},
   "/us-enforcement": {name:"美国执法与警情", eyebrow:"美国执法 · PUBLIC SAFETY", intro:"汇集ICE执法、移民拘留与遣返，以及美国警方执法和案件进展。按领域浏览相关新闻与后续报道。", description:"唐人日报美国执法与警情，汇集ICE执法、拘留、遣返及美国警方执法和案件进展。分别浏览ICE执法和美国警情，查看新闻摘要、发布时间及事件后续，并从原文了解来源与背景。", filter:ENFORCEMENT_FILTER, views:{ice:{label:"ICE执法"},crime:{label:"美国警情"}}}
 };
-export const config = { path: Object.keys(ROUTES).flatMap(path => [path, `${path}/`, `${path}/index.html`]) };
+export const config = { path: ["/topic/xi-jinping", "/topic/xi-jinping/", "/topic/xi-jinping/index.html", "/china-politics", "/china-politics/", "/china-politics/index.html", "/us-enforcement", "/us-enforcement/", "/us-enforcement/index.html"] };
 const SECTIONS: Record<string, string> = {
   "重要新闻": "important-news", "热门头条": "hot-headlines", "中国热门头条": "hot-headlines",
   "美国时政": "us-politics", "美国警情": "us-crime", "中国官场": "china-officialdom",

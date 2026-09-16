@@ -121,7 +121,7 @@ function isRedirectBacked(raw, matchers) {
 
 const collectionHandler = await readFile(path.join(ROOT, "netlify/edge-functions/xi-topic.ts"), "utf8");
 for (const route of EDGE_COLLECTION_ROUTES) {
-  if (!collectionHandler.includes(`"/${route}":`) || !collectionHandler.includes("export const config") || !collectionHandler.includes("Object.keys(ROUTES)")) {
+  if (!collectionHandler.includes(`"/${route}":`) || !collectionHandler.includes("export const config") || !collectionHandler.match(/export const config\s*=\s*\{ path:\s*\[([^\]]+)\]/)?.[1]?.includes(`"/${route}"`)) {
     errors.push(`Edge collection route has no registered handler: /${route}`);
   }
 }

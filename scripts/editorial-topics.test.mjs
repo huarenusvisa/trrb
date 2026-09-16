@@ -47,14 +47,14 @@ test('collection filters retain privacy constraints, canonical pagination and or
     fetched = new URL(input);
     assert.equal(fetched.searchParams.get('status'),'eq.published');
     assert.equal(fetched.searchParams.get('visibility'),'eq.public');
-    return Response.json([{id:'x',slug:'existing',title:'省委书记任免',category_name:'中国热门头条',published_at:'2026-09-15'}]);
+    return Response.json(Array.from({length:21},(_,i)=>({id:String(i),slug:'existing',title:'省委书记任免',category_name:'中国热门头条',published_at:'2026-09-15'}))); 
   });
   let response = await collection(new Request('https://trrb.net/china-politics?view=appointments&page=2'),context);
   let html = await response.text();
   assert.equal(response.status,200);
   assert.match(fetched.searchParams.get('or'),/省委书记/);
   assert.match(fetched.searchParams.get('and'),/^\(or\(.*任命.*\)\)$/);
-  assert.equal(fetched.searchParams.get('offset'),'20');
+  assert.equal(fetched.searchParams.get('offset'),'0');
   assert.match(html,/rel="canonical" href="https:\/\/trrb.net\/china-politics\?view=appointments&amp;page=2"/);
   assert.match(html,/href="\/hot-headlines\/existing"/);
   await collection(new Request('https://trrb.net/us-enforcement?view=crime'),context);

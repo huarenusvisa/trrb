@@ -7,7 +7,7 @@ test('editorial listing combines search with topic filter and strips content fro
  let query;
  t.mock.method(globalThis,'fetch',async url => {
   query = new URL(url).searchParams;
-  return new Response(JSON.stringify([{id:'1',title:'习近平公开活动',content:'中文'.repeat(800),category_name:'热门头条',publication_scope:'topic_only'}]));
+  return new Response(JSON.stringify([0,1].map(i=>({id:String(i),title:'习近平公开活动',content:'中文'.repeat(800),category_name:'热门头条',publication_scope:'topic_only'}))));
  });
  const response = await handler(new Request('https://trrb.net/api?category=中国政治&q=活动&limit=1&offset=3'));
  const payload = await response.json();

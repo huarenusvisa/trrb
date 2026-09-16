@@ -1,3 +1,4 @@
+import {readPoliticalPage} from '../shared/political-page.mjs';
 import {loadChinaPeople,CHINA_PEOPLE_QUERY} from '../shared/china-person-registry.mjs';
 import policy from "../../article-editorial-policy.js";
 import { rest } from "./_shared/supabase-admin.js";
@@ -65,11 +66,12 @@ export default async (event: Request) => {
 
     const { editorialTopics, POLITICS_FILTER } = await import("../shared/editorial-topics.mjs");
     const globalRows = await fetchArticles(globalLimit);
-    const politicalRows = await rest("articles", {query: {
+    const politicalPage = await readPoliticalPage(({offset,limit})=>rest("articles", {query: {
       select: "id,title,slug,summary,content,category_name,topic_key,cover_image,author,status,visibility,published_at,created_at,publication_scope:metadata->>publication_scope",
       status: "eq.published", visibility: "eq.public", published_at: `gte.${homeCutoffIso()}`,
-      or: POLITICS_FILTER, order: "published_at.desc.nullslast,created_at.desc", limit: String(perCategory)
-    }}).catch(() => []);
+      or: POLITICS_FILTER, order: "published_at.desc.nullslast,created_at.desc", limit: String(limit), offset: String(offset)
+    }}),{limit:perCategory}).catch(() => ({rows:[]}));
+    const politicalRows = politicalPage.rows;
     const counts = categoryCounts(globalRows);
     const sparseCategories = CORE_CATEGORIES.filter((category) => (counts.get(category) || 0) < perCategory);
     const supplements = await Promise.all(

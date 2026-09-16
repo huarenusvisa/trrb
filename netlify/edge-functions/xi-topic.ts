@@ -1,5 +1,6 @@
+import {readPoliticalPage} from '../shared/political-page.mjs';
 import {loadChinaPeople,CHINA_PEOPLE_QUERY} from '../shared/china-person-registry.mjs';
-import { ELECTION_FILTER, POLITICS_FILTER, XI_FILTER, ICE_FILTER, ENFORCEMENT_FILTER, POLITICS_VIEWS, termFilter, isChinaPolitical } from "../shared/editorial-topics.mjs";
+import { ELECTION_FILTER, POLITICS_FILTER, XI_FILTER, ICE_FILTER, ENFORCEMENT_FILTER, POLITICS_VIEWS, termFilter, isChinaPolitical, editorialTopics } from "../shared/editorial-topics.mjs";
 const SITE = "https://trrb.net";
 const PAGE_SIZE = 20;
 const ROUTES: Record<string, any> = {
@@ -35,12 +36,14 @@ function safeImage(value: unknown) {
   const image = clean(value);
   return /^(https?:\/\/|\/assets\/)/i.test(image) && !/image-placeholder|category-placeholders/i.test(image) ? image : "";
 }
-function card(row: any) {
+function card(row: any, collectionPath = "") {
+  const memberships = editorialTopics(row);
+  const categoryLabel = ["/china-politics","/topic/xi-jinping"].includes(collectionPath) && memberships.includes("china-politics") ? ["中国政治", ...(memberships.includes("xi") ? ["习近平专题"] : [])].join(" · ") : row.category_name === "热门头条" ? "中国热门头条" : row.category_name;
   const href = esc(articleUrl(row));
   const image = safeImage(row.cover_image);
   const summary = clean(String(row.summary || row.content || "").replace(/<[^>]*>/g, " ")).slice(0, 240);
   const date = row.published_at || row.created_at;
-  return `<article class="trump-item ${image ? "" : "no-image"}">${image ? `<a href="${href}" tabindex="-1" aria-hidden="true"><img src="${esc(image)}" alt="" width="220" height="130" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.closest('article').classList.add('no-image');this.parentElement.remove()"></a>` : ""}<div><h3><a href="${href}">${esc(row.title)}</a></h3><p>${esc(summary)}</p><div class="trump-meta"><time datetime="${esc(date)}">${esc(dateText(date))}</time>（纽约时间） · ${esc(row.category_name === "热门头条" ? "中国热门头条" : row.category_name)}</div><a class="xi-read" href="${href}">阅读全文 <span aria-hidden="true">→</span></a></div></article>`;
+  return `<article class="trump-item ${image ? "" : "no-image"}">${image ? `<a href="${href}" tabindex="-1" aria-hidden="true"><img src="${esc(image)}" alt="" width="220" height="130" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.closest('article').classList.add('no-image');this.parentElement.remove()"></a>` : ""}<div><h3><a href="${href}">${esc(row.title)}</a></h3><p>${esc(summary)}</p><div class="trump-meta"><time datetime="${esc(date)}">${esc(dateText(date))}</time>（纽约时间） · ${esc(categoryLabel)}</div><a class="xi-read" href="${href}">阅读全文 <span aria-hidden="true">→</span></a></div></article>`;
 }
 function response(request: Request, body: string, status = 200) {
   return new Response(request.method === "HEAD" ? null : body, { status, headers: {
@@ -94,13 +97,20 @@ export default async (request: Request, context: any) => {
     if (path === "/us-enforcement" && view === "ice") endpoint.searchParams.set("or", ICE_FILTER);
     if (path === "/us-enforcement" && view === "crime") endpoint.searchParams.set("category_name", "eq.美国警情");
     if (path === "/topic/midterm-elections") endpoint.searchParams.set("and", `(published_at.gte.2026-01-01T00:00:00Z,published_at.lte.${new Date().toISOString()})`);
-    const result = await fetch(endpoint, { headers: { apikey: key, Authorization: `Bearer ${key}`, Accept: "application/json" }, signal: AbortSignal.timeout(8000) });
-    if (!result.ok) throw new Error(`Topic data ${result.status}`);
-    const rows = await result.json();
-    if (!Array.isArray(rows)) throw new Error("Invalid topic data");
+    const readRows = async (target: URL) => {
+      const result = await fetch(target,{headers:{apikey:key,Authorization:`Bearer ${key}`,Accept:'application/json'},signal:AbortSignal.timeout(8000)});
+      if(!result.ok) throw new Error(`Topic data ${result.status}`);
+      const rows = await result.json();
+      if(!Array.isArray(rows)) throw new Error('Invalid topic data');
+      return rows;
+    };
+    const politicalPage = path === '/china-politics' ? await readPoliticalPage(({offset,limit})=>{
+      const target = new URL(endpoint);target.searchParams.set('offset',String(offset));target.searchParams.set('limit',String(limit));return readRows(target);
+    },{limit:PAGE_SIZE,skip:(page-1)*PAGE_SIZE}) : null;
+    const rows = politicalPage ? politicalPage.rows : await readRows(endpoint);
     if (!rows.length) return errorPage(request, 404, page > 1 ? "该专题分页不存在" : "相关报道正在整理中", path);
-    const articles = rows.slice(0, PAGE_SIZE).filter(row => path !== "/china-politics" || isChinaPolitical(row));
-    const hasNext = rows.length > PAGE_SIZE;
+    const articles = rows.slice(0, PAGE_SIZE);
+    const hasNext = politicalPage ? politicalPage.has_more : rows.length > PAGE_SIZE;
     const canonical = `${SITE}${pageUrl(path, page, view)}`;
     const title = `${route.name}${selectedView ? ` · ${selectedView.label}` : ""}${page > 1 ? ` 第${page}页` : ""}｜唐人日报`;
     const schema = { "@context": "https://schema.org", "@type": "CollectionPage", name: title, url: canonical, description: route.description, ...(path === "/topic/xi-jinping" ? {about: { "@type": "Person", name: "习近平" }} : {}), mainEntity: { "@type": "ItemList", itemListElement: articles.map((row: any, index: number) => ({ "@type": "ListItem", position: (page - 1) * PAGE_SIZE + index + 1, name: row.title, url: `${SITE}${articleUrl(row)}` })) } };
@@ -114,7 +124,7 @@ export default async (request: Request, context: any) => {
 <link rel="stylesheet" href="/topic/trump/trump.css?v=20260725-4"><link rel="stylesheet" href="/topic/xi-jinping/xi.css?v=20260916-1"><script type="application/ld+json">${schemaJson}</script>${iceAssets}</head><body>
 <header class="trump-topbar"><a class="trump-brand" href="/">唐人日报</a><a class="xi-home" href="/#topic-focus">返回首页专题</a></header>
 <main class="trump-page"><section class="trump-hero"><div><span class="eyebrow">${esc(route.eyebrow)}</span><h1>${esc(route.name)}</h1><p>${esc(route.intro)}</p></div><div class="trump-status"><i></i><span>持续更新</span><b>${page === 1 ? "最新报道" : "本页最新报道"}：${esc(dateText(articles[0].published_at || articles[0].created_at))}</b></div></section>
-${iceSummary}<section class="trump-feed-panel">${Object.keys(route.views).length ? `<nav class="xi-tabs" aria-label="新闻分类"><a href="${path}" ${!view ? 'aria-current="page"' : ''}>全部报道</a>${Object.entries(route.views).map(([key, value]: [string, any]) => `<a href="${pageUrl(path, 1, key)}" ${view === key ? 'aria-current="page"' : ''}>${esc(value.label)}</a>`).join("")}</nav>` : ""}<div class="trump-feed-head"><h2>${page > 1 ? `历史报道 · 第${page}页` : "最新报道"}</h2><a class="xi-refresh" href="${pageUrl(path, page, view)}">刷新</a></div><p class="xi-context">按发布时间排序 · 阅读原文可查看报道来源与背景</p><div class="trump-feed">${articles.map(card).join("")}</div>
+${iceSummary}<section class="trump-feed-panel">${Object.keys(route.views).length ? `<nav class="xi-tabs" aria-label="新闻分类"><a href="${path}" ${!view ? 'aria-current="page"' : ''}>全部报道</a>${Object.entries(route.views).map(([key, value]: [string, any]) => `<a href="${pageUrl(path, 1, key)}" ${view === key ? 'aria-current="page"' : ''}>${esc(value.label)}</a>`).join("")}</nav>` : ""}<div class="trump-feed-head"><h2>${page > 1 ? `历史报道 · 第${page}页` : "最新报道"}</h2><a class="xi-refresh" href="${pageUrl(path, page, view)}">刷新</a></div><p class="xi-context">按发布时间排序 · 阅读原文可查看报道来源与背景</p><div class="trump-feed">${articles.map(row => card(row,path)).join("")}</div>
 <nav class="xi-pagination" aria-label="专题分页">${page > 1 ? `<a rel="prev" href="${pageUrl(path, page - 1, view)}">上一页</a>` : ""}<span aria-current="page">第 ${page} 页</span>${hasNext ? `<a rel="next" href="${pageUrl(path, page + 1, view)}">下一页 · 继续阅读</a>` : ""}</nav></section></main><footer class="xi-footer">唐人日报 · <a href="/">返回首页</a></footer></body></html>`);
   } catch (error) {
     console.error("Xi topic unavailable", error);

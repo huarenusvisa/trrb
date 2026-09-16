@@ -20,9 +20,9 @@ const HOME_NAV_ITEMS = [
   { category: '移民法官通过率', labelKey: 'home.portalJudgesTitle', url: 'https://asylumjudge.com/' },
   { category: '移民美国', labelKey: 'home.portalImmigrationTitle', route: '/immigration' },
   { category: '移民社区', labelKey: 'home.portalCommunityTitle', route: '/community' },
-  { category: '招聘求职', labelKey: 'home.navJobs', route: '/jobs' },
+  { category: '招聘求职', labelKey: 'home.navJobs', route: '/(tabs)/immigration' },
   { category: '美国执法与警情', labelKey: 'home.navEnforcement' },
-] as const satisfies ReadonlyArray<{ category: string; labelKey: MessageKey; route?: '/jobs' | '/immigration' | '/community'; url?: string }>;
+] as const satisfies ReadonlyArray<{ category: string; labelKey: MessageKey; route?: '/(tabs)/immigration' | '/immigration' | '/community'; url?: string }>;
 const ONBOARDING_LANGUAGES: { locale: SupportedLocale; label: string }[] = [
   { locale: 'zh-CN', label: '简体' },
   { locale: 'zh-TW', label: '繁體' },
@@ -96,7 +96,7 @@ const portalSections = [
     actionKey: 'home.portalJobsAction',
     bannerKey: 'home.portalJobsBanner',
     itemKeys: ['home.portalJobsFeatured', 'home.portalJobsFood', 'home.portalJobsLogistics', 'home.portalJobsOffice', 'home.portalJobsPartTime', 'home.portalJobsPost'],
-    route: '/jobs',
+    route: '/(tabs)/immigration',
   },
   {
     key: 'community',
@@ -332,7 +332,8 @@ export default function HomeScreen() {
   };
   const openTopic = (url: string, label: string) => { void openExternal(url, label); };
   const openPortal = (section: (typeof portalSections)[number]) => {
-    if ('url' in section) void openExternal(section.url, t(section.titleKey));
+    if (section.key === 'jobs') router.navigate('/(tabs)/immigration');
+    else if ('url' in section) void openExternal(section.url, t(section.titleKey));
     else router.push(section.route as '/immigration' | '/legal' | '/jobs' | '/community');
   };
 
@@ -404,7 +405,7 @@ export default function HomeScreen() {
               testID={item.category === '重要新闻' ? 'home-nav-important' : undefined}
               style={styles.navItem}
               onPress={() => {
-                if ('route' in item) router.push(item.route);
+                if ('route' in item) router.navigate(item.route);
                 else if ('url' in item) void openExternal(item.url, t(item.labelKey));
                 else openCategory(item.category);
               }}
@@ -564,7 +565,7 @@ export default function HomeScreen() {
             {portalSections.map((section) => (
               <View key={section.key} testID={`home-portal-${section.key}`} style={styles.portalCard}>
                 <View style={styles.portalHead}>
-                  <View style={styles.portalTitleWrap}><View style={styles.portalAccent} /><Text style={styles.portalTitle}>{t(section.titleKey)}</Text></View>
+                  <View style={styles.portalTitleWrap}><View style={styles.portalAccent} /><Text accessibilityRole={section.key === 'jobs' ? 'link' : undefined} onPress={section.key === 'jobs' ? () => openPortal(section) : undefined} style={styles.portalTitle}>{t(section.titleKey)}</Text></View>
                   <Pressable accessibilityRole="link" accessibilityLabel={t('home.openPortalA11y', { title: t(section.titleKey) })} accessibilityState={{ disabled: externalBusy }} disabled={externalBusy} onPress={() => openPortal(section)}><Text style={styles.portalAction}>{t(section.actionKey)}</Text></Pressable>
                 </View>
                 <Pressable accessibilityRole="link" accessibilityLabel={t('home.openPortalA11y', { title: t(section.titleKey) })} accessibilityState={{ disabled: externalBusy }} disabled={externalBusy} style={[styles.portalBanner, section.key === 'judges' && styles.judgeBanner]} onPress={() => openPortal(section)}><Text style={[styles.portalBannerText, section.key === 'judges' && styles.judgeBannerText]}>{t(section.bannerKey)}</Text></Pressable>

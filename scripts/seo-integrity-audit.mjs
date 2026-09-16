@@ -13,7 +13,7 @@ const DYNAMIC_SEO_HTML = new Set(["article.html", "listing.html", "legal/detail.
 const STRICT_INDEXABLE_SEO_GATE = "STRICT_INDEXABLE_SEO_GATE_V2";
 // These exact routes are served by a registered Edge collection renderer.
 // Validate the handler below rather than treating every /topic/* path as valid.
-const EDGE_COLLECTION_ROUTES = new Set(["topic/xi-jinping", "china-politics", "us-enforcement"]);
+const EDGE_COLLECTION_ROUTES = new Set(["topic/xi-jinping", "china-politics", "us-enforcement", "topic/midterm-elections"]);
 const ROUTE_PREFIXES = new Set([
   "ice", "trump", "immigrate", "important-news", "hot-headlines", "us-politics", "compare",
   "us-crime", "china-officialdom", "asylum", "asylumjudge", "immigration", "deport", "expose", "community", "jobs", "niulai", "ershou", "news"

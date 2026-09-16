@@ -15,13 +15,13 @@ const REN_ZHENGFEI_QUERY = '("任正非" OR "Ren Zhengfei") -is:retweet -is:repl
 // retry, repair, clean or publish Ren Zhengfei items until a future explicit instruction.
 const REN_ZHENGFEI_COLLECTION_ENABLED = false;
 const PIPELINE = "china-hot-li-teacher-v2";
-const PROCESSING_VERSION = "single-event-800-context-v2";
+const PROCESSING_VERSION = "single-event-800-context-v3";
 const WARNING = "真实性提示：本文所述信息可能尚未获得独立核实，部分细节可能存在偏差，请以权威部门后续通报为准。";
 const DRY_RUN = process.argv.includes("--dry-run");
 const RECOVER_ARCHIVED = process.argv.includes("--recover-archived");
 const REPAIR_TODAY = process.argv.includes("--repair-today");
 const REPAIR_SINCE = cleanText(process.env.CHINA_HOT_REPAIR_SINCE || "2026-08-24T00:00:00Z", 100);
-const EXPANSION_VERSION = "single-event-800-context-v2";
+const EXPANSION_VERSION = "single-event-800-context-v3";
 const LOOKBACK_HOURS = intEnv("LI_TEACHER_LOOKBACK_HOURS", 6, 3, 24);
 const MAX_FETCH = intEnv("LI_TEACHER_MAX_FETCH", 100, 10, 200);
 const REN_ZHENGFEI_MAX_FETCH = intEnv("REN_ZHENGFEI_MAX_FETCH", 300, 10, 500);
@@ -532,7 +532,7 @@ export async function generateArticle(qualified, tweet, attempt = 0, previous = 
     type: "object", additionalProperties: false, required: ["title", "summary", "content", "seo_keywords", "appears_old_news", "old_news_reason", "source_sufficient", "rejection_reason"],
     properties: {
       title: { type: "string", minLength: 1 }, summary: { type: "string" },
-      content: { type: "string", minLength: 1 }, seo_keywords: { type: "string" },
+      content: { anyOf: [{ type: "string", minLength: 1100 }, { type: "string", const: "" }] }, seo_keywords: { type: "string" },
       appears_old_news: { type: "boolean" }, old_news_reason: { type: "string" },
       source_sufficient: { type: "boolean" }, rejection_reason: { type: "string" },
     },
@@ -543,7 +543,7 @@ export async function generateArticle(qualified, tweet, attempt = 0, previous = 
       model: OPENAI_MODEL, store: false, max_output_tokens: 6000,
       instructions: [
         "你是唐人日报中国热门头条编辑。只依据输入原文、随附原帖图片和有链接的补充资料整理中文新闻，严禁补造人物、数字、地点、引语、原因或结果。",
-        "发布正文必须至少800个中文字符（不含标题、摘要、链接、免责声明、标签和广告），写成有清晰段落、围绕同一事件的完整新闻。不得拼接不同事件，不得重复、堆砌画面细节或用空泛背景凑字。",
+        "素材足够时写900至1100个中文字符；发布正文必须至少800个中文字符（不含标题、摘要、链接、免责声明、标签和广告），写成有清晰段落、围绕同一事件的完整新闻。不得拼接不同事件，不得重复、堆砌画面细节或用空泛背景凑字。",
         "先判断素材是否足以支持800字完整报道。节目预告、视频标题、话题串烧、零碎评论不能充当正文。如果只有标题或材料不足，source_sufficient必须为false，rejection_reason说明缺什么，content留空；不得靠模型记忆填补事实。",
         "只从图片中提取与同一新闻事件直接相关的可辨认文字、通知、时间、地点和行为；不要用服装、构图、色彩等无关细节扩充篇幅。图片信息必须用“截图文字显示”“画面可见”等方式明确归因；看不清就不写。",
         "允许依据补充资料中的可核查来源交代同一事件背景、时间线和后续，注明媒体或文件及日期；实际取得的评论仅可归因为该账号观点，不得据此证实事实或概括公众态度。没有补充来源时只允许补充确定的基础行政地理关系，例如城市所属省份、区县与城市的关系，以及画面直接显示的场所类型。不要补充企业性质、人物履历、统计数字、历史细节、行业评价或其他模型记忆中的背景。",
@@ -575,7 +575,7 @@ export async function generateArticle(qualified, tweet, attempt = 0, previous = 
   article.title = cleanText(article.title, Infinity); article.summary = cleanText(article.summary, Infinity); article.content = cleanText(article.content, Infinity); article.old_news_reason = cleanText(article.old_news_reason, 800);
   if (!article.appears_old_news && (article.source_sufficient !== true || bodyCharacterCount(article.content) < 800) && !tweet.context_research_attempted) {
     tweet.context_research_attempted = true;
-    tweet.context_research = await researchEvent(qualified, tweet, {request, readJson, model: OPENAI_MODEL, key: process.env.OPENAI_API_KEY});
+    tweet.context_research = await researchEvent(qualified, tweet, {request, readJson, model: OPENAI_MODEL, key: process.env.OPENAI_API_KEY, bearer: bearerToken()});
     if (tweet.context_research) return generateArticle(qualified, tweet, 0, article);
   }
   if (tweet.context_research && article.source_sufficient === true && bodyCharacterCount(article.content) < 800 && attempt < 1) {

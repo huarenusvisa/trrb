@@ -10,7 +10,7 @@ test('keeps the App homepage on the PC mobile content structure', () => {
   const api = read('src/api/trrb.ts');
   const renderStart = home.indexOf('return (');
   const renderedHome = home.slice(renderStart);
-  const markers = ['testID="home-important-carousel"', 'testID="home-rankings"', 'testID="home-topics"', 'testID={`home-news-${key}`}', 'testID={`home-portal-${section.key}`}', 'testID="home-reader-services"'];
+  const markers = ['testID="home-important-carousel"', 'testID="home-rankings"', 'testID="home-topics"', 'testID={`home-news-${key}`}', 'testID={`home-portal-${section.key}`}', '<ReaderServices />'];
   let position = -1;
   for (const marker of markers) {
     const next = renderedHome.indexOf(marker);
@@ -24,7 +24,7 @@ test('keeps the App homepage on the PC mobile content structure', () => {
     assert.ok(i18n.includes(section), `${section} must stay in the localized App homepage content`);
   }
   for (const marker of ['home.portalJudgesTitle', 'home.portalImmigrationTitle', 'home.portalLegalTitle', 'home.portalJobsTitle', 'home.portalCommunityTitle', 'home.readerSubscribeTitle', 'home.readerGroupTitle', 'home.readerTipsTitle']) {
-    assert.ok(home.includes(marker), `${marker} must stay on the App homepage`);
+    assert.ok((home + read('src/components/ReaderServices.tsx')).includes(marker), `${marker} must stay on the App homepage`);
   }
   assert.match(api, /public-home-bundle/);
   assert.match(home, /fetchHomepageBundle\(\)/);
@@ -51,7 +51,8 @@ test('guards homepage external links and keeps failures retryable', () => {
   assert.match(home, /AccessibilityInfo\.announceForAccessibility\(t\('home\.externalLinkFailed'/);
   assert.match(home, /testID="home-external-link-error"[\s\S]*accessibilityRole="alert"/);
   assert.match(home, /testID="home-external-link-retry"[\s\S]*onPress=\{\(\) => void openExternal\(externalFailure\.url, externalFailure\.label\)\}/);
-  assert.match(home, /openExternal\(service\.url, t\(service\.titleKey\)\)/);
+  assert.match(home, /<ReaderServices \/>/);
+  assert.doesNotMatch(home, /https:\/\/trrb.net\/#(?:daily|submit|community)/);
   assert.doesNotMatch(home, /Linking\.openURL\(service\.url\)|Linking\.openURL\(section\.url\)/);
   assert.match(i18n, /'home\.externalLinkFailed': '无法打开“\{title\}”。请检查网络或稍后重试。'/);
   assert.match(i18n, /'home\.retryExternal': 'Try opening again'/);

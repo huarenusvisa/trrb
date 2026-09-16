@@ -45,7 +45,7 @@ if (!html.includes('article-route-runtime.js')) {
 const coreVersions = new Map([
   ['article-live-neighbors.js', '20260916-editorial-1'],
   ['homepage-secondary-hubs.bundle.js', '20260916-compact-4'],
-  ['homepage-topic-runtime.bundle.js', '20260916-placement-1'],
+  ['homepage-topic-runtime.bundle.js', '20260916-refresh-1'],
   ['article-route-runtime.js', '20260916-category-alias'],
   ['homepage-ranking.js', '20260916-placement-1'],
   ['articles-home.js', '20260916-placement-1'],

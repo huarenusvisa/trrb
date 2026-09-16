@@ -1,3 +1,4 @@
+import { ReaderServices } from '../../src/components/ReaderServices';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { AccessibilityInfo, ActivityIndicator, InteractionManager, Linking, Pressable, RefreshControl, ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import { router } from 'expo-router';
@@ -107,11 +108,6 @@ const portalSections = [
   },
 ] as const;
 
-const readerServices = [
-  { key: 'subscribe', titleKey: 'home.readerSubscribeTitle', subtitleKey: 'home.readerSubscribeSubtitle', actionKey: 'home.readerSubscribeAction', url: 'https://trrb.net/#daily' },
-  { key: 'readers', titleKey: 'home.readerGroupTitle', subtitleKey: 'home.readerGroupSubtitle', actionKey: 'home.readerGroupAction', url: 'https://trrb.net/#community' },
-  { key: 'tips', titleKey: 'home.readerTipsTitle', subtitleKey: 'home.readerTipsSubtitle', actionKey: 'home.readerTipsAction', url: 'https://trrb.net/#submit' },
-] as const;
 
 type WeatherState = { temperature: number | null; code: number | null; isDay: boolean };
 type ExternalLinkFailure = { url: string; label: string };
@@ -582,14 +578,7 @@ export default function HomeScreen() {
               </View>
             ))}
 
-            <View testID="home-reader-services" style={styles.readerServicesCard}>
-              {readerServices.map((service) => (
-                <Pressable key={service.key} accessibilityRole="link" accessibilityLabel={t('home.openReaderServiceA11y', { title: t(service.titleKey) })} accessibilityState={{ disabled: externalBusy }} disabled={externalBusy} style={styles.readerService} onPress={() => void openExternal(service.url, t(service.titleKey))}>
-                  <View style={styles.readerServiceCopy}><Text style={styles.readerServiceTitle}>{t(service.titleKey)}</Text><Text style={styles.readerServiceSub}>{t(service.subtitleKey)}</Text></View>
-                  <Text style={styles.readerServiceAction}>{t(service.actionKey)}</Text>
-                </Pressable>
-              ))}
-            </View>
+            <ReaderServices />
 
             <View style={styles.footerBlock}>
               <Text style={styles.footerBrand}>{t('home.footerBrand')}</Text>

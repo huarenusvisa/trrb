@@ -174,7 +174,7 @@ function shortDate(value) {
 
 function homeTopSnapshot(rows) {
   const items = rows.slice(0, 10).map((row, i) => `
-        <article class="seo-static-news-item">
+        <article class="seo-static-news-item no-cover">
           <b>${i + 1}</b>
           <div class="seo-static-news-copy"><h2><a href="${attr(row.loc)}">${escapeHtml(row.title)}</a></h2><small>${escapeHtml(shortDate(row.date))}</small></div>
         </article>`).join("");

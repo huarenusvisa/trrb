@@ -58,6 +58,10 @@
     if (finalized) return;
     if (!force && !(heroReady() && rankReady() && sectionsReady() &&
       html.dataset.homeEnhancementsStable === "true")) return;
+    const hero = document.querySelector("#hero");
+    if (force && hero && !heroReady()) {
+      hero.innerHTML = '<div class="hero-loading-note" role="status">要闻暂未加载完成<a href="/us-politics">先浏览美国时政报道 →</a></div>';
+    }
     finalized = true;
     html.dataset.homeFinalUi = "true";
     html.dataset.homeFinalUiAt = new Date().toISOString();
@@ -82,10 +86,17 @@
     // Do not rebuild the hero on a timer: that caused visible mobile jumps.
     window.setTimeout(() => finalize(false), 1800);
 
+    const observer = new MutationObserver(() => { if (check()) observer.disconnect(); });
+    for (const id of ["hero", "sections-grid", "rank-list"]) {
+      const node = document.getElementById(id);
+      if (node) observer.observe(node, { childList: true, subtree: true });
+    }
+    window.setTimeout(() => observer.disconnect(), 4500);
+
     // Safety watchdog only. It reveals the existing DOM without rebuilding it.
     window.setTimeout(() => finalize(true), 4200);
 
-    window.addEventListener("pageshow", () => finalize(true));
+    window.addEventListener("pageshow", () => check());
   }
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start, { once: true });

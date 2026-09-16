@@ -12,6 +12,8 @@ test('political topics add membership without moving or duplicating article iden
   assert.deepEqual(editorialTopics(row), ['china-politics','xi']);
   assert.deepEqual(politicalSections(row), ['中国热门头条','中国政治','习近平专题']);
   assert.deepEqual(editorialTopics({title:'胖东来员工工资调整'}), []);
+  assert.deepEqual(editorialTopics({title:'库恩斯守住特拉华州民主党席位',summary:'在党内初选中击败挑战者'}), []);
+  assert.deepEqual(editorialTopics({title:'奥巴马点名AI布局2028',summary:'党内讨论候选人政策方案'}), []);
   assert.deepEqual(editorialTopics({title:'省委书记履新'}), ['china-politics']);
   assert.deepEqual(editorialTopics({title:'李强会见来访代表团'}), ['china-politics']);
   assert.equal(JSON.stringify(row), before);

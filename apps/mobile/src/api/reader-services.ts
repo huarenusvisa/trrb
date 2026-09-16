@@ -8,7 +8,7 @@ async function submit(fields: Record<string, string>): Promise<void> {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), 20000);
   try {
-    const response = await fetch('https://trrb.net/thanks.html', {
+    const response = await fetch('https://trrb.net/thanks', {
       method: 'POST',
       headers: {'Content-Type':'application/x-www-form-urlencoded'},
       body: new URLSearchParams({...fields, 'bot-field':''}).toString(),

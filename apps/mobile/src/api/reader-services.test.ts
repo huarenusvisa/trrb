@@ -11,7 +11,7 @@ test('reader forms validate input before making requests',async t=>{
 });
 test('registered forms receive encoded email and Chinese text with exact field names',async t=>{
  const requests: RequestInit[]=[];
- t.mock.method(globalThis,'fetch',async(url,options)=>{assert.equal(url,'https://trrb.net/thanks.html');requests.push(options);return new Response('',{status:200});});
+ t.mock.method(globalThis,'fetch',async(url,options)=>{assert.equal(url,'https://trrb.net/thanks');requests.push(options);return new Response('',{status:200});});
  await subscribeReader(' reader+news@example.com ');
  await submitReaderTip({message:' 纽约线索 & 时间=今天 ',name:'读者',contact:'微信'});
  const subscription=new URLSearchParams(String(requests[0].body));

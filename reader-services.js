@@ -20,6 +20,7 @@
       event.preventDefault();
       if (form.dataset.sending || !form.reportValidity()) return;
       const data = new FormData(form);
+      data.set('form-name', form.name);
       const tip = form.name === 'news-tip';
       if (tip && !String(data.get('message') || '').trim()) { status.textContent = '请填写线索内容。'; return; }
       const file = data.get('attachment');

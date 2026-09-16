@@ -14,14 +14,14 @@ name: Current Tang Daily native store screenshots
       id: home-important-carousel
     timeout: 60000
 - waitForAnimationToEnd
-- takeScreenshot: ${CAPTURE_DIR}/01-home
+- takeScreenshot: 01-home
 - scrollUntilVisible:
     element:
       id: home-topics
     direction: DOWN
     timeout: 30000
 - waitForAnimationToEnd
-- takeScreenshot: ${CAPTURE_DIR}/02-topics
+- takeScreenshot: 02-topics
 - tapOn:
     id: tab-immigration
 - extendedWaitUntil:
@@ -29,7 +29,7 @@ name: Current Tang Daily native store screenshots
     timeout: 60000
 - assertNotVisible: 华人工作网暂时无法打开
 - waitForAnimationToEnd
-- takeScreenshot: ${CAPTURE_DIR}/03-jobs
+- takeScreenshot: 03-jobs
 - tapOn:
     id: tab-legal
 - extendedWaitUntil:
@@ -39,7 +39,7 @@ name: Current Tang Daily native store screenshots
 - waitForAnimationToEnd
 - assertNotVisible:
     id: judge-portal-link-error
-- takeScreenshot: ${CAPTURE_DIR}/04-judges
+- takeScreenshot: 04-judges
 - tapOn:
     id: tab-america
 - extendedWaitUntil:
@@ -47,4 +47,4 @@ name: Current Tang Daily native store screenshots
     timeout: 60000
 - assertNotVisible: 唐人社区暂时无法打开
 - waitForAnimationToEnd
-- takeScreenshot: ${CAPTURE_DIR}/05-community
+- takeScreenshot: 05-community

@@ -3,6 +3,7 @@ import json
 import os
 from pathlib import Path
 import subprocess
+import shutil
 
 def run(*args):
     return subprocess.check_output(args, text=True).strip()
@@ -24,4 +25,13 @@ app = next(Path('/tmp/store-app/unpacked').rglob('*.app'))
 run('xcrun', 'simctl', 'install', udid, str(app))
 Path('captures/device.json').write_text(json.dumps({'device':device['name'],'runtime':runtime,'commit':os.environ['GITHUB_SHA']}, indent=2))
 maestro = str(Path.home() / '.maestro/bin/maestro')
-subprocess.run([maestro, '--device', udid, 'test', '-e', f'CAPTURE_DIR={Path.cwd() / "captures"}', '--debug-output', 'captures/debug', 'scripts/store-capture/screens.yml'], check=True)
+try:
+    subprocess.run([maestro, '--device', udid, 'test', '--debug-output', 'captures/debug', 'scripts/store-capture/screens.yml'], check=True, timeout=900)
+finally:
+    for root in [Path.home() / '.maestro/tests', Path.cwd()]:
+        for name in ['01-home.png','02-topics.png','03-jobs.png','04-judges.png','05-community.png']:
+            for source in root.rglob(name):
+                target = Path('captures') / name
+                if source.resolve() != target.resolve():
+                    shutil.copy2(source, target)
+

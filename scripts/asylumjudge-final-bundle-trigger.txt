@@ -14,3 +14,5 @@
 2026-09-16: add voluntary site support with side-by-side desktop Zelle/Alipay QR codes and mobile payment tabs/swipe.
 
 2026-09-16: restore an explicit Home navigation entry and keep all brand links on the current-language homepage.
+
+2026-09-16: compact desktop support card and remove the permanent nationality navigation highlight; highlight only the current page.

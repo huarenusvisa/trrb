@@ -79,8 +79,11 @@
   let locale = normalizeLocale(pathLocales.get(firstPathSegment) || new URLSearchParams(location.search).get('lang') || storedLocale || 'zh-Hans');
   const standaloneLocaleRoot = standaloneHost && localePaths[locale] ? `/${localePaths[locale]}` : '';
   const localizedRoot = trrbColumn ? root : standaloneLocaleRoot;
-  const routeHref = (key) => ({ judges: (location.pathname === '/' || location.pathname === `${localizedRoot}/` ? '#judge-search' : (localizedRoot || '/')), courts: `${localizedRoot}/courts`, states: `${localizedRoot}/states`, nationality: `${localizedRoot}/nationality`, tools: `${localizedRoot}/tools`, community: '/community/' }[key]);
-  const activeKey = () => /\/tools|tools\.html/.test(location.pathname) ? 'tools' : /\/nationality|china-dashboard/.test(location.pathname) ? 'nationality' : /\/states/.test(location.pathname) ? 'states' : /\/courts|court-detail/.test(location.pathname) ? 'courts' : 'judges';
+  const homeLabels = { en: 'Home', es: 'Inicio', fr: 'Accueil', 'pt-BR': 'Início', hi: 'होम', 'zh-Hans': '首页', 'zh-Hant': '首頁', ru: 'Главная', ar: 'الرئيسية', tr: 'Ana sayfa' };
+  const homeHref = () => trrbColumn ? '/asylumjudge/' : (localePaths[locale] ? `/${localePaths[locale]}/` : '/');
+  const isHome = () => location.pathname.replace(/\/+$/, '') === homeHref().replace(/\/+$/, '');
+  const routeHref = (key) => ({ home: homeHref(), judges: (location.pathname === '/' || location.pathname === `${localizedRoot}/` ? '#judge-search' : (localizedRoot || '/')), courts: `${localizedRoot}/courts`, states: `${localizedRoot}/states`, nationality: `${localizedRoot}/nationality`, tools: `${localizedRoot}/tools`, community: '/community/' }[key]);
+  const activeKey = () => isHome() ? 'home' : /\/tools|tools\.html/.test(location.pathname) ? 'tools' : /\/nationality|china-dashboard/.test(location.pathname) ? 'nationality' : /\/states/.test(location.pathname) ? 'states' : /\/courts|court-detail/.test(location.pathname) ? 'courts' : 'judges';
   const toolMenuMarkup = () => {
     const items = toolMenuLabels[locale] || toolMenuLabels['zh-Hans'];
     const links = [
@@ -94,11 +97,15 @@
     ];
     return `<details class="nav-tools ${activeKey() === 'tools' ? 'active' : ''}"><summary data-nav-key="tools">${labels[locale].tools}</summary><div class="nav-tools-panel">${links.map(([href, label, external]) => `<a href="${href}"${external ? ' target="_blank" rel="noopener noreferrer"' : ''}>${label}${external ? '<span aria-hidden="true">↗</span>' : ''}</a>`).join('')}</div></details>`;
   };
-  const navigationMarkup = () => ['judges', 'courts', 'states', 'nationality'].map((key) => `<a data-nav-key="${key}" class="${activeKey() === key ? 'active' : ''}" href="${routeHref(key)}">${labels[locale][key]}</a>`).join('') + toolMenuMarkup() + `<a data-nav-key="community" href="${routeHref('community')}">${labels[locale].community}</a>`;
+  const navigationMarkup = () => `<a data-nav-key="home" class="${isHome() ? 'active' : ''}"${isHome() ? ' aria-current="page"' : ''} href="${homeHref()}">${homeLabels[locale]}</a>` + ['judges', 'courts', 'states', 'nationality'].map((key) => `<a data-nav-key="${key}" class="${activeKey() === key ? 'active' : ''}" href="${routeHref(key)}">${labels[locale][key]}</a>`).join('') + toolMenuMarkup() + `<a data-nav-key="community" href="${routeHref('community')}">${labels[locale].community}</a>`;
   const languageMarkup = (id = 'language-select') => `<label for="${id}" data-language-label>${labels[locale].language}</label><select id="${id}" aria-label="${labels[locale].language}">${options}</select>`;
   const applyNavigationLabels = () => {
     const set = labels[locale] || labels['zh-Hans'];
     const brandSet = brandLabels[locale] || brandLabels['zh-Hans'];
+    document.querySelectorAll('a.brand,.judge-brand > a.asylumjudge-logo,.judge-brand > a:first-child').forEach((link) => {
+      link.href = homeHref();
+      link.setAttribute('aria-label', `AsylumJudge · ${homeLabels[locale]}`);
+    });
     document.querySelectorAll('.asylumjudge-primary-nav,.home-nav').forEach((node) => { node.innerHTML = navigationMarkup(); });
     document.querySelectorAll('[data-nav-key]').forEach((node) => { node.textContent = set[node.dataset.navKey] || node.textContent; });
     document.querySelectorAll('[data-language-label]').forEach((node) => {
@@ -205,7 +212,7 @@
     const logo = brand.querySelector('a');
     if (logo) {
       logo.className = 'asylumjudge-logo';
-      logo.href = root || '/';
+      logo.href = homeHref();
       logo.innerHTML = '<img class="asylumjudge-lockup" src="/asylumjudge/logo.svg" alt="AsylumJudge.com">';
     }
     const descriptor = brand.querySelector(':scope > div:not(.language-control)');

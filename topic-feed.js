@@ -17,6 +17,7 @@
     const url = new URL(`${SUPABASE_URL}/rest/v1/articles`);
     url.searchParams.set("select", select);
     if (topic === "xi") {
+      url.searchParams.set("visibility", "eq.public");
       url.searchParams.set("or", "(title.ilike.*习近平*,summary.ilike.*习近平*,title.ilike.*習近平*,summary.ilike.*習近平*)");
     } else {
       url.searchParams.set("topic_key", `eq.${topic}`);

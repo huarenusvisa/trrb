@@ -2,7 +2,7 @@
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import test from "node:test";
-import { buildCandidate, buildPublishedArticle, isRenZhengfeiTweet, qualifyTweet, targetLength } from "./china-hot-li-teacher-ingest.mjs";
+import { buildCandidate, buildPublishedArticle, isRenZhengfeiCollectionPaused, isRenZhengfeiTweet, qualifyTweet, targetLength } from "./china-hot-li-teacher-ingest.mjs";
 import { findRenEventDuplicate, hasSubstantiveRenUpdate, sameRenEvent } from "./ren-zhengfei-event-dedupe.mjs";
 
 const renTweet = {
@@ -17,7 +17,7 @@ const renTweet = {
   media: [{ type: "photo", url: "https://pbs.twimg.com/media/ren-event.jpg" }],
 };
 
-test("任正非全站关键词内容进入原中国热门头条流水线", () => {
+test("任正非专题保留原有数据结构，但采集入口已暂停", () => {
   assert.equal(isRenZhengfeiTweet(renTweet), true);
   assert.equal(isRenZhengfeiTweet({ ...renTweet, text: "任正非课程报名返现，欢迎参加抽奖" }), false);
   const qualified = qualifyTweet(renTweet);
@@ -28,6 +28,9 @@ test("任正非全站关键词内容进入原中国热门头条流水线", () =>
   assert.equal(candidate.source_account, "@newsroom");
   assert.equal(candidate.external_id, "x:ren-zhengfei:2099504575149642078");
   assert.equal(candidate.ai_payload.topic_key, "ren-zhengfei");
+  assert.equal(isRenZhengfeiCollectionPaused(renTweet), true);
+  assert.equal(isRenZhengfeiCollectionPaused({ id: "li-source", text: "李老师原账号提到任正非今日露面", topic_key: "china" }), true);
+  assert.equal(isRenZhengfeiCollectionPaused({ id: "china", text: "北京一所学校发布开学通知", topic_key: "china" }), false);
 });
 
 test("任正非时间线按事件去重，但保留官方回应和真实进展", () => {
@@ -76,7 +79,11 @@ test("任正非时间线使用主题键并按原始消息时间倒序", () => {
   assert.match(html, /property="og:image" content="https:\/\/trrb\.net\/assets\/people\/ren-zhengfei-xi-news-hero\.jpg/);
   assert.match(html, /name="twitter:card" content="summary_large_image"/);
   assert.match(redirects, /^\/ren-zhengfei \/ren-zhengfei\/index\.html 200!$/m);
-  assert.match(workflow, /REN_ZHENGFEI_MAX_FETCH/);
+  const ingest = fs.readFileSync(new URL("./china-hot-li-teacher-ingest.mjs", import.meta.url), "utf8");
+  assert.match(ingest, /REN_ZHENGFEI_COLLECTION_ENABLED = false/);
+  assert.match(ingest, /renZhengfeiCollection: "paused_by_editor"/);
+  assert.doesNotMatch(workflow, /REN_ZHENGFEI_MAX_FETCH/);
+  assert.doesNotMatch(workflow, /Clean duplicate Ren Zhengfei timeline stories/);
   assert.doesNotMatch(workflow, /schedule:/);
 });
 

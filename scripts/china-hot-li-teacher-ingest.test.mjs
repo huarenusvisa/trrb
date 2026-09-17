@@ -22,7 +22,7 @@ test("中国新闻及中国政治人物内容进入中国热门头条池", () =>
   assert.equal(candidate.proposed_section, "中国热门头条");
   assert.equal(candidate.decision, "processing");
   assert.equal(candidate.pipeline, "china-hot-li-teacher-v2");
-  assert.equal(candidate.ai_payload.processing_version, "political-routing-600-3500-v7");
+  assert.equal(candidate.ai_payload.processing_version, "news-routing-600-3500-v8");
 });
 
 test("中国热门头条采用600至3500字目标且不截断事实", () => {
@@ -74,7 +74,7 @@ test("中国热门头条按内容查重并执行旧闻门禁", () => {
   assert.match(script, /appears_old_news/);
   assert.match(script, /old_news_checked: true/);
   assert.match(script, /duplicate_check_days: source\.topicKey === REN_ZHENGFEI_TOPIC \? 180 : 30/);
-  assert.match(script, /与近30天已发布中国热门头条重复/);
+  assert.match(script, /与近30天跨栏目已发布内容重复/);
 });
 
 test("发布稿保留媒体归因及原帖证据", () => {
@@ -132,11 +132,11 @@ test("未自动发布的内容仍是可编辑、可人工发布的后台草稿",
   assert.match(draft.metadata.review_reason, /需要编辑核对/);
 });
 
-test("直接涉及中国的跨国新闻进入中国热门，纯美国新闻仍被拒绝", () => {
+test("跨国新闻按主体分流，美国ICE新闻不再丢弃", () => {
   assert.equal(qualifyTweet({ id: "china-cars", text: "美国车企联盟致信国会，要求立法禁销中国车，并称此举涉及中国制造商在美国市场的销售、生产和进口安排。" }).accepted, true);
   assert.equal(qualifyTweet({ id: "xinhua", text: "新华社时评关注农村高额彩礼问题，小红书相关讨论引发网友关注，话题直接涉及中国农村青年婚恋负担。" }).accepted, true);
   assert.equal(qualifyTweet({ id: "security", text: "环球时报报道，国家安全部披露有人深夜翻进快递站偷取数据，国安部提示相关案件涉及数据安全。" }).accepted, true);
-  assert.equal(qualifyTweet({ id: "us", text: "8月23日，美国佛罗里达州警方宣布将与ICE开展联合执法行动，并公布新的移民拘留安排。" }).accepted, false);
+  assert.equal(qualifyTweet({ id: "us", text: "8月23日，美国佛罗里达州警方宣布将与ICE开展联合执法行动，并公布新的移民拘留安排。" }).route, "ice");
   assert.equal(qualifyTweet({ id: "reply", text: chinaTweet.text, referenced_tweets: [{ type: "replied_to" }] }).accepted, false);
   assert.equal(qualifyTweet({ id: "rt", text: `RT @example: ${chinaTweet.text}` }).accepted, false);
   assert.equal(qualifyTweet({ id: "short", text: "北京地铁恢复运营。" }).accepted, true);
@@ -226,7 +226,7 @@ test("自动失败草稿可有界重试，人工复核决定不会被自动覆�
   assert.equal(shouldRetryCandidate({
     decision: "review_required",
     decision_reason: "自动扩写或发布失败：生成稿未明确中国新闻主体；保留为可编辑草稿，由编辑决定是否发布",
-    ai_payload: { processing_version: "political-routing-600-3500-v7", automatic_retry_attempts: 3 },
+    ai_payload: { processing_version: "news-routing-600-3500-v8", automatic_retry_attempts: 3 },
   }, qualified), false);
   assert.equal(shouldRetryCandidate({
     decision: "review_required",

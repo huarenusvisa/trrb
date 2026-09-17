@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {isChinaPolitical,editorialTopics,POLITICS_FILTER} from '../netlify/shared/editorial-topics.mjs';
-import {generateArticle,qualifyTweet,buildPublishedArticle,sourceFor,parseModelJson,eventDuplicate} from './china-hot-li-teacher-ingest.mjs';
+import {buildCandidate,generateArticle,qualifyTweet,buildPublishedArticle,sourceFor,parseModelJson,eventDuplicate} from './china-hot-li-teacher-ingest.mjs';
 import {collectChinaMediaPosts,CHINA_X_SOURCES,CHINA_X_MONITORS,chinaMediaQuery,politicalReviewReason} from './china-x-sources.mjs';
 const body='重庆学校发布开学通知。'+Array.from({length:630},(_,i)=>String.fromCharCode(0x4e00+i)).join('');
 const source={id:'12345',text:'重庆学校今日公布开学安排，通知说明报到时间及校方调整安排。',created_at:new Date().toISOString(),media:[{type:'photo',url:'https://pbs.twimg.com/media/test.jpg'}]};
@@ -111,4 +111,29 @@ test('oversize output cannot be published and fresh rejected routing records alo
  const row={decision:'rejected',article_id:null,collected_at:new Date(now).toISOString(),decision_reason:'自动分类过滤：不属于中国热门头条栏目；未创建或发布文章',ai_payload:{status:'filtered',filter_reason:'outside-china-hot'}};
  assert.equal(shouldRetryCandidate(row,q,now),true);
  for(const patch of [{decision_reason:'人工拒绝'},{article_id:'published'},{collected_at:new Date(now-73*3600000).toISOString()},{decision:'duplicate'}])assert.equal(shouldRetryCandidate({...row,...patch},q,now),false);
+});
+
+test('后台PDF中的可用报道分流，无关旅游天气娱乐和广告不入队',()=>{
+ const routes=[
+ ['美军参谋长联席会议主席凯恩说，美军还需准备好在月球周边空间作战。','us-politics'],
+ ['美国已确认在地球轨道部署了一种太空武器。','us-politics'],
+ ['美国政府暂停全球部分的移民签证面谈，原因与重新评估申请人的经济能力和公共负担有关。','us-politics'],
+ ['美国海岸警卫队证实，美国军方人员和联邦调查局(FBI)特工登上一艘驶往得克萨斯州的油轮，以调查网络攻击事件。','us-enforcement'],
+ ['CNN报道，在美国佐治亚州移民执法突击行动中被拘留的300多名韩国工人正向美国政府发起法律挑战。','ice'],
+ ['美国全国广播公司(NBC)直升机在报道致命巴士事故时坠毁并起火，造成三人丧生。','us-enforcement'],
+ ['里基茨参议员：美中是竞争关系，美国应减少对华供应链依赖并支持台湾。','us-politics'],
+ ['Taiwan Digital Minister visited Washington and met United States officials to discuss cybersecurity.','us-politics'],
+ ['胡塞武装疑似袭击中资一带一路炼油厂，有工作人员撤离。','china']
+ ];
+ for(const [text,route] of routes){const q=qualifyTweet({...source,text,source_username:'bbcchinese'});assert.equal(q.accepted,true,text);assert.equal(q.route,route,text);const row=buildCandidate({...source,text},q);assert.ok(row.proposed_section);}
+ for(const text of ['韩国约有8700座山，步道完善，装备齐全便可自行上山。','A northeasterly wind system will affect Taiwan, bringing mild temperatures and rain.','医疗专业人士表示，讲述美国医院急症室的剧集The Pitt是最真实的医疗剧。','美国餐厅推出周末美食优惠。','Shares of Taiwan Semiconductor Manufacturing Co. returned to their prior ex-dividend level.','Shares in Taiwan closed higher ahead of a U.S. Federal Reserve policy decision.']) assert.equal(qualifyTweet({...source,text,source_username:'Focus_Taiwan'}).accepted,false,text);
+});
+
+test('美国警情成稿和草稿都保留正确栏目，跨栏目改写无法发布',()=>{
+ const tweet={...source,text:'美国联邦调查局FBI调查得克萨斯州油轮网络攻击事件。'};
+ const q=qualifyTweet(tweet);
+ const article={...draft,title:tweet.text,content:tweet.text+body,publication_scope:'topic_only',editorial_review:verdict};
+ const row=buildPublishedArticle(tweet,q,article);
+ assert.equal(row.category_name,'美国警情');assert.equal(row.topic_key,'us-enforcement');assert.equal(row.metadata.china_politics_eligible,false);
+ assert.throws(()=>buildPublishedArticle(tweet,q,{...article,title:'美国国防部长会谈',content:'美国国防部长会谈。'+body}),/栏目不一致/);
 });

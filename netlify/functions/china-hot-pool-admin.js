@@ -15,7 +15,7 @@ exports.handler = async (event) => {
     const input = event.body ? JSON.parse(event.body) : {};
     const action = safeText(input.action || event.queryStringParameters?.action || "list", 40);
     if (action === "list") {
-      const rows = await rest("news_candidates", { query: { select: "id,external_id,pipeline,source_url,source_account,source_name,raw_text,raw_payload,ai_payload,decision,decision_reason,article_id,collected_at,processed_at,created_at,updated_at", pipeline: "like.china-hot-li-teacher%", order: "collected_at.desc", limit: "500" } });
+      const rows = await rest("news_candidates", { query: { select: "id,external_id,pipeline,proposed_section,source_url,source_account,source_name,raw_text,raw_payload,ai_payload,decision,decision_reason,article_id,collected_at,processed_at,created_at,updated_at", pipeline: "like.china-hot-li-teacher%", ...(input.include_history ? {} : { decision: "not.in.(rejected,deleted,duplicate,legacy_archived)" }), order: "collected_at.desc", limit: "500" } });
       return json(200, { ok: true, items: Array.isArray(rows) ? rows : [] });
     }
     const candidateId = safeText(input.id, 100);

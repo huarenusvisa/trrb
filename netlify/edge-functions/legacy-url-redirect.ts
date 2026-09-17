@@ -306,9 +306,9 @@ function retiredArticle(title: string, reason: string): Response {
 </head>
 <body><main class="wrap"><div class="brand">唐人日报 Tang Ren Daily</div><section class="card">
 <h1>${safeTitle}</h1>
-<p>这是一篇来自唐人日报旧版网站的历史链接。目前原始文章尚未完成迁移，因此该旧地址已停止收录。</p>
+<p>这是一篇来自唐人日报旧版网站的历史链接。原始内容已无法提供，该页面已下线。</p>
 <div class="actions"><a class="btn primary" href="/">返回唐人日报首页</a><a class="btn secondary" href="/hot-headlines">查看中国热门头条</a><a class="btn secondary" href="/us-crime">查看美国警情</a></div>
-<div class="note">如果该文章已经恢复，旧网址会自动跳转到恢复后的新闻页面。</div>
+<div class="note">你可以通过首页或新闻栏目浏览当前可用的报道。</div>
 </section></main></body></html>`;
 
   return new Response(body, {

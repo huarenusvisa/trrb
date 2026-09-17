@@ -77,7 +77,7 @@ function isLegacyCandidate(pathname: string): boolean {
   if (/\.[a-z0-9]{1,8}$/i.test(decodedPath)) return false;
   const segments = decodedPath.split("/").filter(Boolean);
   if (segments.length !== 1) return false;
-  return /[\u3400-\u9fff]/u.test(decodedPath);
+  return /[\u3400-\u9fff]/u.test(decodedPath) || /^\/\d+(?:-\d+)?\/?$/.test(decodedPath);
 }
 
 function supabaseConfig() {
@@ -103,7 +103,7 @@ function legacyPathVariants(pathname: string): string[] {
     else values.add(`${normalized}/`);
   };
   add(pathname);
-  try { add(encodeURI(decodeURIComponent(pathname))); } catch { /* malformed legacy URL */ }
+  try { add(decodeURIComponent(pathname)); add(encodeURI(decodeURIComponent(pathname))); } catch { /* malformed legacy URL */ }
   return [...values];
 }
 
@@ -243,7 +243,7 @@ function redirect(destination: string, reason: string): Response {
   return new Response(null, {
     status: 301,
     headers: {
-      Location: destination,
+      Location: new URL(destination, "https://trrb.net").href,
       "Cache-Control": "no-store",
       "X-TRRB-Redirect": reason
     }

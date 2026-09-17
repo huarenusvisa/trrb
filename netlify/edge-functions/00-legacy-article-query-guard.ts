@@ -180,7 +180,7 @@ function redirect(destination: string, reason: string) {
   return new Response(null, {
     status: 301,
     headers: {
-      location: destination,
+      location: new URL(destination, "https://trrb.net").href,
       "cache-control": "public, max-age=300",
       "x-trrb-article-redirect": reason
     }

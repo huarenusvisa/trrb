@@ -3,12 +3,22 @@ import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
 const project = 'cc29573d-d20c-4c3b-a7d6-1bc74838127a';
-const query = `query MacSubmissionCredentials($appId: String!) { app { byId(appId: $appId) { id iosAppCredentials { appleAppIdentifier { bundleIdentifier } appleTeam { appleTeamIdentifier } appStoreConnectApiKeyForSubmissions { keyIdentifier issuerIdentifier keyP8 } } } } }`;
+const query = `query MacSubmissionCredentials($appId: String!) { app { byId(appId: $appId) { id ownerAccount { appStoreConnectApiKeysPaginated(first: 50) { edges { node { id issuerIdentifier appleTeam { appleTeamIdentifier } } } } } iosAppCredentials { appleAppIdentifier { bundleIdentifier } appleTeam { appleTeamIdentifier } appStoreConnectApiKeyForSubmissions { keyIdentifier issuerIdentifier keyP8 } } } } }`;
 const res = await fetch('https://api.expo.dev/graphql', {method:'POST',headers:{Authorization:`Bearer ${process.env.EXPO_TOKEN}`,'Content-Type':'application/json'},body:JSON.stringify({query,variables:{appId:project}})});
 const payload = await res.json();
 if (!res.ok || payload.errors) throw new Error('Unable to read this app’s existing submission credentials from EAS.');
 const matches = payload.data?.app?.byId?.iosAppCredentials?.filter(c=>c.appleAppIdentifier?.bundleIdentifier==='com.tangrenribao.iosapp' && c.appleTeam?.appleTeamIdentifier==='ZJ2LNXPXH3');
-const key = matches?.map(c=>c.appStoreConnectApiKeyForSubmissions).find(Boolean);
+let key = matches?.map(c=>c.appStoreConnectApiKeyForSubmissions).find(k=>k?.issuerIdentifier);
+if (!key) {
+  const candidates = payload.data?.app?.byId?.ownerAccount?.appStoreConnectApiKeysPaginated?.edges?.map(e=>e.node).filter(k=>k.issuerIdentifier && k.appleTeam?.appleTeamIdentifier==='ZJ2LNXPXH3') ?? [];
+  console.log(`App-assigned team key: absent; matching team keys: ${candidates.length}`);
+  if (candidates.length === 1) {
+    const reply = await fetch('https://api.expo.dev/graphql',{method:'POST',headers:{Authorization:`Bearer ${process.env.EXPO_TOKEN}`,'Content-Type':'application/json'},body:JSON.stringify({query:'query MacTeamKey($id: ID!) { appStoreConnectApiKey { byId(id: $id) { keyIdentifier issuerIdentifier keyP8 } } }',variables:{id:candidates[0].id}})});
+    const result = await reply.json();
+    if (!reply.ok || result.errors) throw new Error('Unable to access the existing Apple team signing key.');
+    key = result.data.appStoreConnectApiKey.byId;
+  }
+}
 if (!key?.keyP8 || !key.issuerIdentifier) throw new Error('Mac automatic signing requires a team App Store Connect key. The app has no reusable team key.');
 const base = path.join(process.env.RUNNER_TEMP,'tang-mac-auth');fs.mkdirSync(base,{recursive:true,mode:0o700});
 const keyPath = path.join(base,`AuthKey_${key.keyIdentifier}.p8`);fs.writeFileSync(keyPath,key.keyP8,{mode:0o600});

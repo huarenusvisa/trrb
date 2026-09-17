@@ -23,6 +23,11 @@ jobs:
       - uses: actions/setup-node@v6
         with:
           node-version: '24'
+      - name: Select current stable Xcode
+        run: |
+          XCODE=$(python3 -c 'import glob,re; p=[p for p in glob.glob("/Applications/Xcode_*.app") if re.search(r"Xcode_[0-9.]+\.app$",p)]; print(max(p,key=lambda p:tuple(map(int,re.search(r"Xcode_([0-9.]+)\.app",p)[1].split(".")))))')
+          sudo xcode-select -s "$XCODE/Contents/Developer"
+          xcodebuild -version
       - name: Generate native desktop project
         run: |
           brew install xcodegen
@@ -38,12 +43,16 @@ jobs:
           mkdir -p mac-artifacts/screenshots
           APP="$RUNNER_TEMP/mac-build/Build/Products/Release/TangDailyMac.app"
           codesign --force --deep --sign - "$APP"
-          open -n "$APP"
-          sleep 20
-          PID=$(pgrep -x TangDailyMac | head -1)
-          WINDOW=$(swift scripts/macos/capture.swift "$PID")
-          screencapture -x -o -l "$WINDOW" mac-artifacts/screenshots/01-news.png
-          kill "$PID"
+          for ITEM in '01-news:重要新闻' '02-politics:中国政治' '03-jobs:招聘求职' '04-judges:移民法官' '05-community:唐人社区'; do
+            NAME="${ITEM%%:*}"
+            SECTION="${ITEM#*:}"
+            open -n "$APP" --args "--section=$SECTION"
+            sleep 20
+            PID=$(pgrep -x TangDailyMac | head -1)
+            WINDOW=$(swift scripts/macos/capture.swift "$PID")
+            screencapture -x -o -l "$WINDOW" "mac-artifacts/screenshots/$NAME.png"
+            kill "$PID"
+          done
           ditto -c -k --keepParent "$APP" mac-artifacts/TangDailyMac-validation.zip
       - name: Verify existing Apple signing access
         env:

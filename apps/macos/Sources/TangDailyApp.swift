@@ -66,7 +66,7 @@ struct Feed: Decodable { let articles: [Article]; let has_more: Bool? }
 @main struct TangDailyApp: App {
     @StateObject private var library = Library()
     var body: some Scene {
-        WindowGroup { DesktopView().environmentObject(library).frame(minWidth: 980, minHeight: 680) }
+        WindowGroup { DesktopView().environmentObject(library).tint(Color(red: 0.71, green: 0.05, blue: 0.09)).preferredColorScheme(.light).frame(minWidth: 980, minHeight: 680) }
             .defaultSize(width: 1440, height: 900)
             .commands { SidebarCommands(); CommandGroup(after: .help) { Link("唐人日报技术支持", destination: URL(string: "https://trrb.net/app-support.html")!) } }
     }
@@ -74,7 +74,7 @@ struct Feed: Decodable { let articles: [Article]; let has_more: Bool? }
 struct DesktopView: View {
     @EnvironmentObject var library: Library
     @StateObject private var store = NewsStore()
-    @State private var section: String? = "重要新闻"
+    @State private var section: String? = ProcessInfo.processInfo.arguments.first(where: { $0.hasPrefix("--section=") }).map { String($0.dropFirst(10)) } ?? "重要新闻"
     @State private var search = ""
     @State private var submittedSearch = ""
     @State private var selected: Article?
@@ -154,7 +154,7 @@ struct DesktopView: View {
                         }
                     }.padding(24)
                     if store.more && current != "本机收藏" { Button("加载更多") { Task { await store.load(section: current, query: submittedSearch, append: true) } }.disabled(store.loading).padding(.bottom, 24) }
-                }.background(Color(nsColor: .underPageBackgroundColor))
+                }.background(Color(red: 0.96, green: 0.96, blue: 0.97))
             }
         }
     }

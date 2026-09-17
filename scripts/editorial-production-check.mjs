@@ -48,3 +48,11 @@ for (const [path, legacyId] of [
   assert.equal(new URL(canonical, origin).href, result.url, path + ': canonical mismatch');
   console.log('Accepted legacy recovery ' + path);
 }
+
+// These missing originals were confirmed retired; they must not become soft 404s.
+for (const path of ['/荷兰调查deepseek数据收集/', '/?p=2465']) {
+  const result = await fetch(origin + path, { signal: AbortSignal.timeout(20000) });
+  assert.ok([404, 410].includes(result.status), path + ': retired URL must stay unavailable, not homepage 200 or server error');
+  assert.match(result.headers.get('x-robots-tag') || '', /noindex/i);
+  console.log('Accepted retired legacy URL ' + path);
+}

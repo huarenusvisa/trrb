@@ -60,6 +60,7 @@ jobs:
       - name: Verify existing Apple signing access
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+          TANG_DAILY_APPLE_API_KEY: ${{ secrets.TANG_DAILY_APPLE_API_KEY }}
         run: node scripts/macos/credentials.mjs
       - name: Archive signed Mac application
         run: |

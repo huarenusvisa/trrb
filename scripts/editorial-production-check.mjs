@@ -22,3 +22,29 @@ for (const [path,title] of checks) {
   assert.match(html, /href="\/(?:hot-headlines|us-politics|us-crime|ice|trump|news|china-officialdom|important-news)\//);
   console.log(`Accepted ${path}`);
 }
+
+// Migrated articles must resolve to their own indexable body, not a 410 or homepage.
+for (const [path, legacyId] of [
+  ['/小庭刚走完-大庭就压上来-加州移民案突然进入生死/', 'wp112110'],
+  ['/105167-2/', 'wp105167']
+]) {
+  const first = await fetch(origin + path, {
+    redirect: 'manual', signal: AbortSignal.timeout(20000)
+  });
+  assert.equal(first.status, 301, path + ': missing permanent recovery redirect');
+  const location = first.headers.get('location');
+  assert.ok(location, path + ': missing Location');
+  const target = new URL(location, origin);
+  assert.equal(target.origin, new URL(origin).origin, path + ': unexpected external redirect');
+  assert.ok(target.pathname.endsWith(legacyId), path + ': wrong article destination');
+  const result = await fetch(target, { signal: AbortSignal.timeout(20000) });
+  assert.equal(result.status, 200, path + ': recovered article unavailable');
+  const html = await result.text();
+  assert.match(html, /class=["'][^"']*article-body/, path + ': missing article body');
+  assert.doesNotMatch(result.headers.get('x-robots-tag') || '', /noindex/i);
+  assert.doesNotMatch(html, /<meta[^>]*name=["']robots["'][^>]*noindex/i);
+  const canonical = html.match(/<link[^>]*rel=["']canonical["'][^>]*href=["']([^"']+)/i)?.[1];
+  assert.ok(canonical, path + ': missing canonical');
+  assert.equal(new URL(canonical, origin).href, result.url, path + ': canonical mismatch');
+  console.log('Accepted legacy recovery ' + path);
+}

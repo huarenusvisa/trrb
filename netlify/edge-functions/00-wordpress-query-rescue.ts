@@ -11,7 +11,7 @@ function redirect(location: string, reason: string): Response {
   return new Response(null, {
     status: 301,
     headers: {
-      Location: location,
+      Location: new URL(location, SITE_ORIGIN).href,
       "Cache-Control": "public, max-age=300",
       "X-TRRB-Redirect": reason
     }

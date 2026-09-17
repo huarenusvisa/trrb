@@ -38,6 +38,9 @@ jobs:
           xcodebuild -project apps/macos/TangDailyMac.xcodeproj -scheme TangDailyMac -configuration Release -derivedDataPath "$RUNNER_TEMP/mac-build" CODE_SIGNING_ALLOWED=NO build > "$RUNNER_TEMP/mac-build.log" 2>&1 || { tail -80 "$RUNNER_TEMP/mac-build.log"; exit 1; }
           lipo "$RUNNER_TEMP/mac-build/Build/Products/Release/TangDailyMac.app/Contents/MacOS/TangDailyMac" -verify_arch arm64 x86_64
           plutil -lint apps/macos/Info.plist apps/macos/TangDaily.entitlements apps/macos/Resources/PrivacyInfo.xcprivacy
+      - name: Test article decoding and bookmark persistence format
+        run: |
+          xcodebuild -project apps/macos/TangDailyMac.xcodeproj -scheme TangDailyMac -destination 'platform=macOS' -derivedDataPath "$RUNNER_TEMP/mac-tests" CODE_SIGNING_ALLOWED=NO test > "$RUNNER_TEMP/mac-tests.log" 2>&1 || { tail -80 "$RUNNER_TEMP/mac-tests.log"; exit 1; }
       - name: Capture actual desktop application
         run: |
           mkdir -p mac-artifacts/screenshots

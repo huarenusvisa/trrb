@@ -40,6 +40,7 @@ struct Feed: Decodable { let articles: [Article]; let has_more: Bool? }
     func load(section: String, query: String, append: Bool = false) async {
         let token = UUID(); generation = token
         loading = true; error = nil
+        if !append { articles = []; more = false }
         defer { if token == generation { loading = false } }
         let focus = section == "重要新闻" && query.isEmpty
         let editorial = ["中国政治", "美国执法与警情"].contains(section)
@@ -77,11 +78,10 @@ struct DesktopView: View {
     @State private var section: String? = ProcessInfo.processInfo.arguments.first(where: { $0.hasPrefix("--section=") }).map { String($0.dropFirst(10)) } ?? "重要新闻"
     @State private var search = ""
     @State private var submittedSearch = ""
-    @State private var selected: Article?
     @State private var reader: Article?
     private let news = ["重要新闻","最新新闻","中国热门头条","中国政治","美国时政","美国执法与警情"]
     private let services = ["招聘求职","移民法官","唐人社区"]
-    private let links = ["招聘求职":"https://huarengongzuo.com/", "移民法官":"https://asylumjudge.com/", "唐人社区":"https://trrb.net/community/"]
+    private let links = ["招聘求职":"https://huarengongzuo.com/?lang=zh", "移民法官":"https://asylumjudge.com/", "唐人社区":"https://trrb.net/community/"]
     private var current: String { section ?? "重要新闻" }
     private var displayed: [Article] { current == "本机收藏" ? library.saved.filter { submittedSearch.isEmpty || $0.title.localizedCaseInsensitiveContains(submittedSearch) } : store.articles }
     var body: some View {
@@ -110,7 +110,7 @@ struct DesktopView: View {
         }
         .searchable(text: $search, prompt: "搜索新闻")
         .onSubmit(of: .search) { submittedSearch = search.trimmingCharacters(in: .whitespacesAndNewlines); Task { await reload() } }
-        .onChange(of: section) { _ in selected = nil; submittedSearch = ""; search = "" }
+        .onChange(of: section) { _ in submittedSearch = ""; search = "" }
         .task(id: section) { await reload() }
         .sheet(item: $reader) { article in
             VStack(spacing: 0) {
@@ -139,7 +139,7 @@ struct DesktopView: View {
                                         if let value = article.cover_image, let url = URL(string: value), url.scheme == "https" {
                                             AsyncImage(url: url) { image in image.resizable().scaledToFill() } placeholder: { Rectangle().fill(Color.secondary.opacity(0.08)).overlay(Image(systemName: "newspaper").foregroundStyle(.secondary)) }.frame(height: 166).clipped().clipShape(RoundedRectangle(cornerRadius: 9))
                                         }
-                                        Text(article.category_name ?? "唐人日报").font(.caption).foregroundStyle(.red)
+                                        Text(current == "中国政治" ? "中国政治" : article.category_name ?? "唐人日报").font(.caption).foregroundStyle(.red)
                                         Text(article.title).font(.system(size: 18, weight: .semibold)).foregroundStyle(.primary).lineLimit(3).frame(maxWidth: .infinity, alignment: .leading)
                                         if let summary = article.summary { Text(summary).font(.system(size: 13)).foregroundStyle(.secondary).lineLimit(3) }
                                     }.contentShape(Rectangle())
@@ -177,6 +177,14 @@ struct DesktopView: View {
     }
     func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for action: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
         if action.targetFrame == nil, let url = action.request.url, ["https","http"].contains(url.scheme ?? "") { NSWorkspace.shared.open(url) }; return nil
+    }
+    func webView(_ webView: WKWebView, runJavaScriptAlertPanelWithMessage message: String, initiatedByFrame frame: WKFrameInfo, completionHandler: @escaping () -> Void) {
+        let alert = NSAlert(); alert.messageText = frame.request.url?.host ?? "唐人日报"; alert.informativeText = message; alert.addButton(withTitle: "确定")
+        if let window = webView.window { alert.beginSheetModal(for: window) { _ in completionHandler() } } else { completionHandler() }
+    }
+    func webView(_ webView: WKWebView, runJavaScriptConfirmPanelWithMessage message: String, initiatedByFrame frame: WKFrameInfo, completionHandler: @escaping (Bool) -> Void) {
+        let alert = NSAlert(); alert.messageText = frame.request.url?.host ?? "唐人日报"; alert.informativeText = message; alert.addButton(withTitle: "确定"); alert.addButton(withTitle: "取消")
+        if let window = webView.window { alert.beginSheetModal(for: window) { completionHandler($0 == .alertFirstButtonReturn) } } else { completionHandler(false) }
     }
     func webView(_ webView: WKWebView, runOpenPanelWith parameters: WKOpenPanelParameters, initiatedByFrame frame: WKFrameInfo, completionHandler: @escaping ([URL]?) -> Void) { let panel = NSOpenPanel(); panel.allowsMultipleSelection = parameters.allowsMultipleSelection; panel.canChooseDirectories = false; panel.begin { response in completionHandler(response == .OK ? panel.urls : nil) } }
 }

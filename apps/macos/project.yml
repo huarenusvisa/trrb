@@ -27,10 +27,22 @@ targets:
         INFOPLIST_FILE: Info.plist
         CODE_SIGN_ENTITLEMENTS: TangDaily.entitlements
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+  TangDailyMacTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources: [Tests]
+    dependencies:
+      - target: TangDailyMac
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+        PRODUCT_BUNDLE_IDENTIFIER: com.tangrenribao.mac.tests
 schemes:
   TangDailyMac:
     build:
       targets:
         TangDailyMac: all
+    test:
+      targets: [TangDailyMacTests]
     archive:
       config: Release

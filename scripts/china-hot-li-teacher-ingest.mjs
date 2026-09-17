@@ -515,6 +515,7 @@ function tweetFromCandidate(row) {
   const payload = row?.raw_payload && typeof row.raw_payload === "object" ? row.raw_payload : {};
   return {
     id: cleanText(row.external_id, 200).split(":").pop(), text: cleanText(row.raw_text, 20_000),
+    editorial_processing_requested: row.ai_payload?.editorial_processing_requested === true,
     created_at: payload.source_created_at || row.collected_at, lang: payload.lang || "zh",
     public_metrics: payload.source_public_metrics || payload.public_metrics || {},
     media: payload.source_media || payload.media || [], candidateId: row.id,
@@ -1069,7 +1070,7 @@ export async function run() {
     const tweet = tweetFromCandidate(row);
     if (isRenZhengfeiCollectionPaused(tweet)) continue;
     const qualified = qualifyTweet(tweet);
-    if (tweet.id && shouldRetryCandidate(row, qualified) && !tweetsById.has(String(tweet.id))) tweetsById.set(String(tweet.id), tweet);
+    if (tweet.id && shouldRetryCandidate(row, qualified)) tweetsById.set(String(tweet.id), { ...tweetsById.get(String(tweet.id)), ...tweet });
   }
   const tweets = [...tweetsById.values()];
   const recentArticles = await recentChinaArticles();
@@ -1079,7 +1080,7 @@ export async function run() {
   const filteredReasons = {};
   let processingAttempts = 0;
   const processingDeadline = Date.now() + 40 * 60_000;
-  for (const tweet of tweets.sort((a, b) => Number(Boolean(b.candidateId)) - Number(Boolean(a.candidateId)) || Date.parse(b.created_at || 0) - Date.parse(a.created_at || 0))) {
+  for (const tweet of tweets.sort((a, b) => Number(Boolean(b.editorial_processing_requested)) - Number(Boolean(a.editorial_processing_requested)) || Number(Boolean(b.candidateId)) - Number(Boolean(a.candidateId)) || Date.parse(b.created_at || 0) - Date.parse(a.created_at || 0))) {
     const qualified = qualifyTweet(tweet);
     if (!qualified.accepted) {
       counters.filtered += 1;

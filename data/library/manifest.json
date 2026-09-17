@@ -1,1064 +1,991 @@
 {
   "source": "https://chinesebooks.github.io/xiandai/",
-  "synced_at": "2026-09-17T18:37:01.583Z",
+  "synced_at": "2026-09-17T18:42:20.111Z",
   "complete": false,
+  "book_count": 151,
+  "mirrored_book_count": 75,
+  "chapter_count": 4419,
+  "mirrored_chapter_count": 4379,
+  "failed_books": [
+    {
+      "error": "https://chinesebooks.github.io/lizhi/30suiqianbiejiehun/: HTTP 404"
+    },
+    {
+      "error": "https://chinesebooks.github.io/lizhi/hafunvhailiuyiting/: HTTP 404"
+    },
+    {
+      "error": "https://chinesebooks.github.io/lizhi/humazhange/: HTTP 404"
+    },
+    {
+      "error": "https://chinesebooks.github.io/lizhi/xiaogouqianqian/: HTTP 404"
+    },
+    {
+      "error": "https://chinesebooks.github.io/ertong/guaiwudashi/guaiwudashi12ce/: HTTP 404"
+    },
+    {
+      "error": "https://chinesebooks.github.io/ertong/guaiwudashi/guaiwudashi10ce/: HTTP 404"
+    },
+    {
+      "error": "https://chinesebooks.github.io/ertong/guaiwudashi/guaiwudashi7ce/: HTTP 404"
+    },
+    {
+      "error": "https://chinesebooks.github.io/ertong/guaiwudashi/guaiwudashi5ce/: HTTP 404"
+    },
+    {
+      "error": "https://chinesebooks.github.io/ertong/guaiwudashi/guaiwudashi4ce/: HTTP 404"
+    },
+    {
+      "error": "https://chinesebooks.github.io/ertong/guaiwudashi/guaiwudashi3ce/: HTTP 429"
+    },
+    {
+      "error": "https://chinesebooks.github.io/ertong/guaiwudashi/guaiwudashi1ce/: HTTP 429"
+    },
+    {
+      "error": "https://chinesebooks.github.io/ertong/guaiwudashi/guaiwudashi2ce/: HTTP 429"
+    },
+    {
+      "error": "https://chinesebooks.github.io/ertong/shenshixi/xiangwanglei/: HTTP 429"
+    },
+    {
+      "error": "https://chinesebooks.github.io/ertong/shenshixi/baixiangjiazu/: HTTP 429"
+    },
+    {
+      "error": "https://chinesebooks.github.io/ertong/wumeizhen/wobanliuxingxiexiaoshuo/: HTTP 429"
+    },
+    {
+      "error": "https://chinesebooks.github.io/ertong/wumeizhen/qingwawangzifubanchang/: HTTP 429"
+    },
+    {
+      "error": "https://chinesebooks.github.io/ertong/wumeizhen/tongzhuoyuanjia/: HTTP 429"
+    },
+    {
+      "error": "https://chinesebooks.github.io/xiandai/jinyong/xiakexing/: HTTP 429"
+    },
+    {
+      "error": "https://chinesebooks.github.io/renwuchuanji/yaomingzichuan/: HTTP 429"
+    },
+    {
+      "error": "https://chinesebooks.github.io/renwuchuanji/jinxingzichuan/: HTTP 429"
+    },
+    {
+      "error": "https://chinesebooks.github.io/renwuchuanji/shengmingdebukesiyi/: HTTP 429"
+    },
+    {
+      "error": "https://chinesebooks.github.io/renwuchuanji/qiaobusichuan/: HTTP 429"
+    },
+    {
+      "error": "https://chinesebooks.github.io/renwuchuanji/wuzetianwaichuan/: HTTP 429"
+    },
+    {
+      "error": "https://chinesebooks.github.io/xiandai/annibaobei/bianhua/: HTTP 429"
+    },
+    {
+      "error": "https://chinesebooks.github.io/xiandai/bailuomei/bailuomeisanwenji/: HTTP 429"
+    },
+    {
+      "error": "https://chinesebooks.github.io/xiandai/bailuomei/xiangsimoxiangfu/: HTTP 429"
+    },
+    {
+      "error": "https://chinesebooks.github.io/xiandai/bailuomei/suiyuejinghaoxianshianwen/: HTTP 429"
+    },
+    {
+      "error": "https://chinesebooks.github.io/xiandai/bailuomei/henbuxiangfengweitishi/: HTTP 429"
+    },
+    {
+      "error": "https://chinesebooks.github.io/xiandai/bailuomei/xiangfengruchujian_huishoushiyis/: HTTP 429"
+    },
+    {
+      "error": "https://chinesebooks.github.io/xiandai/yangelingzuopinji/fusang/: HTTP 429"
+    },
+    {
+      "error": "https://chinesebooks.github.io/xiandai/jiapingao/daideng/: HTTP 429"
+    },
+    {
+      "error": "https://chinesebooks.github.io/xiandai/jiapingao/gaoxing/: HTTP 429"
+    },
+    {
+      "error": "https://chinesebooks.github.io/xiandai/jiapingao/feishi/: HTTP 429"
+    },
+    {
+      "error": "https://chinesebooks.github.io/xiandai/jiapingao/gaolaozhuang/: HTTP 429"
+    },
+    {
+      "error": "https://chinesebooks.github.io/xiandai/jiapingao/fuzao/: HTTP 429"
+    },
+    {
+      "error": "https://chinesebooks.github.io/xiandai/jiapingao/gulu/: HTTP 429"
+    },
+    {
+      "error": "https://chinesebooks.github.io/xiandai/jiapingao/qinqiang/: HTTP 429"
+    },
+    {
+      "error": "https://chinesebooks.github.io/xiandai/yangelingzuopinji/biyege/: HTTP 429"
+    },
+    {
+      "error": "https://chinesebooks.github.io/xiandai/yangelingzuopinji/yangelingsanwen/: HTTP 429"
+    },
+    {
+      "error": "https://chinesebooks.github.io/waiguo/chalijiushiquanji/: HTTP 429"
+    },
+    {
+      "error": "https://chinesebooks.github.io/waiguo/langwangmeng/: HTTP 429"
+    },
+    {
+      "error": "https://chinesebooks.github.io/waiguo/piaolianglaoshiyuhuaixiaozi/: HTTP 429"
+    },
+    {
+      "error": "https://chinesebooks.github.io/waiguo/wodetongzhuoshibanchang/: HTTP 429"
+    },
+    {
+      "error": "https://chinesebooks.github.io/waiguo/danyitianshibugudan/: HTTP 429"
+    },
+    {
+      "error": "https://chinesebooks.github.io/waiguo/diqitiaoliegou/: HTTP 429"
+    },
+    {
+      "error": "https://chinesebooks.github.io/waiguo/xueyubaoying/: HTTP 429"
+    },
+    {
+      "error": "https://chinesebooks.github.io/waiguo/hongpiaodaishiwang/: HTTP 429"
+    },
+    {
+      "error": "https://chinesebooks.github.io/waiguo/hunxuechaiwang/: HTTP 429"
+    },
+    {
+      "error": "https://chinesebooks.github.io/waiguo/canlanghuiman/: HTTP 429"
+    },
+    {
+      "error": "https://chinesebooks.github.io/waiguo/fengyangxuedinger/: HTTP 429"
+    },
+    {
+      "error": "https://chinesebooks.github.io/waiguo/huwajinyezi/: HTTP 429"
+    },
+    {
+      "error": "https://chinesebooks.github.io/waiguo/yizhiliediaodezaoyu/: HTTP 429"
+    },
+    {
+      "error": "https://chinesebooks.github.io/waiguo/cangjieduhun/: HTTP 429"
+    },
+    {
+      "error": "https://chinesebooks.github.io/waiguo/xiongshiquliulang/: HTTP 429"
+    },
+    {
+      "error": "https://chinesebooks.github.io/waiguo/yequannvhuang/: HTTP 429"
+    },
+    {
+      "error": "https://chinesebooks.github.io/ertong/shenshixi/jingquanlala/: HTTP 429"
+    },
+    {
+      "error": "https://chinesebooks.github.io/ertong/shenshixi/wangfeiheiyehou/: HTTP 429"
+    },
+    {
+      "error": "https://chinesebooks.github.io/ertong/shenshixi/baoyamuxiang/: HTTP 429"
+    },
+    {
+      "error": "https://chinesebooks.github.io/ertong/shenshixi/zongxiongdegushi/: HTTP 429"
+    },
+    {
+      "error": "https://chinesebooks.github.io/ertong/guaiwudashi/guaiwudashi11ce/: HTTP 429"
+    },
+    {
+      "error": "https://chinesebooks.github.io/ertong/guaiwudashi/guaiwudashi8ce/: HTTP 429"
+    },
+    {
+      "error": "https://chinesebooks.github.io/ertong/guaiwudashi/guaiwudashi9ce/: HTTP 429"
+    },
+    {
+      "error": "https://chinesebooks.github.io/ertong/guaiwudashi/guaiwudashi6ce/: HTTP 429"
+    },
+    {
+      "error": "https://chinesebooks.github.io/ertong/shenshixi/xuebaobeige/: HTTP 429"
+    },
+    {
+      "error": "https://chinesebooks.github.io/ertong/shenshixi/shenshixiduanpianxiaoshuo/: HTTP 429"
+    },
+    {
+      "error": "https://chinesebooks.github.io/ertong/shenshixi/heixiongwudaojia/: HTTP 429"
+    },
+    {
+      "error": "https://chinesebooks.github.io/ertong/shenshixi/laoluwanghake/: HTTP 429"
+    },
+    {
+      "error": "https://chinesebooks.github.io/ertong/shenshixi/xuerandewangguan/: HTTP 429"
+    },
+    {
+      "error": "https://chinesebooks.github.io/ertong/shenshixi/niaonu/: HTTP 429"
+    },
+    {
+      "error": "https://chinesebooks.github.io/ertong/shenshixi/muyangbao/: HTTP 429"
+    },
+    {
+      "error": "https://chinesebooks.github.io/ertong/shenshixi/dayangtuoyumeizhoubao/: HTTP 429"
+    },
+    {
+      "error": "https://chinesebooks.github.io/xiandai/yangelingzuopinji/jinlingshisancha/: HTTP 429"
+    },
+    {
+      "error": "https://chinesebooks.github.io/xiandai/yangelingzuopinji/xiaoyiduohe/: HTTP 429"
+    },
+    {
+      "error": "https://chinesebooks.github.io/xiandai/yangelingzuopinji/dijiugeguafu/: HTTP 429"
+    },
+    {
+      "error": "https://chinesebooks.github.io/xiandai/yangelingzuopinji/lufanyanshi/: HTTP 429"
+    },
+    {
+      "error": "https://chinesebooks.github.io/xiandai/jiapingao/feidu/: HTTP 429"
+    }
+  ],
   "books": [
     {
       "slug": "zhangxiaofengjingdiansanwenji",
       "title": "张晓风经典散文集",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/220729/1659062685366587.jpg",
+      "description": "",
+      "cover": "/assets/library-covers/zhangxiaofengjingdiansanwenji.jpg",
       "source_url": "https://chinesebooks.github.io/xiandai/zhangxiaofengjingdiansanwenji/",
-      "chapter_count": null
+      "chapter_count": 56,
+      "mirrored_chapter_count": 56,
+      "complete": true
     },
     {
       "slug": "jingdiansanwen",
       "title": "经典散文",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/220729/1659060315106302.jpg",
+      "description": "",
+      "cover": "/assets/library-covers/jingdiansanwen.jpg",
       "source_url": "https://chinesebooks.github.io/xiandai/jingdiansanwen/",
-      "chapter_count": null
+      "chapter_count": 528,
+      "mirrored_chapter_count": 528,
+      "complete": true
     },
     {
       "slug": "baifamonvchuan",
       "title": "白发魔女传",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/220728/1659004669857346.jpg",
+      "description": "讲述的是明万历四十三年凉秋，云贵总督卓仲廉卸任归故乡陕北，途经川陕边境时被劫富济贫的绿林女大盗“玉罗刹”练霓裳劫去大部分财产。随行护送的武当弟子耿绍南，因傲慢不逊被削去左手二指，以示惩戒，练霓裳自此与武当派结怨。百姓反抗朝廷，下属背叛上级，奸佞出卖国家，反抗与自由的精神交织在一起，就是那个时代的精神。",
+      "cover": "/assets/library-covers/baifamonvchuan.jpg",
       "source_url": "https://chinesebooks.github.io/xiandai/baifamonvchuan/",
-      "chapter_count": null
+      "chapter_count": 32,
+      "mirrored_chapter_count": 32,
+      "complete": true
     },
     {
       "slug": "bixuejian",
       "title": "碧血剑",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/220728/1659003041408855.jpg",
+      "description": "",
+      "cover": "/assets/library-covers/bixuejian.jpg",
       "source_url": "https://chinesebooks.github.io/xiandai/bixuejian/",
-      "chapter_count": null
+      "chapter_count": 22,
+      "mirrored_chapter_count": 22,
+      "complete": true
     },
     {
       "slug": "baimaxiaoxifeng",
       "title": "白马啸西风",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/220728/1659001817617446.jpg",
+      "description": "",
+      "cover": "/assets/library-covers/baimaxiaoxifeng.jpg",
       "source_url": "https://chinesebooks.github.io/xiandai/baimaxiaoxifeng/",
-      "chapter_count": null
+      "chapter_count": 9,
+      "mirrored_chapter_count": 9,
+      "complete": true
     },
     {
       "slug": "bainianlaokewen",
       "title": "百年老课文",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/220728/1658999463104463.jpg",
+      "description": "",
+      "cover": "/assets/library-covers/bainianlaokewen.jpg",
       "source_url": "https://chinesebooks.github.io/xiandai/bainianlaokewen/",
-      "chapter_count": null
+      "chapter_count": 59,
+      "mirrored_chapter_count": 59,
+      "complete": true
     },
     {
       "slug": "moyanduanpianxiaoshuoji",
       "title": "莫言短篇小说集",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/220728/1658972620141523.jpg",
+      "description": "集结了莫言自一九八一年至一九八九年创作发表的三十篇作品。",
+      "cover": "/assets/library-covers/moyanduanpianxiaoshuoji.jpg",
       "source_url": "https://chinesebooks.github.io/xiandai/moyanduanpianxiaoshuoji/",
-      "chapter_count": null
+      "chapter_count": 31,
+      "mirrored_chapter_count": 31,
+      "complete": true
     },
     {
       "slug": "baimianhua",
       "title": "白棉花",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/220728/1658968764317190.jpg",
+      "description": "《白棉花》是诺贝尔文学奖获得者莫言的作品。《白棉花》讲述年仅17岁的农村青年马成功，一直迷恋着大他几岁、年轻貌美、正直勇敢、身手不凡的青年女子方碧玉。他们有幸一起离开棉田，来到向往已久的棉花加工厂，结识了多才多艺、风流多情、自命不凡的青年才俊李志高；复员军人孙禾斗；社会垃圾“铁捶子”：干部子女孙红花等人，由此开始了一段崭新忙碌的生活和一段不同寻常的爱情故事……",
+      "cover": "/assets/library-covers/baimianhua.jpg",
       "source_url": "https://chinesebooks.github.io/xiandai/baimianhua/",
-      "chapter_count": null
+      "chapter_count": 36,
+      "mirrored_chapter_count": 36,
+      "complete": true
     },
     {
       "slug": "bianyuanxiaopin",
       "title": "边缘小品",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/220728/1658967223849893.jpg",
+      "description": "本书为张贤亮的短篇作品集。收录了张贤亮先生写的一些散文，随笔，和朋友间的书信以及为其他书籍所写的序。",
+      "cover": "/assets/library-covers/bianyuanxiaopin.jpg",
       "source_url": "https://chinesebooks.github.io/xiandai/bianyuanxiaopin/",
-      "chapter_count": null
+      "chapter_count": 28,
+      "mirrored_chapter_count": 28,
+      "complete": true
     },
     {
       "slug": "bashanyeyu",
       "title": "巴山夜雨",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/220727/1658887377917668.jpg",
+      "description": "《巴山夜雨》写于抗战胜利之后，1946年开始连载，1948年底载完，历时三年多。是张恨水“痛定思痛”之作。作者以冷峻理性的笔触，在控诉日寇的战争暴行同时率先对民族心理进行探索解剖国人在抗战中表现出的“劣根性”。小说以主人公李南泉为轴心，向读者展现了一幅蜀东山村众生图。人物栩栩如生、传神阿堵．语言幽默犀利在小说的描写功力上达到了炉火纯青的程度。台湾学者赵孝萱女士称该书是“张恨水的最重要代表作也是他一生作品最高巅峰”。",
+      "cover": "/assets/library-covers/bashanyeyu.jpg",
       "source_url": "https://chinesebooks.github.io/xiandai/bashanyeyu/",
-      "chapter_count": null
+      "chapter_count": 28,
+      "mirrored_chapter_count": 28,
+      "complete": true
     },
     {
       "slug": "banlufuqi",
       "title": "半路夫妻",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/220727/1658882849247601.jpg",
+      "description": "这是一部反映都市人情感的家庭伦理小说。故事通过一个个很平凡的小事串联起来，从再婚中反映了当代人对婚姻的审视，来揭露生活的本质。其中生动的描写了中年夫妻离婚和再婚，对长辈的影响和孩子们对新家庭的看法。尤其是在对孩子的处理上，有着独特的角度，两个家庭，三个差不多大小孩，因为父母的再婚牵到了一起，从极力排斥到接受对方，书中生动的刻画了这个过程。",
+      "cover": "/assets/library-covers/banlufuqi.jpg",
       "source_url": "https://chinesebooks.github.io/xiandai/banlufuqi/",
-      "chapter_count": null
+      "chapter_count": 24,
+      "mirrored_chapter_count": 24,
+      "complete": true
     },
     {
       "slug": "biandiguizi",
       "title": "遍地鬼子",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/220727/1658882172407386.jpg",
+      "description": "故事依旧发生在处处是林海雪原的东北大地，以抗日斗争作为小说的历史背景，风云聚合，刀光剑影。多条故事线索，互相纠缠，互为渗透，织成一张大网。土匪与土匪，土匪与东北军，土匪与日寇，中国人与俄国人、朝鲜人、日本人，朝鲜人、日本人与鄂伦春人，革命者与土匪与日本侵略者……同时，又以几组爱情纠葛穿插其间。各种阶层人物，同心协力抗击日本侵略者，个个有血有肉的人物鲁大、朱长青、花斑狗、骚老包、谢聋子、郑清明等令人难忘。他们中有的虽是\"胡子\"，强悍、凶狠、狡猾，互相倾轧，彼此争斗，但面对日本鬼子时，却又能识大体，顾大局，充满着民族的责任感；有的先是\"胡子\"尔后加入革命队 伍，以铁的纪律约束自已，置自已的生命于不顾……",
+      "cover": "/assets/library-covers/biandiguizi.jpg",
       "source_url": "https://chinesebooks.github.io/xiandai/biandiguizi/",
-      "chapter_count": null
+      "chapter_count": 12,
+      "mirrored_chapter_count": 12,
+      "complete": true
     },
     {
       "slug": "baimenliu",
       "title": "白门柳",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/220727/1658881313287821.jpg",
+      "description": "《白门柳》是著名作家刘斯奋历时16年潜心创作的一部长篇小说，荣获第四届茅盾文学奖。《白门柳》讲述的是明末清初“秦淮八艳”中的三大名妓柳如是、李十娘、董小宛以及名士钱谦益与时代、命运奋力抗争的故事。",
+      "cover": "/assets/library-covers/baimenliu.jpg",
       "source_url": "https://chinesebooks.github.io/xiandai/baimenliu/",
-      "chapter_count": null
+      "chapter_count": 42,
+      "mirrored_chapter_count": 42,
+      "complete": true
     },
     {
       "slug": "buyezhihou",
       "title": "不夜之侯",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/220726/1658829263994563.jpg",
+      "description": "《不夜之侯》是著名女作家王旭烽“茶人三部曲”之第二部，故事以抗日战争为背景，反映了扎根江南杭州的茶叶世家杭家在这段动荡的年代中各种人物的命运遭际，反映了当时的社会现实，突出了杭家人坚强、独立，如茶叶般清净、高洁的品格。叙述故事的同时描述了我国茶叶行业在这段年代里坎坷的发展史。",
+      "cover": "/assets/library-covers/buyezhihou.jpg",
       "source_url": "https://chinesebooks.github.io/xiandai/buyezhihou/",
-      "chapter_count": null
+      "chapter_count": 31,
+      "mirrored_chapter_count": 31,
+      "complete": true
     },
     {
       "slug": "baihu",
       "title": "白狐",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/220726/1658828154695303.jpg",
+      "description": "人群既然让开了，云鹏就一眼看到了那被捆绑着的动物，那竟是只周身雪白的狐狸！这狐狸显然经过了一段长时间的奔跑和挣扎，如今在绳索的捆绑下，虽然已放弃了努力，但仍然在剧烈的喘息着。猎人们把它四只脚绑在一起，因此，它是躺在地下的，它那美丽的头颅微向后仰，一对乌溜溜的黑眼珠，带着股解事的、祈求的神情，默默的看着云鹏。",
+      "cover": "/assets/library-covers/baihu.jpg",
       "source_url": "https://chinesebooks.github.io/xiandai/baihu/",
-      "chapter_count": null
+      "chapter_count": 7,
+      "mirrored_chapter_count": 7,
+      "complete": true
     },
     {
       "slug": "sushiqiren",
       "title": "俗世奇人",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/220726/1658797421748972.jpg",
+      "description": "《俗世奇人》是著名作家冯骥才创作的同名小说集，也是冯骥才的第一本小说。全书由19个短篇小说连缀构成，各篇文字极精短，半文半白，带有“三言两拍”笔意，作品的风格也接近古典传奇色彩，取话本文学旨趣。书中所讲之事，又多以清末天津市井生活为背景，每篇专讲一个传奇人物生平事迹，素材均收集于长期流传津门的民间传说，故事生动有趣，惟妙惟肖，使人物跃然纸上，令人赞叹不已。",
+      "cover": "/assets/library-covers/sushiqiren.jpg",
       "source_url": "https://chinesebooks.github.io/xiandai/sushiqiren/",
-      "chapter_count": null
+      "chapter_count": 19,
+      "mirrored_chapter_count": 19,
+      "complete": true
     },
     {
       "slug": "a",
       "title": "啊",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/220726/1658796515296544.jpg",
+      "description": "中国作家冯骥才创作的中篇小说，荣获1977—1980年全国优秀中篇小说奖，表明了冯骥才在从写“社会问题”到“写人生”的现实主义创作道路上新尝试的成功。",
+      "cover": "/assets/library-covers/a.jpg",
       "source_url": "https://chinesebooks.github.io/xiandai/a/",
-      "chapter_count": null
+      "chapter_count": 25,
+      "mirrored_chapter_count": 25,
+      "complete": true
     },
     {
       "slug": "ansuan",
       "title": "暗算",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/220726/1658794916510271.jpg",
+      "description": "《暗算》长篇谍战小说，由麦家所著，曾获第七届茅盾文学奖。讲述了具有特殊禀赋的人的命运遭际，书写了个人身处在封闭的黑暗空间里的神奇表现。破译密码的故事传奇曲折，充满悬念和神秘感，与此同时，人的心灵世界亦得到丰富细致地展现。",
+      "cover": "/assets/library-covers/ansuan.jpg",
       "source_url": "https://chinesebooks.github.io/xiandai/ansuan/",
-      "chapter_count": null
+      "chapter_count": 86,
+      "mirrored_chapter_count": 86,
+      "complete": true
     },
     {
       "slug": "aiqingdesanbuqu",
       "title": "爱情的三部曲",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/220725/1658716000524154.jpg",
+      "description": "《爱情的三部曲》（《雾》《雨》《电》）是我国著名作家巴金先生的代表作。《爱情的三部曲》是《雾》、《雨》、《电》三个中篇小说的总称。书名原为繁体字，每个字上面带了“雨”字头，象征作品的气候氛围和人物的性格特征。第三部原名《雪》，后改为《电》。这之前还写了一个短篇小说《雷》，地点与《电》同，人物也有交叉，可看作《雨》和《电》之间的插曲和过渡。",
+      "cover": "/assets/library-covers/aiqingdesanbuqu.jpg",
       "source_url": "https://chinesebooks.github.io/xiandai/aiqingdesanbuqu/",
-      "chapter_count": null
+      "chapter_count": 48,
+      "mirrored_chapter_count": 48,
+      "complete": true
     },
     {
       "slug": "qiwang",
       "title": "棋王",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/220720/1658324517191389.jpg",
+      "description": "《棋王》是当代作家阿城的一部短篇小说。小说被视作是新时期“寻根文学”的发韧之作。故事讲述了在文革时代，知青“棋呆子”王一生四处寻找对手下棋、拼棋的故事。小说语言抛弃了20世纪80年代惯有的语言逻辑转而回归宋明小说的语境之中，朴实而飘逸俊美。",
+      "cover": "/assets/library-covers/qiwang.jpg",
       "source_url": "https://chinesebooks.github.io/xiandai/qiwang/",
-      "chapter_count": null
+      "chapter_count": 4,
+      "mirrored_chapter_count": 4,
+      "complete": true
     },
     {
       "slug": "tanmeishujian",
       "title": "谈美书简",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/220720/1658318162935487.jpg",
+      "description": "《谈美书简》是中国现代美学家朱光潜晚年创作的一部系统的美学著作。《谈美书简》采用书信体的形式，娓娓道来，亲切自然，将许多深奥的美学知识通俗化。《谈美书简》全书由十三封书信结集而成，书中，朱光潜先生就青年朋友们普遍关心的美和美感、美的规律、美的范畴等一系列美学问题进行了深入的探讨，同时也对文学的审美特征、文学的创作规律及特点作了详尽的阐释，既是思想上的，又是方法上的，是初涉美学者学习美学知识的重要参考书籍头讲章。",
+      "cover": "/assets/library-covers/tanmeishujian.jpg",
       "source_url": "https://chinesebooks.github.io/xiandai/tanmeishujian/",
-      "chapter_count": null
+      "chapter_count": 14,
+      "mirrored_chapter_count": 14,
+      "complete": true
     },
     {
       "slug": "bailuyuan",
       "title": "白鹿原",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/220720/1658306576830733.jpg",
+      "description": "《白鹿原》是陈忠实的代表作。小说长达近50万字，是陈忠实历时六年艰辛创作完成的。小说以陕西关中平原上素有“仁义村”之称的白鹿村为背景，细腻地反映出白姓和鹿姓两大家族祖孙三代的恩怨纷争。全书浓缩着深沉的民族历史内涵，有令人震撼的真实感和厚重的史诗风格。1993年6月出版后，其畅销和广受海内外读者赞赏欢迎的程度为中国当代文学作品所罕见。",
+      "cover": "/assets/library-covers/bailuyuan.jpg",
       "source_url": "https://chinesebooks.github.io/xiandai/bailuyuan/",
-      "chapter_count": null
+      "chapter_count": 33,
+      "mirrored_chapter_count": 33,
+      "complete": true
     },
     {
       "slug": "biancheng",
       "title": "边城",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/220720/1658302180225336.jpg",
+      "description": "《边城》是沈从文的代表作，展示给读者的是湘西世界和谐的生命形态。《边城》发表于1934年，小说描写了山城茶峒码头团总的两个儿子天保和傩送与摆渡人的外孙女翠翠的曲折爱情。青山，绿水，河边的老艄公，16岁的翠翠，江流木排上的天保，龙舟中生龙活虎的傩送……",
+      "cover": "/assets/library-covers/biancheng.jpg",
       "source_url": "https://chinesebooks.github.io/xiandai/biancheng/",
-      "chapter_count": null
+      "chapter_count": 21,
+      "mirrored_chapter_count": 21,
+      "complete": true
     },
     {
       "slug": "huaixiaohai",
       "title": "坏小孩",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/220718/1658114419473456.jpg",
+      "description": "结婚第四年，徐静有了外遇，并向张东升提出离婚。作为上门女婿入赘的张东升，婚前有过财产公证，一旦离婚，几乎是净身出户。左思右想之后，他决定做几件事改变这个结局。筹划了近一年后，他假意带岳父母旅游，在市郊的三名山上，突然将两人推下山崖摔死。这本是他精心设计的完美的犯罪开场白，谁知，这一幕却被三个在远处玩耍的小孩，无意中用相机的摄像功能拍了下来。更让他没想到的是，这三个小孩，一点都不善良。",
+      "cover": "/assets/library-covers/huaixiaohai.jpg",
       "source_url": "https://chinesebooks.github.io/xiandai/huaixiaohai/",
-      "chapter_count": null
+      "chapter_count": 85,
+      "mirrored_chapter_count": 85,
+      "complete": true
     },
     {
       "slug": "ouyouzaji",
       "title": "欧游杂记",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/220717/1658047326808374.jpg",
+      "description": "本书是朱自清1931年留学英国，漫游欧洲，回国后写成的作品，收录游记11篇，其中《西行通讯》为附录，记述了朱自清漫游欧洲的见闻，再现了二十世纪二三十年代欧洲各国的风光以及民俗民情。",
+      "cover": "/assets/library-covers/ouyouzaji.jpg",
       "source_url": "https://chinesebooks.github.io/xiandai/ouyouzaji/",
-      "chapter_count": null
+      "chapter_count": 14,
+      "mirrored_chapter_count": 14,
+      "complete": true
     },
     {
       "slug": "chunfengchenzuidewanshang",
       "title": "春风沉醉的晚上",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/220717/1658047150622961.jpg",
+      "description": "作品中的“我”是一位生活无着的穷知识分子，为生活所迫，住进了贫民窟中一个窄小破旧的阁楼里。在那里，“我”遇到了一个同样被生活压迫的烟厂女工。由于有着共同的生活处境，对现实有着强烈的不满，他们相识后很快从相互同情，发展到相互关怀、体贴。",
+      "cover": "/assets/library-covers/chunfengchenzuidewanshang.jpg",
       "source_url": "https://chinesebooks.github.io/xiandai/chunfengchenzuidewanshang/",
-      "chapter_count": null
+      "chapter_count": 4,
+      "mirrored_chapter_count": 4,
+      "complete": true
     },
     {
       "slug": "zuoshoudaoyingyoushounianhua",
       "title": "左手倒影右手年华",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/220711/1657494130475697.jpg",
+      "description": "我是一个在感到寂寞的时候就会仰望天空的小孩，望着那个大太阳，望着那个大月亮，望到脖子酸痛，望到眼中噙满泪水。这是真的，好孩子不说假话。而我笔下的那些东西，那些看上去像是开放在水中的幻觉一样的东西，它们也是真的。……",
+      "cover": "/assets/library-covers/zuoshoudaoyingyoushounianhua.jpg",
       "source_url": "https://chinesebooks.github.io/xiandai/zuoshoudaoyingyoushounianhua/",
-      "chapter_count": null
+      "chapter_count": 19,
+      "mirrored_chapter_count": 19,
+      "complete": true
     },
     {
       "slug": "zhongguozhexuejianshi",
       "title": "中国哲学简史",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/220428/1651112695658356.jpg",
+      "description": "作者冯友兰于1947年在美国宾夕法尼亚大学受聘担任讲座教授，讲授中国哲学史。其英文讲稿后经整理写成《中国哲学简史》，于1948年由美国麦克米兰公司出版。此书一出，立即成为西方人了解和学习中国哲学的首选入门书。其后又有法文、意大利文、西班牙文、南斯拉夫文、日文等译本出版。多年来，这部专著一直是世界各大学中国哲学的通用教材，在西方影响很大。",
+      "cover": "/assets/library-covers/zhongguozhexuejianshi.jpg",
       "source_url": "https://chinesebooks.github.io/xiandai/zhongguozhexuejianshi/",
-      "chapter_count": null
+      "chapter_count": 28,
+      "mirrored_chapter_count": 28,
+      "complete": true
     },
     {
       "slug": "zhushenghaoqingshuquanji",
       "title": "朱生豪情书全集",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/220427/1651066622666716.jpg",
+      "description": "",
+      "cover": "/assets/library-covers/zhushenghaoqingshuquanji.jpg",
       "source_url": "https://chinesebooks.github.io/xiandai/zhushenghaoqingshuquanji/",
-      "chapter_count": null
+      "chapter_count": 323,
+      "mirrored_chapter_count": 323,
+      "complete": true
     },
     {
       "slug": "jinshengjinshi",
       "title": "今生今世",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/220425/1650891577798639.jpg",
+      "description": "《今生今世》叙述路胡兰成其传奇一生。作者身处民国乱世，人生遭遇跌宕起伏，对世景世情，感触深入、独到。虽是颠沛流离，却以翻转生命的姿态、欢喜的笔调总结和反省一生。在其笔下，一路展开的，尽是悠悠人世的美丽风景。",
+      "cover": "/assets/library-covers/jinshengjinshi.jpg",
       "source_url": "https://chinesebooks.github.io/xiandai/jinshengjinshi/",
-      "chapter_count": null
+      "chapter_count": 51,
+      "mirrored_chapter_count": 51,
+      "complete": true
     },
     {
       "slug": "zhongguozhexueshidagang",
       "title": "中国哲学史大纲",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/220425/1650871764635612.jpg",
+      "description": "《中国哲学史大纲》基于胡适先生在美国留学期间的博士论文，内容涵盖了从中国古代哲学史的开端到古代哲学史的终结。胡适认为中国哲学史萌芽于西周，成型于春秋时期，终结于秦汉时期。本书分为十二篇，由编写中国古代哲学史的意义开始，后探究古代哲学结胎的事情，之后由孔子老子的哲学讲起直到荀子韩非，最后由于秦汉时期怀疑主义、功用主义、一尊主义和迷信的盛行导致中国古代哲学的终结。",
+      "cover": "/assets/library-covers/zhongguozhexueshidagang.jpg",
       "source_url": "https://chinesebooks.github.io/xiandai/zhongguozhexueshidagang/",
-      "chapter_count": null
+      "chapter_count": 13,
+      "mirrored_chapter_count": 13,
+      "complete": true
     },
     {
       "slug": "changshiji",
       "title": "尝试集",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/220425/1650870181875777.jpg",
+      "description": "《尝试集》系诗集，胡适作。",
+      "cover": "/assets/library-covers/changshiji.jpg",
       "source_url": "https://chinesebooks.github.io/xiandai/changshiji/",
-      "chapter_count": null
+      "chapter_count": 36,
+      "mirrored_chapter_count": 36,
+      "complete": true
     },
     {
       "slug": "xiaoyingxiongyulai",
       "title": "小英雄雨来",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/220331/1648691433380550.jpg",
+      "description": "雨来是抗日战争时期的小英雄，他是一个聪明、勇敢、机灵还很热心的孩子！",
+      "cover": "/assets/library-covers/xiaoyingxiongyulai.jpg",
       "source_url": "https://chinesebooks.github.io/xiandai/xiaoyingxiongyulai/",
-      "chapter_count": null
+      "chapter_count": 37,
+      "mirrored_chapter_count": 37,
+      "complete": true
     },
     {
       "slug": "gududexiaobangxie",
       "title": "孤独的小螃蟹",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/220128/1643359859562408.jpg",
+      "description": "",
+      "cover": "/assets/library-covers/gududexiaobangxie.jpg",
       "source_url": "https://chinesebooks.github.io/xiandai/gududexiaobangxie/",
-      "chapter_count": null
+      "chapter_count": 8,
+      "mirrored_chapter_count": 8,
+      "complete": true
     },
     {
       "slug": "kongshanlingyu",
       "title": "空山灵雨",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/210911/1631326597520898.jpg",
+      "description": "《空山灵雨》是许地山唯一的一本散文集，也是“现代小品文的最初成册的书”，而这个集子的名字竞争恰巧就概括了许地山的写作风格——质朴、清丽，又充满哲学和宗教的气息。“空”与“灵”的韵味境界，是《空山灵雨》在艺术上的独特造诣。不少作品都带着若隐若现、迷离惝恍的朦胧，洒脱超逸的语言蕴含着颇费咀嚼的玄理思辨，巧妙的比喻、隐喻，丰富的想象，奇特的构思和某种小说化倾向，别有一番艺术魅力。",
+      "cover": "/assets/library-covers/kongshanlingyu.jpg",
       "source_url": "https://chinesebooks.github.io/xiandai/kongshanlingyu/",
-      "chapter_count": null
+      "chapter_count": 56,
+      "mirrored_chapter_count": 56,
+      "complete": true
     },
     {
       "slug": "linhuiyinjianzhuwenji",
       "title": "林徽因建筑文集",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/210911/1631324849140617.jpg",
+      "description": "本书以古建测绘实录为切入点，带领广大建筑学爱好者领略“一代才女林徽因”作为建筑学家的严谨和理性，感受其对古建筑设计与保护工作的热情与执着，欣赏她灵活转换于中西建筑艺术体系的迷人风采，体会浪漫主义情怀与科学研究之精彩碰撞。",
+      "cover": "/assets/library-covers/linhuiyinjianzhuwenji.jpg",
       "source_url": "https://chinesebooks.github.io/xiandai/linhuiyinjianzhuwenji/",
-      "chapter_count": null
+      "chapter_count": 11,
+      "mirrored_chapter_count": 11,
+      "complete": true
     },
     {
       "slug": "zhouzuorensanwenji",
       "title": "周作人散文集",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/201121/1-201121103635N3.jpg",
+      "description": "周作人是鲁迅（周树人）之弟，周建人之兄。中国现代著名散文家、文学理论家、评论家、诗人、翻译家、思想家，中国民俗学开拓人，新文化运动的杰出代表。",
+      "cover": "/assets/library-covers/zhouzuorensanwenji.jpg",
       "source_url": "https://chinesebooks.github.io/xiandai/zhouzuorensanwenji/",
-      "chapter_count": null
+      "chapter_count": 136,
+      "mirrored_chapter_count": 136,
+      "complete": true
     },
     {
       "slug": "luxunzuopinji",
       "title": "鲁迅作品集",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/201029/1-201029124450A3.jpg",
+      "description": "",
+      "cover": "/assets/library-covers/luxunzuopinji.jpg",
       "source_url": "https://chinesebooks.github.io/xiandai/luxunzuopinji/",
-      "chapter_count": null
+      "chapter_count": 0,
+      "mirrored_chapter_count": 0,
+      "complete": true
     },
     {
       "slug": "xuzhimosanwen",
       "title": "徐志摩散文",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/201028/1-20102R155224X.jpg",
+      "description": "",
+      "cover": "/assets/library-covers/xuzhimosanwen.jpg",
       "source_url": "https://chinesebooks.github.io/xiandai/xuzhimosanwen/",
-      "chapter_count": null
+      "chapter_count": 56,
+      "mirrored_chapter_count": 56,
+      "complete": true
     },
     {
       "slug": "xuzhimodeshi",
       "title": "徐志摩的诗",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/201028/1-20102R01T25a.jpg",
+      "description": "",
+      "cover": "/assets/library-covers/xuzhimodeshi.jpg",
       "source_url": "https://chinesebooks.github.io/xiandai/xuzhimodeshi/",
-      "chapter_count": null
+      "chapter_count": 33,
+      "mirrored_chapter_count": 33,
+      "complete": true
     },
     {
       "slug": "yeshenchen",
       "title": "夜深沉",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/201028/1-20102Q20342Z8.jpg",
+      "description": "这是一部令人感喟的女性情感史。一位美丽、极富艺术才情的街头歌女，被捧红为京剧名角后情感迷失，难拒纨绔子弟之诱感，堕入火坑，被军阀、富商所摧残，欲逃不能……一位执著不渝的爱慕者旷日苦恋，奈何贫富之差，阴差阳错，一直在痛苦中徘徊，最终无奈地娶老板的姘妇为妻。夜深沉，情也深沉……",
+      "cover": "/assets/library-covers/yeshenchen.jpg",
       "source_url": "https://chinesebooks.github.io/xiandai/yeshenchen/",
-      "chapter_count": null
+      "chapter_count": 41,
+      "mirrored_chapter_count": 41,
+      "complete": true
     },
     {
       "slug": "meirenen",
       "title": "美人恩",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/201028/1-20102Q15K2V6.jpg",
+      "description": "《美人恩》的故事发生在二十世纪二十年代的北京。女主角常小南生在底层穷苦人家，以捡煤核为生。一次偶遇失业潦倒的洪士毅，对她的命运深表同情，用在慈善会打替工的微薄收入接济常家生活。二人萌生爱恋之情。貌美体俏的常小南后被杨柳歌舞团领班相中，从此在爱情上见异思迁，先后甩掉洪士毅、乐师王孙，最终落入纨绔子弟陈四爷之手，导致常家家破人亡。",
+      "cover": "/assets/library-covers/meirenen.jpg",
       "source_url": "https://chinesebooks.github.io/xiandai/meirenen/",
-      "chapter_count": null
+      "chapter_count": 24,
+      "mirrored_chapter_count": 24,
+      "complete": true
     },
     {
       "slug": "tixiaoyinyuan",
       "title": "啼笑因缘",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/201028/1-20102Q14PC27.jpg",
+      "description": "北京青年樊家树到天桥游乐，认识卖艺为生的关寿峰，寿峰女秀姑更暗恋家树。其后家树偶遇唱大鼓的少女凤喜，相互爱慕，树更助喜摆脱卖唱生涯，供她读书。家树虽得富家女何丽娜垂青，亦专情如一。其后，凤喜三叔贪图富贵，使喜亲近刘大帅，刘更迫喜作妾，喜不知如何是好。刘大帅以杀家树威迫凤喜作妾，喜含泪应允。其后树与喜重聚，二人余情未了，一次私会后，事情为大帅知悉，喜被拷打成疯。寿峰与秀姑冒险助树救出垂危的喜，更把大帅杀死，可惜寿锋亦中枪而亡，临终将秀姑托付家树照顾。",
+      "cover": "/assets/library-covers/tixiaoyinyuan.jpg",
       "source_url": "https://chinesebooks.github.io/xiandai/tixiaoyinyuan/",
-      "chapter_count": null
+      "chapter_count": 22,
+      "mirrored_chapter_count": 22,
+      "complete": true
     },
     {
       "slug": "chunmingwaishi",
       "title": "春明外史",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/201028/1-20102Q13439532.jpg",
+      "description": "男主人公杨杏园寄寓北平，以卖文编报为生。他结识了青楼梨云，两人情投意合，刻骨铭心。不幸梨云因病而亡。才女李冬青，亦与杨杏园有深厚感情，经过一段复杂的感情纠葛，李冬青终因身有隐疾，佳期难成，黯然奉母南下。而杨杏园则因文人病缠身，吐血而亡。",
+      "cover": "/assets/library-covers/chunmingwaishi.jpg",
       "source_url": "https://chinesebooks.github.io/xiandai/chunmingwaishi/",
-      "chapter_count": null
+      "chapter_count": 86,
+      "mirrored_chapter_count": 86,
+      "complete": true
     },
     {
       "slug": "laoshezuopinji",
       "title": "老舍作品集",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/201026/1-201026132015c4.jpg",
+      "description": "",
+      "cover": "/assets/library-covers/laoshezuopinji.jpg",
       "source_url": "https://chinesebooks.github.io/xiandai/laoshezuopinji/",
-      "chapter_count": null
+      "chapter_count": 0,
+      "mirrored_chapter_count": 0,
+      "complete": true
     },
     {
       "slug": "pingjiangbuxiaoshengzuopinji",
       "title": "平江不肖生作品集",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/201020/1-2010201624402S.jpg",
+      "description": "",
+      "cover": "/assets/library-covers/pingjiangbuxiaoshengzuopinji.jpg",
       "source_url": "https://chinesebooks.github.io/xiandai/pingjiangbuxiaoshengzuopinji/",
-      "chapter_count": null
+      "chapter_count": 0,
+      "mirrored_chapter_count": 0,
+      "complete": true
     },
     {
       "slug": "beiyannanfei",
       "title": "北雁南飞",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/201028/1-20102Q12912U5.jpg",
+      "description": "它讲述了一对十六七岁的小儿女的纯洁爱情，细致入微地刻画了他们的每一点欢喜、悲伤和痛苦。",
+      "cover": "/assets/library-covers/beiyannanfei.jpg",
       "source_url": "https://chinesebooks.github.io/xiandai/beiyannanfei/",
-      "chapter_count": null
+      "chapter_count": 38,
+      "mirrored_chapter_count": 38,
+      "complete": true
     },
     {
       "slug": "tixiaoyinyuanxuji",
       "title": "啼笑因缘续集",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/201028/1-20102Q1201a56.jpg",
+      "description": "同名影视，陆续登",
+      "cover": "/assets/library-covers/tixiaoyinyuanxuji.jpg",
       "source_url": "https://chinesebooks.github.io/xiandai/tixiaoyinyuanxuji/",
-      "chapter_count": null
+      "chapter_count": 10,
+      "mirrored_chapter_count": 10,
+      "complete": true
     },
     {
       "slug": "jinfenshijia",
       "title": "金粉世家",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/201028/1-20102Q1105Ia.jpg",
+      "description": "本书以北洋军阀内阁总理封建大家族为背景，以豪门之子金燕西与平民之女冷清秋由恋爱、结婚到反目、离异的婚姻为主线，揭露了封建官僚及其妻妾、子女空虚、堕落的精神世界和骄奢淫逸腐朽没落的生活，为豪门贵族铺叙了一部活生生的兴衰史。",
+      "cover": "/assets/library-covers/jinfenshijia.jpg",
       "source_url": "https://chinesebooks.github.io/xiandai/jinfenshijia/",
-      "chapter_count": null
+      "chapter_count": 113,
+      "mirrored_chapter_count": 113,
+      "complete": true
     },
     {
       "slug": "qijianshisanxia",
       "title": "七剑十三侠",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/201027/1-20102G33400H5.jpg",
+      "description": "《七剑十三侠》一名《七子十三生》。作者唐芸洲，号桃花馆主，姑苏人，生平不详，约清德宗光绪中前后（约1892年前后）在世。此书分三集陆续刊行，各六十回，共一百八十回。初集六十回刊于光绪二十二年（1896）。江文蒲在为初集作的序言中说：“吾知是书一出，其不胫而走也必矣。”诚如斯言，书刊行后“风行海内，几至家置一编”（月湖渔隐“二集”序）。光绪辛丑（1901）正月，二集六十四刊行，与初集一样，其“脍炙人口，甚至有手不释卷者”（月湖渔隐“三集”序）。同年六月，三集六十回问世，月湖渔隐赞其“笔墨之奇妙，惊人之怪事，尤较之初、续两集有过之无不及也”（月湖渔隐“三集”序）。",
+      "cover": "/assets/library-covers/qijianshisanxia.jpg",
       "source_url": "https://chinesebooks.github.io/xiandai/qijianshisanxia/",
-      "chapter_count": null
+      "chapter_count": 178,
+      "mirrored_chapter_count": 178,
+      "complete": true
     },
     {
       "slug": "weixingxiaoshuo",
       "title": "微型小说",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/201026/1-20102612423Na.jpg",
+      "description": "",
+      "cover": "/assets/library-covers/weixingxiaoshuo.jpg",
       "source_url": "https://chinesebooks.github.io/xiandai/weixingxiaoshuo/",
-      "chapter_count": null
+      "chapter_count": 8,
+      "mirrored_chapter_count": 8,
+      "complete": true
     },
     {
       "slug": "jingdianxiaoxiaoshuo",
       "title": "经典小小说",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/201025/1-201025111SBS.jpg",
+      "description": "",
+      "cover": "/assets/library-covers/jingdianxiaoxiaoshuo.jpg",
       "source_url": "https://chinesebooks.github.io/xiandai/jingdianxiaoxiaoshuo/",
-      "chapter_count": null
+      "chapter_count": 170,
+      "mirrored_chapter_count": 170,
+      "complete": true
     },
     {
       "slug": "qingchengshijiuxia",
       "title": "青城十九侠",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/201020/1-201020210034964.jpg",
+      "description": "小说第一回曾借矮叟朱梅之口说：“师弟伏魔真人姜庶……执意要创设青城一派，以传本门衣钵。头一代按照先恩师遗偈，共只收男女弟子十九人。”《青城十九侠》即以朱梅的这段话为张本，着力记叙清初青城派剑仙的众弟子罗鹭、裘元、虞南绮、狄胜男、狄勿暴、纪异、吕灵姑、杨永、杨映雪以及纪登、陶钧、杨翊、陈太真、呼延显、尤璜、方环、司明、涂雷、颜虎等十九人修仙炼剑、行道诛邪、开创青城派的武侠故事。",
+      "cover": "/assets/library-covers/qingchengshijiuxia.jpg",
       "source_url": "https://chinesebooks.github.io/xiandai/qingchengshijiuxia/",
-      "chapter_count": null
+      "chapter_count": 103,
+      "mirrored_chapter_count": 103,
+      "complete": true
     },
     {
       "slug": "shushanjianxiachuan",
       "title": "蜀山剑侠传",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/201020/1-201020103I0410.jpg",
+      "description": "神魔剑侠小说。以峨嵋派为主要正义的帮派，讲述了峨嵋弟子学艺和斩妖除魔的经历，尤其以三英二云、七矮和四大弟子为主要的记述对象，其中又以李英琼为最主要的人物。详细描述了她从一个普通的女子，经过无数的机缘巧合，得到长眉真人的紫郢剑，收复神雕佛奴和猩猩袁星，吃下了许多罕见的朱果，又得到前辈仙人所留的太清神焰率兜火和白眉和尚的定珠，最后还获得了前世挚友圣姑的一甲子功力，终于成为峨嵋派最杰出的人物……",
+      "cover": "/assets/library-covers/shushanjianxiachuan.jpg",
       "source_url": "https://chinesebooks.github.io/xiandai/shushanjianxiachuan/",
-      "chapter_count": null
+      "chapter_count": 309,
+      "mirrored_chapter_count": 309,
+      "complete": true
     },
     {
       "slug": "mabole",
       "title": "马伯乐",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/201019/1-201019150625P7.jpg",
+      "description": "马伯乐是个萧红笔下一个时代的旁观者、多余的人。怯弱、自私、多疑、平庸，满腹牢骚，永远都在想，从来不会做的人。整天怨天尤人，逃避现实和困难，成天沉迷在自己的悲观哲学中。他只知道花钱，却不知道挣钱。花钱与父母、太太要，因和父亲要钱受了气，想自己写文章赚钱，也只是想想不动笔；在火车站，把太太、孩子和一堆行李丢在广场，自己一个人先爬上火车逃命；在逃难洪流中，竟暗生出快乐……",
+      "cover": "/assets/library-covers/mabole.jpg",
       "source_url": "https://chinesebooks.github.io/xiandai/mabole/",
-      "chapter_count": null
+      "chapter_count": 72,
+      "mirrored_chapter_count": 72,
+      "complete": true
     },
     {
       "slug": "xiaohongsanwenji",
       "title": "萧红散文集",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/201019/1-2010191I51I50.jpg",
+      "description": "萧红是我国著名的现代女作家。她的小说名篇如《呼兰河传》、《小城三月》等等都闻名于世。同样，她的散文创作也具有很高的成就。她的散文凄切忧婉，在情感浓度和抒写张力上都较深刻强烈，刻画人物注重心理深层的挖掘，文字优美。",
+      "cover": "/assets/library-covers/xiaohongsanwenji.jpg",
       "source_url": "https://chinesebooks.github.io/xiandai/xiaohongsanwenji/",
-      "chapter_count": null
+      "chapter_count": 84,
+      "mirrored_chapter_count": 84,
+      "complete": true
     },
     {
       "slug": "xiaochengsanyue",
       "title": "小城三月",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/201019/1-201019125S22M.jpg",
+      "description": "作品是以儿童视点叙述了这样一个故事：我的一个叫翠姨的姨悄悄地在心里爱上我的堂哥。然而，向往着爱的自由的翠姨，却不幸是一位再嫁的寡妇的女儿，而堂哥却是地主家才学出众的公子。他们的爱情，在有数千年传统规范的约束着的愚昧偏僻小镇，只能被不可理喻的冷寂扼杀掉。",
+      "cover": "/assets/library-covers/xiaochengsanyue.jpg",
       "source_url": "https://chinesebooks.github.io/xiandai/xiaochengsanyue/",
-      "chapter_count": null
+      "chapter_count": 6,
+      "mirrored_chapter_count": 6,
+      "complete": true
     },
     {
       "slug": "shengsichang",
       "title": "生死场",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/201019/1-201019124234957.jpg",
+      "description": "中国作家萧红创作的中篇小说。在故事中，作者描述了一些女人在男权世界里卑微而无助的生活和死亡。",
+      "cover": "/assets/library-covers/shengsichang.jpg",
       "source_url": "https://chinesebooks.github.io/xiandai/shengsichang/",
-      "chapter_count": null
+      "chapter_count": 18,
+      "mirrored_chapter_count": 18,
+      "complete": true
     },
     {
       "slug": "hulanhechuan",
       "title": "呼兰河传",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/201019/1-20101Z95214458.jpg",
+      "description": "该作品以萧红自己童年生活为线索，把孤独的童年故事串起来，形象地反映出呼兰这座小城当年的社会风貌、人情百态，从而无情地揭露和鞭挞中国几千年的封建陋习在社会形成的毒瘤，以及这毒瘤溃烂漫浸所造成的瘟疫般的灾难。",
+      "cover": "/assets/library-covers/hulanhechuan.jpg",
       "source_url": "https://chinesebooks.github.io/xiandai/hulanhechuan/",
-      "chapter_count": null
-    },
-    {
-      "slug": "lizhi--30suiqianbiejiehun",
-      "title": "30岁前别结婚",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170719/1-1FG91PK5595.jpg",
-      "source_url": "https://chinesebooks.github.io/lizhi/30suiqianbiejiehun/",
-      "chapter_count": null
-    },
-    {
-      "slug": "lizhi--hafunvhailiuyiting",
-      "title": "哈佛女孩刘亦婷",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170719/1-1FG91P32C62.jpg",
-      "source_url": "https://chinesebooks.github.io/lizhi/hafunvhailiuyiting/",
-      "chapter_count": null
-    },
-    {
-      "slug": "lizhi--humazhange",
-      "title": "虎妈战歌",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170719/1-1FG91KS9114.jpg",
-      "source_url": "https://chinesebooks.github.io/lizhi/humazhange/",
-      "chapter_count": null
-    },
-    {
-      "slug": "lizhi--xiaogouqianqian",
-      "title": "小狗钱钱",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170719/1-1FG91K229492.jpg",
-      "source_url": "https://chinesebooks.github.io/lizhi/xiaogouqianqian/",
-      "chapter_count": null
+      "chapter_count": 65,
+      "mirrored_chapter_count": 65,
+      "complete": true
     },
     {
       "slug": "moyan--yuhuazuopinji--zaixiyuzhonghuhan",
       "title": "在细雨中呼喊",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170719/1-1FG91J644511.jpg",
+      "description": "作者以第一人称讲述了一个家庭的欢乐和苦痛，细腻地刻画了柔弱的母亲如何完成了自己忍受的一生，她唯一爆发出来的愤怒是在弥留之际；名叫孙广财的父亲又是如何骄傲地将自己培养成一名彻头彻尾的无赖，他对待自己的父亲和对待自己的儿子，就像对待自己的绊脚石。家中的三兄弟的道路只是短暂地有过重叠，随即就又叉向了各自的方向。",
+      "cover": "/assets/library-covers/moyan--yuhuazuopinji--zaixiyuzhonghuhan.jpg",
       "source_url": "https://chinesebooks.github.io/xiandai/moyan/yuhuazuopinji/zaixiyuzhonghuhan/",
-      "chapter_count": null
+      "chapter_count": 57,
+      "mirrored_chapter_count": 57,
+      "complete": true
     },
     {
       "slug": "moyan--yuhuazuopinji--xusanguanmaixueji",
       "title": "许三观卖血记",
-      "cover": "https://chinesebooks.github.io/xiandai/",
+      "description": "",
+      "cover": "/assets/library-covers/moyan--yuhuazuopinji--xusanguanmaixueji.jpg",
       "source_url": "https://chinesebooks.github.io/xiandai/moyan/yuhuazuopinji/xusanguanmaixueji/",
-      "chapter_count": null
+      "chapter_count": 33,
+      "mirrored_chapter_count": 33,
+      "complete": true
     },
     {
       "slug": "liucixinzuopinji--santi3sishenyongsheng",
       "title": "三体3死神永生",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170719/1-1FG91IF5Q4.jpg",
+      "description": "与三体文明的战争使人类第一次看到了宇宙黑暗的真相，地球文明像一个恐惧的孩子，熄灭了寻友的篝火，在暗夜中发抖。自以为历经沧桑，其实刚刚蹒跚学步；自以为悟出了生存竞争的秘密，其实还远没有竞争的资格。使两个文明命悬一线的黑暗森林打击，不过是宇宙战场上的一个微不足道的插曲，一个在战场上乱跑的无知孩童被堑壕中的狙击手射杀，仅此而已。真正的星际战争没人见过，也不可能见到。因为战争的方式和武器已经远超出人类的想象，目睹战场之日，就是灭亡之时。人类没有想到，面对这巨大的存在，从社会学的结论，却可以推导出宇宙学的结果。宇宙的田园时代已经远去，那时，万物的终极之美曾昙花一现，现在已经变成任何大脑和智慧体都无法做出的梦，变成游吟诗人飘渺的残歌；宇宙的物竞天择已到了最惨烈的时刻，在亿万光年暗无天日的战场上，深渊最底层的毁灭力量被唤醒，太空变成了死神广阔的披风。太阳系中的人们永远不会知道这一切，最后面对真相的，只有两双眼睛。",
+      "cover": "/assets/library-covers/liucixinzuopinji--santi3sishenyongsheng.jpg",
       "source_url": "https://chinesebooks.github.io/xiandai/liucixinzuopinji/santi3sishenyongsheng/",
-      "chapter_count": null
+      "chapter_count": 49,
+      "mirrored_chapter_count": 48,
+      "complete": false
     },
     {
       "slug": "liucixinzuopinji--qiuzhuangshandian",
       "title": "球状闪电",
-      "cover": "https://chinesebooks.github.io/xiandai/",
+      "description": "在某个离奇的雨夜，一颗球状闪电闯进了少年的视野。它的啸叫低沉中透着尖利，像是一个鬼魂在太古的荒原上吹着埙。当鬼魂奏完乐曲，球状闪电在一瞬间将少年的父母化为灰烬，而他们身下板凳却是奇迹般的冰凉。这一夜，少年的命运被彻底改变了，他将毕其一生去解开那个将他变成孤儿的自然之谜。",
+      "cover": "/assets/library-covers/liucixinzuopinji--qiuzhuangshandian.jpg",
       "source_url": "https://chinesebooks.github.io/xiandai/liucixinzuopinji/qiuzhuangshandian/",
-      "chapter_count": null
+      "chapter_count": 32,
+      "mirrored_chapter_count": 32,
+      "complete": true
     },
     {
       "slug": "liucixinzuopinji--liulangdiqiu",
       "title": "流浪地球",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170719/1-1FG91HR3320.jpg",
+      "description": "我没见过黑夜，我没见过星星，我没见过春天、秋天和冬天。 我出生在刹车时代结束的时候，那时地球刚刚停止转动...",
+      "cover": "/assets/library-covers/liucixinzuopinji--liulangdiqiu.jpg",
       "source_url": "https://chinesebooks.github.io/xiandai/liucixinzuopinji/liulangdiqiu/",
-      "chapter_count": null
+      "chapter_count": 4,
+      "mirrored_chapter_count": 4,
+      "complete": true
     },
     {
       "slug": "liucixinzuopinji--chaoxinxingjiyuan",
       "title": "超新星纪元",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170719/1-1FG91H23Y02.jpg",
+      "description": "此书中刘慈欣创造了一个孩子掌控的世界，但是在这个世界中，孩子们对以往成人心目中的纯洁的儿童形象进行大胆的反叛与颠覆。这些世界的新主人们，与成人一般进行战争，在纯洁的南极大陆上，进行着最血腥的战斗与厮杀。坦克、航母、歼击机、核弹头……所有武器，都是他们的新玩具。",
+      "cover": "/assets/library-covers/liucixinzuopinji--chaoxinxingjiyuan.jpg",
       "source_url": "https://chinesebooks.github.io/xiandai/liucixinzuopinji/chaoxinxingjiyuan/",
-      "chapter_count": null
+      "chapter_count": 36,
+      "mirrored_chapter_count": 36,
+      "complete": true
     },
     {
       "slug": "moyan--yuhuazuopinji--xiongdi",
       "title": "兄弟",
-      "cover": "https://chinesebooks.github.io/xiandai/",
+      "description": "",
+      "cover": "/assets/library-covers/moyan--yuhuazuopinji--xiongdi.jpg",
       "source_url": "https://chinesebooks.github.io/xiandai/moyan/yuhuazuopinji/xiongdi/",
-      "chapter_count": null
+      "chapter_count": 70,
+      "mirrored_chapter_count": 70,
+      "complete": true
     },
     {
       "slug": "moyan--yuhuazuopinji--huozhou",
       "title": "活着",
-      "cover": "https://chinesebooks.github.io/xiandai/",
+      "description": "",
+      "cover": "/assets/library-covers/moyan--yuhuazuopinji--huozhou.jpg",
       "source_url": "https://chinesebooks.github.io/xiandai/moyan/yuhuazuopinji/huozhou/",
-      "chapter_count": null
+      "chapter_count": 13,
+      "mirrored_chapter_count": 13,
+      "complete": true
     },
     {
       "slug": "moyan--hongshulin",
       "title": "红树林",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170719/1-1FG91A522524.jpg",
+      "description": "《红树林》主要内容：一位美丽纯朴的渔家姑娘，从红树林边闯人现代化都市，经历了迷惘而凄楚的人生，在与命运的抗争中，她终于昂起不屈的头颅，勇敢地迎接挑战……二个青梅竹马的老干部子女，在几十年的磨炼台奋斗和恩怨情仇的碰撞与纠葛中，似合还分，似分还合，虽然分道扬镳，却是藕断丝连……",
+      "cover": "/assets/library-covers/moyan--hongshulin.jpg",
       "source_url": "https://chinesebooks.github.io/xiandai/moyan/hongshulin/",
-      "chapter_count": null
-    },
-    {
-      "slug": "ertong--guaiwudashi--guaiwudashi12ce",
-      "title": "怪物大师12",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170719/1-1FG9164U0920.jpg",
-      "source_url": "https://chinesebooks.github.io/ertong/guaiwudashi/guaiwudashi12ce/",
-      "chapter_count": null
-    },
-    {
-      "slug": "ertong--guaiwudashi--guaiwudashi10ce",
-      "title": "怪物大师10册",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170719/1-1FG9164300607.jpg",
-      "source_url": "https://chinesebooks.github.io/ertong/guaiwudashi/guaiwudashi10ce/",
-      "chapter_count": null
-    },
-    {
-      "slug": "ertong--guaiwudashi--guaiwudashi7ce",
-      "title": "怪物大师7册",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170719/1-1FG9163555P5.jpg",
-      "source_url": "https://chinesebooks.github.io/ertong/guaiwudashi/guaiwudashi7ce/",
-      "chapter_count": null
-    },
-    {
-      "slug": "ertong--guaiwudashi--guaiwudashi5ce",
-      "title": "怪物大师5册",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170719/1-1FG9162959542.jpg",
-      "source_url": "https://chinesebooks.github.io/ertong/guaiwudashi/guaiwudashi5ce/",
-      "chapter_count": null
-    },
-    {
-      "slug": "ertong--guaiwudashi--guaiwudashi4ce",
-      "title": "怪物大师4册",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170719/1-1FG916253DK.jpg",
-      "source_url": "https://chinesebooks.github.io/ertong/guaiwudashi/guaiwudashi4ce/",
-      "chapter_count": null
-    },
-    {
-      "slug": "ertong--guaiwudashi--guaiwudashi3ce",
-      "title": "怪物大师3册",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170719/1-1FG9162139245.jpg",
-      "source_url": "https://chinesebooks.github.io/ertong/guaiwudashi/guaiwudashi3ce/",
-      "chapter_count": null
-    },
-    {
-      "slug": "ertong--guaiwudashi--guaiwudashi1ce",
-      "title": "怪物大师1册",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170719/1-1FG9161353R3.jpg",
-      "source_url": "https://chinesebooks.github.io/ertong/guaiwudashi/guaiwudashi1ce/",
-      "chapter_count": null
-    },
-    {
-      "slug": "ertong--guaiwudashi--guaiwudashi2ce",
-      "title": "怪物大师2",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170719/1-1FG9161J5O9.jpg",
-      "source_url": "https://chinesebooks.github.io/ertong/guaiwudashi/guaiwudashi2ce/",
-      "chapter_count": null
-    },
-    {
-      "slug": "ertong--shenshixi--xiangwanglei",
-      "title": "象王泪",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170719/1-1FG9160530N7.jpg",
-      "source_url": "https://chinesebooks.github.io/ertong/shenshixi/xiangwanglei/",
-      "chapter_count": null
-    },
-    {
-      "slug": "ertong--shenshixi--baixiangjiazu",
-      "title": "白象家族",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170719/1-1FG9160119295.jpg",
-      "source_url": "https://chinesebooks.github.io/ertong/shenshixi/baixiangjiazu/",
-      "chapter_count": null
+      "chapter_count": 10,
+      "mirrored_chapter_count": 10,
+      "complete": true
     },
     {
       "slug": "hanhan--one",
       "title": "一个",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170718/1-1FGQH0432F.jpg",
+      "description": "「一个」，每天只为你准备一张图画，一篇文字和一个问答。 由韩寒主编和监制，原《独唱团》主创成员共同制作。不设互动，不追热点，不关时政，不要喧哗，不惹纷争，不求话题。关掉微博，离开微信，带着微笑，去到「Web 0.1时代」。「一个」足够简单。 有时候，one is all，看一个，就够。",
+      "cover": "/assets/library-covers/hanhan--one.jpg",
       "source_url": "https://chinesebooks.github.io/xiandai/hanhan/one/",
-      "chapter_count": null
+      "chapter_count": 436,
+      "mirrored_chapter_count": 436,
+      "complete": true
     },
     {
       "slug": "hanhan--sanzhongmen",
       "title": "三重门",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170718/1-1FGQGA0607.jpg",
+      "description": "",
+      "cover": "/assets/library-covers/hanhan--sanzhongmen.jpg",
       "source_url": "https://chinesebooks.github.io/xiandai/hanhan/sanzhongmen/",
-      "chapter_count": null
+      "chapter_count": 22,
+      "mirrored_chapter_count": 22,
+      "complete": true
     },
     {
       "slug": "hanhan--changanluan",
       "title": "长安乱",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170718/1-1FGQF9462Q.jpg",
+      "description": "韩寒小说《长安乱》一直忙于赛车的韩寒，利用赛车间隙，用了近一年的时间完成了他的12万字的首部武侠小说《长安乱》。韩寒在书中用第一人称讲述了一个僧人的传奇经历。",
+      "cover": "/assets/library-covers/hanhan--changanluan.jpg",
       "source_url": "https://chinesebooks.github.io/xiandai/hanhan/changanluan/",
-      "chapter_count": null
+      "chapter_count": 16,
+      "mirrored_chapter_count": 16,
+      "complete": true
     },
     {
       "slug": "hanhan--1988--woxianghezhegeshijietantan",
       "title": "1988我想和这个世界谈谈",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170718/1-1FGQF5063P.jpg",
+      "description": "《1988：我想和这个世界谈谈》韩寒最好的一部小说，韩寒是“叛逆的”，他“试图用能给世界一些新意的眼光来看世界。试图寻找令人信服的价值”。",
+      "cover": "/assets/library-covers/hanhan--1988--woxianghezhegeshijietantan.jpg",
       "source_url": "https://chinesebooks.github.io/xiandai/hanhan/1988_woxianghezhegeshijietantan/",
-      "chapter_count": null
-    },
-    {
-      "slug": "ertong--wumeizhen--wobanliuxingxiexiaoshuo",
-      "title": "我班流行写小说",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170718/1-1FGQ30G25L.jpg",
-      "source_url": "https://chinesebooks.github.io/ertong/wumeizhen/wobanliuxingxiexiaoshuo/",
-      "chapter_count": null
-    },
-    {
-      "slug": "ertong--wumeizhen--qingwawangzifubanchang",
-      "title": "青蛙王子副班长",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170718/1-1FGQ25946207.jpg",
-      "source_url": "https://chinesebooks.github.io/ertong/wumeizhen/qingwawangzifubanchang/",
-      "chapter_count": null
-    },
-    {
-      "slug": "ertong--wumeizhen--tongzhuoyuanjia",
-      "title": "同桌冤家",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170718/1-1FGQ241042V.jpg",
-      "source_url": "https://chinesebooks.github.io/ertong/wumeizhen/tongzhuoyuanjia/",
-      "chapter_count": null
+      "chapter_count": 51,
+      "mirrored_chapter_count": 51,
+      "complete": true
     },
     {
       "slug": "jinyong--tianlongbabu",
       "title": "天龙八部",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170717/1-1FGG005035Q.jpg",
+      "description": "金庸小说《天龙八部》以宋哲宗时代为背景，通过宋、辽、大理、西夏、吐蕃王国之间的武林恩怨和民族矛盾，从哲学的高度对人生和社会进行审视和描写，展示了一幅波澜壮阔的生活画卷。",
+      "cover": "/assets/library-covers/jinyong--tianlongbabu.jpg",
       "source_url": "https://chinesebooks.github.io/xiandai/jinyong/tianlongbabu/",
-      "chapter_count": null
+      "chapter_count": 54,
+      "mirrored_chapter_count": 48,
+      "complete": false
     },
     {
       "slug": "jinyong--shediaoyingxiongchuan",
       "title": "射雕英雄传",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170717/1-1FGF95500b9.jpg",
+      "description": "《射雕英雄传》是金庸的代表作之一，《射雕》中的人物个性单纯，郭靖诚朴厚重、黄蓉机智狡狯，读者容易印象深刻。这是中国传统小说和戏剧的特征，但不免缺乏人物内心世界的复杂性。",
+      "cover": "/assets/library-covers/jinyong--shediaoyingxiongchuan.jpg",
       "source_url": "https://chinesebooks.github.io/xiandai/jinyong/shediaoyingxiongchuan/",
-      "chapter_count": null
+      "chapter_count": 43,
+      "mirrored_chapter_count": 35,
+      "complete": false
     },
     {
       "slug": "jinyong--shendiaoxialv",
       "title": "神雕侠侣",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170717/1-1FGF942532U.jpg",
+      "description": "小说《神雕侠侣》所塑造的对爱情忠贞不二、至死不渝的杨过、小龙女的形象深入人心，让无数男女为之动容，甚至泪流满面。小龙女白衣胜雪，清丽处几不食人间烟火；杨过独臂行侠，倨傲时浑不畏世俗陈套。品英雄美人，论武功气慨，问情为何物。",
+      "cover": "/assets/library-covers/jinyong--shendiaoxialv.jpg",
       "source_url": "https://chinesebooks.github.io/xiandai/jinyong/shendiaoxialv/",
-      "chapter_count": null
-    },
-    {
-      "slug": "jinyong--xiakexing",
-      "title": "侠客行",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170717/1-1FGF92RK60.jpg",
-      "source_url": "https://chinesebooks.github.io/xiandai/jinyong/xiakexing/",
-      "chapter_count": null
-    },
-    {
-      "slug": "renwuchuanji--yaomingzichuan",
-      "title": "姚明自传",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170716/1-1FG619120W52.jpg",
-      "source_url": "https://chinesebooks.github.io/renwuchuanji/yaomingzichuan/",
-      "chapter_count": null
-    },
-    {
-      "slug": "renwuchuanji--jinxingzichuan",
-      "title": "半梦",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170716/1-1FG61Z456307.jpg",
-      "source_url": "https://chinesebooks.github.io/renwuchuanji/jinxingzichuan/",
-      "chapter_count": null
-    },
-    {
-      "slug": "renwuchuanji--shengmingdebukesiyi",
-      "title": "生命的不可思议",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170716/1-1FG61UT0124.jpg",
-      "source_url": "https://chinesebooks.github.io/renwuchuanji/shengmingdebukesiyi/",
-      "chapter_count": null
-    },
-    {
-      "slug": "renwuchuanji--qiaobusichuan",
-      "title": "乔布斯传",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170716/1-1FG61U12N29.jpg",
-      "source_url": "https://chinesebooks.github.io/renwuchuanji/qiaobusichuan/",
-      "chapter_count": null
-    },
-    {
-      "slug": "renwuchuanji--wuzetianwaichuan",
-      "title": "武则天外传",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170716/1-1FG61T241543.jpg",
-      "source_url": "https://chinesebooks.github.io/renwuchuanji/wuzetianwaichuan/",
-      "chapter_count": null
-    },
-    {
-      "slug": "annibaobei--bianhua",
-      "title": "彼岸花",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170716/1-1FG61R220X5.jpg",
-      "source_url": "https://chinesebooks.github.io/xiandai/annibaobei/bianhua/",
-      "chapter_count": null
-    },
-    {
-      "slug": "bailuomei--bailuomeisanwenji",
-      "title": "白落梅散文集",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170716/1-1FG61Q4261Y.jpg",
-      "source_url": "https://chinesebooks.github.io/xiandai/bailuomei/bailuomeisanwenji/",
-      "chapter_count": null
-    },
-    {
-      "slug": "bailuomei--xiangsimoxiangfu",
-      "title": "相思莫相负",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170716/1-1FG61P91U06.jpg",
-      "source_url": "https://chinesebooks.github.io/xiandai/bailuomei/xiangsimoxiangfu/",
-      "chapter_count": null
-    },
-    {
-      "slug": "bailuomei--suiyuejinghaoxianshianwen",
-      "title": "岁月静好现世安稳",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170716/1-1FG61P3501Q.jpg",
-      "source_url": "https://chinesebooks.github.io/xiandai/bailuomei/suiyuejinghaoxianshianwen/",
-      "chapter_count": null
-    },
-    {
-      "slug": "bailuomei--henbuxiangfengweitishi",
-      "title": "恨不相逢未剃时",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170716/1-1FG61KU9203.jpg",
-      "source_url": "https://chinesebooks.github.io/xiandai/bailuomei/henbuxiangfengweitishi/",
-      "chapter_count": null
-    },
-    {
-      "slug": "bailuomei--xiangfengruchujian--huishoushiyis",
-      "title": "相逢如初见 回首是一生",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170716/1-1FG61K405U5.jpg",
-      "source_url": "https://chinesebooks.github.io/xiandai/bailuomei/xiangfengruchujian_huishoushiyis/",
-      "chapter_count": null
-    },
-    {
-      "slug": "yangelingzuopinji--fusang",
-      "title": "扶桑",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170716/1-1FG61JJRE.jpg",
-      "source_url": "https://chinesebooks.github.io/xiandai/yangelingzuopinji/fusang/",
-      "chapter_count": null
-    },
-    {
-      "slug": "jiapingao--daideng",
-      "title": "带灯",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170716/1-1FG61J114L1.jpg",
-      "source_url": "https://chinesebooks.github.io/xiandai/jiapingao/daideng/",
-      "chapter_count": null
-    },
-    {
-      "slug": "jiapingao--gaoxing",
-      "title": "高兴",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170716/1-1FG61I61GQ.jpg",
-      "source_url": "https://chinesebooks.github.io/xiandai/jiapingao/gaoxing/",
-      "chapter_count": null
-    },
-    {
-      "slug": "jiapingao--feishi",
-      "title": "匪事",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170716/1-1FG61I034161.jpg",
-      "source_url": "https://chinesebooks.github.io/xiandai/jiapingao/feishi/",
-      "chapter_count": null
-    },
-    {
-      "slug": "jiapingao--gaolaozhuang",
-      "title": "高老庄",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170716/1-1FG61H406337.jpg",
-      "source_url": "https://chinesebooks.github.io/xiandai/jiapingao/gaolaozhuang/",
-      "chapter_count": null
-    },
-    {
-      "slug": "jiapingao--fuzao",
-      "title": "浮躁",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170716/1-1FG61G42N03.jpg",
-      "source_url": "https://chinesebooks.github.io/xiandai/jiapingao/fuzao/",
-      "chapter_count": null
-    },
-    {
-      "slug": "jiapingao--gulu",
-      "title": "古炉",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170716/1-1FG6164914K6.jpg",
-      "source_url": "https://chinesebooks.github.io/xiandai/jiapingao/gulu/",
-      "chapter_count": null
-    },
-    {
-      "slug": "jiapingao--qinqiang",
-      "title": "秦腔",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170716/1-1FG6164329327.jpg",
-      "source_url": "https://chinesebooks.github.io/xiandai/jiapingao/qinqiang/",
-      "chapter_count": null
-    },
-    {
-      "slug": "yangelingzuopinji--biyege",
-      "title": "毕业歌",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170716/1-1FG6162HB38.jpg",
-      "source_url": "https://chinesebooks.github.io/xiandai/yangelingzuopinji/biyege/",
-      "chapter_count": null
-    },
-    {
-      "slug": "yangelingzuopinji--yangelingsanwen",
-      "title": "严歌苓散文",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170716/1-1FG6161914131.jpg",
-      "source_url": "https://chinesebooks.github.io/xiandai/yangelingzuopinji/yangelingsanwen/",
-      "chapter_count": null
-    },
-    {
-      "slug": "waiguo--chalijiushiquanji",
-      "title": "查理九世全集",
-      "cover": "https://chinesebooks.github.io/xiandai/",
-      "source_url": "https://chinesebooks.github.io/waiguo/chalijiushiquanji/",
-      "chapter_count": null
-    },
-    {
-      "slug": "waiguo--langwangmeng",
-      "title": "狼王梦",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170109/1-1F1091J522G1.jpg",
-      "source_url": "https://chinesebooks.github.io/waiguo/langwangmeng/",
-      "chapter_count": null
-    },
-    {
-      "slug": "waiguo--piaolianglaoshiyuhuaixiaozi",
-      "title": "漂亮老师与坏小子",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170109/1-1F1091G345562.jpg",
-      "source_url": "https://chinesebooks.github.io/waiguo/piaolianglaoshiyuhuaixiaozi/",
-      "chapter_count": null
-    },
-    {
-      "slug": "waiguo--wodetongzhuoshibanchang",
-      "title": "我的同桌是班长",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170107/1-1F10H21H9625.jpg",
-      "source_url": "https://chinesebooks.github.io/waiguo/wodetongzhuoshibanchang/",
-      "chapter_count": null
-    },
-    {
-      "slug": "waiguo--danyitianshibugudan",
-      "title": "单翼天使不孤单",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170107/1-1F10H20Q0411.jpg",
-      "source_url": "https://chinesebooks.github.io/waiguo/danyitianshibugudan/",
-      "chapter_count": null
-    },
-    {
-      "slug": "waiguo--diqitiaoliegou",
-      "title": "第七条猎狗",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170111/1-1F111192631350.jpg",
-      "source_url": "https://chinesebooks.github.io/waiguo/diqitiaoliegou/",
-      "chapter_count": null
-    },
-    {
-      "slug": "waiguo--xueyubaoying",
-      "title": "雪域豹影",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170111/1-1F111192914M6.jpg",
-      "source_url": "https://chinesebooks.github.io/waiguo/xueyubaoying/",
-      "chapter_count": null
-    },
-    {
-      "slug": "waiguo--hongpiaodaishiwang",
-      "title": "红飘带狮王",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170111/1-1F1111933353C.jpg",
-      "source_url": "https://chinesebooks.github.io/waiguo/hongpiaodaishiwang/",
-      "chapter_count": null
-    },
-    {
-      "slug": "waiguo--hunxuechaiwang",
-      "title": "混血豺王",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170111/1-1F111193544294.jpg",
-      "source_url": "https://chinesebooks.github.io/waiguo/hunxuechaiwang/",
-      "chapter_count": null
-    },
-    {
-      "slug": "waiguo--canlanghuiman",
-      "title": "残狼灰满",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170111/1-1F111193Z4955.jpg",
-      "source_url": "https://chinesebooks.github.io/waiguo/canlanghuiman/",
-      "chapter_count": null
-    },
-    {
-      "slug": "waiguo--fengyangxuedinger",
-      "title": "疯羊血顶儿",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170111/1-1F111194205930.jpg",
-      "source_url": "https://chinesebooks.github.io/waiguo/fengyangxuedinger/",
-      "chapter_count": null
-    },
-    {
-      "slug": "waiguo--huwajinyezi",
-      "title": "虎娃金叶子",
-      "cover": "https://chinesebooks.github.io/xiandai/",
-      "source_url": "https://chinesebooks.github.io/waiguo/huwajinyezi/",
-      "chapter_count": null
-    },
-    {
-      "slug": "waiguo--yizhiliediaodezaoyu",
-      "title": "一只猎雕的遭遇",
-      "cover": "https://chinesebooks.github.io/xiandai/",
-      "source_url": "https://chinesebooks.github.io/waiguo/yizhiliediaodezaoyu/",
-      "chapter_count": null
-    },
-    {
-      "slug": "waiguo--cangjieduhun",
-      "title": "藏獒渡魂",
-      "cover": "https://chinesebooks.github.io/xiandai/",
-      "source_url": "https://chinesebooks.github.io/waiguo/cangjieduhun/",
-      "chapter_count": null
-    },
-    {
-      "slug": "waiguo--xiongshiquliulang",
-      "title": "雄狮去流浪",
-      "cover": "https://chinesebooks.github.io/xiandai/",
-      "source_url": "https://chinesebooks.github.io/waiguo/xiongshiquliulang/",
-      "chapter_count": null
-    },
-    {
-      "slug": "waiguo--yequannvhuang",
-      "title": "野犬女皇",
-      "cover": "https://chinesebooks.github.io/xiandai/",
-      "source_url": "https://chinesebooks.github.io/waiguo/yequannvhuang/",
-      "chapter_count": null
-    },
-    {
-      "slug": "ertong--shenshixi--jingquanlala",
-      "title": "警犬拉拉",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170716/1-1FG6111215113.jpg",
-      "source_url": "https://chinesebooks.github.io/ertong/shenshixi/jingquanlala/",
-      "chapter_count": null
-    },
-    {
-      "slug": "ertong--shenshixi--wangfeiheiyehou",
-      "title": "王妃黑叶猴",
-      "cover": "https://chinesebooks.github.io/xiandai/",
-      "source_url": "https://chinesebooks.github.io/ertong/shenshixi/wangfeiheiyehou/",
-      "chapter_count": null
-    },
-    {
-      "slug": "ertong--shenshixi--baoyamuxiang",
-      "title": "宝牙母象",
-      "cover": "https://chinesebooks.github.io/xiandai/",
-      "source_url": "https://chinesebooks.github.io/ertong/shenshixi/baoyamuxiang/",
-      "chapter_count": null
-    },
-    {
-      "slug": "ertong--shenshixi--zongxiongdegushi",
-      "title": "棕熊的故事",
-      "cover": "https://chinesebooks.github.io/xiandai/",
-      "source_url": "https://chinesebooks.github.io/ertong/shenshixi/zongxiongdegushi/",
-      "chapter_count": null
-    },
-    {
-      "slug": "ertong--guaiwudashi--guaiwudashi11ce",
-      "title": "怪物大师11册",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170716/1-1FG612595CI.jpg",
-      "source_url": "https://chinesebooks.github.io/ertong/guaiwudashi/guaiwudashi11ce/",
-      "chapter_count": null
-    },
-    {
-      "slug": "ertong--guaiwudashi--guaiwudashi8ce",
-      "title": "怪物大师8册",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170716/1-1FG61326032V.jpg",
-      "source_url": "https://chinesebooks.github.io/ertong/guaiwudashi/guaiwudashi8ce/",
-      "chapter_count": null
-    },
-    {
-      "slug": "ertong--guaiwudashi--guaiwudashi9ce",
-      "title": "怪物大师9册",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170716/1-1FG6131502Y5.jpg",
-      "source_url": "https://chinesebooks.github.io/ertong/guaiwudashi/guaiwudashi9ce/",
-      "chapter_count": null
-    },
-    {
-      "slug": "ertong--guaiwudashi--guaiwudashi6ce",
-      "title": "怪物大师6册",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170716/1-1FG613354J62.jpg",
-      "source_url": "https://chinesebooks.github.io/ertong/guaiwudashi/guaiwudashi6ce/",
-      "chapter_count": null
-    },
-    {
-      "slug": "ertong--shenshixi--xuebaobeige",
-      "title": "雪豹悲歌",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170716/1-1FG6135211H6.jpg",
-      "source_url": "https://chinesebooks.github.io/ertong/shenshixi/xuebaobeige/",
-      "chapter_count": null
-    },
-    {
-      "slug": "ertong--shenshixi--shenshixiduanpianxiaoshuo",
-      "title": "沈石溪短篇动物小说",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170716/1-1FG6140U9112.jpg",
-      "source_url": "https://chinesebooks.github.io/ertong/shenshixi/shenshixiduanpianxiaoshuo/",
-      "chapter_count": null
-    },
-    {
-      "slug": "ertong--shenshixi--heixiongwudaojia",
-      "title": "黑熊舞蹈家",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170716/1-1FG614155RL.jpg",
-      "source_url": "https://chinesebooks.github.io/ertong/shenshixi/heixiongwudaojia/",
-      "chapter_count": null
-    },
-    {
-      "slug": "ertong--shenshixi--laoluwanghake",
-      "title": "老鹿王哈克",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170716/1-1FG61426412Y.jpg",
-      "source_url": "https://chinesebooks.github.io/ertong/shenshixi/laoluwanghake/",
-      "chapter_count": null
-    },
-    {
-      "slug": "ertong--shenshixi--xuerandewangguan",
-      "title": "血染的王冠",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170716/1-1FG6143306201.jpg",
-      "source_url": "https://chinesebooks.github.io/ertong/shenshixi/xuerandewangguan/",
-      "chapter_count": null
-    },
-    {
-      "slug": "ertong--shenshixi--niaonu",
-      "title": "鸟奴",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170716/1-1FG6144615117.jpg",
-      "source_url": "https://chinesebooks.github.io/ertong/shenshixi/niaonu/",
-      "chapter_count": null
-    },
-    {
-      "slug": "ertong--shenshixi--muyangbao",
-      "title": "牧羊豹",
-      "cover": "https://chinesebooks.github.io/xiandai/",
-      "source_url": "https://chinesebooks.github.io/ertong/shenshixi/muyangbao/",
-      "chapter_count": null
-    },
-    {
-      "slug": "ertong--shenshixi--dayangtuoyumeizhoubao",
-      "title": "大羊驼与美洲豹",
-      "cover": "https://chinesebooks.github.io/xiandai/",
-      "source_url": "https://chinesebooks.github.io/ertong/shenshixi/dayangtuoyumeizhoubao/",
-      "chapter_count": null
-    },
-    {
-      "slug": "yangelingzuopinji--jinlingshisancha",
-      "title": "金陵十三钗",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170716/1-1FG615330IW.jpg",
-      "source_url": "https://chinesebooks.github.io/xiandai/yangelingzuopinji/jinlingshisancha/",
-      "chapter_count": null
-    },
-    {
-      "slug": "yangelingzuopinji--xiaoyiduohe",
-      "title": "小姨多鹤",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170716/1-1FG6154613454.jpg",
-      "source_url": "https://chinesebooks.github.io/xiandai/yangelingzuopinji/xiaoyiduohe/",
-      "chapter_count": null
-    },
-    {
-      "slug": "yangelingzuopinji--dijiugeguafu",
-      "title": "第九个寡妇",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170716/1-1FG615540K02.jpg",
-      "source_url": "https://chinesebooks.github.io/xiandai/yangelingzuopinji/dijiugeguafu/",
-      "chapter_count": null
-    },
-    {
-      "slug": "yangelingzuopinji--lufanyanshi",
-      "title": "陆犯焉识",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170716/1-1FG6160041951.jpg",
-      "source_url": "https://chinesebooks.github.io/xiandai/yangelingzuopinji/lufanyanshi/",
-      "chapter_count": null
-    },
-    {
-      "slug": "jiapingao--feidu",
-      "title": "废都",
-      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170108/1-1F10PS114220.jpg",
-      "source_url": "https://chinesebooks.github.io/xiandai/jiapingao/feidu/",
-      "chapter_count": null
+      "chapter_count": 41,
+      "mirrored_chapter_count": 16,
+      "complete": false
     }
   ]
 }

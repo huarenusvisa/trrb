@@ -1085,7 +1085,7 @@ export async function run() {
       counters.filtered += 1;
       // Out-of-scope API search matches are counted, not inserted into the editorial queue.
       const candidate = await existingCandidate(tweet);
-      if (candidate && !["published", "deleted", "taken_down", "duplicate"].includes(candidate.decision)) await markFilteredCandidate(candidate, tweet, qualified);
+      if (candidate && (["processing", "failed"].includes(candidate.decision) || (candidate.decision === "rejected" && candidate.ai_payload?.status === "filtered" && cleanText(candidate.decision_reason).startsWith("自动分类过滤:")))) await markFilteredCandidate(candidate, tweet, qualified);
       filteredReasons[qualified.reason] = Number(filteredReasons[qualified.reason] || 0) + 1;
       results.push({ tweetId: tweet.id, status: "filtered", reason: qualified.reason });
       continue;

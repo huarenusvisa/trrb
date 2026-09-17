@@ -7,6 +7,13 @@
     root.querySelectorAll?.(selector).forEach((link) => { link.href = href; });
   });
   apply();
+  if (!document.querySelector('script[data-library-promo]')) {
+    const script = document.createElement('script');
+    script.src = '/library-promo.js?v=20260917-1';
+    script.dataset.libraryPromo = 'true';
+    script.defer = true;
+    document.head.appendChild(script);
+  }
   if (document.body) new MutationObserver((records) => records.forEach((record) => record.addedNodes.forEach((node) => {
     if (node.nodeType === 1) apply(node);
   }))).observe(document.body, { childList: true, subtree: true });

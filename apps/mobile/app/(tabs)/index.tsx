@@ -578,6 +578,12 @@ export default function HomeScreen() {
               </View>
             ))}
 
+            <Pressable testID="home-library" accessibilityRole="link" style={styles.libraryCard} onPress={() => openTopic('https://trrb.net/library/', t('home.libraryTitle'))}>
+              <View style={styles.libraryMark}><Text style={styles.libraryMarkText}>书</Text></View>
+              <View style={styles.libraryCopy}><Text style={styles.libraryTitle}>{t('home.libraryTitle')}</Text><Text style={styles.librarySubtitle}>{t('home.librarySubtitle')}</Text></View>
+              <Text style={styles.libraryAction}>{t('home.libraryAction')} ›</Text>
+            </Pressable>
+
             <ReaderServices />
 
             <View style={styles.footerBlock}>
@@ -651,6 +657,9 @@ const styles = StyleSheet.create({
   carouselDot: { width: 7, height: 7, borderRadius: 4, backgroundColor: 'rgba(255,255,255,0.72)' },
   carouselDotActive: { width: 24, backgroundColor: '#e00000' },
   sectionCard: { backgroundColor: '#fff', borderRadius: 10, padding: 12, marginBottom: 12 },
+  libraryCard:{minHeight:108,backgroundColor:'#fff9ef',borderWidth:1,borderColor:'#eadfd2',borderRadius:10,padding:14,marginBottom:12,flexDirection:'row',alignItems:'center',gap:12},
+  libraryMark:{width:56,height:72,borderRadius:6,backgroundColor:'#9d201b',alignItems:'center',justifyContent:'center',shadowColor:'#5b211d',shadowOpacity:.16,shadowRadius:8,shadowOffset:{width:0,height:4}},libraryMarkText:{color:'#fff',fontSize:27,fontWeight:'900'},
+  libraryCopy:{flex:1},libraryTitle:{color:'#541713',fontSize:18,fontWeight:'900'},librarySubtitle:{color:'#776961',fontSize:11,lineHeight:17,marginTop:5},libraryAction:{color:'#c8211e',fontSize:12,fontWeight:'900'},
   sectionHead: { minHeight: 31, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', borderBottomWidth: 2, borderBottomColor: '#c8211e', marginBottom: 9 },
   sectionTitle: { color: '#101828', fontSize: 17, fontWeight: '900' },
   more: { color: '#667085', fontSize: 11, fontWeight: '700' },

@@ -10,7 +10,7 @@ test('keeps the App homepage on the PC mobile content structure', () => {
   const api = read('src/api/trrb.ts');
   const renderStart = home.indexOf('return (');
   const renderedHome = home.slice(renderStart);
-  const markers = ['testID="home-important-carousel"', 'testID="home-rankings"', 'testID="home-topics"', 'testID={`home-news-${key}`}', 'testID={`home-portal-${section.key}`}', '<ReaderServices />'];
+  const markers = ['testID="home-important-carousel"', 'testID="home-rankings"', 'testID="home-topics"', 'testID={`home-news-${key}`}', 'testID={`home-portal-${section.key}`}', 'testID="home-library"', '<ReaderServices />'];
   let position = -1;
   for (const marker of markers) {
     const next = renderedHome.indexOf(marker);
@@ -20,10 +20,10 @@ test('keeps the App homepage on the PC mobile content structure', () => {
   assert.match(home, /titleKey: 'home\.topicXiTitle'/);
   assert.doesNotMatch(home, /topicFinanceTitle|trrb\.net\/niulai/);
   assert.match(home, /newsSections = \[\s*\{ key: 'china-hot', titleKey: 'home\.sectionChinaHot', category: '热门头条'/);
-  for (const section of ['移民法官通过率', '移民美国', '美国判例与新规', '招聘求职', '移民社区', '订阅每日快报', '加入读者群', '投稿爆料']) {
+  for (const section of ['移民法官通过率', '移民美国', '美国判例与新规', '招聘求职', '移民社区', '唐人书库', '订阅每日快报', '加入读者群', '投稿爆料']) {
     assert.ok(i18n.includes(section), `${section} must stay in the localized App homepage content`);
   }
-  for (const marker of ['home.portalJudgesTitle', 'home.portalImmigrationTitle', 'home.portalLegalTitle', 'home.portalJobsTitle', 'home.portalCommunityTitle', 'home.readerSubscribeTitle', 'home.readerGroupTitle', 'home.readerTipsTitle']) {
+  for (const marker of ['home.portalJudgesTitle', 'home.portalImmigrationTitle', 'home.portalLegalTitle', 'home.portalJobsTitle', 'home.portalCommunityTitle', 'home.libraryTitle', 'home.readerSubscribeTitle', 'home.readerGroupTitle', 'home.readerTipsTitle']) {
     assert.ok((home + read('src/components/ReaderServices.tsx')).includes(marker), `${marker} must stay on the App homepage`);
   }
   assert.match(api, /public-home-bundle/);

@@ -64,6 +64,17 @@ requireMatch(community, /data-category=["']lawyer_review["']/, "community lawyer
 requireMatch(community, /律师点评/, "community lawyer review label was not renamed");
 forbidMatch(community, /吐槽律师/, "community still exposes the retired lawyer complaint label");
 
+const library = await text("library/index.html");
+requireMatch(library, /^\s*<!doctype html>/i, "library/index.html is not HTML");
+requireMatch(library, /name=["']robots["'][^>]*content=["'][^"']*index,follow/i, "library landing must be index,follow");
+requireMatch(library, /https:\/\/trrb\.net\/library\//i, "library canonical missing");
+requireMatch(library, /id=["']library-grid["']/, "library book grid missing");
+const libraryManifest = await text("data/library/manifest.json");
+requireMatch(libraryManifest, /"books"\s*:\s*\[/, "library catalog manifest missing");
+const librarySync = await text("scripts/sync-chinese-modern-library.mjs");
+requireMatch(librarySync, /mirrorBook/, "library sync is not recursive");
+requireMatch(librarySync, /articleContent/, "library sync cannot extract chapter text");
+
 const communityClient = await text("community/community.js");
 requireMatch(communityClient, /event\.submitter\s*\|\|\s*event\.currentTarget\.querySelector/, "community forms must support Enter-key submission");
 requireMatch(communityClient, /notice success/, "community publishing must render inline success feedback");

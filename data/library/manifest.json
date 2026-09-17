@@ -1,0 +1,1064 @@
+{
+  "source": "https://chinesebooks.github.io/xiandai/",
+  "synced_at": "2026-09-17T18:37:01.583Z",
+  "complete": false,
+  "books": [
+    {
+      "slug": "zhangxiaofengjingdiansanwenji",
+      "title": "张晓风经典散文集",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/220729/1659062685366587.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/zhangxiaofengjingdiansanwenji/",
+      "chapter_count": null
+    },
+    {
+      "slug": "jingdiansanwen",
+      "title": "经典散文",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/220729/1659060315106302.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/jingdiansanwen/",
+      "chapter_count": null
+    },
+    {
+      "slug": "baifamonvchuan",
+      "title": "白发魔女传",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/220728/1659004669857346.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/baifamonvchuan/",
+      "chapter_count": null
+    },
+    {
+      "slug": "bixuejian",
+      "title": "碧血剑",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/220728/1659003041408855.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/bixuejian/",
+      "chapter_count": null
+    },
+    {
+      "slug": "baimaxiaoxifeng",
+      "title": "白马啸西风",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/220728/1659001817617446.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/baimaxiaoxifeng/",
+      "chapter_count": null
+    },
+    {
+      "slug": "bainianlaokewen",
+      "title": "百年老课文",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/220728/1658999463104463.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/bainianlaokewen/",
+      "chapter_count": null
+    },
+    {
+      "slug": "moyanduanpianxiaoshuoji",
+      "title": "莫言短篇小说集",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/220728/1658972620141523.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/moyanduanpianxiaoshuoji/",
+      "chapter_count": null
+    },
+    {
+      "slug": "baimianhua",
+      "title": "白棉花",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/220728/1658968764317190.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/baimianhua/",
+      "chapter_count": null
+    },
+    {
+      "slug": "bianyuanxiaopin",
+      "title": "边缘小品",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/220728/1658967223849893.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/bianyuanxiaopin/",
+      "chapter_count": null
+    },
+    {
+      "slug": "bashanyeyu",
+      "title": "巴山夜雨",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/220727/1658887377917668.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/bashanyeyu/",
+      "chapter_count": null
+    },
+    {
+      "slug": "banlufuqi",
+      "title": "半路夫妻",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/220727/1658882849247601.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/banlufuqi/",
+      "chapter_count": null
+    },
+    {
+      "slug": "biandiguizi",
+      "title": "遍地鬼子",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/220727/1658882172407386.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/biandiguizi/",
+      "chapter_count": null
+    },
+    {
+      "slug": "baimenliu",
+      "title": "白门柳",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/220727/1658881313287821.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/baimenliu/",
+      "chapter_count": null
+    },
+    {
+      "slug": "buyezhihou",
+      "title": "不夜之侯",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/220726/1658829263994563.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/buyezhihou/",
+      "chapter_count": null
+    },
+    {
+      "slug": "baihu",
+      "title": "白狐",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/220726/1658828154695303.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/baihu/",
+      "chapter_count": null
+    },
+    {
+      "slug": "sushiqiren",
+      "title": "俗世奇人",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/220726/1658797421748972.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/sushiqiren/",
+      "chapter_count": null
+    },
+    {
+      "slug": "a",
+      "title": "啊",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/220726/1658796515296544.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/a/",
+      "chapter_count": null
+    },
+    {
+      "slug": "ansuan",
+      "title": "暗算",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/220726/1658794916510271.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/ansuan/",
+      "chapter_count": null
+    },
+    {
+      "slug": "aiqingdesanbuqu",
+      "title": "爱情的三部曲",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/220725/1658716000524154.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/aiqingdesanbuqu/",
+      "chapter_count": null
+    },
+    {
+      "slug": "qiwang",
+      "title": "棋王",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/220720/1658324517191389.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/qiwang/",
+      "chapter_count": null
+    },
+    {
+      "slug": "tanmeishujian",
+      "title": "谈美书简",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/220720/1658318162935487.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/tanmeishujian/",
+      "chapter_count": null
+    },
+    {
+      "slug": "bailuyuan",
+      "title": "白鹿原",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/220720/1658306576830733.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/bailuyuan/",
+      "chapter_count": null
+    },
+    {
+      "slug": "biancheng",
+      "title": "边城",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/220720/1658302180225336.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/biancheng/",
+      "chapter_count": null
+    },
+    {
+      "slug": "huaixiaohai",
+      "title": "坏小孩",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/220718/1658114419473456.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/huaixiaohai/",
+      "chapter_count": null
+    },
+    {
+      "slug": "ouyouzaji",
+      "title": "欧游杂记",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/220717/1658047326808374.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/ouyouzaji/",
+      "chapter_count": null
+    },
+    {
+      "slug": "chunfengchenzuidewanshang",
+      "title": "春风沉醉的晚上",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/220717/1658047150622961.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/chunfengchenzuidewanshang/",
+      "chapter_count": null
+    },
+    {
+      "slug": "zuoshoudaoyingyoushounianhua",
+      "title": "左手倒影右手年华",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/220711/1657494130475697.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/zuoshoudaoyingyoushounianhua/",
+      "chapter_count": null
+    },
+    {
+      "slug": "zhongguozhexuejianshi",
+      "title": "中国哲学简史",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/220428/1651112695658356.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/zhongguozhexuejianshi/",
+      "chapter_count": null
+    },
+    {
+      "slug": "zhushenghaoqingshuquanji",
+      "title": "朱生豪情书全集",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/220427/1651066622666716.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/zhushenghaoqingshuquanji/",
+      "chapter_count": null
+    },
+    {
+      "slug": "jinshengjinshi",
+      "title": "今生今世",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/220425/1650891577798639.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/jinshengjinshi/",
+      "chapter_count": null
+    },
+    {
+      "slug": "zhongguozhexueshidagang",
+      "title": "中国哲学史大纲",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/220425/1650871764635612.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/zhongguozhexueshidagang/",
+      "chapter_count": null
+    },
+    {
+      "slug": "changshiji",
+      "title": "尝试集",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/220425/1650870181875777.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/changshiji/",
+      "chapter_count": null
+    },
+    {
+      "slug": "xiaoyingxiongyulai",
+      "title": "小英雄雨来",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/220331/1648691433380550.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/xiaoyingxiongyulai/",
+      "chapter_count": null
+    },
+    {
+      "slug": "gududexiaobangxie",
+      "title": "孤独的小螃蟹",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/220128/1643359859562408.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/gududexiaobangxie/",
+      "chapter_count": null
+    },
+    {
+      "slug": "kongshanlingyu",
+      "title": "空山灵雨",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/210911/1631326597520898.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/kongshanlingyu/",
+      "chapter_count": null
+    },
+    {
+      "slug": "linhuiyinjianzhuwenji",
+      "title": "林徽因建筑文集",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/210911/1631324849140617.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/linhuiyinjianzhuwenji/",
+      "chapter_count": null
+    },
+    {
+      "slug": "zhouzuorensanwenji",
+      "title": "周作人散文集",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/201121/1-201121103635N3.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/zhouzuorensanwenji/",
+      "chapter_count": null
+    },
+    {
+      "slug": "luxunzuopinji",
+      "title": "鲁迅作品集",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/201029/1-201029124450A3.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/luxunzuopinji/",
+      "chapter_count": null
+    },
+    {
+      "slug": "xuzhimosanwen",
+      "title": "徐志摩散文",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/201028/1-20102R155224X.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/xuzhimosanwen/",
+      "chapter_count": null
+    },
+    {
+      "slug": "xuzhimodeshi",
+      "title": "徐志摩的诗",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/201028/1-20102R01T25a.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/xuzhimodeshi/",
+      "chapter_count": null
+    },
+    {
+      "slug": "yeshenchen",
+      "title": "夜深沉",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/201028/1-20102Q20342Z8.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/yeshenchen/",
+      "chapter_count": null
+    },
+    {
+      "slug": "meirenen",
+      "title": "美人恩",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/201028/1-20102Q15K2V6.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/meirenen/",
+      "chapter_count": null
+    },
+    {
+      "slug": "tixiaoyinyuan",
+      "title": "啼笑因缘",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/201028/1-20102Q14PC27.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/tixiaoyinyuan/",
+      "chapter_count": null
+    },
+    {
+      "slug": "chunmingwaishi",
+      "title": "春明外史",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/201028/1-20102Q13439532.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/chunmingwaishi/",
+      "chapter_count": null
+    },
+    {
+      "slug": "laoshezuopinji",
+      "title": "老舍作品集",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/201026/1-201026132015c4.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/laoshezuopinji/",
+      "chapter_count": null
+    },
+    {
+      "slug": "pingjiangbuxiaoshengzuopinji",
+      "title": "平江不肖生作品集",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/201020/1-2010201624402S.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/pingjiangbuxiaoshengzuopinji/",
+      "chapter_count": null
+    },
+    {
+      "slug": "beiyannanfei",
+      "title": "北雁南飞",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/201028/1-20102Q12912U5.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/beiyannanfei/",
+      "chapter_count": null
+    },
+    {
+      "slug": "tixiaoyinyuanxuji",
+      "title": "啼笑因缘续集",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/201028/1-20102Q1201a56.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/tixiaoyinyuanxuji/",
+      "chapter_count": null
+    },
+    {
+      "slug": "jinfenshijia",
+      "title": "金粉世家",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/201028/1-20102Q1105Ia.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/jinfenshijia/",
+      "chapter_count": null
+    },
+    {
+      "slug": "qijianshisanxia",
+      "title": "七剑十三侠",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/201027/1-20102G33400H5.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/qijianshisanxia/",
+      "chapter_count": null
+    },
+    {
+      "slug": "weixingxiaoshuo",
+      "title": "微型小说",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/201026/1-20102612423Na.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/weixingxiaoshuo/",
+      "chapter_count": null
+    },
+    {
+      "slug": "jingdianxiaoxiaoshuo",
+      "title": "经典小小说",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/201025/1-201025111SBS.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/jingdianxiaoxiaoshuo/",
+      "chapter_count": null
+    },
+    {
+      "slug": "qingchengshijiuxia",
+      "title": "青城十九侠",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/201020/1-201020210034964.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/qingchengshijiuxia/",
+      "chapter_count": null
+    },
+    {
+      "slug": "shushanjianxiachuan",
+      "title": "蜀山剑侠传",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/201020/1-201020103I0410.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/shushanjianxiachuan/",
+      "chapter_count": null
+    },
+    {
+      "slug": "mabole",
+      "title": "马伯乐",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/201019/1-201019150625P7.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/mabole/",
+      "chapter_count": null
+    },
+    {
+      "slug": "xiaohongsanwenji",
+      "title": "萧红散文集",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/201019/1-2010191I51I50.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/xiaohongsanwenji/",
+      "chapter_count": null
+    },
+    {
+      "slug": "xiaochengsanyue",
+      "title": "小城三月",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/201019/1-201019125S22M.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/xiaochengsanyue/",
+      "chapter_count": null
+    },
+    {
+      "slug": "shengsichang",
+      "title": "生死场",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/201019/1-201019124234957.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/shengsichang/",
+      "chapter_count": null
+    },
+    {
+      "slug": "hulanhechuan",
+      "title": "呼兰河传",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/201019/1-20101Z95214458.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/hulanhechuan/",
+      "chapter_count": null
+    },
+    {
+      "slug": "lizhi--30suiqianbiejiehun",
+      "title": "30岁前别结婚",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170719/1-1FG91PK5595.jpg",
+      "source_url": "https://chinesebooks.github.io/lizhi/30suiqianbiejiehun/",
+      "chapter_count": null
+    },
+    {
+      "slug": "lizhi--hafunvhailiuyiting",
+      "title": "哈佛女孩刘亦婷",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170719/1-1FG91P32C62.jpg",
+      "source_url": "https://chinesebooks.github.io/lizhi/hafunvhailiuyiting/",
+      "chapter_count": null
+    },
+    {
+      "slug": "lizhi--humazhange",
+      "title": "虎妈战歌",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170719/1-1FG91KS9114.jpg",
+      "source_url": "https://chinesebooks.github.io/lizhi/humazhange/",
+      "chapter_count": null
+    },
+    {
+      "slug": "lizhi--xiaogouqianqian",
+      "title": "小狗钱钱",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170719/1-1FG91K229492.jpg",
+      "source_url": "https://chinesebooks.github.io/lizhi/xiaogouqianqian/",
+      "chapter_count": null
+    },
+    {
+      "slug": "moyan--yuhuazuopinji--zaixiyuzhonghuhan",
+      "title": "在细雨中呼喊",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170719/1-1FG91J644511.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/moyan/yuhuazuopinji/zaixiyuzhonghuhan/",
+      "chapter_count": null
+    },
+    {
+      "slug": "moyan--yuhuazuopinji--xusanguanmaixueji",
+      "title": "许三观卖血记",
+      "cover": "https://chinesebooks.github.io/xiandai/",
+      "source_url": "https://chinesebooks.github.io/xiandai/moyan/yuhuazuopinji/xusanguanmaixueji/",
+      "chapter_count": null
+    },
+    {
+      "slug": "liucixinzuopinji--santi3sishenyongsheng",
+      "title": "三体3死神永生",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170719/1-1FG91IF5Q4.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/liucixinzuopinji/santi3sishenyongsheng/",
+      "chapter_count": null
+    },
+    {
+      "slug": "liucixinzuopinji--qiuzhuangshandian",
+      "title": "球状闪电",
+      "cover": "https://chinesebooks.github.io/xiandai/",
+      "source_url": "https://chinesebooks.github.io/xiandai/liucixinzuopinji/qiuzhuangshandian/",
+      "chapter_count": null
+    },
+    {
+      "slug": "liucixinzuopinji--liulangdiqiu",
+      "title": "流浪地球",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170719/1-1FG91HR3320.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/liucixinzuopinji/liulangdiqiu/",
+      "chapter_count": null
+    },
+    {
+      "slug": "liucixinzuopinji--chaoxinxingjiyuan",
+      "title": "超新星纪元",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170719/1-1FG91H23Y02.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/liucixinzuopinji/chaoxinxingjiyuan/",
+      "chapter_count": null
+    },
+    {
+      "slug": "moyan--yuhuazuopinji--xiongdi",
+      "title": "兄弟",
+      "cover": "https://chinesebooks.github.io/xiandai/",
+      "source_url": "https://chinesebooks.github.io/xiandai/moyan/yuhuazuopinji/xiongdi/",
+      "chapter_count": null
+    },
+    {
+      "slug": "moyan--yuhuazuopinji--huozhou",
+      "title": "活着",
+      "cover": "https://chinesebooks.github.io/xiandai/",
+      "source_url": "https://chinesebooks.github.io/xiandai/moyan/yuhuazuopinji/huozhou/",
+      "chapter_count": null
+    },
+    {
+      "slug": "moyan--hongshulin",
+      "title": "红树林",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170719/1-1FG91A522524.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/moyan/hongshulin/",
+      "chapter_count": null
+    },
+    {
+      "slug": "ertong--guaiwudashi--guaiwudashi12ce",
+      "title": "怪物大师12",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170719/1-1FG9164U0920.jpg",
+      "source_url": "https://chinesebooks.github.io/ertong/guaiwudashi/guaiwudashi12ce/",
+      "chapter_count": null
+    },
+    {
+      "slug": "ertong--guaiwudashi--guaiwudashi10ce",
+      "title": "怪物大师10册",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170719/1-1FG9164300607.jpg",
+      "source_url": "https://chinesebooks.github.io/ertong/guaiwudashi/guaiwudashi10ce/",
+      "chapter_count": null
+    },
+    {
+      "slug": "ertong--guaiwudashi--guaiwudashi7ce",
+      "title": "怪物大师7册",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170719/1-1FG9163555P5.jpg",
+      "source_url": "https://chinesebooks.github.io/ertong/guaiwudashi/guaiwudashi7ce/",
+      "chapter_count": null
+    },
+    {
+      "slug": "ertong--guaiwudashi--guaiwudashi5ce",
+      "title": "怪物大师5册",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170719/1-1FG9162959542.jpg",
+      "source_url": "https://chinesebooks.github.io/ertong/guaiwudashi/guaiwudashi5ce/",
+      "chapter_count": null
+    },
+    {
+      "slug": "ertong--guaiwudashi--guaiwudashi4ce",
+      "title": "怪物大师4册",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170719/1-1FG916253DK.jpg",
+      "source_url": "https://chinesebooks.github.io/ertong/guaiwudashi/guaiwudashi4ce/",
+      "chapter_count": null
+    },
+    {
+      "slug": "ertong--guaiwudashi--guaiwudashi3ce",
+      "title": "怪物大师3册",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170719/1-1FG9162139245.jpg",
+      "source_url": "https://chinesebooks.github.io/ertong/guaiwudashi/guaiwudashi3ce/",
+      "chapter_count": null
+    },
+    {
+      "slug": "ertong--guaiwudashi--guaiwudashi1ce",
+      "title": "怪物大师1册",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170719/1-1FG9161353R3.jpg",
+      "source_url": "https://chinesebooks.github.io/ertong/guaiwudashi/guaiwudashi1ce/",
+      "chapter_count": null
+    },
+    {
+      "slug": "ertong--guaiwudashi--guaiwudashi2ce",
+      "title": "怪物大师2",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170719/1-1FG9161J5O9.jpg",
+      "source_url": "https://chinesebooks.github.io/ertong/guaiwudashi/guaiwudashi2ce/",
+      "chapter_count": null
+    },
+    {
+      "slug": "ertong--shenshixi--xiangwanglei",
+      "title": "象王泪",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170719/1-1FG9160530N7.jpg",
+      "source_url": "https://chinesebooks.github.io/ertong/shenshixi/xiangwanglei/",
+      "chapter_count": null
+    },
+    {
+      "slug": "ertong--shenshixi--baixiangjiazu",
+      "title": "白象家族",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170719/1-1FG9160119295.jpg",
+      "source_url": "https://chinesebooks.github.io/ertong/shenshixi/baixiangjiazu/",
+      "chapter_count": null
+    },
+    {
+      "slug": "hanhan--one",
+      "title": "一个",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170718/1-1FGQH0432F.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/hanhan/one/",
+      "chapter_count": null
+    },
+    {
+      "slug": "hanhan--sanzhongmen",
+      "title": "三重门",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170718/1-1FGQGA0607.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/hanhan/sanzhongmen/",
+      "chapter_count": null
+    },
+    {
+      "slug": "hanhan--changanluan",
+      "title": "长安乱",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170718/1-1FGQF9462Q.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/hanhan/changanluan/",
+      "chapter_count": null
+    },
+    {
+      "slug": "hanhan--1988--woxianghezhegeshijietantan",
+      "title": "1988我想和这个世界谈谈",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170718/1-1FGQF5063P.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/hanhan/1988_woxianghezhegeshijietantan/",
+      "chapter_count": null
+    },
+    {
+      "slug": "ertong--wumeizhen--wobanliuxingxiexiaoshuo",
+      "title": "我班流行写小说",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170718/1-1FGQ30G25L.jpg",
+      "source_url": "https://chinesebooks.github.io/ertong/wumeizhen/wobanliuxingxiexiaoshuo/",
+      "chapter_count": null
+    },
+    {
+      "slug": "ertong--wumeizhen--qingwawangzifubanchang",
+      "title": "青蛙王子副班长",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170718/1-1FGQ25946207.jpg",
+      "source_url": "https://chinesebooks.github.io/ertong/wumeizhen/qingwawangzifubanchang/",
+      "chapter_count": null
+    },
+    {
+      "slug": "ertong--wumeizhen--tongzhuoyuanjia",
+      "title": "同桌冤家",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170718/1-1FGQ241042V.jpg",
+      "source_url": "https://chinesebooks.github.io/ertong/wumeizhen/tongzhuoyuanjia/",
+      "chapter_count": null
+    },
+    {
+      "slug": "jinyong--tianlongbabu",
+      "title": "天龙八部",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170717/1-1FGG005035Q.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/jinyong/tianlongbabu/",
+      "chapter_count": null
+    },
+    {
+      "slug": "jinyong--shediaoyingxiongchuan",
+      "title": "射雕英雄传",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170717/1-1FGF95500b9.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/jinyong/shediaoyingxiongchuan/",
+      "chapter_count": null
+    },
+    {
+      "slug": "jinyong--shendiaoxialv",
+      "title": "神雕侠侣",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170717/1-1FGF942532U.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/jinyong/shendiaoxialv/",
+      "chapter_count": null
+    },
+    {
+      "slug": "jinyong--xiakexing",
+      "title": "侠客行",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170717/1-1FGF92RK60.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/jinyong/xiakexing/",
+      "chapter_count": null
+    },
+    {
+      "slug": "renwuchuanji--yaomingzichuan",
+      "title": "姚明自传",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170716/1-1FG619120W52.jpg",
+      "source_url": "https://chinesebooks.github.io/renwuchuanji/yaomingzichuan/",
+      "chapter_count": null
+    },
+    {
+      "slug": "renwuchuanji--jinxingzichuan",
+      "title": "半梦",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170716/1-1FG61Z456307.jpg",
+      "source_url": "https://chinesebooks.github.io/renwuchuanji/jinxingzichuan/",
+      "chapter_count": null
+    },
+    {
+      "slug": "renwuchuanji--shengmingdebukesiyi",
+      "title": "生命的不可思议",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170716/1-1FG61UT0124.jpg",
+      "source_url": "https://chinesebooks.github.io/renwuchuanji/shengmingdebukesiyi/",
+      "chapter_count": null
+    },
+    {
+      "slug": "renwuchuanji--qiaobusichuan",
+      "title": "乔布斯传",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170716/1-1FG61U12N29.jpg",
+      "source_url": "https://chinesebooks.github.io/renwuchuanji/qiaobusichuan/",
+      "chapter_count": null
+    },
+    {
+      "slug": "renwuchuanji--wuzetianwaichuan",
+      "title": "武则天外传",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170716/1-1FG61T241543.jpg",
+      "source_url": "https://chinesebooks.github.io/renwuchuanji/wuzetianwaichuan/",
+      "chapter_count": null
+    },
+    {
+      "slug": "annibaobei--bianhua",
+      "title": "彼岸花",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170716/1-1FG61R220X5.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/annibaobei/bianhua/",
+      "chapter_count": null
+    },
+    {
+      "slug": "bailuomei--bailuomeisanwenji",
+      "title": "白落梅散文集",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170716/1-1FG61Q4261Y.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/bailuomei/bailuomeisanwenji/",
+      "chapter_count": null
+    },
+    {
+      "slug": "bailuomei--xiangsimoxiangfu",
+      "title": "相思莫相负",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170716/1-1FG61P91U06.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/bailuomei/xiangsimoxiangfu/",
+      "chapter_count": null
+    },
+    {
+      "slug": "bailuomei--suiyuejinghaoxianshianwen",
+      "title": "岁月静好现世安稳",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170716/1-1FG61P3501Q.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/bailuomei/suiyuejinghaoxianshianwen/",
+      "chapter_count": null
+    },
+    {
+      "slug": "bailuomei--henbuxiangfengweitishi",
+      "title": "恨不相逢未剃时",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170716/1-1FG61KU9203.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/bailuomei/henbuxiangfengweitishi/",
+      "chapter_count": null
+    },
+    {
+      "slug": "bailuomei--xiangfengruchujian--huishoushiyis",
+      "title": "相逢如初见 回首是一生",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170716/1-1FG61K405U5.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/bailuomei/xiangfengruchujian_huishoushiyis/",
+      "chapter_count": null
+    },
+    {
+      "slug": "yangelingzuopinji--fusang",
+      "title": "扶桑",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170716/1-1FG61JJRE.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/yangelingzuopinji/fusang/",
+      "chapter_count": null
+    },
+    {
+      "slug": "jiapingao--daideng",
+      "title": "带灯",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170716/1-1FG61J114L1.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/jiapingao/daideng/",
+      "chapter_count": null
+    },
+    {
+      "slug": "jiapingao--gaoxing",
+      "title": "高兴",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170716/1-1FG61I61GQ.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/jiapingao/gaoxing/",
+      "chapter_count": null
+    },
+    {
+      "slug": "jiapingao--feishi",
+      "title": "匪事",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170716/1-1FG61I034161.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/jiapingao/feishi/",
+      "chapter_count": null
+    },
+    {
+      "slug": "jiapingao--gaolaozhuang",
+      "title": "高老庄",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170716/1-1FG61H406337.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/jiapingao/gaolaozhuang/",
+      "chapter_count": null
+    },
+    {
+      "slug": "jiapingao--fuzao",
+      "title": "浮躁",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170716/1-1FG61G42N03.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/jiapingao/fuzao/",
+      "chapter_count": null
+    },
+    {
+      "slug": "jiapingao--gulu",
+      "title": "古炉",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170716/1-1FG6164914K6.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/jiapingao/gulu/",
+      "chapter_count": null
+    },
+    {
+      "slug": "jiapingao--qinqiang",
+      "title": "秦腔",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170716/1-1FG6164329327.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/jiapingao/qinqiang/",
+      "chapter_count": null
+    },
+    {
+      "slug": "yangelingzuopinji--biyege",
+      "title": "毕业歌",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170716/1-1FG6162HB38.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/yangelingzuopinji/biyege/",
+      "chapter_count": null
+    },
+    {
+      "slug": "yangelingzuopinji--yangelingsanwen",
+      "title": "严歌苓散文",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170716/1-1FG6161914131.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/yangelingzuopinji/yangelingsanwen/",
+      "chapter_count": null
+    },
+    {
+      "slug": "waiguo--chalijiushiquanji",
+      "title": "查理九世全集",
+      "cover": "https://chinesebooks.github.io/xiandai/",
+      "source_url": "https://chinesebooks.github.io/waiguo/chalijiushiquanji/",
+      "chapter_count": null
+    },
+    {
+      "slug": "waiguo--langwangmeng",
+      "title": "狼王梦",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170109/1-1F1091J522G1.jpg",
+      "source_url": "https://chinesebooks.github.io/waiguo/langwangmeng/",
+      "chapter_count": null
+    },
+    {
+      "slug": "waiguo--piaolianglaoshiyuhuaixiaozi",
+      "title": "漂亮老师与坏小子",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170109/1-1F1091G345562.jpg",
+      "source_url": "https://chinesebooks.github.io/waiguo/piaolianglaoshiyuhuaixiaozi/",
+      "chapter_count": null
+    },
+    {
+      "slug": "waiguo--wodetongzhuoshibanchang",
+      "title": "我的同桌是班长",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170107/1-1F10H21H9625.jpg",
+      "source_url": "https://chinesebooks.github.io/waiguo/wodetongzhuoshibanchang/",
+      "chapter_count": null
+    },
+    {
+      "slug": "waiguo--danyitianshibugudan",
+      "title": "单翼天使不孤单",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170107/1-1F10H20Q0411.jpg",
+      "source_url": "https://chinesebooks.github.io/waiguo/danyitianshibugudan/",
+      "chapter_count": null
+    },
+    {
+      "slug": "waiguo--diqitiaoliegou",
+      "title": "第七条猎狗",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170111/1-1F111192631350.jpg",
+      "source_url": "https://chinesebooks.github.io/waiguo/diqitiaoliegou/",
+      "chapter_count": null
+    },
+    {
+      "slug": "waiguo--xueyubaoying",
+      "title": "雪域豹影",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170111/1-1F111192914M6.jpg",
+      "source_url": "https://chinesebooks.github.io/waiguo/xueyubaoying/",
+      "chapter_count": null
+    },
+    {
+      "slug": "waiguo--hongpiaodaishiwang",
+      "title": "红飘带狮王",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170111/1-1F1111933353C.jpg",
+      "source_url": "https://chinesebooks.github.io/waiguo/hongpiaodaishiwang/",
+      "chapter_count": null
+    },
+    {
+      "slug": "waiguo--hunxuechaiwang",
+      "title": "混血豺王",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170111/1-1F111193544294.jpg",
+      "source_url": "https://chinesebooks.github.io/waiguo/hunxuechaiwang/",
+      "chapter_count": null
+    },
+    {
+      "slug": "waiguo--canlanghuiman",
+      "title": "残狼灰满",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170111/1-1F111193Z4955.jpg",
+      "source_url": "https://chinesebooks.github.io/waiguo/canlanghuiman/",
+      "chapter_count": null
+    },
+    {
+      "slug": "waiguo--fengyangxuedinger",
+      "title": "疯羊血顶儿",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170111/1-1F111194205930.jpg",
+      "source_url": "https://chinesebooks.github.io/waiguo/fengyangxuedinger/",
+      "chapter_count": null
+    },
+    {
+      "slug": "waiguo--huwajinyezi",
+      "title": "虎娃金叶子",
+      "cover": "https://chinesebooks.github.io/xiandai/",
+      "source_url": "https://chinesebooks.github.io/waiguo/huwajinyezi/",
+      "chapter_count": null
+    },
+    {
+      "slug": "waiguo--yizhiliediaodezaoyu",
+      "title": "一只猎雕的遭遇",
+      "cover": "https://chinesebooks.github.io/xiandai/",
+      "source_url": "https://chinesebooks.github.io/waiguo/yizhiliediaodezaoyu/",
+      "chapter_count": null
+    },
+    {
+      "slug": "waiguo--cangjieduhun",
+      "title": "藏獒渡魂",
+      "cover": "https://chinesebooks.github.io/xiandai/",
+      "source_url": "https://chinesebooks.github.io/waiguo/cangjieduhun/",
+      "chapter_count": null
+    },
+    {
+      "slug": "waiguo--xiongshiquliulang",
+      "title": "雄狮去流浪",
+      "cover": "https://chinesebooks.github.io/xiandai/",
+      "source_url": "https://chinesebooks.github.io/waiguo/xiongshiquliulang/",
+      "chapter_count": null
+    },
+    {
+      "slug": "waiguo--yequannvhuang",
+      "title": "野犬女皇",
+      "cover": "https://chinesebooks.github.io/xiandai/",
+      "source_url": "https://chinesebooks.github.io/waiguo/yequannvhuang/",
+      "chapter_count": null
+    },
+    {
+      "slug": "ertong--shenshixi--jingquanlala",
+      "title": "警犬拉拉",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170716/1-1FG6111215113.jpg",
+      "source_url": "https://chinesebooks.github.io/ertong/shenshixi/jingquanlala/",
+      "chapter_count": null
+    },
+    {
+      "slug": "ertong--shenshixi--wangfeiheiyehou",
+      "title": "王妃黑叶猴",
+      "cover": "https://chinesebooks.github.io/xiandai/",
+      "source_url": "https://chinesebooks.github.io/ertong/shenshixi/wangfeiheiyehou/",
+      "chapter_count": null
+    },
+    {
+      "slug": "ertong--shenshixi--baoyamuxiang",
+      "title": "宝牙母象",
+      "cover": "https://chinesebooks.github.io/xiandai/",
+      "source_url": "https://chinesebooks.github.io/ertong/shenshixi/baoyamuxiang/",
+      "chapter_count": null
+    },
+    {
+      "slug": "ertong--shenshixi--zongxiongdegushi",
+      "title": "棕熊的故事",
+      "cover": "https://chinesebooks.github.io/xiandai/",
+      "source_url": "https://chinesebooks.github.io/ertong/shenshixi/zongxiongdegushi/",
+      "chapter_count": null
+    },
+    {
+      "slug": "ertong--guaiwudashi--guaiwudashi11ce",
+      "title": "怪物大师11册",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170716/1-1FG612595CI.jpg",
+      "source_url": "https://chinesebooks.github.io/ertong/guaiwudashi/guaiwudashi11ce/",
+      "chapter_count": null
+    },
+    {
+      "slug": "ertong--guaiwudashi--guaiwudashi8ce",
+      "title": "怪物大师8册",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170716/1-1FG61326032V.jpg",
+      "source_url": "https://chinesebooks.github.io/ertong/guaiwudashi/guaiwudashi8ce/",
+      "chapter_count": null
+    },
+    {
+      "slug": "ertong--guaiwudashi--guaiwudashi9ce",
+      "title": "怪物大师9册",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170716/1-1FG6131502Y5.jpg",
+      "source_url": "https://chinesebooks.github.io/ertong/guaiwudashi/guaiwudashi9ce/",
+      "chapter_count": null
+    },
+    {
+      "slug": "ertong--guaiwudashi--guaiwudashi6ce",
+      "title": "怪物大师6册",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170716/1-1FG613354J62.jpg",
+      "source_url": "https://chinesebooks.github.io/ertong/guaiwudashi/guaiwudashi6ce/",
+      "chapter_count": null
+    },
+    {
+      "slug": "ertong--shenshixi--xuebaobeige",
+      "title": "雪豹悲歌",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170716/1-1FG6135211H6.jpg",
+      "source_url": "https://chinesebooks.github.io/ertong/shenshixi/xuebaobeige/",
+      "chapter_count": null
+    },
+    {
+      "slug": "ertong--shenshixi--shenshixiduanpianxiaoshuo",
+      "title": "沈石溪短篇动物小说",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170716/1-1FG6140U9112.jpg",
+      "source_url": "https://chinesebooks.github.io/ertong/shenshixi/shenshixiduanpianxiaoshuo/",
+      "chapter_count": null
+    },
+    {
+      "slug": "ertong--shenshixi--heixiongwudaojia",
+      "title": "黑熊舞蹈家",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170716/1-1FG614155RL.jpg",
+      "source_url": "https://chinesebooks.github.io/ertong/shenshixi/heixiongwudaojia/",
+      "chapter_count": null
+    },
+    {
+      "slug": "ertong--shenshixi--laoluwanghake",
+      "title": "老鹿王哈克",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170716/1-1FG61426412Y.jpg",
+      "source_url": "https://chinesebooks.github.io/ertong/shenshixi/laoluwanghake/",
+      "chapter_count": null
+    },
+    {
+      "slug": "ertong--shenshixi--xuerandewangguan",
+      "title": "血染的王冠",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170716/1-1FG6143306201.jpg",
+      "source_url": "https://chinesebooks.github.io/ertong/shenshixi/xuerandewangguan/",
+      "chapter_count": null
+    },
+    {
+      "slug": "ertong--shenshixi--niaonu",
+      "title": "鸟奴",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170716/1-1FG6144615117.jpg",
+      "source_url": "https://chinesebooks.github.io/ertong/shenshixi/niaonu/",
+      "chapter_count": null
+    },
+    {
+      "slug": "ertong--shenshixi--muyangbao",
+      "title": "牧羊豹",
+      "cover": "https://chinesebooks.github.io/xiandai/",
+      "source_url": "https://chinesebooks.github.io/ertong/shenshixi/muyangbao/",
+      "chapter_count": null
+    },
+    {
+      "slug": "ertong--shenshixi--dayangtuoyumeizhoubao",
+      "title": "大羊驼与美洲豹",
+      "cover": "https://chinesebooks.github.io/xiandai/",
+      "source_url": "https://chinesebooks.github.io/ertong/shenshixi/dayangtuoyumeizhoubao/",
+      "chapter_count": null
+    },
+    {
+      "slug": "yangelingzuopinji--jinlingshisancha",
+      "title": "金陵十三钗",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170716/1-1FG615330IW.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/yangelingzuopinji/jinlingshisancha/",
+      "chapter_count": null
+    },
+    {
+      "slug": "yangelingzuopinji--xiaoyiduohe",
+      "title": "小姨多鹤",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170716/1-1FG6154613454.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/yangelingzuopinji/xiaoyiduohe/",
+      "chapter_count": null
+    },
+    {
+      "slug": "yangelingzuopinji--dijiugeguafu",
+      "title": "第九个寡妇",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170716/1-1FG615540K02.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/yangelingzuopinji/dijiugeguafu/",
+      "chapter_count": null
+    },
+    {
+      "slug": "yangelingzuopinji--lufanyanshi",
+      "title": "陆犯焉识",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170716/1-1FG6160041951.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/yangelingzuopinji/lufanyanshi/",
+      "chapter_count": null
+    },
+    {
+      "slug": "jiapingao--feidu",
+      "title": "废都",
+      "cover": "https://chinesebooks.github.io/xiandai/uploads/img/170108/1-1F10PS114220.jpg",
+      "source_url": "https://chinesebooks.github.io/xiandai/jiapingao/feidu/",
+      "chapter_count": null
+    }
+  ]
+}

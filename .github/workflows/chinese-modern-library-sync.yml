@@ -1,0 +1,45 @@
+name: 唐人书库 · 中国现代文学全量同步
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "27 7 * * 1"
+  push:
+    branches: [main]
+    paths:
+      - "scripts/sync-chinese-modern-library.mjs"
+      - ".github/workflows/chinese-modern-library-sync.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: chinese-modern-library-sync
+  cancel-in-progress: false
+
+jobs:
+  mirror:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 240
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Mirror every listed book and chapter
+        env:
+          LIBRARY_SYNC_CONCURRENCY: "12"
+        run: node scripts/sync-chinese-modern-library.mjs
+      - name: Commit synchronized library data
+        shell: bash
+        run: |
+          if git diff --quiet -- data/library assets/library-covers; then
+            echo "No library changes."
+            exit 0
+          fi
+          git config user.name "trrb-library-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/library assets/library-covers
+          git commit -m "content: sync complete Chinese modern library"
+          git pull --rebase origin main
+          git push origin HEAD:main

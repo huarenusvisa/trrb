@@ -289,6 +289,18 @@ test("后台显示中文处理原因，审核草稿不能通过恢复按钮直�
   assert.match(ingest, /tweetsById/);
 });
 
+test("中国新闻内容池按ICE标准默认隐藏已发布和其他完成记录", () => {
+  const html = fs.readFileSync(new URL("../admin/index.html", import.meta.url), "utf8");
+  const ui = fs.readFileSync(new URL("../admin/content-center.js", import.meta.url), "utf8");
+  const api = fs.readFileSync(new URL("../netlify/functions/china-hot-pool-admin.js", import.meta.url), "utf8");
+  assert.match(html, /新闻发布成功后自动从主列表隐藏/);
+  assert.match(html, /查看处理历史/);
+  assert.match(api, /decision: "in\.\(processing,pending_review,ready_for_review,review_required,failed,taken_down\)"/);
+  assert.match(api, /input\.include_history \? "500" : "200"/);
+  assert.match(ui, /new Set\(\["published", "rejected", "deleted", "duplicate", "legacy_archived"\]\)/);
+  assert.match(ui, /已发布和其他已完成记录已自动隐藏/);
+});
+
 const socialExamples = [
   { id: 'work-exit', text: '“亲手砸掉铁饭碗 亲手解开铁镣铐”\n9月9日，一位网友因为工作单位限制出境、无法自由出国旅游，决定辞职。但由于所在单位规定5年内不能主动辞职，只能通过“被辞退”的方式离开，她只好和领导商量如何走辞退流程。在得到领导理解后，她开始旷工。' },
   { id: 'school-rails', text: '“真的像鸟笼”\n9月11日，一位学生分享自己高中学校的教学楼，从楼梯间向上全是密密麻麻的栅栏。视频迅速引发其他学校学生分享和讨论，网友评论道这是哪里的监狱。' }

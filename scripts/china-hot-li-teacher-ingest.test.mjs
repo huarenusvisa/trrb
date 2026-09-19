@@ -270,35 +270,43 @@ test("中国热门头条打开开关立即采集，并由每小时唤醒器补�
   assert.doesNotMatch(workflow, /-\s+["']?scripts\/\*\*/);
 });
 
-test("后台显示中文处理原因，审核草稿不能通过恢复按钮直接发布", () => {
+test("后台只保留真正需要人工审核的稿件，不可用稿不提供反复加工入口", () => {
   const ingest = fs.readFileSync(new URL("./china-hot-li-teacher-ingest.mjs", import.meta.url), "utf8");
   const html = fs.readFileSync(new URL("../admin/index.html", import.meta.url), "utf8");
   const ui = fs.readFileSync(new URL("../admin/content-center.js", import.meta.url), "utf8");
   const api = fs.readFileSync(new URL("../netlify/functions/china-hot-pool-admin.js", import.meta.url), "utf8");
-  assert.match(html, /未通过加工的材料只能重新加工或编辑/);
+  assert.match(html, /无法成稿、素材不足、缺图或技术重试耗尽的稿件自动删除/);
   assert.match(ui, /review_required:\s*"需要重新加工"/);
   assert.match(ui, /处理说明：/);
-  assert.match(ui, /data-pool-action="retry"/);
   assert.match(ui, /data-pool-edit/);
+  assert.doesNotMatch(ui, /data-pool-action="retry"/);
   assert.doesNotMatch(ui, /published \? "take_down" : "restore"/);
   assert.match(api, /未经加工的审核草稿不能直接恢复发布/);
   assert.match(api, /candidate\.decision !== "taken_down"/);
-  assert.match(api, /action === "retry"/);
+  assert.doesNotMatch(api, /action === "retry"/);
   assert.match(ingest, /async function reprocessableCandidates\(\)/);
   assert.match(ingest, /decision: "in\.\(failed,review_required\)"/);
   assert.match(ingest, /tweetsById/);
 });
 
-test("中国新闻内容池按ICE标准默认隐藏已发布和其他完成记录", () => {
+test("中国新闻内容池按ICE标准隐藏完成记录并彻底清空不可用稿件", () => {
+  const ingest = fs.readFileSync(new URL("./china-hot-li-teacher-ingest.mjs", import.meta.url), "utf8");
   const html = fs.readFileSync(new URL("../admin/index.html", import.meta.url), "utf8");
   const ui = fs.readFileSync(new URL("../admin/content-center.js", import.meta.url), "utf8");
   const api = fs.readFileSync(new URL("../netlify/functions/china-hot-pool-admin.js", import.meta.url), "utf8");
-  assert.match(html, /新闻发布成功后自动从主列表隐藏/);
+  assert.match(html, /仅保留来源ID防止重复采集/);
   assert.match(html, /查看处理历史/);
-  assert.match(api, /decision: "in\.\(processing,pending_review,ready_for_review,review_required,failed,taken_down\)"/);
+  assert.match(api, /decision: "in\.\(processing,pending_review,ready_for_review,review_required,taken_down\)"/);
+  assert.match(api, /decision: "neq\.deleted"/);
   assert.match(api, /input\.include_history \? "500" : "200"/);
-  assert.match(ui, /new Set\(\["published", "rejected", "deleted", "duplicate", "legacy_archived"\]\)/);
+  assert.match(ui, /new Set\(\["published", "rejected", "deleted", "duplicate", "legacy_archived", "failed"\]\)/);
   assert.match(ui, /已发布和其他已完成记录已自动隐藏/);
+  assert.match(ingest, /async function cleanupUnusableBacklog\(\)/);
+  assert.match(ingest, /raw_text: "", raw_payload: \{ tombstone: true/);
+  assert.match(ingest, /decision: "deleted"/);
+  assert.match(ingest, /status: "neq\.published"/);
+  assert.match(ingest, /error\.code === "EDITORIAL_QUALITY_HOLD" \|\| retryAttempts >= 3/);
+  assert.match(ingest, /technical-retry-scheduled/);
 });
 
 const socialExamples = [

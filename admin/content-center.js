@@ -32,14 +32,13 @@
     el("china-hot-pool-list").innerHTML = state.items.length ? state.items.map((item) => {
       const published = item.decision === "published";
       const takenDown = item.decision === "taken_down";
-      const retryable = ["review_required", "failed"].includes(item.decision) && !item.ai_payload?.manual_review_required;
       const reason = item.decision_reason || item.ai_payload?.reason || "等待处理";
       const summary = item.ai_payload?.summary || item.raw_text || "没有可显示的原始材料";
       const source = item.source_url ? `<a class="source-link" href="${esc(item.source_url)}" target="_blank" rel="noopener noreferrer">查看原始来源</a>` : "";
       const articleAction = published
         ? `<a href="/article.html?id=${encodeURIComponent(item.article_id)}" target="_blank" rel="noopener">查看文章</a>`
         : item.article_id ? `<button data-pool-edit="${esc(item.article_id)}">编辑草稿</button>` : "";
-      return `<article class="china-hot-pool-item"><div><span class="tag">${esc(item.ai_payload?.status === "queued_for_reprocess" ? "待重新采编" : item.ai_payload?.manual_review_required ? "已采编·待审核" : decisionLabels[item.decision] || item.decision || "未处理")}</span><span class="tag">${esc(item.proposed_section || "待分流")}</span><time>${esc(timeOf(item))}</time><h4>${esc(titleOf(item))}</h4><p>${esc(String(summary).slice(0, 240))}</p><p class="pool-reason"><b>处理说明：</b>${esc(reason)}</p>${source}</div><div class="china-hot-pool-actions">${articleAction}<button data-pool-download="${esc(item.id)}">下载</button>${retryable ? `<button data-pool-action="retry" data-pool-id="${esc(item.id)}">重新加工</button>` : ""}${published ? `<button data-pool-action="take_down" data-pool-id="${esc(item.id)}">下架</button>` : ""}${takenDown ? `<button data-pool-action="restore" data-pool-id="${esc(item.id)}">恢复</button>` : ""}<button class="danger" data-pool-action="delete" data-pool-id="${esc(item.id)}">删除文章</button></div></article>`;
+      return `<article class="china-hot-pool-item"><div><span class="tag">${esc(item.ai_payload?.manual_review_required ? "已采编·待审核" : decisionLabels[item.decision] || item.decision || "未处理")}</span><span class="tag">${esc(item.proposed_section || "待分流")}</span><time>${esc(timeOf(item))}</time><h4>${esc(titleOf(item))}</h4><p>${esc(String(summary).slice(0, 240))}</p><p class="pool-reason"><b>处理说明：</b>${esc(reason)}</p>${source}</div><div class="china-hot-pool-actions">${articleAction}<button data-pool-download="${esc(item.id)}">下载</button>${published ? `<button data-pool-action="take_down" data-pool-id="${esc(item.id)}">下架</button>` : ""}${takenDown ? `<button data-pool-action="restore" data-pool-id="${esc(item.id)}">恢复</button>` : ""}<button class="danger" data-pool-action="delete" data-pool-id="${esc(item.id)}">删除文章</button></div></article>`;
     }).join("") : "<div class=\"panel\">内容池暂时为空。</div>";
   }
 
@@ -48,8 +47,8 @@
     try {
       const includeHistory = el("china-pool-history")?.checked === true;
       const data = await api({ action: "list", include_history: includeHistory });
-      const terminal = new Set(["published", "rejected", "deleted", "duplicate", "legacy_archived"]);
-      state.items = (data.items || []).filter((item) => includeHistory || !terminal.has(item.decision));
+      const terminal = new Set(["published", "rejected", "deleted", "duplicate", "legacy_archived", "failed"]);
+      state.items = (data.items || []).filter((item) => (includeHistory || !terminal.has(item.decision)) && (item.decision !== "review_required" || item.ai_payload?.manual_review_required === true));
       render();
       el("china-hot-pool-message").textContent = includeHistory
         ? `已读取 ${state.items.length} 条处理历史。`
@@ -138,7 +137,6 @@
       action.disabled = true;
       try {
         await api({ action: action.dataset.poolAction, id: action.dataset.poolId });
-        if (action.dataset.poolAction === "retry") alert("已加入重新加工队列，将由采集任务按新版规则处理，不会直接发布原始材料。");
         await load();
       }
       catch (error) { alert(error.message); action.disabled = false; }

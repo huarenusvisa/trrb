@@ -423,7 +423,12 @@ export function shouldRetryCandidate(candidate, qualified, now = Date.now()) {
       && cleanText(candidate.decision_reason, 1_000).startsWith("自动分类过滤:")
       && isFreshBriefSource({created_at:candidate.raw_payload?.source_created_at || candidate.collected_at}, now);
   }
-  if (candidate.decision === "failed") return true;
+  if (candidate.decision === "failed") {
+    const attempts = Number(candidate.ai_payload?.automatic_retry_attempts || 0);
+    if (!Number.isFinite(attempts) || attempts >= 3 || candidate.ai_payload?.automatic_retry_exhausted === true) return false;
+    const retryAt = Date.parse(candidate.ai_payload?.automatic_retry_at || "");
+    return !Number.isFinite(retryAt) || retryAt <= now;
+  }
   if (candidate.decision !== "review_required") return false;
   const reason = cleanText(candidate.decision_reason, 1_000);
   const generatedFailure = reason.startsWith("自动扩写或发布失败:");
@@ -566,6 +571,76 @@ async function createCandidate(tweet, qualified) {
 async function patchCandidate(id, body) {
   if (DRY_RUN || !id) return;
   await supabase("news_candidates", { method: "PATCH", query: { id: `eq.${id}` }, body: { ...body, updated_at: new Date().toISOString() }, prefer: "return=minimal" });
+}
+
+function isAutomaticUnusableCandidate(candidate = {}) {
+  if (!["failed", "review_required"].includes(candidate.decision)) return false;
+  if (candidate.ai_payload?.manual_review_required === true) return false;
+  if (candidate.decision === "failed"
+    && candidate.ai_payload?.status === "technical_retry_scheduled"
+    && candidate.ai_payload?.automatic_retry_exhausted !== true) return false;
+  const reason = cleanText(candidate.decision_reason, 1_000);
+  return candidate.ai_payload?.quality_hold === true
+    || candidate.ai_payload?.automatic_retry_exhausted === true
+    || reason.startsWith("自动扩写或发布失败:")
+    || reason.includes("采编质量拦截");
+}
+
+async function discardUnusableCandidates(candidates, reason = "自动加工未达到发布标准，已删除不可用稿件") {
+  const rows = (Array.isArray(candidates) ? candidates : [candidates]).filter((row) => row?.id);
+  if (!rows.length || DRY_RUN) return rows.length;
+  const deletedAt = new Date().toISOString();
+  for (let offset = 0; offset < rows.length; offset += 50) {
+    const batch = rows.slice(offset, offset + 50);
+    const articleIds = [...new Set(batch.map((row) => cleanText(row.article_id, 100)).filter(Boolean))];
+    if (articleIds.length) {
+      await supabase("articles", {
+        method: "DELETE",
+        query: { id: `in.(${articleIds.join(",")})`, status: "neq.published" },
+        prefer: "return=minimal",
+      });
+    }
+    await supabase("news_candidates", {
+      method: "PATCH",
+      query: { id: `in.(${batch.map((row) => row.id).join(",")})` },
+      body: {
+        raw_text: "", raw_payload: { tombstone: true, deleted_at: deletedAt },
+        ai_payload: { status: "deleted_unusable", tombstone: true, processing_version: PROCESSING_VERSION },
+        proposed_section: null, article_id: null, decision: "deleted",
+        decision_reason: reason, processed_at: deletedAt, updated_at: deletedAt,
+      },
+      prefer: "return=minimal",
+    });
+  }
+  return rows.length;
+}
+
+async function cleanupUnusableBacklog() {
+  const rows = await supabase("news_candidates", { query: {
+    select: "id,decision,decision_reason,article_id,ai_payload",
+    pipeline: "like.china-hot-li-teacher-v*", decision: "in.(failed,review_required)",
+    order: "updated_at.asc,id.asc", limit: "1000",
+  } });
+  const unusable = (Array.isArray(rows) ? rows : []).filter(isAutomaticUnusableCandidate);
+  const deleted = await discardUnusableCandidates(unusable);
+  if (deleted) console.log(JSON.stringify({ event: "deleted-unusable-backlog", deleted }));
+  return deleted;
+}
+
+async function scheduleTechnicalRetry(candidate, priorArticle, reason, retryAttempts) {
+  if (priorArticle?.id && priorArticle.status !== "published" && !DRY_RUN) {
+    await supabase("articles", { method: "DELETE", query: { id: `eq.${priorArticle.id}`, status: "neq.published" }, prefer: "return=minimal" });
+  }
+  const retryDelay = [30, 120][Math.min(retryAttempts - 1, 1)] * 60_000;
+  await patchCandidate(candidate?.id, {
+    decision: "failed", decision_reason: reason, article_id: null, processed_at: new Date().toISOString(),
+    ai_payload: {
+      status: "technical_retry_scheduled", processing_version: PROCESSING_VERSION,
+      automatic_retry_attempts: retryAttempts,
+      automatic_retry_at: new Date(Date.now() + retryDelay).toISOString(),
+      automatic_retry_exhausted: false,
+    },
+  });
 }
 
 export function parseModelJson(response) {
@@ -891,7 +966,7 @@ async function requireManualReview(candidate, tweet, reason, retry = null) {
     ai_payload: {
       ...(candidate?.ai_payload || {}), status: "review_required", processing_version: PROCESSING_VERSION,
       proposed_title: draft?.title || deriveDraftTitle(tweet.text), summary: draft?.summary || "",
-      editable: true, manual_publish_allowed: true, reason, context_research: tweet.context_research || null, ...(retry || {}),
+      editable: true, manual_publish_allowed: true, manual_review_required: true, reason, context_research: tweet.context_research || null, ...(retry || {}),
       ...(/采编质量拦截/.test(reason) ? { quality_hold: true, automatic_retry_exhausted: true } : {}),
     },
   });
@@ -938,15 +1013,11 @@ async function recoverArchivedBatch() {
         counters.published += 1;
         results.push({ tweetId: tweet.id, status: DRY_RUN ? "dry-run" : "published", articleId: saved?.id || null, title: generated.title });
       } catch (error) {
-        const reason = `自动扩写或发布失败：${cleanText(error?.message || error, 600)}；保留为可编辑草稿，由编辑决定是否发布`;
-        try {
-          const draft = await requireManualReview(row, tweet, reason);
-          counters.review_required += 1;
-          results.push({ tweetId: tweet.id, status: "review-required", articleId: draft?.id || null, error: cleanText(error?.message || error, 800) });
-        } catch (draftError) {
-          counters.failed += 1;
-          results.push({ tweetId: tweet.id, status: "failed", error: cleanText(draftError?.message || draftError, 800) });
-        }
+        const reason = `自动扩写或发布失败：${cleanText(error?.message || error, 600)}；不可用稿件已删除`;
+        const prior = await existingArticle(tweet);
+        await discardUnusableCandidates([{ ...row, article_id: row.article_id || prior?.id }], reason);
+        counters.filtered = Number(counters.filtered || 0) + 1;
+        results.push({ tweetId: tweet.id, status: "deleted-unusable", error: cleanText(error?.message || error, 800) });
       }
     }
   }
@@ -1086,6 +1157,7 @@ async function repairTodayBatch() {
 export async function run() {
   requiredEnvironment();
   await loadChinaPeople(()=>supabase("china_political_people",{query:CHINA_PEOPLE_QUERY}),{force:true});
+  const deletedUnusableBacklog = await cleanupUnusableBacklog();
   if (REPAIR_TODAY) {
     const report = await repairTodayBatch();
     report.chrt = await syncPublishedArticlesToChrt();
@@ -1109,7 +1181,7 @@ export async function run() {
   const recentArticles = await recentChinaArticles();
   const recentRenArticles = [];
   const results = [];
-  const counters = { fetched: collectedTweets.length, queuedRetries: Math.max(0, tweets.length - collectedTweets.length), qualified: 0, published: 0, duplicate: 0, filtered: 0, review_required: 0, failed: 0 };
+  const counters = { fetched: collectedTweets.length, queuedRetries: Math.max(0, tweets.length - collectedTweets.length), qualified: 0, published: 0, duplicate: 0, filtered: 0, review_required: 0, retry_scheduled: 0, deleted_unusable: deletedUnusableBacklog, failed: 0 };
   const filteredReasons = {};
   let processingAttempts = 0;
   const processingDeadline = Date.now() + 40 * 60_000;
@@ -1196,22 +1268,21 @@ export async function run() {
       console.log(JSON.stringify({event:"published",tweetId:tweet.id,articleId:saved?.id,bodyChars:bodyCharacterCount(generated.content),contextSources:tweet.context_research?.sources?.length||0}));
       counters.published += 1; results.push({ tweetId: tweet.id, status: DRY_RUN ? "dry-run" : "published", articleId: saved?.id || null, title: generated.title });
     } catch (error) {
-      const reason = `自动扩写或发布失败：${cleanText(error?.message || error, 600)}；保留为可编辑草稿，由编辑决定是否发布`;
+      const reason = `自动扩写或发布失败：${cleanText(error?.message || error, 600)}`;
       const retryAttempts = Number(candidate?.ai_payload?.automatic_retry_attempts || 0) + 1;
-      const retryDelay = [30, 120, 360][Math.min(retryAttempts - 1, 2)] * 60_000;
-      const retry = retryAttempts < 3 ? {
-        automatic_retry_attempts: retryAttempts,
-        automatic_retry_at: new Date(Date.now() + retryDelay).toISOString(),
-      } : { automatic_retry_attempts: retryAttempts, automatic_retry_exhausted: true };
-      if (error.code === "EDITORIAL_QUALITY_HOLD") {
-        retry.quality_hold = true;
-        retry.automatic_retry_exhausted = true;
-        delete retry.automatic_retry_at;
+      const discardNow = error.code === "EDITORIAL_QUALITY_HOLD" || retryAttempts >= 3;
+      if (discardNow) {
+        const deletedReason = `${reason}；${error.code === "EDITORIAL_QUALITY_HOLD" ? "素材不符合发布标准" : "技术重试已耗尽"}，不可用稿件已删除`;
+        await discardUnusableCandidates([{ ...candidate, article_id: candidate?.article_id || priorArticle?.id }], deletedReason);
+        counters.deleted_unusable += 1;
+        console.log(JSON.stringify({event:"deleted-unusable",tweetId:tweet.id,reason:deletedReason}));
+        results.push({ tweetId: tweet.id, status: "deleted-unusable", error: cleanText(error?.message || error, 800) });
+      } else {
+        await scheduleTechnicalRetry(candidate, priorArticle, `${reason}；系统将在后台自动重试，不生成草稿`, retryAttempts);
+        counters.retry_scheduled += 1;
+        console.log(JSON.stringify({event:"technical-retry-scheduled",tweetId:tweet.id,attempt:retryAttempts,reason}));
+        results.push({ tweetId: tweet.id, status: "technical-retry-scheduled", error: cleanText(error?.message || error, 800) });
       }
-      console.log(JSON.stringify({event:"review-required",tweetId:tweet.id,reason,contextSources:tweet.context_research?.sources?.length||0}));
-      const draft = await requireManualReview(candidate, tweet, reason, retry);
-      counters.review_required += 1;
-      results.push({ tweetId: tweet.id, status: "review-required", articleId: draft?.id || null, error: cleanText(error?.message || error, 800) });
     }
   }
   const chrt = await syncPublishedArticlesToChrt();

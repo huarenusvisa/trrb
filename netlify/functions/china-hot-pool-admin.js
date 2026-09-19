@@ -15,11 +15,9 @@ exports.handler = async (event) => {
     const input = event.body ? JSON.parse(event.body) : {};
     const action = safeText(input.action || event.queryStringParameters?.action || "list", 40);
     if (action === "list") {
-      // Match the ICE review queue: the default view contains only work that
-      // still needs attention. Published and other terminal records remain in
-      // the database for audit/deduplication and are available through history.
-      const rows = await rest("news_candidates", { query: { select: "id,external_id,pipeline,proposed_section,source_url,source_account,source_name,raw_text,raw_payload,ai_payload,decision,decision_reason,article_id,collected_at,processed_at,created_at,updated_at", pipeline: "like.china-hot-li-teacher%", ...(input.include_history ? {} : { decision: "in.(processing,pending_review,ready_for_review,review_required,failed,taken_down)" }), order: "collected_at.desc", limit: input.include_history ? "500" : "200" } });
-      return json(200, { ok: true, items: Array.isArray(rows) ? rows : [] });
+      const rows = await rest("news_candidates", { query: { select: "id,external_id,pipeline,proposed_section,source_url,source_account,source_name,raw_text,raw_payload,ai_payload,decision,decision_reason,article_id,collected_at,processed_at,created_at,updated_at", pipeline: "like.china-hot-li-teacher%", ...(input.include_history ? { decision: "neq.deleted" } : { decision: "in.(processing,pending_review,ready_for_review,review_required,taken_down)" }), order: "collected_at.desc", limit: input.include_history ? "500" : "200" } });
+      const items = (Array.isArray(rows) ? rows : []).filter((row) => row.decision !== "review_required" || row.ai_payload?.manual_review_required === true);
+      return json(200, { ok: true, items });
     }
     const candidateId = safeText(input.id, 100);
     if (!candidateId) return json(400, { error: "缺少内容池记录ID" });
@@ -28,19 +26,6 @@ exports.handler = async (event) => {
     if (!candidate) return json(404, { error: "内容池记录不存在" });
     const article = await articleFor(candidate.article_id);
     const time = new Date().toISOString();
-    if (action === "retry") {
-      if (!["review_required", "failed"].includes(candidate.decision)) return json(409, { error: "只有需要重新加工或加工失败的内容才能加入重试队列" });
-      const aiPayload = candidate.ai_payload && typeof candidate.ai_payload === "object" ? candidate.ai_payload : {};
-      await rest("news_candidates", {
-        method: "PATCH", query: { id: `eq.${candidateId}` }, prefer: "return=minimal",
-        body: {
-          decision: "failed", decision_reason: "管理员已请求重新加工，等待下一轮采集任务按新版规则处理",
-          ai_payload: { ...aiPayload, status: "queued_for_reprocess", automatic_retry_attempts: 0, automatic_retry_at: time, automatic_retry_exhausted: false },
-          updated_at: time,
-        },
-      });
-      return json(200, { ok: true, queued: true });
-    }
     if (["take_down", "restore"].includes(action)) {
       if (!article) return json(409, { error: "这条记录没有关联文章" });
       if (action === "take_down" && candidate.decision !== "published") return json(409, { error: "只有已发布文章才能下架" });
@@ -53,10 +38,10 @@ exports.handler = async (event) => {
     }
     if (action === "delete") {
       if (article) {
-        await rest("news_candidates", { method: "PATCH", query: { id: `eq.${candidateId}` }, body: { article_id: null, decision: "deleted", decision_reason: "管理员删除前台文章；内容池原始记录保留", updated_at: time }, prefer: "return=minimal" });
+        await rest("news_candidates", { method: "PATCH", query: { id: `eq.${candidateId}` }, body: { raw_text: "", raw_payload: { tombstone: true, deleted_at: time }, ai_payload: { status: "deleted_by_editor", tombstone: true }, proposed_section: null, article_id: null, decision: "deleted", decision_reason: "管理员已删除稿件内容，仅保留来源ID防止重复采集", updated_at: time }, prefer: "return=minimal" });
         await rest("articles", { method: "DELETE", query: { id: `eq.${article.id}` }, prefer: "return=minimal" });
       } else {
-        await rest("news_candidates", { method: "PATCH", query: { id: `eq.${candidateId}` }, body: { decision: "deleted", decision_reason: "管理员标记删除；内容池原始记录保留", updated_at: time }, prefer: "return=minimal" });
+        await rest("news_candidates", { method: "PATCH", query: { id: `eq.${candidateId}` }, body: { raw_text: "", raw_payload: { tombstone: true, deleted_at: time }, ai_payload: { status: "deleted_by_editor", tombstone: true }, proposed_section: null, article_id: null, decision: "deleted", decision_reason: "管理员已删除稿件内容，仅保留来源ID防止重复采集", updated_at: time }, prefer: "return=minimal" });
       }
       return json(200, { ok: true });
     }

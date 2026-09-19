@@ -73,7 +73,7 @@
     document.querySelector('#center-en').textContent=category.nameEn;
     document.querySelector('#center-title').textContent=topic?`${topic.name}知识中心`:category.nameZh;
     document.querySelector('#center-description').textContent=topic?(topic.summary||`系统了解${topic.name}的申请条件、流程、材料、身份维持和常见问题。`):category.description;
-    document.querySelector('#breadcrumbs').innerHTML=`<a href="./">移民美国</a><span>›</span><a href="./center.html?path=${esc(category.slug)}">${esc(category.nameZh)}</a>${topic?`<span>›</span><strong>${esc(topic.name)}</strong>`:''}`;
+    document.querySelector('#breadcrumbs').innerHTML=`<a href="./">移民美国知识库</a><span>›</span><a href="./center.html?path=${esc(category.slug)}">${esc(category.nameZh)}</a>${topic?`<span>›</span><strong>${esc(topic.name)}</strong>`:''}`;
     document.querySelector('#topic-nav').innerHTML=category.items.map(item=>`<a class="${topic&&topic.slug===item.slug?'is-current':''}" href="${itemUrl(item)}">${esc(item.name)}</a>`).join('');
 
     const overview=document.querySelector('#topic-overview');

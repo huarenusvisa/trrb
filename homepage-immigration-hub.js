@@ -36,7 +36,7 @@
 
   function immigrationMarkup() {
     return `
-      <header class="immigration-hub-head"><h2>移民美国</h2><a href="/immigrate/">进入知识库</a></header>
+      <header class="immigration-hub-head"><h2>移民美国知识库</h2><a href="/immigrate/">进入知识库</a></header>
       <a class="immigration-hub-feature" href="/immigrate/"><strong>找到适合您的美国身份途径</strong></a>
       <div class="immigration-hub-grid">
         ${immigrationPaths.map(([name, href], index) => `<a class="${index === immigrationPaths.length - 1 ? "is-wide" : ""}" href="${href}"><strong>${name}</strong><span aria-hidden="true">›</span></a>`).join("")}

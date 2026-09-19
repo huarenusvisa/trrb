@@ -2,7 +2,7 @@
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import test from "node:test";
-import { assertPublicationQuality, bodyCharacterCount, isHeadlineDigest, buildCandidate, buildChrtRecord, buildPublishedArticle, buildReviewDraft, containsBoilerplate, deriveDraftTitle, editorialTarget, generateArticle, isThinSourceMaterial, qualifyTweet, shouldRetryCandidate, similarity, targetLength } from "./china-hot-li-teacher-ingest.mjs";
+import { assertPublicationQuality, bodyCharacterCount, isHeadlineDigest, buildCandidate, buildChrtRecord, buildPublishedArticle, buildReviewDraft, containsBoilerplate, deriveDraftTitle, editorialTarget, formatNewsParagraphs, generateArticle, isThinSourceMaterial, qualifyTweet, requiresBackgroundResearch, shouldRetryCandidate, similarity, targetLength } from "./china-hot-li-teacher-ingest.mjs";
 
 // Distinct characters isolate length/transport tests from the repetition gate.
 const qualityBody = "重庆学校公布安排。" + Array.from({ length: 820 }, (_, i) => String.fromCharCode(0x4e00 + i)).join("");
@@ -22,7 +22,7 @@ test("中国新闻及中国政治人物内容进入中国热门头条池", () =>
   assert.equal(candidate.proposed_section, "中国热门头条");
   assert.equal(candidate.decision, "processing");
   assert.equal(candidate.pipeline, "china-hot-li-teacher-v2");
-  assert.equal(candidate.ai_payload.processing_version, "editorial-depth-source-chain-v9");
+  assert.equal(candidate.ai_payload.processing_version, "editorial-paragraph-background-v10");
 });
 
 test("中国热门头条采用600至3500字目标且不截断事实", () => {
@@ -35,6 +35,15 @@ test("总编辑可按选题价值选择1500至3000字深度稿，标题型素材
   assert.deepEqual(editorialTarget("deep"), { min: 1500, max: 3000, band: "深度稿1500至3000个中文字符，解释因果、节点、数据与可能方向" });
   assert.equal(isThinSourceMaterial("北京国家信访局门口：两名访民喝农药自杀"), true);
   assert.equal(isThinSourceMaterial(chinaTweet.text), false);
+});
+
+test("高影响短材料必须补背景，所有稿型按语义分段", () => {
+  assert.equal(requiresBackgroundResearch("美国军方称一份AI错误情报报告险些导致中国船只被误判。"), true);
+  assert.equal(requiresBackgroundResearch("某社区周末调整垃圾收集时间，居民可按新安排投放。"), false);
+  const formatted = formatNewsParagraphs("第一段交代事件。第二段补充时间线。第三段说明已确认的后续。", "standard");
+  assert.equal(formatted.split("\n\n").length, 3);
+  const brief = formatNewsParagraphs("先交代最新进展。再说明已经核实的背景。", "brief");
+  assert.equal(brief.split("\n\n").length, 2);
 });
 
 test("栏目资格同时检查原文与成稿，拒绝把无关外国稿标为中国头条", () => {
@@ -79,8 +88,8 @@ test("中国热门头条按内容查重并执行旧闻门禁", () => {
   const script = fs.readFileSync(new URL("./china-hot-li-teacher-ingest.mjs", import.meta.url), "utf8");
   assert.match(script, /appears_old_news/);
   assert.match(script, /old_news_checked: true/);
-  assert.match(script, /duplicate_check_days: source\.topicKey === REN_ZHENGFEI_TOPIC \? 180 : 30/);
-  assert.match(script, /与近30天跨栏目已发布内容重复/);
+  assert.match(script, /duplicate_check_days: source\.topicKey === REN_ZHENGFEI_TOPIC \? 180 : 730/);
+  assert.match(script, /与近两年跨栏目已发布内容属于同一事件/);
 });
 
 test("发布稿保留媒体归因及原帖证据", () => {
@@ -91,7 +100,7 @@ test("发布稿保留媒体归因及原帖证据", () => {
   assert.equal(article.metadata.automatic_publish, true);
   assert.equal(article.metadata.unverified_public_claim, true);
   assert.equal(article.metadata.public_source_attribution, true);
-  assert.equal(article.metadata.duplicate_check_days, 30);
+  assert.equal(article.metadata.duplicate_check_days, 730);
   assert.doesNotMatch(article.content, /李老师|X平台|x\.com/);
 });
 
@@ -232,7 +241,7 @@ test("自动失败草稿可有界重试，人工复核决定不会被自动覆�
   assert.equal(shouldRetryCandidate({
     decision: "review_required",
     decision_reason: "自动扩写或发布失败：生成稿未明确中国新闻主体；保留为可编辑草稿，由编辑决定是否发布",
-    ai_payload: { processing_version: "editorial-depth-source-chain-v9", automatic_retry_attempts: 3 },
+    ai_payload: { processing_version: "editorial-paragraph-background-v10", automatic_retry_attempts: 3 },
   }, qualified), false);
   assert.equal(shouldRetryCandidate({
     decision: "review_required",
@@ -275,7 +284,7 @@ test("后台只保留真正需要人工审核的稿件，不可用稿不提供�
   const html = fs.readFileSync(new URL("../admin/index.html", import.meta.url), "utf8");
   const ui = fs.readFileSync(new URL("../admin/content-center.js", import.meta.url), "utf8");
   const api = fs.readFileSync(new URL("../netlify/functions/china-hot-pool-admin.js", import.meta.url), "utf8");
-  assert.match(html, /无法成稿、素材不足、缺图或技术重试耗尽的稿件自动删除/);
+  assert.match(html, /重复稿和无法成稿的内容自动删除/);
   assert.match(ui, /review_required:\s*"需要重新加工"/);
   assert.match(ui, /处理说明：/);
   assert.match(ui, /data-pool-edit/);
@@ -289,24 +298,33 @@ test("后台只保留真正需要人工审核的稿件，不可用稿不提供�
   assert.match(ingest, /tweetsById/);
 });
 
-test("中国新闻内容池按ICE标准隐藏完成记录并彻底清空不可用稿件", () => {
+test("中国新闻内容池只显示待处理记录并彻底清空不可用与重复稿件", () => {
   const ingest = fs.readFileSync(new URL("./china-hot-li-teacher-ingest.mjs", import.meta.url), "utf8");
   const html = fs.readFileSync(new URL("../admin/index.html", import.meta.url), "utf8");
   const ui = fs.readFileSync(new URL("../admin/content-center.js", import.meta.url), "utf8");
   const api = fs.readFileSync(new URL("../netlify/functions/china-hot-pool-admin.js", import.meta.url), "utf8");
-  assert.match(html, /仅保留来源ID防止重复采集/);
-  assert.match(html, /查看处理历史/);
+  assert.match(html, /仅保留必要来源ID防止重复采集/);
+  assert.doesNotMatch(html, /查看处理历史/);
   assert.match(api, /decision: "in\.\(processing,pending_review,ready_for_review,review_required,taken_down\)"/);
-  assert.match(api, /decision: "neq\.deleted"/);
-  assert.match(api, /input\.include_history \? "500" : "200"/);
+  assert.doesNotMatch(api, /include_history/);
   assert.match(ui, /new Set\(\["published", "rejected", "deleted", "duplicate", "legacy_archived", "failed"\]\)/);
-  assert.match(ui, /已发布和其他已完成记录已自动隐藏/);
+  assert.match(ui, /重复稿、已发布稿和其他已完成记录不会出现在后台/);
   assert.match(ingest, /async function cleanupUnusableBacklog\(\)/);
   assert.match(ingest, /raw_text: "", raw_payload: \{ tombstone: true/);
   assert.match(ingest, /decision: "deleted"/);
   assert.match(ingest, /status: "neq\.published"/);
   assert.match(ingest, /error\.code === "EDITORIAL_QUALITY_HOLD" \|\| retryAttempts >= 3/);
   assert.match(ingest, /technical-retry-scheduled/);
+  assert.match(ingest, /async function cleanupDuplicateBacklog\(\)/);
+  assert.match(ingest, /status: "deleted_duplicate"/);
+});
+
+test("前台不展示内部研究来源，文章管理隐藏中国自动采编记录", () => {
+  const prerender = fs.readFileSync(new URL("../netlify/edge-functions/article-prerender.ts", import.meta.url), "utf8");
+  const admin = fs.readFileSync(new URL("../admin/admin.js", import.meta.url), "utf8");
+  assert.doesNotMatch(prerender, /报道背景与资料来源|article-research-sources/);
+  assert.match(admin, /metadata\?\.collector/);
+  assert.match(admin, /startsWith\("china-hot-li-teacher"\)/);
 });
 
 const socialExamples = [
@@ -429,7 +447,7 @@ test("只有标题的线索找不到原始出处和上下游资料时不得成�
     if (input.tools) return Response.json({output:[]});
     return Response.json({output_text:JSON.stringify({title:tweet.text,summary:"",content:"",seo_keywords:"",appears_old_news:false,old_news_reason:"",source_sufficient:false,rejection_reason:"未找到可核对原始出处",image_evidence:[],editorial_depth:"standard",depth_reason:"只有标题",analysis_angles:[]})});
   });
-  await assert.rejects(generateArticle({accepted:true,reason:"china-news",route:"china",text:tweet.text,title:tweet.text}, tweet), /只有标题或一句话/);
+  await assert.rejects(generateArticle({accepted:true,reason:"china-news",route:"china",text:tweet.text,title:tweet.text}, tweet), /标题型或高影响线索/);
 });
 
 test('无法可靠扩至800字的新热点经过独立核对可发布为选题短讯', async t => {

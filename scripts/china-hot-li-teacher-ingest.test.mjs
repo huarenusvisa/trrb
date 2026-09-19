@@ -2,11 +2,11 @@
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import test from "node:test";
-import { assertPublicationQuality, bodyCharacterCount, isHeadlineDigest, buildCandidate, buildChrtRecord, buildPublishedArticle, buildReviewDraft, containsBoilerplate, deriveDraftTitle, generateArticle, qualifyTweet, shouldRetryCandidate, similarity, targetLength } from "./china-hot-li-teacher-ingest.mjs";
+import { assertPublicationQuality, bodyCharacterCount, isHeadlineDigest, buildCandidate, buildChrtRecord, buildPublishedArticle, buildReviewDraft, containsBoilerplate, deriveDraftTitle, editorialTarget, generateArticle, isThinSourceMaterial, qualifyTweet, shouldRetryCandidate, similarity, targetLength } from "./china-hot-li-teacher-ingest.mjs";
 
 // Distinct characters isolate length/transport tests from the repetition gate.
 const qualityBody = "重庆学校公布安排。" + Array.from({ length: 820 }, (_, i) => String.fromCharCode(0x4e00 + i)).join("");
-const editorial_review = { single_event: true, grounded: true, sufficient: true, image_relevant: true, cover_index: 0, image_description: "校方公布的开学安排通知", reason: "输入材料支持成稿" };
+const editorial_review = { single_event: true, grounded: true, sufficient: true, image_relevant: true, depth_appropriate: true, analysis_grounded: true, source_chain_complete: true, cover_index: 0, image_description: "校方公布的开学安排通知", reason: "输入材料支持成稿" };
 
 const chinaTweet = {
   id: "123", created_at: "2026-08-23T08:00:00.000Z", lang: "zh",
@@ -22,13 +22,19 @@ test("中国新闻及中国政治人物内容进入中国热门头条池", () =>
   assert.equal(candidate.proposed_section, "中国热门头条");
   assert.equal(candidate.decision, "processing");
   assert.equal(candidate.pipeline, "china-hot-li-teacher-v2");
-  assert.equal(candidate.ai_payload.processing_version, "news-routing-600-3500-v8");
+  assert.equal(candidate.ai_payload.processing_version, "editorial-depth-source-chain-v9");
 });
 
 test("中国热门头条采用600至3500字目标且不截断事实", () => {
   for (const source of ["短文", "中".repeat(300), "中".repeat(1200)]) {
     assert.deepEqual(targetLength(source, 1), { min: 600, max: 3500, band: "正文600至3500个中文字符，依据同一事件素材，不凑字" });
   }
+});
+
+test("总编辑可按选题价值选择1500至3000字深度稿，标题型素材强制补链", () => {
+  assert.deepEqual(editorialTarget("deep"), { min: 1500, max: 3000, band: "深度稿1500至3000个中文字符，解释因果、节点、数据与可能方向" });
+  assert.equal(isThinSourceMaterial("北京国家信访局门口：两名访民喝农药自杀"), true);
+  assert.equal(isThinSourceMaterial(chinaTweet.text), false);
 });
 
 test("栏目资格同时检查原文与成稿，拒绝把无关外国稿标为中国头条", () => {
@@ -226,7 +232,7 @@ test("自动失败草稿可有界重试，人工复核决定不会被自动覆�
   assert.equal(shouldRetryCandidate({
     decision: "review_required",
     decision_reason: "自动扩写或发布失败：生成稿未明确中国新闻主体；保留为可编辑草稿，由编辑决定是否发布",
-    ai_payload: { processing_version: "news-routing-600-3500-v8", automatic_retry_attempts: 3 },
+    ai_payload: { processing_version: "editorial-depth-source-chain-v9", automatic_retry_attempts: 3 },
   }, qualified), false);
   assert.equal(shouldRetryCandidate({
     decision: "review_required",
@@ -362,6 +368,48 @@ test("短稿检索同一事件背景，扩写后将资料交给独立质检并�
   const article=await generateArticle(qualifyTweet(tweet),tweet);
   assert.equal(writes,2);assert.equal(researches,1);assert.equal(reviews,1);
   assert.deepEqual(buildPublishedArticle(tweet,qualifyTweet(tweet),article).supporting_sources,[source]);
+});
+
+test("高价值选题由总编辑判定为深度稿后，必须补足双来源并写到1500至3000字", async (t) => {
+  const tweet = {...chinaTweet, text: qualityBody};
+  const deepBody = "重庆学校发布通知，因持续高温调整开学安排。这是一篇基于公开资料的深度报道。" + Array.from({length: 1650}, (_, i) => String.fromCodePoint(0x4e00 + i)).join("");
+  const sources = [
+    {url:"https://example.com/primary", title:"原始文件"},
+    {url:"https://example.org/data", title:"统计资料"},
+  ];
+  let writes = 0, researches = 0, reviews = 0;
+  t.mock.method(globalThis, "fetch", async (_url, options) => {
+    const input = JSON.parse(options.body);
+    if (input.tools) {
+      researches += 1;
+      assert.match(input.input, /"editorial_depth":"deep"/);
+      return Response.json({output:[{type:"web_search_call",status:"completed"},{type:"message",content:[{type:"output_text",text:"原始文件和统计资料共同说明事件背景。",annotations:sources.map((source)=>({type:"url_citation",...source}))}]}]});
+    }
+    if (input.text.format.name === "china_hot_editorial_review") {
+      reviews += 1;
+      return Response.json({output_text:JSON.stringify(editorial_review)});
+    }
+    writes += 1;
+    return Response.json({output_text:JSON.stringify({title:"重庆学校高温期开学安排的节点与走向",summary:"公开文件与统计资料解释重庆学校调整安排的背景。",content:writes < 3 ? qualityBody : deepBody,seo_keywords:"重庆学校,高温,数据",appears_old_news:false,old_news_reason:"",source_sufficient:true,rejection_reason:"",image_evidence:[],editorial_depth:"deep",depth_reason:"具有公共影响、历史数据和多种后续方向",analysis_angles:["为何此刻发生","历史规律与年度数据","后续情景"]})});
+  });
+  const article = await generateArticle(qualifyTweet(tweet), tweet);
+  assert.equal(article.editorial_depth, "deep");
+  assert.equal(article.target.min, 1500);
+  assert.ok(bodyCharacterCount(article.content) >= 1500);
+  assert.equal(researches, 1);
+  assert.equal(writes, 3);
+  assert.equal(reviews, 1);
+  assert.equal(buildPublishedArticle(tweet, qualifyTweet(tweet), article).metadata.article_format, "deep_analysis");
+});
+
+test("只有标题的线索找不到原始出处和上下游资料时不得成稿", async (t) => {
+  const tweet = {...chinaTweet, text:"北京国家信访局门口：两名访民喝农药自杀"};
+  t.mock.method(globalThis, "fetch", async (_url, options) => {
+    const input = JSON.parse(options.body);
+    if (input.tools) return Response.json({output:[]});
+    return Response.json({output_text:JSON.stringify({title:tweet.text,summary:"",content:"",seo_keywords:"",appears_old_news:false,old_news_reason:"",source_sufficient:false,rejection_reason:"未找到可核对原始出处",image_evidence:[],editorial_depth:"standard",depth_reason:"只有标题",analysis_angles:[]})});
+  });
+  await assert.rejects(generateArticle({accepted:true,reason:"china-news",route:"china",text:tweet.text,title:tweet.text}, tweet), /只有标题或一句话/);
 });
 
 test('无法可靠扩至800字的新热点经过独立核对可发布为选题短讯', async t => {

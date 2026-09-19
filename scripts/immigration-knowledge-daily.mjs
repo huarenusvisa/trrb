@@ -239,7 +239,7 @@ async function generateBatch(topicName, angles, avoidTitles) {
   const numberedAngles = angles.map((angle, index) => `${index + 1}. ${angle}`).join('\n');
   const avoid = avoidTitles.slice(-80).map(title => `- ${title}`).join('\n');
   const asylumGuard = topicName === '政治庇护'
-    ? '\n政治庇护专用标准：可覆盖庇护基础、I-589、面谈、证据、可信度、移民法庭、BIA和联邦法院案例、C08工卡与庇护时钟、USCIS/EOIR政策及数据解读。每篇必须在正文末尾列出至少一个可核验的美国政府或法院官方来源链接（uscis.gov、justice.gov、govinfo.gov、federalregister.gov或美国联邦法院官方来源）；不得把提案写成已生效规则，不得编造案件、引证、费用、处理时间或通过率。'
+    ? '\n政治庇护专用标准：可覆盖庇护基础、I-589、面谈、证据、可信度、移民法庭、BIA和联邦法院案例、C08工卡与庇护时钟、USCIS/EOIR政策及数据解读。官方来源由系统保存在后台元数据中，正文不强制显示链接；不得把提案写成已生效规则，不得编造案件、引证、费用、处理时间或通过率。'
     : '';
   const prompt = `你是唐人日报“移民美国”专业知识库编辑。请为“${category.name} / ${topicName}”一次生成${angles.length}篇彼此独立的中文知识文章。\n\n每篇文章必须严格对应下面同序号的写作角度，不能合并、遗漏或重复：\n${numberedAngles}\n\n统一要求：\n1. 每篇标题准确、专业、不夸张，标题之间不得近似；\n2. 每篇摘要80至120个汉字；\n3. 每篇正文900至1400个汉字，使用清晰小标题；\n4. 只解释对应角度的法律概念、证据联系、判断因素、风险和常见误区；\n5. 不编造最新费用、处理时间、排期、配额或政策数字；涉及会变化的信息，明确提示以USCIS、美国国务院或主管机关最新规则为准；\n6. 保持中立、写实，不构成法律意见；\n7. 每篇必须自然出现专题名“${topicName}”；\n8. 不得复用以下近期标题：\n${avoid || '- 无'}\n9. 仅返回符合JSON Schema的结果，articles数组顺序必须与写作角度顺序一致。${asylumGuard}`;
 
@@ -366,7 +366,7 @@ for (const [slug, topicName] of Object.entries(category.topics)) {
         title,
         slug: articleSlug(title),
         summary,
-        content: topicName === '政治庇护' ? `${content}\n\n官方参考来源：${ASYLUM_OFFICIAL_SOURCE}\n\n本文为一般信息，不构成针对个案的法律意见。` : content,
+        content,
         category_name: `${topicPrefix(topicName)}${angles[index]}`,
         status: 'published',
         visibility: 'public',

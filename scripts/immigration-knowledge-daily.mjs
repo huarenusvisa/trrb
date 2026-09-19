@@ -287,7 +287,8 @@ async function generateBatch(topicName, angles, avoidTitles) {
               schema
             }
           }
-        })
+        }),
+        signal: AbortSignal.timeout(120000)
       });
       if (!response.ok) {
         const detail = await response.text();

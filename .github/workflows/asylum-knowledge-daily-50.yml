@@ -16,7 +16,7 @@ permissions:
 
 concurrency:
   group: asylumjudge-daily-knowledge-50
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   publish:
@@ -56,4 +56,3 @@ jobs:
       - name: 生成并发布最近30小时共50篇庇护知识
         if: steps.gate.outputs.run == 'true'
         run: node scripts/immigration-knowledge-daily.mjs humanitarian
-

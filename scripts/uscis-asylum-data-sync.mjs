@@ -66,7 +66,8 @@ async function sb(endpoint, options = {}) {
     signal: AbortSignal.timeout(60000)
   });
   if (!response.ok) throw new Error(`Supabase ${response.status}: ${await response.text()}`);
-  return response.status === 204 ? null : response.json();
+  const text = await response.text();
+  return text ? JSON.parse(text) : null;
 }
 
 async function upsertChunks(table, rows, conflict) {

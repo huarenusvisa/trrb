@@ -45,14 +45,11 @@
   async function load() {
     el("china-hot-pool-message").textContent = "正在读取内容池…";
     try {
-      const includeHistory = el("china-pool-history")?.checked === true;
-      const data = await api({ action: "list", include_history: includeHistory });
+      const data = await api({ action: "list" });
       const terminal = new Set(["published", "rejected", "deleted", "duplicate", "legacy_archived", "failed"]);
-      state.items = (data.items || []).filter((item) => (includeHistory || !terminal.has(item.decision)) && (item.decision !== "review_required" || item.ai_payload?.manual_review_required === true));
+      state.items = (data.items || []).filter((item) => !terminal.has(item.decision) && (item.decision !== "review_required" || item.ai_payload?.manual_review_required === true));
       render();
-      el("china-hot-pool-message").textContent = includeHistory
-        ? `已读取 ${state.items.length} 条处理历史。`
-        : `待处理 ${state.items.length} 条；已发布和其他已完成记录已自动隐藏。`;
+      el("china-hot-pool-message").textContent = `待处理 ${state.items.length} 条；重复稿、已发布稿和其他已完成记录不会出现在后台。`;
     }
     catch (error) { el("china-hot-pool-message").textContent = `读取失败：${error.message}`; }
   }
@@ -158,7 +155,6 @@
     }
   });
   document.addEventListener("DOMContentLoaded", () => {
-    el("china-pool-history")?.addEventListener("change", () => load());
     el("refresh-china-hot-pool")?.addEventListener("click", load);
     el("refresh-trump-x-pool")?.addEventListener("click", loadTrump);
     el("trump-editor-content")?.addEventListener("input", updateTrumpCount);

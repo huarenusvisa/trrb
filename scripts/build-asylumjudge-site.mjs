@@ -18,6 +18,7 @@ await mkdir(join(functions, '_shared'), { recursive: true });
 await mkdir(edgeFunctions, { recursive: true });
 
 await cp(join(root, 'asylumjudge'), join(output, 'asylumjudge'), { recursive: true });
+await cp(join(root, 'uscis-asylum-data'), join(output, 'uscis-asylum-data'), { recursive: true });
 await cp(join(root, 'asylumjudge', 'index.html'), join(output, 'index.html'));
 await cp(join(root, 'asylumjudge', 'robots.txt'), join(output, 'robots.txt'));
 await cp(join(root, 'asylumjudge', 'sitemap.xml'), join(output, 'sitemap.xml'));

@@ -24,3 +24,5 @@
 2026-09-19: deploy USCIS affirmative-asylum data dashboard, interview approval-rate navigation, official data API, and daily asylum knowledge updates.
 
 2026-09-19: restore the visible homepage interview-data entry and publish the shared USCIS office dashboard at the canonical route on both sites.
+
+2026-09-19: retain the USCIS interview-rate entry after the runtime language navigation rebuilds the production header.

@@ -24,6 +24,10 @@ assert.match(zhKeyword, /FAQPage/, 'Chinese keyword page must contain explanator
 
 const rootHome = read('index.html');
 const enHome = read('en/index.html');
+const runtimeNavigation = readFileSync('asylumjudge/domain-brand.js', 'utf8');
+assert.match(runtimeNavigation, /'zh-Hans': \{ uscis: '查面谈'/, 'runtime navigation must retain the Chinese USCIS interview entry');
+assert.match(runtimeNavigation, /\['uscis', 'judges', 'courts', 'states', 'nationality'\]/, 'runtime navigation must render USCIS before the court-data entries');
+assert.match(runtimeNavigation, /uscis: '\/uscis-asylum-data\/'/, 'runtime navigation must send interview users to the canonical USCIS dashboard');
 for (const prefix of ['', ...locales]) {
   const home = read(join(prefix, 'index.html'));
   const base = prefix ? `/${prefix}` : '';

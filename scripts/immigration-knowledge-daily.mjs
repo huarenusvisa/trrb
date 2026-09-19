@@ -14,6 +14,7 @@ const OPENAI_MODEL = process.env.OPENAI_MODEL || 'gpt-5-mini';
 const SUPABASE_URL = String(process.env.SUPABASE_URL || '').replace(/\/+$/, '');
 const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 const MAX_OUTPUT_TOKENS = Math.max(8000, Number(process.env.KNOWLEDGE_BATCH_MAX_OUTPUT_TOKENS || 20000));
+const ASYLUM_OFFICIAL_SOURCE = 'https://www.uscis.gov/humanitarian/refugees-and-asylum/asylum';
 
 if (!categoryKey || !OPENAI_API_KEY || !SUPABASE_URL || !SUPABASE_KEY) {
   throw new Error('Missing category or required secrets');
@@ -358,7 +359,6 @@ for (const [slug, topicName] of Object.entries(category.topics)) {
       const summary = String(article.summary || '').trim();
       const content = String(article.content || '').trim();
       if (!title || !summary || content.length < 800 || content.length > 1700) return;
-      if (topicName === '政治庇护' && !/https:\/\/(?:www\.)?(?:uscis\.gov|justice\.gov|govinfo\.gov|federalregister\.gov)|https:\/\/[^\s)]+\.uscourts\.gov/i.test(content)) return;
       if (titleSet.has(title) || batchTitles.has(title)) return;
       batchTitles.add(title);
       rows.push({
@@ -366,12 +366,12 @@ for (const [slug, topicName] of Object.entries(category.topics)) {
         title,
         slug: articleSlug(title),
         summary,
-        content,
+        content: topicName === '政治庇护' ? `${content}\n\n官方参考来源：${ASYLUM_OFFICIAL_SOURCE}\n\n本文为一般信息，不构成针对个案的法律意见。` : content,
         category_name: `${topicPrefix(topicName)}${angles[index]}`,
         status: 'published',
         visibility: 'public',
         author: '唐人日报编辑部',
-        metadata: { immigration_category: category.name, immigration_topic: topicName, writing_angle: angles[index], generated_by: 'immigration-knowledge-daily' },
+        metadata: { immigration_category: category.name, immigration_topic: topicName, writing_angle: angles[index], official_source_url: topicName === '政治庇护' ? ASYLUM_OFFICIAL_SOURCE : null, generated_by: 'immigration-knowledge-daily' },
         published_at: new Date().toISOString()
       });
     });

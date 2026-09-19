@@ -17,13 +17,13 @@ const REN_ZHENGFEI_QUERY = '("任正非" OR "Ren Zhengfei") -is:retweet -is:repl
 // retry, repair, clean or publish Ren Zhengfei items until a future explicit instruction.
 const REN_ZHENGFEI_COLLECTION_ENABLED = false;
 const PIPELINE = "china-hot-li-teacher-v2";
-const PROCESSING_VERSION = "editorial-depth-source-chain-v9";
+const PROCESSING_VERSION = "editorial-paragraph-background-v10";
 const WARNING = "真实性提示：本文所述信息可能尚未获得独立核实，部分细节可能存在偏差，请以权威部门后续通报为准。";
 const DRY_RUN = process.argv.includes("--dry-run");
 const RECOVER_ARCHIVED = process.argv.includes("--recover-archived");
 const REPAIR_TODAY = process.argv.includes("--repair-today");
 const REPAIR_SINCE = cleanText(process.env.CHINA_HOT_REPAIR_SINCE || "2026-08-24T00:00:00Z", 100);
-const EXPANSION_VERSION = "editorial-depth-source-chain-v9";
+const EXPANSION_VERSION = "editorial-paragraph-background-v10";
 const LOOKBACK_HOURS = intEnv("LI_TEACHER_LOOKBACK_HOURS", 6, 3, 24);
 const MAX_FETCH = intEnv("LI_TEACHER_MAX_FETCH", 100, 10, 200);
 const REN_ZHENGFEI_MAX_FETCH = intEnv("REN_ZHENGFEI_MAX_FETCH", 300, 10, 500);
@@ -179,6 +179,28 @@ export function targetLength() {
 export function isThinSourceMaterial(value) {
   const text = textWithoutLinks(value);
   return text.length < 120 && !/[。！？!?]/u.test(text);
+}
+
+export function requiresBackgroundResearch(value) {
+  const text = textWithoutLinks(value);
+  if (isThinSourceMaterial(text)) return true;
+  const highImpact = /人工智能|\bAI\b|军方|軍方|军事|軍事|军舰|軍艦|导弹|導彈|核武|战争|戰爭|外交|制裁|国家安全|國家安全|上访|上訪|自杀|自殺|维权|維權|拘留|逮捕|重大事故|公共政策|官方通报|官方通報/i;
+  return text.length < 700 && highImpact.test(text);
+}
+
+export function formatNewsParagraphs(value, depth = "standard") {
+  const text = cleanText(value, Infinity);
+  if (!text) return "";
+  const existing = text.split(/\n{2,}|\n/u).map((item) => cleanText(item, Infinity)).filter(Boolean);
+  const minimum = depth === "deep" ? 6 : depth === "brief" ? 2 : 3;
+  if (existing.length >= minimum) return existing.join("\n\n");
+  const sentences = text.match(/[^。！？!?]+[。！？!?]?/gu)?.map((item) => cleanText(item, Infinity)).filter(Boolean) || [];
+  if (sentences.length < (depth === "brief" ? 2 : 3)) return existing.join("\n\n");
+  const groups = Math.min(minimum, sentences.length);
+  const perGroup = Math.ceil(sentences.length / groups);
+  const paragraphs = [];
+  for (let index = 0; index < sentences.length; index += perGroup) paragraphs.push(sentences.slice(index, index + perGroup).join(""));
+  return paragraphs.join("\n\n");
 }
 
 export function editorialTarget(depth = "standard") {
@@ -457,11 +479,11 @@ export function similarity(leftValue, rightValue) {
 }
 
 async function recentChinaArticles() {
-  const cutoff = new Date(Date.now() - 30 * 86400_000).toISOString();
+  const cutoff = new Date(Date.now() - 730 * 86400_000).toISOString();
   const rows = await supabase("articles", { query: {
     select: "id,title,summary,content,source_url,published_at,metadata", category_name: "in.(热门头条,中国热门头条,中国政治,中国官场,美国时政,美国警情,ICE执法动态,ICE执法,驱逐快报)",
     status: "eq.published", visibility: "eq.public", published_at: `gte.${cutoff}`,
-    order: "published_at.desc", limit: "1000",
+    order: "published_at.desc", limit: "2000",
   } });
   return Array.isArray(rows) ? rows : [];
 }
@@ -627,6 +649,35 @@ async function cleanupUnusableBacklog() {
   return deleted;
 }
 
+async function discardDuplicateCandidate(candidate, duplicateArticleId = "", reason = "同一事件已经发布，重复稿已删除") {
+  if (!candidate?.id || DRY_RUN) return Boolean(candidate?.id);
+  const deletedAt = new Date().toISOString();
+  await supabase("news_candidates", {
+    method: "PATCH", query: { id: `eq.${candidate.id}` }, prefer: "return=minimal",
+    body: {
+      raw_text: "", raw_payload: { tombstone: true, duplicate: true, deleted_at: deletedAt },
+      ai_payload: { status: "deleted_duplicate", tombstone: true, processing_version: PROCESSING_VERSION, duplicate_article_id: duplicateArticleId || null },
+      proposed_section: null, article_id: null, decision: "deleted",
+      decision_reason: reason, processed_at: deletedAt, updated_at: deletedAt,
+    },
+  });
+  return true;
+}
+
+async function cleanupDuplicateBacklog() {
+  const rows = await supabase("news_candidates", { query: {
+    select: "id,decision_reason,article_id,ai_payload",
+    pipeline: "like.china-hot-li-teacher-v*", decision: "eq.duplicate",
+    order: "updated_at.asc,id.asc", limit: "1000",
+  } });
+  let deleted = 0;
+  for (const row of Array.isArray(rows) ? rows : []) {
+    if (await discardDuplicateCandidate(row, row.article_id || row.ai_payload?.duplicate_article_id || "", row.decision_reason || "同一事件已经发布，历史重复稿已删除")) deleted += 1;
+  }
+  if (deleted) console.log(JSON.stringify({ event: "deleted-duplicate-backlog", deleted }));
+  return deleted;
+}
+
 async function scheduleTechnicalRetry(candidate, priorArticle, reason, retryAttempts) {
   if (priorArticle?.id && priorArticle.status !== "published" && !DRY_RUN) {
     await supabase("articles", { method: "DELETE", query: { id: `eq.${priorArticle.id}`, status: "neq.published" }, prefer: "return=minimal" });
@@ -711,6 +762,7 @@ export async function generateArticle(qualified, tweet, attempt = 0, previous = 
   if (!usableMedia(tweet).length) throw qualityError("原始素材没有可供核对的合适配图，补齐图片后再加工");
   const brief = mode === "brief";
   const thinSource = isThinSourceMaterial(qualified.text);
+  const backgroundResearchRequired = requiresBackgroundResearch(qualified.text);
   if (brief && (!qualified.accepted || !isFreshBriefSource(tweet) || !tweet.context_research_attempted)) throw qualityError("短讯仅限对应选题的新热点，旧稿不可借短讯补发");
   let target = editorialTarget(brief ? "brief" : previous?.editorial_depth || "standard");
   const schema = {
@@ -742,6 +794,7 @@ export async function generateArticle(qualified, tweet, attempt = 0, previous = 
         "场景描述使用可核对的名词、颜色、数量、位置和可见动作，不写“环境整洁”“设施完善”“氛围紧张”等评价性形容。",
         "标题保留原文已提供的地点、机构或人物；社会与校园事件可以用学生、学校、工作单位等真实主体。原文未交代地名时不得补造中国或具体地点来满足分类。",
         "标题简洁概括新闻事实，不设字数门槛，不得复制整段原文，不得以日期开头。摘要、标题和正文不得三段重复。",
+        "无论是短讯、标准稿还是深度稿，content都必须按意思分段，并用一个空行分隔段落。短讯至少两段，标准稿至少三段，深度稿至少六段；不要一句话单独成段。每段围绕一个中心，以逗号连接紧密相关的分句，每段通常只保留一至两个句号，避免连续短句和频繁使用句号。",
         "对未核实说法准确注明来自发帖者、截图、目击者或公开通报；不要反复写“尚待核实”。只有真实媒体报道才能写据某媒体报道；仅原报道确实援引匿名人士时才可写据该媒体援引知情人士称。普通账号只能写某账号发文称，禁止虚构媒体、内部人员、知情人士或爆料渠道。",
         "必须检查是否为旧闻。只有原文或图片明确显示过去日期、周年、回顾、旧视频、旧照片或旧事件重新传播时，appears_old_news才为true，并在old_news_reason写明证据；不得凭模型记忆判断。",
         "政治报道必须区分已确认事实、具名媒体报道和分析推测。任免、调查只写材料直接支持的结论；缺席活动不等于失势，转发同一说法不是独立证实。",
@@ -762,18 +815,19 @@ export async function generateArticle(qualified, tweet, attempt = 0, previous = 
   const article = response;
   article.title = cleanText(article.title, Infinity); article.summary = cleanText(article.summary, Infinity); article.content = cleanText(article.content, Infinity); article.old_news_reason = cleanText(article.old_news_reason, 800);
   article.editorial_depth = brief ? "brief" : article.editorial_depth === "deep" ? "deep" : "standard";
+  article.content = formatNewsParagraphs(article.content, article.editorial_depth);
   article.depth_reason = cleanText(article.depth_reason, 1000);
   article.analysis_angles = Array.isArray(article.analysis_angles) ? article.analysis_angles.map((item) => cleanText(item, 300)).filter(Boolean).slice(0, 6) : [];
   target = editorialTarget(article.editorial_depth);
   if (article.appears_old_news) return { ...article, target };
-  if (!brief && (thinSource || article.editorial_depth === "deep" || article.source_sufficient !== true || bodyCharacterCount(article.content) < 600) && !tweet.context_research_attempted) {
+  if (!brief && (thinSource || backgroundResearchRequired || article.editorial_depth === "deep" || article.source_sufficient !== true || bodyCharacterCount(article.content) < 600) && !tweet.context_research_attempted) {
     tweet.context_research_attempted = true;
     try {
       tweet.context_research = await researchEvent(qualified, tweet, {request, readJson, model: OPENAI_MODEL, key: process.env.OPENAI_API_KEY, bearer: bearerToken(), editorialDepth: article.editorial_depth, analysisAngles: article.analysis_angles});
     } catch { tweet.context_research_error = "补充资料检索暂未完成；短讯只能依据已取得的原始材料"; }
     if (tweet.context_research) return generateArticle(qualified, tweet, 0, article);
   }
-  if (!brief && thinSource && !(tweet.context_research?.sources || []).length) throw qualityError("只有标题或一句话，未找到原始出处、上下游文字或可核对的同一事件资料");
+  if (!brief && (thinSource || backgroundResearchRequired) && !(tweet.context_research?.sources || []).length) throw qualityError("标题型或高影响线索未找到原始出处、上下游文字或可核对的同一事件背景");
   if (!brief && article.editorial_depth === "deep" && (tweet.context_research?.sources || []).length < 2) throw qualityError("深度选题缺少至少两个可点击资料来源，不能用推测扩写");
   if (!brief && article.editorial_depth === "deep" && article.source_sufficient === true && bodyCharacterCount(article.content) < 1500 && attempt < 1) {
     return generateArticle(qualified, tweet, attempt + 1, {...article, rewrite_reason: `已判定为深度选题，但正文仅${bodyCharacterCount(article.content)}个中文字符。请用已给来源回答analysis_angles中的问题，补充可核对的时间线、数据口径、因果与情景分析，写至1500–3000字；不得重复或虚构`});
@@ -886,7 +940,7 @@ export function buildPublishedArticle(tweet, qualified, article, publishedAt = n
       editorial_expansion_version: EXPANSION_VERSION, image_grounding_used: visualInputs(tweet).length > 0,
       context_research_attempted: tweet.context_research_attempted === true, context_research: tweet.context_research || null, editorial_review: article.editorial_review, body_character_count: bodyCharacterCount(article.content),
       image_evidence: article.image_evidence || [], image_count: visualInputs(tweet).length, old_news_checked: true, appears_old_news: false,
-      duplicate_check_days: source.topicKey === REN_ZHENGFEI_TOPIC ? 180 : 30,
+      duplicate_check_days: source.topicKey === REN_ZHENGFEI_TOPIC ? 180 : 730,
       duplicate_policy: source.topicKey === REN_ZHENGFEI_TOPIC ? "ren-event-v1" : "china-cross-source-event-v2",
       person_topic: source.topicKey === REN_ZHENGFEI_TOPIC ? "任正非" : "",
     },
@@ -1158,6 +1212,7 @@ export async function run() {
   requiredEnvironment();
   await loadChinaPeople(()=>supabase("china_political_people",{query:CHINA_PEOPLE_QUERY}),{force:true});
   const deletedUnusableBacklog = await cleanupUnusableBacklog();
+  const deletedDuplicateBacklog = await cleanupDuplicateBacklog();
   if (REPAIR_TODAY) {
     const report = await repairTodayBatch();
     report.chrt = await syncPublishedArticlesToChrt();
@@ -1181,7 +1236,7 @@ export async function run() {
   const recentArticles = await recentChinaArticles();
   const recentRenArticles = [];
   const results = [];
-  const counters = { fetched: collectedTweets.length, queuedRetries: Math.max(0, tweets.length - collectedTweets.length), qualified: 0, published: 0, duplicate: 0, filtered: 0, review_required: 0, retry_scheduled: 0, deleted_unusable: deletedUnusableBacklog, failed: 0 };
+  const counters = { fetched: collectedTweets.length, queuedRetries: Math.max(0, tweets.length - collectedTweets.length), qualified: 0, published: 0, duplicate: 0, filtered: 0, review_required: 0, retry_scheduled: 0, deleted_unusable: deletedUnusableBacklog, deleted_duplicate: deletedDuplicateBacklog, failed: 0 };
   const filteredReasons = {};
   let processingAttempts = 0;
   const processingDeadline = Date.now() + 40 * 60_000;
@@ -1225,7 +1280,7 @@ export async function run() {
     if (renSourceDuplicate) {
       const candidate = priorCandidate || await createCandidate(tweet, qualified);
       counters.duplicate += 1;
-      await patchCandidate(candidate?.id, { decision: "duplicate", decision_reason: `任正非时间线同一事件只保留一条：${renSourceDuplicate.id}`, article_id: renSourceDuplicate.id, processed_at: new Date().toISOString(), ai_payload: { ...(candidate?.ai_payload || {}), status: "duplicate_event", processing_version: PROCESSING_VERSION, duplicate_article_id: renSourceDuplicate.id, duplicate_policy: "ren-event-v1" } });
+      await discardDuplicateCandidate(candidate, renSourceDuplicate.id, `任正非时间线同一事件只保留一条：${renSourceDuplicate.id}；重复稿已删除`);
       results.push({ tweetId: tweet.id, status: "duplicate-ren-event", articleId: renSourceDuplicate.id });
       continue;
     }
@@ -1237,7 +1292,7 @@ export async function run() {
       const generated = await generateArticle(qualified, tweet);
       if (generated.appears_old_news) {
         counters.filtered += 1;
-        await patchCandidate(candidate?.id, { decision: "rejected", decision_reason: `旧闻检查未通过：${generated.old_news_reason || "原帖明确在回顾旧事件"}`, processed_at: new Date().toISOString(), ai_payload: { ...generated, status: "filtered_old_news", processing_version: PROCESSING_VERSION, automatic_publish_blocked: true } });
+        await discardUnusableCandidates([candidate], `旧闻检查未通过：${generated.old_news_reason || "原帖明确在回顾旧事件"}；旧稿已删除`);
         results.push({ tweetId: tweet.id, status: "old-news", reason: generated.old_news_reason || "原帖明确在回顾旧事件" });
         continue;
       }
@@ -1245,7 +1300,7 @@ export async function run() {
       const similar = renGeneratedDuplicate || await eventDuplicate(generated, recentArticles);
       if (similar) {
         counters.duplicate += 1;
-        await patchCandidate(candidate?.id, { decision: "duplicate", decision_reason: `与近30天跨栏目已发布内容重复：${similar.id}`, article_id: similar.id, processed_at: new Date().toISOString(), ai_payload: { ...generated, status: "duplicate", processing_version: PROCESSING_VERSION, duplicate_article_id: similar.id } });
+        await discardDuplicateCandidate(candidate, similar.id, `与近两年跨栏目已发布内容属于同一事件：${similar.id}；重复稿已删除`);
         results.push({ tweetId: tweet.id, status: "duplicate-content", articleId: similar.id });
         continue;
       }

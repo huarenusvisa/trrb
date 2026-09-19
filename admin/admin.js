@@ -282,9 +282,9 @@ async function loadCategories() {
 async function loadArticles() {
   const { data, error } = await supabaseClient
     .from("articles")
-    .select("id,title,category_name,status,published_at,created_at")
+    .select("id,title,category_name,status,published_at,created_at,metadata")
     .order("created_at", { ascending: false })
-    .limit(100);
+    .limit(1000);
 
   if (error) {
     console.error(error);
@@ -292,10 +292,11 @@ async function loadArticles() {
     return;
   }
 
-  const articles = data || [];
-  el("count-articles").textContent = articles.length;
-  el("count-published").textContent = articles.filter((item) => item.status === "published").length;
-  el("count-draft").textContent = articles.filter((item) => item.status === "draft").length;
+  const allArticles = data || [];
+  const articles = allArticles.filter((item) => !String(item.metadata?.collector || "").startsWith("china-hot-li-teacher"));
+  el("count-articles").textContent = allArticles.length;
+  el("count-published").textContent = allArticles.filter((item) => item.status === "published").length;
+  el("count-draft").textContent = allArticles.filter((item) => item.status === "draft").length;
 
   el("articles-tbody").innerHTML = articles.length
     ? articles.map(renderArticleRow).join("")

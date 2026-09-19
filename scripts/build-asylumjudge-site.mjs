@@ -34,6 +34,7 @@ await cp(join(root, 'styles.css'), join(output, 'styles.css'));
 await cp(join(root, 'trrb-logo-cropped.webp'), join(output, 'trrb-logo-cropped.webp'));
 await cp(join(root, 'asylumjudge', 'immigration-judges-proxy.js'), join(functions, 'immigration-judges.js'));
 await cp(join(root, 'asylumjudge', 'uscis-asylum-data-proxy.js'), join(functions, 'uscis-asylum-data.js'));
+await cp(join(root, 'data', 'uscis-asylum-snapshot.json'), join(functions, 'uscis-asylum-snapshot.json'));
 await cp(join(root, 'asylumjudge-community.html'), join(output, 'asylumjudge-community.html'));
 await cp(join(root, 'community'), join(output, 'community'), { recursive: true });
 await mkdir(join(output, 'assets'), { recursive: true });

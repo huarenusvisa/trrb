@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
+import { createRequire } from 'node:module';
 import { join } from 'node:path';
 
 const OUT = '.netlify/asylumjudge-bundle/public';
@@ -28,6 +29,20 @@ const runtimeNavigation = readFileSync('asylumjudge/domain-brand.js', 'utf8');
 assert.match(runtimeNavigation, /'zh-Hans': \{ uscis: '查面谈'/, 'runtime navigation must retain the Chinese USCIS interview entry');
 assert.match(runtimeNavigation, /\['uscis', 'judges', 'courts', 'states', 'nationality'\]/, 'runtime navigation must render USCIS before the court-data entries');
 assert.match(runtimeNavigation, /uscis: '\/uscis-asylum-data\/'/, 'runtime navigation must send interview users to the canonical USCIS dashboard');
+const require = createRequire(import.meta.url);
+const apiPath = join(process.cwd(), '.netlify', 'asylumjudge-bundle', 'netlify', 'functions', 'uscis-asylum-data.js');
+const originalFetch = globalThis.fetch;
+globalThis.fetch = async () => { throw new Error('simulated shared API outage'); };
+const uscisApi = require(apiPath);
+const fallbackOverviewResponse = await uscisApi.handler({ httpMethod: 'GET', queryStringParameters: { mode: 'overview' } });
+const fallbackOverview = JSON.parse(fallbackOverviewResponse.body);
+assert.equal(fallbackOverviewResponse.statusCode, 200, 'USCIS API must return its bundled snapshot when the shared API is unavailable');
+assert.ok(fallbackOverview.offices.length >= 11, 'USCIS fallback must retain the complete published asylum-office directory');
+const fallbackOfficeResponse = await uscisApi.handler({ httpMethod: 'GET', queryStringParameters: { mode: 'office', office: 'New York' } });
+const fallbackOffice = JSON.parse(fallbackOfficeResponse.body);
+assert.equal(fallbackOfficeResponse.statusCode, 200, 'USCIS fallback must serve individual office trends');
+assert.ok(fallbackOffice.periods.length >= 1, 'USCIS fallback must include trend periods for New York');
+globalThis.fetch = originalFetch;
 for (const prefix of ['', ...locales]) {
   const home = read(join(prefix, 'index.html'));
   const base = prefix ? `/${prefix}` : '';

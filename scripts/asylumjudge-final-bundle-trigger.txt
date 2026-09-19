@@ -26,3 +26,5 @@
 2026-09-19: restore the visible homepage interview-data entry and publish the shared USCIS office dashboard at the canonical route on both sites.
 
 2026-09-19: retain the USCIS interview-rate entry after the runtime language navigation rebuilds the production header.
+
+2026-09-19: bundle the complete USCIS office snapshot as an automatic fallback when the shared production API is unavailable.

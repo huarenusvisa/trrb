@@ -359,7 +359,8 @@ for (const [slug, topicName] of Object.entries(category.topics)) {
       const title = String(article.title || '').trim();
       const summary = String(article.summary || '').trim();
       const content = String(article.content || '').trim();
-      if (!title || !summary || content.length < 800 || content.length > 1700) return;
+      const hanCharacters = (content.match(/\p{Script=Han}/gu) || []).length;
+      if (!title || !summary || hanCharacters < 800 || hanCharacters > 1500) return;
       if (titleSet.has(title) || batchTitles.has(title)) return;
       batchTitles.add(title);
       rows.push({

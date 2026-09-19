@@ -34,7 +34,7 @@
       '/us-politics': '美国时政',
       '/us-crime': '美国警情',
       '/china-officialdom': '中国官场',
-      '/immigration': '移民美国',
+      '/immigration': '移民美国知识库',
       '/asylum': '庇护百科',
       '/ice/news': 'ICE执法动态'
     };

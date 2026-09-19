@@ -67,9 +67,12 @@ for (const [asset, version] of coreVersions) {
   html = html.replace(re, `$1?v=${version}$2`);
 }
 
-// Keep the homepage primary navigation on the immigration news category. The
-// separate knowledge-center cards intentionally continue to use /immigrate/.
-html = html.replace('<a href="/immigrate/">移民美国</a>', '<a href="/immigration">移民美国</a>');
+// The primary immigration entry is the knowledge base. Keep the database
+// category name internal; do not turn the public navigation back into a news
+// archive during performance normalization.
+html = html
+  .replace('<a href="/immigration">移民美国</a>', '<a href="/immigrate/">移民美国知识库</a>')
+  .replace('<a href="/immigrate/">移民美国</a>', '<a href="/immigrate/">移民美国知识库</a>');
 
 // Remove avoidable internal redirects from the high-traffic homepage shell.
 html = html
@@ -84,7 +87,7 @@ const canonicalCategories = new Map([
   ['美国时政', '/us-politics'],
   ['美国警情', '/us-crime'],
   ['中国官场', '/china-officialdom'],
-  ['移民美国', '/immigration'],
+  ['移民美国', '/immigrate/'],
   ['庇护百科', '/asylum']
 ]);
 for (const [name, route] of canonicalCategories) {

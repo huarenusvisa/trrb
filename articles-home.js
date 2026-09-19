@@ -196,6 +196,7 @@ function mergeArticles(live, archived) {
 }
 
 function categoryUrl(category) {
+  if (String(category || "").trim() === "移民美国") return "/immigrate/";
   return CATEGORY_ROUTES[String(category || "").trim()] || "/";
 }
 function articleUrl(article) {
@@ -351,7 +352,7 @@ function findLeadArticle(categoryArticles) { return categoryArticles.find(hasRea
 function renderCategorySection(category, articles) {
   const isPolitics = category === "美国警情";
   const isEnforcement = ["ICE执法动态", "ICE执法", "驱逐快报"].includes(category);
-  const displayCategory = isPolitics ? "中国政治" : isEnforcement ? "美国执法与警情" : category === "热门头条" ? "中国热门头条" : category;
+  const displayCategory = isPolitics ? "中国政治" : isEnforcement ? "美国执法与警情" : category === "热门头条" ? "中国热门头条" : category === "移民美国" ? "移民美国知识库" : category;
   const categoryArticles = articles
     .filter((item) => isPolitics ? (item.editorial_topics || []).includes("china-politics") : isEnforcement ? ["美国警情", "ICE执法动态", "ICE执法", "驱逐快报"].includes(normalizeCategory(item.category)) || item.topic_key === "ice" : normalizeCategory(item.category) === category)
     .filter(isFreshHomepageArticle)

@@ -211,7 +211,6 @@
   function bind() {
     $('login-open').addEventListener('click', () => $('auth-dialog').showModal());
     $('publish-open').addEventListener('click', () => openComposer(state.category || 'uscis_interview'));
-    $('hero-publish').addEventListener('click', () => openComposer('uscis_interview'));
     $('auth-form').addEventListener('submit', handleAuth);
     $('composer-form').addEventListener('submit', handleCompose);
     $('post-category').addEventListener('change', renderStructuredFields);

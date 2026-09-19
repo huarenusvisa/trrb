@@ -4,6 +4,7 @@
   const esc = (value) => String(value ?? "").replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[char]));
   const decisionLabels = {
     processing: "自动加工中", published: "已发布", review_required: "需要重新加工",
+    pending_review: "待人工审核", ready_for_review: "待人工审核",
     failed: "加工失败", rejected: "已过滤", duplicate: "重复内容",
     taken_down: "已下架", deleted: "已删除", legacy_archived: "历史归档",
   };
@@ -44,7 +45,16 @@
 
   async function load() {
     el("china-hot-pool-message").textContent = "正在读取内容池…";
-    try { const data = await api({ action: "list", include_history: el("china-pool-history")?.checked === true }); state.items = data.items || []; render(); el("china-hot-pool-message").textContent = `已读取 ${state.items.length} 条记录。`; }
+    try {
+      const includeHistory = el("china-pool-history")?.checked === true;
+      const data = await api({ action: "list", include_history: includeHistory });
+      const terminal = new Set(["published", "rejected", "deleted", "duplicate", "legacy_archived"]);
+      state.items = (data.items || []).filter((item) => includeHistory || !terminal.has(item.decision));
+      render();
+      el("china-hot-pool-message").textContent = includeHistory
+        ? `已读取 ${state.items.length} 条处理历史。`
+        : `待处理 ${state.items.length} 条；已发布和其他已完成记录已自动隐藏。`;
+    }
     catch (error) { el("china-hot-pool-message").textContent = `读取失败：${error.message}`; }
   }
 

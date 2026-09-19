@@ -32,6 +32,7 @@ await cp(join(root, 'immigration-judge-approval-rate'), join(output, 'immigratio
 await cp(join(root, 'styles.css'), join(output, 'styles.css'));
 await cp(join(root, 'trrb-logo-cropped.webp'), join(output, 'trrb-logo-cropped.webp'));
 await cp(join(root, 'asylumjudge', 'immigration-judges-proxy.js'), join(functions, 'immigration-judges.js'));
+await cp(join(root, 'asylumjudge', 'uscis-asylum-data-proxy.js'), join(functions, 'uscis-asylum-data.js'));
 await cp(join(root, 'asylumjudge-community.html'), join(output, 'asylumjudge-community.html'));
 await cp(join(root, 'community'), join(output, 'community'), { recursive: true });
 await mkdir(join(output, 'assets'), { recursive: true });
@@ -57,6 +58,8 @@ const localizedRewrites = localePrefixes.flatMap((locale) => [
   `/${locale}/methodology /methodology/ 301!`,
   `/${locale}/methodology/ /methodology/ 301!`,
   `/${locale}/judge-backgrounds /${locale}/judge-backgrounds/ 301!`,
+  `/${locale}/uscis-asylum-data /uscis-asylum-data/ 301!`,
+  `/${locale}/uscis-asylum-data/ /uscis-asylum-data/ 301!`,
   `/${locale}/judge /immigration-judge-approval-rate/detail.html 200`,
   `/${locale}/court /immigration-judge-approval-rate/court-detail.html 200`
 ]).join('\n');
@@ -81,6 +84,7 @@ https://www.immigrationjudge.us/* https://asylumjudge.com/:splat 301!
 /asylumjudge/index.html / 301!
 /asylumjudge/trrb.html / 301!
 /asylumjudge/judge-backgrounds.html /judge-backgrounds/ 301!
+/asylumjudge/uscis-data.html /uscis-asylum-data/ 301!
 /asylumjudge-community.html /community/ 301!
 /hot-headlines https://trrb.net/hot-headlines 301!
 /us-politics https://trrb.net/us-politics 301!
@@ -111,6 +115,8 @@ https://www.immigrationjudge.us/* https://asylumjudge.com/:splat 301!
 /compare /immigration-judge-approval-rate/compare.html 200
 /compare/ /immigration-judge-approval-rate/compare.html 200
 /judge-backgrounds /judge-backgrounds/ 301!
+/uscis-asylum-data /uscis-asylum-data/ 301!
+/uscis-asylum-data/ /asylumjudge/uscis-data.html 200!
 /china /nationalities/china--ch/ 301!
 /methodology /methodology/ 301!
 /community /asylumjudge-community.html 200!

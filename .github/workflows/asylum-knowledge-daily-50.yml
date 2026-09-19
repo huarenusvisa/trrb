@@ -1,0 +1,59 @@
+name: AsylumJudge 每日庇护知识50篇
+
+on:
+  schedule:
+    - cron: "15 13 * * *"
+    - cron: "15 14 * * *"
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/immigration-knowledge-daily.mjs"
+      - ".github/workflows/asylum-knowledge-daily-50.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: asylumjudge-daily-knowledge-50
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    env:
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      OPENAI_MODEL: ${{ secrets.OPENAI_MODEL }}
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      KNOWLEDGE_ONLY_TOPIC: asylum
+      KNOWLEDGE_ARTICLES_PER_TOPIC: "50"
+      KNOWLEDGE_HEALTH_WINDOW_HOURS: "30"
+      KNOWLEDGE_BATCH_SIZE: "5"
+      KNOWLEDGE_BATCH_MAX_OUTPUT_TOKENS: "16000"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: 纽约上午9点执行门控
+        id: gate
+        shell: bash
+        run: |
+          if [[ "${{ github.event_name }}" != "schedule" || "$(TZ=America/New_York date +%H)" == "09" ]]; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "run=false" >> "$GITHUB_OUTPUT"
+          fi
+      - name: 检查密钥
+        if: steps.gate.outputs.run == 'true'
+        shell: bash
+        run: |
+          test -n "$OPENAI_API_KEY"
+          test -n "$SUPABASE_URL"
+          test -n "$SUPABASE_SERVICE_ROLE_KEY"
+      - name: 生成并发布最近30小时共50篇庇护知识
+        if: steps.gate.outputs.run == 'true'
+        run: node scripts/immigration-knowledge-daily.mjs humanitarian
+

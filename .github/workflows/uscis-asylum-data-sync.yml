@@ -1,0 +1,49 @@
+name: USCIS庇护官方数据同步
+
+on:
+  schedule:
+    - cron: "35 11 * * 1-5"
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/uscis-asylum-data-sync.mjs"
+      - "scripts/uscis-asylum-xlsx.py"
+      - ".github/workflows/uscis-asylum-data-sync.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: uscis-asylum-official-data
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install openpyxl
+      - name: 校验官方工作簿发现逻辑
+        run: node scripts/uscis-asylum-data-sync.mjs --self-test
+      - name: 拉取USCIS官方工作簿并写入数据库
+        run: node scripts/uscis-asylum-data-sync.mjs
+      - name: 保存最新官方快照
+        shell: bash
+        run: |
+          if git diff --quiet -- data/uscis-asylum-snapshot.json; then exit 0; fi
+          git config user.name "trrb-data-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/uscis-asylum-snapshot.json
+          git commit -m "data: refresh USCIS asylum statistics"
+          git push

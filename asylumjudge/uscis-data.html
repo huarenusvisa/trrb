@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>USCIS庇护面谈通过率查询｜各庇护办公室官方数据</title>
+  <meta name="description" content="查询USCIS主动庇护申请、面谈、批准、拒绝或转庭、行政结案及积压数据，比较纽约、纽瓦克、洛杉矶等庇护办公室。">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <link rel="canonical" href="https://asylumjudge.com/uscis-asylum-data/">
+  <meta property="og:title" content="USCIS庇护面谈通过率｜AsylumJudge">
+  <meta property="og:description" content="基于USCIS官方Asylum Division工作簿比较全美庇护办公室结果、积压和趋势。">
+  <meta property="og:url" content="https://asylumjudge.com/uscis-asylum-data/">
+  <meta property="og:image" content="https://asylumjudge.com/asylumjudge/og-logo.png">
+  <link rel="icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/asylumjudge/site.css?v=41">
+  <link rel="stylesheet" href="/asylumjudge/uscis-data.css?v=1">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Dataset","name":"USCIS庇护办公室统计数据","description":"USCIS Asylum Division公开工作簿的办公室级主动庇护统计展示。","url":"https://asylumjudge.com/uscis-asylum-data/","creator":{"@type":"GovernmentOrganization","name":"U.S. Citizenship and Immigration Services"},"isBasedOn":"https://www.uscis.gov/tools/reports-and-studies/immigration-and-citizenship-data"}</script>
+</head>
+<body>
+  <a class="skip-link" href="#uscis-main">跳到主要内容</a>
+  <header class="site-header">
+    <div class="shell header-inner">
+      <a class="brand" href="/" aria-label="AsylumJudge首页"><img class="brand-lockup" src="/asylumjudge/logo.svg" alt="AsylumJudge.com"></a>
+      <nav class="home-nav" aria-label="主要导航">
+        <a class="active" href="/uscis-asylum-data/">查面谈</a>
+        <a href="/#judge-search">查法官</a><a href="/judge-backgrounds">法官背景</a><a href="/courts">查法院</a><a href="/states">各州数据</a><a href="/nationality">各国国籍批准率</a><a href="/tools">移民工具</a>
+      </nav>
+    </div>
+  </header>
+  <main id="uscis-main" class="uscis-page">
+    <section class="shell uscis-heading">
+      <div><span>USCIS AFFIRMATIVE ASYLUM DATA</span><h1>USCIS庇护面谈通过率</h1><p>主动庇护办公室数据与移民法庭裁决数据分开统计。页面只展示USCIS公开工作簿中的真实记录。</p></div>
+      <a id="uscis-source-link" class="source-link" href="https://www.uscis.gov/tools/reports-and-studies/immigration-and-citizenship-data" rel="noopener noreferrer">查看USCIS官方来源 →</a>
+    </section>
+    <div id="uscis-status" class="shell uscis-status" role="status" aria-live="polite">正在读取USCIS官方数据…</div>
+    <section class="shell uscis-dashboard" aria-busy="true">
+      <div class="uscis-main-card">
+        <div class="card-head"><div><span>OFFICE TREND</span><h2 id="office-title">各庇护办公室趋势</h2><small id="release-period">读取中</small></div><label>庇护办公室<select id="office-select" aria-label="选择庇护办公室"></select></label></div>
+        <div id="office-chart" class="office-chart" aria-label="所选庇护办公室月度结果趋势"></div>
+        <div class="outcome-key"><span><i class="grant"></i>批准</span><span><i class="refer"></i>拒绝/转庭</span><span><i class="admin"></i>行政结案/撤销</span></div>
+      </div>
+      <aside class="uscis-summary">
+        <div class="card-head"><div><span>NATIONAL OVERVIEW</span><h2>全美主动庇护数据</h2></div><b id="official-badge">USCIS官方</b></div>
+        <div class="rate-card"><span>实体结果批准占比</span><strong id="national-rate">—</strong><small>批准 ÷（批准＋拒绝/转庭）</small></div>
+        <dl class="national-counts"><div><dt>收到申请</dt><dd id="national-received">—</dd></div><div><dt>完成案件</dt><dd id="national-completed">—</dd></div><div><dt>最新积压</dt><dd id="national-pending">—</dd></div><div><dt>完成面谈</dt><dd id="national-interviews">—</dd></div></dl>
+        <p class="scope-note">USCIS工作簿把“Deny/Referral”合并公布；这里不把行政结案计算为拒绝，也不把申请数量当作人数。</p>
+      </aside>
+    </section>
+    <section class="shell office-directory">
+      <div class="section-title"><div><span>ASYLUM OFFICES</span><h2>庇护办公室数据比较</h2></div><input id="office-filter" type="search" placeholder="搜索 New York、Newark、Los Angeles" aria-label="搜索庇护办公室"></div>
+      <div class="table-wrap"><table><thead><tr><th>庇护办公室</th><th>收到申请</th><th>完成案件</th><th>最新积压</th><th>批准</th><th>拒绝/转庭</th><th>批准占比</th></tr></thead><tbody id="office-rows"><tr><td colspan="7">正在读取…</td></tr></tbody></table></div>
+    </section>
+    <section class="shell methodology-note"><h2>数据口径</h2><p>本页使用USCIS Asylum Division官方季度工作簿。批准占比按 Grant ÷（Grant + Deny/Referral）计算；Admin Close/Dismissal不进入分母。部分小数量被USCIS以“*”抑制，汇总可能略低于实际值。历史数据不能预测个案结果，也不构成法律意见。</p><a href="/methodology/">查看完整统计方法 →</a></section>
+  </main>
+  <footer><div class="shell footer-inner"><div><b>AsylumJudge.com</b><span>USCIS与EOIR数据分别统计</span></div><p>官方来源 · 透明口径 · 持续更新</p></div></footer>
+  <script src="/asylumjudge/uscis-data.js?v=1" defer></script>
+</body>
+</html>

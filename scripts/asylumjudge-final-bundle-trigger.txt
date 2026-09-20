@@ -28,3 +28,5 @@
 2026-09-19: retain the USCIS interview-rate entry after the runtime language navigation rebuilds the production header.
 
 2026-09-19: bundle the complete USCIS office snapshot as an automatic fallback when the shared production API is unavailable.
+
+2026-09-20: expose USCIS office data through a browser-safe public API route instead of a client-visible Netlify function path.

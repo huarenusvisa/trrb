@@ -117,6 +117,7 @@ https://www.immigrationjudge.us/* https://asylumjudge.com/:splat 301!
 /compare /immigration-judge-approval-rate/compare.html 200
 /compare/ /immigration-judge-approval-rate/compare.html 200
 /judge-backgrounds /judge-backgrounds/ 301!
+/api/uscis-asylum-data /.netlify/functions/uscis-asylum-data 200!
 /uscis-asylum-data /uscis-asylum-data/ 301!
 /uscis-asylum-data/ /asylumjudge/uscis-data.html 200!
 /china /nationalities/china--ch/ 301!

@@ -26,9 +26,12 @@ assert.match(zhKeyword, /FAQPage/, 'Chinese keyword page must contain explanator
 const rootHome = read('index.html');
 const enHome = read('en/index.html');
 const runtimeNavigation = readFileSync('asylumjudge/domain-brand.js', 'utf8');
+const uscisClient = readFileSync('asylumjudge/uscis-data.js', 'utf8');
 assert.match(runtimeNavigation, /'zh-Hans': \{ uscis: '查面谈'/, 'runtime navigation must retain the Chinese USCIS interview entry');
 assert.match(runtimeNavigation, /\['uscis', 'judges', 'courts', 'states', 'nationality'\]/, 'runtime navigation must render USCIS before the court-data entries');
 assert.match(runtimeNavigation, /uscis: '\/uscis-asylum-data\/'/, 'runtime navigation must send interview users to the canonical USCIS dashboard');
+assert.match(uscisClient, /\/api\/uscis-asylum-data\?mode=overview/, 'USCIS client must use the browser-safe public API route');
+assert.doesNotMatch(uscisClient, /fetch\([^\n]*\.netlify\/functions/, 'USCIS client must not expose a function path that browser blockers can reject');
 const require = createRequire(import.meta.url);
 const apiPath = join(process.cwd(), '.netlify', 'asylumjudge-bundle', 'netlify', 'functions', 'uscis-asylum-data.js');
 const originalFetch = globalThis.fetch;
@@ -67,6 +70,7 @@ assert.match(hardening, /stopImmediatePropagation/, 'language hardening must pre
 assert.match(hardening, /\/en\/asylum-judge-rating\//, 'language hardening must map the English keyword page');
 
 const redirects = read('_redirects');
+assert.match(redirects, /^\/api\/uscis-asylum-data \/\.netlify\/functions\/uscis-asylum-data 200!$/m, 'USCIS public API route must proxy internally to its Netlify function');
 for (const line of redirects.split('\n')) {
   const [from, to, status] = line.trim().split(/\s+/);
   if (/^30[1278]!?$/.test(status || '')) {

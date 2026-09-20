@@ -32,7 +32,7 @@ function renderChart(periods) {
 async function loadOffice(office) {
   $('#office-title').textContent = `${office} 庇护办公室趋势`;
   try {
-    const data = await request(`/.netlify/functions/uscis-asylum-data?mode=office&office=${encodeURIComponent(office)}`);
+    const data = await request(`/api/uscis-asylum-data?mode=office&office=${encodeURIComponent(office)}`);
     renderChart(data.periods || []);
   } catch {
     $('#office-chart').innerHTML = '<p>该办公室趋势暂时无法读取。</p>';
@@ -41,7 +41,7 @@ async function loadOffice(office) {
 
 async function load() {
   try {
-    const data = await request('/.netlify/functions/uscis-asylum-data?mode=overview');
+    const data = await request('/api/uscis-asylum-data?mode=overview');
     offices = data.offices || [];
     const national = data.national || {};
     $('#national-rate').textContent = pct(national.grant_rate);

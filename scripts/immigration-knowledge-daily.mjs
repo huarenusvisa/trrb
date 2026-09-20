@@ -1,5 +1,11 @@
 import fs from 'node:fs/promises';
 import crypto from 'node:crypto';
+import {
+  newYorkDateKey,
+  plannedDailyTarget,
+  publicationSlot,
+  rotatingAngleOffset
+} from './immigration-knowledge-plan.mjs';
 
 const categoryKey = process.argv[2];
 const targetPerTopic = Math.max(
@@ -8,7 +14,7 @@ const targetPerTopic = Math.max(
 );
 const onlyTopic = String(process.env.KNOWLEDGE_ONLY_TOPIC || '').trim();
 const batchSize = Math.max(1, Math.min(8, Number(process.env.KNOWLEDGE_BATCH_SIZE || 5)));
-const windowHours = Math.max(24, Number(process.env.KNOWLEDGE_HEALTH_WINDOW_HOURS || 30));
+const windowHours = Math.max(48, Number(process.env.KNOWLEDGE_HEALTH_WINDOW_HOURS || 48));
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 const OPENAI_MODEL = process.env.OPENAI_MODEL || 'gpt-5-mini';
 const SUPABASE_URL = String(process.env.SUPABASE_URL || '').replace(/\/+$/, '');
@@ -313,10 +319,14 @@ async function generateBatch(topicName, angles, avoidTitles) {
   throw lastError;
 }
 
-const cutoff = new Date(Date.now() - windowHours * 3600000).toISOString();
-const recent = await sb(
+const runStartedAt = new Date();
+const publicationDate = newYorkDateKey(runStartedAt);
+const plannedTarget = plannedDailyTarget(runStartedAt, targetPerTopic);
+const cutoff = new Date(runStartedAt.getTime() - windowHours * 3600000).toISOString();
+const recentWindow = await sb(
   `articles?select=title,category_name,published_at&status=eq.published&published_at=gte.${encodeURIComponent(cutoff)}&order=published_at.desc&limit=3000`
 );
+const recent = (recentWindow || []).filter(article => newYorkDateKey(article.published_at) === publicationDate);
 const historical = await sb(
   'articles?select=title&status=eq.published&order=published_at.desc&limit=5000'
 );
@@ -337,16 +347,17 @@ const results = {};
 for (const [slug, topicName] of Object.entries(category.topics)) {
   if (onlyTopic && slug !== onlyTopic) continue;
   const already = recentTopicCount(topicName);
-  let missing = Math.max(0, targetPerTopic - already);
+  let missing = Math.max(0, plannedTarget - already);
   results[slug] = { topic: topicName, before: already, requested: missing, published: 0 };
 
   if (!missing) {
-    console.log(`[knowledge] ${category.name}/${topicName} already meets ${targetPerTopic}`);
+    console.log(`[knowledge] ${category.name}/${topicName} already meets today's planned ${plannedTarget}/${targetPerTopic}`);
     continue;
   }
 
   const pool = anglePool(slug, topicName);
-  let angleOffset = already;
+  const dayOffset = rotatingAngleOffset(publicationDate, pool.length);
+  let angleOffset = dayOffset + already;
 
   for (let round = 1; round <= 12 && missing > 0; round += 1) {
     const requestCount = Math.min(missing, batchSize);
@@ -363,6 +374,7 @@ for (const [slug, topicName] of Object.entries(category.topics)) {
       if (!title || !summary || hanCharacters < 800 || hanCharacters > 1500) return;
       if (titleSet.has(title) || batchTitles.has(title)) return;
       batchTitles.add(title);
+      const articlePlanIndex = already + results[slug].published + rows.length;
       rows.push({
         id: crypto.randomUUID(),
         title,
@@ -373,7 +385,16 @@ for (const [slug, topicName] of Object.entries(category.topics)) {
         status: 'published',
         visibility: 'public',
         author: '唐人日报编辑部',
-        metadata: { immigration_category: category.name, immigration_topic: topicName, writing_angle: angles[index], official_source_url: topicName === '政治庇护' ? ASYLUM_OFFICIAL_SOURCE : null, generated_by: 'immigration-knowledge-daily' },
+        metadata: {
+          immigration_category: category.name,
+          immigration_topic: topicName,
+          writing_angle: angles[index],
+          daily_plan_date: publicationDate,
+          daily_plan_slot: publicationSlot(articlePlanIndex)?.label,
+          daily_plan_order: articlePlanIndex + 1,
+          official_source_url: topicName === '政治庇护' ? ASYLUM_OFFICIAL_SOURCE : null,
+          generated_by: 'immigration-knowledge-daily'
+        },
         published_at: new Date().toISOString()
       });
     });
@@ -389,20 +410,22 @@ for (const [slug, topicName] of Object.entries(category.topics)) {
       console.log(`[knowledge] ${category.name}/${topicName} published ${rows.length}, round ${round}`);
     }
 
-    missing = Math.max(0, targetPerTopic - recentTopicCount(topicName));
+    missing = Math.max(0, plannedTarget - recentTopicCount(topicName));
     angleOffset += angles.length;
   }
 
   results[slug].after = recentTopicCount(topicName);
-  if (results[slug].after < targetPerTopic) {
-    throw new Error(`${category.name}/${topicName} remains ${results[slug].after}/${targetPerTopic}`);
+  if (results[slug].after < plannedTarget) {
+    throw new Error(`${category.name}/${topicName} remains ${results[slug].after}/${plannedTarget} for ${publicationDate}`);
   }
 }
 
 console.log(JSON.stringify({
   category: categoryKey,
   category_name: category.name,
-  expected_per_topic: targetPerTopic,
+  publication_date_new_york: publicationDate,
+  daily_target_per_topic: targetPerTopic,
+  planned_target_now: plannedTarget,
   topic_count: Object.keys(category.topics).length,
   total_published: totalPublished,
   results

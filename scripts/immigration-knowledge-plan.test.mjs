@@ -34,10 +34,13 @@ const generator = fs.readFileSync('scripts/immigration-knowledge-daily.mjs', 'ut
 assert.match(workflow, /cron: "17 12 \* \* \*"/);
 assert.match(workflow, /cron: "17 13 \* \* \*"/);
 assert.match(workflow, /cancel-in-progress: false/);
+assert.match(workflow, /KNOWLEDGE_BATCH_SIZE: "2"/);
 assert.match(workflow, /纽约上午8点时区门控/);
 assert.doesNotMatch(workflow, /date \+%H/);
 assert.match(generator, /daily_plan_date: publicationDate/);
 assert.match(generator, /daily_plan_slot: publicationSlot\(articlePlanIndex\)/);
 assert.match(generator, /daily_plan_order: articlePlanIndex \+ 1/);
+assert.match(generator, /Math\.ceil\(missing \/ batchSize\) \* 3/);
+assert.match(generator, /rejected\.push\(\{ title/);
 
 console.log('immigration knowledge publication plan checks passed');

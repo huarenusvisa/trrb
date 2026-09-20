@@ -319,6 +319,87 @@ async function generateBatch(topicName, angles, avoidTitles) {
   throw lastError;
 }
 
+async function reviseArticleLength(article, topicName, angle) {
+  const originalContent = String(article.content || '').trim();
+  const originalHanCharacters = (originalContent.match(/\p{Script=Han}/gu) || []).length;
+  if (originalHanCharacters >= 800 && originalHanCharacters <= 1500) return article;
+
+  const schema = {
+    type: 'object',
+    additionalProperties: false,
+    required: ['sections'],
+    properties: {
+      sections: {
+        type: 'array',
+        minItems: 8,
+        maxItems: 8,
+        items: {
+          type: 'object',
+          additionalProperties: false,
+          required: ['heading', 'body'],
+          properties: {
+            heading: { type: 'string' },
+            body: { type: 'string' }
+          }
+        }
+      }
+    }
+  };
+
+  let bestContent = originalContent;
+  let bestHanCharacters = originalHanCharacters;
+  for (let attempt = 1; attempt <= 3; attempt += 1) {
+    const prompt = `你是唐人日报“移民美国”专业知识库编辑。请重写下面这篇“${topicName}”知识文章的正文，写作角度是“${angle}”。\n\n标题：${article.title}\n摘要：${article.summary}\n原稿（目前约${bestHanCharacters}个汉字）：\n${bestContent}\n\n硬性要求：\n1. 只返回8个有明确小标题的正文段落，每段正文写140至190个中文汉字；\n2. 合并后正文必须达到900至1400个中文汉字，不能把标点、英文或标题计入字数；\n3. 补足法律概念、判断因素、证据准备、程序节点、风险、常见误区和实务提醒，但不得编造案件、费用、处理时间、通过率或政策变化；\n4. 不改变原稿的核心结论，不写成针对个人案件的法律意见；\n5. 涉及会变化的信息时，提醒读者以USCIS、EOIR或主管机关最新规则为准；\n6. 每段内容完整，避免空泛重复，仅返回符合JSON Schema的数据。`;
+
+    try {
+      const response = await fetch('https://api.openai.com/v1/responses', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${OPENAI_API_KEY}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          model: OPENAI_MODEL,
+          input: prompt,
+          max_output_tokens: 8000,
+          text: {
+            format: {
+              type: 'json_schema',
+              name: 'immigration_article_sections',
+              strict: true,
+              schema
+            }
+          }
+        }),
+        signal: AbortSignal.timeout(120000)
+      });
+      if (!response.ok) throw new Error(`OpenAI ${response.status}: ${await response.text()}`);
+      const data = await response.json();
+      const parsed = JSON.parse(outputText(data));
+      if (!Array.isArray(parsed.sections) || parsed.sections.length !== 8) {
+        throw new Error(`Expected 8 sections, received ${parsed.sections?.length || 0}`);
+      }
+      const revisedContent = parsed.sections
+        .map(section => `## ${String(section.heading || '').trim()}\n\n${String(section.body || '').trim()}`)
+        .join('\n\n');
+      const revisedHanCharacters = (revisedContent.match(/\p{Script=Han}/gu) || []).length;
+      if (revisedHanCharacters > bestHanCharacters && revisedHanCharacters <= 1500) {
+        bestContent = revisedContent;
+        bestHanCharacters = revisedHanCharacters;
+      }
+      if (revisedHanCharacters >= 800 && revisedHanCharacters <= 1500) {
+        console.log(`[knowledge] ${topicName} repaired article length ${originalHanCharacters}->${revisedHanCharacters}`);
+        return { ...article, content: revisedContent };
+      }
+      console.warn(`[knowledge] ${topicName} length repair attempt ${attempt}/3 produced ${revisedHanCharacters} Han characters`);
+    } catch (error) {
+      console.warn(`[knowledge] ${topicName} length repair attempt ${attempt}/3 failed: ${error.message}`);
+    }
+  }
+
+  return { ...article, content: bestContent };
+}
+
 const runStartedAt = new Date();
 const publicationDate = newYorkDateKey(runStartedAt);
 const plannedTarget = plannedDailyTarget(runStartedAt, targetPerTopic);
@@ -368,18 +449,19 @@ for (const [slug, topicName] of Object.entries(category.topics)) {
     const batchTitles = new Set();
     const rejected = [];
 
-    articles.forEach((article, index) => {
+    for (let index = 0; index < articles.length; index += 1) {
+      const article = await reviseArticleLength(articles[index], topicName, angles[index]);
       const title = String(article.title || '').trim();
       const summary = String(article.summary || '').trim();
       const content = String(article.content || '').trim();
       const hanCharacters = (content.match(/\p{Script=Han}/gu) || []).length;
       if (!title || !summary || hanCharacters < 800 || hanCharacters > 1500) {
         rejected.push({ title: title || '(missing title)', hanCharacters, reason: 'length' });
-        return;
+        continue;
       }
       if (titleSet.has(title) || batchTitles.has(title)) {
         rejected.push({ title, hanCharacters, reason: 'duplicate-title' });
-        return;
+        continue;
       }
       batchTitles.add(title);
       const articlePlanIndex = already + results[slug].published + rows.length;
@@ -405,7 +487,7 @@ for (const [slug, topicName] of Object.entries(category.topics)) {
         },
         published_at: new Date().toISOString()
       });
-    });
+    }
 
     if (rejected.length) {
       console.warn(`[knowledge] ${category.name}/${topicName} rejected ${rejected.length}/${articles.length} in round ${round}: ${JSON.stringify(rejected)}`);

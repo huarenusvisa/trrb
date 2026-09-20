@@ -32,8 +32,8 @@ jobs:
       KNOWLEDGE_ONLY_TOPIC: asylum
       KNOWLEDGE_ARTICLES_PER_TOPIC: "50"
       KNOWLEDGE_HEALTH_WINDOW_HOURS: "48"
-      KNOWLEDGE_BATCH_SIZE: "5"
-      KNOWLEDGE_BATCH_MAX_OUTPUT_TOKENS: "16000"
+      KNOWLEDGE_BATCH_SIZE: "2"
+      KNOWLEDGE_BATCH_MAX_OUTPUT_TOKENS: "12000"
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

@@ -2,13 +2,15 @@ name: AsylumJudge 每日庇护知识50篇
 
 on:
   schedule:
-    - cron: "15 13 * * *"
-    - cron: "15 14 * * *"
+    # 与纽约华人会计师财税知识同步：纽约上午 8 点执行；双 cron 兼容夏令时和冬令时。
+    - cron: "17 12 * * *"
+    - cron: "17 13 * * *"
   workflow_dispatch:
   push:
     branches: [main]
     paths:
       - "scripts/immigration-knowledge-daily.mjs"
+      - "scripts/immigration-knowledge-plan.mjs"
       - ".github/workflows/asylum-knowledge-daily-50.yml"
 
 permissions:
@@ -16,7 +18,7 @@ permissions:
 
 concurrency:
   group: asylumjudge-daily-knowledge-50
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   publish:
@@ -29,7 +31,7 @@ jobs:
       SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
       KNOWLEDGE_ONLY_TOPIC: asylum
       KNOWLEDGE_ARTICLES_PER_TOPIC: "50"
-      KNOWLEDGE_HEALTH_WINDOW_HOURS: "30"
+      KNOWLEDGE_HEALTH_WINDOW_HOURS: "48"
       KNOWLEDGE_BATCH_SIZE: "5"
       KNOWLEDGE_BATCH_MAX_OUTPUT_TOKENS: "16000"
     steps:
@@ -37,15 +39,22 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
-      - name: 纽约上午9点执行门控
+      - name: 纽约上午8点时区门控
         id: gate
         shell: bash
         run: |
-          if [[ "${{ github.event_name }}" != "schedule" || "$(TZ=America/New_York date +%H)" == "09" ]]; then
-            echo "run=true" >> "$GITHUB_OUTPUT"
+          offset="$(TZ=America/New_York date +%z)"
+          schedule="${{ github.event.schedule }}"
+          if [[ "${{ github.event_name }}" != "schedule" ]]; then
+            run=true
+          elif [[ "$schedule" == "17 12 * * *" && "$offset" == "-0400" ]]; then
+            run=true
+          elif [[ "$schedule" == "17 13 * * *" && "$offset" == "-0500" ]]; then
+            run=true
           else
-            echo "run=false" >> "$GITHUB_OUTPUT"
+            run=false
           fi
+          echo "run=$run" >> "$GITHUB_OUTPUT"
       - name: 检查密钥
         if: steps.gate.outputs.run == 'true'
         shell: bash
@@ -53,6 +62,6 @@ jobs:
           test -n "$OPENAI_API_KEY"
           test -n "$SUPABASE_URL"
           test -n "$SUPABASE_SERVICE_ROLE_KEY"
-      - name: 生成并发布最近30小时共50篇庇护知识
+      - name: 按五个编辑板块生成并补足当日50篇庇护知识
         if: steps.gate.outputs.run == 'true'
         run: node scripts/immigration-knowledge-daily.mjs humanitarian

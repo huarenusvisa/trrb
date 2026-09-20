@@ -35,7 +35,8 @@ assert.match(uscisClient, /\/api\/uscis-asylum-data\?mode=overview/, 'USCIS clie
 assert.doesNotMatch(uscisClient, /fetch\([^\n]*\.netlify\/functions/, 'USCIS client must not expose a function path that browser blockers can reject');
 assert.match(uscisClient, /snapshotOverview\(\)/, 'USCIS client must render its page snapshot when all network data routes are blocked');
 assert.match(uscisClient, /snapshotOffice\(office\)/, 'USCIS client must retain individual office trends without a network request');
-assert.match(uscisPageSource, /window\.USCIS_ASYLUM_SNAPSHOT\s*=\s*\{/, 'USCIS page must inline its official snapshot without a blockable data request');
+assert.match(uscisPageSource, /<script id="uscis-snapshot" type="application\/json">\s*\{/, 'USCIS page must inline its official snapshot as non-executable JSON without a blockable data request');
+assert.match(uscisClient, /JSON\.parse\(document\.querySelector\('#uscis-snapshot'\)/, 'USCIS client must read the non-executable inline snapshot from the DOM');
 assert.ok((uscisPageSource.match(/"office":/g) || []).length >= 30, 'USCIS inline snapshot must include every published office-period row');
 const require = createRequire(import.meta.url);
 const apiPath = join(process.cwd(), '.netlify', 'asylumjudge-bundle', 'netlify', 'functions', 'uscis-asylum-data.js');

@@ -3,7 +3,12 @@ const fmt = (value) => Number(value || 0).toLocaleString('zh-CN');
 const pct = (value) => value == null ? '—' : `${Number(value).toFixed(1)}%`;
 const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
 let offices = [];
-const snapshot = window.USCIS_ASYLUM_SNAPSHOT || null;
+let snapshot = null;
+try {
+  snapshot = JSON.parse(document.querySelector('#uscis-snapshot')?.textContent || 'null');
+} catch {
+  snapshot = null;
+}
 const num = (value) => Number(value || 0);
 
 async function request(url) {

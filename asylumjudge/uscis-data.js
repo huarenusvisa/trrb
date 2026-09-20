@@ -3,11 +3,55 @@ const fmt = (value) => Number(value || 0).toLocaleString('zh-CN');
 const pct = (value) => value == null ? '—' : `${Number(value).toFixed(1)}%`;
 const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
 let offices = [];
+const snapshot = window.USCIS_ASYLUM_SNAPSHOT || null;
+const num = (value) => Number(value || 0);
 
 async function request(url) {
   const response = await fetch(url, { signal: AbortSignal.timeout(20000) });
   if (!response.ok) throw new Error(`HTTP ${response.status}`);
   return response.json();
+}
+
+function snapshotOffices() {
+  const byOffice = new Map();
+  for (const row of snapshot?.offices || []) {
+    const office = String(row.office || '').trim();
+    if (!office) continue;
+    const current = byOffice.get(office) || {
+      office, applications_received: 0, cases_completed: 0, cases_pending: 0,
+      interviews_completed: 0, grants: 0, deny_referrals: 0, admin_close_dismissals: 0,
+      period_start: row.period, period_end: row.period, has_suppressed_values: false
+    };
+    for (const field of ['applications_received', 'cases_completed', 'interviews_completed', 'grants', 'deny_referrals', 'admin_close_dismissals']) current[field] += num(row[field]);
+    if (String(row.period) >= String(current.period_end)) {
+      current.period_end = row.period;
+      current.cases_pending = row.cases_pending == null ? current.cases_pending : num(row.cases_pending);
+    }
+    if (String(row.period) < String(current.period_start)) current.period_start = row.period;
+    current.has_suppressed_values ||= Boolean(row.has_suppressed_values);
+    byOffice.set(office, current);
+  }
+  return [...byOffice.values()].map((row) => {
+    const denominator = row.grants + row.deny_referrals;
+    return { ...row, grant_rate: denominator ? row.grants / denominator * 100 : null };
+  }).sort((a, b) => b.cases_completed - a.cases_completed || a.office.localeCompare(b.office));
+}
+
+function snapshotOverview() {
+  if (!snapshot) return null;
+  const officeSummaries = snapshotOffices();
+  const national = { applications_received: 0, cases_completed: 0, cases_pending: 0, interviews_completed: 0, grants: 0, deny_referrals: 0, admin_close_dismissals: 0, offices: officeSummaries.length };
+  for (const row of officeSummaries) for (const field of Object.keys(national)) if (field !== 'offices') national[field] += num(row[field]);
+  const denominator = national.grants + national.deny_referrals;
+  national.grant_rate = denominator ? national.grants / denominator * 100 : null;
+  return { source: snapshot.source || {}, methodology: snapshot.methodology || {}, offices: officeSummaries, national, storage: 'page_snapshot' };
+}
+
+function snapshotOffice(office) {
+  if (!snapshot) return null;
+  const key = String(office || '').trim().toLowerCase();
+  const periods = (snapshot.offices || []).filter((row) => String(row.office || '').trim().toLowerCase() === key).sort((a, b) => String(a.period).localeCompare(String(b.period)));
+  return periods.length ? { periods, storage: 'page_snapshot' } : null;
 }
 
 function renderTable(query = '') {
@@ -32,7 +76,14 @@ function renderChart(periods) {
 async function loadOffice(office) {
   $('#office-title').textContent = `${office} 庇护办公室趋势`;
   try {
-    const data = await request(`/api/uscis-asylum-data?mode=office&office=${encodeURIComponent(office)}`);
+    let data;
+    try {
+      data = await request(`/api/uscis-asylum-data?mode=office&office=${encodeURIComponent(office)}`);
+      if (!Array.isArray(data.periods) || !data.periods.length) throw new Error('empty office trend');
+    } catch {
+      data = snapshotOffice(office);
+      if (!data) throw new Error('office trend unavailable');
+    }
     renderChart(data.periods || []);
   } catch {
     $('#office-chart').innerHTML = '<p>该办公室趋势暂时无法读取。</p>';
@@ -41,7 +92,16 @@ async function loadOffice(office) {
 
 async function load() {
   try {
-    const data = await request('/api/uscis-asylum-data?mode=overview');
+    let data;
+    let usedPageSnapshot = false;
+    try {
+      data = await request('/api/uscis-asylum-data?mode=overview');
+      if (!Array.isArray(data.offices) || !data.offices.length) throw new Error('empty office directory');
+    } catch {
+      data = snapshotOverview();
+      usedPageSnapshot = true;
+      if (!data?.offices?.length) throw new Error('USCIS office data unavailable');
+    }
     offices = data.offices || [];
     const national = data.national || {};
     $('#national-rate').textContent = pct(national.grant_rate);
@@ -50,7 +110,7 @@ async function load() {
     $('#national-pending').textContent = fmt(national.cases_pending);
     $('#national-interviews').textContent = fmt(national.interviews_completed);
     $('#release-period').textContent = `FY ${data.source?.fiscal_year || '—'} · 截至 ${data.source?.period_end || '—'}`;
-    $('#uscis-status').textContent = `官方数据更新至 ${data.source?.period_end || '最近公开期'}；共 ${offices.length} 个庇护办公室。`;
+    $('#uscis-status').textContent = `数据更新至 ${data.source?.period_end || '最近公开期'}；共 ${offices.length} 个庇护办公室${usedPageSnapshot ? '（已使用页面内置数据）' : ''}。`;
     if (data.source?.url) $('#uscis-source-link').href = data.source.url;
     $('#office-select').innerHTML = offices.map((row) => `<option value="${esc(row.office)}">${esc(row.office)}</option>`).join('');
     renderTable();

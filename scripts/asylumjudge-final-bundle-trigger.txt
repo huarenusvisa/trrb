@@ -34,3 +34,5 @@
 2026-09-20: ship the complete USCIS office snapshot with the page so tables and trends render even when every browser data request is blocked.
 
 2026-09-20: inline the complete USCIS office snapshot inside the HTML so no separate data resource can be blocked.
+
+2026-09-20: store the inline USCIS snapshot as inert application/json so strict browsers can read it without authorizing inline script execution.

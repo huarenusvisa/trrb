@@ -37,6 +37,7 @@ assert.match(uscisClient, /snapshotOverview\(\)/, 'USCIS client must render its 
 assert.match(uscisClient, /snapshotOffice\(office\)/, 'USCIS client must retain individual office trends without a network request');
 assert.match(uscisPageSource, /<script id="uscis-snapshot" type="application\/json">\s*\{/, 'USCIS page must inline its official snapshot as non-executable JSON without a blockable data request');
 assert.match(uscisClient, /JSON\.parse\(document\.querySelector\('#uscis-snapshot'\)/, 'USCIS client must read the non-executable inline snapshot from the DOM');
+assert.match(uscisClient, /data\.source\?\.url && sourceLink/, 'USCIS client must not fail when the optional official-source link is absent');
 assert.ok((uscisPageSource.match(/"office":/g) || []).length >= 30, 'USCIS inline snapshot must include every published office-period row');
 const require = createRequire(import.meta.url);
 const apiPath = join(process.cwd(), '.netlify', 'asylumjudge-bundle', 'netlify', 'functions', 'uscis-asylum-data.js');

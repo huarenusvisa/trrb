@@ -116,7 +116,8 @@ async function load() {
     $('#national-interviews').textContent = fmt(national.interviews_completed);
     $('#release-period').textContent = `FY ${data.source?.fiscal_year || '—'} · 截至 ${data.source?.period_end || '—'}`;
     $('#uscis-status').textContent = `数据更新至 ${data.source?.period_end || '最近公开期'}；共 ${offices.length} 个庇护办公室${usedPageSnapshot ? '（已使用页面内置数据）' : ''}。`;
-    if (data.source?.url) $('#uscis-source-link').href = data.source.url;
+    const sourceLink = $('#uscis-source-link');
+    if (data.source?.url && sourceLink) sourceLink.href = data.source.url;
     $('#office-select').innerHTML = offices.map((row) => `<option value="${esc(row.office)}">${esc(row.office)}</option>`).join('');
     renderTable();
     if (offices[0]) loadOffice(offices.find((row) => row.office === 'New York')?.office || offices[0].office);

@@ -39,7 +39,7 @@ export const IMMIGRATION_KNOWLEDGE_ROUTES: ImmigrationKnowledgeCategory[] = [
     name: "家庭移民",
     description: "唐人日报家庭移民知识中心，系统整理婚姻绿卡、亲属移民、I-130、I-485、领事程序、担保与面谈相关知识。",
     topics: [
-      ["citizen-spouse", "美国公民婚姻绿卡"], ["f2a", "绿卡配偶F2A"], ["k1", "K-1未婚夫/妻"], ["parents", "父母移民"],
+      ["i130", "I-130亲属移民申请"], ["citizen-spouse", "美国公民婚姻绿卡"], ["f2a", "绿卡配偶F2A"], ["k1", "K-1未婚夫/妻"], ["parents", "父母移民"],
       ["children", "子女移民"], ["siblings", "兄弟姐妹移民"], ["cr1-ir1", "CR-1/IR-1配偶移民"], ["family-preference", "F1/F2B/F3/F4优先类别"]
     ].map(([slug, name]) => ({ slug, name }))
   },
@@ -57,7 +57,7 @@ export const IMMIGRATION_KNOWLEDGE_ROUTES: ImmigrationKnowledgeCategory[] = [
     name: "境内身份转换",
     description: "唐人日报境内身份转换知识中心，系统整理美国境内身份延期、转换、I-539、身份衔接与常见合规风险。",
     topics: [
-      ["b2-to-f1", "B-2转F-1"], ["f1-to-h1b", "F-1转H-1B"], ["j1-waiver", "J-1豁免"], ["extension", "身份延期"],
+      ["uscis-policy", "USCIS政策与表格"], ["b2-to-f1", "B-2转F-1"], ["f1-to-h1b", "F-1转H-1B"], ["j1-waiver", "J-1豁免"], ["extension", "身份延期"],
       ["reinstatement", "身份恢复"], ["i485", "I-485境内调整身份"], ["ead", "EAD工卡"], ["advance-parole", "Advance Parole旅行许可"]
     ].map(([slug, name]) => ({ slug, name }))
   },

@@ -5,13 +5,15 @@ import { readFile } from 'node:fs/promises';
 const read = (path) => readFile(new URL(`../${path}`, import.meta.url), 'utf8');
 
 test('public immigration navigation opens the knowledge base', async () => {
-  const [home, article, listing, redirects, optimizer, legacyEntry] = await Promise.all([
+  const [home, article, listing, redirects, optimizer, legacyEntry, channels, categoryApi] = await Promise.all([
     read('index.html'),
     read('article.html'),
     read('listing.html'),
     read('_redirects'),
     read('scripts/optimize-homepage-performance.mjs'),
-    read('immigration-entry.js')
+    read('immigration-entry.js'),
+    read('config/channels.js'),
+    read('netlify/functions/public-category-page.js')
   ]);
 
   for (const html of [home, article, listing]) {
@@ -22,6 +24,8 @@ test('public immigration navigation opens the knowledge base', async () => {
   assert.doesNotMatch(redirects, /^\/immigration \/listing\.html/m);
   assert.doesNotMatch(optimizer, /<a href="\/immigrate\/">移民美国<\/a>', '<a href="\/immigration">移民美国<\/a>/);
   assert.match(legacyEntry, /window\.location\.replace\('\/immigrate\/'\)/);
+  assert.doesNotMatch(channels, /name:\s*["']移民美国["']/);
+  assert.doesNotMatch(categoryApi, /\["移民美国",\s*\{\s*path:\s*"\/immigration"/);
 });
 
 test('community opens directly on the boards without the promotional hero', async () => {

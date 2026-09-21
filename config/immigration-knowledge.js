@@ -28,7 +28,7 @@ window.TRRB_IMMIGRATION_KNOWLEDGE = {
     {
       key:"family",slug:"family",nameZh:"家庭移民",nameEn:"Family-Based Immigration",description:"通过美国公民或永久居民亲属关系申请移民签证、境内绿卡或未婚夫妻签证。",
       items:[
-        {name:"美国公民婚姻绿卡",slug:"citizen-spouse",summary:"美国公民为境内或境外配偶申请绿卡"},{name:"绿卡配偶F2A",slug:"f2a",summary:"永久居民为配偶及未成年子女申请移民"},{name:"K-1未婚夫/妻",slug:"k1",summary:"美国公民未婚夫妻赴美结婚签证"},{name:"父母移民",slug:"parents",summary:"年满21岁的美国公民为父母申请绿卡"},{name:"子女移民",slug:"children",summary:"公民或绿卡持有者为子女申请移民"},{name:"兄弟姐妹移民",slug:"siblings",summary:"年满21岁的美国公民申请兄弟姐妹"},{name:"CR-1/IR-1配偶移民",slug:"cr1-ir1",summary:"境外配偶通过领事程序获得移民签证"},{name:"F1/F2B/F3/F4优先类别",slug:"family-preference",summary:"家庭优先类别、排期与优先日期"}
+        {name:"I-130亲属移民申请",slug:"i130",summary:"美国公民或永久居民为合资格亲属提交移民申请"},{name:"美国公民婚姻绿卡",slug:"citizen-spouse",summary:"美国公民为境内或境外配偶申请绿卡"},{name:"绿卡配偶F2A",slug:"f2a",summary:"永久居民为配偶及未成年子女申请移民"},{name:"K-1未婚夫/妻",slug:"k1",summary:"美国公民未婚夫妻赴美结婚签证"},{name:"父母移民",slug:"parents",summary:"年满21岁的美国公民为父母申请绿卡"},{name:"子女移民",slug:"children",summary:"公民或绿卡持有者为子女申请移民"},{name:"兄弟姐妹移民",slug:"siblings",summary:"年满21岁的美国公民申请兄弟姐妹"},{name:"CR-1/IR-1配偶移民",slug:"cr1-ir1",summary:"境外配偶通过领事程序获得移民签证"},{name:"F1/F2B/F3/F4优先类别",slug:"family-preference",summary:"家庭优先类别、排期与优先日期"}
       ],
       keywords:["婚绿","婚姻绿卡","配偶绿卡","家庭移民","f2a","k1","k-1","cr1","cr-1","ir1","ir-1","父母移民","子女移民","兄弟姐妹移民","i-130","i130","亲属移民","家庭优先","移民签证","nvc","ds-260","经济担保","i-864"]
     },
@@ -42,7 +42,7 @@ window.TRRB_IMMIGRATION_KNOWLEDGE = {
     {
       key:"change-status",slug:"change-status",nameZh:"境内身份转换",nameEn:"Change of Status in the U.S.",description:"人在美国境内时，处理非移民身份转换、延期、恢复、调整身份、工卡与旅行许可。",
       items:[
-        {name:"B-2转F-1",slug:"b2-to-f1",summary:"旅游身份在美国境内转换为学生身份"},{name:"F-1转H-1B",slug:"f1-to-h1b",summary:"学生身份、OPT与H-1B工作身份衔接"},{name:"J-1豁免",slug:"j1-waiver",summary:"解除两年回国居住要求后规划身份"},{name:"身份延期",slug:"extension",summary:"在现有非移民身份到期前申请延长停留"},{name:"身份恢复",slug:"reinstatement",summary:"F-1失去身份后申请恢复合法学生身份"},{name:"I-485境内调整身份",slug:"i485",summary:"人在美国境内申请永久居民身份"},{name:"EAD工卡",slug:"ead",summary:"基于特定资格申请美国就业授权"},{name:"Advance Parole旅行许可",slug:"advance-parole",summary:"身份申请待审期间申请出境与返美许可"}
+        {name:"USCIS政策与表格",slug:"uscis-policy",summary:"查看移民局规则、表格版本、生效日期与适用范围"},{name:"B-2转F-1",slug:"b2-to-f1",summary:"旅游身份在美国境内转换为学生身份"},{name:"F-1转H-1B",slug:"f1-to-h1b",summary:"学生身份、OPT与H-1B工作身份衔接"},{name:"J-1豁免",slug:"j1-waiver",summary:"解除两年回国居住要求后规划身份"},{name:"身份延期",slug:"extension",summary:"在现有非移民身份到期前申请延长停留"},{name:"身份恢复",slug:"reinstatement",summary:"F-1失去身份后申请恢复合法学生身份"},{name:"I-485境内调整身份",slug:"i485",summary:"人在美国境内申请永久居民身份"},{name:"EAD工卡",slug:"ead",summary:"基于特定资格申请美国就业授权"},{name:"Advance Parole旅行许可",slug:"advance-parole",summary:"身份申请待审期间申请出境与返美许可"}
       ],
       keywords:["身份转换","change of status","境内转身份","b2转f1","b-2转f-1","f1转h1b","j1豁免","两年回国要求","i-539","i539","身份延期","延期停留","身份恢复","reinstatement","i-485","i485","调整身份","ead","工卡","i-765","i765","advance parole","旅行许可","回美证","i-131","i131","身份逾期","非法停留","cap-gap"]
     },

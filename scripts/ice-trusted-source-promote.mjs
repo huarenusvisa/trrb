@@ -2,8 +2,10 @@
 import process from "node:process";
 import { fileURLToPath } from "node:url";
 import iceClassifier from "../netlify/functions/_shared/ice-enforcement.js";
+import officialRouting from "../netlify/functions/_shared/official-content-routing.js";
 
 const { isIceEnforcementText, isIceEnforcementEvidence } = iceClassifier;
+const { routeOfficialContent } = officialRouting;
 const REQUIRED = ["SUPABASE_URL", "SUPABASE_SERVICE_ROLE_KEY"];
 const OFFICIAL_TYPES = /^(official|government|agency)$/i;
 const OFFICIAL_HANDLES = /^(icegov|dhsgov|hsi_hq|cbp|usbpchief|uscis|dojcrimdiv|usmarshalshq|fbi|ero[a-z0-9_]*|ice[a-z0-9_]*|dhs[a-z0-9_]*|cbp[a-z0-9_]*|usbp[a-z0-9_]*|uscis[a-z0-9_]*)$/i;
@@ -68,20 +70,27 @@ async function main() {
       stale += 1;
       continue;
     }
-    if (!isIceEnforcementText(story.title, story.summary, story.content)) {
+    const evidence = await evidenceFor(story);
+    const payload = story.ai_payload && typeof story.ai_payload === "object" ? story.ai_payload : {};
+    const allOfficialEvidence = evidence.filter(official);
+    const officialRoute = allOfficialEvidence.length
+      ? routeOfficialContent(story.title, story.summary, story.content, allOfficialEvidence)
+      : null;
+    const iceStory = isIceEnforcementText(story.title, story.summary, story.content);
+    if (!iceStory && !officialRoute) {
       await sb("ice_stories", { method: "PATCH", query: { id: `eq.${story.id}` }, body: {
         status: "rejected", human_review_status: "rejected", scheduled_at: null,
-        decision_reason: `${story.decision_reason || ""}；ICE分类防火墙：正文不是明确的ICE执法内容，禁止进入ICE发布链`,
+        decision_reason: `${story.decision_reason || ""}；官方内容分流未命中美国时政、美国警情、ICE执法或移民知识库，禁止自动发布`,
         updated_at: nowIso()
       }, prefer: "return=minimal" });
       rejectedNonIce += 1;
       continue;
     }
-    const evidence = await evidenceFor(story);
     if (!editorialReady(story, evidence)) { incomplete += 1; continue; }
-    const officialEvidence = evidence.filter((post) => official(post) && isIceEnforcementEvidence(post.source_text, post.source_username));
-    const trustedMediaEvidence = evidence.filter((post) => trustedMedia(post) && isIceEnforcementEvidence(post.source_text, post.source_username));
-    const payload = story.ai_payload && typeof story.ai_payload === "object" ? story.ai_payload : {};
+    const officialEvidence = officialRoute
+      ? allOfficialEvidence.filter((post) => officialRoute.key !== "ice" || isIceEnforcementEvidence(post.source_text, post.source_username))
+      : [];
+    const trustedMediaEvidence = iceStory ? evidence.filter((post) => trustedMedia(post) && isIceEnforcementEvidence(post.source_text, post.source_username)) : [];
     const mediaScoreReady = Number(story.total_score || 0) >= AUTO_PUBLISH_SCORE;
     const trustedEvidence = officialEvidence.length ? officialEvidence : (mediaScoreReady ? trustedMediaEvidence : []);
     if (!trustedEvidence.length) {
@@ -111,17 +120,18 @@ async function main() {
         trusted_source_candidate: true,
         trusted_source_types: [...new Set(trustedEvidence.map((post) => post.source_type))],
         trusted_source_accounts: sources,
+        official_content_route: officialRoute,
         trusted_source_verified_at: nowIso(),
         trusted_source_risk_blocked: blockedByRisk
       },
-      decision_reason: `${story.decision_reason || ""}；${blockedByRisk ? (isOfficial ? "官方来源但存在风险标记，转人工审核" : "可信媒体内容存在未确认或风险标记，转人工审核") : (isOfficial ? "已核验ICE/DHS等官方来源，允许自动发布" : `可信媒体且评分达到${AUTO_PUBLISH_SCORE}，允许自动发布`)}`,
+      decision_reason: `${story.decision_reason || ""}；${blockedByRisk ? (isOfficial ? "官方来源但存在风险标记，转人工审核" : "可信媒体内容存在未确认或风险标记，转人工审核") : (isOfficial ? `已核验一级官方来源，自动分流至${officialRoute?.categoryName || "ICE执法动态"}` : `可信媒体且评分达到${AUTO_PUBLISH_SCORE}，允许自动发布`)}`,
       updated_at: nowIso()
     }, prefer: "return=minimal" });
     if (blockedByRisk) riskBlocked += 1;
     else if (isOfficial) autoApproved += 1;
     else trustedMediaApproved += 1;
   }
-  console.log(JSON.stringify({ stage: "ice-official-auto-publish-v8-tier1-context", checked: Array.isArray(rows) ? rows.length : 0, official_auto_approved: autoApproved, trusted_media_auto_approved: trustedMediaApproved, official_risk_blocked: riskBlocked, rejected_non_ice: rejectedNonIce, manual_non_official: manual, incomplete_or_not_chinese: incomplete, stale }, null, 2));
+  console.log(JSON.stringify({ stage: "official-content-auto-routing-v9", checked: Array.isArray(rows) ? rows.length : 0, official_auto_approved: autoApproved, trusted_media_auto_approved: trustedMediaApproved, official_risk_blocked: riskBlocked, rejected_unroutable: rejectedNonIce, manual_non_official: manual, incomplete_or_not_chinese: incomplete, stale }, null, 2));
 }
 
 export { editorialReady, blocksAutomaticPublish };

@@ -2,6 +2,11 @@ name: 栏目CMS与生产调度数据库迁移
 
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "supabase/migrations/20260921160000_retire_immigration_project_and_route_content.sql"
+      - ".github/workflows/category-cms-migrate.yml"
 
 permissions:
   contents: read
@@ -69,6 +74,7 @@ jobs:
           psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f supabase/migrations/20260725_retire_deport_and_refine_ice.sql
           psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f supabase/migrations/20260725_trump_topic_and_media_cleanup.sql
           psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f supabase/migrations/20260730_ice_supabase_cron_dispatch.sql
+          psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f supabase/migrations/20260921160000_retire_immigration_project_and_route_content.sql
 
       - name: Verify ICE category and Supabase Cron
         env:
@@ -80,7 +86,7 @@ jobs:
           test -n "${SUPABASE_SERVICE_ROLE_KEY:-}"
 
           status="$(curl -sS -o /tmp/categories.json -w '%{http_code}' \
-            "${SUPABASE_URL%/}/rest/v1/categories?select=slug,name,is_active,show_in_navigation,show_on_homepage,auto_fetch,ai_rewrite,auto_publish,include_in_sitemap,include_in_google_news,include_in_rss&or=(slug.eq.ice,slug.eq.deport,slug.eq.trump,name.eq.%E9%A9%B1%E9%80%90%E5%BF%AB%E6%8A%A5)" \
+            "${SUPABASE_URL%/}/rest/v1/categories?select=slug,name,is_active,show_in_navigation,show_on_homepage,auto_fetch,ai_rewrite,auto_publish,include_in_sitemap,include_in_google_news,include_in_rss&or=(slug.eq.ice,slug.eq.deport,slug.eq.trump,slug.eq.immigration,name.eq.%E9%A9%B1%E9%80%90%E5%BF%AB%E6%8A%A5,name.eq.%E7%A7%BB%E6%B0%91%E7%BE%8E%E5%9B%BD)" \
             -H "apikey: ${SUPABASE_SERVICE_ROLE_KEY}" \
             -H "Authorization: Bearer ${SUPABASE_SERVICE_ROLE_KEY}")"
           cat /tmp/categories.json
@@ -104,6 +110,7 @@ jobs:
           const ice = rows.find(x => String(x.slug).toLowerCase() === 'ice');
           const deport = rows.find(x => String(x.slug).toLowerCase() === 'deport' || x.name === '驱逐快报');
           const trump = rows.find(x => String(x.slug).toLowerCase() === 'trump');
+          const immigration = rows.find(x => String(x.slug).toLowerCase() === 'immigration' || x.name === '移民美国');
           if (!ice || ice.name !== 'ICE执法动态' || !ice.is_active || !ice.show_in_navigation || !ice.show_on_homepage) {
             throw new Error('ICE执法动态栏目未正确启用');
           }
@@ -113,5 +120,6 @@ jobs:
           if (trump && (trump.is_active || trump.show_in_navigation || trump.show_on_homepage || trump.include_in_sitemap || trump.include_in_rss)) {
             throw new Error('Trump独立栏目尚未下线');
           }
-          console.log('ICE栏目和Supabase Cron调度器验证完成。');
+          if (immigration) throw new Error('移民美国旧项目尚未从后台删除');
+          console.log('旧移民美国项目已删除；ICE栏目和Supabase Cron调度器验证完成。');
           NODE

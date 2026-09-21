@@ -4,7 +4,7 @@ import process from "node:process";
 const BASE = String(process.env.SUPABASE_URL || "").replace(/\/+$/, "");
 const KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || "";
 const WINDOW_HOURS = Number(process.env.ICE_DEDUPE_HOURS || 720);
-const PUBLISHED_HISTORY_DAYS = Number(process.env.ICE_PUBLISHED_DEDUPE_DAYS || 30);
+const PUBLISHED_HISTORY_DAYS = Number(process.env.ICE_PUBLISHED_DEDUPE_DAYS || 730);
 
 function requireEnv() { if (!BASE || !KEY) throw new Error("缺少 SUPABASE_URL 或 SUPABASE_SERVICE_ROLE_KEY"); }
 function headers(prefer = "") { return { apikey: KEY, Authorization: `Bearer ${KEY}`, "Content-Type": "application/json", ...(prefer ? { Prefer: prefer } : {}) }; }

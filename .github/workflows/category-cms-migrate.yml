@@ -57,16 +57,15 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          if [[ -z "${GITHUB_DISPATCH_TOKEN:-}" ]]; then
-            echo "缺少ICE_GITHUB_DISPATCH_TOKEN（或GH_PAT/PERSONAL_ACCESS_TOKEN）。" >&2
-            echo "该Fine-grained PAT只需访问huarenusvisa/trrb，并授予Actions: Read and write。" >&2
-            exit 1
-          fi
           existing_secret_id="$(psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -Atc \
             "select id from vault.decrypted_secrets where name='github_actions_dispatch_token' limit 1;")"
           if [[ -n "$existing_secret_id" ]]; then
             echo "GitHub workflow token already exists in Supabase Vault; reusing it."
           else
+            if [[ -z "${GITHUB_DISPATCH_TOKEN:-}" ]]; then
+              echo "Supabase Vault尚无调度密钥，且缺少ICE_GITHUB_DISPATCH_TOKEN（或GH_PAT/PERSONAL_ACCESS_TOKEN）。" >&2
+              exit 1
+            fi
             psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -v dispatch_token="$GITHUB_DISPATCH_TOKEN" \
               -c "select vault.create_secret(:'dispatch_token', 'github_actions_dispatch_token', 'Fine-grained GitHub token for Supabase Cron to dispatch ICE production workflow');"
           fi

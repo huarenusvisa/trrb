@@ -36,6 +36,14 @@ function recentEnough(story) { const time = new Date(story.last_seen_at || story
 function hasChinese(value) { return /[\u3400-\u9fff]/.test(String(value || "")); }
 function mediaCount(evidence) { return evidence.reduce((count, post) => { const media = Array.isArray(post.media) ? post.media : []; return count + media.filter((item) => item?.url || item?.preview_image_url).length; }, 0); }
 function editorialReady(story, evidence) { const payload = story.ai_payload && typeof story.ai_payload === "object" ? story.ai_payload : {}; const officialAutoCheck = evidence.some(official) && payload.automatic_old_news_check_passed === true; const oldNewsConfirmed = payload.manual_old_news_confirmation === true || officialAutoCheck; const count = (String(story.content || "").match(/[\u3400-\u9fff]/gu) || []).length; return ACCEPTED_EDITORIAL_VERSIONS.has(payload.translation_version) && payload.translated_to_chinese === true && payload.old_news_checked === true && oldNewsConfirmed && payload.appears_old_news !== true && count >= 300 && count <= 1500 && hasChinese(story.title) && hasChinese(story.content) && (mediaCount(evidence) === 0 || payload.image_grounding_used === true); }
+function blocksAutomaticPublish(story, payload, isOfficial) {
+  if (payload.appears_old_news === true) return true;
+  // A Tier-1 agency post is the primary evidence. Generic conflict/privacy/model-risk
+  // flags remain in the audit record but must not silently defeat official direct publish.
+  if (isOfficial) return false;
+  const hasUnconfirmedClaims = Array.isArray(payload.unconfirmed_claims) && payload.unconfirmed_claims.length > 0;
+  return Boolean(story.conflict_detected || story.privacy_risk || story.fabrication_risk || hasUnconfirmedClaims);
+}
 
 async function main() {
   requireEnv();
@@ -80,8 +88,7 @@ async function main() {
     }
     const isOfficial = officialEvidence.length > 0;
     const sources = [...new Set(trustedEvidence.map((post) => post.source_username).filter(Boolean))];
-    const hasUnconfirmedClaims = Array.isArray(payload.unconfirmed_claims) && payload.unconfirmed_claims.length > 0;
-    const blockedByRisk = Boolean(story.conflict_detected || story.privacy_risk || story.fabrication_risk || payload.appears_old_news || (!isOfficial && hasUnconfirmedClaims));
+    const blockedByRisk = blocksAutomaticPublish(story, payload, isOfficial);
     await sb("ice_stories", { method: "PATCH", query: { id: `eq.${story.id}` }, body: {
       status: blockedByRisk ? "pending_review" : "approved",
       human_review_status: blockedByRisk ? "required" : (isOfficial ? "not_required_official" : "not_required_trusted_media"),
@@ -110,5 +117,5 @@ async function main() {
   console.log(JSON.stringify({ stage: "ice-official-auto-publish-v8-tier1-context", checked: Array.isArray(rows) ? rows.length : 0, official_auto_approved: autoApproved, trusted_media_auto_approved: trustedMediaApproved, official_risk_blocked: riskBlocked, rejected_non_ice: rejectedNonIce, manual_non_official: manual, incomplete_or_not_chinese: incomplete, stale }, null, 2));
 }
 
-export { editorialReady };
+export { editorialReady, blocksAutomaticPublish };
 if (process.argv[1] === fileURLToPath(import.meta.url)) main().catch((error) => { console.error("ICE官方信源自动发布分流失败：", error); process.exitCode = 1; });

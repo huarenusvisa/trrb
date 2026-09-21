@@ -17,6 +17,7 @@ begin
   article_text := coalesce(new.title, '') || ' ' || coalesce(new.summary, '') || ' ' || left(coalesce(new.content, ''), 2400);
   new.category_id := null;
   new.topic_key := null;
+  new.metadata := coalesce(new.metadata, '{}'::jsonb) - 'human_category_override';
 
   if article_text ~* '((^|[^A-Za-z])ICE([^A-Za-z]|$|执法|拘|抓|逮|遣|驱|突|搜)|移民及海关执法局|移民与海关执法局|移民和海关执法局)'
      and article_text ~* '(抓捕|拘捕|逮捕|拘留|羁押|遣返|递解|驱逐出境|突袭|搜捕|通缉|执法行动|查获|arrest|detain|deport|removal|raid|warrant)' then
@@ -72,6 +73,13 @@ set category_id = null, updated_at = now()
 where category_id in (
   select id from public.categories where name = '移民美国' or lower(slug) = 'immigration'
 );
+
+-- Retire old manual overrides before deleting the category. Otherwise the
+-- legacy override trigger attempts to restore the category during FK cleanup.
+update public.articles
+set metadata = coalesce(metadata, '{}'::jsonb) - 'human_category_override',
+    updated_at = now()
+where coalesce(metadata->>'human_category_override', '') = '移民美国';
 
 delete from public.categories
 where name = '移民美国' or lower(slug) = 'immigration';

@@ -22,7 +22,6 @@ function articleUrl(article: any) {
     "美国时政": "us-politics",
     "美国警情": "us-crime",
     "中国官场": "china-officialdom",
-    "移民美国": "immigration",
     "庇护百科": "asylum",
     "驱逐快报": "deport",
     "ICE执法动态": "ice"

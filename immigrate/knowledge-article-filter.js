@@ -40,6 +40,7 @@
     eb3:{terms:['eb-3','eb3','技术工移民','非技术工移民']},
     eb4:{terms:['eb-4','eb4','特殊移民']},
     eb5:{terms:['eb-5','eb5','投资移民','i-526e','i-829']},
+    i130:{terms:['i-130','i130','petition for alien relative','亲属移民申请']},
     'citizen-spouse':{terms:['婚姻绿卡','婚绿','公民配偶','i-130a','i-751']},
     f2a:{terms:['f2a','f-2a','绿卡配偶','表a与表b']},
     k1:{terms:['k-1','k1未婚','未婚夫签证','未婚妻签证','i-129f']},
@@ -57,6 +58,7 @@
     't-visa':{terms:['t签证','t visa','i-914','人口贩运受害者']},
     sijs:{terms:['sijs','特殊移民青少年','特殊青少年']},
     tps:{terms:['tps','临时保护身份','i-821']},
+    'uscis-policy':{terms:['uscis政策','uscis表格','移民局新规','移民局政策','表格版本','官方政策动态']},
     'b2-to-f1':{terms:['b-2转f-1','b2转f1','旅游转学生','i-539转f1']},
     'f1-to-h1b':{terms:['f-1转h-1b','f1转h1b','cap-gap']},
     'j1-waiver':{terms:['j-1豁免','j1豁免','212(e)','ds-3035']},
@@ -79,9 +81,9 @@
     study:['f1','j1','m1','cpt','opt','stem-opt','day-1-cpt'],
     work:['h1b','l1','o1','h2a','h2b','tn','e1-e2','r1'],
     employment:['eb1a','eb1b','eb1c','niw','eb2-perm','eb3','eb4','eb5'],
-    family:['citizen-spouse','f2a','k1','parents','children','siblings','cr1-ir1','family-preference'],
+    family:['i130','citizen-spouse','f2a','k1','parents','children','siblings','cr1-ir1','family-preference'],
     humanitarian:['asylum','c08-ead','withholding','cat','vawa','u-visa','t-visa','sijs','tps'],
-    'change-status':['b2-to-f1','f1-to-h1b','j1-waiver','extension','reinstatement','i485','ead','advance-parole'],
+    'change-status':['uscis-policy','b2-to-f1','f1-to-h1b','j1-waiver','extension','reinstatement','i485','ead','advance-parole'],
     citizenship:['n400','continuous-residence','physical-presence','tests','interview','oath','n600','derived-citizenship']
   };
 

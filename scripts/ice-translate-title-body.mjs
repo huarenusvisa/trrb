@@ -2,7 +2,7 @@
 import process from "node:process";
 import { fileURLToPath } from "node:url";
 
-const VERSION = "zh-title-body-v9-official-context-300-1500";
+const VERSION = "zh-title-body-v10-official-context-flex-300-1500";
 const ACCEPTED_VERSIONS = new Set([VERSION]);
 const CONTEXT_EXPANSION_VERSION = "ice-verified-context-v2";
 const VERIFIED_ICE_EDITORIAL_CONTEXT = Object.freeze({
@@ -76,8 +76,8 @@ function editorialBand(posts, sourceLength = sourceLengthFromPosts(posts), image
   const distinctSources = new Set(posts.map((post) => String(post.source_username || post.source_display_name || "").toLowerCase()).filter(Boolean)).size;
   const rich = sourceLength >= 900 || distinctSources >= 3 || imageCount >= 2;
   return rich
-    ? { min: 800, max: 1500, policy: "verified-rich-context-800-1500" }
-    : { min: 300, max: 800, policy: "verified-brief-context-300-800" };
+    ? { min: 300, preferredMin: 800, max: 1500, policy: "verified-rich-context-prefer-800-1500" }
+    : { min: 300, preferredMin: 300, max: 800, policy: "verified-brief-context-300-800" };
 }
 
 async function translate(story, posts, attempt = 0) {
@@ -98,6 +98,7 @@ async function translate(story, posts, attempt = 0) {
         "title准确概括已知事实，包含最重要的地点、人物或机构及核心动作，不设字数上下限；不得使用震惊、炸裂、横扫、铁腕等煽动词。",
         "summary简明概括事件，不设字数上下限。",
         `content为可直接发布的中文新闻正文，按纯中文汉字计算必须在${band.min}至${band.max}字之间，英文、数字、空格和标点不计入字数；如实保留来源能够支持的时间、地点、人物、机构、事件经过、人数及来源归因。`,
+        band.preferredMin > band.min ? `本事件可用来源或上下文较丰富，在不重复、不虚构的前提下优先扩写到${band.preferredMin}至${band.max}字；若可核实信息不足，写满${band.min}字即可，不得为了达到优选长度而凑字。` : "普通快讯以300至800个纯中文汉字完整交代已核实事实。",
         `普通快讯写成3至6个自然段，信息充分的重点稿写成5至8个自然段；每段围绕一个完整信息点，减少连续短句和频繁句号，多用逗号组织完整复句，但不得为凑字重复表达。`,
         "字数只能来自来源文字、图片中可核对的事实和verified_editorial_background。禁止用提醒、呼吁、空泛评价、重复句、免责声明或模型记忆凑字；不得虚构抓捕现场、法律文书、犯罪记录、移民身份、国籍、拘留地点或递解结果。",
         "如有图片，必须逐张读取可辨认的文字、人物、地点、标志、物件、数量、颜色和动作，并以‘画面可见’或‘图片文字显示’明确归因；看不清不写。视频仅按静态缩略图处理。",
@@ -120,7 +121,7 @@ async function translate(story, posts, attempt = 0) {
   const count = chineseCharCount(parsedContent);
   if ((!hasChinese(parsed.title) || !hasChinese(parsedContent) || chineseRatio(parsedContent) < 0.45 || count < band.min || count > band.max) && attempt < 3) return translate(story, posts, attempt + 1);
   if (count < band.min || count > band.max) throw new Error(`正文纯中文汉字${count}字，不符合${band.min}至${band.max}字发布标准`);
-  return { ...parsed, sourceLength, imageCount: images.length, targetMin: band.min, targetMax: band.max, lengthPolicy: band.policy };
+  return { ...parsed, sourceLength, imageCount: images.length, targetMin: band.min, preferredMin: band.preferredMin, targetMax: band.max, lengthPolicy: band.policy };
 }
 async function storiesToTranslate() { const rows = await sb("ice_stories", { query: { select: "*", status: "in.(collecting,pending_review,pending_corroboration,approved)", order: "updated_at.desc", limit: String(intEnv("ICE_TRANSLATE_MAX_STORIES", 120, 1, 300)) } }); return Array.isArray(rows) ? rows : []; }
 async function postsFor(story) { const rows = await sb("ice_posts", { query: { select: "id,x_post_id,x_url,source_username,source_display_name,source_type,trust_tier,source_created_at,source_text,location_text,city,state_code,processing_status,media", event_fingerprint: `eq.${story.event_fingerprint}`, processing_status: "neq.irrelevant", order: "trust_tier.asc,source_created_at.desc", limit: "30" } }); return (Array.isArray(rows) ? rows : []).filter((post) => safeText(post.source_text, 10000)); }
@@ -137,7 +138,7 @@ async function patchStory(story, translated, posts) {
   if (chineseRatio(content) < 0.45) throw new Error("正文中文比例不足，禁止进入发布流程");
   if (length < targetMin || length > targetMax) throw new Error(`正文纯中文汉字${length}字，不符合${targetMin}至${targetMax}字发布标准`);
   const appearsOldNews = Boolean(translated.appears_old_news);
-  await sb("ice_stories", { method: "PATCH", query: { id: `eq.${story.id}` }, body: { title, summary: summary || content.slice(0, 180), content, final_title: title, final_summary: summary || content.slice(0, 180), final_content: content, ai_payload: { ...payload, translation_version: VERSION, context_expansion_version: CONTEXT_EXPANSION_VERSION, translated_at: nowIso(), translated_source_count: posts.length, translated_to_chinese: true, source_language: translated.source_language || "unknown", title_length: titleLength(title), body_character_count: length, body_chinese_character_count: length, source_character_count: translated.sourceLength, target_min_chars: targetMin, target_max_chars: targetMax, length_policy: translated.lengthPolicy || band.policy, image_grounding_used: translated.imageCount > 0, image_count: translated.imageCount, image_observations: safeText(translated.image_observations, 2000), appears_old_news: appearsOldNews, old_news_reason: safeText(translated.old_news_reason, 1000), old_news_checked: true, automatic_old_news_check_passed: !appearsOldNews, manual_old_news_confirmation: false }, updated_at: nowIso() }, prefer: "return=minimal" });
+  await sb("ice_stories", { method: "PATCH", query: { id: `eq.${story.id}` }, body: { title, summary: summary || content.slice(0, 180), content, final_title: title, final_summary: summary || content.slice(0, 180), final_content: content, ai_payload: { ...payload, translation_version: VERSION, context_expansion_version: CONTEXT_EXPANSION_VERSION, translated_at: nowIso(), translated_source_count: posts.length, translated_to_chinese: true, source_language: translated.source_language || "unknown", title_length: titleLength(title), body_character_count: length, body_chinese_character_count: length, source_character_count: translated.sourceLength, target_min_chars: targetMin, preferred_min_chars: Number(translated.preferredMin || band.preferredMin), target_max_chars: targetMax, length_policy: translated.lengthPolicy || band.policy, image_grounding_used: translated.imageCount > 0, image_count: translated.imageCount, image_observations: safeText(translated.image_observations, 2000), appears_old_news: appearsOldNews, old_news_reason: safeText(translated.old_news_reason, 1000), old_news_checked: true, automatic_old_news_check_passed: !appearsOldNews, manual_old_news_confirmation: false }, updated_at: nowIso() }, prefer: "return=minimal" });
 }
 async function main() {
   requireEnvironment();

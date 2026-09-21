@@ -3,8 +3,10 @@ import process from "node:process";
 
 const REQUIRED = ["SUPABASE_URL", "SUPABASE_SERVICE_ROLE_KEY"];
 const MAX_AGE_MINUTES = Number(process.env.ICE_MAX_SOURCE_AGE_MINUTES || 60);
-const PUBLISHED_DAYS = Number(process.env.ICE_PUBLISHED_DEDUPE_DAYS || 30);
+const PUBLISHED_DAYS = Number(process.env.ICE_PUBLISHED_DEDUPE_DAYS || 730);
 const THRESHOLD = Number(process.env.ICE_REVIEW_DUPLICATE_THRESHOLD || 0.42);
+const OFFICIAL_TYPES = /^(official|government|agency)$/i;
+const OFFICIAL_HANDLES = /^(icegov|dhsgov|hsi_hq|cbp|usbpchief|uscis|dojcrimdiv|usmarshalshq|fbi|ero[a-z0-9_]*|ice[a-z0-9_]*|dhs[a-z0-9_]*|cbp[a-z0-9_]*|usbp[a-z0-9_]*|uscis[a-z0-9_]*)$/i;
 
 function text(value) { return String(value ?? "").replace(/\u0000/g, "").trim(); }
 function normalize(value) {
@@ -80,15 +82,30 @@ async function sb(table, { method = "GET", query = {}, body, prefer = "" } = {})
 async function removeStory(story) {
   await sb("ice_stories", { method: "DELETE", query: { id: `eq.${story.id}` }, prefer: "return=minimal" });
 }
+function isTierOneOfficial(post) {
+  const type = text(post?.source_type);
+  const username = text(post?.source_username).replace(/^@/, "");
+  return Number(post?.trust_tier) === 1 && (OFFICIAL_TYPES.test(type) || OFFICIAL_HANDLES.test(username));
+}
+async function hasTierOneOfficialEvidence(storyId) {
+  const links = await sb("ice_story_evidence", { query: { select: "post_id", story_id: `eq.${storyId}`, limit: "100" } });
+  const ids = (Array.isArray(links) ? links : []).map((row) => row.post_id).filter(Boolean);
+  if (!ids.length) return false;
+  const posts = await sb("ice_posts", { query: { select: "id,source_type,source_username,trust_tier", id: `in.(${ids.join(",")})`, limit: "100" } });
+  return (Array.isArray(posts) ? posts : []).some(isTierOneOfficial);
+}
 async function resetAutomaticOldNewsConfirmation(story) {
   const current = payload(story);
   if (current.old_news_checked !== true || current.manual_old_news_confirmation === true) return false;
+  // Tier-1 government sources use the editorial model's source-grounded date check.
+  // Preserve that completed check so the later cleanup stage cannot undo direct publishing.
+  if (current.automatic_old_news_check_passed === true && await hasTierOneOfficialEvidence(story.id)) return false;
   await sb("ice_stories", {
     method: "PATCH", query: { id: `eq.${story.id}` },
-    body: { ai_payload: { ...current, old_news_checked: false, manual_old_news_confirmation: false }, updated_at: new Date().toISOString() },
+    body: { ai_payload: { ...current, old_news_checked: false, automatic_old_news_check_passed: false, manual_old_news_confirmation: false }, updated_at: new Date().toISOString() },
     prefer: "return=minimal"
   });
-  story.ai_payload = { ...current, old_news_checked: false, manual_old_news_confirmation: false };
+  story.ai_payload = { ...current, old_news_checked: false, automatic_old_news_check_passed: false, manual_old_news_confirmation: false };
   return true;
 }
 function isIceArticle(article) {

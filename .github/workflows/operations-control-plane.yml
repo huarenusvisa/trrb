@@ -18,6 +18,13 @@ on:
       # ICE production coverage fixes must wake the collector immediately.
       - '.github/workflows/ice-unified-pipeline.yml'
       - 'scripts/ice-candidate-gate.mjs'
+      - 'scripts/ice-clean-existing-review-duplicates.mjs'
+      - 'scripts/ice-translate-title-body.mjs'
+      - 'scripts/ice-trusted-source-promote.mjs'
+      - 'scripts/ice-publish-due.mjs'
+      - 'scripts/ice-dedupe-v3.mjs'
+      - 'scripts/ice-precollect-published-dedupe.mjs'
+      - 'scripts/ice-original-posts.test.mjs'
       - 'scripts/ice-high-recall-discovery.mjs'
       - 'scripts/ice-high-recall-production.test.mjs'
       - 'scripts/ice-news-quality-gate.mjs'

@@ -50,3 +50,9 @@ test("legacy hotnews archive redirects to the current headline hub", async () =>
   assert.equal(response.status, 301);
   assert.equal(response.headers.get("location"), "https://trrb.net/hot-headlines");
 });
+
+test("article prerender defers WordPress system routes to the retirement handler", () => {
+  const source = readFileSync(new URL("../netlify/edge-functions/article-prerender.ts", import.meta.url), "utf8");
+  assert.match(source, /\(\?:page\|author\|tag\|search\|category\)/);
+  assert.match(source, /Never reinterpret their trailing page number/);
+});

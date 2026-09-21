@@ -4,9 +4,11 @@ import process from "node:process";
 import { fileURLToPath } from "node:url";
 import peopleCountModule from "../netlify/functions/_shared/ice-people-count.js";
 import iceClassifier from "../netlify/functions/_shared/ice-enforcement.js";
+import officialRouting from "../netlify/functions/_shared/official-content-routing.js";
 
 const { buildPeopleCountMetadata } = peopleCountModule;
 const { isIceEnforcementText, isIceEnforcementEvidence } = iceClassifier;
+const { routeOfficialContent } = officialRouting;
 const OFFICIAL_TYPES = /^(official|government|agency)$/i;
 const OFFICIAL_HANDLES = /^(icegov|dhsgov|hsi_hq|cbp|usbpchief|uscis|dojcrimdiv|usmarshalshq|fbi|ero[a-z0-9_]*|ice[a-z0-9_]*|dhs[a-z0-9_]*|cbp[a-z0-9_]*|usbp[a-z0-9_]*|uscis[a-z0-9_]*)$/i;
 const ACCEPTED_EDITORIAL_VERSIONS = new Set(["zh-title-body-v10-official-context-flex-300-1500", "zh-title-body-v9-official-context-300-1500", "zh-title-body-v8-source-led", "zh-title-body-v7-300-600-800-context-image"]);
@@ -103,7 +105,7 @@ async function officialEvidence(story) {
   const linked = ids.length ? await sb("ice_posts", { query: { select: "*", id: `in.(${ids.join(",")})`, limit: "100" } }) : [];
   const fingerprintPosts = story.event_fingerprint ? await sb("ice_posts", { query: { select: "*", event_fingerprint: `eq.${story.event_fingerprint}`, limit: "100" } }) : [];
   const posts = [...new Map([...(Array.isArray(linked) ? linked : []), ...(Array.isArray(fingerprintPosts) ? fingerprintPosts : [])].map((post) => [post.id, post])).values()];
-  return posts.filter((post) => officialPost(post) && isIceEnforcementEvidence(post.source_text, post.source_username));
+  return posts.filter(officialPost);
 }
 async function leadPost(story) {
   const payload = safeJson(story?.ai_payload, story?.ai_payload || {});
@@ -115,13 +117,19 @@ async function leadPost(story) {
   const rows = await sb("ice_posts", { query: { select: "*", event_fingerprint: `eq.${story.event_fingerprint}`, order: "trust_tier.asc,source_created_at.asc", limit: "1" } });
   return Array.isArray(rows) ? rows[0] || null : null;
 }
-async function existingArticle(postId, eventFingerprint) {
+async function existingArticle(postId, eventFingerprint, routeKey = "ice") {
   const bySource = await sb("articles", { query: { select: "id", source_platform: "eq.x", source_post_id: `eq.${postId}`, limit: "1" } });
   if (Array.isArray(bySource) && bySource[0]) return bySource[0];
-  const byEvent = await sb("articles", { query: { select: "id", slug: `eq.ice-${eventFingerprint}`, limit: "1" } });
+  const byEvent = await sb("articles", { query: { select: "id", slug: `eq.${routeKey}-${eventFingerprint}`, limit: "1" } });
   return Array.isArray(byEvent) ? byEvent[0] || null : null;
 }
-async function recentSimilarArticle(story) { const cutoff = new Date(Date.now() - 730 * 86400_000).toISOString(); const rows = await sb("articles", { query: { select: "id,title,summary,content", topic_key: "eq.ice", status: "eq.published", published_at: `gte.${cutoff}`, order: "published_at.desc", limit: "5000" } }); const source = `${story.title || ""}${story.summary || ""}${story.content || ""}`; return (Array.isArray(rows) ? rows : []).find((article) => similarity(source, `${article.title || ""}${article.summary || ""}${article.content || ""}`) >= 0.72) || null; }
+async function recentSimilarArticle(story, route) {
+  const cutoff = new Date(Date.now() - 730 * 86400_000).toISOString();
+  const routeFilter = route?.key === "ice" ? { topic_key: "eq.ice" } : { category_name: `eq.${route.categoryName}` };
+  const rows = await sb("articles", { query: { select: "id,title,summary,content", ...routeFilter, status: "eq.published", published_at: `gte.${cutoff}`, order: "published_at.desc", limit: "5000" } });
+  const source = `${story.title || ""}${story.summary || ""}${story.content || ""}`;
+  return (Array.isArray(rows) ? rows : []).find((article) => similarity(source, `${article.title || ""}${article.summary || ""}${article.content || ""}`) >= 0.72) || null;
+}
 async function updateStory(id, patch) {
   await sb("ice_stories", { method: "PATCH", query: { id: `eq.${id}` }, body: patch, prefer: "return=minimal" });
 }
@@ -140,14 +148,8 @@ async function publish(story) {
     });
     return null;
   }
-  if (!isIceEnforcementText(story.title, story.summary, story.content)) {
-    await updateStory(story.id, {
-      status: "rejected", human_review_status: "rejected", scheduled_at: null,
-      decision_reason: `${story.decision_reason || ""}；ICE分类防火墙：不是明确的ICE执法内容，禁止发布`
-    });
-    return null;
-  }
   let verifiedOfficial = [];
+  let route = null;
   if (officialApproved) {
     verifiedOfficial = await officialEvidence(story);
     if (!verifiedOfficial.length) {
@@ -157,6 +159,23 @@ async function publish(story) {
       });
       return null;
     }
+    route = routeOfficialContent(story.title, story.summary, story.content, verifiedOfficial);
+    if (!route || (route.key === "ice" && !verifiedOfficial.some((post) => isIceEnforcementEvidence(post.source_text, post.source_username)))) {
+      await updateStory(story.id, {
+        status: "pending_review", human_review_status: "required", scheduled_at: null,
+        decision_reason: `${story.decision_reason || ""}；官方内容无法可靠分流，已转人工审核`
+      });
+      return null;
+    }
+  } else {
+    route = { key: "ice", categoryName: "ICE执法动态", topicKey: "ice" };
+  }
+  if (route.key === "ice" && !isIceEnforcementText(story.title, story.summary, story.content)) {
+    await updateStory(story.id, {
+      status: "rejected", human_review_status: "rejected", scheduled_at: null,
+      decision_reason: `${story.decision_reason || ""}；ICE分类防火墙：不是明确的ICE执法内容，禁止发布到ICE执法动态`
+    });
+    return null;
   }
   const post = verifiedOfficial[0] || await leadPost(story);
   if (!post) throw new Error(`故事${story.id}没有来源帖子`);
@@ -177,14 +196,14 @@ async function publish(story) {
     : (sourcePeopleCount > 0 && sourcePeopleCount <= 500
       ? { people_count: sourcePeopleCount, people_count_type: "exact", people_count_source: "structured_source" }
       : {});
-  const duplicate = await existingArticle(post.x_post_id, story.event_fingerprint);
+  const duplicate = await existingArticle(post.x_post_id, story.event_fingerprint, route.key);
   if (duplicate) {
     await updateStory(story.id, { status: "published", article_id: String(duplicate.id), published_at: nowIso(), decision_reason: `${story.decision_reason || ""}；同一来源帖子或事件指纹已发布，未重复创建文章` });
     return duplicate.id;
   }
-  const similar = await recentSimilarArticle(story);
+  const similar = await recentSimilarArticle(story, route);
   if (similar) {
-    await updateStory(story.id, { status: "published", article_id: String(similar.id), published_at: nowIso(), decision_reason: `${story.decision_reason || ""}；与近30天已发布ICE文章高度重复，未重复创建文章` });
+    await updateStory(story.id, { status: "published", article_id: String(similar.id), published_at: nowIso(), decision_reason: `${story.decision_reason || ""}；与近两年同栏目文章高度重复，未重复创建文章` });
     return similar.id;
   }
   const evidence = await storyEvidence(story.id);
@@ -196,9 +215,9 @@ async function publish(story) {
   const rows = await sb("articles", {
     method: "POST",
     body: {
-      id, title: story.title, slug: `ice-${story.event_fingerprint}`, summary: story.summary, content: story.content,
-      category_name: "ICE执法动态", cover_image: story.cover_image || video?.poster || "", seo_keywords: "ICE,移民执法,拘留,遣返,ERO,HSI,CBP,DHS,美国移民",
-      author: "唐人日报编辑部", status: "published", visibility: "public", published_at: time, created_at: time, topic_key: "ice", source_platform: "x",
+      id, title: story.title, slug: `${route.key}-${story.event_fingerprint}`, summary: story.summary, content: story.content,
+      category_name: route.categoryName, cover_image: story.cover_image || video?.poster || "", seo_keywords: route.seoKeywords || "美国官方信息,移民政策,美国时政,美国警情,ICE执法",
+      author: "唐人日报编辑部", status: "published", visibility: "public", published_at: time, created_at: time, topic_key: route.topicKey || null, source_platform: "x",
       source_post_id: post.x_post_id, source_url: post.x_url, source_account: post.source_username, source_created_at: post.source_created_at,
       ai_confidence: story.ai_confidence,
       review_status: officialApproved ? "official_source_auto_published" : "human_approved",
@@ -211,7 +230,8 @@ async function publish(story) {
         official_source_auto: officialApproved, official_direct_publish: officialApproved, translated_to_chinese: true,
         source_character_count: payload?.source_character_count, target_min_chars: payload?.target_min_chars, target_max_chars: payload?.target_max_chars,
         image_grounding_used: payload?.image_grounding_used === true, image_count: payload?.image_count || 0, image_observations: payload?.image_observations || "",
-        duplicate_check_days: 730, old_news_checked: true, distribution_channels: ["ICE执法动态", "ICE实时追踪"],
+        duplicate_check_days: 730, old_news_checked: true, official_content_route: route,
+        distribution_channels: route.key === "ice" ? ["ICE执法动态", "ICE实时追踪"] : [route.categoryName],
         video_url: video?.url || "", video_poster: video?.poster || "", video_featured: temporaryFeatured, video_featured_until: featuredUntil,
         confirmed_facts: payload?.confirmed_facts || [], unconfirmed_claims: payload?.unconfirmed_claims || [],
         evidence: evidence.map((item) => ({ post_id: item.x_post_id, url: item.x_url, source_type: item.source_type, independence_key: item.independence_key }))

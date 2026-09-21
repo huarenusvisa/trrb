@@ -1,6 +1,5 @@
 const { SUPABASE_URL, SERVICE_KEY } = require("./_shared/supabase-admin");
 const { isIceEnforcementText } = require("./_shared/ice-enforcement");
-const { isUsImmigrationText } = require("./_shared/us-immigration-category");
 const { isChinaHotHeadline } = require("./_shared/china-hot-headlines");
 
 const CATEGORY_DEFINITIONS = new Map([
@@ -10,7 +9,6 @@ const CATEGORY_DEFINITIONS = new Map([
   ["美国时政", { path: "/us-politics" }],
   ["美国警情", { path: "/us-crime" }],
   ["中国官场", { path: "/china-officialdom" }],
-  ["移民美国", { path: "/immigration", mode: "us-immigration" }],
   ["庇护百科", { path: "/asylum", mode: "asylum" }],
   ["ICE执法动态", { path: "/ice/news", mode: "ice" }]
 ]);
@@ -80,7 +78,7 @@ exports.handler = async (event) => {
 
   try {
     const url = new URL(`${SUPABASE_URL}/rest/v1/articles`);
-    const includeContent = ["ice", "us-immigration", "china-hot"].includes(definition.mode);
+    const includeContent = ["ice", "china-hot"].includes(definition.mode);
     const select = "id,title,slug,summary,category_id,category_name,topic_key,cover_image,author,status,visibility,published_at,created_at"
       + (includeContent ? ",content" : "");
     url.searchParams.set("select", select);
@@ -112,9 +110,7 @@ exports.handler = async (event) => {
     const rawArticles = Array.isArray(rows) ? rows : [];
     const contentFilter = definition.mode === "ice"
       ? (row) => isIceEnforcementText(row.title, row.summary)
-      : definition.mode === "us-immigration"
-        ? (row) => isUsImmigrationText(row.title, `${row.summary || ""} ${row.content || ""}`)
-        : definition.mode === "china-hot"
+      : definition.mode === "china-hot"
           ? (row) => isChinaHotHeadline(row.title, `${row.summary || ""} ${row.content || ""}`)
         : null;
     const eligibleArticles = contentFilter ? rawArticles.filter(contentFilter) : rawArticles;

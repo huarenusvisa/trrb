@@ -9,7 +9,7 @@ const { buildPeopleCountMetadata } = peopleCountModule;
 const { isIceEnforcementText, isIceEnforcementEvidence } = iceClassifier;
 const OFFICIAL_TYPES = /^(official|government|agency)$/i;
 const OFFICIAL_HANDLES = /^(icegov|dhsgov|hsi_hq|cbp|usbpchief|uscis|dojcrimdiv|usmarshalshq|fbi|ero[a-z0-9_]*|ice[a-z0-9_]*|dhs[a-z0-9_]*|cbp[a-z0-9_]*|usbp[a-z0-9_]*|uscis[a-z0-9_]*)$/i;
-const ACCEPTED_EDITORIAL_VERSIONS = new Set(["zh-title-body-v8-source-led", "zh-title-body-v7-300-600-800-context-image"]);
+const ACCEPTED_EDITORIAL_VERSIONS = new Set(["zh-title-body-v9-official-context-300-1500", "zh-title-body-v8-source-led", "zh-title-body-v7-300-600-800-context-image"]);
 
 function intEnv(name, fallback, min = 0, max = Number.MAX_SAFE_INTEGER) {
   const value = Number(process.env[name] ?? fallback);
@@ -28,7 +28,7 @@ function safeJson(value, fallback = null) {
 function hasChinese(value) { return /[\u3400-\u9fff]/u.test(String(value || "")); }
 function chineseRatio(value) { const text = String(value || "").replace(/\s+/g, ""); return text ? (text.match(/[\u3400-\u9fff]/gu) || []).length / Array.from(text).length : 0; }
 function hasVisualMedia(post) { const media = safeJson(post?.media, post?.media || []); return (Array.isArray(media) ? media : []).some((item) => item?.url || item?.preview_image_url); }
-function editorialReady(story, post) { const payload = safeJson(story?.ai_payload, story?.ai_payload || {}); return ACCEPTED_EDITORIAL_VERSIONS.has(payload?.translation_version) && payload?.translated_to_chinese === true && payload?.old_news_checked === true && payload?.manual_old_news_confirmation === true && payload?.appears_old_news !== true && hasChinese(story.title) && hasChinese(story.content) && chineseRatio(story.content) >= 0.45 && (!hasVisualMedia(post) || payload?.image_grounding_used === true); }
+function editorialReady(story, post) { const payload = safeJson(story?.ai_payload, story?.ai_payload || {}); const officialAutoCheck = officialPost(post) && payload?.automatic_old_news_check_passed === true; const oldNewsConfirmed = payload?.manual_old_news_confirmation === true || officialAutoCheck; const count = (String(story.content || "").match(/[\u3400-\u9fff]/gu) || []).length; return ACCEPTED_EDITORIAL_VERSIONS.has(payload?.translation_version) && payload?.translated_to_chinese === true && payload?.old_news_checked === true && oldNewsConfirmed && payload?.appears_old_news !== true && count >= 300 && count <= 1500 && hasChinese(story.title) && hasChinese(story.content) && chineseRatio(story.content) >= 0.45 && (!hasVisualMedia(post) || payload?.image_grounding_used === true); }
 function shingles(value) { const text = String(value || "").toLowerCase().replace(/[^a-z0-9\u3400-\u9fff]+/g, ""); const out = new Set(); for (let i = 0; i < text.length - 1; i += 1) out.add(text.slice(i, i + 2)); return out; }
 function similarity(a, b) { const left = shingles(a), right = shingles(b); if (!left.size || !right.size) return 0; let common = 0; for (const token of left) if (right.has(token)) common += 1; return common / (left.size + right.size - common); }
 function isOfficialUrgent(story) {
@@ -95,13 +95,13 @@ async function storyEvidence(storyId) {
 function officialPost(post) {
   const type = String(post?.source_type || "");
   const username = String(post?.source_username || "").replace(/^@/, "");
-  return OFFICIAL_TYPES.test(type) || OFFICIAL_HANDLES.test(username);
+  return Number(post?.trust_tier) === 1 && (OFFICIAL_TYPES.test(type) || OFFICIAL_HANDLES.test(username));
 }
 async function officialEvidence(storyId) {
   const links = await storyEvidence(storyId);
   const ids = links.map((row) => row.post_id).filter(Boolean);
   if (!ids.length) return [];
-  const rows = await sb("ice_posts", { query: { select: "id,source_type,source_username,source_text", id: `in.(${ids.join(",")})`, limit: "100" } });
+  const rows = await sb("ice_posts", { query: { select: "id,source_type,source_username,source_text,trust_tier", id: `in.(${ids.join(",")})`, limit: "100" } });
   return (Array.isArray(rows) ? rows : []).filter((post) => officialPost(post) && isIceEnforcementEvidence(post.source_text, post.source_username));
 }
 async function leadPost(story) {
@@ -120,7 +120,7 @@ async function existingArticle(postId, eventFingerprint) {
   const byEvent = await sb("articles", { query: { select: "id", slug: `eq.ice-${eventFingerprint}`, limit: "1" } });
   return Array.isArray(byEvent) ? byEvent[0] || null : null;
 }
-async function recentSimilarArticle(story) { const cutoff = new Date(Date.now() - 30 * 86400_000).toISOString(); const rows = await sb("articles", { query: { select: "id,title,summary,content", topic_key: "eq.ice", status: "eq.published", published_at: `gte.${cutoff}`, order: "published_at.desc", limit: "1000" } }); const source = `${story.title || ""}${story.summary || ""}${story.content || ""}`; return (Array.isArray(rows) ? rows : []).find((article) => similarity(source, `${article.title || ""}${article.summary || ""}${article.content || ""}`) >= 0.72) || null; }
+async function recentSimilarArticle(story) { const cutoff = new Date(Date.now() - 730 * 86400_000).toISOString(); const rows = await sb("articles", { query: { select: "id,title,summary,content", topic_key: "eq.ice", status: "eq.published", published_at: `gte.${cutoff}`, order: "published_at.desc", limit: "5000" } }); const source = `${story.title || ""}${story.summary || ""}${story.content || ""}`; return (Array.isArray(rows) ? rows : []).find((article) => similarity(source, `${article.title || ""}${article.summary || ""}${article.content || ""}`) >= 0.72) || null; }
 async function updateStory(id, patch) {
   await sb("ice_stories", { method: "PATCH", query: { id: `eq.${id}` }, body: patch, prefer: "return=minimal" });
 }

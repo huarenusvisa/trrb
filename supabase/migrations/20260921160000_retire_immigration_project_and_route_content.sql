@@ -8,12 +8,14 @@ set search_path = ''
 as $$
 declare
   article_text text;
+  legacy_category text;
   target record;
 begin
-  if new.category_name is distinct from '移民美国' then
+  if new.category_name is null or new.category_name not in ('移民美国', 'USCIS', 'DHS', 'CBP', 'Visa') then
     return new;
   end if;
 
+  legacy_category := new.category_name;
   article_text := coalesce(new.title, '') || ' ' || coalesce(new.summary, '') || ' ' || left(coalesce(new.content, ''), 2400);
   new.category_id := null;
   new.topic_key := null;
@@ -49,6 +51,10 @@ begin
     select id, name into target from public.categories where lower(slug) = 'politics' or name = '美国时政' order by (name = '美国时政') desc limit 1;
     new.category_id := target.id;
     new.category_name := coalesce(target.name, '美国时政');
+  elsif legacy_category in ('DHS', 'CBP') then
+    select id, name into target from public.categories where lower(slug) = 'us-politics' or name = '美国时政' order by (name = '美国时政') desc limit 1;
+    new.category_id := target.id;
+    new.category_name := coalesce(target.name, '美国时政');
   else
     new.category_name := '移民美国·境内身份转换·USCIS政策与表格·历史归档';
   end if;
@@ -67,11 +73,18 @@ update public.articles
 set category_name = '移民美国', updated_at = now()
 where category_name = '移民美国';
 
+-- Source agencies are evidence, not standalone editorial destinations.
+update public.articles
+set category_name = category_name, updated_at = now()
+where category_name in ('USCIS', 'DHS', 'CBP', 'Visa');
+
 -- Remove stale foreign-key links from already hierarchical knowledge articles.
 update public.articles
 set category_id = null, updated_at = now()
 where category_id in (
-  select id from public.categories where name = '移民美国' or lower(slug) = 'immigration'
+  select id from public.categories
+  where name in ('移民美国', 'USCIS', 'DHS', 'CBP', 'Visa')
+     or lower(slug) in ('immigration', 'uscis', 'dhs', 'cbp', 'visa')
 );
 
 -- Retire old manual overrides before deleting the category. Otherwise the
@@ -82,15 +95,27 @@ set metadata = coalesce(metadata, '{}'::jsonb) - 'human_category_override',
 where coalesce(metadata->>'human_category_override', '') = '移民美国';
 
 delete from public.categories
-where name = '移民美国' or lower(slug) = 'immigration';
+where name in ('移民美国', 'USCIS', 'DHS', 'CBP', 'Visa')
+   or lower(slug) in ('immigration', 'uscis', 'dhs', 'cbp', 'visa');
+
+update public.categories
+set is_active = false, show_in_navigation = false, show_on_homepage = false,
+    show_in_nav = false, show_on_home = false, auto_fetch = false,
+    ai_rewrite = false, auto_publish = false, include_in_sitemap = false,
+    include_in_google_news = false, include_in_rss = false, updated_at = now()
+where lower(slug) in ('china', 'politics', 'world') or name in ('China', 'Politics', 'World');
 
 do $$
 begin
-  if exists (select 1 from public.categories where name = '移民美国' or lower(slug) = 'immigration') then
-    raise exception 'legacy 移民美国 category still exists';
+  if exists (
+    select 1 from public.categories
+    where name in ('移民美国', 'USCIS', 'DHS', 'CBP', 'Visa')
+       or lower(slug) in ('immigration', 'uscis', 'dhs', 'cbp', 'visa')
+  ) then
+    raise exception 'retired immigration/source category still exists';
   end if;
-  if exists (select 1 from public.articles where category_name = '移民美国') then
-    raise exception 'legacy 移民美国 articles still exist';
+  if exists (select 1 from public.articles where category_name in ('移民美国', 'USCIS', 'DHS', 'CBP', 'Visa')) then
+    raise exception 'retired immigration/source articles still exist';
   end if;
 end;
 $$;

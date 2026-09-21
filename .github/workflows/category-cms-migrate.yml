@@ -62,8 +62,14 @@ jobs:
             echo "该Fine-grained PAT只需访问huarenusvisa/trrb，并授予Actions: Read and write。" >&2
             exit 1
           fi
-          psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -v dispatch_token="$GITHUB_DISPATCH_TOKEN" \
-            -c "select vault.create_secret(:'dispatch_token', 'github_actions_dispatch_token', 'Fine-grained GitHub token for Supabase Cron to dispatch ICE production workflow');"
+          existing_secret_id="$(psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -Atc \
+            "select id from vault.decrypted_secrets where name='github_actions_dispatch_token' limit 1;")"
+          if [[ -n "$existing_secret_id" ]]; then
+            echo "GitHub workflow token already exists in Supabase Vault; reusing it."
+          else
+            psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -v dispatch_token="$GITHUB_DISPATCH_TOKEN" \
+              -c "select vault.create_secret(:'dispatch_token', 'github_actions_dispatch_token', 'Fine-grained GitHub token for Supabase Cron to dispatch ICE production workflow');"
+          fi
 
       - name: Apply category, topic and scheduler migrations
         env:

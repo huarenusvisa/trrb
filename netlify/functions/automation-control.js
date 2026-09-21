@@ -149,10 +149,20 @@ async function dispatchControl(key) {
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-async function cancelWorkflow(workflow) {
+// A module stop must never cancel another module's shared dispatcher.
+function canCancelRun(workflow, key, run) {
+  if (key === 'global' || workflow !== CONTROL_PLANE_WORKFLOW) return true;
+  const modules = new Set((DISPATCHES[key] || []).map(item => item.inputs?.module));
+  return run.event === 'workflow_dispatch' && [...modules].some(module =>
+    run.display_title === `TRRB Operations [${module}]`);
+}
+
+async function cancelWorkflow(workflow, key) {
   const query = new URLSearchParams({ branch: 'main', per_page: '30' });
   const payload = await github(`/actions/workflows/${encodeURIComponent(workflow)}/runs?${query}`);
-  const activeRuns = (payload?.workflow_runs || []).filter((run) => ACTIVE_RUN_STATES.has(run.status));
+  const running = (payload?.workflow_runs || []).filter((run) => ACTIVE_RUN_STATES.has(run.status));
+  const activeRuns = running.filter(run => canCancelRun(workflow, key, run));
+  const preserved = running.length - activeRuns.length;
   await Promise.all(activeRuns.map((run) => github(`/actions/runs/${run.id}/cancel`, { method: 'POST' })));
 
   let pendingIds = activeRuns.map((run) => run.id);
@@ -169,7 +179,8 @@ async function cancelWorkflow(workflow) {
   return {
     requested: activeRuns.length,
     confirmed: activeRuns.length - pendingIds.length,
-    pending: pendingIds.length
+    pending: pendingIds.length,
+    preserved
   };
 }
 
@@ -184,7 +195,7 @@ async function cancelControl(key) {
       ])];
   const results = await Promise.allSettled(workflows.map(async (workflow) => ({
     workflow,
-    stop: await cancelWorkflow(workflow)
+    stop: await cancelWorkflow(workflow, key)
   })));
   const failures = results.filter((result) => result.status === 'rejected');
   if (failures.length) {
@@ -193,8 +204,9 @@ async function cancelControl(key) {
   return results.reduce((summary, result) => ({
     requested: summary.requested + result.value.stop.requested,
     confirmed: summary.confirmed + result.value.stop.confirmed,
-    pending: summary.pending + result.value.stop.pending
-  }), { requested: 0, confirmed: 0, pending: 0 });
+    pending: summary.pending + result.value.stop.pending,
+    preserved: summary.preserved + result.value.stop.preserved
+  }), { requested: 0, confirmed: 0, pending: 0, preserved: 0 });
 }
 
 async function patchControls(query, enabled, userId, prefer = 'return=minimal') {
@@ -371,7 +383,9 @@ exports.handler = async (event) => {
         controlKey: key,
         severity: fullyStopped ? 'info' : 'warning',
         title: fullyStopped ? `${existing.display_name}已停止` : `${existing.display_name}正在停止`,
-        message: stop.requested === 0
+        message: stop.preserved > 0
+          ? `关闭开关已生效；已停止 ${stop.confirmed} 个专属实例。保留 ${stop.preserved} 个共享或其他模块任务，避免误停；共享流程中已开始的工作可能继续至结束，后续由关闭开关拦截。`
+          : stop.requested === 0
           ? '关闭开关已生效；没有发现正在运行或排队的实例。'
           : fullyStopped
             ? `关闭开关已生效；${stop.confirmed} 个运行实例已确认停止。`

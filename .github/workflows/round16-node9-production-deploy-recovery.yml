@@ -91,6 +91,44 @@ jobs:
             "https://api.github.com/repos/$GITHUB_REPOSITORY/statuses/$DEPLOY_SHA" \
             -d '{"state":"pending","context":"trrb/production-accepted","description":"Waiting for Netlify Git deployment and production acceptance"}' >/dev/null
 
+      - name: 绑定唐人日报附加域名
+        if: env.SKIP_DEPLOY != 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "${NETLIFY_AUTH_TOKEN:-}"
+          node <<'NODE'
+          const siteId = process.env.NETLIFY_SITE_ID;
+          const token = process.env.NETLIFY_AUTH_TOKEN;
+          const endpoint = `https://api.netlify.com/api/v1/sites/${siteId}`;
+          const required = ['tangrenribao.com', 'www.tangrenribao.com'];
+          const headers = {
+            Authorization: `Bearer ${token}`,
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+          };
+          const currentResponse = await fetch(endpoint, { headers });
+          if (!currentResponse.ok) throw new Error(`Netlify site lookup failed: HTTP ${currentResponse.status}`);
+          const current = await currentResponse.json();
+          if (current.custom_domain !== 'trrb.net') {
+            throw new Error(`Refusing to change unexpected primary domain: ${current.custom_domain || '(none)'}`);
+          }
+          const aliases = [...new Set([...(current.domain_aliases || []), ...required])];
+          const updateResponse = await fetch(endpoint, {
+            method: 'PUT',
+            headers,
+            body: JSON.stringify({ domain_aliases: aliases })
+          });
+          if (!updateResponse.ok) throw new Error(`Netlify alias update failed: HTTP ${updateResponse.status}`);
+          const updated = await updateResponse.json();
+          const missing = required.filter((domain) => !(updated.domain_aliases || []).includes(domain));
+          if (updated.custom_domain !== 'trrb.net' || missing.length) {
+            throw new Error(`Netlify alias verification failed; missing: ${missing.join(', ') || 'none'}`);
+          }
+          console.log(`Primary domain preserved: ${updated.custom_domain}`);
+          console.log(`Tang Ren Daily aliases connected: ${required.join(', ')}`);
+          NODE
+
       # Push and manual runs share the same publisher and exact-SHA acceptance.
       # Waiting alone cannot recover when Netlify Git auto-deployment is absent.
       - name: 发布 Netlify Production

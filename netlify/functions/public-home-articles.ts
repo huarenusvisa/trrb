@@ -2,7 +2,6 @@ import {loadChinaPeople,CHINA_PEOPLE_QUERY} from '../shared/china-person-registr
 import policy from "../../article-editorial-policy.js";
 import { rest } from "./_shared/supabase-admin.js";
 import { isIceEnforcementText } from "./_shared/ice-enforcement.js";
-import { isUsImmigrationText } from "./_shared/us-immigration-category.js";
 import { isChinaHotCategory, isChinaHotHeadline } from "./_shared/china-hot-headlines.js";
 
 const HOME_MAX_AGE_MS = 4 * 24 * 60 * 60 * 1000;
@@ -54,7 +53,6 @@ export default async (event: Request) => {
     const articles = (Array.isArray(rows) ? rows : []).filter((row) => {
       if (articleTime(row) < cutoffMs) return false;
       if (category === "ICE执法动态") return isIceEnforcementText(row.title, row.summary);
-      if (category === "移民美国") return isUsImmigrationText(row.title, `${row.summary || ""} ${row.content || ""}`);
       if (isChinaHotCategory(category) || isChinaHotCategory(row.category_name)) {
         return isChinaHotHeadline(row.title, `${row.summary || ""} ${row.content || ""}`);
       }

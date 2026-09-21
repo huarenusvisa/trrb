@@ -63,11 +63,11 @@ jobs:
             echo "GitHub workflow token already exists in Supabase Vault; reusing it."
           else
             if [[ -z "${GITHUB_DISPATCH_TOKEN:-}" ]]; then
-              echo "Supabase Vault尚无调度密钥，且缺少ICE_GITHUB_DISPATCH_TOKEN（或GH_PAT/PERSONAL_ACCESS_TOKEN）。" >&2
-              exit 1
+              echo "警告：Supabase Vault与GitHub Actions均无调度PAT；跳过可选密钥写入，继续执行栏目迁移。"
+            else
+              psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -v dispatch_token="$GITHUB_DISPATCH_TOKEN" \
+                -c "select vault.create_secret(:'dispatch_token', 'github_actions_dispatch_token', 'Fine-grained GitHub token for Supabase Cron to dispatch ICE production workflow');"
             fi
-            psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -v dispatch_token="$GITHUB_DISPATCH_TOKEN" \
-              -c "select vault.create_secret(:'dispatch_token', 'github_actions_dispatch_token', 'Fine-grained GitHub token for Supabase Cron to dispatch ICE production workflow');"
           fi
 
       - name: Apply category, topic and scheduler migrations

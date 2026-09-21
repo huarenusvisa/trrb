@@ -7,7 +7,6 @@ const ROUTES: Record<string, { name: string; displayName?: string; description: 
   "/us-politics": { name: "美国时政", description: "唐人日报美国时政，持续追踪白宫、国会、选举、公共政策与联邦政府最新动态，梳理事件背景、权威来源及后续影响。" },
   "/us-crime": { name: "美国警情", description: "唐人日报美国警情，持续关注美国治安、警方执法、联邦调查、法院审判与重大刑事案件，提供可靠来源和后续进展。" },
   "/china-officialdom": { name: "中国官场", description: "唐人日报中国官场，追踪官员任免、反腐、调查与公共治理动态。" },
-  "/immigration": { name: "移民美国", description: "唐人日报移民美国，持续关注美国移民政策、签证、绿卡、庇护、入籍、边境执法与移民社区动态，提供实用信息和权威来源。" },
   "/asylum": { name: "庇护百科", description: "唐人日报庇护百科，聚合美国庇护、递解抗辩、人道主义保护、移民法庭及相关实务信息。" },
   "/ice/news": { name: "ICE执法动态", description: "唐人日报ICE执法动态，持续追踪ICE、DHS、HSI与CBP的抓捕、拘留、遣返及相关执法新闻，说明事件背景、法律程序和后续进展。" }
 };
@@ -21,7 +20,6 @@ const ARTICLE_SECTIONS: Record<string, string> = {
   "美国时政": "us-politics",
   "美国警情": "us-crime",
   "中国官场": "china-officialdom",
-  "移民美国": "immigration",
   "庇护百科": "asylum",
   "驱逐快报": "deport",
   "ICE执法动态": "ice",
@@ -260,8 +258,3 @@ export default async (request: Request, context: any) => {
     responseHeaders.set("x-trrb-category-total", Number.isFinite(total) ? String(total) : "unknown");
     responseHeaders.set("link", `<${canonical}>; rel=\"canonical\"`);
     return new Response(request.method === "HEAD" ? null : html, { status: 200, headers: responseHeaders });
-  } catch (error) {
-    console.error("category prerender failed", path, error);
-    return fail(503, "栏目数据暂时不可用", "category-edge-v2-data-unavailable");
-  }
-};

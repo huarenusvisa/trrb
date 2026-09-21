@@ -19,7 +19,7 @@ import {
   patchStory
 } from "./ice-translate-title-body.mjs";
 import { editorialReady as publisherReady } from "./ice-publish-due.mjs";
-import { editorialReady as promoterReady } from "./ice-trusted-source-promote.mjs";
+import { editorialReady as promoterReady, blocksAutomaticPublish } from "./ice-trusted-source-promote.mjs";
 import manualPublish from "../netlify/functions/ice-review-v2.js";
 import manualApprove from "../netlify/functions/ice-review-actions-v4.js";
 import { clampBulletin, clampTitle, hasSavedChineseEditorial, looksNormalized } from "./ice-editorial-normalize.mjs";
@@ -151,6 +151,9 @@ test("tier-one ICE or DHS evidence may use automatic old-news confirmation but o
   assert.equal(publisherReady(story, official), true);
   assert.equal(promoterReady(story, [unverified]), false);
   assert.equal(publisherReady(story, unverified), false);
+  assert.equal(blocksAutomaticPublish({ conflict_detected: true, privacy_risk: true, fabrication_risk: true }, story.ai_payload, true), false);
+  assert.equal(blocksAutomaticPublish({ conflict_detected: true }, story.ai_payload, false), true);
+  assert.equal(blocksAutomaticPublish({}, { ...story.ai_payload, appears_old_news: true }, true), true);
 });
 
 test("brief normalization does not pad, truncate or reprocess valid Chinese text by length", () => {

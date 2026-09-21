@@ -354,6 +354,14 @@ export default async (request: Request, context: any) => {
     return context.next();
   }
 
+  // WordPress archive/system routes belong to 01-wordpress-archive-retire.
+  // Never reinterpret their trailing page number as a historical article ID.
+  if (/^\/(?:page|author|tag|search|category)(?:\/|$)/i.test(url.pathname)
+    || /^\/20\d{2}(?:\/|$)/i.test(url.pathname)
+    || /^\/feed\/?$/i.test(url.pathname)) {
+    return context.next();
+  }
+
   try {
     if (url.pathname === "/article.html") {
       const id = clean(url.searchParams.get("id"));

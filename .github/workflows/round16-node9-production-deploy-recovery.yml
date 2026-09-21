@@ -131,7 +131,19 @@ jobs:
               command = tomllib.load(config_file)['build']['command']
           subprocess.run(['bash', '-e', '-o', 'pipefail', '-c', command], check=True)
           PY
-            COMMIT_REF="$DEPLOY_SHA" npx --yes netlify-cli@latest deploy --prod --site "$NETLIFY_SITE_ID" --no-build --debug
+            if ! COMMIT_REF="$DEPLOY_SHA" npx --yes netlify-cli@latest deploy --prod --site "$NETLIFY_SITE_ID" --no-build; then
+              if [ -z "${NETLIFY_BUILD_HOOK:-}" ]; then
+                exit 2
+              fi
+              echo 'Netlify CLI upload failed; falling back to the configured Git build hook.'
+              deploy_mode='build-hook'
+              if [[ "$NETLIFY_BUILD_HOOK" == *\?* ]]; then
+                hook_url="${NETLIFY_BUILD_HOOK}&trigger_branch=main&clear_cache=true"
+              else
+                hook_url="${NETLIFY_BUILD_HOOK}?trigger_branch=main&clear_cache=true"
+              fi
+              curl -fsS -X POST "$hook_url"
+            fi
           elif [ -n "${NETLIFY_BUILD_HOOK:-}" ]; then
             deploy_mode='build-hook'
             echo 'Deploy mode: Netlify build hook fallback'
@@ -238,3 +250,5 @@ jobs:
             -d '{"state":"failure","context":"trrb/production-accepted","description":"Production deployment or exact-SHA acceptance failed; see workflow logs"}' >/dev/null
 
       - name: 同一 SHA 已部署时跳过
+        if: env.SKIP_DEPLOY == 'true'
+        run: echo "Production SHA $DEPLOY_SHA was already deployed and accepted; duplicate run skipped."

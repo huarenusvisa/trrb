@@ -72,3 +72,19 @@ assert.match(plane, /发送机器人站内错误通知/);
 assert.match(plane, /node scripts\/automation-notify\.mjs/);
 
 console.log('Automation control contract passed: grouped controls, deduplicated SEO dispatch, UI notifications, hard gates, manual-task isolation and ICE emergency routing are enforced.');
+
+// Exercise cancellation isolation, including runs queued before module jobs exist.
+const { runInNewContext } = await import('node:vm');
+const sandbox = { require: () => ({}), exports: {}, process: { env: {} } };
+runInNewContext(`${control}\nglobalThis.cancelPolicy = canCancelRun;`, sandbox);
+const queuedChina = { status: 'queued', event: 'workflow_dispatch', display_title: 'TRRB Operations [china-hot]' };
+assert.equal(sandbox.cancelPolicy('operations-control-plane.yml', 'jobs', queuedChina), false);
+assert.equal(sandbox.cancelPolicy('operations-control-plane.yml', 'china_hot', queuedChina), true);
+assert.equal(sandbox.cancelPolicy('operations-control-plane.yml', 'jobs', { ...queuedChina, display_title: 'TRRB Operations [jobs]' }), true);
+assert.equal(sandbox.cancelPolicy('operations-control-plane.yml', 'jobs', { ...queuedChina, display_title: 'TRRB Operations [all]' }), false);
+assert.equal(sandbox.cancelPolicy('operations-control-plane.yml', 'jobs', { ...queuedChina, event: 'schedule' }), false);
+assert.equal(sandbox.cancelPolicy('operations-control-plane.yml', 'jobs', { ...queuedChina, display_title: 'TRRB Operations Control Plane' }), false);
+assert.equal(sandbox.cancelPolicy('operations-control-plane.yml', 'global', queuedChina), true);
+assert.equal(sandbox.cancelPolicy('jobs-daily-ingest.yml', 'jobs', queuedChina), true);
+assert.match(plane, /^run-name: TRRB Operations \[/m);
+console.log('Module stop isolation passed: jobs cannot cancel China, shared or legacy runs.');

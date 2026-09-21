@@ -5,6 +5,9 @@ const SUPABASE_URL = String(process.env.SUPABASE_URL || "").replace(/\/$/, "");
 const SUPABASE_SERVICE_ROLE_KEY = String(process.env.SUPABASE_SERVICE_ROLE_KEY || "");
 const TARGET_CANDIDATES = Math.max(50, Math.min(1_000, Number(process.env.JOBS_TARGET_CANDIDATES || 500)));
 const ATS_SOURCE_LIMIT = Math.max(100, Math.min(1_000, Number(process.env.JOBS_ATS_SOURCE_LIMIT || 625)));
+const MIN_NEW_PUBLISHED = Math.max(1, Math.min(200, Number(process.env.JOBS_MIN_NEW_PUBLISHED || 50)));
+const EXPANDED_CHINESE_TARGET = Math.max(TARGET_CANDIDATES, Math.min(2_000, Number(process.env.JOBS_EXPANDED_CHINESE_TARGET || 1_000)));
+const EXPANDED_ATS_SOURCE_LIMIT = Math.max(ATS_SOURCE_LIMIT, Math.min(1_000, Number(process.env.JOBS_EXPANDED_ATS_SOURCE_LIMIT || 350)));
 const STORE_BATCH_SIZE = Math.max(50, Math.min(500, Number(process.env.JOBS_STORE_BATCH_SIZE || 150)));
 const STORE_CONCURRENCY = Math.max(2, Math.min(16, Number(process.env.JOBS_STORE_CONCURRENCY || 8)));
 const REST_RETRY_ATTEMPTS = Math.max(1, Math.min(5, Number(process.env.JOBS_REST_RETRY_ATTEMPTS || 3)));
@@ -18,9 +21,23 @@ const ATS_SOURCES = [
   { type: "lever", key: "lever_distro", board: "distro" },
   { type: "lever", key: "lever_springoakliving", board: "springoakliving" },
 ];
+// These official employer feeds are only opened when the primary pass produces
+// fewer than MIN_NEW_PUBLISHED new listings. This keeps the normal run focused,
+// while giving a low-volume day a much broader US-wide candidate pool.
+const EXPANDED_ATS_SOURCES = [
+  { type: "greenhouse", key: "greenhouse_sweetgreen", board: "sweetgreen" },
+  { type: "greenhouse", key: "greenhouse_doordashusa", board: "doordashusa" },
+  { type: "greenhouse", key: "greenhouse_lyft", board: "lyft" },
+  { type: "greenhouse", key: "greenhouse_toast", board: "toast" },
+  { type: "greenhouse", key: "greenhouse_instacart", board: "instacart" },
+  { type: "greenhouse", key: "greenhouse_opentable", board: "opentable" },
+  { type: "greenhouse", key: "greenhouse_spacex", board: "spacex" },
+  { type: "lever", key: "lever_gopuff", board: "gopuff" },
+];
+const ALL_ATS_SOURCES = [...ATS_SOURCES, ...EXPANDED_ATS_SOURCES];
 const SOURCE_REGISTRATIONS = [
   { source_key: SOURCE_KEY, company_name: "500工作网", source_type: "structured_web", board_token: null, source_url: `${SOURCE_ORIGIN}/` },
-  ...ATS_SOURCES.map((source) => ({
+  ...ALL_ATS_SOURCES.map((source) => ({
     source_key: source.key, company_name: source.board, source_type: source.type === "lever" ? "api" : source.type, board_token: source.board,
     source_url: source.type === "greenhouse" ? `https://job-boards.greenhouse.io/${source.board}` : `https://jobs.lever.co/${source.board}`,
   })),
@@ -286,10 +303,10 @@ async function ensureSourceRegistry(request = rest) {
   return new Set([...registered].filter(([, enabled]) => enabled === true).map(([key]) => key));
 }
 
-async function fetchChineseCandidates({ discover = discoverUrls, fetchPage = fetchText } = {}) {
+async function fetchChineseCandidates({ discover = discoverUrls, fetchPage = fetchText, target = TARGET_CANDIDATES } = {}) {
   let urls = [];
   try {
-    urls = await discover();
+    urls = await discover(target);
     const fetched = await mapLimit(urls, 3, async (url) => normalizeCandidate(url, await fetchPage(url)));
     return {
       discovered: urls.length, candidates: fetched.filter((item) => !item?.error),
@@ -314,17 +331,19 @@ async function mapLimit(items, limit, worker) {
   return output;
 }
 
-async function discoverUrls() {
+async function discoverUrls(target = TARGET_CANDIDATES) {
   const urls = new Set();
-  for (let page = 1; page <= 20 && urls.size < TARGET_CANDIDATES; page += 1) {
+  const boundedTarget = Math.max(50, Math.min(2_000, Number(target) || TARGET_CANDIDATES));
+  const maxPages = Math.max(20, Math.ceil(boundedTarget / 20) + 10);
+  for (let page = 1; page <= maxPages && urls.size < boundedTarget; page += 1) {
     const url = page === 1 ? `${SOURCE_ORIGIN}/` : `${SOURCE_ORIGIN}/index/${page}`;
     const html = await fetchText(url);
     for (const match of html.matchAll(/href=["'](?:https?:\/\/(?:www\.)?500work\.com)?(\/page\/(\d+))[^"']*["']/gi)) {
       urls.add(`${SOURCE_ORIGIN}${match[1]}`);
-      if (urls.size >= TARGET_CANDIDATES) break;
+      if (urls.size >= boundedTarget) break;
     }
   }
-  return [...urls].slice(0, TARGET_CANDIDATES);
+  return [...urls].slice(0, boundedTarget);
 }
 
 function normalizeCandidate(url, html) {
@@ -398,7 +417,7 @@ function safeHttpUrl(value) {
   catch { return ""; }
 }
 
-async function fetchEnglishCandidates(sources = ATS_SOURCES) {
+async function fetchEnglishCandidates(sources = ATS_SOURCES, sourceLimit = ATS_SOURCE_LIMIT) {
   const groups = await mapLimit(sources, 2, async (source) => {
     try {
       const endpoint = source.type === "greenhouse"
@@ -410,7 +429,7 @@ async function fetchEnglishCandidates(sources = ATS_SOURCES) {
       return {
         source_key: source.key,
         discovered: discovered.length,
-        candidates: discovered.slice(0, ATS_SOURCE_LIMIT).map((job) => normalizeAtsCandidate(source, job)),
+        candidates: discovered.slice(0, sourceLimit).map((job) => normalizeAtsCandidate(source, job)),
         error: null,
       };
     } catch (error) {
@@ -531,12 +550,56 @@ async function storeCandidate(candidate) {
   return "published";
 }
 
+function candidateKey(candidate) {
+  return `${candidate.sourceKey || SOURCE_KEY}:${candidate.externalId}`;
+}
+
+function shouldExpand(published, minimum = MIN_NEW_PUBLISHED) {
+  return Number(published || 0) < Number(minimum || MIN_NEW_PUBLISHED);
+}
+
+async function storeCandidates(candidates, summary, phase) {
+  for (let offset = 0; offset < candidates.length; offset += STORE_BATCH_SIZE) {
+    const batch = candidates.slice(offset, offset + STORE_BATCH_SIZE);
+    const stored = await mapLimit(batch, STORE_CONCURRENCY, async (candidate) => {
+      try { return { sourceKey: candidate.sourceKey || SOURCE_KEY, status: await storeCandidate(candidate) }; }
+      catch (error) {
+        console.error("WRITE_ERROR", candidate.sourceKey || SOURCE_KEY, candidate.url, error?.message || error);
+        return { sourceKey: candidate.sourceKey || SOURCE_KEY, status: "write_errors" };
+      }
+    });
+    for (const result of stored) addStatus(summary, result.sourceKey, result.status);
+    console.log(`JOBS_INGEST_BATCH ${JSON.stringify({ phase, offset, size: batch.length, published: summary.published, existing: summary.existing, rejected: summary.rejected, write_errors: summary.write_errors })}`);
+  }
+}
+
+async function reportIngestionSummary(summary) {
+  const fallback = summary.fallback?.triggered
+    ? `；不足${summary.minimum_new_published}条，已自动全网扩抓${summary.fallback.fetched}条候选`
+    : "；首轮已达到最低发布量，无需扩抓";
+  const message = `发现${summary.discovered}条，检查${summary.fetched}条，新增发布${summary.published}条，已存在${summary.existing}条，过滤${summary.rejected}条，写入失败${summary.write_errors}条${fallback}。`;
+  try {
+    await rest("automation_notifications", "", { method: "POST", body: {
+      control_key: "jobs",
+      severity: summary.write_errors ? "warning" : "info",
+      title: `招聘抓取完成：新增${summary.published}条`,
+      message,
+      details: summary,
+    }, prefer: "return=minimal" });
+  } catch (error) {
+    // Reporting must never turn a successful ingestion into a failed run.
+    console.error("JOBS_REPORT_ERROR", error?.message || error);
+  }
+  console.log(`JOBS_INGEST_REPORT ${message}`);
+}
+
 async function main() {
   if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) throw new Error("Missing SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY");
   const summary = {
     started_at: NOW_ISO,
     target: TARGET_CANDIDATES,
     ats_source_limit: ATS_SOURCE_LIMIT,
+    minimum_new_published: MIN_NEW_PUBLISHED,
     batch_size: STORE_BATCH_SIZE,
     concurrency: STORE_CONCURRENCY,
     discovered: 0,
@@ -548,6 +611,7 @@ async function main() {
     fetch_errors: 0,
     source_errors: 0,
     write_errors: 0,
+    fallback: { triggered: false, reason: null, discovered: 0, fetched: 0, published: 0 },
     sources: {},
   };
   try {
@@ -573,17 +637,62 @@ async function main() {
     if (chinese.error) console.error("SOURCE_ERROR", SOURCE_KEY, chinese.error);
     for (const report of english.sources.filter((item) => item.error)) console.error("SOURCE_ERROR", report.source_key, report.error);
 
-    for (let offset = 0; offset < candidates.length; offset += STORE_BATCH_SIZE) {
-      const batch = candidates.slice(offset, offset + STORE_BATCH_SIZE);
-      const stored = await mapLimit(batch, STORE_CONCURRENCY, async (candidate) => {
-        try { return { sourceKey: candidate.sourceKey || SOURCE_KEY, status: await storeCandidate(candidate) }; }
-        catch (error) {
-          console.error("WRITE_ERROR", candidate.sourceKey || SOURCE_KEY, candidate.url, error?.message || error);
-          return { sourceKey: candidate.sourceKey || SOURCE_KEY, status: "write_errors" };
+    await storeCandidates(candidates, summary, "primary");
+
+    if (shouldExpand(summary.published)) {
+      const publishedBeforeFallback = summary.published;
+      const knownCandidates = new Set(candidates.map(candidateKey));
+      const expandedChinese = enabledSources.has(SOURCE_KEY)
+        ? await fetchChineseCandidates({ target: EXPANDED_CHINESE_TARGET })
+        : { discovered: 0, candidates: [], failures: [], error: null };
+      const expandedEnglish = await fetchEnglishCandidates(
+        ALL_ATS_SOURCES.filter((source) => enabledSources.has(source.key)),
+        EXPANDED_ATS_SOURCE_LIMIT,
+      );
+      const fallbackCandidates = [...expandedChinese.candidates, ...expandedEnglish.candidates]
+        .filter((candidate) => !knownCandidates.has(candidateKey(candidate)));
+      const fallbackBySource = new Map();
+      for (const candidate of fallbackCandidates) {
+        const key = candidate.sourceKey || SOURCE_KEY;
+        fallbackBySource.set(key, (fallbackBySource.get(key) || 0) + 1);
+      }
+      const newEnglishSources = expandedEnglish.sources.filter((report) => !summary.sources[report.source_key]);
+      const discoveryDelta = Math.max(0, expandedChinese.discovered - chinese.discovered)
+        + newEnglishSources.reduce((total, report) => total + report.discovered, 0);
+      summary.discovered += discoveryDelta;
+      summary.fetched += fallbackCandidates.length;
+      if (summary.sources[SOURCE_KEY]) {
+        summary.sources[SOURCE_KEY].discovered = Math.max(summary.sources[SOURCE_KEY].discovered, expandedChinese.discovered);
+        summary.sources[SOURCE_KEY].fetched += fallbackBySource.get(SOURCE_KEY) || 0;
+        summary.sources[SOURCE_KEY].error ||= expandedChinese.error;
+      }
+      summary.fetch_errors += expandedChinese.failures.length;
+      if (expandedChinese.error && !chinese.error) summary.source_errors += 1;
+      for (const report of expandedEnglish.sources) {
+        const existing = summary.sources[report.source_key];
+        if (existing) {
+          existing.discovered = Math.max(existing.discovered, report.discovered);
+          existing.fetched += fallbackBySource.get(report.source_key) || 0;
+          existing.error ||= report.error;
+        } else {
+          summary.sources[report.source_key] = {
+            ...emptySourceSummary(), ...report, fetched: fallbackBySource.get(report.source_key) || 0,
+          };
+          if (report.error) summary.source_errors += 1;
         }
-      });
-      for (const result of stored) addStatus(summary, result.sourceKey, result.status);
-      console.log(`JOBS_INGEST_BATCH ${JSON.stringify({ offset, size: batch.length, published: summary.published, existing: summary.existing, rejected: summary.rejected, write_errors: summary.write_errors })}`);
+      }
+      for (const failed of expandedChinese.failures.slice(0, 10)) console.error("FALLBACK_FETCH_ERROR", failed.url, failed.error);
+      for (const report of expandedEnglish.sources.filter((item) => item.error)) console.error("FALLBACK_SOURCE_ERROR", report.source_key, report.error);
+      summary.fallback = {
+        triggered: true,
+        reason: `primary_published_below_${MIN_NEW_PUBLISHED}`,
+        discovered: discoveryDelta,
+        fetched: fallbackCandidates.length,
+        published: 0,
+      };
+      console.log(`JOBS_INGEST_FALLBACK ${JSON.stringify(summary.fallback)}`);
+      await storeCandidates(fallbackCandidates, summary, "expanded_web");
+      summary.fallback.published = summary.published - publishedBeforeFallback;
     }
 
     const allowedWriteErrors = Math.max(MIN_WRITE_ERROR_THRESHOLD, Math.ceil(summary.fetched * MAX_WRITE_ERROR_RATE));
@@ -598,6 +707,7 @@ async function main() {
         updated_at: NOW_ISO,
       } });
     }
+    await reportIngestionSummary(summary);
     console.log(`JOBS_INGEST_SUMMARY ${JSON.stringify(summary)}`);
     const handled = summary.published + summary.repaired + summary.existing + summary.rejected;
     if (summary.fetched < 50 || handled === 0 || summary.write_errors > allowedWriteErrors) process.exitCode = 1;
@@ -610,4 +720,4 @@ async function main() {
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) await main();
 
-export { ensureSourceRegistry, fetchChineseCandidates, normalizeAtsCandidate, normalizeCandidate, pickCategory, pickEnglishLocation };
+export { ensureSourceRegistry, fetchChineseCandidates, normalizeAtsCandidate, normalizeCandidate, pickCategory, pickEnglishLocation, shouldExpand };

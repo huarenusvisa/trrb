@@ -59,7 +59,11 @@ assert.match(netlify, /function\s*=\s*"huarengongzuo-seo-landing"[\s\S]*path\s*=
 assert.match(netlify, /function\s*=\s*"huarengongzuo-seo-landing"[\s\S]*path\s*=\s*"\/jobs\/categories\/\*"/, "category SEO landing route missing");
 assert.match(landing, /CollectionPage/, "SEO landing page structured data missing");
 assert.match(landing, /BreadcrumbList/, "SEO landing breadcrumb structured data missing");
+assert.match(landing, /ItemList/, "SEO landing job-list structured data missing");
+assert.match(landing, /san-francisco/, "expanded major-city landing pages missing");
+assert.match(landing, /office-admin/, "expanded category landing pages missing");
 assert.match(landing, /icon-192\.png/, "SEO landing logo/favicon missing");
+assert.match(jobsPage, /jobs-directory-title/, "crawlable job and city directory missing from jobs page");
 assert.match(jobsPage, /canonical" href="https:\/\/huarengongzuo\.com\/jobs\//, "jobs page canonical is not owned by 华人工作网");
 assert.match(jobsPage, /华人工作网 Logo/, "visible jobs page logo missing");
 assert.match(publishPage, /noindex,follow/, "publish form should not compete in search results");

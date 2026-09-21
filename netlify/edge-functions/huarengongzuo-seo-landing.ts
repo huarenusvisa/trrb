@@ -42,6 +42,46 @@ const LOCATIONS: Record<string, Landing> = {
     name: "休斯敦", search: "Houston",
     intro: "查看休斯敦及周边地区华人招聘信息，快速查找餐饮、仓库、司机、零售和服务行业岗位，并直接联系招聘方。",
     match: (job) => includesAny(placeText(job), ["houston", "休斯敦", "休斯顿"])
+  },
+  "san-francisco": {
+    name: "旧金山", search: "San Francisco",
+    intro: "查看旧金山湾区华人招聘信息，覆盖餐饮、科技、零售、办公室、护理、仓储和本地服务岗位。",
+    match: (job) => includesAny(placeText(job), ["san francisco", "旧金山", "三藩市", "bay area"])
+  },
+  seattle: {
+    name: "西雅图", search: "Seattle",
+    intro: "查看西雅图及华盛顿州周边最新招聘，按职位和地区进入岗位详情并联系招聘方。",
+    match: (job) => includesAny(placeText(job), ["seattle", "西雅图"])
+  },
+  chicago: {
+    name: "芝加哥", search: "Chicago",
+    intro: "查看芝加哥地区华人常用招聘岗位，包括餐饮、物流、零售、办公室和专业服务工作。",
+    match: (job) => includesAny(placeText(job), ["chicago", "芝加哥"])
+  },
+  philadelphia: {
+    name: "费城", search: "Philadelphia",
+    intro: "查看费城及周边地区当前有效招聘，快速查找餐饮、护理、仓库、司机和办公室岗位。",
+    match: (job) => includesAny(placeText(job), ["philadelphia", "费城"])
+  },
+  dallas: {
+    name: "达拉斯", search: "Dallas",
+    intro: "查看达拉斯及北德州招聘信息，覆盖服务业、物流、司机、零售、办公室和技术岗位。",
+    match: (job) => includesAny(placeText(job), ["dallas", "达拉斯"])
+  },
+  atlanta: {
+    name: "亚特兰大", search: "Atlanta",
+    intro: "查看亚特兰大都会区最新招聘信息，按工作类别和地点直接进入岗位详情。",
+    match: (job) => includesAny(placeText(job), ["atlanta", "亚特兰大"])
+  },
+  miami: {
+    name: "迈阿密", search: "Miami",
+    intro: "查看迈阿密及南佛州招聘信息，覆盖餐饮、美容、零售、房地产和本地服务岗位。",
+    match: (job) => includesAny(placeText(job), ["miami", "迈阿密"])
+  },
+  "washington-dc": {
+    name: "华盛顿DC", search: "Washington DC",
+    intro: "查看华盛顿DC及周边地区招聘，包括办公室、教育、法律、护理、餐饮和技术岗位。",
+    match: (job) => includesAny(placeText(job), ["washington", "华盛顿", "district of columbia"])
   }
 };
 
@@ -70,6 +110,46 @@ const CATEGORIES: Record<string, Landing> = {
     name: "家政护理", search: "家政",
     intro: "查找全美华人家政、保姆、护工、陪护和居家护理岗位。涉及住家工作时，应提前确认休息时间、职责范围、住宿条件和工资支付方式。",
     match: (job) => includesAny(workText(job), ["home-care", "家政", "保姆", "护工", "护理", "陪护", "阿姨"])
+  },
+  massage: {
+    name: "按摩SPA", search: "按摩",
+    intro: "查找全美华人按摩、SPA和理疗服务岗位，联系前请确认执照要求、工作内容、排班与薪资。",
+    match: (job) => includesAny(workText(job), ["massage", "按摩", "spa", "理疗"])
+  },
+  construction: {
+    name: "装修建筑", search: "装修",
+    intro: "查找装修、建筑、木工、电工、水暖、安装和施工相关岗位，确认工地位置、保险和薪资方式。",
+    match: (job) => includesAny(workText(job), ["construction", "装修", "建筑", "木工", "电工", "安装"])
+  },
+  "retail-grocery": {
+    name: "超市零售", search: "超市",
+    intro: "查找超市、零售、店员、收银、理货和门店销售岗位，按城市查看当前有效招聘。",
+    match: (job) => includesAny(workText(job), ["retail-grocery", "超市", "零售", "店员", "收银"])
+  },
+  "office-admin": {
+    name: "办公室行政", search: "办公室",
+    intro: "查找办公室、文员、前台、行政、客服和助理岗位，查看工作地点、语言和经验要求。",
+    match: (job) => includesAny(workText(job), ["office-admin", "办公室", "文员", "前台", "行政", "助理"])
+  },
+  "accounting-finance": {
+    name: "会计金融", search: "会计",
+    intro: "查找会计、记账、报税、财务和金融相关岗位，优先展示信息完整且仍可申请的职位。",
+    match: (job) => includesAny(workText(job), ["accounting-finance", "会计", "财务", "金融", "bookkeeper", "accountant"])
+  },
+  education: {
+    name: "教育培训", search: "教育",
+    intro: "查找教师、助教、幼教、学校和培训机构岗位，按地区查看工作要求与申请入口。",
+    match: (job) => includesAny(workText(job), ["education", "老师", "教师", "幼教", "学校", "培训"])
+  },
+  "it-tech": {
+    name: "IT科技", search: "IT",
+    intro: "查找软件、IT、数据、产品、工程和技术支持岗位，进入详情页查看雇主与官方申请入口。",
+    match: (job) => includesAny(workText(job), ["it-tech", "软件", "程序", "开发", "工程师", "developer", "engineer"])
+  },
+  sales: {
+    name: "市场销售", search: "销售",
+    intro: "查找市场、销售、商务拓展和客户服务岗位，比较工作地点、类型与申请要求。",
+    match: (job) => includesAny(workText(job), ["sales", "销售", "市场", "商务", "marketing"])
   }
 };
 
@@ -93,15 +173,23 @@ function page(landing: Landing, canonical: string, kind: "location" | "category"
   const title = kind === "location" ? `${landing.name}招聘｜最新华人工作岗位｜华人工作网` : `${landing.name}工作｜美国华人招聘｜华人工作网`;
   const heading = kind === "location" ? `${landing.name}招聘与找工作` : `${landing.name}工作与招聘`;
   const cards = jobs.length ? jobs.map((job) => `<article><h2><a href="/jobs/listing.html?id=${encodeURIComponent(job.id)}">${esc(job.title)}</a></h2><p>${esc(placeText(job) || "美国")}${clean(job.company_name) ? ` · ${esc(job.company_name)}` : ""}</p></article>`).join("") : `<div class="empty">当前没有匹配岗位，请进入全部岗位继续查找。招聘信息会持续更新。</div>`;
+  const directorySource = kind === "location" ? LOCATIONS : CATEGORIES;
+  const directoryPath = kind === "location" ? "locations" : "categories";
+  const directory = Object.entries(directorySource).map(([slug, item]) =>
+    `<a href="/jobs/${directoryPath}/${slug}/">${esc(item.name)}${kind === "location" ? "招聘" : "工作"}</a>`
+  ).join("");
   const schema = {
     "@context": "https://schema.org",
     "@graph": [
-      { "@type": "CollectionPage", "@id": `${canonical}#page`, name: heading, url: canonical, description: landing.intro, inLanguage: "zh-Hans", isPartOf: { "@id": `${SITE}/#website` } },
+      { "@type": "CollectionPage", "@id": `${canonical}#page`, name: heading, url: canonical, description: landing.intro, inLanguage: "zh-Hans", dateModified: jobs[0]?.updated_at || undefined, isPartOf: { "@id": `${SITE}/#website` } },
       { "@type": "BreadcrumbList", itemListElement: [
         { "@type": "ListItem", position: 1, name: "华人工作网", item: `${SITE}/` },
         { "@type": "ListItem", position: 2, name: "全部岗位", item: `${SITE}/jobs/` },
         { "@type": "ListItem", position: 3, name: heading, item: canonical }
-      ] }
+      ] },
+      { "@type": "ItemList", name: `${heading}最新岗位`, numberOfItems: jobs.length, itemListElement: jobs.map((job, index) => ({
+        "@type": "ListItem", position: index + 1, name: clean(job.title), url: `${SITE}/jobs/listing.html?id=${encodeURIComponent(job.id)}`
+      })) }
     ]
   };
   return `<!doctype html><html lang="zh-Hans"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
@@ -109,10 +197,10 @@ function page(landing: Landing, canonical: string, kind: "location" | "category"
 <link rel="canonical" href="${esc(canonical)}"><link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192"><link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180">
 <meta property="og:type" content="website"><meta property="og:site_name" content="华人工作网"><meta property="og:title" content="${esc(title)}"><meta property="og:description" content="${esc(landing.intro)}"><meta property="og:url" content="${esc(canonical)}"><meta property="og:image" content="${SITE}/og-share.png">
 <script type="application/ld+json">${escJson(schema)}</script>
-<style>body{margin:0;background:#f6f9fd;color:#0f172a;font-family:system-ui,"Noto Sans SC","Microsoft YaHei",sans-serif}.bar{background:#fff;border-bottom:1px solid #dce6f2}.bar div,.wrap{max-width:980px;margin:auto;padding:18px}.brand{display:flex;align-items:center;gap:10px;color:#0f172a;text-decoration:none;font-weight:900}.brand img{width:42px;height:42px}.hero{padding:42px 0 22px}.eyebrow{color:#1769d2;font-weight:850}h1{font-size:clamp(32px,6vw,52px);margin:8px 0 15px}.intro{font-size:18px;line-height:1.8;color:#475569;max-width:800px}.actions{display:flex;gap:10px;flex-wrap:wrap;margin:22px 0}.actions a{padding:11px 16px;border-radius:10px;text-decoration:none;font-weight:850;background:#1769d2;color:#fff}.actions a.alt{background:#eaf3ff;color:#1554a5}.list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:20px 0 45px}.list article,.empty{background:#fff;border:1px solid #dce6f2;border-radius:14px;padding:18px}.list h2{font-size:18px;margin:0 0 8px}.list h2 a{color:#0f172a;text-decoration:none}.list p{color:#64748b;margin:0}.safety{background:#fff7ed;border:1px solid #fed7aa;border-radius:14px;padding:18px;line-height:1.7;margin-bottom:45px}@media(max-width:680px){.list{grid-template-columns:1fr}.hero{padding-top:28px}}</style></head><body>
+<style>body{margin:0;background:#f6f9fd;color:#0f172a;font-family:system-ui,"Noto Sans SC","Microsoft YaHei",sans-serif}.bar{background:#fff;border-bottom:1px solid #dce6f2}.bar div,.wrap{max-width:980px;margin:auto;padding:18px}.brand{display:flex;align-items:center;gap:10px;color:#0f172a;text-decoration:none;font-weight:900}.brand img{width:42px;height:42px}.hero{padding:42px 0 22px}.eyebrow{color:#1769d2;font-weight:850}h1{font-size:clamp(32px,6vw,52px);margin:8px 0 15px}.intro{font-size:18px;line-height:1.8;color:#475569;max-width:800px}.actions{display:flex;gap:10px;flex-wrap:wrap;margin:22px 0}.actions a{padding:11px 16px;border-radius:10px;text-decoration:none;font-weight:850;background:#1769d2;color:#fff}.actions a.alt{background:#eaf3ff;color:#1554a5}.list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:20px 0 30px}.list article,.empty{background:#fff;border:1px solid #dce6f2;border-radius:14px;padding:18px}.list h2{font-size:18px;margin:0 0 8px}.list h2 a{color:#0f172a;text-decoration:none}.list p{color:#64748b;margin:0}.directory{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 35px}.directory a{background:#fff;border:1px solid #dce6f2;border-radius:999px;padding:8px 12px;color:#1554a5;text-decoration:none;font-weight:750}.safety{background:#fff7ed;border:1px solid #fed7aa;border-radius:14px;padding:18px;line-height:1.7;margin-bottom:45px}@media(max-width:680px){.list{grid-template-columns:1fr}.hero{padding-top:28px}}</style></head><body>
 <header class="bar"><div><a class="brand" href="/"><img src="/icon-192.png" alt="华人工作网 Logo" width="42" height="42"><span>华人工作网</span></a></div></header>
 <main class="wrap"><section class="hero"><div class="eyebrow">美国华人招聘 · 持续更新</div><h1>${esc(heading)}</h1><p class="intro">${esc(landing.intro)}</p><div class="actions"><a href="/?${kind === "location" ? "place" : "q"}=${encodeURIComponent(landing.search)}#latest-jobs">查看${esc(landing.name)}岗位</a><a class="alt" href="/jobs/">进入全部岗位</a><a class="alt" href="/jobs/publish.html">免费发布招聘</a></div></section>
-<section><h2>当前相关岗位</h2><div class="list">${cards}</div></section><aside class="safety"><strong>求职安全提醒：</strong>联系前核实雇主身份、工作地点、薪资和用工条件。正规招聘不应要求求职者提供银行卡密码、短信验证码或预付高额费用。</aside></main></body></html>`;
+<section><h2>当前相关岗位</h2><div class="list">${cards}</div></section><nav class="directory" aria-label="更多${kind === "location" ? "地区" : "工作类别"}">${directory}</nav><aside class="safety"><strong>求职安全提醒：</strong>联系前核实雇主身份、工作地点、薪资和用工条件。正规招聘不应要求求职者提供银行卡密码、短信验证码或预付高额费用。</aside></main></body></html>`;
 }
 
 export default async (request: Request, context: any) => {

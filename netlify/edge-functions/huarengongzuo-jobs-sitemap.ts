@@ -5,8 +5,16 @@ const EVERGREEN_URLS = [
   ["/jobs/locations/new-york/", "0.8"], ["/jobs/locations/flushing/", "0.8"],
   ["/jobs/locations/los-angeles/", "0.8"], ["/jobs/locations/boston/", "0.8"],
   ["/jobs/locations/houston/", "0.8"], ["/jobs/categories/restaurant/", "0.8"],
+  ["/jobs/locations/san-francisco/", "0.8"], ["/jobs/locations/seattle/", "0.8"],
+  ["/jobs/locations/chicago/", "0.8"], ["/jobs/locations/philadelphia/", "0.8"],
+  ["/jobs/locations/dallas/", "0.8"], ["/jobs/locations/atlanta/", "0.8"],
+  ["/jobs/locations/miami/", "0.8"], ["/jobs/locations/washington-dc/", "0.8"],
   ["/jobs/categories/driver/", "0.8"], ["/jobs/categories/warehouse/", "0.8"],
   ["/jobs/categories/beauty-nail/", "0.8"], ["/jobs/categories/home-care/", "0.8"],
+  ["/jobs/categories/massage/", "0.8"], ["/jobs/categories/construction/", "0.8"],
+  ["/jobs/categories/retail-grocery/", "0.8"], ["/jobs/categories/office-admin/", "0.8"],
+  ["/jobs/categories/accounting-finance/", "0.8"], ["/jobs/categories/education/", "0.8"],
+  ["/jobs/categories/it-tech/", "0.8"], ["/jobs/categories/sales/", "0.8"],
   ["/ershou/", "0.7"]
 ] as const;
 

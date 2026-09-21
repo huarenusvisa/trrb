@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { ensureSourceRegistry, fetchChineseCandidates, normalizeAtsCandidate, pickCategory, pickEnglishLocation } from "./jobs-daily-ingest.mjs";
+import { ensureSourceRegistry, fetchChineseCandidates, normalizeAtsCandidate, pickCategory, pickEnglishLocation, shouldExpand } from "./jobs-daily-ingest.mjs";
 
 test("registers source parents idempotently without re-enabling disabled sources", async () => {
   const registry = new Map([["500work", { source_key: "500work", is_enabled: false, priority: 95 }]]);
@@ -21,11 +21,20 @@ test("registers source parents idempotently without re-enabling disabled sources
     return [...registry.values()];
   };
   const enabled = await ensureSourceRegistry(request);
-  assert.deepEqual([...enabled].sort(), ["greenhouse_bayada", "greenhouse_freedomcare", "lever_distro", "lever_springoakliving"]);
+  for (const required of ["greenhouse_bayada", "greenhouse_freedomcare", "greenhouse_sweetgreen", "greenhouse_spacex", "lever_distro", "lever_gopuff", "lever_springoakliving"]) {
+    assert.equal(enabled.has(required), true, required);
+  }
   assert.deepEqual(await ensureSourceRegistry(request), enabled);
-  assert.equal(registry.size, 5);
+  assert.equal(registry.size, 13);
   assert.equal(registry.get("500work").priority, 95);
   assert.equal(registry.get("500work").is_enabled, false);
+});
+
+test("opens the expanded web pass only when new publications are below 50", () => {
+  assert.equal(shouldExpand(0), true);
+  assert.equal(shouldExpand(49), true);
+  assert.equal(shouldExpand(50), false);
+  assert.equal(shouldExpand(80), false);
 });
 
 test("fails before ingestion when a source registration is missing", async () => {

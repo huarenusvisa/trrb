@@ -44,7 +44,7 @@ test('renamed China category uses canonical article links in cards and structure
 for (const method of ['GET', 'HEAD']) {
   test(`${method}: public categories do not inherit template noindex headers`, async t => {
     fixture(t);
-    for (const route of ['/hot-headlines', '/us-politics', '/us-crime', '/immigration', '/ice/news']) {
+    for (const route of ['/hot-headlines', '/us-politics', '/us-crime', '/ice/news']) {
       const response = await categoryPage(new Request(`https://trrb.net${route}`, { method }), context);
       const html = await response.text();
       assert.equal(response.status, 200, route);
@@ -56,6 +56,18 @@ for (const method of ['GET', 'HEAD']) {
         assert.match(html, /已确认的短讯/);
         assert.ok(html.includes(`rel="canonical" href="https://trrb.net${route}"`));
       } else assert.equal(html, '');
+    }
+  });
+}
+
+for (const method of ['GET', 'HEAD']) {
+  test(`${method}: retired categories redirect to their replacement without fetching news`, async t => {
+    t.mock.method(globalThis, 'fetch', async () => { throw new Error('Redirect must not fetch category data'); });
+    for (const [route, destination] of [['/immigration', '/immigrate/'], ['/china-officialdom', '/hot-headlines']]) {
+      const response = await categoryPage(new Request(`https://trrb.net${route}`, { method }), context);
+      assert.equal(response.status, 301, route);
+      assert.equal(response.headers.get('location'), `https://trrb.net${destination}`, route);
+      assert.equal(await response.text(), '', route);
     }
   });
 }

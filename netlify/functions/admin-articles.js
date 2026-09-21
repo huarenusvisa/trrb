@@ -14,7 +14,7 @@ const {
   generateCover
 } = require("./_shared/article-ai");
 const { isIceEnforcementText } = require("./_shared/ice-enforcement");
-const { isUsImmigrationText } = require("./_shared/us-immigration-category");
+const { routeOfficialContent } = require("./_shared/official-content-routing");
 const { CHINA_HOT_CATEGORY, isChinaHotCategory, isChinaHotHeadline } = require("./_shared/china-hot-headlines");
 
 const ALLOWED_STATUS = new Set(["draft", "published", "hidden"]);
@@ -88,21 +88,10 @@ function enforceImmigrationCategory(title, content, categoryName) {
     return { categoryName, corrected: false, reason: "" };
   }
 
-  const text = normalizedArticleText(title, content);
-  if (isIceEnforcementText(title, String(content || "").slice(0, 1200))) {
-    return { categoryName: "ICE执法动态", corrected: true, reason: "immigration-enforcement" };
-  }
-  if (isUsImmigrationText(title, String(content || "").slice(0, 1200))) {
-    return { categoryName: IMMIGRATION_CATEGORY, corrected: false, reason: "immigration-to-us" };
-  }
-  if (containsAny(text, GENERAL_CRIME_TERMS)) {
-    return { categoryName: "美国警情", corrected: true, reason: "general-crime" };
-  }
-  if (containsAny(text, US_POLITICS_TERMS)) {
-    return { categoryName: "美国时政", corrected: true, reason: "us-politics" };
-  }
+  const route = routeOfficialContent(title, "", content, []);
+  if (route) return { categoryName: route.categoryName, corrected: true, reason: route.reason };
 
-  const error = new Error("该稿不属于“移民美国”。该栏目只收录赴美签证、绿卡、入籍、庇护申请及美国移民办理政策；ICE抓捕、拘留、遣返和边境执法请发布到“ICE执法动态”。");
+  const error = new Error("“移民美国”旧项目已删除。请将稿件发布到移民美国知识库的具体表格或签证模块；ICE、刑事案件和政府政策请分别选择ICE执法动态、美国警情或美国时政。");
   error.statusCode = 400;
   throw error;
 }

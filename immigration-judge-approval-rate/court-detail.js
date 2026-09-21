@@ -27,10 +27,10 @@ async function load() {
     const response = await fetch(`/.netlify/functions/immigration-judges?${params}`, { signal: controller.signal });
     if (!response.ok) throw new Error(`Court detail failed: ${response.status}`);
     const data = await response.json();
-    if (!data.court) throw new Error('Court detail missing');
+    if (!data.court || data.court.court_name !== courtName || (state && data.court.court_state !== state)) throw new Error('Court detail identity mismatch');
     const court = data.court;
     const fiscalYear = Number(data.fiscal_year || requestedYear || 2026);
-    document.title = `${court.court_name} FY ${fiscalYear} 庇护通过率｜唐人日报`;
+    if (document.body.dataset.seoPrerendered !== 'true') document.title = `${court.court_name} FY ${fiscalYear} 庇护通过率｜唐人日报`;
     $('#court-name').textContent = court.court_name || '移民法院';
     $('#court-place').textContent = [court.court_city, court.court_state].filter(Boolean).join(', ');
     const fiscalYearJudgeList = data.judge_list_scope === 'fiscal_year';

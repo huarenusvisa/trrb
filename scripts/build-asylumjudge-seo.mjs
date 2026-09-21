@@ -1,5 +1,6 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
+import { attachProfileContent, profileLabels, profileTable } from './asylumjudge-profile-content.mjs';
 import { buildAsylumJudgeCategories } from './asylumjudge-categories.mjs';
 
 const ORIGIN = 'https://asylumjudge.com';
@@ -483,6 +484,20 @@ function renderJudge(template, judge, locale) {
   if (n(judge.grants) + n(judge.denials) < 50) {
     html = fillElement(html, 'sample-warning', '少于50件，不显示').replace(/(id="sample-warning"[^>]*) hidden/, '$1');
   }
+  const labels = profileLabels(locale.code);
+  if (judge.prerender_court) {
+    const court = judge.prerender_court;
+    html = fillElement(html, 'judge-court', `<a href="${localizedPath(locale, `courts/${slugify(court.court_name)}--${String(court.court_code || slugify(court.court_state)).toLowerCase()}`)}">${escapeHtml(court.court_name)}</a> · ${escapeHtml([court.court_city, court.court_state].filter(Boolean).join(', '))}`);
+  }
+  html = fillElement(html, 'yearly', judge.prerender_yearly?.length
+    ? profileTable(judge.prerender_yearly, locale.code, labels[0], row => `<b>FY ${row.fiscal_year}</b>`)
+    : `<p class="empty">${escapeHtml(labels[10])}</p>`);
+  if (judge.prerender_nationalities?.length) {
+    const year = Number(judge.prerender_snapshot.scope_end.slice(0, 4));
+    const rows = judge.prerender_nationalities.filter(row => row.fiscal_year === year).sort((a,b) => b.total_asylum_decisions - a.total_asylum_decisions);
+    html = fillElement(html, 'nationality', profileTable(rows, locale.code, labels[1], row => `<b>FY ${year} · ${escapeHtml(row.nationality)}</b><small>${escapeHtml([row.data_start_date,row.data_end_date].filter(Boolean).join(' – '))}</small>`));
+    html = fillElement(html, 'nationality-period-label', `FY ${year} · ${year - 1}-10-01 – ${escapeHtml(judge.prerender_snapshot.scope_end)} · EOIR`);
+  }
   if (background?.biography || background?.biography_excerpt) {
     const biography = background.biography || background.biography_excerpt;
     const sourceLabel = `${background.source_title || 'DOJ/EOIR official source'}${background.source_date ? ` (${background.source_date})` : ''} →`;
@@ -517,6 +532,11 @@ function renderCourt(template, court, locale) {
     .replace('<strong id="judges">—</strong>', `<strong id="judges">${escapeHtml(localeNumber(court.judges, locale.code))}</strong>`)
     .replace('<strong id="decisions">—</strong>', `<strong id="decisions">${escapeHtml(total)}</strong>`)
     .replace('<strong id="gd">—</strong>', `<strong id="gd">${escapeHtml(`${localeNumber(court.grants, locale.code)} / ${localeNumber(court.denials, locale.code)} / ${localeNumber(court.other_decisions, locale.code)}`)}</strong>`);
+  const labels = profileLabels(locale.code);
+  html = fillElement(html, 'court-source', `${escapeHtml(court.prerender_period)} · EOIR · ${escapeHtml(labels[9])}`);
+  html = fillElement(html, 'judge-list-title', escapeHtml(labels[8]));
+  html = fillElement(html, 'judge-list', profileTable(court.prerender_judges || [], locale.code, labels[8], judge =>
+    `<a href="${localizedPath(locale, `judges/${slugify(judge.judge_name)}--${shortId(judge.id)}`)}"><b>${escapeHtml(cleanName(judge.judge_name))}</b></a><small>${escapeHtml([judge.data_start_date,judge.data_end_date].filter(Boolean).join(' – '))}</small>`));
   return injectSeoHead(html, { locale, relative, title, description, schema: courtSchema(locale, canonical, court, title, description) });
 }
 
@@ -659,6 +679,8 @@ export async function buildAsylumJudgeSeo({ root, output }) {
     await writePage(output, locale, 'judge-backgrounds', renderBackgroundDirectory(backgroundTemplate, judgeData.results, locale));
     staticRows.push({ loc: localizedUrl(locale, 'judge-backgrounds'), lastmod: backgroundData.generated_at || TODAY });
   }));
+
+  await attachProfileContent(root, judgeData.results, courtData.courts, courtData);
 
   const judgeRows = [];
   await writeEntities(

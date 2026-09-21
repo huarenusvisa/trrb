@@ -71,6 +71,7 @@ jobs:
       - name: Verify sitemap and canonical SEO contract
         run: |
           node scripts/asylumjudge-seo.test.mjs
+          node scripts/asylumjudge-profile-content.test.mjs
           node scripts/asylumjudge-tool-search-intent.test.mjs
           node scripts/asylumjudge-search-engine-ops.test.mjs
       - name: Verify multilingual, branding and search-intent regression contract

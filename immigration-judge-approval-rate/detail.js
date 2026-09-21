@@ -407,7 +407,7 @@ async function load() {
   try {
     const localUrl = `/.netlify/functions/immigration-judges?mode=detail&id=${encodeURIComponent(id)}`;
     const data = await requestJson(apiUrl(localUrl), { cache: 'no-store' });
-    if (!data.judge) throw new Error('Judge detail missing');
+    if (!data.judge || String(data.judge.id).toLowerCase() !== String(id).toLowerCase()) throw new Error('Judge detail identity mismatch');
     const judge = data.judge;
     const summary = detailSummaryCopy();
     if (data.background || document.body.dataset.seoPrerendered !== 'true') renderBackground(data.background);

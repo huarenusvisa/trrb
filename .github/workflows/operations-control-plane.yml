@@ -1,5 +1,6 @@
 # Newest-canonical sitemap final verification: 2026-09-02T22:54Z
 name: TRRB Operations Control Plane
+run-name: TRRB Operations [${{ inputs.module || github.event_name }}]
 
 on:
   push:

@@ -97,12 +97,13 @@ function officialPost(post) {
   const username = String(post?.source_username || "").replace(/^@/, "");
   return Number(post?.trust_tier) === 1 && (OFFICIAL_TYPES.test(type) || OFFICIAL_HANDLES.test(username));
 }
-async function officialEvidence(storyId) {
-  const links = await storyEvidence(storyId);
+async function officialEvidence(story) {
+  const links = await storyEvidence(story.id);
   const ids = links.map((row) => row.post_id).filter(Boolean);
-  if (!ids.length) return [];
-  const rows = await sb("ice_posts", { query: { select: "id,source_type,source_username,source_text,trust_tier", id: `in.(${ids.join(",")})`, limit: "100" } });
-  return (Array.isArray(rows) ? rows : []).filter((post) => officialPost(post) && isIceEnforcementEvidence(post.source_text, post.source_username));
+  const linked = ids.length ? await sb("ice_posts", { query: { select: "*", id: `in.(${ids.join(",")})`, limit: "100" } }) : [];
+  const fingerprintPosts = story.event_fingerprint ? await sb("ice_posts", { query: { select: "*", event_fingerprint: `eq.${story.event_fingerprint}`, limit: "100" } }) : [];
+  const posts = [...new Map([...(Array.isArray(linked) ? linked : []), ...(Array.isArray(fingerprintPosts) ? fingerprintPosts : [])].map((post) => [post.id, post])).values()];
+  return posts.filter((post) => officialPost(post) && isIceEnforcementEvidence(post.source_text, post.source_username));
 }
 async function leadPost(story) {
   const payload = safeJson(story?.ai_payload, story?.ai_payload || {});
@@ -146,9 +147,10 @@ async function publish(story) {
     });
     return null;
   }
+  let verifiedOfficial = [];
   if (officialApproved) {
-    const verified = await officialEvidence(story.id);
-    if (!verified.length || story.conflict_detected || story.privacy_risk || story.fabrication_risk) {
+    verifiedOfficial = await officialEvidence(story);
+    if (!verifiedOfficial.length) {
       await updateStory(story.id, {
         status: "pending_review", human_review_status: "required", scheduled_at: null,
         decision_reason: `${story.decision_reason || ""}；发布边界复核未通过，已转人工审核`
@@ -156,7 +158,7 @@ async function publish(story) {
       return null;
     }
   }
-  const post = await leadPost(story);
+  const post = verifiedOfficial[0] || await leadPost(story);
   if (!post) throw new Error(`故事${story.id}没有来源帖子`);
   if (!editorialReady(story, post)) {
     await updateStory(story.id, { status: "pending_review", human_review_status: officialApproved ? "required" : story.human_review_status, scheduled_at: null, decision_reason: `${story.decision_reason || ""}；发布器拦截：中文翻译、读图或旧闻检查未通过` });

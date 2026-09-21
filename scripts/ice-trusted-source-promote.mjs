@@ -25,7 +25,14 @@ function headers(prefer = "") { return { apikey: process.env.SUPABASE_SERVICE_RO
 async function readJson(response) { const text = await response.text(); if (!text) return null; try { return JSON.parse(text); } catch { return { raw: text }; } }
 async function request(url, options = {}) { const response = await fetch(url, options); const body = await readJson(response); if (!response.ok) throw new Error(body?.message || body?.details || body?.error || body?.raw || `请求失败（${response.status}）`); return body; }
 async function sb(table, { method = "GET", query = {}, body, prefer = "" } = {}) { const url = new URL(`${String(process.env.SUPABASE_URL).replace(/\/+$/, "")}/rest/v1/${table}`); for (const [key, value] of Object.entries(query)) if (value !== undefined && value !== null && value !== "") url.searchParams.set(key, String(value)); return request(url, { method, headers: headers(prefer), body: body === undefined ? undefined : JSON.stringify(body) }); }
-async function evidenceFor(storyId) { const links = await sb("ice_story_evidence", { query: { select: "post_id", story_id: `eq.${storyId}`, limit: "100" } }); const ids = (Array.isArray(links) ? links : []).map((row) => row.post_id).filter(Boolean); if (!ids.length) return []; const rows = await sb("ice_posts", { query: { select: "id,source_type,source_username,source_display_name,source_text,trust_tier,source_created_at,media", id: `in.(${ids.join(",")})`, limit: "100" } }); return Array.isArray(rows) ? rows : []; }
+async function evidenceFor(story) {
+  const select = "id,source_type,source_username,source_display_name,source_text,trust_tier,source_created_at,media";
+  const links = await sb("ice_story_evidence", { query: { select: "post_id", story_id: `eq.${story.id}`, limit: "100" } });
+  const ids = (Array.isArray(links) ? links : []).map((row) => row.post_id).filter(Boolean);
+  const linked = ids.length ? await sb("ice_posts", { query: { select, id: `in.(${ids.join(",")})`, limit: "100" } }) : [];
+  const fingerprintPosts = story.event_fingerprint ? await sb("ice_posts", { query: { select, event_fingerprint: `eq.${story.event_fingerprint}`, limit: "100" } }) : [];
+  return [...new Map([...(Array.isArray(linked) ? linked : []), ...(Array.isArray(fingerprintPosts) ? fingerprintPosts : [])].map((post) => [post.id, post])).values()];
+}
 function official(post) { const type = String(post?.source_type || ""); const username = String(post?.source_username || "").replace(/^@/, ""); return Number(post?.trust_tier) === 1 && (OFFICIAL_TYPES.test(type) || OFFICIAL_HANDLES.test(username)); }
 function trustedMedia(post) {
   const type = String(post?.source_type || "");
@@ -70,7 +77,7 @@ async function main() {
       rejectedNonIce += 1;
       continue;
     }
-    const evidence = await evidenceFor(story.id);
+    const evidence = await evidenceFor(story);
     if (!editorialReady(story, evidence)) { incomplete += 1; continue; }
     const officialEvidence = evidence.filter((post) => official(post) && isIceEnforcementEvidence(post.source_text, post.source_username));
     const trustedMediaEvidence = evidence.filter((post) => trustedMedia(post) && isIceEnforcementEvidence(post.source_text, post.source_username));

@@ -87,19 +87,19 @@ function isTierOneOfficial(post) {
   const username = text(post?.source_username).replace(/^@/, "");
   return Number(post?.trust_tier) === 1 && (OFFICIAL_TYPES.test(type) || OFFICIAL_HANDLES.test(username));
 }
-async function hasTierOneOfficialEvidence(storyId) {
-  const links = await sb("ice_story_evidence", { query: { select: "post_id", story_id: `eq.${storyId}`, limit: "100" } });
+async function hasTierOneOfficialEvidence(story) {
+  const links = await sb("ice_story_evidence", { query: { select: "post_id", story_id: `eq.${story.id}`, limit: "100" } });
   const ids = (Array.isArray(links) ? links : []).map((row) => row.post_id).filter(Boolean);
-  if (!ids.length) return false;
-  const posts = await sb("ice_posts", { query: { select: "id,source_type,source_username,trust_tier", id: `in.(${ids.join(",")})`, limit: "100" } });
-  return (Array.isArray(posts) ? posts : []).some(isTierOneOfficial);
+  const linked = ids.length ? await sb("ice_posts", { query: { select: "id,source_type,source_username,trust_tier", id: `in.(${ids.join(",")})`, limit: "100" } }) : [];
+  const fingerprintPosts = story.event_fingerprint ? await sb("ice_posts", { query: { select: "id,source_type,source_username,trust_tier", event_fingerprint: `eq.${story.event_fingerprint}`, limit: "100" } }) : [];
+  return [...(Array.isArray(linked) ? linked : []), ...(Array.isArray(fingerprintPosts) ? fingerprintPosts : [])].some(isTierOneOfficial);
 }
 async function resetAutomaticOldNewsConfirmation(story) {
   const current = payload(story);
   if (current.old_news_checked !== true || current.manual_old_news_confirmation === true) return false;
   // Tier-1 government sources use the editorial model's source-grounded date check.
   // Preserve that completed check so the later cleanup stage cannot undo direct publishing.
-  if (current.automatic_old_news_check_passed === true && await hasTierOneOfficialEvidence(story.id)) return false;
+  if (current.automatic_old_news_check_passed === true && await hasTierOneOfficialEvidence(story)) return false;
   await sb("ice_stories", {
     method: "PATCH", query: { id: `eq.${story.id}` },
     body: { ai_payload: { ...current, old_news_checked: false, automatic_old_news_check_passed: false, manual_old_news_confirmation: false }, updated_at: new Date().toISOString() },

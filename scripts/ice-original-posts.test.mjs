@@ -24,7 +24,7 @@ import manualPublish from "../netlify/functions/ice-review-v2.js";
 import manualApprove from "../netlify/functions/ice-review-actions-v4.js";
 import { clampBulletin, clampTitle, hasSavedChineseEditorial, looksNormalized } from "./ice-editorial-normalize.mjs";
 
-const checkedPayload = { translation_version: "zh-title-body-v9-official-context-300-1500", translated_to_chinese: true, old_news_checked: true, manual_old_news_confirmation: true, appears_old_news: false };
+const checkedPayload = { translation_version: "zh-title-body-v10-official-context-flex-300-1500", translated_to_chinese: true, old_news_checked: true, manual_old_news_confirmation: true, appears_old_news: false };
 const shortStory = { title: "ICE通报", content: "ICE通报在纽约拘捕一人。", ai_payload: checkedPayload };
 
 
@@ -92,7 +92,7 @@ test("empty, English, old-news and unreviewed-image stories remain blocked", () 
   assert.throws(() => manualApprove.assertEditorialReady(unrelated, unrelated), /不是明确的ICE/);
 });
 
-test("translation applies 300 to 800 for briefs and 800 to 1500 for rich verified context", async (t) => {
+test("translation applies 300 to 800 for briefs and permits verified rich context up to 1500", async (t) => {
   assert.doesNotMatch(JSON.stringify(schemaFor()), /minLength|maxLength/);
   let requests = 0;
   let currentContent = "据ICE通报，执法人员在纽约核对身份并说明行动安排。".repeat(32);
@@ -112,6 +112,8 @@ test("translation applies 300 to 800 for briefs and 800 to 1500 for rich verifie
     { source_username: "ERONewYork", source_text: "ERO New York supplied local context." }
   ];
   assert.equal(editorialBand(posts).max, 800);
+  assert.equal(editorialBand(richPosts).min, 300);
+  assert.equal(editorialBand(richPosts).preferredMin, 800);
   assert.equal(editorialBand(richPosts).max, 1500);
   assert.equal((await translate(shortStory, richPosts)).content, currentContent);
   assert.equal(requests, 2);
@@ -142,7 +144,7 @@ test("translation persistence records pure Chinese count and automatic old-news 
 
 test("tier-one ICE or DHS evidence may use automatic old-news confirmation but other sources may not", () => {
   const content = "据ICE通报，执法人员在纽约核对身份并说明行动安排。".repeat(32);
-  const story = { title: "纽约ICE执法通报", content, ai_payload: { translation_version: "zh-title-body-v9-official-context-300-1500", translated_to_chinese: true, old_news_checked: true, automatic_old_news_check_passed: true, manual_old_news_confirmation: false, appears_old_news: false } };
+  const story = { title: "纽约ICE执法通报", content, ai_payload: { translation_version: "zh-title-body-v10-official-context-flex-300-1500", translated_to_chinese: true, old_news_checked: true, automatic_old_news_check_passed: true, manual_old_news_confirmation: false, appears_old_news: false } };
   const official = { source_type: "official", source_username: "ICEgov", trust_tier: 1, source_text: "ICE announced an immigration arrest in New York." };
   const unverified = { ...official, trust_tier: 2 };
   assert.equal(promoterReady(story, [official]), true);

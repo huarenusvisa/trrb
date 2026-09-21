@@ -103,11 +103,15 @@ jobs:
           psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -Atc \
             "select jobname || '|' || schedule || '|' || active from cron.job where jobname='trrb-ice-supabase-scheduler';" \
             | tee /tmp/cron.txt
-          grep -q '^trrb-ice-supabase-scheduler|\*/10 \* \* \* \*|t$' /tmp/cron.txt
+          grep -Eq '^trrb-ice-supabase-scheduler|\*/10 \* \* \* \*|(t|true)$' /tmp/cron.txt
 
-          psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -Atc \
-            "select public.dispatch_ice_pipeline_if_due();" \
-            | tee /tmp/dispatch-check.txt
+          if psql "$DATABASE_URL" -Atc "select exists(select 1 from vault.decrypted_secrets where name='github_actions_dispatch_token');" | grep -Eq '^(t|true)$'; then
+            psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -Atc \
+              "select public.dispatch_ice_pipeline_if_due();" \
+              | tee /tmp/dispatch-check.txt
+          else
+            echo "Supabase Vault未配置可选调度PAT；跳过即时派发测试。"
+          fi
 
           node - <<'NODE'
           const fs = require('fs');

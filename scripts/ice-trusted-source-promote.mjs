@@ -17,7 +17,7 @@ const TRUSTED_MEDIA_HANDLES = new Set([
 ]);
 const AUTO_PUBLISH_SCORE = Number(process.env.ICE_AUTO_PUBLISH_SCORE || 80);
 const MAX_AGE_MINUTES = Number(process.env.ICE_TRUSTED_MAX_AGE_MINUTES || 120);
-const ACCEPTED_EDITORIAL_VERSIONS = new Set(["zh-title-body-v8-source-led", "zh-title-body-v7-300-600-800-context-image"]);
+const ACCEPTED_EDITORIAL_VERSIONS = new Set(["zh-title-body-v9-official-context-300-1500", "zh-title-body-v8-source-led", "zh-title-body-v7-300-600-800-context-image"]);
 
 function nowIso() { return new Date().toISOString(); }
 function requireEnv() { const missing = REQUIRED.filter((name) => !process.env[name]); if (missing.length) throw new Error(`缺少 GitHub Secret：${missing.join(", ")}`); }
@@ -26,7 +26,7 @@ async function readJson(response) { const text = await response.text(); if (!tex
 async function request(url, options = {}) { const response = await fetch(url, options); const body = await readJson(response); if (!response.ok) throw new Error(body?.message || body?.details || body?.error || body?.raw || `请求失败（${response.status}）`); return body; }
 async function sb(table, { method = "GET", query = {}, body, prefer = "" } = {}) { const url = new URL(`${String(process.env.SUPABASE_URL).replace(/\/+$/, "")}/rest/v1/${table}`); for (const [key, value] of Object.entries(query)) if (value !== undefined && value !== null && value !== "") url.searchParams.set(key, String(value)); return request(url, { method, headers: headers(prefer), body: body === undefined ? undefined : JSON.stringify(body) }); }
 async function evidenceFor(storyId) { const links = await sb("ice_story_evidence", { query: { select: "post_id", story_id: `eq.${storyId}`, limit: "100" } }); const ids = (Array.isArray(links) ? links : []).map((row) => row.post_id).filter(Boolean); if (!ids.length) return []; const rows = await sb("ice_posts", { query: { select: "id,source_type,source_username,source_display_name,source_text,trust_tier,source_created_at,media", id: `in.(${ids.join(",")})`, limit: "100" } }); return Array.isArray(rows) ? rows : []; }
-function official(post) { const type = String(post?.source_type || ""); const username = String(post?.source_username || "").replace(/^@/, ""); return OFFICIAL_TYPES.test(type) || OFFICIAL_HANDLES.test(username); }
+function official(post) { const type = String(post?.source_type || ""); const username = String(post?.source_username || "").replace(/^@/, ""); return Number(post?.trust_tier) === 1 && (OFFICIAL_TYPES.test(type) || OFFICIAL_HANDLES.test(username)); }
 function trustedMedia(post) {
   const type = String(post?.source_type || "");
   const username = String(post?.source_username || "").replace(/^@/, "").toLowerCase();
@@ -35,7 +35,7 @@ function trustedMedia(post) {
 function recentEnough(story) { const time = new Date(story.last_seen_at || story.first_seen_at || story.created_at || 0).getTime(); return Number.isFinite(time) && Date.now() - time <= MAX_AGE_MINUTES * 60000; }
 function hasChinese(value) { return /[\u3400-\u9fff]/.test(String(value || "")); }
 function mediaCount(evidence) { return evidence.reduce((count, post) => { const media = Array.isArray(post.media) ? post.media : []; return count + media.filter((item) => item?.url || item?.preview_image_url).length; }, 0); }
-function editorialReady(story, evidence) { const payload = story.ai_payload && typeof story.ai_payload === "object" ? story.ai_payload : {}; return ACCEPTED_EDITORIAL_VERSIONS.has(payload.translation_version) && payload.translated_to_chinese === true && payload.old_news_checked === true && payload.manual_old_news_confirmation === true && payload.appears_old_news !== true && hasChinese(story.title) && hasChinese(story.content) && (mediaCount(evidence) === 0 || payload.image_grounding_used === true); }
+function editorialReady(story, evidence) { const payload = story.ai_payload && typeof story.ai_payload === "object" ? story.ai_payload : {}; const officialAutoCheck = evidence.some(official) && payload.automatic_old_news_check_passed === true; const oldNewsConfirmed = payload.manual_old_news_confirmation === true || officialAutoCheck; const count = (String(story.content || "").match(/[\u3400-\u9fff]/gu) || []).length; return ACCEPTED_EDITORIAL_VERSIONS.has(payload.translation_version) && payload.translated_to_chinese === true && payload.old_news_checked === true && oldNewsConfirmed && payload.appears_old_news !== true && count >= 300 && count <= 1500 && hasChinese(story.title) && hasChinese(story.content) && (mediaCount(evidence) === 0 || payload.image_grounding_used === true); }
 
 async function main() {
   requireEnv();
@@ -107,7 +107,7 @@ async function main() {
     else if (isOfficial) autoApproved += 1;
     else trustedMediaApproved += 1;
   }
-  console.log(JSON.stringify({ stage: "ice-official-auto-publish-v7-strict-evidence", checked: Array.isArray(rows) ? rows.length : 0, official_auto_approved: autoApproved, trusted_media_auto_approved: trustedMediaApproved, official_risk_blocked: riskBlocked, rejected_non_ice: rejectedNonIce, manual_non_official: manual, incomplete_or_not_chinese: incomplete, stale }, null, 2));
+  console.log(JSON.stringify({ stage: "ice-official-auto-publish-v8-tier1-context", checked: Array.isArray(rows) ? rows.length : 0, official_auto_approved: autoApproved, trusted_media_auto_approved: trustedMediaApproved, official_risk_blocked: riskBlocked, rejected_non_ice: rejectedNonIce, manual_non_official: manual, incomplete_or_not_chinese: incomplete, stale }, null, 2));
 }
 
 export { editorialReady };

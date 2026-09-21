@@ -4,8 +4,8 @@ import policy from "../../article-editorial-policy.js";
 import { rest } from "./_shared/supabase-admin.js";
 import { isChinaHotCategory, isChinaHotHeadline } from "./_shared/china-hot-headlines.js";
 
-const CORE_CATEGORIES = ["热门头条", "美国时政", "美国警情", "移民美国", "ICE执法动态"];
-const RETIRED_HOME_CATEGORIES = new Set(["重要新闻", "中国官场", "庇护百科"]);
+const CORE_CATEGORIES = ["热门头条", "美国时政", "美国警情", "ICE执法动态"];
+const RETIRED_HOME_CATEGORIES = new Set(["重要新闻", "中国官场", "庇护百科", "移民美国"]);
 const HOME_MAX_AGE_MS = 4 * 24 * 60 * 60 * 1000;
 
 function response(statusCode, body) {

@@ -1,5 +1,10 @@
 const CANONICAL_HOST = "trrb.net";
 const CANONICAL_ORIGIN = `https://${CANONICAL_HOST}`;
+const REDIRECT_HOSTS = new Set([
+  `www.${CANONICAL_HOST}`,
+  "tangrenribao.com",
+  "www.tangrenribao.com"
+]);
 
 // Inline Edge Functions that match the same request are processed alphabetically
 // by file name. The 00- prefix makes this host guard run before article/category/
@@ -11,7 +16,7 @@ export default async (request: Request, context: any) => {
 
   const url = new URL(request.url);
   const host = url.hostname.toLowerCase();
-  const needsHostCanonical = host === `www.${CANONICAL_HOST}`;
+  const needsHostCanonical = REDIRECT_HOSTS.has(host);
   const needsHttps = url.protocol !== "https:";
 
   if (!needsHostCanonical && !needsHttps) return context.next();
@@ -22,7 +27,9 @@ export default async (request: Request, context: any) => {
     headers: {
       Location: destination.toString(),
       "Cache-Control": "public, max-age=300",
-      "X-TRRB-Host-Canonical": "apex-https"
+      "X-TRRB-Host-Canonical": host.endsWith("tangrenribao.com")
+        ? "tangrenribao-to-trrb"
+        : "apex-https"
     }
   });
 };

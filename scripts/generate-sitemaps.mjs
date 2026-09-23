@@ -1,4 +1,5 @@
 import { articleIndexability, ARTICLE_INDEXABILITY_POLICY } from "../netlify/shared/article-indexability.mjs";
+import { fetchPublishedArticles } from './sitemap-article-reader.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
 import vm from 'node:vm';
@@ -135,6 +136,7 @@ async function rest(pathname, params) {
   const url = new URL(`${base}/rest/v1/${pathname}`);
   Object.entries(params || {}).forEach(([name, value]) => url.searchParams.set(name, value));
   const response = await fetch(url, {
+    signal: AbortSignal.timeout(45000),
     headers: {
       apikey: key,
       Authorization: `Bearer ${key}`,
@@ -142,10 +144,13 @@ async function rest(pathname, params) {
     }
   });
   if (!response.ok) {
-    throw new Error(`${pathname} query failed: ${response.status} ${(await response.text()).slice(0, 300)}`);
+    const error = new Error(`${pathname} query failed: ${response.status} ${(await response.text()).slice(0, 300)}`);
+    error.status = response.status;
+    throw error;
   }
   const rows = await response.json();
-  return Array.isArray(rows) ? rows : [];
+  if (!Array.isArray(rows)) throw new Error(`${pathname} returned an invalid page`);
+  return rows;
 }
 
 async function fetchCategories() {
@@ -162,22 +167,7 @@ async function fetchCategories() {
 }
 
 async function fetchAllPublishedArticles() {
-  const pageSize = 1000;
-  const maxPages = 100;
-  const all = [];
-  for (let page = 0; page < maxPages; page += 1) {
-    const rows = await rest('articles', {
-      select: 'id,title,slug,summary,content,category_id,category_name,topic_key,status,visibility,published_at,created_at,source_url,cover_image',
-      status: 'eq.published',
-      visibility: 'eq.public',
-      order: 'published_at.desc.nullslast,created_at.desc,id.desc',
-      limit: String(pageSize),
-      offset: String(page * pageSize)
-    });
-    all.push(...rows);
-    if (rows.length < pageSize) break;
-  }
-  return all;
+  return fetchPublishedArticles(rest);
 }
 
 const categories = await fetchCategories();

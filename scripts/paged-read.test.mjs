@@ -45,3 +45,9 @@ test('retries a native AbortError even when its message omits the error name',as
   const value=await readWithRetry(async()=>{if(++calls===1)throw new DOMException('This operation was aborted','AbortError');return 'ok';},{wait:async()=>{}});
   assert.equal(value,'ok');assert.equal(calls,2);
 });
+
+test('retries native request deadlines without restarting the cursor scan',async()=>{
+  let calls=0;
+  const result=await readWithRetry(async()=>{if(++calls===1)throw new DOMException('The operation was aborted due to timeout','TimeoutError');return ['next-page'];},{wait:async()=>{}});
+  assert.deepEqual(result,['next-page']);assert.equal(calls,2);
+});

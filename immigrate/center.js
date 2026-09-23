@@ -92,10 +92,13 @@
     document.querySelector('#structure-title').textContent=topic?`${topic.name}完整知识目录`:`${category.nameZh}使用方式`;
     document.querySelector('#knowledge-steps').innerHTML=steps.map((step,index)=>`<div class="knowledge-step"><strong>${String(index+1).padStart(2,'0')} · ${esc(step)}</strong><small>内容将按照统一知识模板持续补充</small></div>`).join('');
     document.querySelector('#articles-title').textContent=topic?`${topic.name}相关文章`:`${category.nameZh}相关文章`;
-    document.querySelector('.related-articles').hidden=topic?.slug==='c08-ead';
+    document.querySelector('.current-knowledge').hidden=['c08-ead','asylum-process','immigration-court','asylum-family','asylum-status','refugee'].includes(topic?.slug);
   }
 
   async function loadArticles(){
+    // The strict filter owns the live list; a second asynchronous renderer can
+    // otherwise overwrite its results with the unscoped newest 500 articles.
+    if(document.querySelector('script[src*="knowledge-article-filter.js"]'))return;
     const root=document.querySelector('#article-list');
     const select=['id','title','summary','content','category_name','status','published_at'].join(',');
     const url=`${SUPABASE_URL}/rest/v1/articles?select=${encodeURIComponent(select)}&status=eq.published&order=published_at.desc.nullslast&limit=500`;

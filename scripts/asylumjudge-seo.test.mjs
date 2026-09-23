@@ -18,11 +18,7 @@ for (const shard of ['static', 'judges', 'courts', 'nationalities']) {
   assert.match(sitemapIndex, new RegExp(`<loc>https://asylumjudge\\.com/sitemap-${shard}\\.xml</loc>`));
 }
 
-// Search Console showed that most discovered-but-not-indexed examples were
-// detailed Turkish, Portuguese, Russian, Arabic, Hindi and Traditional Chinese
-// entity translations. Keep those pages accessible but stop submitting them as
-// crawl-priority canonicals. The sitemaps focus detail indexing on zh-Hans,
-// English, Spanish and French while keeping all language hubs available.
+// Every fully localized public detail page must remain discoverable and indexable.
 const sitemapFiles = [
   ['sitemap-static.xml', 50],
   ['sitemap-judges.xml', 1000],
@@ -45,6 +41,12 @@ for (const url of allUrls) {
   const pathname = new URL(url).pathname;
   const relative = pathname === '/' ? 'index.html' : `${pathname.replace(/^\//, '').replace(/\/$/, '')}/index.html`;
   assert.ok(await exists(relative), `sitemap URL must have a generated page: ${url}`);
+  if (/\/(judges|courts|nationalities)\/[^/]+\/$/.test(pathname)) {
+    const html = await read(relative);
+    assert.ok(html.includes(`<link rel="canonical" href="${url}">`), `${url} must self-canonicalize`);
+    assert.doesNotMatch(html, /<meta[^>]+name="robots"[^>]+content="[^"]*noindex/i, `${url} must not submit an excluded page`);
+    assert.equal((html.match(/rel="alternate" hreflang=/g) || []).length, 11, `${url} must retain all language alternates`);
+  }
 }
 
 const judgeUrl = allUrls.find((url) => /\/en\/judges\//.test(url));
@@ -58,7 +60,7 @@ for (const url of [judgeUrl, courtUrl, nationalityUrl]) {
   assert.match(html, new RegExp(`<link rel="canonical" href="${url.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}">`));
   assert.match(html, /<meta name="robots" content="index,follow,/);
   assert.doesNotMatch(html, /<meta name="robots" content="noindex/i);
-  assert.equal((html.match(/rel="alternate" hreflang=/g) || []).length, 5, 'priority detail pages should advertise four indexable locale alternates plus x-default');
+  assert.equal((html.match(/rel="alternate" hreflang=/g) || []).length, 11, 'detail pages should advertise all ten indexable locale alternates plus x-default');
   assert.equal((html.match(/type="application\/ld\+json" data-seo-generated/g) || []).length, 1, 'each entity page should retain one generated JSON-LD graph');
   const json = html.match(/<script type="application\/ld\+json" data-seo-generated>([\s\S]*?)<\/script>/)?.[1];
   assert.ok(json, 'page should have generated JSON-LD');
@@ -132,11 +134,10 @@ for (const scheme of ['http', 'https']) {
   }
 }
 
-// Low-priority translations still render correctly for users but are not sent
-// to search engines as detail-page indexing targets.
+// Translated detail pages must retain their public indexing eligibility.
 const arabicNationality = await read('ar/nationalities/china--ch/index.html');
 assert.match(arabicNationality, /<html lang="ar" dir="rtl">/);
-assert.match(arabicNationality, /<meta name="robots" content="noindex,follow,max-image-preview:large">/);
+assert.match(arabicNationality, /<meta name="robots" content="index,follow,max-image-preview:large">/);
 assert.match(arabicNationality, /<body data-country="[^"]+" data-seo-prerendered="true">/);
 assert.match(arabicNationality, /<h1>[^<]+<\/h1>/, 'entity H1 must remain country-specific after client translations load');
 assert.doesNotMatch(arabicNationality, /<h1 data-i18n="heroTitle">/, 'entity H1 must not be replaced by the generic nationality title');
@@ -176,4 +177,4 @@ assert.doesNotMatch(headers, /\/\*\.(?:js|css)\s+Cache-Control:[^\n]*no-store/, 
 assert.match(headers, /\/judge\s+X-Robots-Tag: noindex, follow/);
 assert.match(headers, /\/\*\/judge\s+X-Robots-Tag: noindex, follow/);
 
-console.log(`AsylumJudge SEO contract: PASS (${allUrls.length.toLocaleString()} priority canonical URLs checked; low-demand translated details remain accessible but noindex/follow)`);
+console.log(`AsylumJudge SEO contract: PASS (${allUrls.length.toLocaleString()} canonical URLs checked; localized public details remain indexable)`);

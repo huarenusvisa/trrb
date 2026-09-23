@@ -1,5 +1,9 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
+import {mkdtemp, mkdir, copyFile, writeFile, readFile, rm} from 'node:fs/promises';
+import {tmpdir} from 'node:os';
+import {join} from 'node:path';
+import {execFileSync} from 'node:child_process';
 import pageHandler from '../netlify/edge-functions/huarengongzuo-job-prerender.ts';
 import sitemapHandler from '../netlify/edge-functions/huarengongzuo-jobs-sitemap.ts';
 import {buildTasks} from './build-huarengongzuo-seo-tasks.mjs';
@@ -32,4 +36,18 @@ test('task manifest emits add/update/delete, is idempotent, rejects incomplete/f
  const current={complete:true,urls:[{url:url('new'),fingerprint:'1'},{url:url('same'),fingerprint:'2'}]};
  assert.deepEqual(buildTasks(current,before).tasks.map(x=>x.action),['add','update','delete']);assert.equal(buildTasks(current,current).tasks.length,0);assert.equal(buildTasks(current).dispatch,false);
  assert.throws(()=>buildTasks({...current,complete:false},before));assert.throws(()=>buildTasks({complete:true,urls:[{url:'https://trrb.net/',fingerprint:'1'}]}));
+});
+test('SEO builder supports expanded city and category routes without losing public jobs',async()=>{
+ const dir=await mkdtemp(join(tmpdir(),'hg-seo-'));
+ try {
+  for(const path of ['scripts','netlify/edge-functions','huarengongzuo/seo']) await mkdir(join(dir,path),{recursive:true});
+  for(const path of ['scripts/build-huarengongzuo-seo.mjs','scripts/build-huarengongzuo-seo-tasks.mjs','netlify/edge-functions/huarengongzuo-jobs-sitemap.ts']) await copyFile(path,join(dir,path));
+  await writeFile(join(dir,'huarengongzuo/seo/public-jobs-snapshot.json'),JSON.stringify({complete:true,generated_at:'2026-09-23T00:00:00Z',jobs:[job]}));
+  execFileSync(process.execPath,['scripts/build-huarengongzuo-seo.mjs'],{cwd:dir});
+  const snapshot=JSON.parse(await readFile(join(dir,'huarengongzuo/seo/current-snapshot.json'),'utf8'));
+  const urls=snapshot.urls.map(row=>row.url);
+  assert.ok(urls.length>14,'Expanded route set must survive the builder');
+  for(const path of ['/jobs/locations/miami/','/jobs/categories/it-tech/',`/jobs/listing.html?id=${id}`]) assert.ok(urls.includes('https://huarengongzuo.com'+path));
+  assert.equal(new Set(urls).size,urls.length);
+ } finally {await rm(dir,{recursive:true,force:true});}
 });

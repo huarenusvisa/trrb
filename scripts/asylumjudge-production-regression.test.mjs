@@ -5,7 +5,6 @@ import { join } from 'node:path';
 
 const OUT = '.netlify/asylumjudge-bundle/public';
 const locales = ['en', 'es', 'fr', 'pt-br', 'hi', 'zh-hant', 'ru', 'ar', 'tr'];
-const hubOnlyLocales = ['pt-br', 'hi', 'zh-hant', 'ru', 'ar', 'tr'];
 const read = (path) => readFileSync(join(OUT, path), 'utf8');
 
 assert.ok(existsSync(join(OUT, 'index.html')), 'Chinese root homepage must exist');
@@ -129,15 +128,17 @@ assert.ok(metaDescription(enJudge).length >= 110, 'English judge meta descriptio
 assert.ok(metaDescription(zhJudge).length <= 180, 'Chinese judge meta description must avoid search-result truncation');
 assert.ok(metaDescription(enJudge).length <= 180, 'English judge meta description must avoid search-result truncation');
 
-for (const locale of hubOnlyLocales) {
+for (const locale of locales) {
   const profile = firstProfile(locale);
-  assert.match(profile, /name="robots" content="noindex,follow,max-image-preview:large"/, `/${locale}/ detail pages must remain usable but stop consuming index budget`);
+  assert.match(profile, /name="robots" content="index,follow,max-image-preview:large"/, `/${locale}/ public detail pages must be indexable`);
+  assert.equal((profile.match(/rel="alternate" hreflang=/g) || []).length, 11, 'Every locale needs reciprocal alternate links');
+  assert.match(profile, /data-search-hierarchy="true"/, 'Every locale needs crawlable hierarchy links');
 }
 
 for (const sitemapName of ['sitemap-judges.xml', 'sitemap-courts.xml', 'sitemap-nationalities.xml']) {
   const xml = read(sitemapName);
-  for (const locale of hubOnlyLocales) {
-    assert.doesNotMatch(xml, new RegExp(`https://asylumjudge\\.com/${locale}/(?:judges|courts|nationalities)/`), `${sitemapName} must not submit low-priority ${locale} entity details`);
+  for (const locale of locales) {
+    assert.ok(xml.includes(`https://asylumjudge.com/${locale}/`), `${sitemapName} must include localized public entity details`);
   }
 }
 

@@ -6,7 +6,7 @@ const input=JSON.parse(await readFile(root+'public-jobs-snapshot.json','utf8'));
 if(input.complete!==true) throw new Error('Complete public snapshot required');
 const source=await readFile('netlify/edge-functions/huarengongzuo-jobs-sitemap.ts','utf8');
 const evergreen=[...source.split('] as const;')[0].matchAll(/\["(\/[^"\n]*)", "/g)].map(x=>'https://huarengongzuo.com'+x[1]);
-if(evergreen.length!==13) throw new Error('Review evergreen routes before building');
+if(evergreen.length<2 || new Set(evergreen).size!==evergreen.length || !evergreen.includes('https://huarengongzuo.com/') || !evergreen.includes('https://huarengongzuo.com/jobs/')) throw new Error('Evergreen routes must be unique and include home and jobs');
 const urls=[...evergreen.map(url=>({url,lastmod:null})),...input.jobs.map(job=>({url:`https://huarengongzuo.com/jobs/listing.html?id=${job.id}`,lastmod:job.updated_at}))].map(row=>({...row,fingerprint:createHash('sha256').update(JSON.stringify([row.url,row.lastmod,'public-index-v2'])).digest('hex')}));
 const current={complete:true,generated_at:input.generated_at,urls};
 let previous=null;

@@ -117,11 +117,9 @@ async function buildManifest() {
       },
       delete: {
         robots_match: 'noindex,follow',
-        locale_prefixes: ['pt-br', 'hi', 'zh-hant', 'ru', 'ar', 'tr'],
-        entity_segments: ['judges', 'courts', 'nationalities'],
-        url_pattern: 'https://asylumjudge.com/{locale}/{entity}/{slug}/',
+        urls: remove,
         expected_count: remove.length,
-        meaning: 'Remove from searchable index only; pages remain available to users.'
+        meaning: 'Only explicitly noindexed URLs found in the final build; never infer removal from language.'
       }
     },
     materialization: {

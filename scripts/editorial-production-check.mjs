@@ -6,9 +6,9 @@ const checks = [
   ['/xijinping?page=2','习近平专题'],
   ['/china-politics','中国政治'],
   ['/china-politics?view=appointments','中国政治'],
-  ['/iceandpolice','美国执法与警情'],
-  ['/iceandpolice?view=ice','美国执法与警情'],
-  ['/iceandpolice?view=crime','美国执法与警情']
+  ['/iceandpolice','ICE执法与警情'],
+  ['/iceandpolice?view=ice','ICE执法与警情'],
+  ['/iceandpolice?view=crime','ICE执法与警情']
 ];
 for (const [path,title] of checks) {
   const result = await fetch(origin+path, {headers:{'Cache-Control':'no-cache'},signal:AbortSignal.timeout(20000)});

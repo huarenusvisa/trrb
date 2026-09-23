@@ -9,7 +9,7 @@ permissions:
 
 concurrency:
   group: china-hot-li-teacher-content-intake
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   collect-to-content-center:
@@ -44,7 +44,11 @@ jobs:
           test -n "$OPENAI_API_KEY"
       - name: Run collector tests
         run: node --test scripts/china-person-registry.test.mjs scripts/china-hot-li-teacher-ingest.test.mjs scripts/china-context-research.test.mjs scripts/china-editorial-update.test.mjs scripts/ren-zhengfei-news.test.mjs scripts/article-editorial-policy.test.mjs
+      - name: Read China headlines category switches
+        id: category
+        run: node scripts/category-pipeline-gate.mjs hot-headlines
       - name: Collect China headlines and publish automatically
+        if: steps.category.outputs.auto_fetch == 'true' && steps.category.outputs.ai_rewrite == 'true' && steps.category.outputs.auto_publish == 'true'
         shell: bash
         run: |
           args=()

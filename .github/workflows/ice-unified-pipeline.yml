@@ -92,18 +92,10 @@ jobs:
           test -n "$X_BEARER_TOKEN" || { echo "缺少X_BEARER_TOKEN"; exit 1; }
           test -n "$OPENAI_API_KEY" || { echo "缺少OPENAI_API_KEY"; exit 1; }
 
-      - name: Read ICE category switches with safe fallback
+      - name: Read canonical ICE category switches (fail closed)
         id: category
         if: steps.window.outputs.allowed == 'true'
-        shell: bash
-        run: |
-          if ! node scripts/category-pipeline-gate.mjs ice; then
-            echo "分类配置读取失败，采用安全默认值。"
-            echo "enabled=true" >> "$GITHUB_OUTPUT"
-            echo "auto_fetch=true" >> "$GITHUB_OUTPUT"
-            echo "ai_rewrite=true" >> "$GITHUB_OUTPUT"
-            echo "auto_publish=true" >> "$GITHUB_OUTPUT"
-          fi
+        run: node scripts/category-pipeline-gate.mjs iceandpolice
 
       - name: Stop when ICE category is disabled
         if: steps.window.outputs.allowed == 'true' && steps.category.outputs.enabled != 'true'
@@ -158,7 +150,7 @@ jobs:
 
       - name: Publish
         # 最终发布仍执行官方原始证据、风险标记和人工审核边界；质量门禁只负责减少噪声和旧闻。
-        if: steps.window.outputs.allowed == 'true' && steps.category.outputs.enabled == 'true'
+        if: steps.window.outputs.allowed == 'true' && steps.category.outputs.enabled == 'true' && steps.category.outputs.auto_publish == 'true'
         env:
           ICE_FORCE_FIRST_PUBLISH: "true"
           ICE_PUBLISH_MAX_PER_RUN: "12"

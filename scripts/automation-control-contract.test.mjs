@@ -88,3 +88,15 @@ assert.equal(sandbox.cancelPolicy('operations-control-plane.yml', 'global', queu
 assert.equal(sandbox.cancelPolicy('jobs-daily-ingest.yml', 'jobs', queuedChina), true);
 assert.match(plane, /^run-name: TRRB Operations \[/m);
 console.log('Module stop isolation passed: jobs cannot cancel China, shared or legacy runs.');
+
+const calls = [];
+const controlSandbox = {exports:{},process:{env:{}},console:{error(){}},require:()=>({
+  authenticateStaff:async()=>({user:{id:'editor'}}),safeText:v=>String(v),
+  rest:async(table,options)=>{calls.push({table,...options});return table==='automation_controls' ? [{control_key:'ice',display_name:'ICE采集与发布',enabled:false}] : [];}
+})};
+runInNewContext(control,controlSandbox);
+const missingCategory=await controlSandbox.exports.handler({httpMethod:'PATCH',body:JSON.stringify({control_key:'ice',enabled:true})});
+assert.equal(missingCategory.statusCode,500);
+assert.equal(calls.find(c=>c.table==='categories').query.slug,'eq.iceandpolice');
+assert.equal(calls.some(c=>c.table==='automation_controls' && c.method==='PATCH'),false);
+console.log('Missing category cannot leave a control falsely enabled.');

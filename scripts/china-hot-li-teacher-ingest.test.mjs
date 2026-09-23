@@ -294,7 +294,7 @@ test("后台只保留真正需要人工审核的稿件，不可用稿不提供�
   assert.match(api, /candidate\.decision !== "taken_down"/);
   assert.doesNotMatch(api, /action === "retry"/);
   assert.match(ingest, /async function reprocessableCandidates\(\)/);
-  assert.match(ingest, /decision: "in\.\(failed,review_required\)"/);
+  assert.match(ingest, /decision: "in\.\(failed,review_required,processing\)"/);
   assert.match(ingest, /tweetsById/);
 });
 
@@ -483,4 +483,15 @@ test('同一新闻不能用短讯版本绕过长稿去重', async()=>{
  const brief={title:'重庆某中学发布高温期开学安排调整通知',summary:'学校公布新学期开学安排',content:'学校公布新学期开学安排，调整报到时间。'};
  assert.equal(duplicateArticle(brief,[{...brief,id:'existing',content:qualityBody}]).id,'existing');
  assert.equal(duplicateArticle(brief,[{id:'other',title:'重庆地铁线路恢复运营',summary:'运营部门公布班次',content:'地铁班次已经调整。'}]),null);
+});
+
+
+test("recovers interrupted automated processing only after timeout and within freshness rules", () => {
+  const now=Date.now();
+  const row={decision:'processing',article_id:null,ai_payload:{status:'queued'},updated_at:new Date(now-66*60000).toISOString(),collected_at:new Date(now-2*3600000).toISOString()};
+  const q={accepted:true};
+  assert.equal(shouldRetryCandidate(row,q,now),true);
+  for (const patch of [{updated_at:new Date(now-30*60000).toISOString()},{article_id:'existing'}, {ai_payload:{status:'queued',quality_hold:true}}, {ai_payload:{status:'queued',manual_review_required:true}}, {collected_at:new Date(now-73*3600000).toISOString()}]) {
+    assert.equal(shouldRetryCandidate({...row,...patch},q,now),false);
+  }
 });

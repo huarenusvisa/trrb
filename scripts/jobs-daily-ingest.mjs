@@ -4,10 +4,8 @@ import { pathToFileURL } from "node:url";
 const SUPABASE_URL = String(process.env.SUPABASE_URL || "").replace(/\/$/, "");
 const SUPABASE_SERVICE_ROLE_KEY = String(process.env.SUPABASE_SERVICE_ROLE_KEY || "");
 const TARGET_CANDIDATES = Math.max(50, Math.min(1_000, Number(process.env.JOBS_TARGET_CANDIDATES || 500)));
-const ATS_SOURCE_LIMIT = Math.max(100, Math.min(1_000, Number(process.env.JOBS_ATS_SOURCE_LIMIT || 625)));
 const MIN_NEW_PUBLISHED = Math.max(1, Math.min(200, Number(process.env.JOBS_MIN_NEW_PUBLISHED || 50)));
 const EXPANDED_CHINESE_TARGET = Math.max(TARGET_CANDIDATES, Math.min(2_000, Number(process.env.JOBS_EXPANDED_CHINESE_TARGET || 1_000)));
-const EXPANDED_ATS_SOURCE_LIMIT = Math.max(ATS_SOURCE_LIMIT, Math.min(1_000, Number(process.env.JOBS_EXPANDED_ATS_SOURCE_LIMIT || 350)));
 const STORE_BATCH_SIZE = Math.max(50, Math.min(500, Number(process.env.JOBS_STORE_BATCH_SIZE || 150)));
 const STORE_CONCURRENCY = Math.max(2, Math.min(16, Number(process.env.JOBS_STORE_CONCURRENCY || 8)));
 const REST_RETRY_ATTEMPTS = Math.max(1, Math.min(5, Number(process.env.JOBS_REST_RETRY_ATTEMPTS || 3)));
@@ -16,6 +14,9 @@ const MIN_WRITE_ERROR_THRESHOLD = Math.max(10, Math.min(500, Number(process.env.
 const SOURCE_KEY = "500work";
 const SOURCE_ORIGIN = "https://500work.com";
 const ATS_SOURCES = [
+  { type: "greenhouse", key: "greenhouse_weee", board: "weee" },
+  { type: "greenhouse", key: "greenhouse_chowbus", board: "chowbus" },
+  { type: "greenhouse", key: "greenhouse_yqn", board: "yqn" },
   { type: "greenhouse", key: "greenhouse_freedomcare", board: "freedomcare" },
   { type: "greenhouse", key: "greenhouse_bayada", board: "bayada" },
   { type: "lever", key: "lever_distro", board: "distro" },
@@ -417,19 +418,19 @@ function safeHttpUrl(value) {
   catch { return ""; }
 }
 
-async function fetchEnglishCandidates(sources = ATS_SOURCES, sourceLimit = ATS_SOURCE_LIMIT) {
+export async function fetchEnglishCandidates(sources = ATS_SOURCES, request = fetchJson) {
   const groups = await mapLimit(sources, 2, async (source) => {
     try {
       const endpoint = source.type === "greenhouse"
         ? `https://boards-api.greenhouse.io/v1/boards/${source.board}/jobs?content=true`
         : `https://api.lever.co/v0/postings/${source.board}?mode=json`;
-      const data = await fetchJson(endpoint);
+      const data = await request(endpoint);
       const jobs = source.type === "greenhouse" ? data.jobs : data;
       const discovered = Array.isArray(jobs) ? jobs : [];
       return {
         source_key: source.key,
         discovered: discovered.length,
-        candidates: discovered.slice(0, sourceLimit).map((job) => normalizeAtsCandidate(source, job)),
+        candidates: discovered.map((job) => normalizeAtsCandidate(source, job)),
         error: null,
       };
     } catch (error) {
@@ -449,7 +450,7 @@ async function fetchEnglishCandidates(sources = ATS_SOURCES, sourceLimit = ATS_S
 }
 
 function emptySourceSummary() {
-  return { discovered: 0, fetched: 0, published: 0, repaired: 0, existing: 0, rejected: 0, write_errors: 0, error: null };
+  return { discovered: 0, fetched: 0, published: 0, repaired: 0, existing: 0, held: 0, rejected: 0, write_errors: 0, error: null };
 }
 
 function addStatus(summary, sourceKey, status) {
@@ -458,20 +459,24 @@ function addStatus(summary, sourceKey, status) {
   if (Object.hasOwn(summary, status)) summary[status] += 1;
 }
 
-async function storeCandidate(candidate) {
+export function isPublicJobListing(listing) {
+  return listing?.status === "open" && listing.moderation_hold !== true;
+}
+
+export async function storeCandidate(candidate, request = rest) {
   const sourceKey = candidate.sourceKey || SOURCE_KEY;
   const sourceFilter = `source_key=eq.${sourceKey}&source_external_id=eq.${encodeURIComponent(candidate.externalId)}`;
-  const existingRaw = await rest("job_ingest_raw", `${sourceFilter}&payload_hash=eq.${candidate.payloadHash}&select=id,stage,normalized_job_listing_id&limit=1`);
+  const existingRaw = await request("job_ingest_raw", `${sourceFilter}&payload_hash=eq.${candidate.payloadHash}&select=id,stage,normalized_job_listing_id&limit=1`);
   let rawId;
   if (existingRaw?.[0]) {
     rawId = existingRaw[0].id;
-    await rest("job_ingest_raw", `id=eq.${rawId}`, { method: "PATCH", body: {
+    await request("job_ingest_raw", `id=eq.${rawId}`, { method: "PATCH", body: {
       fetched_at: NOW_ISO, last_seen_at: NOW_ISO,
       ...(candidate.errors.length && !existingRaw[0].normalized_job_listing_id
         ? { stage: "rejected", validation_errors: candidate.errors } : {}),
     } });
   } else {
-    const inserted = await rest("job_ingest_raw", "", { method: "POST", body: {
+    const inserted = await request("job_ingest_raw", "", { method: "POST", body: {
       source_key: sourceKey,
       source_external_id: candidate.externalId,
       source_url: candidate.url,
@@ -488,9 +493,9 @@ async function storeCandidate(candidate) {
 
   if (candidate.errors.length) return "rejected";
 
-  const existingListing = await rest("job_listings", `${sourceFilter}&select=id,status,status_reason,moderation_hold&limit=1`);
+  const existingListing = await request("job_listings", `${sourceFilter}&select=id,status,status_reason,moderation_hold&limit=1`);
   if (existingListing?.[0]) {
-    const repairHeldListing = existingListing[0].status === "unlisted" && existingListing[0].status_reason === "auto_ingest_parser_quality_hold";
+    const repairHeldListing = !existingListing[0].moderation_hold && existingListing[0].status === "unlisted" && existingListing[0].status_reason === "auto_ingest_parser_quality_hold";
     const refreshOpenListing = existingListing[0].status === "open" && !existingListing[0].moderation_hold;
     const body = {
       source_checked_at: NOW_ISO,
@@ -510,12 +515,17 @@ async function storeCandidate(candidate) {
       source_published_at: candidate.payload.source_published_at,
     });
     if (repairHeldListing) Object.assign(body, { status: "open", status_reason: null, published_at: NOW_ISO });
-    await rest("job_listings", `id=eq.${existingListing[0].id}`, { method: "PATCH", body });
-    if (rawId) await rest("job_ingest_raw", `id=eq.${rawId}`, { method: "PATCH", body: { stage: "published", normalized_job_listing_id: existingListing[0].id, validation_errors: [] } });
-    return repairHeldListing ? "repaired" : "existing";
+    const saved = await request("job_listings", `id=eq.${existingListing[0].id}`, { method: "PATCH", body });
+    if (!saved?.[0]?.id) throw new Error("Job refresh returned no listing");
+    const published = isPublicJobListing(saved[0]);
+    if (rawId) await request("job_ingest_raw", `id=eq.${rawId}`, { method: "PATCH", body: {
+      stage: published ? "published" : "validated", normalized_job_listing_id: saved[0].id,
+      validation_errors: published ? [] : [`listing_not_public:${saved[0].status_reason || saved[0].status}`],
+    } });
+    return published ? (repairHeldListing ? "repaired" : "existing") : "held";
   }
 
-  const listing = await rest("job_listings", "", { method: "POST", body: {
+  const listing = await request("job_listings", "", { method: "POST", body: {
     category_slug: candidate.payload.category_slug,
     title: candidate.payload.title,
     description: candidate.payload.description,
@@ -546,8 +556,13 @@ async function storeCandidate(candidate) {
     language_requirements: sourceKey === SOURCE_KEY ? ["Chinese"] : ["English"],
   } });
   const listingId = listing?.[0]?.id;
-  if (rawId && listingId) await rest("job_ingest_raw", `id=eq.${rawId}`, { method: "PATCH", body: { stage: "published", normalized_job_listing_id: listingId, validation_errors: [] } });
-  return "published";
+  if (!listingId) throw new Error("Job insert returned no listing");
+  const published = isPublicJobListing(listing[0]);
+  if (rawId) await request("job_ingest_raw", `id=eq.${rawId}`, { method: "PATCH", body: {
+    stage: published ? "published" : "validated", normalized_job_listing_id: listingId,
+    validation_errors: published ? [] : [`listing_not_public:${listing[0].status_reason || listing[0].status}`],
+  } });
+  return published ? "published" : "held";
 }
 
 function candidateKey(candidate) {
@@ -575,13 +590,13 @@ async function storeCandidates(candidates, summary, phase) {
 
 async function reportIngestionSummary(summary) {
   const fallback = summary.fallback?.triggered
-    ? `；不足${summary.minimum_new_published}条，已自动全网扩抓${summary.fallback.fetched}条候选`
+    ? `；首轮新增不足${summary.minimum_new_published}条，已从已接入来源扩抓${summary.fallback.fetched}条候选`
     : "；首轮已达到最低发布量，无需扩抓";
-  const message = `发现${summary.discovered}条，检查${summary.fetched}条，新增发布${summary.published}条，已存在${summary.existing}条，过滤${summary.rejected}条，写入失败${summary.write_errors}条${fallback}。`;
+  const message = `发现${summary.discovered}条，检查${summary.fetched}条，新增发布${summary.published}条，已存在${summary.existing}条，保持下架或待审${summary.held}条，过滤${summary.rejected}条，详情抓取失败${summary.fetch_errors}次，来源失败${summary.source_errors}个，写入失败${summary.write_errors}条${fallback}。`;
   try {
     await rest("automation_notifications", "", { method: "POST", body: {
       control_key: "jobs",
-      severity: summary.write_errors ? "warning" : "info",
+      severity: summary.write_errors || summary.fetch_errors || summary.source_errors ? "warning" : "info",
       title: `招聘抓取完成：新增${summary.published}条`,
       message,
       details: summary,
@@ -598,7 +613,7 @@ async function main() {
   const summary = {
     started_at: NOW_ISO,
     target: TARGET_CANDIDATES,
-    ats_source_limit: ATS_SOURCE_LIMIT,
+    ats_scan: "complete_active_feed",
     minimum_new_published: MIN_NEW_PUBLISHED,
     batch_size: STORE_BATCH_SIZE,
     concurrency: STORE_CONCURRENCY,
@@ -607,6 +622,7 @@ async function main() {
     published: 0,
     repaired: 0,
     existing: 0,
+    held: 0,
     rejected: 0,
     fetch_errors: 0,
     source_errors: 0,
@@ -647,7 +663,6 @@ async function main() {
         : { discovered: 0, candidates: [], failures: [], error: null };
       const expandedEnglish = await fetchEnglishCandidates(
         ALL_ATS_SOURCES.filter((source) => enabledSources.has(source.key)),
-        EXPANDED_ATS_SOURCE_LIMIT,
       );
       const fallbackCandidates = [...expandedChinese.candidates, ...expandedEnglish.candidates]
         .filter((candidate) => !knownCandidates.has(candidateKey(candidate)));
@@ -709,7 +724,7 @@ async function main() {
     }
     await reportIngestionSummary(summary);
     console.log(`JOBS_INGEST_SUMMARY ${JSON.stringify(summary)}`);
-    const handled = summary.published + summary.repaired + summary.existing + summary.rejected;
+    const handled = summary.published + summary.repaired + summary.existing + summary.held + summary.rejected;
     if (summary.fetched < 50 || handled === 0 || summary.write_errors > allowedWriteErrors) process.exitCode = 1;
   } catch (error) {
     await rest("job_source_registry", `source_key=eq.${SOURCE_KEY}`, { method: "PATCH", body: { last_checked_at: NOW_ISO, last_error: String(error?.message || error).slice(0, 500), updated_at: NOW_ISO } }).catch(() => {});

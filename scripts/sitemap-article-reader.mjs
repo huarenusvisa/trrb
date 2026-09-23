@@ -1,3 +1,5 @@
+import { readWithRetry } from './paged-read.mjs';
+
 const SELECT = 'id,title,slug,summary,content,category_id,category_name,topic_key,status,visibility,published_at,created_at,source_url,cover_image';
 
 const timestamp = (value, fallback) => value ? Date.parse(value) : fallback;
@@ -10,14 +12,7 @@ export async function fetchPublishedArticles(rest, { pageSize = 200, maxRows = 1
   for (;;) {
     const params = { select: SELECT, status: 'eq.published', visibility: 'eq.public', order: 'id.asc', limit: String(pageSize) };
     if (cursor) params.id = `gt.${cursor}`;
-    let rows;
-    for (let attempt = 0; ; attempt++) {
-      try { rows = await rest('articles', params); break; }
-      catch (error) {
-        if (attempt >= 2 || !(error.status === 429 || error.status >= 500)) throw error;
-        await pause(500 * (attempt + 1));
-      }
-    }
+    const rows = await readWithRetry(() => rest('articles', params), { wait: pause });
     if (!Array.isArray(rows) || rows.length > pageSize) throw new Error('Invalid article page; refusing incomplete sitemap');
     for (const row of rows) {
       if (!row?.id || String(row.id) <= cursor) throw new Error('Article cursor did not advance; refusing incomplete sitemap');

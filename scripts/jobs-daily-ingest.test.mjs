@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { ensureSourceRegistry, fetchChineseCandidates, fetchEnglishCandidates, storeCandidate, normalizeAtsCandidate, pickCategory, pickEnglishLocation, shouldExpand } from "./jobs-daily-ingest.mjs";
+import { ensureSourceRegistry, fetchChineseCandidates, fetchEnglishCandidates, storeCandidate, retryAfterMs, normalizeAtsCandidate, pickCategory, pickEnglishLocation, shouldExpand } from "./jobs-daily-ingest.mjs";
 
 test("registers source parents idempotently without re-enabling disabled sources", async () => {
   const registry = new Map([["500work", { source_key: "500work", is_enabled: false, priority: 95 }]]);
@@ -147,4 +147,11 @@ test("does not republish or misreport a held listing, including holds applied at
     assert.match(raw.validation_errors[0],/third_party_no_public_direct_contact/);
     if (existing) assert.equal(writes.find(w=>w.table==='job_listings').body.status,undefined);
   }
+});
+
+
+test("honors source rate-limit Retry-After seconds and dates",()=>{
+  assert.equal(retryAfterMs('90'),90000);
+  assert.equal(retryAfterMs('Wed, 23 Sep 2026 20:04:00 GMT',Date.parse('2026-09-23T20:03:00Z')),60000);
+  assert.equal(retryAfterMs(null),0);
 });

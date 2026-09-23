@@ -1,5 +1,6 @@
-import { articleIndexability, ARTICLE_INDEXABILITY_POLICY } from "../netlify/shared/article-indexability.mjs";
 import { fetchPublishedArticles } from './sitemap-article-reader.mjs';
+import { readWithRetry } from "./paged-read.mjs";
+import { articleIndexability, ARTICLE_INDEXABILITY_POLICY } from "../netlify/shared/article-indexability.mjs";
 import fs from 'node:fs';
 import path from 'node:path';
 import vm from 'node:vm';
@@ -144,9 +145,7 @@ async function rest(pathname, params) {
     }
   });
   if (!response.ok) {
-    const error = new Error(`${pathname} query failed: ${response.status} ${(await response.text()).slice(0, 300)}`);
-    error.status = response.status;
-    throw error;
+    throw new Error(`${pathname} query failed: ${response.status} ${(await response.text()).slice(0, 300)}`);
   }
   const rows = await response.json();
   if (!Array.isArray(rows)) throw new Error(`${pathname} returned an invalid page`);
@@ -155,14 +154,14 @@ async function rest(pathname, params) {
 
 async function fetchCategories() {
   try {
-    return await rest('categories', {
+    return await readWithRetry(() => rest('categories', {
       select: 'id,name,slug,is_active,sort_order,include_in_sitemap,include_in_google_news',
       is_active: 'eq.true',
       order: 'sort_order.asc'
-    });
+    }));
   } catch (error) {
     console.warn(`[sitemap] category CMS unavailable: ${error.message}`);
-    return [];
+    throw error;
   }
 }
 

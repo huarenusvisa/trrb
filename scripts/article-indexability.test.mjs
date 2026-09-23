@@ -129,3 +129,17 @@ test('production sitemap build includes short articles and only public published
     rmSync(working, { recursive: true, force: true });
   }
 });
+
+
+for (const unavailable of ['/rest/v1/articles','/rest/v1/categories','/article.html']) {
+  test(`temporary ${unavailable} failure never becomes an article 404 or permanent noindex`,async t=>{
+    useFixture(t,[article()]);
+    const original=globalThis.fetch;
+    t.mock.method(globalThis,'fetch',async input=>new URL(String(input)).pathname===unavailable ? new Response('temporary',{status:503}) : original(input));
+    const response=await articlePage(new Request('https://trrb.net/hot-headlines/short-news'),context);
+    assert.equal(response.status,503);
+    assert.equal(response.headers.get('retry-after'),'120');
+    assert.equal(response.headers.get('cache-control'),'no-store');
+    assert.equal(response.headers.get('x-robots-tag'),null);
+  });
+}

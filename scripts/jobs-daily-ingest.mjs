@@ -222,20 +222,45 @@ function extractDescription(text, title) {
   return value.slice(0, 4000) || title;
 }
 
+export function retryAfterMs(value, now = Date.now()) {
+  const seconds = Number(value);
+  if (value && Number.isFinite(seconds)) return Math.max(0, seconds * 1000);
+  const date = Date.parse(value || "");
+  return Number.isFinite(date) ? Math.max(0, date - now) : 0;
+}
+
+let nextSourceRequest = 0;
+let sourceRequestQueue = Promise.resolve();
+function paceSourceRequest() {
+  sourceRequestQueue = sourceRequestQueue.then(async () => {
+    while (nextSourceRequest > Date.now()) {
+      await new Promise(resolve => setTimeout(resolve, nextSourceRequest - Date.now()));
+    }
+    nextSourceRequest = Date.now() + 500;
+  });
+  return sourceRequestQueue;
+}
+
 async function fetchText(url, attempts = 3) {
   let lastError;
   for (let attempt = 1; attempt <= attempts; attempt += 1) {
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 25000);
+    await paceSourceRequest();
     try {
-      const response = await fetch(url, { headers: { "user-agent": USER_AGENT, accept: "text/html,application/xhtml+xml" }, signal: controller.signal, redirect: "follow" });
-      if (!response.ok) throw new Error(`${url} HTTP ${response.status}`);
+      const response = await fetch(url, { headers: { "user-agent": USER_AGENT, accept: "text/html,application/xhtml+xml" }, signal: AbortSignal.timeout(25000), redirect: "follow" });
+      if (!response.ok) {
+        if (response.status === 429) {
+          const cooldown = Math.max(retryAfterMs(response.headers.get("retry-after")), 5000 * 2 ** (attempt - 1));
+          nextSourceRequest = Math.max(nextSourceRequest, Date.now() + cooldown);
+        }
+        const error = new Error(`${url} HTTP ${response.status}`);
+        error.status = response.status;
+        throw error;
+      }
       return await response.text();
     } catch (error) {
       lastError = error;
-      if (attempt < attempts) await new Promise((resolve) => setTimeout(resolve, 700 * attempt + Math.floor(Math.random() * 400)));
-    } finally {
-      clearTimeout(timeout);
+      if (error.status && ![408,429].includes(error.status) && error.status < 500) break;
+      if (attempt < attempts) await new Promise(resolve => setTimeout(resolve, 1000 * attempt));
     }
   }
   throw lastError;

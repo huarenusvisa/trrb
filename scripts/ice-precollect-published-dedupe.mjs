@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { readAllPages } from "./paged-read.mjs";
 import process from "node:process";
 import { fileURLToPath } from "node:url";
 
@@ -23,7 +24,7 @@ function requireEnv() { const missing = REQUIRED.filter((name) => !process.env[n
 function headers(prefer = "") { return { apikey: process.env.SUPABASE_SERVICE_ROLE_KEY, Authorization: `Bearer ${process.env.SUPABASE_SERVICE_ROLE_KEY}`, "Content-Type": "application/json", ...(prefer ? { Prefer: prefer } : {}) }; }
 async function readJson(response) { const text = await response.text(); if (!text) return null; try { return JSON.parse(text); } catch { return { raw: text }; } }
 async function request(url, options = {}) { const response = await fetch(url, options); const body = await readJson(response); if (!response.ok) throw new Error(body?.message || body?.details || body?.error || body?.raw || `请求失败（${response.status}）`); return body; }
-async function sb(table, { method = "GET", query = {}, body, prefer = "" } = {}) { const url = new URL(`${String(process.env.SUPABASE_URL).replace(/\/+$/, "")}/rest/v1/${table}`); for (const [key, value] of Object.entries(query)) if (value !== undefined && value !== null && value !== "") url.searchParams.set(key, String(value)); return request(url, { method, headers: headers(prefer), body: body === undefined ? undefined : JSON.stringify(body) }); }
+async function sb(table, { method = "GET", query = {}, body, prefer = "" } = {}) {if (method === "GET" && Number(query.limit) > 200) return readAllPages(page => sb(table, {method,query:{...query,order:query.order ? `${query.order},id.desc` : "id.desc",...page},body,prefer}), {maxRows:Number(query.limit)}); const url = new URL(`${String(process.env.SUPABASE_URL).replace(/\/+$/, "")}/rest/v1/${table}`); for (const [key, value] of Object.entries(query)) if (value !== undefined && value !== null && value !== "") url.searchParams.set(key, String(value)); return request(url, { method, headers: headers(prefer), body: body === undefined ? undefined : JSON.stringify(body) }); }
 
 const STOP_WORDS = new Set(["ice","immigration","customs","enforcement","breaking","update","video","watch","exclusive","news","report","reports","美国","移民","海关","执法","消息","视频","现场","最新","据称","报道","表示","一名","一位","一人","事件","关注"]);
 const ACTION_GROUPS = [

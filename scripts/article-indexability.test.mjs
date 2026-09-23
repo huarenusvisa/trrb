@@ -105,7 +105,11 @@ test('News sitemap keeps its 48-hour eligibility window', async t => {
 });
 
 test('production sitemap build includes short articles and only public published records', async t => {
-  useFixture(t, [article(), article({ slug: 'empty', content: '' }), article({ slug: 'private', visibility: 'private' })]);
+  const knowledge = article({id:'knowledge',title:'庇护历史知识归档',slug:'knowledge-history',content:'经整理的历史知识正文',category_id:null,category_name:'移民美国·境内身份转换·历史知识文章',knowledge_migration_batch:'20260923-asylum-knowledge',knowledge_path:'change-status',knowledge_topic:'i485'});
+  useFixture(t, [article(), article({ slug: 'empty', content: '' }), article({ slug: 'private', visibility: 'private' }),knowledge,{...knowledge,id:'private-knowledge',slug:'private-knowledge',visibility:'private'}]);
+  const originalFetch=globalThis.fetch;
+  t.mock.method(globalThis,'fetch',async input=>new URL(String(input)).pathname==='/rest/v1/categories'
+    ? Response.json([...categories,{id:'knowledge-cat',name:'移民美国知识库',slug:'immigrate',is_active:true,include_in_sitemap:true,include_in_google_news:false}]) : originalFetch(input));
   const working = mkdtempSync(path.join(tmpdir(), 'trrb-sitemap-test-'));
   const previousCwd = process.cwd();
   const originalEnv = { SUPABASE_URL: process.env.SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY };
@@ -120,6 +124,9 @@ test('production sitemap build includes short articles and only public published
       const xml = readFileSync(path.join(working, name), 'utf8');
       assert.match(xml, /\/hot-headlines\/short-news<\/loc>/);
       assert.doesNotMatch(xml, /\/hot-headlines\/(?:empty|private)</);
+      assert.doesNotMatch(xml, /private-knowledge/);
+      if (name==='sitemap.xml') assert.match(xml,/\/news\/knowledge-history<\/loc>/);
+      else assert.doesNotMatch(xml,/knowledge-history/);
     }
   } finally {
     process.chdir(previousCwd);
@@ -143,3 +150,14 @@ for (const unavailable of ['/rest/v1/articles','/rest/v1/categories','/article.h
     assert.equal(response.headers.get('x-robots-tag'),null);
   });
 }
+
+
+test('WordPress query IDs reach their dedicated resolver without a malformed UUID query',async t=>{
+  useFixture(t,[]);
+  t.mock.method(globalThis,'fetch',async()=>{throw Error('Legacy IDs must be delegated before database access');});
+  for (const id of ['2465','wp-2465','1342','wp-112231']) {
+    const response=await articlePage(new Request(`https://trrb.net/article.html?id=${id}`),{next:async()=>new Response('legacy resolver',{status:410})});
+    assert.equal(response.status,410);
+    assert.equal(await response.text(),'legacy resolver');
+  }
+});

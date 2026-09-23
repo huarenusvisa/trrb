@@ -164,7 +164,7 @@ async function fetchCategories() {
 
 async function fetchAllPublishedArticles() {
   return readAllPages(page => rest('articles', {
-    select: 'id,title,slug,summary,content,category_id,category_name,topic_key,status,visibility,published_at,created_at,source_url,cover_image',
+    select: 'id,title,slug,summary,content,category_id,category_name,topic_key,status,visibility,published_at,created_at,source_url,cover_image,knowledge_migration_batch:metadata->>knowledge_migration_batch,knowledge_path:metadata->>knowledge_path,knowledge_topic:metadata->>knowledge_topic',
     status: 'eq.published',
     visibility: 'eq.public',
     order: 'published_at.desc.nullslast,created_at.desc,id.desc',
@@ -193,7 +193,7 @@ function canonicalArticleUrl(article) {
   return `${SITE}/${encodeURIComponent(articleSection(article))}/${encodeURIComponent(slug)}`;
 }
 
-const categoryUrl = (category) => `${SITE}/${encodeURIComponent(canonicalSection(category?.slug || ''))}`;
+const categoryUrl = (category) => category?.slug === 'immigrate' ? `${SITE}/immigrate/` : `${SITE}/${encodeURIComponent(canonicalSection(category?.slug || ''))}`;
 
 if (categories.length) {
   const specialRoutes = [
@@ -252,6 +252,12 @@ if (categories.length) {
 const isAllowed = (article, idSet, nameSet, slugSet) => {
   if (isSpecialTopicArticle(article)) return true;
   if (!categories.length) return true;
+  // Curated historical knowledge records retain their article URLs while living
+  // under configured knowledge modules rather than a flat CMS news category.
+  if (article?.knowledge_migration_batch === '20260923-asylum-knowledge' && slugSet.has('immigrate')) {
+    const module = `${SITE}/immigrate/center?path=${encodeURIComponent(article.knowledge_path || '')}&topic=${encodeURIComponent(article.knowledge_topic || '')}`;
+    if (IMMIGRATION_KNOWLEDGE_ENTRIES.some(entry => entry.loc === module)) return true;
+  }
   if (article?.category_id) return idSet.has(String(article.category_id));
   if (article?.category_name) {
     const name = cleanText(article.category_name);

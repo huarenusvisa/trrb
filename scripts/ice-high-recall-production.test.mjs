@@ -40,7 +40,7 @@ test("非官方候选仍进入人工审核，最终发布边界保持严格", ()
   assert.match(intake, /human_review_status: "required"/);
   assert.match(publisher, /humanApproved = story\.human_review_status === "approved" && Boolean\(story\.reviewed_by\)/);
   assert.match(publisher, /officialApproved = story\.human_review_status === "not_required_official"/);
-  assert.match(publisher, /officialEvidence\(story\.id\)/);
+  assert.match(publisher, /verifiedOfficial = await officialEvidence\(story\)/);
 });
 
 test("持续采集按30天事件窗口去重并在失败时停止", () => {

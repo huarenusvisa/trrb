@@ -70,7 +70,7 @@ export default async (request: Request, context: any) => {
 
   const query = String(url.searchParams.get("q") || "").trim();
   const type = String(url.searchParams.get("type") || "").trim().toLowerCase();
-  if (["中期选举", "2026中期选举", "中期選舉"].includes(query.replace(/\s+/g, "")) && !url.searchParams.get("category")) return redirect("/topic/midterm-elections", "midterm-topic-entry-v1");
+  if (["中期选举", "2026中期选举", "中期選舉"].includes(query.replace(/\s+/g, "")) && !url.searchParams.get("category")) return redirect("/midterm-elections", "midterm-topic-entry-v1");
   if (query || type === "search") return context.next();
 
   const category = String(url.searchParams.get("category") || "").trim();

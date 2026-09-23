@@ -32,7 +32,7 @@ export function termFilter(terms) { return `(${terms.flatMap(term => [`title.ili
 export const POLITICS_FILTER = `(metadata->>china_politics_eligible.eq.true,and(or(${[...new Set([...POLITICS_TERMS,'中央办公厅','中央辦公廳','正部级','正部級'])].map(term => `title.ilike.*${term}*`).join(',')}),${POLITICAL_NOISE.map(term => `title.not.ilike.*${term}*`).join(',')}))`;
 export const XI_FILTER = termFilter(XI_TERMS);
 export const ICE_FILTER = '(topic_key.eq.ice,category_name.eq.ICE执法动态,category_name.eq.ICE执法,category_name.eq.驱逐快报)';
-export const ENFORCEMENT_FILTER = '(topic_key.eq.ice,category_name.eq.ICE执法动态,category_name.eq.ICE执法,category_name.eq.驱逐快报,category_name.eq.美国警情)';
+export const ENFORCEMENT_FILTER = '(topic_key.eq.ice,category_name.eq.ICE执法动态,category_name.eq.ICE执法,category_name.eq.驱逐快报,category_name.eq.美国警情,category_name.eq.ICE执法与警情)';
 export function editorialTopics(row) {
   const text = `${row?.title || ''} ${row?.summary || row?.excerpt || ''}`;
   const topics = [];

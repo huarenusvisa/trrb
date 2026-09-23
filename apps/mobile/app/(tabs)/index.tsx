@@ -52,7 +52,7 @@ const topicCards = [
     subtitleKey: 'home.topicXiSubtitle',
     statusKey: 'home.topicAutoUpdate',
     image: 'https://upload.wikimedia.org/wikipedia/commons/c/cc/Xi_Jinping_March_2017.jpg',
-    url: 'https://trrb.net/topic/xi-jinping',
+    url: 'https://trrb.net/xijinping',
   },
   {
     key: 'election',
@@ -60,7 +60,7 @@ const topicCards = [
     subtitleKey: 'home.topicElectionSubtitle',
     statusKey: 'home.topicLiveUpdate',
     image: 'https://trrb.net/assets/topic-focus/election-ballot.jpg?v=30',
-    url: 'https://trrb.net/topic/midterm-elections',
+    url: 'https://trrb.net/midterm-elections',
   },
 
 ] as const satisfies ReadonlyArray<{ key: 'trump' | 'xi' | 'election'; titleKey: MessageKey; subtitleKey: MessageKey; statusKey: MessageKey; image: string; url: string }>;

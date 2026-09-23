@@ -16,6 +16,7 @@ const {
 const { isIceEnforcementText } = require("./_shared/ice-enforcement");
 const { routeOfficialContent } = require("./_shared/official-content-routing");
 const { CHINA_HOT_CATEGORY, isChinaHotCategory, isChinaHotHeadline } = require("./_shared/china-hot-headlines");
+const { articleListQuery } = require("./_shared/article-search");
 
 const ALLOWED_STATUS = new Set(["draft", "published", "hidden"]);
 const ICE_CATEGORIES = new Set(["ICE执法动态", "ICE执法", "驱逐快报"]);
@@ -126,18 +127,11 @@ async function assertNoPublishedDuplicate(title, excludeId = "") {
   }
 }
 
-async function listArticles() {
-  const rows = await rest("articles", {
-    query: {
-      select: "id,title,category_name,status,published_at,created_at,cover_image,summary,metadata",
-      order: "created_at.desc",
-      // Automated source intake can add more than 100 review drafts in one
-      // collection window. Keep them visible in the content center instead of
-      // silently dropping older pending items from the administrator list.
-      limit: "500"
-    }
-  });
-  return Array.isArray(rows) ? rows : [];
+async function listArticles(input) {
+  const { query, page, pageSize, text, emptySearch } = articleListQuery(input);
+  const rows = emptySearch ? [] : await rest("articles", { query });
+  return { articles: rows.slice(0, pageSize), page, page_size: pageSize,
+    has_more: rows.length > pageSize, search: text, recent_hours: text ? null : 72 };
 }
 
 async function updateStatus(input) {
@@ -292,7 +286,7 @@ exports.handler = async (event) => {
     const input = JSON.parse(event.body || "{}");
     const action = safeText(input.action, 60);
 
-    if (action === "list") return json(200, { articles: await listArticles() });
+    if (action === "list") return json(200, await listArticles(input));
     if (action === "status") return json(200, { article: await updateStatus(input) });
     if (action === "suggest_titles") return json(200, { titles: await suggestTitles(input) });
     if (action === "upload_cover") return json(200, { url: await uploadManualCover(input) });

@@ -33,7 +33,7 @@ test('homepage combines enforcement, separates politics, and preserves original 
   assert.match(politics, /href="\/hot-headlines\/party"/);
   assert.doesNotMatch(politics, /纽约警方案件|ICE拘留案件/);
   const enforcement = sandbox.window.renderCategorySection('ICE执法动态', rows);
-  assert.match(enforcement, /美国执法与警情/);
+  assert.match(enforcement, /ICE执法与警情/);
   assert.match(enforcement, /href="\/us-crime\/case"/);
   assert.match(enforcement, /href="\/ice\/detention"/);
   assert.doesNotMatch(enforcement, /省委书记履新/);
@@ -57,10 +57,10 @@ test('collection filters retain privacy constraints, canonical pagination and or
   assert.equal(fetched.searchParams.get('offset'),'0');
   assert.match(html,/rel="canonical" href="https:\/\/trrb.net\/china-politics\?view=appointments&amp;page=2"/);
   assert.match(html,/href="\/hot-headlines\/existing"/);
-  await collection(new Request('https://trrb.net/us-enforcement?view=crime'),context);
+  await collection(new Request('https://trrb.net/iceandpolice?view=crime'),context);
   assert.equal(fetched.searchParams.get('category_name'),'eq.美国警情');
-  await collection(new Request('https://trrb.net/us-enforcement?view=ice'),context);
+  await collection(new Request('https://trrb.net/iceandpolice?view=ice'),context);
   assert.doesNotMatch(fetched.searchParams.get('or'),/美国警情/);
-  response = await collection(new Request('https://trrb.net/us-enforcement?view=bad'),context);
+  response = await collection(new Request('https://trrb.net/iceandpolice?view=bad'),context);
   assert.equal(response.status,404);
 });

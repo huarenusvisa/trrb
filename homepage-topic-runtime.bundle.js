@@ -5,7 +5,8 @@
   const SUPABASE_KEY = "sb_publishable_hSmKJghvQoJKg0m5loDQ2g_f1gu8qak";
   const FALLBACK = Array.isArray(window.TRRB_CHANNELS) ? window.TRRB_CHANNELS : [];
 
-  const listingUrl = (item) => `/${encodeURIComponent(String(item.slug || "").trim())}`;
+  const ROUTE_ALIASES = { ice: "/iceandpolice", "us-enforcement": "/iceandpolice", "midterm-elections": "/midterm-elections", "xi-jinping": "/xijinping", "immigration-judge-approval-rate": "https://asylumjudge.com/" };
+  const listingUrl = (item) => ROUTE_ALIASES[item.slug] || `/${encodeURIComponent(String(item.slug || "").trim())}`;
 
   async function fetchCategories() {
     const fields = [
@@ -40,25 +41,25 @@
   function routeKey(value) {
     try {
       const url = new URL(value, location.origin);
-      return url.pathname.replace(/\/$/, "") || "/";
+      const path = url.pathname.replace(/\/$/, "") || "/";
+      return url.origin === location.origin ? path : url.origin + path;
     } catch {
       return String(value || "").replace(/\/$/, "") || "/";
     }
   }
 
-  function publicNavigation(channels) {
-    return channels.map(item => item.name === "美国警情" ? {...item, name:"中国政治", href:"/china-politics"} : ["ICE执法动态", "ICE执法"].includes(item.name) ? {...item, name:"美国执法与警情", href:"/us-enforcement"} : item);
-  }
+  function publicNavigation(channels) { return channels; }
   function renderNavigation(channels) {
     channels = publicNavigation(channels);
     const nav = document.querySelector("#site-navigation .nav-inner");
     if (!nav) return;
 
-    // Only remove links that this runtime created on a previous pass. Static
-    // independent products such as /jobs/, /niulai/ or /legal/ must survive a
-    // category refresh even though they are not rows in the categories table.
-    nav.querySelectorAll("a[data-dynamic-category]").forEach((node) => node.remove());
-
+    // Reconcile known CMS entries so disabled navigation flags take effect.
+    // Independent products absent from the CMS (jobs, legal, exposure) stay intact.
+    const managedRoutes = new Set(["/important-news", "/hot-headlines", "/us-politics", "/china-politics", "/asylum", "/immigration", "/us-enforcement", "/iceandpolice", "/xijinping", ...channels.map(item => routeKey(item.href))]);
+    nav.querySelectorAll(":scope > a:not(.nav-expose-link)").forEach(node => {
+      if (node.dataset.dynamicCategory || managedRoutes.has(routeKey(node.getAttribute("href")))) node.remove();
+    });
     const anchor = nav.querySelector(".nav-expose-link");
     const existing = Array.from(nav.querySelectorAll(":scope > a:not(.nav-expose-link)"));
 
@@ -127,7 +128,7 @@
       canonical.rel = "canonical";
       document.head.appendChild(canonical);
     }
-    canonical.href = `https://trrb.net/${encodeURIComponent(active.slug)}`;
+    canonical.href = new URL(active.href, "https://trrb.net").href;
   }
 
   function publish(channels) {

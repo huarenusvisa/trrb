@@ -215,7 +215,7 @@
     return `
       <tr>
         <td><b>${escapeHtml(article.title)}</b><br><small>${escapeHtml(article.id)}</small></td>
-        <td>${escapeHtml(article.category_name || "-")}<br><small>${escapeHtml(focusModeLabel(focusMode))}</small></td>
+        <td>${escapeHtml(article.category_label || article.category_name || "-")}<br><small>${escapeHtml(focusModeLabel(focusMode))}</small></td>
         <td><span class="status-pill ${statusClass}">${escapeHtml(statusText)}</span>${failed ? `<br><small>${escapeHtml(metadata.ai_cover_error)}</small>` : ""}</td>
         <td>${escapeHtml(formatDate(article.published_at || article.created_at))}</td>
         <td>
@@ -393,7 +393,7 @@
     const select = el("article-category");
     if (!select) return;
     Array.from(select.options || []).forEach((option) => {
-      if (String(option.textContent || "").trim() === "重要新闻") option.remove();
+      if (["重要新闻", "ICE", "习近平"].includes(String(option.textContent || "").trim())) option.remove();
     });
     const politics = Array.from(select.options || []).find((option) => String(option.textContent || "").trim() === "美国时政");
     if (politics && !select.value) select.value = politics.value;

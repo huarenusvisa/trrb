@@ -43,4 +43,14 @@ function articleListQuery(input = {}, { publicOnly = false, now = Date.now() } =
   return { query, page, pageSize, text, emptySearch: Boolean(text && !terms.length) };
 }
 
-module.exports = { searchTerms, searchFilter, articleListQuery };
+function articleCategoryLabel(article) {
+  const name = String(article.category_name || '').trim();
+  if (['ICE', 'ICE执法动态', 'ICE执法', 'ICE执法追踪', 'ICE新闻', '驱逐快报', '美国警情', '美国执法与警情', 'ICE执法与警情'].includes(name)) {
+    return name === '美国警情' ? 'ICE执法与警情 · 美国警情' : 'ICE执法与警情';
+  }
+  const primary = name === '热门头条' ? '中国热门头条' : name;
+  return name !== '中国政治' && article.metadata?.editorial_topics?.includes('china-politics')
+    ? `${primary} · 中国政治` : primary;
+}
+
+module.exports = { searchTerms, searchFilter, articleListQuery, articleCategoryLabel };

@@ -18,15 +18,16 @@
     ...extra
   });
   const STANDARD_CATEGORIES = [
-    defaults("ICE","ice",10,{auto_fetch:true,auto_publish:true,seo_title:"ICE执法最新新闻｜唐人日报",seo_description:"追踪美国ICE执法、拘留、遣返及移民政策动态。",seo_keywords:"ICE,美国移民执法,遣返,拘留",ai_prompt:"写成客观、写实的中文新闻，核实人物、地点、时间与执法机构；不得把指控写成定罪。"}),
-    defaults("Trump","trump",20,{auto_fetch:true,auto_publish:true,seo_title:"特朗普最新动态｜唐人日报",seo_description:"特朗普政府、白宫、选举及美国政策最新动态。",seo_keywords:"特朗普,白宫,美国政治",ai_prompt:"按新闻事实改写，明确消息来源、时间和政策背景，不添加未经证实的判断。"}),
-    defaults("USCIS","uscis",30,{auto_fetch:true,seo_title:"USCIS移民局最新政策｜唐人日报",seo_description:"美国移民局政策、表格、费用和案件处理动态。",seo_keywords:"USCIS,美国移民局,移民政策",ai_prompt:"准确保留政策名称、表格编号、生效日期和适用人群；法律风险内容进入人工审核。"}),
-    defaults("DHS","dhs",40,{auto_fetch:true,seo_title:"DHS国土安全部动态｜唐人日报",seo_description:"美国国土安全部政策与执法动态。",seo_keywords:"DHS,国土安全部,美国执法",ai_prompt:"以官方文件和可核实信息为主，标明尚未确认的内容。"}),
-    defaults("CBP","cbp",50,{auto_fetch:true,seo_title:"CBP边境与海关动态｜唐人日报",seo_description:"美国海关与边境保护局执法及口岸政策动态。",seo_keywords:"CBP,美国边境,海关",ai_prompt:"准确区分CBP、ICE、HSI等机构，保留地点、数量和官方表述。"}),
-    defaults("Visa","visa",60,{seo_title:"美国签证新闻与政策｜唐人日报",seo_description:"美国签证政策、领事程序与申请动态。",seo_keywords:"美国签证,签证政策,领事馆",ai_prompt:"保留签证类别、政策日期和官方来源，不提供保证性结论。"}),
-    defaults("China","china",70,{seo_title:"中国新闻｜唐人日报",seo_description:"中国社会、官场与突发新闻。",seo_keywords:"中国新闻,中国官场,社会新闻",ai_prompt:"区分官方通报、网络信息和当事人说法；未获证实内容必须明确标注。"}),
-    defaults("Politics","politics",80,{seo_title:"美国政治新闻｜唐人日报",seo_description:"美国国会、白宫、州政府和选举新闻。",seo_keywords:"美国政治,国会,选举",ai_prompt:"保持政治报道中立，准确引用不同阵营观点。"}),
-    defaults("World","world",90,{seo_title:"国际新闻｜唐人日报",seo_description:"全球时政、冲突与重大事件。",seo_keywords:"国际新闻,全球时政",ai_prompt:"使用可靠来源，明确事件发生时间和地点，避免夸大未经证实的伤亡或结论。"})
+    defaults("中国热门头条", "hot-headlines", 2),
+    defaults("ICE执法与警情", "iceandpolice", 3, {auto_fetch: true, auto_publish: true}),
+    defaults("美国时政", "us-politics", 4),
+    defaults("中国政治", "china-politics", 5),
+    defaults("移民法官通过率", "immigration-judge-approval-rate", 6),
+    defaults("移民社区", "community", 8, {show_in_navigation: false, show_on_homepage: false}),
+    defaults("移民美国知识库", "immigrate", 9, {show_in_navigation: false, show_on_homepage: false}),
+    defaults("特朗普实时动态", "trump", 20, {show_in_navigation: false, show_on_homepage: false, auto_fetch: true, auto_publish: true}),
+    defaults("美国中期选举实时追踪", "midterm-elections", 90, {show_in_navigation: false, show_on_homepage: false}),
+    defaults("习近平", "xijinping", 100, {show_in_navigation: false, show_on_homepage: false})
   ];
 
   document.addEventListener("DOMContentLoaded", () => {
@@ -94,6 +95,8 @@
     if (!allCategories.length) { list.innerHTML = '<div class="category-empty">暂无栏目，请新增或应用标准栏目。</div>'; return; }
     list.innerHTML = allCategories.map((item, index) => {
       const badges = [item.show_in_navigation !== false ? "导航" : "", item.show_on_homepage !== false ? "首页" : "", item.auto_fetch ? "抓取" : "", item.ai_rewrite !== false ? "AI" : "", item.auto_publish ? "自动发布" : "", item.include_in_google_news !== false ? "News" : "", item.include_in_rss !== false ? "RSS" : ""].filter(Boolean);
+      if (item.slug === "ice") badges.unshift("旧采集入口 · 内容归入ICE执法与警情");
+      if (["xijinping", "xi-jinping"].includes(item.slug)) badges.unshift("仅专题");
       return `<article class="category-item ${item.is_active ? "" : "is-disabled"}"><div class="category-item-main"><div class="category-item-title"><strong>${escapeText(item.name)}</strong><span class="category-state ${item.is_active ? "on" : "off"}">${item.is_active ? "已启用" : "已停用"}</span></div><div class="category-meta"><a href="/${encodeURIComponent(item.slug)}" target="_blank" rel="noopener"><code>/${escapeText(item.slug)}</code> ↗</a><span>排序 ${Number(item.sort_order || 0)}</span></div><div class="category-badges">${badges.map(x => `<span>${escapeText(x)}</span>`).join("")}</div></div><div class="category-actions"><button type="button" onclick="TRRBCategoryManager.move('${escapeAttr(item.id)}',-1)" ${index === 0 ? "disabled" : ""}>上移</button><button type="button" onclick="TRRBCategoryManager.move('${escapeAttr(item.id)}',1)" ${index === allCategories.length - 1 ? "disabled" : ""}>下移</button><button type="button" onclick="TRRBCategoryManager.edit('${escapeAttr(item.id)}')">编辑</button><button type="button" onclick="TRRBCategoryManager.toggle('${escapeAttr(item.id)}',${item.is_active ? "false" : "true"})">${item.is_active ? "停用" : "启用"}</button><button type="button" class="danger" onclick="TRRBCategoryManager.remove('${escapeAttr(item.id)}')">删除</button></div></article>`;
     }).join("");
   }
@@ -101,7 +104,7 @@
   async function applyStandardCategories() {
     if (!canManageCategories()) return setStandardMessage("当前账号没有栏目管理权限。", true);
     if (!advancedSchemaReady) return setStandardMessage("请先完成栏目CMS数据库迁移。", true);
-    if (!confirm("应用标准栏目及全部开关配置？其他自定义栏目不会被删除。")) return;
+    if (!confirm("应用当前标准栏目名称、排序和显示位置？已有采集、发布和SEO设置保持不变。")) return;
     const button = $("apply-standard-categories");
     if (button) button.disabled = true;
     setStandardMessage("正在配置...");
@@ -112,7 +115,7 @@
       let created = 0, updated = 0;
       for (const standard of STANDARD_CATEGORIES) {
         const current = bySlug.get(standard.slug);
-        const query = current ? supabaseClient.from("categories").update(standard).eq("id", current.id) : supabaseClient.from("categories").insert(standard);
+        const query = current ? supabaseClient.from("categories").update({name: standard.name, slug: standard.slug, sort_order: standard.sort_order, is_active: true, show_in_navigation: standard.show_in_navigation, show_on_homepage: standard.show_on_homepage}).eq("id", current.id) : supabaseClient.from("categories").insert(standard);
         const result = await query;
         if (result.error) throw new Error(`/${standard.slug}: ${result.error.message}`);
         current ? updated++ : created++;

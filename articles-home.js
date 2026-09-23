@@ -7,6 +7,8 @@ const CATEGORY_ROUTES = {
   "重要新闻": "/important-news",
   "热门头条": "/hot-headlines",
   "中国热门头条": "/hot-headlines",
+  "中国政治": "/china-politics",
+  "ICE执法与警情": "/iceandpolice",
   "美国时政": "/us-politics",
   "美国警情": "/us-crime",
   "中国官场": "/china-officialdom",
@@ -173,6 +175,8 @@ const categoryIds = {
   重要新闻: "important",
   热门头条: "hot",
   中国热门头条: "hot",
+  中国政治: "china-politics",
+  "ICE执法与警情": "ice",
   驱逐快报: "deport",
   "ICE执法动态": "ice",
   美国时政: "politics",
@@ -345,16 +349,19 @@ function hasRealImage(item) {
 }
 function normalizeCategory(value) {
   const category = String(value || "").trim();
+  if (["美国执法与警情", "ICE执法与警情", "美国警情", "ICE", "ICE执法动态", "ICE执法", "ICE执法追踪", "ICE新闻", "驱逐快报"].includes(category)) return "ICE执法与警情";
   return category === "中国热门头条" ? "热门头条" : category;
 }
+window.TRRB_homeCategoryName = normalizeCategory;
 function findLeadArticle(categoryArticles) { return categoryArticles.find(hasRealImage) || categoryArticles[0] || null; }
 
 function renderCategorySection(category, articles) {
-  const isPolitics = category === "美国警情";
-  const isEnforcement = ["ICE执法动态", "ICE执法", "驱逐快报"].includes(category);
+  category = normalizeCategory(category);
+  const isPolitics = category === "中国政治";
+  const isEnforcement = category === "ICE执法与警情";
   const displayCategory = isPolitics ? "中国政治" : isEnforcement ? "ICE执法与警情" : category === "热门头条" ? "中国热门头条" : category === "移民美国" ? "移民美国知识库" : category;
   const categoryArticles = articles
-    .filter((item) => isPolitics ? (item.editorial_topics || []).includes("china-politics") : isEnforcement ? ["美国警情", "ICE执法动态", "ICE执法", "驱逐快报", "ICE执法与警情"].includes(normalizeCategory(item.category)) || item.topic_key === "ice" : normalizeCategory(item.category) === category)
+    .filter((item) => isPolitics ? normalizeCategory(item.category || item.category_name) === "中国政治" || (item.editorial_topics || []).includes("china-politics") : isEnforcement ? normalizeCategory(item.category || item.category_name) === "ICE执法与警情" || item.topic_key === "ice" : normalizeCategory(item.category || item.category_name) === category)
     .filter(isFreshHomepageArticle)
     .sort((a, b) => articleTimestamp(b) - articleTimestamp(a));
   const article = findLeadArticle(categoryArticles);
@@ -383,7 +390,7 @@ function renderChinaHotSection(articles) {
 function renderSections(articles) {
   // 中国热门头条必须由主渲染器直接拥有，不能依赖后加载的兼容脚本
   // 临时插入；否则缓存或接口时序变化会留下空卡甚至整片空白。
-  const categories = ["美国时政", "美国警情", "中国官场", "移民美国", "庇护百科"];
+  const categories = ["美国时政", "ICE执法与警情", "中国政治", "移民法官通过率"];
   const sections = [renderChinaHotSection(articles), ...categories.map((category) => renderCategorySection(category, articles))];
   sections.push(renderExposureWallCard());
   const root = document.querySelector("#sections-grid");

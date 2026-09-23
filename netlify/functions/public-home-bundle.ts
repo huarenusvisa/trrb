@@ -3,8 +3,10 @@ import {loadChinaPeople,CHINA_PEOPLE_QUERY} from '../shared/china-person-registr
 import policy from "../../article-editorial-policy.js";
 import { rest } from "./_shared/supabase-admin.js";
 import { isChinaHotCategory, isChinaHotHeadline } from "./_shared/china-hot-headlines.js";
+import { ENFORCEMENT_FILTER } from "../shared/editorial-topics.mjs";
 
-const CORE_CATEGORIES = ["热门头条", "美国时政", "美国警情", "ICE执法动态"];
+const CORE_CATEGORIES = ["热门头条", "美国时政", "美国警情", "ICE执法与警情"];
+const ENFORCEMENT_CATEGORIES = new Set(["美国执法与警情", "ICE执法与警情", "美国警情", "ICE", "ICE执法动态", "ICE执法", "ICE执法追踪", "ICE新闻", "驱逐快报"]);
 const RETIRED_HOME_CATEGORIES = new Set(["重要新闻", "中国官场", "庇护百科", "移民美国"]);
 const HOME_MAX_AGE_MS = 4 * 24 * 60 * 60 * 1000;
 
@@ -37,7 +39,8 @@ async function fetchArticles(limit, category = "") {
     order: "published_at.desc.nullslast,created_at.desc",
     limit: String(limit)
   };
-  if (category) query.category_name = `eq.${category}`;
+  if (category === "ICE执法与警情") query.or = ENFORCEMENT_FILTER;
+  else if (category) query.category_name = `eq.${category}`;
   const rows = await rest("articles", { query });
   return (Array.isArray(rows) ? rows : [])
     .filter((row) => timeOf(row) >= Date.now() - HOME_MAX_AGE_MS)
@@ -51,6 +54,9 @@ function categoryCounts(rows) {
     const category = String(row?.category_name || "").trim();
     if (!category) continue;
     counts.set(category, (counts.get(category) || 0) + 1);
+    if (category !== "ICE执法与警情" && (ENFORCEMENT_CATEGORIES.has(category) || row.topic_key === "ice")) {
+      counts.set("ICE执法与警情", (counts.get("ICE执法与警情") || 0) + 1);
+    }
   }
   return counts;
 }

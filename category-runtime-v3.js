@@ -2,6 +2,8 @@
   const SUPABASE_URL = "https://fwiznbpsqkfgkvyznebz.supabase.co";
   const SUPABASE_KEY = "sb_publishable_hSmKJghvQoJKg0m5loDQ2g_f1gu8qak";
   const FALLBACK = Array.isArray(window.TRRB_CHANNELS) ? window.TRRB_CHANNELS : [];
+  // These remain valid collection/topic routes, without separate CMS cards.
+  const TOPIC_ONLY_SLUGS = new Set(["ice", "xijinping", "xi-jinping"]);
 
   const ROUTE_ALIASES = { ice: "/iceandpolice", "us-enforcement": "/iceandpolice", "midterm-elections": "/midterm-elections", "xi-jinping": "/xijinping", "immigration-judge-approval-rate": "https://asylumjudge.com/" };
   const listingUrl = (item) => ROUTE_ALIASES[item.slug] || `/${encodeURIComponent(String(item.slug || "").trim())}`;
@@ -30,8 +32,8 @@
       ...item,
       priority: Number(item.sort_order ?? 999),
       enabled: item.is_active !== false,
-      showInNav: item.show_in_navigation !== false,
-      showOnHome: item.show_on_homepage !== false,
+      showInNav: item.show_in_navigation !== false && !TOPIC_ONLY_SLUGS.has(item.slug),
+      showOnHome: item.show_on_homepage !== false && !TOPIC_ONLY_SLUGS.has(item.slug),
       href: listingUrl(item)
     }));
   }
@@ -153,9 +155,9 @@
       ...item,
       priority: Number(item.priority ?? index + 1),
       enabled: item.enabled !== false,
-      showInNav: true,
-      showOnHome: true,
-      href: item.slug ? `/${encodeURIComponent(item.slug)}` : `./listing.html?category=${encodeURIComponent(item.name)}`
+      showInNav: item.show_in_navigation !== false && !TOPIC_ONLY_SLUGS.has(item.slug),
+      showOnHome: item.show_on_homepage !== false && !TOPIC_ONLY_SLUGS.has(item.slug),
+      href: item.slug ? listingUrl(item) : `./listing.html?category=${encodeURIComponent(item.name)}`
     }));
     publish(fallback);
   });

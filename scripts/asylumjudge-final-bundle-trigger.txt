@@ -40,3 +40,5 @@
 2026-09-20: keep the USCIS dashboard rendering when the optional official-source link is intentionally absent from the article body.
 
 2026-09-21: prerender verified judge annual/nationality tables and court profile links with explicit periods; reject invalid or mismatched profile API responses.
+
+2026-09-23: restore indexing eligibility for 8,700 localized public detail pages, reciprocal hreflang, all-language sitemaps and localized hierarchy; verify all 14,650 canonical sitemap URLs and prevent language-based deletion tasks.

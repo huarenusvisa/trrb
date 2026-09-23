@@ -2,8 +2,9 @@ import { readFile, readdir, writeFile } from 'node:fs/promises';
 import { join, relative, sep } from 'node:path';
 
 const OUT = join(process.cwd(), '.netlify', 'asylumjudge-bundle', 'public');
-const PRIMARY_DETAIL_LOCALES = new Set(['', 'en', 'es', 'fr']);
-const HUB_ONLY_LOCALES = new Set(['pt-br', 'hi', 'zh-hant', 'ru', 'ar', 'tr']);
+// Localized, prerendered public data is indexable in every supported language.
+// noindex is an exclusion directive, not a crawl-priority control.
+const DETAIL_LOCALES = new Set(['', 'en', 'es', 'fr', 'pt-br', 'hi', 'zh-hant', 'ru', 'ar', 'tr']);
 const ENTITY_SEGMENTS = new Set(['judges', 'courts', 'nationalities']);
 const MIN_DESCRIPTION = 110;
 const MAX_DESCRIPTION = 180;
@@ -25,7 +26,7 @@ function localeAndEntity(file) {
   const rel = relative(OUT, file).split(sep).join('/');
   const parts = rel.split('/');
   const first = parts[0];
-  const knownLocale = first && (PRIMARY_DETAIL_LOCALES.has(first) || HUB_ONLY_LOCALES.has(first)) && first !== '';
+  const knownLocale = first && DETAIL_LOCALES.has(first) && first !== '';
   const locale = knownLocale ? first : '';
   const offset = knownLocale ? 1 : 0;
   const segment = parts[offset] || '';
@@ -88,18 +89,21 @@ function improveDescription(html, locale) {
   return html.replace(found.tag, nextTag);
 }
 
-function removeLowPriorityHreflang(html) {
-  return html.replace(/\s*<link\s+rel=["']alternate["']\s+hreflang=["'](?:pt-BR|hi|zh-Hant|ru|ar|tr)["'][^>]*>\s*/gi, '\n');
-}
-
 function hierarchyBlock(locale) {
   const root = locale ? `/${locale}` : '';
   const core = locale === 'en' ? '/en/asylum-judge-rating/' : locale ? `${root}/` : '/asylum-judge-approval-rate/';
-  const labels = locale === 'en'
-    ? ['Asylum judge rating guide', 'Browse immigration courts', 'Browse states', 'Nationality outcomes', 'Official judge backgrounds']
-    : locale === ''
-      ? ['庇护法官通过率', '浏览移民法院', '按州查看', '按国籍查看', '法官官方背景']
-      : ['Approval-rate guide', 'Immigration courts', 'State data', 'Nationality outcomes', 'Judge backgrounds'];
+  const labels = {
+    '': ['庇护法官通过率', '浏览移民法院', '按州查看', '按国籍查看', '法官官方背景'],
+    en: ['Asylum judge rating guide', 'Browse immigration courts', 'Browse states', 'Nationality outcomes', 'Official judge backgrounds'],
+    es: ['Tasas de aprobación', 'Tribunales de inmigración', 'Datos por estado', 'Resultados por nacionalidad', 'Biografías de jueces'],
+    fr: ['Taux d’approbation', 'Tribunaux d’immigration', 'Données par État', 'Résultats par nationalité', 'Biographies des juges'],
+    'pt-br': ['Taxas de aprovação', 'Tribunais de imigração', 'Dados por estado', 'Resultados por nacionalidade', 'Biografias dos juízes'],
+    hi: ['स्वीकृति दर', 'आव्रजन अदालतें', 'राज्य के अनुसार डेटा', 'राष्ट्रीयता के अनुसार परिणाम', 'न्यायाधीशों की पृष्ठभूमि'],
+    'zh-hant': ['庇護法官通過率', '瀏覽移民法院', '按州查看', '按國籍查看', '法官官方背景'],
+    ru: ['Доли одобрений', 'Иммиграционные суды', 'Данные по штатам', 'Результаты по гражданству', 'Биографии судей'],
+    ar: ['نسب الموافقة', 'محاكم الهجرة', 'بيانات الولايات', 'النتائج حسب الجنسية', 'السير الذاتية للقضاة'],
+    tr: ['Onay oranları', 'Göçmenlik mahkemeleri', 'Eyalet verileri', 'Uyruğa göre sonuçlar', 'Hâkimlerin özgeçmişleri']
+  }[locale];
   return `<nav class="search-hierarchy" aria-label="${locale === '' ? '庇护法官数据导航' : 'AsylumJudge data navigation'}" data-search-hierarchy="true"><a href="${core}">${labels[0]}</a> · <a href="${root}/courts/">${labels[1]}</a> · <a href="${root}/states/">${labels[2]}</a> · <a href="${root}/nationality/">${labels[3]}</a> · <a href="${root}/judge-backgrounds/">${labels[4]}</a></nav>`;
 }
 
@@ -130,12 +134,8 @@ function addDatasetCitation(html) {
   return next;
 }
 
-function stripUrlsFromSitemap(xml) {
-  return xml.replace(/\s*<url>\s*<loc>https:\/\/asylumjudge\.com\/(pt-br|hi|zh-hant|ru|ar|tr)\/(judges|courts|nationalities)\/[^<]+<\/loc>[\s\S]*?<\/url>/gi, '');
-}
-
 const files = await walk(OUT);
-let noindexed = 0;
+let indexable = 0;
 let descriptions = 0;
 let hierarchy = 0;
 for (const file of files) {
@@ -147,11 +147,9 @@ for (const file of files) {
   const descAfter = findDescriptionTag(html)?.value || '';
   if (descAfter !== descBefore) descriptions += 1;
 
-  if (detail && HUB_ONLY_LOCALES.has(locale)) {
-    html = upsertRobots(html, 'noindex,follow,max-image-preview:large');
-    noindexed += 1;
-  } else if (detail && PRIMARY_DETAIL_LOCALES.has(locale)) {
-    html = removeLowPriorityHreflang(html);
+  if (detail && DETAIL_LOCALES.has(locale)) {
+    html = upsertRobots(html, 'index,follow,max-image-preview:large');
+    indexable += 1;
     const withHierarchy = addHierarchy(html, locale);
     if (withHierarchy !== html) hierarchy += 1;
     html = withHierarchy;
@@ -163,11 +161,4 @@ for (const file of files) {
   if (html !== before) await writeFile(file, html);
 }
 
-for (const sitemapName of ['sitemap-judges.xml', 'sitemap-courts.xml', 'sitemap-nationalities.xml']) {
-  const p = join(OUT, sitemapName);
-  const before = await readFile(p, 'utf8');
-  const after = stripUrlsFromSitemap(before);
-  if (after !== before) await writeFile(p, after);
-}
-
-console.log(`AsylumJudge search quality: ${noindexed} low-demand translated detail pages changed to noindex/follow; ${descriptions} meta descriptions lengthened; ${hierarchy} primary detail pages received hierarchy links; low-priority detail URLs removed from XML sitemaps; citeable Dataset metadata added.`);
+console.log(`AsylumJudge search quality: ${indexable} localized detail pages indexable with reciprocal language alternates retained; ${descriptions} meta descriptions lengthened; ${hierarchy} detail pages received hierarchy links; all public entity URLs retained in XML sitemaps; citeable Dataset metadata added.`);

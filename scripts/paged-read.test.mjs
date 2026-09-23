@@ -19,3 +19,10 @@ test('retries timeouts but propagates missing data and permanent failures',async
   await assert.rejects(readWithRetry(async()=>{calls++;throw Error('403 denied');},{wait:async()=>{}}),/403/);
   assert.equal(calls,1);
 });
+
+
+test('retries a native AbortError even when its message omits the error name',async()=>{
+  let calls=0;
+  const value=await readWithRetry(async()=>{if(++calls===1)throw new DOMException('This operation was aborted','AbortError');return 'ok';},{wait:async()=>{}});
+  assert.equal(value,'ok');assert.equal(calls,2);
+});

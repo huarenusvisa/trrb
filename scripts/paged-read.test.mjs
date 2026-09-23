@@ -40,10 +40,12 @@ test('retries timeouts but propagates missing data and permanent failures',async
 });
 
 
-test('retries a native AbortError even when its message omits the error name',async()=>{
-  let calls=0;
-  const value=await readWithRetry(async()=>{if(++calls===1)throw new DOMException('This operation was aborted','AbortError');return 'ok';},{wait:async()=>{}});
-  assert.equal(value,'ok');assert.equal(calls,2);
+test('retries native abort and timeout errors even when messages omit the error name',async()=>{
+  for (const name of ['AbortError','TimeoutError']) {
+    let calls=0;
+    const value=await readWithRetry(async()=>{if(++calls===1)throw new DOMException('This operation was aborted',name);return 'ok';},{wait:async()=>{}});
+    assert.equal(value,'ok');assert.equal(calls,2);
+  }
 });
 
 test('retries native request deadlines without restarting the cursor scan',async()=>{

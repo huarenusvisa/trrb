@@ -100,7 +100,9 @@ const ARTICLE_SELECT = "id,title,slug,summary,content,category_id,category_name,
 
 async function getArticleById(id: string) {
   const { base, key } = supabaseConfig();
-  if (!base || !key || !id) return null;
+  // Numeric WordPress IDs and invalid query IDs are handled by the archive path.
+  // Sending them to the UUID column raises 22P02 and incorrectly becomes a 503.
+  if (!base || !key || !/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(id)) return null;
   const url = new URL(`${base}/rest/v1/articles`);
   url.searchParams.set("select", ARTICLE_SELECT);
   url.searchParams.set("id", `eq.${id}`);

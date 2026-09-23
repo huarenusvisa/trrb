@@ -29,7 +29,10 @@ function useFixture(t, articles) {
       assert.equal(url.searchParams.get('visibility'), 'eq.public');
       let rows = articles.filter(a => a.status === 'published' && a.visibility === 'public');
       if (url.searchParams.has('slug')) rows = rows.filter(a => `eq.${a.slug}` === url.searchParams.get('slug'));
-      if (url.searchParams.has('id')) rows = rows.filter(a => `eq.${a.id}` === url.searchParams.get('id'));
+      const idFilter = url.searchParams.get('id');
+      if (idFilter?.startsWith('gt.')) rows = rows.filter(a => a.id > idFilter.slice(3));
+      else if (idFilter) rows = rows.filter(a => `eq.${a.id}` === idFilter);
+      if (url.searchParams.get('order') === 'id.asc') rows.sort((a, b) => a.id.localeCompare(b.id));
       const offset = Number(url.searchParams.get('offset') || 0);
       return Response.json(rows.slice(offset, offset + Number(url.searchParams.get('limit') || 1000)));
     }
@@ -105,7 +108,7 @@ test('News sitemap keeps its 48-hour eligibility window', async t => {
 });
 
 test('production sitemap build includes short articles and only public published records', async t => {
-  useFixture(t, [article(), article({ slug: 'empty', content: '' }), article({ slug: 'private', visibility: 'private' })]);
+  useFixture(t, [article(), article({ id: '00000000-0000-4000-8000-000000000002', slug: 'empty', content: '' }), article({ id: '00000000-0000-4000-8000-000000000003', slug: 'private', visibility: 'private' })]);
   const working = mkdtempSync(path.join(tmpdir(), 'trrb-sitemap-test-'));
   const previousCwd = process.cwd();
   const originalEnv = { SUPABASE_URL: process.env.SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY };

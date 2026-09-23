@@ -29,7 +29,11 @@ function useFixture(t, articles) {
       assert.equal(url.searchParams.get('visibility'), 'eq.public');
       let rows = articles.filter(a => a.status === 'published' && a.visibility === 'public');
       if (url.searchParams.has('slug')) rows = rows.filter(a => `eq.${a.slug}` === url.searchParams.get('slug'));
-      if (url.searchParams.has('id')) rows = rows.filter(a => `eq.${a.id}` === url.searchParams.get('id'));
+      if (url.searchParams.has('id')) {
+        const idFilter=url.searchParams.get('id');
+        rows=rows.filter(a=>idFilter.startsWith('gt.') ? String(a.id)>idFilter.slice(3) : `eq.${a.id}`===idFilter);
+      }
+      if (url.searchParams.get('order')==='id.asc') rows.sort((a,b)=>String(a.id).localeCompare(String(b.id)));
       const offset = Number(url.searchParams.get('offset') || 0);
       return Response.json(rows.slice(offset, offset + Number(url.searchParams.get('limit') || 1000)));
     }
@@ -106,7 +110,7 @@ test('News sitemap keeps its 48-hour eligibility window', async t => {
 
 test('production sitemap build includes short articles and only public published records', async t => {
   const knowledge = article({id:'knowledge',title:'庇护历史知识归档',slug:'knowledge-history',content:'经整理的历史知识正文',category_id:null,category_name:'移民美国·境内身份转换·历史知识文章',knowledge_migration_batch:'20260923-asylum-knowledge',knowledge_path:'change-status',knowledge_topic:'i485'});
-  useFixture(t, [article(), article({ slug: 'empty', content: '' }), article({ slug: 'private', visibility: 'private' }),knowledge,{...knowledge,id:'private-knowledge',slug:'private-knowledge',visibility:'private'}]);
+  useFixture(t, [article(), article({ id:'empty', slug: 'empty', content: '' }), article({ id:'private', slug: 'private', visibility: 'private' }),knowledge,{...knowledge,id:'private-knowledge',slug:'private-knowledge',visibility:'private'}]);
   const originalFetch=globalThis.fetch;
   t.mock.method(globalThis,'fetch',async input=>new URL(String(input)).pathname==='/rest/v1/categories'
     ? Response.json([...categories,{id:'knowledge-cat',name:'移民美国知识库',slug:'immigrate',is_active:true,include_in_sitemap:true,include_in_google_news:false}]) : originalFetch(input));

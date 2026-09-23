@@ -1,4 +1,5 @@
-import { readAllPages, readWithRetry } from "./paged-read.mjs";
+import { fetchPublishedArticles } from './sitemap-article-reader.mjs';
+import { readWithRetry } from "./paged-read.mjs";
 import { articleIndexability, ARTICLE_INDEXABILITY_POLICY } from "../netlify/shared/article-indexability.mjs";
 import fs from 'node:fs';
 import path from 'node:path';
@@ -136,6 +137,7 @@ async function rest(pathname, params) {
   const url = new URL(`${base}/rest/v1/${pathname}`);
   Object.entries(params || {}).forEach(([name, value]) => url.searchParams.set(name, value));
   const response = await fetch(url, {
+    signal: AbortSignal.timeout(45000),
     headers: {
       apikey: key,
       Authorization: `Bearer ${key}`,
@@ -146,7 +148,8 @@ async function rest(pathname, params) {
     throw new Error(`${pathname} query failed: ${response.status} ${(await response.text()).slice(0, 300)}`);
   }
   const rows = await response.json();
-  return Array.isArray(rows) ? rows : [];
+  if (!Array.isArray(rows)) throw new Error(`${pathname} returned an invalid page`);
+  return rows;
 }
 
 async function fetchCategories() {
@@ -163,13 +166,7 @@ async function fetchCategories() {
 }
 
 async function fetchAllPublishedArticles() {
-  return readAllPages(page => rest('articles', {
-    select: 'id,title,slug,summary,content,category_id,category_name,topic_key,status,visibility,published_at,created_at,source_url,cover_image,knowledge_migration_batch:metadata->>knowledge_migration_batch,knowledge_path:metadata->>knowledge_path,knowledge_topic:metadata->>knowledge_topic',
-    status: 'eq.published',
-    visibility: 'eq.public',
-    order: 'published_at.desc.nullslast,created_at.desc,id.desc',
-    ...page
-  }));
+  return fetchPublishedArticles(rest);
 }
 
 const categories = await fetchCategories();
@@ -252,8 +249,7 @@ if (categories.length) {
 const isAllowed = (article, idSet, nameSet, slugSet) => {
   if (isSpecialTopicArticle(article)) return true;
   if (!categories.length) return true;
-  // Curated historical knowledge records retain their article URLs while living
-  // under configured knowledge modules rather than a flat CMS news category.
+  // Curated knowledge records use modules instead of a flat news category.
   if (article?.knowledge_migration_batch === '20260923-asylum-knowledge' && slugSet.has('immigrate')) {
     const module = `${SITE}/immigrate/center?path=${encodeURIComponent(article.knowledge_path || '')}&topic=${encodeURIComponent(article.knowledge_topic || '')}`;
     if (IMMIGRATION_KNOWLEDGE_ENTRIES.some(entry => entry.loc === module)) return true;

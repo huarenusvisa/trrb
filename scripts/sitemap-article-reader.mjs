@@ -1,6 +1,6 @@
 import { readWithRetry } from './paged-read.mjs';
 
-const SELECT = 'id,title,slug,summary,content,category_id,category_name,topic_key,status,visibility,published_at,created_at,source_url,cover_image';
+const SELECT = 'id,title,slug,summary,content,category_id,category_name,topic_key,status,visibility,published_at,created_at,source_url,cover_image,knowledge_migration_batch:metadata->>knowledge_migration_batch,knowledge_path:metadata->>knowledge_path,knowledge_topic:metadata->>knowledge_topic';
 
 const timestamp = (value, fallback) => value ? Date.parse(value) : fallback;
 

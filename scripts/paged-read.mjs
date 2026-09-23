@@ -21,3 +21,13 @@ export async function readAllPages(readPage, { pageSize = 200, maxRows = 100000 
   }
   return rows;
 }
+
+// Bound wide REST reads and preserve the caller's ordering and requested cap.
+export async function readDatabaseQuery(query, request) {
+  const maxRows = Number(query.limit);
+  if (!(maxRows > 200)) return readWithRetry(() => request(query));
+  const order = query.order || 'id.desc';
+  const stableOrder = order.split(',').some(part => /^id(?:\.|$)/.test(part)) ? order : `${order},id.desc`;
+  const start = Number(query.offset || 0);
+  return readAllPages(page => request({ ...query, ...page, order: stableOrder, offset: String(start + Number(page.offset)) }), { maxRows });
+}

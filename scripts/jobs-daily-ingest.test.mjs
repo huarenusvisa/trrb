@@ -135,7 +135,10 @@ test("does not republish or misreport a held listing, including holds applied at
     const writes=[];
     const held={id:'job-1',status:'unlisted',status_reason:'third_party_no_public_direct_contact',moderation_hold:false};
     const request=async (table, query, options) => {
-      if (!options) return table==='job_ingest_raw' ? [{id:1}] : existing ? [held] : [];
+      if (!options) {
+        if (table==='job_listings') assert.match(query, /(?:^|&)listing_origin=eq.external(?:&|$)/);
+        return table==='job_ingest_raw' ? [{id:1}] : existing ? [held] : [];
+      }
       writes.push({table,...options});
       return table==='job_listings' ? [held] : [{id:1}];
     };

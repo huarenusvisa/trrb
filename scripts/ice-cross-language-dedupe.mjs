@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { readDatabaseQuery } from "./paged-read.mjs";
 import process from "node:process";
 
 const REQUIRED = ["SUPABASE_URL", "SUPABASE_SERVICE_ROLE_KEY"];
@@ -13,7 +14,17 @@ function requireEnv() { const missing = REQUIRED.filter((name) => !process.env[n
 function headers(prefer = "") { return { apikey: process.env.SUPABASE_SERVICE_ROLE_KEY, Authorization: `Bearer ${process.env.SUPABASE_SERVICE_ROLE_KEY}`, "Content-Type": "application/json", ...(prefer ? { Prefer: prefer } : {}) }; }
 async function readJson(response) { const raw = await response.text(); if (!raw) return null; try { return JSON.parse(raw); } catch { return { raw }; } }
 async function request(url, options = {}) { const response = await fetch(url, options); const body = await readJson(response); if (!response.ok) throw new Error(body?.message || body?.details || body?.error || body?.raw || `请求失败（${response.status}）`); return body; }
-async function sb(table, { method = "GET", query = {}, body, prefer = "" } = {}) { const url = new URL(`${String(process.env.SUPABASE_URL).replace(/\/+$/, "")}/rest/v1/${table}`); for (const [key, value] of Object.entries(query)) if (value !== undefined && value !== null && value !== "") url.searchParams.set(key, String(value)); return request(url, { method, headers: headers(prefer), body: body === undefined ? undefined : JSON.stringify(body) }); }
+async function sb(table, { method = "GET", query = {}, body, prefer = "" } = {}) {
+  const execute = async (pageQuery) => {
+    const base = String(process.env.SUPABASE_URL || "").replace(/\/+$/, "");
+    const url = new URL(`${base}/rest/v1/${table}`);
+    for (const [key, value] of Object.entries(pageQuery)) {
+      if (value !== undefined && value !== null && value !== "") url.searchParams.set(key, String(value));
+    }
+    return request(url, { method, headers: headers(prefer), body: body === undefined ? undefined : JSON.stringify(body) });
+  };
+  return method === "GET" ? readDatabaseQuery(query, execute) : execute(query);
+}
 
 const STATE_MAP = new Map([
   ["alabama","al"],["alaska","ak"],["arizona","az"],["arkansas","ar"],["california","ca"],["colorado","co"],["connecticut","ct"],["delaware","de"],["florida","fl"],["georgia","ga"],["hawaii","hi"],["idaho","id"],["illinois","il"],["indiana","in"],["iowa","ia"],["kansas","ks"],["kentucky","ky"],["louisiana","la"],["maine","me"],["maryland","md"],["massachusetts","ma"],["michigan","mi"],["minnesota","mn"],["mississippi","ms"],["missouri","mo"],["montana","mt"],["nebraska","ne"],["nevada","nv"],["new hampshire","nh"],["new jersey","nj"],["new mexico","nm"],["new york","ny"],["north carolina","nc"],["north dakota","nd"],["ohio","oh"],["oklahoma","ok"],["oregon","or"],["pennsylvania","pa"],["rhode island","ri"],["south carolina","sc"],["south dakota","sd"],["tennessee","tn"],["texas","tx"],["utah","ut"],["vermont","vt"],["virginia","va"],["washington","wa"],["west virginia","wv"],["wisconsin","wi"],["wyoming","wy"],

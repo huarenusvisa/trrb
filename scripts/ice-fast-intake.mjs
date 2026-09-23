@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { readDatabaseQuery } from "./paged-read.mjs";
 import crypto from "node:crypto";
 import process from "node:process";
 import { fileURLToPath } from "node:url";
@@ -44,16 +45,15 @@ function headers(prefer = "") {
   };
 }
 async function sb(table, { method = "GET", query = {}, body, prefer = "" } = {}) {
-  const base = String(process.env.SUPABASE_URL || "").replace(/\/+$/, "");
-  const url = new URL(`${base}/rest/v1/${table}`);
-  for (const [key, value] of Object.entries(query)) {
-    if (value !== undefined && value !== null && value !== "") url.searchParams.set(key, String(value));
-  }
-  return request(url, {
-    method,
-    headers: headers(prefer),
-    body: body === undefined ? undefined : JSON.stringify(body)
-  });
+  const execute = async (pageQuery) => {
+    const base = String(process.env.SUPABASE_URL || "").replace(/\/+$/, "");
+    const url = new URL(`${base}/rest/v1/${table}`);
+    for (const [key, value] of Object.entries(pageQuery)) {
+      if (value !== undefined && value !== null && value !== "") url.searchParams.set(key, String(value));
+    }
+    return request(url, { method, headers: headers(prefer), body: body === undefined ? undefined : JSON.stringify(body) });
+  };
+  return method === "GET" ? readDatabaseQuery(query, execute) : execute(query);
 }
 function isReply(post) {
   const payload = safeJson(post.raw_payload, {});

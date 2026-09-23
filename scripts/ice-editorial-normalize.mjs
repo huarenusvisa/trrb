@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { readDatabaseQuery } from "./paged-read.mjs";
 import process from "node:process";
 import { fileURLToPath } from "node:url";
 
@@ -48,16 +49,15 @@ function sbHeaders(prefer = "") {
 }
 
 async function sb(table, { method = "GET", query = {}, body, prefer = "" } = {}) {
-  const base = process.env.SUPABASE_URL.replace(/\/+$/, "");
-  const url = new URL(`${base}/rest/v1/${table}`);
-  Object.entries(query).forEach(([key, value]) => {
-    if (value !== undefined && value !== null && value !== "") url.searchParams.set(key, String(value));
-  });
-  return requestJson(url, {
-    method,
-    headers: sbHeaders(prefer),
-    body: body === undefined ? undefined : JSON.stringify(body)
-  });
+  const execute = async (pageQuery) => {
+    const base = String(process.env.SUPABASE_URL || "").replace(/\/+$/, "");
+    const url = new URL(`${base}/rest/v1/${table}`);
+    for (const [key, value] of Object.entries(pageQuery)) {
+      if (value !== undefined && value !== null && value !== "") url.searchParams.set(key, String(value));
+    }
+    return requestJson(url, { method, headers: sbHeaders(prefer), body: body === undefined ? undefined : JSON.stringify(body) });
+  };
+  return method === "GET" ? readDatabaseQuery(query, execute) : execute(query);
 }
 
 function responseText(response) {

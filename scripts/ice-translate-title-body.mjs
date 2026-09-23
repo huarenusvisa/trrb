@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { readDatabaseQuery } from "./paged-read.mjs";
 import process from "node:process";
 import { fileURLToPath } from "node:url";
 
@@ -30,7 +31,17 @@ function requireEnvironment() { const missing = REQUIRED.filter((name) => !proce
 async function readJson(response) { const text = await response.text(); if (!text) return null; try { return JSON.parse(text); } catch { return { raw: text }; } }
 async function request(url, options = {}) { const response = await fetch(url, options); const body = await readJson(response); if (!response.ok) throw new Error(body?.message || body?.details || body?.error?.message || body?.error || body?.raw || `${response.status}`); return body; }
 function headers(prefer = "") { return { apikey: process.env.SUPABASE_SERVICE_ROLE_KEY, Authorization: `Bearer ${process.env.SUPABASE_SERVICE_ROLE_KEY}`, "Content-Type": "application/json", ...(prefer ? { Prefer: prefer } : {}) }; }
-async function sb(table, { method = "GET", query = {}, body, prefer = "" } = {}) { const base = String(process.env.SUPABASE_URL || "").replace(/\/+$/, ""); const url = new URL(`${base}/rest/v1/${table}`); for (const [key, value] of Object.entries(query)) if (value !== undefined && value !== null && value !== "") url.searchParams.set(key, String(value)); return request(url, { method, headers: headers(prefer), body: body === undefined ? undefined : JSON.stringify(body) }); }
+async function sb(table, { method = "GET", query = {}, body, prefer = "" } = {}) {
+  const execute = async (pageQuery) => {
+    const base = String(process.env.SUPABASE_URL || "").replace(/\/+$/, "");
+    const url = new URL(`${base}/rest/v1/${table}`);
+    for (const [key, value] of Object.entries(pageQuery)) {
+      if (value !== undefined && value !== null && value !== "") url.searchParams.set(key, String(value));
+    }
+    return request(url, { method, headers: headers(prefer), body: body === undefined ? undefined : JSON.stringify(body) });
+  };
+  return method === "GET" ? readDatabaseQuery(query, execute) : execute(query);
+}
 function responseText(response) { if (typeof response?.output_text === "string" && response.output_text.trim()) return response.output_text.trim(); for (const item of response?.output || []) for (const part of item?.content || []) if (part?.type === "output_text" && typeof part.text === "string") return part.text.trim(); return ""; }
 function parseResponse(response) {
   const text = responseText(response);

@@ -27,7 +27,7 @@ test('complete active employer still receives JobPosting',async()=>{
 });
 test('sitemap paginates past 1000 and retains incomplete public jobs',async()=>{
  const original=globalThis.fetch;let calls=0;
- globalThis.fetch=async(url)=>{calls++;assert.equal(url.searchParams.get('deleted_at'),'is.null');const offset=Number(url.searchParams.get('offset'));return Response.json(Array.from({length:offset===0?1000:1},(_,i)=>({...job,id:`job-${offset+i}`})));};
+ globalThis.fetch=async(url,options)=>{calls++;assert.ok(options.signal instanceof AbortSignal);assert.equal(url.searchParams.get('deleted_at'),'is.null');assert.equal(url.searchParams.has('offset'),false);const cursor=url.searchParams.get('id');assert.equal(cursor,calls===1?null:'gt.job-0999');return Response.json(Array.from({length:calls===1?1000:1},(_,i)=>({...job,id:`job-${String((calls-1)*1000+i).padStart(4,'0')}`})));};
  try{const response=await sitemapHandler(new Request('https://huarengongzuo.com/sitemap.xml'),context);assert.equal(response.headers.get('x-hg-sitemap-jobs'),'1001');const xml=await response.text();assert.ok(xml.includes('job-1000'));assert.equal(calls,2);}finally{globalThis.fetch=original;}
 });
 test('task manifest emits add/update/delete, is idempotent, rejects incomplete/foreign snapshots',()=>{
@@ -50,4 +50,21 @@ test('SEO builder supports expanded city and category routes without losing publ
   for(const path of ['/jobs/locations/miami/','/jobs/categories/it-tech/',`/jobs/listing.html?id=${id}`]) assert.ok(urls.includes('https://huarengongzuo.com'+path));
   assert.equal(new Set(urls).size,urls.length);
  } finally {await rm(dir,{recursive:true,force:true});}
+});
+
+
+test('sitemap timeout and invalid cursor fall back to the complete published snapshot',async t=>{
+ const fallback=()=>new Response('<urlset>complete published snapshot</urlset>',{headers:{'content-type':'application/xml'}});
+ for (const failure of ['timeout','repeated-cursor']) {
+  t.mock.method(globalThis,'fetch',async(_url,options)=>{
+   assert.ok(options.signal instanceof AbortSignal);
+   if(failure==='timeout') throw new DOMException('Database deadline exceeded','TimeoutError');
+   return Response.json([{id:'same'},{id:'same'}]);
+  });
+  const response=await sitemapHandler(new Request('https://huarengongzuo.com/sitemap.xml'),{next:fallback});
+  assert.equal(response.status,200);
+  assert.equal(await response.text(),'<urlset>complete published snapshot</urlset>');
+  assert.equal(response.headers.get('x-hg-sitemap-jobs'),null,'Partial pages cannot be reported as a complete live sitemap');
+  t.mock.restoreAll();
+ }
 });

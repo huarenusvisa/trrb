@@ -38,13 +38,22 @@ async function jobs() {
   url.searchParams.set("order", "id.asc");
   url.searchParams.set("limit", String(PAGE_SIZE));
   const jobs: any[] = [];
-  for (let offset = 0; ; offset += PAGE_SIZE) {
-    url.searchParams.set("offset", String(offset));
-    const response = await fetch(url, { headers: { apikey: key, Authorization: `Bearer ${key}`, Accept: "application/json" }, cache: "no-store" });
+  // Bound the whole scan so the complete published snapshot can take over
+  // before the edge response deadline when the database is overloaded.
+  const signal = AbortSignal.timeout(15000);
+  let cursor = "";
+  for (;;) {
+    if (cursor) url.searchParams.set("id", `gt.${cursor}`);
+    const response = await fetch(url, { signal, headers: { apikey: key, Authorization: `Bearer ${key}`, Accept: "application/json" }, cache: "no-store" });
     if (!response.ok) throw new Error(`job_listings ${response.status}`);
     const rows = await response.json();
-    if (!Array.isArray(rows)) throw new Error("Invalid jobs sitemap response");
-    jobs.push(...rows);
+    if (!Array.isArray(rows) || rows.length > PAGE_SIZE) throw new Error("Invalid jobs sitemap response");
+    for (const row of rows) {
+      if (!row?.id || String(row.id) <= cursor) throw new Error("Jobs sitemap cursor did not advance");
+      cursor = String(row.id);
+      jobs.push(row);
+    }
+    if (jobs.length + EVERGREEN_URLS.length > 50000) throw new Error("Sitemap requires an index with child sitemaps");
     if (rows.length < PAGE_SIZE) break;
   }
   // Never silently emit an invalid or truncated sitemap.

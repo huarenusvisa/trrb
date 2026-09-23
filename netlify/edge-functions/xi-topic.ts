@@ -4,12 +4,12 @@ import { ELECTION_FILTER, POLITICS_FILTER, XI_FILTER, ICE_FILTER, ENFORCEMENT_FI
 const SITE = "https://trrb.net";
 const PAGE_SIZE = 20;
 const ROUTES: Record<string, any> = {
-  "/topic/midterm-elections": {name:"2026中期选举实时动态", eyebrow:"美国选举 · MIDTERMS 2026", intro:"追踪国会席位争夺、关键州选情、党内初选与投票规则。按时间阅读相关新闻，了解竞选进展与事件背景。", description:"唐人日报2026美国中期选举专题，汇集参众两院席位争夺、关键州竞选、党内初选、选区划分与投票规则报道。按发布时间浏览相关新闻摘要，通过原文查看来源和背景，使用分页继续阅读本轮选举的历史报道。", filter:ELECTION_FILTER, views:{}},
-  "/topic/xi-jinping": {name:"习近平专题", eyebrow:"人物专题 · XI JINPING", intro:"追踪相关新闻、公开活动、政策动向与事件后续。结合报道摘要与原文，了解事件的来龙去脉。", description:"唐人日报习近平专题，汇集与习近平直接相关的已发布新闻、公开活动、政策动向与事件后续。按发布时间浏览报道摘要，进入原文了解背景与来源，并通过分页继续阅读历史报道。", filter:XI_FILTER, views:{}},
+  "/midterm-elections": {name:"2026中期选举实时动态", eyebrow:"美国选举 · MIDTERMS 2026", intro:"追踪国会席位争夺、关键州选情、党内初选与投票规则。按时间阅读相关新闻，了解竞选进展与事件背景。", description:"唐人日报2026美国中期选举专题，汇集参众两院席位争夺、关键州竞选、党内初选、选区划分与投票规则报道。按发布时间浏览相关新闻摘要，通过原文查看来源和背景，使用分页继续阅读本轮选举的历史报道。", filter:ELECTION_FILTER, views:{}},
+  "/xijinping": {name:"习近平专题", eyebrow:"人物专题 · XI JINPING", intro:"追踪相关新闻、公开活动、政策动向与事件后续。结合报道摘要与原文，了解事件的来龙去脉。", description:"唐人日报习近平专题，汇集与习近平直接相关的已发布新闻、公开活动、政策动向与事件后续。按发布时间浏览报道摘要，进入原文了解背景与来源，并通过分页继续阅读历史报道。", filter:XI_FILTER, views:{}},
   "/china-politics": {name:"中国政治", eyebrow:"中国政治 · CHINA POLITICS", intro:"关注领导人动态、人事任免、机构变化与事件后续。结合原文来源阅读报道，区分事实、转述与分析。", description:"唐人日报中国政治栏目，汇集领导人公开活动、人事任免、调查通报和政策动向。按发布时间查看新闻摘要、背景与后续报道，浏览领导人动态、人事任免及政治观察，进入原文核对信息来源。", filter:POLITICS_FILTER, views:POLITICS_VIEWS},
-  "/us-enforcement": {name:"美国执法与警情", eyebrow:"美国执法 · PUBLIC SAFETY", intro:"汇集ICE执法、移民拘留与遣返，以及美国警方执法和案件进展。按领域浏览相关新闻与后续报道。", description:"唐人日报美国执法与警情，汇集ICE执法、拘留、遣返及美国警方执法和案件进展。分别浏览ICE执法和美国警情，查看新闻摘要、发布时间及事件后续，并从原文了解来源与背景。", filter:ENFORCEMENT_FILTER, views:{ice:{label:"ICE执法"},crime:{label:"美国警情"}}}
+  "/iceandpolice": {name:"ICE执法与警情", eyebrow:"美国执法 · PUBLIC SAFETY", intro:"汇集ICE执法、移民拘留与遣返，以及美国警方执法和案件进展。按领域浏览相关新闻与后续报道。", description:"唐人日报美国执法与警情，汇集ICE执法、拘留、遣返及美国警方执法和案件进展。分别浏览ICE执法和美国警情，查看新闻摘要、发布时间及事件后续，并从原文了解来源与背景。", filter:ENFORCEMENT_FILTER, views:{ice:{label:"ICE执法"},crime:{label:"美国警情"}}}
 };
-export const config = { path: ["/topic/midterm-elections", "/topic/midterm-elections/", "/topic/midterm-elections/index.html", "/topic/xi-jinping", "/topic/xi-jinping/", "/topic/xi-jinping/index.html", "/china-politics", "/china-politics/", "/china-politics/index.html", "/us-enforcement", "/us-enforcement/", "/us-enforcement/index.html"] };
+export const config = { path: ["/xijinping", "/xijinping/", "/xijinping/index.html", "/iceandpolice", "/iceandpolice/", "/iceandpolice/index.html", "/midterm-elections", "/midterm-elections/", "/midterm-elections/index.html", "/china-politics", "/china-politics/", "/china-politics/index.html", "/topic/xi-jinping", "/topic/xi-jinping/", "/topic/xi-jinping/index.html", "/us-enforcement", "/us-enforcement/", "/us-enforcement/index.html", "/topic/midterm-elections", "/topic/midterm-elections/", "/topic/midterm-elections/index.html"] };
 const SECTIONS: Record<string, string> = {
   "重要新闻": "important-news", "热门头条": "hot-headlines", "中国热门头条": "hot-headlines",
   "美国时政": "us-politics", "美国警情": "us-crime", "中国官场": "china-officialdom",
@@ -38,7 +38,7 @@ function safeImage(value: unknown) {
 }
 function card(row: any, collectionPath = "") {
   const memberships = editorialTopics(row);
-  const categoryLabel = ["/china-politics","/topic/xi-jinping"].includes(collectionPath) && memberships.includes("china-politics") ? ["中国政治", ...(memberships.includes("xi") ? ["习近平专题"] : [])].join(" · ") : row.category_name === "热门头条" ? "中国热门头条" : row.category_name;
+  const categoryLabel = ["/china-politics","/xijinping"].includes(collectionPath) && memberships.includes("china-politics") ? ["中国政治", ...(memberships.includes("xi") ? ["习近平专题"] : [])].join(" · ") : row.category_name === "热门头条" ? "中国热门头条" : row.category_name;
   const href = esc(articleUrl(row));
   const image = safeImage(row.cover_image);
   const summary = clean(String(row.summary || row.content || "").replace(/<[^>]*>/g, " ")).slice(0, 240);
@@ -54,13 +54,15 @@ function response(request: Request, body: string, status = 200) {
     ...(status === 503 ? { "retry-after": "120" } : {})
   } });
 }
-function errorPage(request: Request, status: number, message: string, path = "/topic/xi-jinping") {
+function errorPage(request: Request, status: number, message: string, path = "/xijinping") {
   return response(request, `<!doctype html><html lang="zh-Hans"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,follow"><title>${esc(message)} - 唐人日报</title></head><body><main><h1>${esc(message)}</h1><p><a href="${path}">返回栏目</a> · <a href="/">返回首页</a></p></main></body></html>`, status);
 }
 export default async (request: Request, context: any) => {
   if (!["GET", "HEAD"].includes(request.method)) return context.next();
   const url = new URL(request.url);
   const path = url.pathname.replace(/\/index\.html$/, "").replace(/\/$/, "");
+  const aliases: Record<string, string> = { "/topic/xi-jinping": "/xijinping", "/us-enforcement": "/iceandpolice", "/topic/midterm-elections": "/midterm-elections" };
+  if (aliases[path]) return Response.redirect(`${SITE}${aliases[path]}${url.search}`, 301);
   const route = ROUTES[path];
   if (!route) return context.next();
   const view = url.searchParams.get("view") || "";
@@ -94,9 +96,9 @@ export default async (request: Request, context: any) => {
       limit: String(PAGE_SIZE + 1), offset: String((page - 1) * PAGE_SIZE)
     }).forEach(([key, value]) => endpoint.searchParams.set(key, value));
     if (path === "/china-politics" && selectedView) endpoint.searchParams.set("and", `(or${termFilter(selectedView.terms)})`);
-    if (path === "/us-enforcement" && view === "ice") endpoint.searchParams.set("or", ICE_FILTER);
-    if (path === "/us-enforcement" && view === "crime") endpoint.searchParams.set("category_name", "eq.美国警情");
-    if (path === "/topic/midterm-elections") endpoint.searchParams.set("and", `(published_at.gte.2026-01-01T00:00:00Z,published_at.lte.${new Date().toISOString()})`);
+    if (path === "/iceandpolice" && view === "ice") endpoint.searchParams.set("or", ICE_FILTER);
+    if (path === "/iceandpolice" && view === "crime") endpoint.searchParams.set("category_name", "eq.美国警情");
+    if (path === "/midterm-elections") endpoint.searchParams.set("and", `(published_at.gte.2026-01-01T00:00:00Z,published_at.lte.${new Date().toISOString()})`);
     const readRows = async (target: URL) => {
       const result = await fetch(target,{headers:{apikey:key,Authorization:`Bearer ${key}`,Accept:'application/json'},signal:AbortSignal.timeout(8000)});
       if(!result.ok) throw new Error(`Topic data ${result.status}`);
@@ -113,9 +115,9 @@ export default async (request: Request, context: any) => {
     const hasNext = politicalPage ? politicalPage.has_more : rows.length > PAGE_SIZE;
     const canonical = `${SITE}${pageUrl(path, page, view)}`;
     const title = `${route.name}${selectedView ? ` · ${selectedView.label}` : ""}${page > 1 ? ` 第${page}页` : ""}｜唐人日报`;
-    const schema = { "@context": "https://schema.org", "@type": "CollectionPage", name: title, url: canonical, description: route.description, ...(path === "/topic/xi-jinping" ? {about: { "@type": "Person", name: "习近平" }} : {}), mainEntity: { "@type": "ItemList", itemListElement: articles.map((row: any, index: number) => ({ "@type": "ListItem", position: (page - 1) * PAGE_SIZE + index + 1, name: row.title, url: `${SITE}${articleUrl(row)}` })) } };
-    const iceAssets = path === "/us-enforcement" ? '<link rel="stylesheet" href="/topic/ice/tracking-overlay.css?v=20260916-1"><script defer src="/topic/ice/people-count.js?v=20260916-1"></script><script defer src="/topic/ice/tracking-data.js?v=20260916-2"></script><script defer src="/topic/ice/tracking-overlay.js?v=20260916-1"></script>' : '';
-    const iceSummary = path === "/us-enforcement" ? `<section class="ice-tracking-summary" aria-label="ICE执法动态"><div><h2>ICE执法动态</h2><div>近24小时发布 <strong data-ice-reports>—</strong> 篇 · 报道涉及 <strong data-ice-people>—</strong> 人</div><p data-ice-update>正在读取最新公开报道…</p><p>按报道发布时间汇总，含估算；不代表全美实际执法总人数。</p></div><a href="/ice" aria-haspopup="dialog" aria-controls="ice-tracking-dialog">全屏查看地图 ↗</a></section><button class="ice-tracking-float" hidden type="button" aria-haspopup="dialog" aria-controls="ice-tracking-dialog">ICE执法地图 ↗</button><dialog id="ice-tracking-dialog" class="ice-tracking-dialog" aria-labelledby="ice-dialog-title"><div class="ice-tracking-toolbar"><h2 id="ice-dialog-title">ICE执法追踪</h2><a href="/ice" target="_blank" rel="noopener">独立页面 ↗</a><button type="button" autofocus>关闭 ×</button></div></dialog>` : '';
+    const schema = { "@context": "https://schema.org", "@type": "CollectionPage", name: title, url: canonical, description: route.description, ...(path === "/xijinping" ? {about: { "@type": "Person", name: "习近平" }} : {}), mainEntity: { "@type": "ItemList", itemListElement: articles.map((row: any, index: number) => ({ "@type": "ListItem", position: (page - 1) * PAGE_SIZE + index + 1, name: row.title, url: `${SITE}${articleUrl(row)}` })) } };
+    const iceAssets = path === "/iceandpolice" ? '<link rel="stylesheet" href="/topic/ice/tracking-overlay.css?v=20260916-1"><script defer src="/topic/ice/people-count.js?v=20260916-1"></script><script defer src="/topic/ice/tracking-data.js?v=20260916-2"></script><script defer src="/topic/ice/tracking-overlay.js?v=20260916-1"></script>' : '';
+    const iceSummary = path === "/iceandpolice" ? `<section class="ice-tracking-summary" aria-label="ICE执法动态"><div><h2>ICE执法动态</h2><div>近24小时发布 <strong data-ice-reports>—</strong> 篇 · 报道涉及 <strong data-ice-people>—</strong> 人</div><p data-ice-update>正在读取最新公开报道…</p><p>按报道发布时间汇总，含估算；不代表全美实际执法总人数。</p></div><a href="/ice" aria-haspopup="dialog" aria-controls="ice-tracking-dialog">全屏查看地图 ↗</a></section><button class="ice-tracking-float" hidden type="button" aria-haspopup="dialog" aria-controls="ice-tracking-dialog">ICE执法地图 ↗</button><dialog id="ice-tracking-dialog" class="ice-tracking-dialog" aria-labelledby="ice-dialog-title"><div class="ice-tracking-toolbar"><h2 id="ice-dialog-title">ICE执法追踪</h2><a href="/ice" target="_blank" rel="noopener">独立页面 ↗</a><button type="button" autofocus>关闭 ×</button></div></dialog>` : '';
     const schemaJson = JSON.stringify(schema).replaceAll("<", "\\u003c");
     return response(request, `<!doctype html><html lang="zh-Hans"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">

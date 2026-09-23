@@ -94,7 +94,7 @@
     if (!allCategories.length) { list.innerHTML = '<div class="category-empty">暂无栏目，请新增或应用标准栏目。</div>'; return; }
     list.innerHTML = allCategories.map((item, index) => {
       const badges = [item.show_in_navigation !== false ? "导航" : "", item.show_on_homepage !== false ? "首页" : "", item.auto_fetch ? "抓取" : "", item.ai_rewrite !== false ? "AI" : "", item.auto_publish ? "自动发布" : "", item.include_in_google_news !== false ? "News" : "", item.include_in_rss !== false ? "RSS" : ""].filter(Boolean);
-      return `<article class="category-item ${item.is_active ? "" : "is-disabled"}"><div class="category-item-main"><div class="category-item-title"><strong>${escapeText(item.name)}</strong><span class="category-state ${item.is_active ? "on" : "off"}">${item.is_active ? "已启用" : "已停用"}</span></div><div class="category-meta"><code>/${escapeText(item.slug)}</code><span>排序 ${Number(item.sort_order || 0)}</span></div><div class="category-badges">${badges.map(x => `<span>${escapeText(x)}</span>`).join("")}</div></div><div class="category-actions"><button type="button" onclick="TRRBCategoryManager.move('${escapeAttr(item.id)}',-1)" ${index === 0 ? "disabled" : ""}>上移</button><button type="button" onclick="TRRBCategoryManager.move('${escapeAttr(item.id)}',1)" ${index === allCategories.length - 1 ? "disabled" : ""}>下移</button><button type="button" onclick="TRRBCategoryManager.edit('${escapeAttr(item.id)}')">编辑</button><button type="button" onclick="TRRBCategoryManager.toggle('${escapeAttr(item.id)}',${item.is_active ? "false" : "true"})">${item.is_active ? "停用" : "启用"}</button><button type="button" class="danger" onclick="TRRBCategoryManager.remove('${escapeAttr(item.id)}')">删除</button></div></article>`;
+      return `<article class="category-item ${item.is_active ? "" : "is-disabled"}"><div class="category-item-main"><div class="category-item-title"><strong>${escapeText(item.name)}</strong><span class="category-state ${item.is_active ? "on" : "off"}">${item.is_active ? "已启用" : "已停用"}</span></div><div class="category-meta"><a href="/${encodeURIComponent(item.slug)}" target="_blank" rel="noopener"><code>/${escapeText(item.slug)}</code> ↗</a><span>排序 ${Number(item.sort_order || 0)}</span></div><div class="category-badges">${badges.map(x => `<span>${escapeText(x)}</span>`).join("")}</div></div><div class="category-actions"><button type="button" onclick="TRRBCategoryManager.move('${escapeAttr(item.id)}',-1)" ${index === 0 ? "disabled" : ""}>上移</button><button type="button" onclick="TRRBCategoryManager.move('${escapeAttr(item.id)}',1)" ${index === allCategories.length - 1 ? "disabled" : ""}>下移</button><button type="button" onclick="TRRBCategoryManager.edit('${escapeAttr(item.id)}')">编辑</button><button type="button" onclick="TRRBCategoryManager.toggle('${escapeAttr(item.id)}',${item.is_active ? "false" : "true"})">${item.is_active ? "停用" : "启用"}</button><button type="button" class="danger" onclick="TRRBCategoryManager.remove('${escapeAttr(item.id)}')">删除</button></div></article>`;
     }).join("");
   }
 
@@ -178,7 +178,45 @@
 
   async function toggleCategory(id, nextState) { if (!canManageCategories()) return alert("没有权限。"); const result = await supabaseClient.from("categories").update({ is_active: nextState }).eq("id", id); if (result.error) return alert(result.error.message); await Promise.all([loadCategoryManager(), loadCategories()]); }
   async function moveCategory(id, direction) { if (!canManageCategories()) return; const index = allCategories.findIndex(x => String(x.id) === String(id)), swap = index + direction; if (index < 0 || swap < 0 || swap >= allCategories.length) return; const a = allCategories[index], b = allCategories[swap], ao = Number(a.sort_order || index * 10 + 10), bo = Number(b.sort_order || swap * 10 + 10); let result = await supabaseClient.from("categories").update({ sort_order: bo }).eq("id", a.id); if (result.error) return alert(result.error.message); result = await supabaseClient.from("categories").update({ sort_order: ao }).eq("id", b.id); if (result.error) return alert(result.error.message); await Promise.all([loadCategoryManager(), loadCategories()]); }
-  async function removeCategory(id) { if (!canManageCategories()) return; const item = allCategories.find(x => String(x.id) === String(id)); if (!item) return; const count = await supabaseClient.from("articles").select("id", { count: "exact", head: true }).eq("category_id", id); if (count.error) return alert(count.error.message); if ((count.count || 0) > 0) return alert(`栏目已有 ${count.count} 篇文章，请先转移文章或停用栏目。`); if (!confirm(`永久删除“${item.name}”？`)) return; const result = await supabaseClient.from("categories").delete().eq("id", id); if (result.error) return alert(result.error.message); resetCategoryForm(); await Promise.all([loadCategoryManager(), loadCategories()]); }
+  async function removeCategory(id) {
+    if (!canManageCategories()) return;
+    const item = allCategories.find(x => String(x.id) === String(id));
+    if (!item) return;
+    const count = await supabaseClient.from("articles").select("id", { count: "exact", head: true })
+      .or(`category_id.eq.${id},category_name.eq.${JSON.stringify(item.name)}`);
+    if (count.error) return alert(count.error.message);
+    document.getElementById("category-transfer-dialog")?.remove();
+    const dialog = document.createElement("dialog");
+    dialog.id = "category-transfer-dialog";
+    dialog.className = "category-transfer-dialog";
+    const targets = allCategories.filter(x => x.is_active && x.id !== item.id);
+    dialog.innerHTML = `<form method="dialog"><h3>删除“${escapeText(item.name)}”</h3><p>当前有 ${count.count || 0} 篇文章。选择目标栏目后，将转移全部文章并删除原栏目。</p><p>文章正文、发布时间和发布状态会保留。</p><label for="category-transfer-target">文章转移到</label><select id="category-transfer-target" ${count.count ? "required" : ""}><option value="">${count.count ? "请选择目标栏目" : "没有文章，可直接删除"}</option>${targets.map(x => `<option value="${escapeAttr(x.id)}">${escapeText(x.name)}（/${escapeText(x.slug)}）</option>`).join("")}</select><p id="category-transfer-message" role="status"></p><div class="category-transfer-actions"><button type="button" id="category-transfer-cancel" class="secondary-btn">取消</button><button type="submit" id="category-transfer-submit">${count.count ? "转移文章并删除栏目" : "删除空栏目"}</button></div></form>`;
+    document.body.appendChild(dialog);
+    dialog.querySelector("#category-transfer-cancel").onclick = () => dialog.close();
+    dialog.querySelector("form").addEventListener("submit", async event => {
+      event.preventDefault();
+      const button = dialog.querySelector("#category-transfer-submit");
+      button.disabled = true;
+      const message = dialog.querySelector("#category-transfer-message");
+      message.textContent = "正在转移并核对文章…";
+      dialog.querySelector("#category-transfer-cancel").disabled = true;
+      let result;
+      try { result = await supabaseClient.rpc("transfer_and_delete_category", {
+        source_id: item.id, target_id: dialog.querySelector("select").value || null
+      }); } catch (error) { result = { error }; }
+      const { data, error } = result;
+      button.disabled = false;
+      dialog.querySelector("#category-transfer-cancel").disabled = false;
+      if (error) { message.textContent = `未能确认完成：${error.message}。请刷新栏目列表核对后再操作。`; return; }
+      dialog.close(); resetCategoryForm();
+      await Promise.all([loadCategoryManager(), loadCategories()]);
+      setMessage(`已转移 ${data?.moved || 0} 篇文章，并删除“${item.name}”。`, false, true);
+      if (typeof loadArticles === "function") await loadArticles();
+    });
+    dialog.addEventListener("cancel", event => { if (dialog.querySelector("#category-transfer-submit").disabled) event.preventDefault(); });
+    dialog.addEventListener("close", () => dialog.remove(), { once: true });
+    dialog.showModal();
+  }
 
   function resetCategoryForm() { $("category-form")?.reset(); setValue("category-id", ""); if ($("category-slug")) delete $("category-slug").dataset.manual; setValue("category-sort", "100"); setCheck("category-active", true); setCheck("category-show-nav", true); setCheck("category-show-home", true); setCheck("category-auto-fetch", false); setCheck("category-ai-rewrite", true); setCheck("category-auto-publish", false); setCheck("category-sitemap", true); setCheck("category-google-news", true); setCheck("category-rss", true); setCheck("category-push-x", false); setCheck("category-push-telegram", false); if ($("category-form-title")) $("category-form-title").textContent = "新增栏目"; if ($("category-submit")) $("category-submit").textContent = "保存栏目"; setMessage(""); }
   function syncSlugFromName() { if ($("category-id")?.value || $("category-slug")?.dataset.manual === "1") return; const slug = slugify($("category-name").value); if (slug) $("category-slug").value = slug; }

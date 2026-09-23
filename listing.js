@@ -92,30 +92,13 @@ function articleTimestamp(item) {
   return Number.isFinite(t) ? t : 0;
 }
 
-async function fetchLiveSearchArticles(query, limit = 240) {
-  const normalized = String(query || "").trim().slice(0, 120).replace(/[%*(),]/g, " ").replace(/\s+/g, " ");
-  if (!normalized) return [];
-  const cacheKey = `trrb-search-v2-${normalized.toLowerCase()}-${limit}`;
-  const cached = readLiveCache(cacheKey);
-  if (cached) return cached;
-
-  const select = ["id","title","slug","summary","category_id","category_name","topic_key","cover_image","author","status","published_at","created_at"].join(",");
-  const url = new URL(`${TRRB_SUPABASE_URL}/rest/v1/articles`);
-  url.searchParams.set("select", select);
-  url.searchParams.set("status", "eq.published");
-  url.searchParams.set("visibility", "eq.public");
-  const pattern = `*${normalized}*`;
-  url.searchParams.set("or", `(title.ilike.${pattern},summary.ilike.${pattern},content.ilike.${pattern})`);
-  url.searchParams.set("order", "published_at.desc.nullslast,created_at.desc");
-  url.searchParams.set("limit", String(limit));
-
-  const rows = await fetchJsonWithTimeout(url.toString(), {
-    cache: "no-store",
-    headers: { apikey: TRRB_SUPABASE_KEY, Authorization: `Bearer ${TRRB_SUPABASE_KEY}`, Accept: "application/json" }
-  }, 9000);
-  const articles = (Array.isArray(rows) ? rows : []).map(row => ({...mapLiveArticle(row), matchedSearch: normalized.toLowerCase()}));
-  writeLiveCache(cacheKey, articles);
-  return articles;
+async function fetchLiveSearchArticles(query, page = 1, category = "") {
+  const params = new URLSearchParams({ q: query, page: String(page), page_size: String(pageSize) });
+  if (category) params.set("category", category);
+  const payload = await fetchJsonWithTimeout(`/.netlify/functions/public-article-search?${params}`, {
+    cache: "no-store", headers: { Accept: "application/json" }
+  }, 15000);
+  return { ...payload, articles: (payload.articles || []).map(mapLiveArticle) };
 }
 
 async function fetchLiveArticleById(id) {
@@ -208,8 +191,13 @@ async function initListing() {
 
   try {
     if (searchMode && query) {
-      const live = await fetchLiveSearchArticles(query, 240);
-      renderListingDataset(live, category, query, page);
+      const result = await fetchLiveSearchArticles(query, page, category);
+      renderHeader(category, query);
+      // The server already searched title, summary and body; do not filter its
+      // results again against the shortened display summary.
+      renderArticles(result.articles, 1);
+      const nav = document.querySelector("#pagination");
+      if (nav) nav.innerHTML = `${page > 1 ? pageLink("上一页", page - 1, false, category, query) : ""}<span class="page-link is-disabled">第 ${page} 页</span>${result.has_more ? pageLink("下一页", page + 1, false, category, query) : ""}`;
       return;
     }
 

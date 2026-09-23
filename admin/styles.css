@@ -603,3 +603,5 @@ th { background: #f1f5f9; }
 .automation-report-status.loading{color:#1d4ed8}
 .automation-report-status.success{color:#15803d;font-weight:700}
 .automation-report-status.error{color:#b42318;font-weight:700}
+
+.article-search-toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:10px}.article-search-toolbar input{flex:1;min-width:220px;max-width:600px}.article-search-toolbar select{width:auto}#articles-list-note{color:#64748b;line-height:1.6}#articles-pagination{margin-top:18px;display:flex;align-items:center;gap:14px}

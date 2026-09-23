@@ -1,6 +1,6 @@
 (() => {
   "use strict";
-  const RETIRED = new Set(["trump", "deport"]);
+  const RETIRED = new Set(["deport"]);
 
   async function enforceRetiredCategories() {
     if (!window.supabaseClient) return;

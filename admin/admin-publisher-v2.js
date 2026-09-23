@@ -231,10 +231,41 @@
     `;
   }
 
+  let articlePage = 1;
+  let articleSearch = "";
+  let articleStatus = "";
+  let articleRequest = 0;
+  document.addEventListener("DOMContentLoaded", () => {
+    el("articles-search-form")?.addEventListener("submit", event => {
+      event.preventDefault(); articleSearch = el("articles-search").value.trim(); articlePage = 1; loadArticles();
+    });
+    el("articles-status")?.addEventListener("change", () => {
+      articleStatus = el("articles-status").value; articlePage = 1; loadArticles();
+    });
+    el("articles-search-clear")?.addEventListener("click", () => {
+      el("articles-search").value = ""; articleSearch = ""; articlePage = 1; loadArticles();
+    });
+    el("articles-pagination")?.addEventListener("click", event => {
+      const button = event.target.closest("[data-article-page]");
+      if (button) { articlePage = Number(button.dataset.articlePage); loadArticles(); }
+    });
+  });
+
   loadArticles = async function loadArticlesV2() {
+    const request = ++articleRequest;
+    el("articles-list-note").textContent = "正在查询…";
     try {
-      const result = await publisherApi("list");
+      const result = await publisherApi("list", { q: articleSearch, status: articleStatus, page: articlePage, page_size: 50 });
+      if (request !== articleRequest) return;
+      el("articles-list-note").textContent = articleSearch
+        ? `全库搜索“${articleSearch}”，包含72小时以前的新闻；第${articlePage}页。`
+        : `默认只显示最近72小时的新闻；更早新闻仍保留并正常公开，输入关键词即可查找。第${articlePage}页。`;
+      el("articles-pagination").innerHTML = `${articlePage > 1 ? `<button type="button" data-article-page="${articlePage - 1}">上一页</button>` : ""}<span>第 ${articlePage} 页</span>${result.has_more ? `<button type="button" data-article-page="${articlePage + 1}">下一页</button>` : ""}`;
       const articles = result.articles || [];
+      ["articles", "published", "draft"].forEach(name => {
+        const label = el(`count-${name}`)?.nextElementSibling;
+        if (label) label.textContent = { articles: "本页文章", published: "本页已发布", draft: "本页草稿" }[name];
+      });
       el("count-articles").textContent = articles.length;
       el("count-published").textContent = articles.filter((item) => item.status === "published").length;
       el("count-draft").textContent = articles.filter((item) => item.status === "draft").length;
@@ -242,7 +273,10 @@
         ? articles.map(renderArticleRowWithAiState).join("")
         : `<tr><td colspan="5">暂无文章。</td></tr>`;
     } catch (error) {
+      if (request !== articleRequest) return;
       console.error(error);
+      el("articles-list-note").textContent = "查询失败，请重试。";
+      el("articles-pagination").innerHTML = "";
       el("articles-tbody").innerHTML = `<tr><td colspan="5">文章读取失败：${escapeHtml(error.message)}</td></tr>`;
     }
   };

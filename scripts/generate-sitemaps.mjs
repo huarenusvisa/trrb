@@ -17,9 +17,9 @@ if (!base || !key) {
 
 const STATIC_HUBS = [
   { loc: `${SITE}/china-politics`, priority: '0.8', changefreq: 'daily' },
-  { loc: `${SITE}/us-enforcement`, priority: '0.8', changefreq: 'daily' },
-  { loc: `${SITE}/topic/midterm-elections`, priority: '0.8', changefreq: 'daily' },
-  { loc: `${SITE}/topic/xi-jinping`, priority: '0.8', changefreq: 'daily' },
+  { loc: `${SITE}/iceandpolice`, priority: '0.8', changefreq: 'daily' },
+  { loc: `${SITE}/midterm-elections`, priority: '0.8', changefreq: 'daily' },
+  { loc: `${SITE}/xijinping`, priority: '0.8', changefreq: 'daily' },
   { loc: `${SITE}/community/`, priority: '0.9', changefreq: 'daily' },
   { loc: `${SITE}/immigrate/`, priority: '0.8', changefreq: 'weekly' },
   { loc: `${SITE}/legal/`, priority: '0.8', changefreq: 'daily' },

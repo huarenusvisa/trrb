@@ -91,8 +91,8 @@ test('merged enforcement, Xi and election topics stay aligned with PC without lo
   assert.match(home, /key: 'us-enforcement'/);
   assert.match(home, /key: 'china-politics'/);
   assert.match(home, /https:\/\/trrb.net\/ice/);
-  assert.match(home, /topic\/midterm-elections/);
-  assert.match(home, /topic\/xi-jinping/);
+  assert.match(home, /midterm-elections/);
+  assert.match(home, /xijinping/);
   assert.match(home, /rankCategories[^;]*'ICE执法动态'/s);
   assert.match(home, /importantHomepageEligible\(item\)/);
   assert.match(home, /globalHomepageEligible\(item\)/);

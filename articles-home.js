@@ -352,14 +352,14 @@ function findLeadArticle(categoryArticles) { return categoryArticles.find(hasRea
 function renderCategorySection(category, articles) {
   const isPolitics = category === "美国警情";
   const isEnforcement = ["ICE执法动态", "ICE执法", "驱逐快报"].includes(category);
-  const displayCategory = isPolitics ? "中国政治" : isEnforcement ? "美国执法与警情" : category === "热门头条" ? "中国热门头条" : category === "移民美国" ? "移民美国知识库" : category;
+  const displayCategory = isPolitics ? "中国政治" : isEnforcement ? "ICE执法与警情" : category === "热门头条" ? "中国热门头条" : category === "移民美国" ? "移民美国知识库" : category;
   const categoryArticles = articles
-    .filter((item) => isPolitics ? (item.editorial_topics || []).includes("china-politics") : isEnforcement ? ["美国警情", "ICE执法动态", "ICE执法", "驱逐快报"].includes(normalizeCategory(item.category)) || item.topic_key === "ice" : normalizeCategory(item.category) === category)
+    .filter((item) => isPolitics ? (item.editorial_topics || []).includes("china-politics") : isEnforcement ? ["美国警情", "ICE执法动态", "ICE执法", "驱逐快报", "ICE执法与警情"].includes(normalizeCategory(item.category)) || item.topic_key === "ice" : normalizeCategory(item.category) === category)
     .filter(isFreshHomepageArticle)
     .sort((a, b) => articleTimestamp(b) - articleTimestamp(a));
   const article = findLeadArticle(categoryArticles);
-  const more = isPolitics ? "/china-politics" : isEnforcement ? "/us-enforcement" : categoryUrl(category);
-  const tabs = isEnforcement ? '<div class="home-collection-tabs"><a href="/us-enforcement?view=ice">ICE执法</a><a href="/us-enforcement?view=crime">美国警情</a></div>' : "";
+  const more = isPolitics ? "/china-politics" : isEnforcement ? "/iceandpolice" : categoryUrl(category);
+  const tabs = isEnforcement ? '<div class="home-collection-tabs"><a href="/iceandpolice?view=ice">ICE执法</a><a href="/iceandpolice?view=crime">美国警情</a></div>' : "";
 
   if (!article) {
     return `<article class="news-box category-empty" id="${categoryIds[category] || ""}"><header><h2>${escapeHtml(displayCategory)}</h2><a href="${more}">更多</a></header><div class="category-empty-state"><strong>暂无该分类内容</strong><span>新内容发布后将在这里显示</span></div></article>`;

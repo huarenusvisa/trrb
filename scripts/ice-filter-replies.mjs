@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { readAllPages } from "./paged-read.mjs";
 import process from "node:process";
 import { fileURLToPath } from "node:url";
 
@@ -47,7 +48,7 @@ function headers(prefer = "") {
   };
 }
 
-async function sb(table, { method = "GET", query = {}, body, prefer = "" } = {}) {
+async function sb(table, { method = "GET", query = {}, body, prefer = "" } = {}) {if (method === "GET" && Number(query.limit) > 200) return readAllPages(page => sb(table, {method,query:{...query,order:query.order ? `${query.order},id.desc` : "id.desc",...page},body,prefer}), {maxRows:Number(query.limit)});
   const base = String(process.env.SUPABASE_URL || "").replace(/\/+$/, "");
   const url = new URL(`${base}/rest/v1/${table}`);
   for (const [key, value] of Object.entries(query)) {

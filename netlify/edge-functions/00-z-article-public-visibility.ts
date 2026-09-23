@@ -5,6 +5,8 @@ const ARTICLE_SECTIONS = new Set([
   "hot-headlines",
   "us-politics",
   "us-crime",
+  "iceandpolice",
+  "china-politics",
   "china-officialdom",
   "immigration",
   "asylum",
@@ -46,10 +48,10 @@ function blocked(request: Request, status = 404) {
   const responseHeaders: Record<string, string> = {
     "content-type": "text/plain; charset=utf-8",
     "cache-control": status === 503 ? "no-store" : "public, max-age=300",
-    "x-robots-tag": "noindex, nofollow",
     "x-trrb-article-visibility": status === 503 ? "lookup-unavailable" : "private-hidden"
   };
   if (status === 503) responseHeaders["retry-after"] = "120";
+  else responseHeaders["x-robots-tag"] = "noindex, nofollow";
   return new Response(request.method === "HEAD" ? null : status === 503 ? "Temporarily unavailable" : "Not Found", {
     status,
     headers: responseHeaders

@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { readAllPages } from "./paged-read.mjs";
 import process from "node:process";
 import {loadChinaPeople,CHINA_PEOPLE_QUERY,findChinaPeople,CHINA_REGISTRY_VERSION} from "../netlify/shared/china-person-registry.mjs";
 import {collectChinaMediaPosts, chinaMediaSource, politicalReviewReason} from "./china-x-sources.mjs";
@@ -488,12 +489,11 @@ export function similarity(leftValue, rightValue) {
 
 async function recentChinaArticles() {
   const cutoff = new Date(Date.now() - 730 * 86400_000).toISOString();
-  const rows = await supabase("articles", { query: {
+  return readAllPages(page => supabase("articles", { query: {
     select: "id,title,summary,content,source_url,published_at,metadata", category_name: "in.(热门头条,中国热门头条,中国政治,中国官场,美国时政,美国警情,ICE执法动态,ICE执法,驱逐快报)",
     status: "eq.published", visibility: "eq.public", published_at: `gte.${cutoff}`,
-    order: "published_at.desc", limit: "2000",
-  } });
-  return Array.isArray(rows) ? rows : [];
+    order: "published_at.desc.nullslast,created_at.desc,id.desc", ...page,
+  } }), {pageSize:200,maxRows:2000});
 }
 
 async function recentRenZhengfeiArticles() {

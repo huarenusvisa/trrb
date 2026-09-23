@@ -518,7 +518,7 @@ export async function storeCandidate(candidate, request = rest) {
 
   if (candidate.errors.length) return "rejected";
 
-  const existingListing = await request("job_listings", `${sourceFilter}&select=id,status,status_reason,moderation_hold&limit=1`);
+  const existingListing = await request("job_listings", `${sourceFilter}&listing_origin=eq.external&select=id,status,status_reason,moderation_hold&limit=1`);
   if (existingListing?.[0]) {
     const repairHeldListing = !existingListing[0].moderation_hold && existingListing[0].status === "unlisted" && existingListing[0].status_reason === "auto_ingest_parser_quality_hold";
     const refreshOpenListing = existingListing[0].status === "open" && !existingListing[0].moderation_hold;

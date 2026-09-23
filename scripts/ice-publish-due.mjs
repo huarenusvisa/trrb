@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { readDatabaseQuery } from "./paged-read.mjs";
 import crypto from "node:crypto";
 import process from "node:process";
 import { fileURLToPath } from "node:url";
@@ -52,10 +53,15 @@ function headers(prefer = "") {
   return { apikey: process.env.SUPABASE_SERVICE_ROLE_KEY, Authorization: `Bearer ${process.env.SUPABASE_SERVICE_ROLE_KEY}`, "Content-Type": "application/json", ...(prefer ? { Prefer: prefer } : {}) };
 }
 async function sb(table, { method = "GET", query = {}, body, prefer = "" } = {}) {
-  const base = process.env.SUPABASE_URL.replace(/\/+$/, "");
-  const url = new URL(`${base}/rest/v1/${table}`);
-  for (const [key, value] of Object.entries(query)) if (value != null) url.searchParams.set(key, String(value));
-  return requestJson(url, { method, headers: headers(prefer), body: body == null ? undefined : JSON.stringify(body) });
+  const execute = async (pageQuery) => {
+    const base = String(process.env.SUPABASE_URL || "").replace(/\/+$/, "");
+    const url = new URL(`${base}/rest/v1/${table}`);
+    for (const [key, value] of Object.entries(pageQuery)) {
+      if (value !== undefined && value !== null && value !== "") url.searchParams.set(key, String(value));
+    }
+    return requestJson(url, { method, headers: headers(prefer), body: body === undefined ? undefined : JSON.stringify(body) });
+  };
+  return method === "GET" ? readDatabaseQuery(query, execute) : execute(query);
 }
 function bestVideo(post) {
   const media = safeJson(post?.media, post?.media || []);

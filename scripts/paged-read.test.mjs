@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {readAllPages,readWithRetry} from './paged-read.mjs';
+import {readAllPages,readWithRetry,readDatabaseQuery} from './paged-read.mjs';
 
 test('reads beyond REST row caps without truncating the requested history',async()=>{
   const dataset=Array.from({length:1853},(_,id)=>({id}));
@@ -9,6 +9,25 @@ test('reads beyond REST row caps without truncating the requested history',async
     return dataset.slice(Number(offset),Number(offset)+Number(limit));
   },{maxRows:2000});
   assert.deepEqual(result,dataset);
+});
+
+test('wide database reads preserve filters, offsets, ordering and exact requested caps',async()=>{
+  const dataset=Array.from({length:1500},(_,id)=>({id}));
+  const calls=[];
+  const rows=await readDatabaseQuery({limit:'1201',offset:'20',status:'eq.published',order:'updated_at.desc'},async query=>{
+    calls.push(query);
+    assert.equal(query.status,'eq.published');
+    assert.equal(query.order,'updated_at.desc,id.desc');
+    assert.ok(Number(query.limit)<=200);
+    return dataset.slice(Number(query.offset),Number(query.offset)+Number(query.limit));
+  });
+  assert.deepEqual(rows,dataset.slice(20,1221));
+  assert.equal(calls.at(-1).limit,'1');
+});
+
+test('small database reads propagate errors and keep the original query',async()=>{
+  const query={limit:'24',order:'updated_at.desc'};
+  await assert.rejects(readDatabaseQuery(query,async actual=>{assert.equal(actual,query);throw Error('403 denied');}),/403/);
 });
 test('retries timeouts but propagates missing data and permanent failures',async()=>{
   let calls=0;

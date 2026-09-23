@@ -30,6 +30,7 @@ test("旧事件回顾没有新进展时被过滤", () => {
   const result = classifyNewsQuality(row("Two months ago, Lorenzo was killed by ICE on his way to work. The family still remembers him."));
   assert.equal(result.keep, false);
   assert.equal(result.reason, "ice_stale_recap_filtered");
+  assert.equal(classifyNewsQuality(row("Two months ago ICE agents arrested a man in Texas. His family remembers the incident.")).keep, false);
 });
 
 test("真实当前ICE执法和实际羁押事件保留", () => {

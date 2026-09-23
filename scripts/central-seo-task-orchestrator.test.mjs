@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { mkdtemp, readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
-import { orchestrate } from './central-seo-task-orchestrator.mjs';
+import { orchestrate, persistQueue } from './central-seo-task-orchestrator.mjs';
 
 const dir = await mkdtemp(join(tmpdir(), 'central-seo-'));
 const file = (name) => join(dir, name);
@@ -118,6 +118,24 @@ try {
     assert.equal(database.get(semanticKey(oldRow)).status, 'submitted');
     assert.equal(database.get(semanticKey(oldRow)).attempts, 3);
   }
+  const batches = [];
+  const intakeTasks = Array.from({ length: 251 }, (_, index) => ({ id: `intake-${index}`, site: 'huarengongzuo', origin: 'https://huarengongzuo.com', action: 'update', url: `https://huarengongzuo.com/jobs/listing.html?id=${index}`, lastmod: null }));
+  globalThis.fetch = async (_input, options) => {
+    batches.push(options.body);
+    if (batches.length === 1) return Response.json({ code: '57014', message: 'canceling statement due to statement timeout' }, { status: 500 });
+    for (const row of JSON.parse(options.body)) {
+      assert.equal(Object.hasOwn(row, 'status'), false);
+      assert.equal(Object.hasOwn(row, 'attempts'), false);
+    }
+    return new Response(null, { status: 201 });
+  };
+  assert.equal(await persistQueue(intakeTasks, new Map([['huarengongzuo', 'fixture-batch']])), 251);
+  assert.deepEqual(batches.map(body => JSON.parse(body).length), [100, 100, 100, 51]);
+  assert.equal(batches[0], batches[1], 'Retry must reuse the identical idempotent payload');
+  let deniedCalls = 0;
+  globalThis.fetch = async () => { deniedCalls++; return new Response('denied', { status: 403 }); };
+  await assert.rejects(persistQueue(intakeTasks, new Map()), /HTTP 403/);
+  assert.equal(deniedCalls, 1, 'Permanent failures must not be retried');
 } finally {
   globalThis.fetch = originalFetch;
   if (originalBase === undefined) delete process.env.SUPABASE_URL; else process.env.SUPABASE_URL = originalBase;

@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { readAllPages } from "./paged-read.mjs";
+import { readAllPages, readWithRetry } from "./paged-read.mjs";
 import process from "node:process";
 import {loadChinaPeople,CHINA_PEOPLE_QUERY,findChinaPeople,CHINA_REGISTRY_VERSION} from "../netlify/shared/china-person-registry.mjs";
 import {collectChinaMediaPosts, chinaMediaSource, politicalReviewReason} from "./china-x-sources.mjs";
@@ -86,7 +86,8 @@ async function supabase(table, { method = "GET", query = {}, body, prefer = "" }
   const base = cleanText(process.env.SUPABASE_URL, 2_000).replace(/\/+$/, "");
   const url = new URL(`${base}/rest/v1/${table}`);
   for (const [key, value] of Object.entries(query)) if (value !== undefined && value !== null && value !== "") url.searchParams.set(key, String(value));
-  return readJson(await request(url, { method, headers: supabaseHeaders(prefer), body: body === undefined ? undefined : JSON.stringify(body) }));
+  const read = async () => readJson(await request(url, { method, headers: supabaseHeaders(prefer), body: body === undefined ? undefined : JSON.stringify(body) }));
+  return method === "GET" ? readWithRetry(read) : read();
 }
 
 async function githubOidcToken() {

@@ -3,7 +3,7 @@ export async function readWithRetry(read, { attempts = 3, wait = ms => new Promi
   for (let attempt = 1; ; attempt++) {
     try { return await read(); }
     catch (error) {
-      const transient = /\b(?:408|429|500|502|503|504|57014)\b|statement timeout|fetch failed|network|ECONNRESET|AbortError/i.test(String(error?.message || error));
+      const transient = /\b(?:408|429|500|502|503|504|57014)\b|statement timeout|fetch failed|network|ECONNRESET|AbortError/i.test(`${error?.name || ''}: ${error?.message || error}`);
       if (!transient || attempt >= attempts) throw error;
       await wait(500 * 2 ** (attempt - 1));
     }

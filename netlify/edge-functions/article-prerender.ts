@@ -381,26 +381,14 @@ export default async (request: Request, context: any) => {
         });
       }
 
+      // The dedicated legacy query guard resolves WordPress IDs and archives.
+      // Never send numeric IDs to the UUID column or retire them before that guard.
+      if (!/^[0-9a-f]{8}-[0-9a-f-]{27,}$/i.test(id)) return context.next();
+
       const article = await getArticleById(id);
       if (article) {
         const canonical = await canonicalFor(article);
         return redirect(canonical, "legacy-query-to-pretty");
-      }
-
-      const wp = id.match(/^wp-(\d+)$/i);
-      if (wp) {
-        const numericId = wp[1];
-        const archived = await archiveHasId(request, numericId);
-        if (archived === true) return redirect(`${SITE}/article.html?id=${encodeURIComponent(numericId)}`, "wordpress-prefix-to-valid-archive");
-        if (archived === false) return gone(id, "wordpress-id-not-in-archive");
-        return context.next();
-      }
-
-      if (/^\d+$/.test(id)) {
-        const archived = await archiveHasId(request, id);
-        if (archived === true) return context.next();
-        if (archived === false) return gone(id, "numeric-id-not-in-archive");
-        return context.next();
       }
 
       return new Response(notFoundHtml(), {

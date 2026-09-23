@@ -16,7 +16,7 @@ const {
 const { isIceEnforcementText } = require("./_shared/ice-enforcement");
 const { routeOfficialContent } = require("./_shared/official-content-routing");
 const { CHINA_HOT_CATEGORY, isChinaHotCategory, isChinaHotHeadline } = require("./_shared/china-hot-headlines");
-const { articleListQuery } = require("./_shared/article-search");
+const { articleListQuery, articleCategoryLabel } = require("./_shared/article-search");
 
 const ALLOWED_STATUS = new Set(["draft", "published", "hidden"]);
 const ICE_CATEGORIES = new Set(["ICE执法动态", "ICE执法", "驱逐快报"]);
@@ -130,7 +130,7 @@ async function assertNoPublishedDuplicate(title, excludeId = "") {
 async function listArticles(input) {
   const { query, page, pageSize, text, emptySearch } = articleListQuery(input);
   const rows = emptySearch ? [] : await rest("articles", { query });
-  return { articles: rows.slice(0, pageSize), page, page_size: pageSize,
+  return { articles: rows.slice(0, pageSize).map(row => ({...row, category_label: articleCategoryLabel(row)})), page, page_size: pageSize,
     has_more: rows.length > pageSize, search: text, recent_hours: text ? null : 72 };
 }
 

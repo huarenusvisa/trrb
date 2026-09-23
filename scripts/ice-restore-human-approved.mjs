@@ -1,4 +1,11 @@
 #!/usr/bin/env node
+import { readDatabaseQuery } from "./paged-read.mjs";
+async function sb(table, options = {}) {
+  const { method = "GET", query = {} } = options;
+  return method === "GET"
+    ? readDatabaseQuery(query, pageQuery => sbOnce(table, { ...options, query: pageQuery }))
+    : sbOnce(table, options);
+}
 import process from "node:process";
 
 const REQUIRED = ["SUPABASE_URL", "SUPABASE_SERVICE_ROLE_KEY"];
@@ -18,7 +25,7 @@ async function readJson(response) {
   try { return JSON.parse(text); } catch { return { raw: text }; }
 }
 
-async function sb(table, { method = "GET", query = {}, body, prefer = "" } = {}) {
+async function sbOnce(table, { method = "GET", query = {}, body, prefer = "" } = {}) {
   const url = new URL(`${String(process.env.SUPABASE_URL).replace(/\/+$/, "")}/rest/v1/${table}`);
   for (const [key, value] of Object.entries(query)) {
     if (value !== undefined && value !== null && value !== "") url.searchParams.set(key, String(value));

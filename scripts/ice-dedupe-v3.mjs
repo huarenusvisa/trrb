@@ -1,4 +1,11 @@
 #!/usr/bin/env node
+import { readDatabaseQuery } from "./paged-read.mjs";
+async function rest(table, options = {}) {
+  const { method = "GET", query = {} } = options;
+  return method === "GET"
+    ? readDatabaseQuery(query, pageQuery => restOnce(table, { ...options, query: pageQuery }))
+    : restOnce(table, options);
+}
 import process from "node:process";
 
 const BASE = String(process.env.SUPABASE_URL || "").replace(/\/+$/, "");
@@ -8,7 +15,7 @@ const PUBLISHED_HISTORY_DAYS = Number(process.env.ICE_PUBLISHED_DEDUPE_DAYS || 7
 
 function requireEnv() { if (!BASE || !KEY) throw new Error("缺少 SUPABASE_URL 或 SUPABASE_SERVICE_ROLE_KEY"); }
 function headers(prefer = "") { return { apikey: KEY, Authorization: `Bearer ${KEY}`, "Content-Type": "application/json", ...(prefer ? { Prefer: prefer } : {}) }; }
-async function rest(table, { method = "GET", query = {}, body, prefer = "" } = {}) {
+async function restOnce(table, { method = "GET", query = {}, body, prefer = "" } = {}) {
   const url = new URL(`${BASE}/rest/v1/${table}`);
   for (const [k, v] of Object.entries(query)) if (v !== undefined && v !== null && v !== "") url.searchParams.set(k, String(v));
   const response = await fetch(url, { method, headers: headers(prefer), body: body === undefined ? undefined : JSON.stringify(body) });

@@ -29,6 +29,17 @@ test('small database reads propagate errors and keep the original query',async()
   const query={limit:'24',order:'updated_at.desc'};
   await assert.rejects(readDatabaseQuery(query,async actual=>{assert.equal(actual,query);throw Error('403 denied');}),/403/);
 });
+
+test('schema reloads and structured transient statuses are retried without hiding authorization errors',async()=>{
+  for (const error of [Object.assign(Error('Unavailable'),{status:503}),Object.assign(Error('schema loading'),{code:'PGRST002'}),Error('Could not query the database for the schema cache. Retrying.')]) {
+    let calls=0;
+    assert.deepEqual(await readWithRetry(async()=>{if(++calls===1)throw error;return ['recovered'];},{wait:async()=>{}}),['recovered']);
+    assert.equal(calls,2);
+  }
+  let calls=0;
+  await assert.rejects(readWithRetry(async()=>{calls++;throw Object.assign(Error('Unauthorized'),{status:401});},{wait:async()=>{}}),/Unauthorized/);
+  assert.equal(calls,1);
+});
 test('retries timeouts but propagates missing data and permanent failures',async()=>{
   let calls=0;
   assert.deepEqual(await readWithRetry(async()=>{if(++calls<3)throw Error('500: statement timeout');return [1];},{wait:async()=>{}}),[1]);

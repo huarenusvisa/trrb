@@ -65,7 +65,7 @@ function fairSelect(tasks, priority, quota) {
   return selected;
 }
 
-async function persistQueue(tasks, sourceBySite) {
+export async function persistQueue(tasks, sourceBySite) {
   const base = String(process.env.SUPABASE_URL || '').replace(/\/+$/, '');
   const key = String(process.env.SUPABASE_SERVICE_ROLE_KEY || '');
   assert(base && key, 'queue persistence requires SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY');
@@ -76,8 +76,8 @@ async function persistQueue(tasks, sourceBySite) {
     prefer: 'resolution=merge-duplicates,return=minimal'
   };
   let persisted = 0;
-  for (let index = 0; index < tasks.length; index += 500) {
-    const rows = tasks.slice(index, index + 500).map((task) => ({
+  for (let index = 0; index < tasks.length; index += 100) {
+    const rows = tasks.slice(index, index + 100).map((task) => ({
       task_id: task.id,
       site_key: task.site,
       origin: task.origin,
@@ -90,10 +90,24 @@ async function persistQueue(tasks, sourceBySite) {
     // Site manifests may regenerate their IDs for an unchanged URL. Match the
     // database's semantic unique key, while preserving status/attempt/lock fields
     // by omitting them from this intake-only update.
-    const response = await fetch(`${base}/rest/v1/seo_task_queue?on_conflict=site_key,action,url`, {
-      method: 'POST', headers, body: JSON.stringify(rows), signal: AbortSignal.timeout(30000)
-    });
-    if (!response.ok) throw new Error(`central queue upsert failed: HTTP ${response.status}: ${(await response.text()).slice(0, 300)}`);
+    // The semantic unique key and identical payload make these intake upserts
+    // idempotent even if a connection fails after the database commits them.
+    const body = JSON.stringify(rows);
+    for (let attempt = 0; ; attempt++) {
+      try {
+        const response = await fetch(`${base}/rest/v1/seo_task_queue?on_conflict=site_key,action,url`, {
+          method: 'POST', headers, body, signal: AbortSignal.timeout(30000)
+        });
+        if (response.ok) break;
+        const error = new Error(`central queue upsert failed: HTTP ${response.status}: ${(await response.text()).slice(0, 300)}`);
+        error.retryable = response.status === 429 || response.status >= 500;
+        throw error;
+      } catch (error) {
+        const transient = error.retryable || error instanceof TypeError || ['AbortError', 'TimeoutError'].includes(error.name);
+        if (!transient || attempt >= 2) throw error;
+        await new Promise(resolve => setTimeout(resolve, 500 * 2 ** attempt));
+      }
+    }
     persisted += rows.length;
   }
   return persisted;

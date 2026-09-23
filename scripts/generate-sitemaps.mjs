@@ -1,3 +1,4 @@
+import { readAllPages, readWithRetry } from "./paged-read.mjs";
 import { articleIndexability, ARTICLE_INDEXABILITY_POLICY } from "../netlify/shared/article-indexability.mjs";
 import fs from 'node:fs';
 import path from 'node:path';
@@ -150,34 +151,25 @@ async function rest(pathname, params) {
 
 async function fetchCategories() {
   try {
-    return await rest('categories', {
+    return await readWithRetry(() => rest('categories', {
       select: 'id,name,slug,is_active,sort_order,include_in_sitemap,include_in_google_news',
       is_active: 'eq.true',
       order: 'sort_order.asc'
-    });
+    }));
   } catch (error) {
     console.warn(`[sitemap] category CMS unavailable: ${error.message}`);
-    return [];
+    throw error;
   }
 }
 
 async function fetchAllPublishedArticles() {
-  const pageSize = 1000;
-  const maxPages = 100;
-  const all = [];
-  for (let page = 0; page < maxPages; page += 1) {
-    const rows = await rest('articles', {
-      select: 'id,title,slug,summary,content,category_id,category_name,topic_key,status,visibility,published_at,created_at,source_url,cover_image',
-      status: 'eq.published',
-      visibility: 'eq.public',
-      order: 'published_at.desc.nullslast,created_at.desc,id.desc',
-      limit: String(pageSize),
-      offset: String(page * pageSize)
-    });
-    all.push(...rows);
-    if (rows.length < pageSize) break;
-  }
-  return all;
+  return readAllPages(page => rest('articles', {
+    select: 'id,title,slug,summary,content,category_id,category_name,topic_key,status,visibility,published_at,created_at,source_url,cover_image',
+    status: 'eq.published',
+    visibility: 'eq.public',
+    order: 'published_at.desc.nullslast,created_at.desc,id.desc',
+    ...page
+  }));
 }
 
 const categories = await fetchCategories();

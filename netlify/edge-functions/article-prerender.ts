@@ -165,12 +165,12 @@ async function getCategorySlug(article: any): Promise<string> {
 
   try {
     const response = await fetch(url, { headers: dbHeaders(key), cache: "no-store" });
-    if (!response.ok) return canonicalSection(fallback || "news");
+    if (!response.ok) throw new Error(`Article category unavailable: ${response.status}`);
     const rows = await response.json();
     const slug = clean(Array.isArray(rows) && rows[0] ? rows[0].slug : "");
     return canonicalSection(slug || fallback || "news");
-  } catch {
-    return canonicalSection(fallback || "news");
+  } catch (error) {
+    throw error;
   }
 }
 
@@ -346,6 +346,13 @@ async function templateResponse(request: Request) {
   return fetch(templateUrl, { headers: { "X-TRRB-Template": "1" } });
 }
 
+function temporaryArticleFailure(request: Request): Response {
+  return new Response(request.method === "HEAD" ? null : "Article temporarily unavailable. Please retry.", {
+    status: 503,
+    headers: {"Content-Type":"text/plain; charset=utf-8", "Cache-Control":"no-store", "Retry-After":"120", "X-TRRB-Prerender":"lookup-unavailable"}
+  });
+}
+
 export default async (request: Request, context: any) => {
   if (request.method !== "GET" && request.method !== "HEAD") return context.next();
 
@@ -419,7 +426,7 @@ export default async (request: Request, context: any) => {
     }
 
     const upstream = await templateResponse(request);
-    if (!upstream.ok) return context.next();
+    if (!upstream.ok) throw new Error(`Article template unavailable: ${upstream.status}`);
     let html = await upstream.text();
     html = injectHead(html, article, canonical, true);
     html = injectBody(html, article, canonical);
@@ -438,6 +445,6 @@ export default async (request: Request, context: any) => {
     return new Response(request.method === "HEAD" ? null : html, { status: 200, headers });
   } catch (error) {
     console.error("article prerender failed", error);
-    return context.next();
+    return temporaryArticleFailure(request);
   }
 };

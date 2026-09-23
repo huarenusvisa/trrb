@@ -12,6 +12,8 @@ on:
     paths:
       - '.github/workflows/seo-search-engine-ops.yml'
       - 'scripts/seo-search-engine-ops.mjs'
+      - 'scripts/generate-sitemaps.mjs'
+      - 'scripts/paged-read.mjs'
       - 'scripts/category-ice-indexability.test.mjs'
       - 'scripts/finalize-redirects.mjs'
       - 'netlify/edge-functions/category-prerender.ts'

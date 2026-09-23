@@ -6,6 +6,7 @@
   const topic=params.get('topic')||'';
   const root=document.querySelector('#article-list');
   if(!root)return;
+  if(['c08-ead','asylum-process','immigration-court','asylum-family','asylum-status','refugee'].includes(topic))return;
 
   const SUPABASE_URL='https://fwiznbpsqkfgkvyznebz.supabase.co';
   const SUPABASE_KEY='sb_publishable_hSmKJghvQoJKg0m5loDQ2g_f1gu8qak';
@@ -180,6 +181,8 @@
     const url=new URL(`${SUPABASE_URL}/rest/v1/articles`);
     url.searchParams.set('select',select);
     url.searchParams.set('status','eq.published');
+    url.searchParams.set('visibility','eq.public');
+    url.searchParams.set('and','(category_name.not.like.*·历史知识文章)');
     if(categoryPattern)url.searchParams.set('category_name',`like.${categoryPattern}`);
     url.searchParams.set('order','published_at.desc.nullslast');
     url.searchParams.set('limit',String(limit));

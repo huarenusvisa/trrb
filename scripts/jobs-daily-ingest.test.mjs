@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { ensureSourceRegistry, fetchChineseCandidates, normalizeAtsCandidate, pickCategory, pickEnglishLocation, shouldExpand } from "./jobs-daily-ingest.mjs";
+import { ensureSourceRegistry, fetchChineseCandidates, fetchEnglishCandidates, storeCandidate, normalizeAtsCandidate, pickCategory, pickEnglishLocation, shouldExpand } from "./jobs-daily-ingest.mjs";
 
 test("registers source parents idempotently without re-enabling disabled sources", async () => {
   const registry = new Map([["500work", { source_key: "500work", is_enabled: false, priority: 95 }]]);
@@ -25,7 +25,7 @@ test("registers source parents idempotently without re-enabling disabled sources
     assert.equal(enabled.has(required), true, required);
   }
   assert.deepEqual(await ensureSourceRegistry(request), enabled);
-  assert.equal(registry.size, 13);
+  assert.equal(registry.size, 16);
   assert.equal(registry.get("500work").priority, 95);
   assert.equal(registry.get("500work").is_enabled, false);
 });
@@ -120,4 +120,31 @@ test("keeps non-caregiver English jobs for the general jobs site", () => {
   );
   assert.equal(item.payload.category_slug, "office-admin");
   assert.deepEqual(item.errors, []);
+});
+
+
+test("inspects the full employer feed, including positions beyond the former cap", async () => {
+  const jobs = Array.from({length: 1201}, (_, id) => ({id, title:'Office Assistant', content:'Manage office', location:{name:'New York, NY'}, absolute_url:`https://example.com/${id}`}));
+  const result = await fetchEnglishCandidates([{type:'greenhouse', key:'test', board:'test'}], async () => ({jobs}));
+  assert.equal(result.candidates.length, 1201);
+  assert.equal(result.candidates.at(-1).externalId, '1200');
+});
+
+test("does not republish or misreport a held listing, including holds applied at insertion", async () => {
+  for (const existing of [true, false]) {
+    const writes=[];
+    const held={id:'job-1',status:'unlisted',status_reason:'third_party_no_public_direct_contact',moderation_hold:false};
+    const request=async (table, query, options) => {
+      if (!options) return table==='job_ingest_raw' ? [{id:1}] : existing ? [held] : [];
+      writes.push({table,...options});
+      return table==='job_listings' ? [held] : [{id:1}];
+    };
+    const result=await storeCandidate({sourceKey:'500work',externalId:'1',payloadHash:'hash',errors:[],payload:{}}, request);
+    assert.equal(result,'held');
+    const raw=writes.filter(w=>w.table==='job_ingest_raw').at(-1).body;
+    assert.equal(raw.stage,'validated');
+    assert.equal(raw.normalized_job_listing_id,'job-1');
+    assert.match(raw.validation_errors[0],/third_party_no_public_direct_contact/);
+    if (existing) assert.equal(writes.find(w=>w.table==='job_listings').body.status,undefined);
+  }
 });

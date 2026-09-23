@@ -222,10 +222,12 @@ async function patchControls(query, enabled, userId, prefer = 'return=minimal') 
   });
 }
 
-async function enableIceCategoryAutomation() {
+async function enableCategoryAutomation(key) {
+  const category = { ice: { slug: 'iceandpolice', name: 'ICE执法与警情' }, china_hot: { slug: 'hot-headlines', name: '中国热门头条' } }[key];
+  if (!category) return;
   const rows = await rest('categories', {
     method: 'PATCH',
-    query: { slug: 'ilike.ice' },
+    query: { slug: `eq.${category.slug}` },
     body: {
       is_active: true,
       auto_fetch: true,
@@ -236,7 +238,7 @@ async function enableIceCategoryAutomation() {
     prefer: 'return=representation'
   });
   if (!Array.isArray(rows) || rows.length === 0) {
-    throw new Error('ICE栏目不存在，无法同步自动采集与自动发布开关');
+    throw new Error(`${category.name}栏目不存在，无法同步自动采集与自动发布开关`);
   }
 }
 
@@ -321,6 +323,13 @@ exports.handler = async (event) => {
     const existing = group ? await readControlGroup(key) : await readControl(key);
     if (!existing) return json(404, { error: '机器人流程不存在' });
 
+    // Validate/synchronize categories before persisting an enabled control.
+    if (body.enabled) {
+      for (const target of key === 'global' ? ['ice', 'china_hot'] : targetKeys) {
+        await enableCategoryAutomation(target);
+      }
+    }
+
     let mode = 'individual';
     let globalAutoClosed = false;
     if (key === 'global') {
@@ -348,10 +357,6 @@ exports.handler = async (event) => {
     } else {
       await patchControls({ control_key: controlKeyFilter(targetKeys) }, false, user.id);
       globalAutoClosed = await closeGlobalIfNoEnabledChildren(user.id);
-    }
-
-    if (body.enabled && (key === 'ice' || key === 'global')) {
-      await enableIceCategoryAutomation();
     }
 
     const control = group ? await readControlGroup(key) : await readControl(key);

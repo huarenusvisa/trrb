@@ -429,6 +429,14 @@ async function markFilteredCandidate(candidate, tweet, qualified) {
 
 export function shouldRetryCandidate(candidate, qualified, now = Date.now()) {
   if (!candidate || !qualified?.accepted) return false;
+  if (candidate.decision === "processing") {
+    const updated = Date.parse(candidate.updated_at || candidate.collected_at || "");
+    return !candidate.article_id && candidate.ai_payload?.status === "queued"
+      && candidate.ai_payload?.quality_hold !== true
+      && candidate.ai_payload?.manual_review_required !== true
+      && Number.isFinite(updated) && now - updated >= 65 * 60_000
+      && isFreshBriefSource({created_at:candidate.raw_payload?.source_created_at || candidate.collected_at}, now);
+  }
   if (candidate.ai_payload?.quality_hold === true) {
     // Enrich recent automated political holds once with source research; this is not publication approval.
     if (candidate.decision === "review_required" && cleanText(candidate.decision_reason, 1000).startsWith("政治线索待核查:")
@@ -540,7 +548,7 @@ async function reprocessableCandidates() {
   const since = new Date(Date.now() - 30 * 86400_000).toISOString();
   const rows = await supabase("news_candidates", { query: {
     select: "id,external_id,raw_text,raw_payload,decision,decision_reason,article_id,ai_payload,collected_at,updated_at",
-    pipeline: "like.china-hot-li-teacher-v*", decision: "in.(failed,review_required)",
+    pipeline: "like.china-hot-li-teacher-v*", decision: "in.(failed,review_required,processing)",
     and: `(or(raw_payload->>topic_key.is.null,raw_payload->>topic_key.neq.ren-zhengfei),or(ai_payload->>quality_hold.is.null,ai_payload->>quality_hold.eq.false,ai_payload->>processing_version.neq.${PROCESSING_VERSION}))`,
     updated_at: `gte.${since}`, order: "collected_at.desc,id.desc", limit: String(Math.min(1000, MAX_FETCH * 10)),
   } });
@@ -640,7 +648,7 @@ async function discardUnusableCandidates(candidates, reason = "自动加工未�
 async function cleanupUnusableBacklog() {
   const rows = await supabase("news_candidates", { query: {
     select: "id,decision,decision_reason,article_id,ai_payload",
-    pipeline: "like.china-hot-li-teacher-v*", decision: "in.(failed,review_required)",
+    pipeline: "like.china-hot-li-teacher-v*", decision: "in.(failed,review_required,processing)",
     order: "updated_at.asc,id.asc", limit: "1000",
   } });
   const unusable = (Array.isArray(rows) ? rows : []).filter(isAutomaticUnusableCandidate);
@@ -1287,6 +1295,7 @@ export async function run() {
     if (counters.published >= MAX_PUBLISH || processingAttempts >= MAX_PUBLISH || Date.now() >= processingDeadline) { results.push({ tweetId: tweet.id, status: "deferred" }); continue; }
     const candidate = priorCandidate || await createCandidate(tweet, qualified);
     processingAttempts += 1;
+    await patchCandidate(candidate?.id, { updated_at: new Date().toISOString() });
     console.log(JSON.stringify({event:"processing", tweetId:tweet.id, attempt:processingAttempts, version:PROCESSING_VERSION}));
     try {
       const generated = await generateArticle(qualified, tweet);

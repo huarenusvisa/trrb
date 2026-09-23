@@ -4,6 +4,8 @@
   const SUPABASE_URL = "https://fwiznbpsqkfgkvyznebz.supabase.co";
   const SUPABASE_KEY = "sb_publishable_hSmKJghvQoJKg0m5loDQ2g_f1gu8qak";
   const FALLBACK = Array.isArray(window.TRRB_CHANNELS) ? window.TRRB_CHANNELS : [];
+  // These remain valid collection/topic routes, without separate CMS cards.
+  const TOPIC_ONLY_SLUGS = new Set(["ice", "xijinping", "xi-jinping"]);
 
   const ROUTE_ALIASES = { ice: "/iceandpolice", "us-enforcement": "/iceandpolice", "midterm-elections": "/midterm-elections", "xi-jinping": "/xijinping", "immigration-judge-approval-rate": "https://asylumjudge.com/" };
   const listingUrl = (item) => ROUTE_ALIASES[item.slug] || `/${encodeURIComponent(String(item.slug || "").trim())}`;
@@ -32,8 +34,8 @@
       ...item,
       priority: Number(item.sort_order ?? 999),
       enabled: item.is_active !== false,
-      showInNav: item.show_in_navigation !== false,
-      showOnHome: item.show_on_homepage !== false,
+      showInNav: item.show_in_navigation !== false && !TOPIC_ONLY_SLUGS.has(item.slug),
+      showOnHome: item.show_on_homepage !== false && !TOPIC_ONLY_SLUGS.has(item.slug),
       href: listingUrl(item)
     }));
   }
@@ -155,9 +157,9 @@
       ...item,
       priority: Number(item.priority ?? index + 1),
       enabled: item.enabled !== false,
-      showInNav: true,
-      showOnHome: true,
-      href: item.slug ? `/${encodeURIComponent(item.slug)}` : `./listing.html?category=${encodeURIComponent(item.name)}`
+      showInNav: item.show_in_navigation !== false && !TOPIC_ONLY_SLUGS.has(item.slug),
+      showOnHome: item.show_on_homepage !== false && !TOPIC_ONLY_SLUGS.has(item.slug),
+      href: item.slug ? listingUrl(item) : `./listing.html?category=${encodeURIComponent(item.name)}`
     }));
     publish(fallback);
   });
@@ -169,14 +171,11 @@ window.TRRB_TOPIC_CONFIG={trump:{title:'特朗普实时动态'},ice:{title:'ICE�
 
 (function installUnifiedHomepageChannels() {
   const fallbackChannels = [
-    { name: "重要新闻", slug: "important", priority: 1, enabled: true },
-    { name: "热门头条", displayName: "中国热门头条", slug: "hot", priority: 2, enabled: true },
-    { name: "驱逐快报", slug: "deport", priority: 3, enabled: true },
-    { name: "美国时政", slug: "politics", priority: 4, enabled: true },
-    { name: "美国警情", slug: "crime", priority: 5, enabled: true },
-    { name: "中国官场", slug: "china", priority: 6, enabled: true },
-    { name: "移民美国", slug: "immigration", priority: 7, enabled: true },
-    { name: "庇护百科", slug: "asylum", priority: 8, enabled: true }
+    { name: "中国热门头条", slug: "hot-headlines", priority: 1, enabled: true },
+    { name: "美国时政", slug: "us-politics", priority: 2, enabled: true },
+    { name: "ICE执法与警情", slug: "iceandpolice", priority: 3, enabled: true },
+    { name: "中国政治", slug: "china-politics", priority: 4, enabled: true },
+    { name: "移民法官通过率", slug: "immigration-judge-approval-rate", priority: 5, enabled: true }
   ];
   const enforcementPattern = /\bICE\b|移民与海关执法局|移民执法|遣返|驱逐|递解|自愿离境|非法移民|逮捕.{0,8}移民|拘捕.{0,8}移民/i;
 
@@ -184,10 +183,16 @@ window.TRRB_TOPIC_CONFIG={trump:{title:'特朗普实时动态'},ice:{title:'ICE�
   function installFocusHero(){if(document.querySelector('script[data-trrb-focus-hero="34"]'))return;const script=document.createElement("script");script.src="./homepage-focus-v34.js?v=34.0";script.dataset.trrbFocusHero="34";document.body.appendChild(script);}
   function inferArticleCategory(article){const raw=String(article?.category||article?.category_name||"新闻").trim()||"新闻";const text=`${article?.title||""} ${article?.excerpt||article?.summary||""}`;if((raw==="移民美国"||raw==="新闻"||raw==="ICE执法")&&enforcementPattern.test(text))return "驱逐快报";return raw;}
   function normalizeHomepageArticles(articles){return(Array.isArray(articles)?articles:[]).map(article=>({...article,category:inferArticleCategory(article)}));}
-  function activeNewsCategories(){const source=Array.isArray(window.TRRB_CHANNELS)&&window.TRRB_CHANNELS.length?window.TRRB_CHANNELS:fallbackChannels;return source.filter(channel=>channel&&channel.enabled!==false&&channel.slug!=="expose"&&channel.name).slice().sort((a,b)=>Number(a.priority||999)-Number(b.priority||999)).map(channel=>String(channel.name||"").trim()).filter(Boolean).filter((name,index,list)=>list.indexOf(name)===index);}
+  function activeNewsCategories() {
+    const source = Array.isArray(window.TRRB_CHANNELS) && window.TRRB_CHANNELS.length ? window.TRRB_CHANNELS : fallbackChannels;
+    return source.filter(channel => channel && channel.enabled !== false && channel.showOnHome !== false && channel.show_on_homepage !== false && !["expose", "xijinping", "xi-jinping"].includes(channel.slug) && channel.name !== "习近平" && channel.name)
+      .slice().sort((a, b) => Number(a.priority || 999) - Number(b.priority || 999))
+      .map(channel => window.TRRB_homeCategoryName ? window.TRRB_homeCategoryName(channel.name) : String(channel.name).trim())
+      .filter((name, index, list) => name && list.indexOf(name) === index);
+  }
   function canInstall(){return typeof window.renderCategorySection==="function"&&typeof window.renderExposureWallCard==="function";}
   function installRenderer(){if(!canInstall())return false;window.renderSections=function renderUnifiedSections(articles){const normalized=normalizeHomepageArticles(articles);window.TRRB_LAST_HOME_ARTICLES=normalized;const sections=activeNewsCategories().map(category=>window.renderCategorySection(category,normalized));sections.push(window.renderExposureWallCard());const root=document.querySelector("#sections-grid");if(root)root.innerHTML=sections.join("");};const current=Array.isArray(window.TRRB_LAST_HOME_ARTICLES)?window.TRRB_LAST_HOME_ARTICLES:(typeof window.localArticleIndex==="function"?window.localArticleIndex():[]);if(current.length)window.renderSections(current);return true;}
-  function loadChannelConfig(){if(Array.isArray(window.TRRB_CHANNELS)&&window.TRRB_CHANNELS.length){installRenderer();return;}const existing=document.querySelector('script[data-trrb-channel-config="true"]');if(existing)return;const script=document.createElement("script");script.src="./config/channels.js?v=31.1";script.async=true;script.dataset.trrbChannelConfig="true";script.addEventListener("load",()=>installRenderer());script.addEventListener("error",()=>installRenderer());document.head.appendChild(script);}
+  function loadChannelConfig(){if(Array.isArray(window.TRRB_CHANNELS)&&window.TRRB_CHANNELS.length){installRenderer();return;}const existing=document.querySelector('script[data-trrb-channel-config="true"]');if(existing)return;const script=document.createElement("script");script.src="./config/channels.js?v=20260923-collections";script.async=true;script.dataset.trrbChannelConfig="true";script.addEventListener("load",()=>installRenderer());script.addEventListener("error",()=>installRenderer());document.head.appendChild(script);}
 
   window.TRRB_inferArticleCategory=inferArticleCategory;
   window.addEventListener("trrb:categories-ready",()=>installRenderer());

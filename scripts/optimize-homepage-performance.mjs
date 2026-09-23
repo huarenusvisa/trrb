@@ -45,17 +45,17 @@ if (!html.includes('article-route-runtime.js')) {
 const coreVersions = new Map([
   ['article-live-neighbors.js', '20260916-editorial-1'],
   ['homepage-secondary-hubs.bundle.js', '20260916-jobs-green-5'],
-  ['homepage-topic-runtime.bundle.js', '20260923-cms-routes'],
+  ['homepage-topic-runtime.bundle.js', '20260923-collections'],
   ['article-route-runtime.js', '20260916-category-alias'],
   ['homepage-ranking.js', '20260916-placement-1'],
-  ['articles-home.js', '20260923-cms-routes'],
+  ['articles-home.js', '20260923-collections'],
   ['ice-home-unify.js', '20260916-editorial-1'],
   ['topic-focus.js', '20260916-election-1'],
   ['homepage-refresh-guard.js', '20260916-placement-1'],
   ['homepage-immigration-hub.js', '20260819-reuse-bundle-2'],
   ['jobs-home.js', '20260916-jobs-green-5'],
   ['articles-home-live-fix.js', '20260916-placement-1'],
-  ['category-runtime-v3.js', '20260923-cms-routes'],
+  ['category-runtime-v3.js', '20260923-collections'],
   ['homepage-startup-stability.js', '20260822-hotfix-1']
 ]);
 // Historical contract markers retained for older CI gates while the cache

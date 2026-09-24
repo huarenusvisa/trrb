@@ -96,7 +96,7 @@ function dbHeaders(key: string) {
   return { apikey: key, Authorization: `Bearer ${key}`, Accept: "application/json" };
 }
 
-const ARTICLE_SELECT = "id,title,slug,summary,content,category_id,category_name,topic_key,cover_image,seo_keywords,author,status,visibility,published_at,created_at,metadata";
+const ARTICLE_SELECT = "id,title,slug,summary,content,category_id,category_name,topic_key,cover_image,source_url,seo_keywords,author,status,visibility,published_at,created_at,metadata";
 
 async function getArticleById(id: string) {
   const { base, key } = supabaseConfig();
@@ -255,11 +255,57 @@ function injectHead(html: string, article: any, canonical: string, prettyRoute: 
     .replace(/<\/head>/i, `${seo}\n  </head>`);
 }
 
-function injectBody(html: string, article: any, canonical: string) {
+function publicSource(value: unknown): string {
+  try {
+    const url = new URL(clean(value));
+    if (!/^https?:$/.test(url.protocol) || url.username || url.password) return "";
+    // WordPress imports use source_url as a migration key, not a citation.
+    if (/^(?:www\.)?(?:trrb\.(?:net|cc)|tangrenribao\.com)$/i.test(url.hostname)) return "";
+    return url.href;
+  } catch { return ""; }
+}
+
+async function sectionStories(article: any): Promise<any[]> {
+  const { base, key } = supabaseConfig();
+  if (!base || !key || (!article.category_id && !article.category_name)) return [];
+  const url = new URL(`${base}/rest/v1/articles`);
+  url.searchParams.set("select", "id,title,slug,canonical_url,status,visibility,hidden_at,archived_at,published_at,created_at");
+  url.searchParams.set(article.category_id ? "category_id" : "category_name", `eq.${article.category_id || article.category_name}`);
+  url.searchParams.set("status", "eq.published");
+  url.searchParams.set("visibility", "eq.public");
+  url.searchParams.set("hidden_at", "is.null");
+  url.searchParams.set("archived_at", "is.null");
+  url.searchParams.set("published_at", `lte.${new Date().toISOString()}`);
+  url.searchParams.set("id", `neq.${article.id}`);
+  url.searchParams.set("order", "published_at.desc,id.asc");
+  url.searchParams.set("limit", "8");
+  try {
+    const response = await fetch(url, { headers: dbHeaders(key), signal: AbortSignal.timeout(1500) });
+    if (!response.ok) return [];
+    const rows = await response.json();
+    const seen = new Set([String(article.id)]);
+    return (Array.isArray(rows) ? rows : []).filter((row) => {
+      if (!row.id || !row.title || seen.has(String(row.id)) || row.status !== "published"
+        || row.visibility !== "public" || row.hidden_at || row.archived_at
+        || Date.parse(row.published_at || row.created_at) > Date.now()) return false;
+      try {
+        const target = new URL(row.canonical_url);
+        if (target.origin !== SITE || target.search || target.hash || target.pathname.split("/").filter(Boolean).length !== 2) return false;
+        seen.add(String(row.id));
+        row.canonical_url = target.href;
+        return true;
+      } catch { return false; }
+    }).slice(0, 6);
+  } catch { return []; } // Recommendations must never make the article unavailable.
+}
+
+function injectBody(html: string, article: any, canonical: string, stories: any[] = []) {
   const title = clean(article.title) || "唐人日报新闻";
   const category = clean(article.category_name) || "新闻";
   const displayCategory = category === "热门头条" ? "中国热门头条" : category;
   const author = clean(article.author) || "Tang Ren Daily";
+  const sectionHref = `/${new URL(canonical).pathname.split("/").filter(Boolean)[0]}`;
+  const source = publicSource(article.source_url);
   const published = isoDate(article.published_at || article.created_at).slice(0, 10);
   const content = String(visibleArticleText(article.content) ? article.content : article.summary || "").trim();
   const paragraphs = content.split(/\n{2,}|\r?\n/).map((p) => clean(p)).filter(Boolean);
@@ -273,7 +319,7 @@ function injectBody(html: string, article: any, canonical: string) {
     : "";
   const prerender = `<a class="back-link" href="/">返回首页</a>
       <header class="article-header">
-        <span class="tag">${esc(displayCategory)}</span>
+        <a class="tag" href="${esc(sectionHref)}">${esc(displayCategory)}</a>
         <h1>${esc(title)}</h1>
         <div class="story-meta">${esc(author)} · ${esc(published)}</div>
       </header>
@@ -281,6 +327,8 @@ function injectBody(html: string, article: any, canonical: string) {
       ${image ? `<img class="article-image" src="${esc(image)}" loading="eager" fetchpriority="high" alt="${esc(title)}" />` : ""}
       ${warning ? `<aside class="article-content-warning">${esc(warning)}</aside>` : ""}
       <div class="article-body">${paragraphs.map((p) => `<p>${esc(p)}</p>`).join("")}</div>
+      ${source ? `<p class="article-source">来源链接：<a href="${esc(source)}" rel="noopener noreferrer">${esc(new URL(source).hostname)}</a></p>` : ""}
+      ${stories.length ? `<nav class="article-section-stories" aria-label="同栏目报道"><h2>同栏目报道</h2><ul>${stories.map((row) => `<li><a href="${esc(row.canonical_url)}">${esc(row.title)}</a></li>`).join("")}</ul></nav>` : ""}
       <nav class="article-neighbors" aria-label="上一篇和下一篇"></nav>
       <section class="related-news" hidden><h2>延伸阅读</h2><div class="related-carousel" aria-label="延伸阅读文章"><div class="related-track"></div></div></section>`;
   const data = `<script id="trrb-prerendered-article" type="application/json">${escJson(article)}</script>`;
@@ -413,15 +461,16 @@ export default async (request: Request, context: any) => {
       return redirect(canonical, "pretty-path-normalize");
     }
 
-    const upstream = await templateResponse(request);
+    const [upstream, stories] = await Promise.all([templateResponse(request), sectionStories(article)]);
     if (!upstream.ok) throw new Error(`Article template unavailable: ${upstream.status}`);
     let html = await upstream.text();
     html = injectHead(html, article, canonical, true);
-    html = injectBody(html, article, canonical);
+    html = injectBody(html, article, canonical, stories);
     html = disableLegacyClientLoaders(html);
 
     const headers = new Headers(upstream.headers);
     headers.set("content-type", "text/html; charset=UTF-8");
+    headers.delete("content-length");
     headers.set("cache-control", "public, max-age=60, stale-while-revalidate=300");
     headers.set("x-trrb-prerender", "article-edge-v4-archive-410-ice-safe");
     headers.set("link", `<${canonical}>; rel=\"canonical\"`);

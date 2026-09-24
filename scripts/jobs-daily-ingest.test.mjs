@@ -25,7 +25,7 @@ test("registers source parents idempotently without re-enabling disabled sources
     assert.equal(enabled.has(required), true, required);
   }
   assert.deepEqual(await ensureSourceRegistry(request), enabled);
-  assert.equal(registry.size, 16);
+  assert.equal(registry.size, 28);
   assert.equal(registry.get("500work").priority, 95);
   assert.equal(registry.get("500work").is_enabled, false);
 });
@@ -35,6 +35,7 @@ test("opens the expanded web pass only when new publications are below 50", () =
   assert.equal(shouldExpand(49), true);
   assert.equal(shouldExpand(50), false);
   assert.equal(shouldExpand(80), false);
+  assert.equal(shouldExpand(80, 50, true), true);
 });
 
 test("fails before ingestion when a source registration is missing", async () => {

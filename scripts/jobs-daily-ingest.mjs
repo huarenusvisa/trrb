@@ -5,6 +5,7 @@ const SUPABASE_URL = String(process.env.SUPABASE_URL || "").replace(/\/$/, "");
 const SUPABASE_SERVICE_ROLE_KEY = String(process.env.SUPABASE_SERVICE_ROLE_KEY || "");
 const TARGET_CANDIDATES = Math.max(50, Math.min(1_000, Number(process.env.JOBS_TARGET_CANDIDATES || 500)));
 const MIN_NEW_PUBLISHED = Math.max(1, Math.min(200, Number(process.env.JOBS_MIN_NEW_PUBLISHED || 50)));
+const ALWAYS_EXPAND = !/^(0|false|no|off)$/i.test(String(process.env.JOBS_ALWAYS_EXPAND || "true").trim());
 const EXPANDED_CHINESE_TARGET = Math.max(TARGET_CANDIDATES, Math.min(2_000, Number(process.env.JOBS_EXPANDED_CHINESE_TARGET || 1_000)));
 const STORE_BATCH_SIZE = Math.max(50, Math.min(500, Number(process.env.JOBS_STORE_BATCH_SIZE || 150)));
 const STORE_CONCURRENCY = Math.max(2, Math.min(16, Number(process.env.JOBS_STORE_CONCURRENCY || 8)));
@@ -22,9 +23,9 @@ const ATS_SOURCES = [
   { type: "lever", key: "lever_distro", board: "distro" },
   { type: "lever", key: "lever_springoakliving", board: "springoakliving" },
 ];
-// These official employer feeds are only opened when the primary pass produces
-// fewer than MIN_NEW_PUBLISHED new listings. This keeps the normal run focused,
-// while giving a low-volume day a much broader US-wide candidate pool.
+// These official public employer feeds form the broad second pass. Production
+// runs enable this pass every day so the pipeline publishes every newly found,
+// verifiable US listing instead of stopping as soon as a minimum is reached.
 const EXPANDED_ATS_SOURCES = [
   { type: "greenhouse", key: "greenhouse_sweetgreen", board: "sweetgreen" },
   { type: "greenhouse", key: "greenhouse_doordashusa", board: "doordashusa" },
@@ -34,6 +35,18 @@ const EXPANDED_ATS_SOURCES = [
   { type: "greenhouse", key: "greenhouse_opentable", board: "opentable" },
   { type: "greenhouse", key: "greenhouse_spacex", board: "spacex" },
   { type: "lever", key: "lever_gopuff", board: "gopuff" },
+  { type: "greenhouse", key: "greenhouse_coinbase", board: "coinbase" },
+  { type: "greenhouse", key: "greenhouse_datadog", board: "datadog" },
+  { type: "greenhouse", key: "greenhouse_samsara", board: "samsara" },
+  { type: "greenhouse", key: "greenhouse_onemedical", board: "onemedical" },
+  { type: "greenhouse", key: "greenhouse_reddit", board: "reddit" },
+  { type: "greenhouse", key: "greenhouse_stripe", board: "stripe" },
+  { type: "greenhouse", key: "greenhouse_roblox", board: "roblox" },
+  { type: "greenhouse", key: "greenhouse_zscaler", board: "zscaler" },
+  { type: "greenhouse", key: "greenhouse_coursera", board: "coursera" },
+  { type: "greenhouse", key: "greenhouse_taskrabbit", board: "taskrabbit" },
+  { type: "greenhouse", key: "greenhouse_justworks", board: "justworks" },
+  { type: "greenhouse", key: "greenhouse_seatgeek", board: "seatgeek" },
 ];
 const ALL_ATS_SOURCES = [...ATS_SOURCES, ...EXPANDED_ATS_SOURCES];
 const SOURCE_REGISTRATIONS = [
@@ -106,13 +119,13 @@ const locationRules = [
 
 const categories = [
   [/餐厅|餐馆|中餐|日餐|外卖店|麻辣烫|厨师|炒锅|油锅|寿司|企台|起台|服务员|后厨|打包|奶茶|咖啡|restaurant|cook|server/i, "restaurant"],
-  [/美甲|甲店|指甲店|美容|理发|nail|beauty/i, "beauty-nail"],
+  [/美甲|甲店|指甲店|美睫|美容|美发|理发|修甲|手足护理|nail|manicure|pedicure|beauty|lash|eyelash|cosmetology|esthetician|salon|stylist/i, "beauty-nail"],
   [/按摩|\bspa\b|massage/i, "massage"],
   [/装修|建筑|木工|电工|水电|冷气|玻璃|安装|construction/i, "construction"],
   [/仓库|倉庫|物流|货仓|貨倉|理货|叉车|warehouse|logistics/i, "logistics-warehouse"],
   [/司机|司機|送货|送貨|配送|卡车|卡車|TLC|driver/i, "truck-driver"],
   [/超市|零售|店员|销售|sales|retail/i, "retail-grocery"],
-  [/保姆|育儿嫂|育兒嫂|月嫂|导乐|導樂|护理|護理|护工|護工|老人照护|老人照護|家政|阿姨|老人中心|home[ -]?care|caregiver|nanny|babysitter|baby[ -]?sitter|newborn care specialist|postpartum doula|birth doula|doula|home health aide|personal care aide|elder care|elderly care|senior care|companion care|housekeeper|housekeeping/i, "home-care"],
+  [/保姆|育儿嫂|育兒嫂|月嫂|导乐|導樂|护理|護理|护工|護工|老人照护|老人照護|家政|阿姨|老人中心|home[ -]?care|home health|caregiver|nanny|babysitter|baby[ -]?sitter|newborn care specialist|postpartum doula|birth doula|doula|home health aide|personal care aide|patient care assistant|direct support professional|elder care|elderly care|senior care|companion care|housekeeper|housekeeping/i, "home-care"],
   [/律师|法律|legal/i, "legal"],
   [/会计|bookkeeper|accountant|finance/i, "accounting-finance"],
   [/地产|房产|real estate/i, "real-estate"],
@@ -594,8 +607,8 @@ function candidateKey(candidate) {
   return `${candidate.sourceKey || SOURCE_KEY}:${candidate.externalId}`;
 }
 
-function shouldExpand(published, minimum = MIN_NEW_PUBLISHED) {
-  return Number(published || 0) < Number(minimum || MIN_NEW_PUBLISHED);
+function shouldExpand(published, minimum = MIN_NEW_PUBLISHED, alwaysExpand = false) {
+  return Boolean(alwaysExpand) || Number(published || 0) < Number(minimum || MIN_NEW_PUBLISHED);
 }
 
 async function storeCandidates(candidates, summary, phase) {
@@ -615,8 +628,10 @@ async function storeCandidates(candidates, summary, phase) {
 
 async function reportIngestionSummary(summary) {
   const fallback = summary.fallback?.triggered
-    ? `；首轮新增不足${summary.minimum_new_published}条，已从已接入来源扩抓${summary.fallback.fetched}条候选`
-    : "；首轮已达到最低发布量，无需扩抓";
+    ? (summary.fallback.reason === "always_expand_enabled"
+      ? `；已启用每日全量扩抓，继续检查${summary.fallback.fetched}条候选`
+      : `；首轮新增不足${summary.minimum_new_published}条，已从已接入来源扩抓${summary.fallback.fetched}条候选`)
+    : "；本次没有可用的扩展候选";
   const message = `发现${summary.discovered}条，检查${summary.fetched}条，新增发布${summary.published}条，已存在${summary.existing}条，保持下架或待审${summary.held}条，过滤${summary.rejected}条，详情抓取失败${summary.fetch_errors}次，来源失败${summary.source_errors}个，写入失败${summary.write_errors}条${fallback}。`;
   try {
     await rest("automation_notifications", "", { method: "POST", body: {
@@ -640,6 +655,7 @@ async function main() {
     target: TARGET_CANDIDATES,
     ats_scan: "complete_active_feed",
     minimum_new_published: MIN_NEW_PUBLISHED,
+    always_expand: ALWAYS_EXPAND,
     batch_size: STORE_BATCH_SIZE,
     concurrency: STORE_CONCURRENCY,
     discovered: 0,
@@ -680,7 +696,7 @@ async function main() {
 
     await storeCandidates(candidates, summary, "primary");
 
-    if (shouldExpand(summary.published)) {
+    if (shouldExpand(summary.published, MIN_NEW_PUBLISHED, ALWAYS_EXPAND)) {
       const publishedBeforeFallback = summary.published;
       const knownCandidates = new Set(candidates.map(candidateKey));
       const expandedChinese = enabledSources.has(SOURCE_KEY)
@@ -725,7 +741,7 @@ async function main() {
       for (const report of expandedEnglish.sources.filter((item) => item.error)) console.error("FALLBACK_SOURCE_ERROR", report.source_key, report.error);
       summary.fallback = {
         triggered: true,
-        reason: `primary_published_below_${MIN_NEW_PUBLISHED}`,
+        reason: ALWAYS_EXPAND ? "always_expand_enabled" : `primary_published_below_${MIN_NEW_PUBLISHED}`,
         discovered: discoveryDelta,
         fetched: fallbackCandidates.length,
         published: 0,

@@ -265,11 +265,11 @@ function publicSource(value: unknown): string {
   } catch { return ""; }
 }
 
-async function sectionStories(article: any): Promise<any[]> {
+async function sectionStories(article: any, canonical: string): Promise<any[]> {
   const { base, key } = supabaseConfig();
   if (!base || !key || (!article.category_id && !article.category_name)) return [];
   const url = new URL(`${base}/rest/v1/articles`);
-  url.searchParams.set("select", "id,title,slug,canonical_url,status,visibility,hidden_at,archived_at,published_at,created_at");
+  url.searchParams.set("select", "id,title,slug,topic_key,canonical_url,status,visibility,hidden_at,archived_at,published_at,created_at");
   url.searchParams.set(article.category_id ? "category_id" : "category_name", `eq.${article.category_id || article.category_name}`);
   url.searchParams.set("status", "eq.published");
   url.searchParams.set("visibility", "eq.public");
@@ -284,12 +284,19 @@ async function sectionStories(article: any): Promise<any[]> {
     if (!response.ok) return [];
     const rows = await response.json();
     const seen = new Set([String(article.id)]);
+    const currentSection = decodeURIComponent(new URL(canonical).pathname.split("/")[1]);
+    const categorySection = canonicalSection(FALLBACK_CATEGORY_SLUGS[clean(article.category_name)] || currentSection);
     return (Array.isArray(rows) ? rows : []).filter((row) => {
       if (!row.id || !row.title || seen.has(String(row.id)) || row.status !== "published"
         || row.visibility !== "public" || row.hidden_at || row.archived_at
         || Date.parse(row.published_at || row.created_at) > Date.now()) return false;
       try {
-        const target = new URL(row.canonical_url);
+        // New ingested stories often leave canonical_url empty. Match the
+        // article renderer's category/topic + slug route instead of dropping them.
+        const topic = clean(row.topic_key).toLowerCase();
+        const section = topic === "trump" || topic === "ice" ? topic : categorySection;
+        const fallback = row.slug ? `${SITE}/${encodeURIComponent(section)}/${encodeURIComponent(row.slug)}` : "";
+        const target = new URL(clean(row.canonical_url) || fallback);
         if (target.origin !== SITE || target.search || target.hash || target.pathname.split("/").filter(Boolean).length !== 2) return false;
         seen.add(String(row.id));
         row.canonical_url = target.href;
@@ -461,7 +468,7 @@ export default async (request: Request, context: any) => {
       return redirect(canonical, "pretty-path-normalize");
     }
 
-    const [upstream, stories] = await Promise.all([templateResponse(request), sectionStories(article)]);
+    const [upstream, stories] = await Promise.all([templateResponse(request), sectionStories(article, canonical)]);
     if (!upstream.ok) throw new Error(`Article template unavailable: ${upstream.status}`);
     let html = await upstream.text();
     html = injectHead(html, article, canonical, true);

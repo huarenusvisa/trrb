@@ -19,6 +19,8 @@ function fixture(t, { source = article.source_url, outage = false } = {}) {
     assert.ok(options.signal);
     if (outage) throw new Error('recommendations unavailable');
     return Response.json([story, story, article,
+      { ...story, id: 'new', slug: 'fresh', canonical_url: '' },
+      { ...story, id: 'topic', slug: 'ice-report', topic_key: 'ice', canonical_url: '' },
       { ...story, id: 'private', visibility: 'private', canonical_url: 'https://trrb.net/hot-headlines/private' },
       { ...story, id: 'external', canonical_url: 'https://outside.test/article' },
       { ...story, id: 'future', published_at: '2099-01-01', canonical_url: 'https://trrb.net/hot-headlines/future' },
@@ -37,6 +39,8 @@ test('raw HTML contains safe source and public same-section links without JavaSc
   assert.match(html, /href="https:\/\/example.org\/report\?a=1&amp;b=2"/);
   assert.equal((html.match(/href="https:\/\/trrb.net\/hot-headlines\/other"/g) || []).length, 1);
   assert.match(html, /同栏目报道 &lt;标题&gt;/);
+  assert.match(html, /href="https:\/\/trrb.net\/hot-headlines\/fresh"/);
+  assert.match(html, /href="https:\/\/trrb.net\/ice\/ice-report"/);
   assert.doesNotMatch(html, /href="https:\/\/(?:outside.test|trrb.net\/hot-headlines\/(?:private|future|hidden))/);
 });
 test('recommendation failure leaves the article indexable and readable', async t => {

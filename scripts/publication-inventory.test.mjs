@@ -47,3 +47,14 @@ test('snapshot renders its revision without category lookup and cannot serve wit
  const r=await articlePage(new Request('https://trrb.net/ice/a'),{next:()=>new Response('',{status:404})});
  assert.equal(r.status,200);assert.equal(r.headers.get('x-trrb-publication-revision'),'v1');assert.match(r.headers.get('cache-control'),/must-revalidate/);assert.match(await r.text(),/发布时正文/);
 });
+
+test('homepage delegates to the stable router before category-based fallbacks',()=>{
+ const source=fs.readFileSync('articles-home.js','utf8');
+ const fn=source.slice(source.indexOf('function articleUrl(article) {'),source.indexOf('function renderHome('));
+ const sandbox={window:{TRRB_articleUrl:()=>'/ice/original'}};vm.runInNewContext(fn,sandbox);
+ assert.equal(sandbox.articleUrl({...article,slug:'changed',category:'美国时政'}),'/ice/original');
+});
+test('full sitemap reconciliation records review gaps without claiming unindexed',()=>{
+ const result=buildInventory([article],{now,search:{local:{inventorySitemapUrls:[]}}});
+ assert.equal(result.summary.missingFromSitemap,1);assert.equal(result.items[0].inSitemap,false);assert.equal(result.items[0].google.status,'unknown');
+});

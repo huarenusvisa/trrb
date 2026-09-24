@@ -37,6 +37,7 @@ exports.handler = async (event) => {
       select: "id,title,slug,publication_path,summary,content,category_name,cover_image,author,status,visibility,published_at,created_at,source_url,source_name,source_account,source_platform",
       status: "eq.published",
       visibility: "eq.public",
+      hidden_at: "is.null", archived_at: "is.null", published_at: `lte.${new Date().toISOString()}`,
       order: "published_at.desc.nullslast,created_at.desc",
       limit: String(limit),
       offset: String(offset)

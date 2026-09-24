@@ -206,6 +206,11 @@ function categoryUrl(category) {
 }
 function articleUrl(article) {
   if (!article) return "/";
+  if (typeof window.TRRB_articleUrl === "function") {
+    const routed = window.TRRB_articleUrl(article);
+    if (routed) return routed;
+  }
+
   const slug = String(article.slug || "").trim();
   const id = String(article.id || "").trim();
   const topic = String(article.topicKey || article.topic_key || "").trim().toLowerCase();
@@ -213,10 +218,6 @@ function articleUrl(article) {
   const section = topic === "trump" ? "trump" : topic === "ice" ? "ice" : (CATEGORY_SECTIONS[category] || "news");
   if (slug) return `/${encodeURIComponent(section)}/${encodeURIComponent(slug)}`;
   if (UUID_RE.test(id)) return `/${encodeURIComponent(section)}/${encodeURIComponent(id)}`;
-  if (typeof window.TRRB_articleUrl === "function") {
-    const routed = window.TRRB_articleUrl(article);
-    if (routed) return routed;
-  }
   return id ? `/article.html?id=${encodeURIComponent(id)}` : "/";
 }
 

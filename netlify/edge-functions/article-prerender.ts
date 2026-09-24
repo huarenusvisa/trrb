@@ -493,6 +493,8 @@ export default async (request: Request, context: any) => {
     const headers = new Headers(upstream.headers);
     headers.set("content-type", "text/html; charset=UTF-8");
     headers.delete("content-length");
+    headers.delete("etag");
+    headers.delete("last-modified");
     headers.set("cache-control", "public, max-age=0, must-revalidate");
     headers.set("netlify-cdn-cache-control", "no-store");
     headers.set("cdn-cache-control", "no-store");

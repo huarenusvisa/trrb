@@ -207,7 +207,9 @@ try {
   const rest = async (table,params) => {const u=new URL(`${base}/rest/v1/${table}`);Object.entries(params).forEach(([k,v])=>u.searchParams.set(k,v));const r=await fetch(u,{headers,signal:AbortSignal.timeout(30000)});if(!r.ok)throw new Error(`Inventory read HTTP ${r.status}`);return r.json();};
   const persist = async row => {const r=await fetch(`${base}/rest/v1/seo_content_inventory_runs`,{method:'POST',headers,body:JSON.stringify(row),signal:AbortSignal.timeout(60000)});if(!r.ok)throw new Error(`Inventory persistence HTTP ${r.status}`);};
   const retired = (await fs.readFile('retired-indexnow-urls.txt','utf8').catch(()=>'' )).split(/\r?\n/).filter(x=>/^https?:/.test(x));
+  report.local.inventorySitemapUrls = await sitemapUrls();
   report.inventory = await saveInventory(report,{rest,persist,retired});
+  delete report.local.inventorySitemapUrls;
 } catch(error) {report.failures.push(`Full content inventory: ${error.message}`);}
 
 if(!report.google.configured){

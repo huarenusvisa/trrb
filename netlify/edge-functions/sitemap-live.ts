@@ -110,6 +110,7 @@ async function fetchPublishedArticles() {
       select: "publication_path,publication_updated_at,id,title,slug,summary,content,category_id,category_name,topic_key,status,visibility,published_at,created_at",
       status: "eq.published",
       visibility: "eq.public",
+      hidden_at: "is.null", archived_at: "is.null", published_at: `lte.${new Date().toISOString()}`,
       order: "published_at.desc.nullslast,created_at.desc,id.desc",
       limit: String(pageSize),
       offset: String(offset)

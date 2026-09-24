@@ -10,7 +10,7 @@ export async function fetchPublishedArticles(rest, { pageSize = 200, maxRows = 1
   const all = [];
   let cursor = '';
   for (;;) {
-    const params = { select: SELECT, status: 'eq.published', visibility: 'eq.public', order: 'id.asc', limit: String(pageSize) };
+    const params = { select: SELECT, status: 'eq.published', visibility: 'eq.public', hidden_at: 'is.null', archived_at: 'is.null', published_at: `lte.${new Date().toISOString()}`, order: 'id.asc', limit: String(pageSize) };
     if (cursor) params.id = `gt.${cursor}`;
     const rows = await readWithRetry(() => rest('articles', params), { wait: pause });
     if (!Array.isArray(rows) || rows.length > pageSize) throw new Error('Invalid article page; refusing incomplete sitemap');

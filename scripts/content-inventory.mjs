@@ -18,6 +18,7 @@ export function buildInventory(articles, {now = new Date(), search = {}, retired
   const inspections = new Map((search.google?.urlInspection || []).map(x => [x.url, x]));
   const pages = new Map((search.google?.performance28d?.breakdowns?.page?.current?.rows || []).map(x => [x.page, x]));
   const groups = new Map();
+  const sitemap = Array.isArray(search.local?.inventorySitemapUrls) ? new Set(search.local.inventorySitemapUrls) : null;
   const items = articles.map(a => {
     const policy = articleIndexability(a);
     let url = publicationUrl(a);
@@ -29,13 +30,14 @@ export function buildInventory(articles, {now = new Date(), search = {}, retired
     if (publicNow && !url) issues.push('missing-publication-path');
     if (publicNow && !a.publication_revision) issues.push('missing-publication-snapshot');
     if (publicNow) issues.push(...policy.reasons);
+    if (publicNow && policy.indexable && url && sitemap && !sitemap.has(url)) issues.push('missing-from-sitemap-review');
     const sources = publicEvidence(a);
     if (publicNow && !sources.length) issues.push('missing-external-source');
     const inspection = inspections.get(url), performance = pages.get(url);
     const row = {id:a.id,title:a.title,url,category:a.category_name,topic:a.topic_key,publishedAt:a.published_at,
       cohort:`${ice ? 'ice' : 'other'}:${String(a.published_at || a.created_at).slice(0,7)}`,pilot:ice,
       state:!publicNow ? 'not-public' : policy.indexable ? 'eligible-for-indexing' : 'needs-content',
-      revision:a.publication_revision,sourceCount:sources.length,issues,
+      inSitemap:sitemap ? sitemap.has(url) : null,revision:a.publication_revision,sourceCount:sources.length,issues,
       google:{inspection:inspection || null,status:inspection && !inspection.error ? 'inspection-returned' : 'unknown',performance:performance || null},
       bing:{status:'unknown',reason:'site-level report does not establish per-URL indexing'},
       duplicateCandidateOf:null};
@@ -52,7 +54,7 @@ export function buildInventory(articles, {now = new Date(), search = {}, retired
   return {summary:{generatedAt:now.toISOString(),total:items.length,public:items.filter(x=>x.state!=='not-public').length,
     missingSnapshots:items.filter(x=>x.issues.includes('missing-publication-snapshot')).length,
     duplicateCandidates:items.filter(x=>x.duplicateCandidateOf).length,sourceGaps:items.filter(x=>x.issues.includes('missing-external-source')).length,
-    pilot:'ICE',cohorts,retiredUrls:retired.length,retiredPolicy:'keep existing 404/410; no WordPress recovery',
+    sitemapUrls:sitemap?.size ?? null,missingFromSitemap:items.filter(x=>x.issues.includes('missing-from-sitemap-review')).length,pilot:'ICE',cohorts,retiredUrls:retired.length,retiredPolicy:'keep existing 404/410; no WordPress recovery',
     googleWindows:search.google?.performance28d?.windows || null,googleAvailability:search.google?.performance28d?.status || 'unavailable',
     bingAvailability:search.bing?.configured ? 'site-level-only' : 'unavailable',
     notes:['Full database inventory via cursor; concurrent publishing can change totals between runs.','Search Analytics returns observed top rows; absence means unknown, not zero or unindexed.','Identical body is a review candidate; related events and matching titles alone are not merged.','Source gaps need editorial evidence; no invented sources or automatic mass noindex.']},items};

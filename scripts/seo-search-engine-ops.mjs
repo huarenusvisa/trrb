@@ -1,4 +1,4 @@
-import { saveInventory } from './content-inventory.mjs';
+import { saveInventory, persistInventory } from './content-inventory.mjs';
 import fs from 'node:fs/promises';
 import process from 'node:process';
 import { google } from 'googleapis';
@@ -205,7 +205,17 @@ try {
   if (!base || !key) throw new Error('Full inventory database credentials missing');
   const headers = {apikey:key,Authorization:`Bearer ${key}`,'Content-Type':'application/json'};
   const rest = async (table,params) => {const u=new URL(`${base}/rest/v1/${table}`);Object.entries(params).forEach(([k,v])=>u.searchParams.set(k,v));const r=await fetch(u,{headers,signal:AbortSignal.timeout(30000)});if(!r.ok)throw new Error(`Inventory read HTTP ${r.status}`);return r.json();};
-  const persist = async row => {const r=await fetch(`${base}/rest/v1/seo_content_inventory_runs`,{method:'POST',headers,body:JSON.stringify(row),signal:AbortSignal.timeout(60000)});if(!r.ok)throw new Error(`Inventory persistence HTTP ${r.status}`);};
+  const request = async (method,table,params={},body) => {
+    const u=new URL(`${base}/rest/v1/${table}`);Object.entries(params).forEach(([k,v])=>u.searchParams.set(k,v));
+    for(let attempt=0;;attempt++) {
+      const r=await fetch(u,{method,headers:{...headers,Prefer:'resolution=merge-duplicates,return=minimal'},body:body===undefined?undefined:JSON.stringify(body),signal:AbortSignal.timeout(30000)});
+      if(r.ok)return method==='GET'?r.json():null;
+      const detail=await r.json().catch(()=>({}));
+      if([429,500,502,503,504].includes(r.status)&&attempt<2){await new Promise(resolve=>setTimeout(resolve,500*2**attempt));continue;}
+      throw new Error(`Inventory ${method} ${table} HTTP ${r.status}: ${String(detail.code||'')} ${String(detail.message||'').slice(0,250)}`);
+    }
+  };
+  const persist = row => persistInventory(row,request);
   const retired = (await fs.readFile('retired-indexnow-urls.txt','utf8').catch(()=>'' )).split(/\r?\n/).filter(x=>/^https?:/.test(x));
   report.local.inventorySitemapUrls = await sitemapUrls();
   report.inventory = await saveInventory(report,{rest,persist,retired});
@@ -218,5 +228,5 @@ if(!report.google.configured){
 }
 if(!report.bing.configured){const message='Bing Webmaster account API not authorized yet';(REQUIRE_BING?report.failures:report.warnings).push(message);}
 await fs.writeFile('seo-search-engine-ops-report.json',JSON.stringify(report,null,2)+'\n');
-console.log(JSON.stringify({site:report.site,writeMode:report.writeMode,priorityOrder:report.priorityOrder,googleConfigured:report.google.configured,bingConfigured:report.bing.configured,livePageAudit:report.local.livePages,googleDeprecatedRemoved:report.google.deprecatedSitemapsRemoved||[],bingDeprecatedRemoved:report.bing.deprecatedFeedsRemoved||[],warnings:report.warnings,failures:report.failures},null,2));
+console.log(JSON.stringify({site:report.site,writeMode:report.writeMode,priorityOrder:report.priorityOrder,inventory:report.inventory,googleConfigured:report.google.configured,bingConfigured:report.bing.configured,livePageAudit:report.local.livePages,googleDeprecatedRemoved:report.google.deprecatedSitemapsRemoved||[],bingDeprecatedRemoved:report.bing.deprecatedFeedsRemoved||[],warnings:report.warnings,failures:report.failures},null,2));
 if(report.failures.length)process.exitCode=1;

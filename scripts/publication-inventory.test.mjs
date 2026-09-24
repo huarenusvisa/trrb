@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
 import {publicationUrl,publicEvidence} from '../netlify/shared/publication.mjs';
-import {buildInventory,readInventory} from './content-inventory.mjs';
+import {buildInventory,readInventory,persistInventory} from './content-inventory.mjs';
 import articlePage from '../netlify/edge-functions/article-prerender.ts';
 const now = new Date('2026-09-24T12:00:00Z');
 const article = {id:'a',title:'现场报道',slug:'a',content:'现场事实',category_name:'ICE执法动态',topic_key:'ice',status:'published',visibility:'public',published_at:'2026-09-23T12:00:00Z',publication_path:'/ice/a',publication_revision:'v1',source_url:'https://www.ice.gov/news/a'};
@@ -57,4 +57,12 @@ test('homepage delegates to the stable router before category-based fallbacks',(
 test('full sitemap reconciliation records review gaps without claiming unindexed',()=>{
  const result=buildInventory([article],{now,search:{local:{inventorySitemapUrls:[]}}});
  assert.equal(result.summary.missingFromSitemap,1);assert.equal(result.items[0].inSitemap,false);assert.equal(result.items[0].google.status,'unknown');
+});
+
+test('inventory writes bounded batches and publishes only after all succeed',async()=>{
+ const calls=[];await persistInventory({commit_sha:'sha',summary:{total:5},items:Array.from({length:5},(_,i)=>({...buildInventory([{...article,id:String(i)}],{now}).items[0]}))},async(method,table,q,body)=>{calls.push({method,table,body});return [];},{batchSize:2});
+ assert.deepEqual(calls.filter(x=>x.table==='seo_content_inventory_items').map(x=>x.body.length),[2,2,1]);
+ assert.equal(calls[0].body.is_complete,false);assert.equal(calls[4].body.is_complete,true);
+ const failed=[];await assert.rejects(persistInventory({summary:{},items:[{...article,pilot:true,issues:[]}]},async(method,table,q,body)=>{failed.push({method,body});if(table==='seo_content_inventory_items')throw new Error('batch unavailable');return [];}),/batch unavailable/);
+ assert.equal(failed.some(x=>x.body?.is_complete===true),false);
 });

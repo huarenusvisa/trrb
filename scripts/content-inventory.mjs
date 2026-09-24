@@ -1,4 +1,4 @@
-import { createHash } from 'node:crypto';
+import { createHash, randomUUID } from 'node:crypto';
 import { articleIndexability } from '../netlify/shared/article-indexability.mjs';
 import { publicationUrl, publicEvidence } from '../netlify/shared/publication.mjs';
 import { readWithRetry } from './paged-read.mjs';
@@ -64,4 +64,21 @@ export async function saveInventory(search, {rest, persist, retired=[]}) {
   await persist({commit_sha:process.env.GITHUB_SHA || null,...result});
   if (result.summary.missingSnapshots) throw new Error(`Published snapshot gaps: ${result.summary.missingSnapshots}`);
   return result.summary;
+}
+
+// Stage bounded batches, then publish the ledger only after all rows exist.
+// Idempotent upserts allow an interrupted batch to be retried safely.
+export async function persistInventory(row, request, {batchSize=200}={}) {
+  const id=randomUUID();
+  await request('POST','seo_content_inventory_runs',{}, {id,commit_sha:row.commit_sha,summary:row.summary,items:[],is_complete:false});
+  for(let offset=0;offset<row.items.length;offset+=batchSize) {
+    const batch=row.items.slice(offset,offset+batchSize).map(item=>({run_id:id,article_id:item.id,pilot:item.pilot,issues:item.issues,search_text:`${item.id} ${item.title} ${item.url}`,payload:item}));
+    await request('POST','seo_content_inventory_items',{},batch);
+  }
+  await request('PATCH','seo_content_inventory_runs',{id:`eq.${id}`},{is_complete:true});
+  // Keep complete summaries for comparisons; only the newest two need full detail.
+  // Never delete an incomplete run's batches while another controller may be writing.
+  const older=await request('GET','seo_content_inventory_runs',{select:'id',is_complete:'eq.true',order:'created_at.desc',offset:'2',limit:'100'});
+  if(older.length)await request('DELETE','seo_content_inventory_items',{run_id:`in.(${older.map(x=>x.id).join(',')})`});
+  return id;
 }

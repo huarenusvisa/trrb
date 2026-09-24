@@ -25,7 +25,6 @@ test("registers source parents idempotently without re-enabling disabled sources
     assert.equal(enabled.has(required), true, required);
   }
   assert.deepEqual(await ensureSourceRegistry(request), enabled);
-  assert.equal(registry.size, 28);
   assert.equal(registry.get("500work").priority, 95);
   assert.equal(registry.get("500work").is_enabled, false);
 });

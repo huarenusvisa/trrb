@@ -112,7 +112,7 @@ async function fetchLiveArticleById(id) {
   const cacheKey = `trrb-live-article-v5-${id}`;
   const cached = readLiveCache(cacheKey);
   if (cached?.[0]) return cached[0];
-  const select = ["id","title","slug","summary","content","category_id","category_name","topic_key","cover_image","author","status","published_at","created_at"].join(",");
+  const select = ["id","title","slug","publication_path","summary","content","category_id","category_name","topic_key","cover_image","author","status","published_at","created_at"].join(",");
   const url = `${TRRB_SUPABASE_URL}/rest/v1/articles?select=${encodeURIComponent(select)}&id=eq.${encodeURIComponent(id)}&status=eq.published&limit=1`;
   const rows = await fetchJsonWithTimeout(url, {
     cache: "default",
@@ -130,6 +130,7 @@ function mapLiveArticle(row) {
     id: row.id,
     title: row.title || "",
     slug: row.slug || "",
+    publication_path: row.publication_path || "",
     editorial_topics: Array.isArray(row.editorial_topics) ? row.editorial_topics : [],
       publication_scope: row.publication_scope || "standard",
       body_character_count: row.body_character_count, editorial_policy_version: row.editorial_policy_version,

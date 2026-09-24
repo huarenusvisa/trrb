@@ -17,7 +17,7 @@ function articleListQuery(input = {}, { publicOnly = false, now = Date.now() } =
   const terms = searchTerms(text);
   const query = {
     select: publicOnly
-      ? 'id,title,slug,summary,category_name,topic_key,cover_image,author,published_at,created_at'
+      ? 'id,title,slug,publication_path,summary,category_name,topic_key,cover_image,author,published_at,created_at'
       : 'id,title,category_name,status,visibility,published_at,created_at,cover_image,summary,metadata',
     order: 'published_at.desc.nullslast,created_at.desc,id.desc',
     limit: String(pageSize + 1), offset: String((page - 1) * pageSize)

@@ -1,3 +1,4 @@
+import { publicationUrl } from "../shared/publication.mjs";
 const SITE = "https://trrb.net";
 const PAGE_SIZE = 24;
 
@@ -91,6 +92,7 @@ async function fetchCategoryPage(request: Request, category: string, page: numbe
   return payload;
 }
 function articleUrl(article: any): string {
+  if (publicationUrl(article)) return new URL(publicationUrl(article)).pathname;
   const topic = clean(article?.topic_key).toLowerCase();
   const slug = clean(article?.slug) || clean(article?.id);
   if (!slug) return "";

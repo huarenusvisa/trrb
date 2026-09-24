@@ -36,7 +36,7 @@ export default async (event: Request) => {
     const category = String(new URL(event.url).searchParams.get("category") || "").trim().slice(0, 80);
     const cutoffMs = Date.now() - HOME_MAX_AGE_MS;
     const query = {
-      select: "id,title,slug,summary,content,category_id,category_name,topic_key,cover_image,author,status,visibility,published_at,created_at,publication_scope:metadata->>publication_scope",
+      select: "id,title,slug,publication_path,summary,content,category_id,category_name,topic_key,cover_image,author,status,visibility,published_at,created_at,publication_scope:metadata->>publication_scope",
       status: "eq.published",
       visibility: "eq.public",
       published_at: `gte.${new Date(cutoffMs).toISOString()}`,

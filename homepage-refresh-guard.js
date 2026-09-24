@@ -34,6 +34,7 @@
       longform_chars: Number(row.longform_chars || 0),
       title: row.title || "",
       slug: row.slug || "",
+    publication_path: row.publication_path || "",
       categoryId: row.category_id || "",
       category_id: row.category_id || "",
       topicKey: row.topic_key || "",

@@ -27,6 +27,7 @@
       longform_chars: Number(row.longform_chars || 0),
       title: row.title || "",
       slug: row.slug || "",
+    publication_path: row.publication_path || "",
       category: row.category_name || row.category || "新闻",
       category_name: row.category_name || row.category || "新闻",
       topicKey: row.topic_key || row.topicKey || "",

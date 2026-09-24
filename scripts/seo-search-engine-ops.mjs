@@ -1,3 +1,4 @@
+import { saveInventory } from './content-inventory.mjs';
 import fs from 'node:fs/promises';
 import process from 'node:process';
 import { google } from 'googleapis';
@@ -198,6 +199,17 @@ async function bingOps(){
   }catch(e){report.failures.push(`Bing Webmaster: ${e.message}`);}
 }
 await localAudit();await googleOps();await bingOps();
+try {
+  const base = String(process.env.SUPABASE_URL || '').replace(/\/+$/,'');
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!base || !key) throw new Error('Full inventory database credentials missing');
+  const headers = {apikey:key,Authorization:`Bearer ${key}`,'Content-Type':'application/json'};
+  const rest = async (table,params) => {const u=new URL(`${base}/rest/v1/${table}`);Object.entries(params).forEach(([k,v])=>u.searchParams.set(k,v));const r=await fetch(u,{headers,signal:AbortSignal.timeout(30000)});if(!r.ok)throw new Error(`Inventory read HTTP ${r.status}`);return r.json();};
+  const persist = async row => {const r=await fetch(`${base}/rest/v1/seo_content_inventory_runs`,{method:'POST',headers,body:JSON.stringify(row),signal:AbortSignal.timeout(60000)});if(!r.ok)throw new Error(`Inventory persistence HTTP ${r.status}`);};
+  const retired = (await fs.readFile('retired-indexnow-urls.txt','utf8').catch(()=>'' )).split(/\r?\n/).filter(x=>/^https?:/.test(x));
+  report.inventory = await saveInventory(report,{rest,persist,retired});
+} catch(error) {report.failures.push(`Full content inventory: ${error.message}`);}
+
 if(!report.google.configured){
   const message='Google Search Console account API not authorized yet';
   (REQUIRE_GOOGLE?report.failures:report.warnings).push(message);

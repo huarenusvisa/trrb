@@ -1,3 +1,4 @@
+import { publicationUrl } from "../netlify/shared/publication.mjs";
 import { fetchPublishedArticles } from './sitemap-article-reader.mjs';
 import { readWithRetry } from "./paged-read.mjs";
 import { articleIndexability, ARTICLE_INDEXABILITY_POLICY } from "../netlify/shared/article-indexability.mjs";
@@ -185,6 +186,7 @@ function articleSection(article) {
 }
 
 function canonicalArticleUrl(article) {
+  if (publicationUrl(article)) return publicationUrl(article);
   const slug = cleanText(article?.slug || '') || cleanText(article?.id || '');
   if (!slug) return null;
   return `${SITE}/${encodeURIComponent(articleSection(article))}/${encodeURIComponent(slug)}`;

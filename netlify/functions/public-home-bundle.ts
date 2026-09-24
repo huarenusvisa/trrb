@@ -32,7 +32,7 @@ function homeCutoffIso() {
 
 async function fetchArticles(limit, category = "") {
   const query = {
-    select: "id,title,slug,summary,content,category_id,category_name,topic_key,cover_image,author,status,visibility,published_at,created_at,is_breaking,rank_score,publication_scope:metadata->>publication_scope",
+    select: "id,title,slug,publication_path,summary,content,category_id,category_name,topic_key,cover_image,author,status,visibility,published_at,created_at,is_breaking,rank_score,publication_scope:metadata->>publication_scope",
     status: "eq.published",
     visibility: "eq.public",
     published_at: `gte.${homeCutoffIso()}`,
@@ -73,7 +73,7 @@ export default async (event: Request) => {
     const { editorialTopics, POLITICS_FILTER } = await import("../shared/editorial-topics.mjs");
     const globalRows = await fetchArticles(globalLimit);
     const politicalPage = await readPoliticalPage(({offset,limit})=>rest("articles", {query: {
-      select: "id,title,slug,summary,content,category_name,topic_key,cover_image,author,status,visibility,published_at,created_at,publication_scope:metadata->>publication_scope",
+      select: "id,title,slug,publication_path,summary,content,category_name,topic_key,cover_image,author,status,visibility,published_at,created_at,publication_scope:metadata->>publication_scope",
       status: "eq.published", visibility: "eq.public", published_at: `gte.${homeCutoffIso()}`,
       or: POLITICS_FILTER, order: "published_at.desc.nullslast,created_at.desc", limit: String(limit), offset: String(offset)
     }}),{limit:perCategory}).catch(() => ({rows:[]}));

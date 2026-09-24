@@ -105,7 +105,7 @@ async function fetchLiveArticleById(id) {
   const cacheKey = `trrb-live-article-v5-${id}`;
   const cached = readLiveCache(cacheKey);
   if (cached?.[0]) return cached[0];
-  const select = ["id","title","slug","summary","content","category_id","category_name","topic_key","cover_image","author","status","published_at","created_at"].join(",");
+  const select = ["id","title","slug","publication_path","summary","content","category_id","category_name","topic_key","cover_image","author","status","published_at","created_at"].join(",");
   const url = `${TRRB_SUPABASE_URL}/rest/v1/articles?select=${encodeURIComponent(select)}&id=eq.${encodeURIComponent(id)}&status=eq.published&limit=1`;
   const rows = await fetchJsonWithTimeout(url, {
     cache: "default",
@@ -123,6 +123,7 @@ function mapLiveArticle(row) {
     id: row.id,
     title: row.title || "",
     slug: row.slug || "",
+    publication_path: row.publication_path || "",
     topicKey: row.topic_key || "",
     categoryId: row.category_id || "",
     category: row.category_name || "新闻",

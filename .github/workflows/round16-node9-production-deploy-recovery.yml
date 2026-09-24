@@ -77,6 +77,10 @@ jobs:
           echo "SKIP_DEPLOY=$already_accepted" >> "$GITHUB_ENV"
           echo "already_accepted=$already_accepted"
 
+      - name: 验证固定网址、发布快照和全量台账
+        if: env.SKIP_DEPLOY != 'true'
+        run: node --experimental-strip-types --test scripts/publication-inventory.test.mjs scripts/article-indexability.test.mjs scripts/article-crawl-links.test.mjs scripts/sitemap-article-reader.test.mjs
+
       - name: 标记生产验收开始
         if: env.SKIP_DEPLOY != 'true'
         shell: bash

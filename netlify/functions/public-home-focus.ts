@@ -101,7 +101,7 @@ export default async (event: Request) => {
 
   try {
     const cutoff = new Date(Date.now() - HOME_MAX_AGE_MS).toISOString();
-    const select = "id,title,slug,summary,content,category_name,topic_key,cover_image,author,status,visibility,published_at,created_at,is_featured,is_breaking,rank_score,metadata";
+    const select = "id,title,slug,publication_path,summary,content,category_name,topic_key,cover_image,author,status,visibility,published_at,created_at,is_featured,is_breaking,rank_score,metadata";
     const baseQuery = {
       select,
       status: "eq.published",

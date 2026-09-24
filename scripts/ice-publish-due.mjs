@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { publicEvidence } from '../netlify/shared/publication.mjs';
 import { readDatabaseQuery } from "./paged-read.mjs";
 import crypto from "node:crypto";
 import process from "node:process";
@@ -213,6 +214,10 @@ async function publish(story) {
     return similar.id;
   }
   const evidence = await storyEvidence(story.id);
+  if (route.key === "ice" && !publicEvidence({source_url:post.x_url,metadata:{evidence:evidence.map(x=>({url:x.x_url}))}}).length) {
+    await updateStory(story.id,{status:"pending_review",decision_reason:"ICE来源质量检查：缺少可核对的外部来源链接，请编辑补充后发布"});
+    return null;
+  }
   const id = crypto.randomUUID();
   const time = nowIso();
   const video = bestVideo(post);
@@ -228,6 +233,7 @@ async function publish(story) {
       ai_confidence: story.ai_confidence,
       review_status: officialApproved ? "official_source_auto_published" : "human_approved",
       metadata: {
+        publication_quality_version: "ice-evidence-v1",
         event_fingerprint: story.event_fingerprint, event_type: eventType, city: post.city || "", state_code: post.state_code || "",
         location_text: post.location_text || [post.city, post.state_code].filter(Boolean).join(", "), ...peopleMetadata, total_score: story.total_score,
         independent_source_count: story.independent_source_count, official_source_count: story.official_source_count, media_source_count: story.media_source_count,

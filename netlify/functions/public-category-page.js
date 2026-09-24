@@ -79,7 +79,7 @@ exports.handler = async (event) => {
   try {
     const url = new URL(`${SUPABASE_URL}/rest/v1/articles`);
     const includeContent = ["ice", "china-hot"].includes(definition.mode);
-    const select = "id,title,slug,summary,category_id,category_name,topic_key,cover_image,author,status,visibility,published_at,created_at"
+    const select = "id,title,slug,publication_path,summary,category_id,category_name,topic_key,cover_image,author,status,visibility,published_at,created_at"
       + (includeContent ? ",content" : "");
     url.searchParams.set("select", select);
     url.searchParams.set("status", "eq.published");

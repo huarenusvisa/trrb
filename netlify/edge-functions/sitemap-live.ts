@@ -1,3 +1,4 @@
+import { publicationUrl } from "../shared/publication.mjs";
 import { articleIndexability, ARTICLE_INDEXABILITY_POLICY } from "../shared/article-indexability.mjs";
 const SITE = "https://trrb.net";
 // The build publishes a sitemap index plus 5,000-URL article shards.  Keep the
@@ -106,7 +107,7 @@ async function fetchPublishedArticles() {
   const pageSize = 1000;
   for (let offset = 0; offset < 100000; offset += pageSize) {
     const rows = await fetchRows("articles", {
-      select: "id,title,slug,summary,content,category_id,category_name,topic_key,status,visibility,published_at,created_at",
+      select: "publication_path,publication_updated_at,id,title,slug,summary,content,category_id,category_name,topic_key,status,visibility,published_at,created_at",
       status: "eq.published",
       visibility: "eq.public",
       order: "published_at.desc.nullslast,created_at.desc,id.desc",
@@ -236,7 +237,7 @@ export default async (request: Request, context: any) => {
       const section = sectionFor(article, byId, byName);
       const slug = clean(article?.slug) || clean(article?.id);
       if (!slug) continue;
-      const loc = `${SITE}/${encodeURIComponent(section)}/${encodeURIComponent(slug)}`;
+      const loc = publicationUrl(article) || `${SITE}/${encodeURIComponent(section)}/${encodeURIComponent(slug)}`;
       if (seenUrls.has(loc)) continue;
       seenUrls.add(loc);
       blocks.push(urlBlock(loc, lastmod(article)));

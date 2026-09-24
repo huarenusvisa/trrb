@@ -1,3 +1,4 @@
+import { publicationUrl, publicEvidence } from "../shared/publication.mjs";
 import { articleIndexability, visibleArticleText, ARTICLE_INDEXABILITY_POLICY } from "../shared/article-indexability.mjs";
 const SITE = "https://trrb.net";
 
@@ -96,7 +97,7 @@ function dbHeaders(key: string) {
   return { apikey: key, Authorization: `Bearer ${key}`, Accept: "application/json" };
 }
 
-const ARTICLE_SELECT = "id,title,slug,summary,content,category_id,category_name,topic_key,cover_image,source_url,seo_keywords,author,status,visibility,published_at,created_at,metadata";
+const ARTICLE_SELECT = "publication_path,publication_html,publication_revision,publication_updated_at,id,title,slug,summary,content,category_id,category_name,topic_key,cover_image,source_url,seo_keywords,author,status,visibility,published_at,created_at,metadata";
 
 async function getArticleById(id: string) {
   const { base, key } = supabaseConfig();
@@ -106,6 +107,9 @@ async function getArticleById(id: string) {
   url.searchParams.set("id", `eq.${id}`);
   url.searchParams.set("status", "eq.published");
   url.searchParams.set("visibility", "eq.public");
+  url.searchParams.set("hidden_at", "is.null");
+  url.searchParams.set("archived_at", "is.null");
+  url.searchParams.set("published_at", `lte.${new Date().toISOString()}`);
   url.searchParams.set("limit", "1");
   const response = await fetch(url, { headers: dbHeaders(key), cache: "no-store" });
   if (!response.ok) throw new Error(`Supabase article id ${response.status}`);
@@ -121,6 +125,9 @@ async function getArticleBySlug(slug: string) {
   url.searchParams.set("slug", `eq.${slug}`);
   url.searchParams.set("status", "eq.published");
   url.searchParams.set("visibility", "eq.public");
+  url.searchParams.set("hidden_at", "is.null");
+  url.searchParams.set("archived_at", "is.null");
+  url.searchParams.set("published_at", `lte.${new Date().toISOString()}`);
   url.searchParams.set("order", "published_at.desc.nullslast,created_at.desc");
   url.searchParams.set("limit", "1");
   const response = await fetch(url, { headers: dbHeaders(key), cache: "no-store" });
@@ -175,6 +182,8 @@ async function getCategorySlug(article: any): Promise<string> {
 }
 
 async function canonicalFor(article: any): Promise<string> {
+  const pinned = publicationUrl(article);
+  if (pinned) return pinned;
   const section = canonicalSection(await getCategorySlug(article));
   const slug = clean(article?.slug) || clean(article?.id);
   return `${SITE}/${encodeURIComponent(section)}/${encodeURIComponent(slug)}`;
@@ -200,7 +209,7 @@ function injectHead(html: string, article: any, canonical: string, prettyRoute: 
     description: summary,
     image: [image],
     datePublished: published,
-    dateModified: published,
+    dateModified: isoDate(article.publication_updated_at || article.published_at || article.created_at),
     articleSection: category,
     inLanguage: "zh-CN",
     mainEntityOfPage: { "@type": "WebPage", "@id": canonical },
@@ -276,6 +285,9 @@ async function sectionStories(article: any, canonical: string): Promise<any[]> {
   url.searchParams.set("hidden_at", "is.null");
   url.searchParams.set("archived_at", "is.null");
   url.searchParams.set("published_at", `lte.${new Date().toISOString()}`);
+  url.searchParams.set("hidden_at", "is.null");
+  url.searchParams.set("archived_at", "is.null");
+  url.searchParams.set("published_at", `lte.${new Date().toISOString()}`);
   url.searchParams.set("id", `neq.${article.id}`);
   url.searchParams.set("order", "published_at.desc,id.asc");
   url.searchParams.set("limit", "8");
@@ -306,18 +318,20 @@ async function sectionStories(article: any, canonical: string): Promise<any[]> {
   } catch { return []; } // Recommendations must never make the article unavailable.
 }
 
-function injectBody(html: string, article: any, canonical: string, stories: any[] = []) {
+function injectBody(html: string, article: any, canonical: string, stories: any[] = [], currentSection: string | null = null) {
   const title = clean(article.title) || "唐人日报新闻";
   const category = clean(article.category_name) || "新闻";
   const displayCategory = category === "热门头条" ? "中国热门头条" : category;
   const author = clean(article.author) || "Tang Ren Daily";
-  const sectionHref = `/${new URL(canonical).pathname.split("/").filter(Boolean)[0]}`;
+  const sectionHref = `/${currentSection ? encodeURIComponent(currentSection) : new URL(canonical).pathname.split("/").filter(Boolean)[0]}`;
   const source = publicSource(article.source_url);
   const published = isoDate(article.published_at || article.created_at).slice(0, 10);
   const content = String(visibleArticleText(article.content) ? article.content : article.summary || "").trim();
   const paragraphs = content.split(/\n{2,}|\r?\n/).map((p) => clean(p)).filter(Boolean);
   const image = clean(article.cover_image);
   const topic = clean(article.topic_key).toLowerCase();
+  const evidence = publicEvidence(article);
+  const iceEvidence = isIceArticle(article) ? `<aside class="article-evidence"><h2>报道来源与核实说明</h2>${evidence.length ? `<ul>${evidence.map(u => `<li><a href="${esc(u)}" rel="noopener noreferrer">${esc(new URL(u).hostname)}</a></li>`).join("")}</ul><p>以上为报道所依据的来源；来源陈述不等于独立核实结论。</p>` : `<p>本篇尚未附可核对的外部来源链接，待编辑补充。</p>`}<p><a href="/ice/news">查看 ICE 执法报道与后续进展</a></p></aside>` : "";
   const topicTimeline = topic === "ren-zhengfei"
     ? `<aside class="article-topic-timeline"><a href="/ren-zhengfei"><b>任正非新闻时间线</b><span>按时间查看全部相关新闻 →</span></a></aside>`
     : "";
@@ -333,8 +347,9 @@ function injectBody(html: string, article: any, canonical: string, stories: any[
       ${topicTimeline}
       ${image ? `<img class="article-image" src="${esc(image)}" loading="eager" fetchpriority="high" alt="${esc(title)}" />` : ""}
       ${warning ? `<aside class="article-content-warning">${esc(warning)}</aside>` : ""}
-      <div class="article-body">${paragraphs.map((p) => `<p>${esc(p)}</p>`).join("")}</div>
+      <div class="article-body">${article.publication_revision && article.publication_html != null ? article.publication_html : paragraphs.map((p) => `<p>${esc(p)}</p>`).join("")}</div>
       ${source ? `<p class="article-source">来源链接：<a href="${esc(source)}" rel="noopener noreferrer">${esc(new URL(source).hostname)}</a></p>` : ""}
+      ${iceEvidence}
       ${stories.length ? `<nav class="article-section-stories" aria-label="同栏目报道"><h2>同栏目报道</h2><ul>${stories.map((row) => `<li><a href="${esc(row.canonical_url)}">${esc(row.title)}</a></li>`).join("")}</ul></nav>` : ""}
       <nav class="article-neighbors" aria-label="上一篇和下一篇"></nav>
       <section class="related-news" hidden><h2>延伸阅读</h2><div class="related-carousel" aria-label="延伸阅读文章"><div class="related-track"></div></div></section>`;
@@ -468,17 +483,20 @@ export default async (request: Request, context: any) => {
       return redirect(canonical, "pretty-path-normalize");
     }
 
-    const [upstream, stories] = await Promise.all([templateResponse(request), sectionStories(article, canonical)]);
+    const [upstream, stories, currentSection] = await Promise.all([templateResponse(request), sectionStories(article, canonical), getCategorySlug(article).catch(() => null)]);
     if (!upstream.ok) throw new Error(`Article template unavailable: ${upstream.status}`);
     let html = await upstream.text();
     html = injectHead(html, article, canonical, true);
-    html = injectBody(html, article, canonical, stories);
+    html = injectBody(html, article, canonical, stories, currentSection);
     html = disableLegacyClientLoaders(html);
 
     const headers = new Headers(upstream.headers);
     headers.set("content-type", "text/html; charset=UTF-8");
     headers.delete("content-length");
-    headers.set("cache-control", "public, max-age=60, stale-while-revalidate=300");
+    headers.set("cache-control", "public, max-age=0, must-revalidate");
+    headers.set("netlify-cdn-cache-control", "no-store");
+    headers.set("cdn-cache-control", "no-store");
+    headers.set("x-trrb-publication-revision", article.publication_revision || "legacy");
     headers.set("x-trrb-prerender", "article-edge-v4-archive-410-ice-safe");
     headers.set("link", `<${canonical}>; rel=\"canonical\"`);
     headers.set("x-trrb-indexability-policy", ARTICLE_INDEXABILITY_POLICY);

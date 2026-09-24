@@ -20,7 +20,7 @@ export default async (request: Request) => {
   try {
     await loadChinaPeople(()=>rest('china_political_people',{query:CHINA_PEOPLE_QUERY}));
     const query: Record<string,string> = {
-      select:'id,title,slug,summary,content,category_name,topic_key,cover_image,author,published_at,created_at,publication_scope:metadata->>publication_scope',
+      select:'id,title,slug,publication_path,summary,content,category_name,topic_key,cover_image,author,published_at,created_at,publication_scope:metadata->>publication_scope',
       status:'eq.published', visibility:'eq.public', published_at:`lte.${new Date().toISOString()}`,
       or:filter, order:'published_at.desc.nullslast,created_at.desc,id.desc', limit:String(limit), offset:String(offset)
     };

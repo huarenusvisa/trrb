@@ -106,7 +106,13 @@
     return FALLBACK_CATEGORY_SLUGS[categoryName] || 'news';
   }
 
+  function pinnedPath(article) {
+    const path = article?.publication_path;
+    return typeof path === "string" && /^\/[^/?#]+\/[^/?#]+$/.test(path) && !/[\\\s]/.test(path) ? path : "";
+  }
+
   function prettyArticleUrl(article, categories) {
+    if (pinnedPath(article)) return pinnedPath(article);
     if (!article) return '';
     const id = String(article.id || '').trim();
     const slug = String(article.slug || '').trim();
@@ -116,6 +122,7 @@
   }
 
   window.TRRB_articleUrl = function TRRB_articleUrl(article) {
+    if (pinnedPath(article)) return pinnedPath(article);
     if (!article) return '';
     const id = String(article.id || '').trim();
     const cached = routeCache.get(id);
@@ -140,7 +147,7 @@
     for (let offset = 0; offset < ids.length; offset += 40) {
       const batch = ids.slice(offset, offset + 40);
       const url = new URL(`${SUPABASE_URL}/rest/v1/articles`);
-      url.searchParams.set('select', 'id,slug,category_id,category_name,topic_key,status');
+      url.searchParams.set('select', 'publication_path,id,slug,category_id,category_name,topic_key,status');
       url.searchParams.set('status', 'eq.published');
       url.searchParams.set('id', `in.(${batch.join(',')})`);
       try {

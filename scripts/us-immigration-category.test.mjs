@@ -22,6 +22,9 @@ test("US immigration category rejects ICE enforcement and unrelated migration", 
   const rejected = [
     ["科罗拉多奥罗拉ICE疑似餐厅前拘捕两人", "ICE在餐厅前拘捕"],
     ["ICE执飞161人遣返海地航班", "从弗吉尼亚起飞"],
+    ["美国国土安全部宣布加强遣返数百万非法移民", "推动遣返并要求离境"],
+    ["美国终止临时保护身份政策涉数万人面临驱逐", "终止TPS后启动遣返"],
+    ["驱逐令激增：多州移民家庭面临强制离境", "递解程序已经启动"],
     ["ICE宣布查获OPT项目诈骗案", "涉及一万名留学生"],
     ["海地接收首批161名TPS遣返者", "遣返航班抵达"],
     ["佐治亚州起诉非法取得公民身份者", "联邦刑事案件"],
@@ -47,5 +50,7 @@ test("database firewall reroutes ICE and blocks unrelated published rows", () =>
   assert.match(source, /immigration_text := article_text/);
   assert.match(source, /non_process_event/);
   assert.match(source, /set search_path = ''/);
+  assert.match(source, /as \$\$\s*\ndeclare/);
+  assert.doesNotMatch(source, /as \$\s*\ndeclare/);
   assert.match(source, /\[\^A-Za-z\]\)ICE/);
 });

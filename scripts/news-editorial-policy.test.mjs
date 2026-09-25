@@ -14,10 +14,11 @@ const source=url=>({url,kind:'web_evidence',tool_cited:true});
 const research={web_search_completed:true,sources:[source('https://www.justice.gov/opa/primary'),source('https://www.reuters.com/independent')]};
 const review=Object.fromEntries(['single_event','grounded','sufficient','source_chain_complete','analysis_grounded','depth_appropriate','court_status_correct','fresh_event','image_grounded',...DEEP_REVIEW_FIELDS].map(k=>[k,true]));
 const official={source_type:'official',source_username:'ICEgov',trust_tier:1};
-function story(chars=2500) {const title='联邦法院公布移民政策裁决',content='文'.repeat(chars);return {title,content,ai_payload:{translation_version:ICE_TRANSLATION_VERSION,editorial_policy_version:EDITORIAL_POLICY_VERSION,editorial_depth:'deep',editorial_review:review,context_research:research,reviewed_content_sha256:contentDigest(title,content),translated_to_chinese:true,old_news_checked:true,automatic_old_news_check_passed:true,appears_old_news:false}};}
+function story(chars=2000) {const title='联邦法院公布移民政策裁决',content='文'.repeat(chars);return {title,content,ai_payload:{translation_version:ICE_TRANSLATION_VERSION,editorial_policy_version:EDITORIAL_POLICY_VERSION,editorial_depth:'deep',editorial_review:review,context_research:research,reviewed_content_sha256:contentDigest(title,content),translated_to_chinese:true,old_news_checked:true,automatic_old_news_check_passed:true,appears_old_news:false}};}
 test('deep limits apply at both ICE publication gates, including topic_only',()=>{
- for(const n of [2499,2500,3500,3501]) {const s=story(n);s.ai_payload.publication_scope='topic_only';assert.equal(publishReady(s,official),n>=2500&&n<=3500);assert.equal(promoteReady(s,[official]),n>=2500&&n<=3500);}
- assert.throws(()=>assertBodyQuality({editorial_depth:'deep',publication_scope:'topic_only',content:'文'.repeat(650)}),/2500/);
+ for(const n of [1999,2000,3500,3501]) {const s=story(n);s.ai_payload.publication_scope='topic_only';assert.equal(publishReady(s,official),n>=2000&&n<=3500);assert.equal(promoteReady(s,[official]),n>=2000&&n<=3500);}
+ assert.throws(()=>assertBodyQuality({editorial_depth:'deep',publication_scope:'topic_only',content:'文'.repeat(650)}),/2000/);
+ assert.throws(()=>assertBodyQuality({editorial_depth:'standard',content:'文'.repeat(2000)}),/超过1999/);
 });
 test('two links from one publisher, social comments and unexecuted searches cannot qualify depth',()=>{
  assert.equal(independentSourceCount({sources:research.sources}),0);
@@ -84,7 +85,7 @@ test('undersized drafts are reviewed under their actual lower tier and still req
  });
  const posts=[{source_text:'A federal court issued an injunction on new immigration rules today.',x_url:'https://www.justice.gov/opa/primary'}];
  const brief=await translate({},posts);assert.equal(brief.editorial_depth,'brief');assert.equal(reviewedDepth,'brief');assert.equal(writes,1);
- length=1700;requested='deep';const standard=await translate({},posts);assert.equal(standard.editorial_depth,'standard');assert.equal(reviewedDepth,'standard');assert.equal(writes,2);
+ length=1700;requested='deep';const standard=await translate({},posts);assert.equal(standard.editorial_depth,'standard');assert.equal(reviewedDepth,'standard');assert.equal(writes,3);
  length=500;grounded=false;await assert.rejects(()=>translate({},posts),/独立复核未通过/);
 });
 

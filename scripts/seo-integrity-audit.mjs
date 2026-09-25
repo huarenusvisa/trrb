@@ -15,7 +15,7 @@ const STRICT_INDEXABLE_SEO_GATE = "STRICT_INDEXABLE_SEO_GATE_V2";
 // Validate the handler below rather than treating every /topic/* path as valid.
 const EDGE_COLLECTION_ROUTES = new Set(["xijinping", "china-politics", "iceandpolice", "midterm-elections"]);
 const ROUTE_PREFIXES = new Set([
-  "ice", "trump", "immigrate", "important-news", "hot-headlines", "us-politics", "compare",
+  "ice", "iceandpolice", "trump", "immigrate", "important-news", "hot-headlines", "us-politics", "compare",
   "us-crime", "china-officialdom", "asylum", "asylumjudge", "immigration", "deport", "expose", "community", "jobs", "niulai", "ershou", "news"
 ]);
 const FORBIDDEN_SITEMAP_ROUTES = [

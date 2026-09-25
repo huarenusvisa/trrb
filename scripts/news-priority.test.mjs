@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {newsPriority,compareNewsPriority,sourceFingerprint,editorialRetryAllowed} from './news-priority.mjs';
+import {EDITORIAL_POLICY_VERSION} from './news-editorial-policy.mjs';
 import {shouldRetryCandidate} from './china-hot-li-teacher-ingest.mjs';
 const now=Date.now();
 const primary={source_created_at:new Date(now-60000).toISOString(),source_text:'Federal court issued injunction on immigration policy, docket released',source_type:'official',trust_tier:1};
@@ -16,9 +17,9 @@ test('official websites also fail strict 12-hour rule; unknown/future date fails
 });
 test('same evidence gets max two attempts, with backoff; new evidence unlocks research',()=>{
  const posts=[primary]; const fp=sourceFingerprint(posts);
- assert.equal(editorialRetryAllowed({ai_payload:{editorial_attempt:{fingerprint:fp,count:2,at:new Date(now-7200000).toISOString()}}},posts,now),false);
- assert.equal(editorialRetryAllowed({ai_payload:{editorial_attempt:{fingerprint:fp,count:1,at:new Date(now).toISOString()}}},posts,now),false);
- assert.equal(editorialRetryAllowed({ai_payload:{editorial_attempt:{fingerprint:fp,count:2,at:new Date(now).toISOString()}}},[{...primary,source_text:primary.source_text+' new appeal filed'}],now),true);
+ assert.equal(editorialRetryAllowed({ai_payload:{editorial_attempt:{policy_version:EDITORIAL_POLICY_VERSION,fingerprint:fp,count:2,at:new Date(now-7200000).toISOString()}}},posts,now),false);
+ assert.equal(editorialRetryAllowed({ai_payload:{editorial_attempt:{policy_version:EDITORIAL_POLICY_VERSION,fingerprint:fp,count:1,at:new Date(now).toISOString()}}},posts,now),false);
+ assert.equal(editorialRetryAllowed({ai_payload:{editorial_attempt:{policy_version:EDITORIAL_POLICY_VERSION,fingerprint:fp,count:2,at:new Date(now).toISOString()}}},[{...primary,source_text:primary.source_text+' new appeal filed'}],now),true);
 });
 test('budget hold remains retryable while fresh, but cannot bypass manual hold or age limit',()=>{
  const candidate={decision:'review_required',raw_payload:{source_created_at:primary.source_created_at},ai_payload:{budget_deferred:true,quality_hold:true}};
@@ -29,4 +30,9 @@ test('budget hold remains retryable while fresh, but cannot bypass manual hold o
 
 test('priority ranking does not silently exclude new policy wording outside the scoring vocabulary',()=>{
  assert.equal(newsPriority({...primary,source_text:'White House vetoes legislation; full text attached'}).eligible,true);
+});
+
+test('new policy permits a bounded recheck of old machine failures',()=>{
+ const posts=[primary];
+ assert.equal(editorialRetryAllowed({ai_payload:{editorial_attempt:{policy_version:'old',fingerprint:sourceFingerprint(posts),count:2,at:new Date(now).toISOString()}}},posts,now),true);
 });

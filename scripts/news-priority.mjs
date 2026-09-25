@@ -1,5 +1,5 @@
 import {createHash} from 'node:crypto';
-import {sourceWithinCollectionWindow} from './news-editorial-policy.mjs';
+import {EDITORIAL_POLICY_VERSION,sourceWithinCollectionWindow} from './news-editorial-policy.mjs';
 const ACTION=/\b(?:announc\w*|issu\w*|rul(?:e[ds]?|ing)|signed|passed|charged|arrest\w*|seized|detain\w*|deport\w*|remov\w*|killed|rescued|filed|sentenc\w*|injunction|appeal\w*)\b|公布|发布|判决|裁定|起诉|逮捕|拘留|生效|实施|通过|签署|调查|撤销|任免|通报|抗议|死亡|枪击/i;
 const IMPACT=/\b(?:policy|rule|court|visa|immigration|tariff|sanction|congress|rights|class.action|supreme)\b|政策|法院|判例|签证|留学|华人|华裔|中国公民|关税|制裁|权益|全国|集体诉讼/i;
 const OPINION=/\b(?:opinion|commentary|throwback|anniversary|watch our show)\b|纯属猜测|网传|据传|回顾|周年|节目预告|点击观看/i;
@@ -25,5 +25,5 @@ export function compareNewsPriority(a,b) {return newsPriority(b).score-newsPrior
 export function sourceFingerprint(posts) {return createHash('sha256').update(JSON.stringify(posts.map(p=>[p.x_post_id,p.source_created_at,p.source_text]).sort((a,b)=>String(a[0]).localeCompare(String(b[0]))))).digest('hex');}
 export function editorialRetryAllowed(story,posts,now=Date.now()) {
   const old=story.ai_payload?.editorial_attempt;
-  return !old || old.fingerprint!==sourceFingerprint(posts) || (old.count<2 && now-Date.parse(old.at)>=3600000);
+  return !old || old.policy_version!==EDITORIAL_POLICY_VERSION || old.fingerprint!==sourceFingerprint(posts) || (old.count<2 && now-Date.parse(old.at)>=3600000);
 }

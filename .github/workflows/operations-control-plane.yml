@@ -17,6 +17,7 @@ on:
       - 'scripts/news-editorial-policy.mjs'
       - 'scripts/news-article-updates.mjs'
       - 'scripts/ice-official-web-discovery.mjs'
+      - 'scripts/ice-drop-stale-posts.mjs'
       - 'netlify/functions/_shared/news-editorial-policy.js'
       - 'netlify/functions/_shared/news-collection-scope.js'
       - 'scripts/china-hot-li-teacher-ingest.test.mjs'

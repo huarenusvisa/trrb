@@ -132,7 +132,7 @@ async function main() {
   const cutoff = new Date(Date.now() - LOOKBACK_HOURS * 3600000).toISOString();
   const rows = await sb("ice_posts", {
     query: {
-      select: "id,source_username,source_type,source_text,processing_status,relevant,source_created_at,created_at",
+      select: "id,source_username,source_type,trust_tier,source_text,processing_status,relevant,source_created_at,created_at",
       created_at: `gte.${cutoff}`,
       order: "created_at.desc",
       limit: String(MAX_ROWS)

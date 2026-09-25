@@ -153,7 +153,7 @@ async function searchX(query, startTime) {
     url.searchParams.set("start_time", startTime);
     if (nextToken) url.searchParams.set("next_token", nextToken);
 
-    url.searchParams.set("tweet.fields", "id,text,author_id,created_at,lang,public_metrics,possibly_sensitive,attachments");
+    url.searchParams.set("tweet.fields", "id,text,note_tweet,entities,author_id,created_at,lang,public_metrics,possibly_sensitive,attachments");
     url.searchParams.set("expansions", "author_id,attachments.media_keys");
     url.searchParams.set("user.fields", "id,name,username,verified,public_metrics");
     url.searchParams.set("media.fields", "media_key,type,url,preview_image_url,width,height,duration_ms,variants");
@@ -227,7 +227,7 @@ async function main() {
             trust_tier: author.verified ? 3 : 5,
             independence_key: author.username ? `x:${String(author.username).toLowerCase()}` : `x-user:${tweet.author_id}`,
             source_created_at: tweet.created_at || null,
-            source_text: tweet.text || "",
+            source_text: tweet.note_tweet?.text || tweet.text || "",
             media,
             raw_payload: {
               tweet,

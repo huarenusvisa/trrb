@@ -144,7 +144,7 @@ async function fetchUserTimeline(user, startTime) {
     url.searchParams.set("start_time", startTime);
     url.searchParams.set("exclude", "retweets,replies");
     if (paginationToken) url.searchParams.set("pagination_token", paginationToken);
-    url.searchParams.set("tweet.fields", "id,text,author_id,created_at,lang,public_metrics,possibly_sensitive,attachments");
+    url.searchParams.set("tweet.fields", "id,text,note_tweet,entities,author_id,created_at,lang,public_metrics,possibly_sensitive,attachments");
     url.searchParams.set("expansions", "attachments.media_keys");
     url.searchParams.set("media.fields", "media_key,type,url,preview_image_url,width,height,duration_ms,variants");
     const payload = await request(url, { headers: { Authorization: `Bearer ${process.env.X_BEARER_TOKEN}` } });
@@ -161,7 +161,7 @@ async function searchSingleHandle(username, startTime) {
   url.searchParams.set("max_results", "100");
   url.searchParams.set("start_time", startTime);
   url.searchParams.set("sort_order", "recency");
-  url.searchParams.set("tweet.fields", "id,text,author_id,created_at,lang,public_metrics,possibly_sensitive,attachments");
+  url.searchParams.set("tweet.fields", "id,text,note_tweet,entities,author_id,created_at,lang,public_metrics,possibly_sensitive,attachments");
   url.searchParams.set("expansions", "author_id,attachments.media_keys");
   url.searchParams.set("user.fields", "id,name,username,verified,public_metrics");
   url.searchParams.set("media.fields", "media_key,type,url,preview_image_url,width,height,duration_ms,variants");
@@ -193,7 +193,7 @@ function makeRow(tweet, user, media, collector, manualReviewOnly) {
     trust_tier: official ? 1 : 4,
     independence_key: `${official ? "official" : "monitored"}:${username.toLowerCase()}`,
     source_created_at: tweet.created_at || null,
-    source_text: tweet.text || "",
+    source_text: tweet.note_tweet?.text || tweet.text || "",
     media,
     raw_payload: {
       tweet,

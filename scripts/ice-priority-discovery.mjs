@@ -28,7 +28,7 @@ const MONITORED_HANDLES = [
 ];
 
 function rotationSlot() {
-  return Math.floor(Date.now() / (15 * 60 * 1000)) % ROTATION_GROUPS;
+  return Math.floor(Date.now() / (60 * 60 * 1000)) % ROTATION_GROUPS;
 }
 
 function handlesForRun() {
@@ -140,7 +140,7 @@ async function fetchUserTimeline(user, startTime) {
   let paginationToken = "";
   for (let page = 0; page < Math.max(1, Math.min(5, MAX_PAGES)); page += 1) {
     const url = new URL(`${X_API}/users/${encodeURIComponent(user.id)}/tweets`);
-    url.searchParams.set("max_results", "100");
+    url.searchParams.set("max_results", "20");
     url.searchParams.set("start_time", startTime);
     url.searchParams.set("exclude", "retweets,replies");
     if (paginationToken) url.searchParams.set("pagination_token", paginationToken);
@@ -158,7 +158,7 @@ async function fetchUserTimeline(user, startTime) {
 async function searchSingleHandle(username, startTime) {
   const url = new URL(`${X_API}/tweets/search/recent`);
   url.searchParams.set("query", `from:${username} -is:retweet -is:reply`);
-  url.searchParams.set("max_results", "100");
+  url.searchParams.set("max_results", "20");
   url.searchParams.set("start_time", startTime);
   url.searchParams.set("sort_order", "recency");
   url.searchParams.set("tweet.fields", "id,text,note_tweet,entities,author_id,created_at,lang,public_metrics,possibly_sensitive,attachments");

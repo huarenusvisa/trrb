@@ -12,6 +12,8 @@ concurrency:
 
 env:
   NODE_OPTIONS: "--max-http-header-size=65536"
+  NEWS_BUDGET_ENFORCE: "1"
+  NEWS_BUDGET_PIPELINE: "ice"
   X_BEARER_TOKEN: ${{ secrets.X_BEARER_TOKEN || secrets.X_API_BEARER_TOKEN || secrets.TWITTER_BEARER_TOKEN }}
   OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
   OPENAI_MODEL: ${{ secrets.OPENAI_MODEL }}
@@ -21,15 +23,15 @@ env:
   ICE_PRIORITY_LOOKBACK_MINUTES: "720"
   ICE_EXTRA_LOOKBACK_MINUTES: "720"
   ICE_ADDED_SOURCE_LOOKBACK_HOURS: "12"
-  ICE_ADDED_SOURCE_MAX_PAGES: "3"
-  ICE_PRIORITY_MAX_PAGES: "6"
+  ICE_ADDED_SOURCE_MAX_PAGES: "1"
+  ICE_PRIORITY_MAX_PAGES: "1"
   ICE_PRIORITY_ROTATION_GROUPS: "4"
   ICE_ERO_ROTATION_GROUPS: "4"
   ICE_ERO_LOOKBACK_HOURS: "12"
   # 高召回只扫最近6小时，并提高最低评分和来源门槛，减少旧闻与低价值社媒噪声。
   ICE_HIGH_RECALL_LOOKBACK_HOURS: "6"
-  ICE_HIGH_RECALL_MAX_PAGES: "2"
-  ICE_HIGH_RECALL_RESULTS_PER_QUERY: "50"
+  ICE_HIGH_RECALL_MAX_PAGES: "1"
+  ICE_HIGH_RECALL_RESULTS_PER_QUERY: "10"
   ICE_HIGH_RECALL_MIN_SCORE: "60"
   ICE_HIGH_RECALL_MIN_FOLLOWERS: "1000"
   # 新闻质量门禁优先剔除普通单词ice、旧闻回顾、纯观点和没有具体事件的内容。
@@ -85,7 +87,12 @@ jobs:
           node-version: "22"
 
       - name: Validate unified editorial and collection rules
-        run: node --test scripts/news-editorial-policy.test.mjs scripts/ice-news-quality-gate.test.mjs scripts/official-content-routing.test.mjs scripts/ice-original-posts.test.mjs
+        env:
+          NEWS_BUDGET_ENFORCE: "0"
+        run: node --test scripts/news-budget.test.mjs scripts/news-priority.test.mjs scripts/news-editorial-policy.test.mjs scripts/ice-news-quality-gate.test.mjs scripts/official-content-routing.test.mjs scripts/ice-original-posts.test.mjs
+
+      - name: Enable shared budget after checkout and validation
+        run: echo 'NODE_OPTIONS=--max-http-header-size=65536 --import ./scripts/news-budget-preload.mjs' >> "$GITHUB_ENV"
 
       - name: Validate required secrets
         if: steps.window.outputs.allowed == 'true'
@@ -119,12 +126,12 @@ jobs:
           set +e
           ok=0
           for script in \
+            scripts/ice-official-web-discovery.mjs \
             scripts/ice-priority-discovery.mjs \
             scripts/ice-ero-official-discovery.mjs \
             scripts/ice-extra-monitored-discovery.mjs \
             scripts/ice-added-source-discovery.mjs \
-            scripts/ice-high-recall-discovery.mjs \
-            scripts/ice-official-web-discovery.mjs
+            scripts/ice-high-recall-discovery.mjs
           do
             node "$script" && ok=1
           done
@@ -184,3 +191,7 @@ jobs:
           ICE_HEARTBEAT_STATUS: "failure"
           ICE_HEARTBEAT_ERROR: "ICE唯一生产流水线失败"
         run: node scripts/ice-pipeline-heartbeat.mjs || true
+
+      - name: Report shared news budget
+        if: always()
+        run: node scripts/news-budget-report.mjs

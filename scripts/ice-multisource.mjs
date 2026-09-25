@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import {compareNewsPriority,newsPriority} from './news-priority.mjs';
+import {isBudgetDeferred} from './news-cost-model.mjs';
 import fs from "node:fs/promises";
 import crypto from "node:crypto";
 import process from "node:process";
@@ -683,12 +685,13 @@ async function backlog() {
     query: {
       select: "*",
       processing_status: "in.(collected,failed)",
-      attempts: `lt.${intEnv("ICE_MAX_RETRIES", 5, 1, 20)}`,
-      order: "created_at.asc",
-      limit: String(intEnv("ICE_MAX_AI_POSTS_PER_RUN", 12, 1, 50)),
+      attempts: `lt.${intEnv("ICE_MAX_RETRIES", 2, 1, 2)}`,
+      source_created_at: `gte.${new Date(Date.now()-12*3600000).toISOString()}`,
+      order: "trust_tier.asc,source_created_at.desc",
+      limit: "200",
     },
   });
-  return Array.isArray(rows) ? rows : [];
+  return (Array.isArray(rows) ? rows : []).filter(p=>newsPriority(p).eligible).sort(compareNewsPriority).slice(0,intEnv("ICE_MAX_AI_POSTS_PER_RUN",12,1,50));
 }
 async function updatePost(id, patch) {
   const rows = await sb("ice_posts", {
@@ -813,6 +816,10 @@ async function processPost(post) {
     await attachEvidence(story, updated);
     return story.id;
   } catch (error) {
+    if (isBudgetDeferred(error)) {
+      await updatePost(post.id,{processing_status:'collected',attempts:Number(post.attempts || 0),last_error:'预算保护：等待下一可用额度'});
+      return null;
+    }
     await updatePost(post.id, {
       processing_status: "failed",
       last_error: String(error.message || error).slice(0, 2000),
@@ -1145,7 +1152,9 @@ async function main() {
     if (storyId) storyIds.add(storyId);
   }
   const reviewIds = await storiesForReview([...storyIds]);
-  for (const storyId of reviewIds) await judgeStory(storyId);
+  for (const storyId of reviewIds) {
+    try {await judgeStory(storyId);} catch(error) {if(isBudgetDeferred(error)){console.log(error.message);break;} throw error;}
+  }
 
   console.log(
     `运行完成：新收集${collected}条，AI处理${pending.length}条，交叉复核${reviewIds.length}个事件`

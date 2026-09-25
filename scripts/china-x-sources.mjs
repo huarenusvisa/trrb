@@ -42,8 +42,15 @@ export function politicalReviewReason(tweet) {
 }
 export async function collectChinaMediaPosts({request,readJson,bearer,lookbackHours=12,mediaFor,includeMonitors=false}) {
  const collected=[];
- for(const source of [...CHINA_X_SOURCES,...(includeMonitors?CHINA_X_MONITORS:[])]) {
-  for (const query of chinaMediaQueries(source)) {
+ const offset=Math.floor(Date.now()/3600000)%CHINA_X_SOURCES.length;
+ const publishers=[...CHINA_X_SOURCES.slice(offset),...CHINA_X_SOURCES.slice(0,offset)];
+ const sources=[...publishers,...(includeMonitors?CHINA_X_MONITORS:[])];
+ // One primary topic query per publisher before spending on extended keyword lists.
+ const queries=sources.map(source=>({source,queries:chinaMediaQueries(source)}));
+ for(let round=0;round<Math.max(...queries.map(x=>x.queries.length));round++) {
+  for (const item of queries) {
+  const source=item.source, query=item.queries[round];
+  if (!query) continue;
   try {
    const url=new URL('https://api.x.com/2/tweets/search/recent');
    url.searchParams.set('query',query);url.searchParams.set('max_results','20');

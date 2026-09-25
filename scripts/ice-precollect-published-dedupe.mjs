@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import { readAllPages } from "./paged-read.mjs";
 import process from "node:process";
+import {hasMaterialUpdate} from "./ice-fast-intake.mjs";
 import { fileURLToPath } from "node:url";
 
 const REQUIRED = ["SUPABASE_URL", "SUPABASE_SERVICE_ROLE_KEY"];
@@ -75,17 +76,16 @@ async function main(){
     if(isKnownOldEvent(raw)){await markSkipped(post,"known_old_event_repost");stale+=1;continue;}
     if(!Number.isFinite(time)||time<oldestAllowed){await markSkipped(post,"precollect_source_older_than_one_hour");stale+=1;continue;}
     const recent=stories.find((story)=>(post.event_fingerprint&&story.event_fingerprint===post.event_fingerprint)||isSimilar(raw,combinedStoryText(story)));
-    if(recent){await markSkipped(post,"precollect_duplicate_of_recent_one_hour_story",recent.id);recentDuplicate+=1;continue;}
+    if(recent && !hasMaterialUpdate(post,recent)){await markSkipped(post,"precollect_duplicate_of_recent_one_hour_story",recent.id);recentDuplicate+=1;continue;}
     const published=articles.find((article)=>(post.event_fingerprint&&eventFingerprintOfArticle(article)===post.event_fingerprint)||isSimilar(raw,combinedArticleText(article)));
-    if(published){
-      // Product rule: once an auto-collected ICE event has been published, every later auto-collected
-      // related item is killed before review, even when it contains additional details.
+    if(published && !hasMaterialUpdate(post,published)){
+      // Repeated facts are skipped; substantive leads continue to reviewed same-URL updates.
       await markSkipped(post,"precollect_duplicate_of_published_auto_ice_hard_kill",published.id);
       publishedDuplicate+=1;continue;
     }
     passed+=1;
   }
-  console.log(JSON.stringify({stage:"ice-precollect-published-dedupe-v2",policy:"auto_ice_related_hard_kill_human_longform_preserved",scanned:posts.length,auto_published_comparison_set:articles.length,skipped_stale_over_one_hour:stale,skipped_recent_one_hour_duplicates:recentDuplicate,skipped_published_auto_ice_related:publishedDuplicate,passed_to_intake:passed},null,2));
+  console.log(JSON.stringify({stage:"ice-precollect-published-dedupe-v2",policy:"same_event_updates_require_review",scanned:posts.length,auto_published_comparison_set:articles.length,skipped_stale_over_one_hour:stale,skipped_recent_one_hour_duplicates:recentDuplicate,skipped_published_auto_ice_related:publishedDuplicate,passed_to_intake:passed},null,2));
 }
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   main().catch((error)=>{console.error("ICE采集前已发布内容去重失败：",error);process.exitCode=1;});

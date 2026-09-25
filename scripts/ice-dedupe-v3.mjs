@@ -95,7 +95,7 @@ function preferred(a, b) {
   return timeOf(a) <= timeOf(b) ? a : b;
 }
 async function rejectDuplicate(row, keeper, reason) {
-  if (["published", "rejected"].includes(row.status)) return false;
+  if (["published", "rejected"].includes(row.status) || ["editing","approved","rejected"].includes(row.human_review_status) || row.reviewed_by || row.ai_payload?.material_update_pending) return false;
   await rest("ice_stories", { method: "PATCH", query: { id: `eq.${row.id}` }, body: { status: "rejected", decision_reason: `自动查重隐藏：${reason}；保留记录 ${keeper.id}`, updated_at: new Date().toISOString() }, prefer: "return=minimal" });
   return true;
 }
@@ -112,6 +112,7 @@ async function main() {
   const keepers = [];
   let hidden = 0, blockedByPublished = 0, placeholders = 0;
   for (const story of stories) {
+    if (["editing","approved","rejected"].includes(story.human_review_status) || story.reviewed_by || story.ai_payload?.material_update_pending) {keepers.push(story);continue;}
     const empty = !String(story.content || "").trim() || /^ICE候选新闻待审核$/i.test(String(story.title || "").trim());
     if (empty && !["published", "rejected"].includes(story.status)) {
       await rest("ice_stories", { method: "PATCH", query: { id: `eq.${story.id}` }, body: { status: "rejected", decision_reason: "自动隐藏：缺少正文或仍为占位标题", updated_at: new Date().toISOString() }, prefer: "return=minimal" });

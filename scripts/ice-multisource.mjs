@@ -2,6 +2,7 @@
 import fs from "node:fs/promises";
 import crypto from "node:crypto";
 import process from "node:process";
+import newsScope from "../netlify/functions/_shared/news-collection-scope.js";
 
 const args = new Map(process.argv.slice(2).map((arg) => {
   const value = arg.replace(/^--/, "");
@@ -45,6 +46,7 @@ function digest(value) {
 }
 
 function localIceRelevance(text) {
+  if (newsScope.collectionScope(text)) return true;
   const value = String(text || "").toLowerCase();
   const agency =
     /\bice\b|immigration and customs enforcement|\bhsi\b|\bero\b|homeland security investigations/.test(value);
@@ -700,8 +702,8 @@ async function updatePost(id, patch) {
 async function extractPost(post) {
   return openAiStructured(
     [
-      "你是唐人日报ICE专题事实提取编辑。",
-      "判断帖子是否直接涉及美国ICE拘留、逮捕、执法、遣返、移送、拘留设施、相关法院程序或重要政策。",
+      "你是唐人日报美国时政、中国政治、法院动态与执法信息事实提取编辑。",
+      "判断帖子是否为美国时政、中国政治、法院裁决或程序进展、ICE/DHS/ERO/HSI/CBP/FBI/DOJ等执法机构的具体动态，或有可说明机制的华人相关签证、留学、就业、经商、税务、家庭与安全事件。以上任一项可设relevant=true，无需必须提及ICE；只有观点或宣传而无新事件时为false。",
       "只提取原帖明确出现的信息，不补充外部事实。",
       "严格区分逮捕、拘留、指控、起诉、定罪、判刑、遣返、移送和释放。",
       "event_fingerprint使用稳定的英文小写短语，按日期、地点、核心主体、事件类型组织；未知部分留空。",
@@ -914,7 +916,7 @@ async function scheduledAt() {
 async function judgeStory(storyId) {
   const storyRows = await sb("ice_stories", {
     query: {
-      select: "id,status,human_review_status",
+      select: "id,status,human_review_status,reviewed_by,ai_payload",
       id: `eq.${storyId}`,
       limit: "1",
     },
@@ -922,7 +924,7 @@ async function judgeStory(storyId) {
   const storyMeta = Array.isArray(storyRows) ? storyRows[0] : null;
   if (!storyMeta) return;
   if (["approved","published","rejected"].includes(storyMeta.status)) return;
-  if (storyMeta.human_review_status === "editing") {
+  if (["editing","approved","rejected"].includes(storyMeta.human_review_status) || storyMeta.reviewed_by || storyMeta.ai_payload?.material_update_pending) {
     console.log(`${storyId}：管理员正在编辑，本轮跳过AI覆盖`);
     return;
   }
@@ -935,7 +937,7 @@ async function judgeStory(storyId) {
 
   const ai = await openAiStructured(
     [
-      "你是唐人日报ICE专题交叉核验主编。",
+      "你是唐人日报时政、法院与执法新闻交叉核验主编。",
       "只采用至少一个来源明确支持且没有被其他可靠来源冲突的事实。",
       "官方机构单一来源可以进入发布判断，但必须使用“ICE表示、DHS称、警方通报”等归因。",
       "非官方媒体、记者、律师、机构或个体，至少需要两个独立来源相互印证。",

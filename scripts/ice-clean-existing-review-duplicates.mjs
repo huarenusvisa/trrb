@@ -7,6 +7,7 @@ async function sb(table, options = {}) {
     : sbOnce(table, options);
 }
 import process from "node:process";
+import {reviewedStoryReady} from "./news-editorial-policy.mjs";
 
 const REQUIRED = ["SUPABASE_URL", "SUPABASE_SERVICE_ROLE_KEY"];
 const MAX_AGE_MINUTES = Number(process.env.ICE_MAX_SOURCE_AGE_MINUTES || 60);
@@ -138,7 +139,7 @@ async function main() {
   const cutoff = new Date(Date.now() - MAX_AGE_MINUTES * 60000).toISOString();
   const articleCutoff = new Date(Date.now() - PUBLISHED_DAYS * 86400000).toISOString();
   const [storiesRaw, articlesRaw] = await Promise.all([
-    sb("ice_stories", { query: { select: "id,title,summary,content,cover_image,first_seen_at,last_seen_at,created_at,status,human_review_status,decision_reason,event_fingerprint,official_source_count,independent_source_count,ai_payload", status: "in.(collecting,pending_review,pending_corroboration,approved)", order: "last_seen_at.desc.nullslast,created_at.desc", limit: "1500" } }),
+    sb("ice_stories", { query: { select: "id,title,summary,content,cover_image,first_seen_at,last_seen_at,created_at,status,human_review_status,decision_reason,event_fingerprint,official_source_count,independent_source_count,reviewed_by,ai_payload", status: "in.(collecting,pending_review,pending_corroboration,approved)", order: "last_seen_at.desc.nullslast,created_at.desc", limit: "1500" } }),
     loadPublishedArticles(articleCutoff)
   ]);
   const stories = (Array.isArray(storiesRaw) ? storiesRaw : []).sort((a, b) => priority(b) - priority(a));
@@ -146,6 +147,7 @@ async function main() {
   const kept = [];
   let stale = 0, oldNews = 0, resetAutomaticChecks = 0, publishedDuplicate = 0, queueDuplicate = 0, retained = 0;
   for (const story of stories) {
+    if (["editing","approved","rejected"].includes(story.human_review_status) || story.reviewed_by || story.ai_payload?.material_update_pending || reviewedStoryReady(story)) {kept.push(story);retained++;continue;}
     if (await resetAutomaticOldNewsConfirmation(story)) resetAutomaticChecks += 1;
     const review = payload(story);
     if (review.appears_old_news === true && review.manual_old_news_confirmation !== true) {

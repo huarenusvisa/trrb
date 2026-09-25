@@ -7,6 +7,8 @@ async function sb(table, options = {}) {
     : sbOnce(table, options);
 }
 import process from "node:process";
+import {fileURLToPath} from "node:url";
+import newsScope from "../netlify/functions/_shared/news-collection-scope.js";
 import iceClassifier from "../netlify/functions/_shared/ice-enforcement.js";
 
 const { isIceEnforcementEvidence } = iceClassifier;
@@ -69,11 +71,12 @@ function highRecallSignal(row) {
 function hasAgencyContext(text) {
   return ACRONYM_CONTEXT.test(text) || DIRECT_PHRASE.test(text) || (LOWERCASE_ICE.test(text) && IMMIGRATION_CONTEXT.test(text));
 }
-function isCandidate(row) {
+export function isCandidate(row) {
   const text = String(row?.source_text || "");
   const username = String(row?.source_username || "").replace(/^@/, "").trim();
   const sourceType = String(row?.source_type || "").trim();
 
+  if (CANDIDATE_SOURCE_TYPE.test(sourceType) && newsScope.collectionScope(text, row)) return true;
   if (isIceEnforcementEvidence(text, username)) return true;
   if (!CANDIDATE_SOURCE_TYPE.test(sourceType) && !NATIVE_AGENCY_HANDLE.test(username)) return false;
   if (!ACTION_CONTEXT.test(text)) return false;
@@ -130,7 +133,7 @@ async function main() {
   }, null, 2));
 }
 
-main().catch((error) => {
+if (process.argv[1] === fileURLToPath(import.meta.url)) main().catch((error) => {
   console.error("ICE候选内容过滤失败：", error);
   process.exitCode = 1;
 });

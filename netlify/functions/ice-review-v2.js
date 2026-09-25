@@ -1,3 +1,5 @@
+const {routeOfficialContent} = require('./_shared/official-content-routing');
+const {manualEditorialMetadata} = require('./_shared/news-editorial-policy');
 const crypto = require("node:crypto");
 const { authenticateStaff, rest, safeText } = require("./_shared/supabase-admin");
 const { buildPeopleCountMetadata } = require("./_shared/ice-people-count");
@@ -131,20 +133,23 @@ function shingles(value) { const text = String(value || "").toLowerCase().replac
 function similarity(a, b) { const left = shingles(a), right = shingles(b); if (!left.size || !right.size) return 0; let common = 0; for (const token of left) if (right.has(token)) common += 1; return common / (left.size + right.size - common); }
 function assertEditorialReady(story, title, content, input = {}) {
   const payload = story.ai_payload && typeof story.ai_payload === "object" ? story.ai_payload : {};
-  if (!isIceEnforcementText(title, story.summary, content)) throw Object.assign(new Error("该内容不是明确的ICE执法新闻，不能发布到ICE栏目"), { statusCode: 400 });
+  if (!routeOfficialContent(title,story.summary,content)) throw Object.assign(new Error("该内容不是明确的ICE执法或已批准时政、法院、警情选题，不能发布"), { statusCode: 400 });
   if (!chinese(title) || !chinese(content)) throw Object.assign(new Error("标题和正文必须是中文，禁止直接发布英文原文"), { statusCode: 400 });
   if (payload.manual_old_news_confirmation !== true && input.not_old_news_confirmed !== true) throw Object.assign(new Error("必须由编辑人工确认不是旧闻，不能发布"), { statusCode: 400 });
   if (payload.appears_old_news === true) throw Object.assign(new Error("系统识别为旧闻，不能发布"), { statusCode: 400 });
   if (Number(payload.image_count || 0) > 0 && payload.image_grounding_used !== true && input.image_reviewed !== true) throw Object.assign(new Error("原帖含图片但尚未完成读图核验，不能发布"), { statusCode: 400 });
 }
 async function recentSimilarArticle(title, summary, content) {
+  const route = routeOfficialContent(title,summary,content);
   const cutoff = new Date(Date.now() - 730 * 86400000).toISOString();
-  const rows = await rest("articles", { query: { select: "id,title,summary,content", topic_key: "eq.ice", status: "eq.published", published_at: `gte.${cutoff}`, order: "published_at.desc", limit: "1000" } });
+  const rows = await rest("articles", { query: { select: "id,title,summary,content", category_name: `eq.${route?.categoryName || "ICE执法动态"}`, status: "eq.published", published_at: `gte.${cutoff}`, order: "published_at.desc", limit: "1000" } });
   const source = `${title}${summary}${content}`;
   return (Array.isArray(rows) ? rows : []).find((article) => similarity(source, `${article.title || ""}${article.summary || ""}${article.content || ""}`) >= 0.72) || null;
 }
 
-async function patchPublishedArticle(articleId, fields) {
+async function patchPublishedArticle(articleId, fields, story = {}) {
+  const route = routeOfficialContent(fields.title,fields.summary,fields.content);
+  const prior = await rest("articles",{query:{select:"metadata",id:`eq.${articleId}`,limit:"1"}});
   await rest("articles", {
     method: "PATCH",
     query: { id: `eq.${articleId}` },
@@ -157,7 +162,8 @@ async function patchPublishedArticle(articleId, fields) {
       seo_description: fields.summary || fields.content.slice(0, 160),
       status: "published",
       visibility: "public",
-      topic_key: "ice",
+      topic_key: route?.topicKey || null,category_name:route.categoryName,
+      metadata:{...(prior?.[0]?.metadata || {}),...manualEditorialMetadata(story,fields.title,fields.content),official_content_route:route,manual_override:true},
       updated_at: nowIso()
     },
     prefer: "return=minimal"
@@ -191,7 +197,7 @@ async function updatePublishedArticle(story, actor, fields, input = {}) {
     }
   };
   const [, updated] = await Promise.all([
-    patchPublishedArticle(story.article_id, fields),
+    patchPublishedArticle(story.article_id, fields, story),
     patchStory(story.id, storyPatch)
   ]);
   await logReview(story, actor, fields.notes, story.article_id);
@@ -204,6 +210,7 @@ async function publishNow(story, actor, input) {
   const content = safeText(input.content || story.final_content || story.content || summary, Infinity);
   const coverImage = safeText(input.cover_image || story.final_cover_image || story.cover_image, 3000);
   const notes = safeText(input.notes, 4000);
+  const route = routeOfficialContent(title,summary,content);
   if (!title || !content) {
     const error = new Error("标题和正文不能为空");
     error.statusCode = 400;
@@ -216,7 +223,7 @@ async function publishNow(story, actor, input) {
   const post = await leadPost(story);
   const eventType = story.event_type || post?.event_type || "other";
   const peopleMetadata = buildPeopleCountMetadata({ title, summary, content, event_type: eventType });
-  const sourcePlatform = post ? "x" : "manual_ice_review";
+  const sourcePlatform = post ? (/^official-web-/.test(post.x_post_id) ? "official_web" : "x") : "manual_ice_review";
   const sourceId = safeText(post?.x_post_id || story.id, 200);
   const [duplicate, similarCandidate, evidence] = await Promise.all([
     existingArticle(sourcePlatform, sourceId),
@@ -235,10 +242,10 @@ async function publishNow(story, actor, input) {
       body: {
         id: articleId,
         title,
-        slug: `ice-${story.event_fingerprint || story.id}`,
+        slug: `${route.key}-${story.event_fingerprint || story.id}`,
         summary,
         content,
-        category_name: "ICE执法动态",
+        category_name: route.categoryName,
         cover_image: coverImage,
         seo_keywords: "ICE,移民执法,拘留,遣返,美国移民",
         author: "唐人日报编辑部",
@@ -246,7 +253,7 @@ async function publishNow(story, actor, input) {
         visibility: "public",
         published_at: time,
         created_at: time,
-        topic_key: "ice",
+        topic_key: route.topicKey || null,
         source_platform: sourcePlatform,
         source_post_id: sourceId,
         source_url: post?.x_url || "https://trrb.net/ice",
@@ -255,6 +262,7 @@ async function publishNow(story, actor, input) {
         ai_confidence: story.ai_confidence,
         review_status: "human_published_override",
         metadata: {
+          ...manualEditorialMetadata(story,title,content),official_content_route:route,
           event_fingerprint: story.event_fingerprint,
           event_type: eventType,
           city: story.ai_payload?.city || post?.city || "",
@@ -285,7 +293,7 @@ async function publishNow(story, actor, input) {
     const article = Array.isArray(rows) ? rows[0] : rows;
     articleId = String(article?.id || articleId);
   } else {
-    await patchPublishedArticle(articleId, { title, summary, content, coverImage });
+    await patchPublishedArticle(articleId, { title, summary, content, coverImage }, story);
   }
 
   const storyPatch = {

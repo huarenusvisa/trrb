@@ -23,6 +23,7 @@ export function chinaMediaQuery(source) {
 export function chinaMediaQueries(source) {
  const queries=[chinaMediaQuery(source)];
  if (!source.reviewOnly) queries.push(`from:${source.handle} (美国 OR 美國 OR 美方 OR 白宫 OR 白宮 OR 五角大楼 OR 五角大樓 OR 特朗普 OR 川普 OR 台海 OR 军售 OR 軍售 OR 美军 OR ICE OR FBI OR CBP OR Pentagon OR Hegseth OR "United States" OR "White House") -is:retweet -is:reply`);
+ if (!source.reviewOnly) queries.push(`from:${source.handle} (法院 OR 判例 OR 裁定 OR 上诉 OR 留学生 OR 华人 OR 签证 OR 关税 OR 制裁 OR 反腐 OR 任免 OR 国务院 OR SupremeCourt OR USCIS OR DHS OR HSI OR DOJ) -is:retweet -is:reply`);
  const prefix=`from:${source.handle} (`; const suffix=') -is:retweet -is:reply';
  let terms=[];
  for(const name of chinaPersonNames()) {

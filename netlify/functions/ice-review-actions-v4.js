@@ -1,3 +1,5 @@
+const {routeOfficialContent} = require('./_shared/official-content-routing');
+const {manualEditorialMetadata} = require('./_shared/news-editorial-policy');
 const { safeText, rest, authenticateStaff } = require('./_shared/supabase-admin');
 const { isIceEnforcementText } = require('./_shared/ice-enforcement');
 
@@ -17,7 +19,7 @@ function nowIso() { return new Date().toISOString(); }
 function chinese(value) { return /[\u3400-\u9fff]/u.test(String(value || '')); }
 function assertEditorialReady(story, fields, input = {}) {
   const payload = story.ai_payload && typeof story.ai_payload === 'object' ? story.ai_payload : {};
-  if (!isIceEnforcementText(fields.title, fields.summary, fields.content)) { const error = new Error('该内容不是明确的ICE执法新闻，不能批准发布'); error.statusCode = 400; throw error; }
+  if (!routeOfficialContent(fields.title,fields.summary,fields.content)) { const error = new Error('该内容不是明确的ICE执法或已批准时政、法院、警情选题，不能批准发布'); error.statusCode = 400; throw error; }
   if (!chinese(fields.title) || !chinese(fields.content)) { const error = new Error('标题和正文必须是中文，禁止直接发布英文原文'); error.statusCode = 400; throw error; }
   if (payload.manual_old_news_confirmation !== true && input.not_old_news_confirmed !== true) { const error = new Error('必须由编辑人工确认不是旧闻，不能批准发布'); error.statusCode = 400; throw error; }
   if (payload.appears_old_news === true) { const error = new Error('系统识别为旧闻，不能批准发布'); error.statusCode = 400; throw error; }
@@ -167,6 +169,7 @@ async function approveStory(story, actor, input) {
     reviewed_at: nowIso(),
     ai_payload: {
       ...payload,
+      ...manualEditorialMetadata(story,fields.title,fields.content),
       old_news_checked: payload.manual_old_news_confirmation === true || input.not_old_news_confirmed === true,
       manual_old_news_confirmation: payload.manual_old_news_confirmation === true || input.not_old_news_confirmed === true,
       image_grounding_used: payload.image_grounding_used === true || input.image_reviewed === true,

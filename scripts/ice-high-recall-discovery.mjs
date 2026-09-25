@@ -1,10 +1,16 @@
 #!/usr/bin/env node
 import process from "node:process";
+import newsScope from "../netlify/functions/_shared/news-collection-scope.js";
 
 const X_API = "https://api.x.com/2";
 const REQUIRED = ["X_BEARER_TOKEN", "SUPABASE_URL", "SUPABASE_SERVICE_ROLE_KEY"];
 
 const SEARCH_QUERIES = [
+  '(from:WhiteHouse OR from:USCIS OR from:TheJusticeDept OR from:FBI OR from:StateDept) (policy OR rule OR court OR announced OR issued OR charged) -is:retweet -is:reply',
+  '("Supreme Court" OR "federal court" OR "circuit court") (ruled OR ruling OR injunction OR appeal OR immigration) -is:retweet -is:reply',
+  '("United States" OR Congress OR "White House") (policy OR legislation OR executive OR sanctions OR tariff) (announced OR signed OR passed OR issued) -is:retweet -is:reply',
+  '("Chinese Americans" OR "Chinese students" OR "Chinese nationals") (visa OR policy OR court OR fraud OR arrested OR tax) -is:retweet -is:reply',
+  '(China OR "Xi Jinping" OR 中国 OR 习近平 OR 中共) (policy OR sanctions OR government OR 政策 OR 任免 OR 反腐 OR 调查) -is:retweet -is:reply',
   // 高召回：重大执法、枪击、追车、现场视频
   '("ICE agent" OR "ICE agents" OR ICE) (shooting OR shot OR gunfire OR fired OR chase OR crash OR "use of force") -is:retweet lang:en',
   '("Immigration and Customs Enforcement" OR ICE) (arrest OR arrested OR detained OR detention OR raid OR operation OR custody OR "taken into custody" OR "taken away" OR dragged OR "broke the window" OR "vehicle stop") -is:retweet lang:en',
@@ -111,7 +117,7 @@ function authorMap(includes) {
 
 function relevanceScore(text, mediaCount, author) {
   const value = String(text || "").toLowerCase();
-  let score = 0;
+  let score = newsScope.collectionScope(text) ? 60 : 0;
 
   if (/\bice\b|immigration and customs enforcement|immigration agents|federal agents|\bero\b|\bhsi\b|homeland security investigations|移民与海关执法局|国土安全调查局|移民局特工|移民执法人员/.test(value)) score += 35;
   if (/shoot|shot|gunfire|fired|chase|raid|arrest|detain|detention|deport|removal|custody|operation|use of force|traffick|smuggl|rescued|recovered|missing children|taken into custody|taken away|dragged|broke the window|抓捕|逮捕|拘留|羁押|带走|抓走|遣返|驱逐|突袭|执法|破窗|拖出/.test(value)) score += 30;

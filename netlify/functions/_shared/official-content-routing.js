@@ -1,3 +1,4 @@
+const { collectionScope } = require('./news-collection-scope');
 const { isIceEnforcementText } = require('./ice-enforcement');
 
 function normalize(...values) {
@@ -40,16 +41,19 @@ function routeOfficialContent(title, summary, content, evidence = []) {
   if (has(text, /\beb-?2\b.*\bniw\b|国家利益豁免|\bniw\b/)) return knowledge('职业移民', 'EB-2 NIW', 'NIW policy');
   if (has(text, /\buscis\b|美国公民及移民服务局|移民局/)) return knowledge('境内身份转换', 'USCIS政策与表格', 'general USCIS policy or form update');
 
+  const scope = collectionScope(text);
+  if (scope?.key === 'china') return {key:'china',categoryName:'中国热门头条',topicKey:null,reason:scope.reason};
   const criminalAction = has(text, /逮捕|拘捕|被捕|起诉|刑事指控|枪击|命案|谋杀|诈骗|贩毒|绑架|搜查令|通缉|arrest|indict|criminal charge|shooting|murder|fraud|drug trafficking|warrant/);
   const criminalAgency = has(text, /\bfbi\b|联邦调查局|司法部|\bdoj\b|检察官|警察|警方|警长|sheriff|police|prosecutor/);
   if (criminalAction && criminalAgency) {
     return { key: 'us-crime', categoryName: '美国警情', topicKey: null, reason: 'US criminal investigation or police action' };
   }
 
-  if (has(text, /白宫|国会|参议院|众议院|总统|州长|行政命令|最高法院|联邦法院|法案|听证会|政府政策|政策调整|rule|regulation|policy|congress|white house|supreme court/)) {
+  if (scope?.key === 'us-politics' || has(text, /白宫|国会|参议院|众议院|总统|州长|行政命令|最高法院|联邦法院|法案|听证会|政府政策|政策调整|rule|regulation|policy|congress|white house|supreme court/)) {
     return { key: 'us-politics', categoryName: '美国时政', topicKey: null, reason: 'US government, court or public-policy development' };
   }
 
+  if (scope) return {key:scope.key,categoryName:scope.key === 'us-crime' ? '美国警情' : '美国时政',topicKey:null,reason:scope.reason};
   return null;
 }
 

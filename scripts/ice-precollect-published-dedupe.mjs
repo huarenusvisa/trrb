@@ -5,7 +5,7 @@ import {hasMaterialUpdate} from "./ice-fast-intake.mjs";
 import { fileURLToPath } from "node:url";
 
 const REQUIRED = ["SUPABASE_URL", "SUPABASE_SERVICE_ROLE_KEY"];
-const MAX_SOURCE_AGE_MINUTES = Number(process.env.ICE_MAX_SOURCE_AGE_MINUTES || 60);
+const MAX_SOURCE_AGE_MINUTES = Math.min(720, Number(process.env.ICE_MAX_SOURCE_AGE_MINUTES || 60));
 const RECENT_WINDOW_MINUTES = Number(process.env.ICE_RECENT_DUPLICATE_WINDOW_MINUTES || 60);
 const PUBLISHED_LOOKBACK_DAYS = Number(process.env.ICE_PUBLISHED_DEDUPE_DAYS || 730);
 const SIMILARITY_THRESHOLD = Number(process.env.ICE_PUBLISHED_SIMILARITY_THRESHOLD || 0.38);

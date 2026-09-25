@@ -3,8 +3,8 @@ import process from "node:process";
 
 const X_API = "https://api.x.com/2";
 const REQUIRED = ["X_BEARER_TOKEN", "SUPABASE_URL", "SUPABASE_SERVICE_ROLE_KEY"];
-const LOOKBACK_MINUTES = Number(process.env.ICE_PRIORITY_LOOKBACK_MINUTES || 180);
-const ACCEPT_AGE_MINUTES = Number(process.env.ICE_MAX_SOURCE_AGE_MINUTES || 180);
+const LOOKBACK_MINUTES = Math.min(720, Number(process.env.ICE_PRIORITY_LOOKBACK_MINUTES || 180));
+const ACCEPT_AGE_MINUTES = Math.min(720, Number(process.env.ICE_MAX_SOURCE_AGE_MINUTES || 180));
 const MAX_PAGES = Number(process.env.ICE_PRIORITY_MAX_PAGES || 3);
 const ROTATION_GROUPS = Math.max(1, Number(process.env.ICE_PRIORITY_ROTATION_GROUPS || 4));
 

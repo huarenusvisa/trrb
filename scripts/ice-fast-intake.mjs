@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import { readDatabaseQuery } from "./paged-read.mjs";
+import {sourceWithinCollectionWindow} from './news-editorial-policy.mjs';
 import crypto from "node:crypto";
 import process from "node:process";
 import { fileURLToPath } from "node:url";
@@ -453,6 +454,10 @@ async function runFastIntake() {
   let failed = 0;
   for (const post of posts) {
     try {
+      if (!sourceWithinCollectionWindow(post.source_created_at)) {
+        await sb('ice_posts',{method:'PATCH',query:{id:`eq.${post.id}`},body:{relevant:false,processing_status:'irrelevant',last_error:'source_outside_12_hour_window'},prefer:'return=minimal'});
+        continue;
+      }
       if (isReply(post)) { await markReply(post); replies += 1; continue; }
       if (await existingEvidence(post.id)) { alreadyLinked += 1; continue; }
       const historical = historicalByFingerprint.get(eventSignature(post));

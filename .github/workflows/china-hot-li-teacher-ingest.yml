@@ -21,8 +21,8 @@ jobs:
       X_BEARER_TOKEN: ${{ secrets.X_BEARER_TOKEN }}
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       OPENAI_MODEL: ${{ secrets.OPENAI_MODEL }}
-      # 定时任务可能延迟；回看24小时并依靠原帖ID、旧闻检查和近30天语义查重补漏。
-      LI_TEACHER_LOOKBACK_HOURS: ${{ inputs.lookback_hours || '24' }}
+      # 所有新采集来源最多回看12小时；不能通过扩大窗口补抓旧闻。
+      LI_TEACHER_LOOKBACK_HOURS: "12"
       LI_TEACHER_MAX_FETCH: ${{ inputs.recover_archived && '200' || '100' }}
       # 任正非专题按编辑要求暂停；即使本工作流手动开启，也不再搜索或更新该专题。
       LI_TEACHER_MAX_PUBLISH: ${{ inputs.recover_archived && '150' || '20' }}

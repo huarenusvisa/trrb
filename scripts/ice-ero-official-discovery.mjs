@@ -3,7 +3,7 @@ import crypto from "node:crypto";
 import process from "node:process";
 
 const X_API = "https://api.x.com/2";
-const LOOKBACK_HOURS = Number(process.env.ICE_ERO_LOOKBACK_HOURS || 12);
+const LOOKBACK_HOURS = Math.min(12, Number(process.env.ICE_ERO_LOOKBACK_HOURS || 12));
 const MAX_PAGES_PER_QUERY = 3;
 const ROTATION_GROUPS = Math.max(1, Number(process.env.ICE_ERO_ROTATION_GROUPS || 3));
 const DIRECT_BATCH_SIZE = Math.max(1, Number(process.env.ICE_ERO_DIRECT_BATCH_SIZE || 10));

@@ -20,7 +20,7 @@ const TRUSTED_MEDIA_HANDLES = new Set([
   "chicagotribune","abc7chicago","wgnnews"
 ]);
 const AUTO_PUBLISH_SCORE = Number(process.env.ICE_AUTO_PUBLISH_SCORE || 80);
-const MAX_AGE_MINUTES = Number(process.env.ICE_TRUSTED_MAX_AGE_MINUTES || 120);
+const MAX_AGE_MINUTES = Math.min(720, Number(process.env.ICE_TRUSTED_MAX_AGE_MINUTES || 120));
 const ACCEPTED_EDITORIAL_VERSIONS = new Set([ICE_TRANSLATION_VERSION, "zh-title-body-v10-official-context-flex-300-1500", "zh-title-body-v9-official-context-300-1500", "zh-title-body-v8-source-led", "zh-title-body-v7-300-600-800-context-image"]);
 
 function nowIso() { return new Date().toISOString(); }

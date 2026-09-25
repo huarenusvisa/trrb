@@ -255,7 +255,7 @@ test("自动失败草稿可有界重试，人工复核决定不会被自动覆�
   }, qualified), false);
 });
 
-test("中国热门头条打开开关立即采集，并由每小时唤醒器补漏24小时内容", () => {
+test("中国热门头条打开开关立即采集，并由每小时唤醒器回看最多12小时内容", () => {
   const workflow = fs.readFileSync(new URL("../.github/workflows/china-hot-li-teacher-ingest.yml", import.meta.url), "utf8");
   const control = fs.readFileSync(new URL("../.github/workflows/operations-control-plane.yml", import.meta.url), "utf8");
   assert.match(workflow, /OPENAI_API_KEY/);
@@ -264,7 +264,7 @@ test("中国热门头条打开开关立即采集，并由每小时唤醒器补�
   assert.match(workflow, /recover_archived/);
   assert.match(workflow, /repair_today/);
   assert.match(workflow, /--repair-today/);
-  assert.match(workflow, /LI_TEACHER_LOOKBACK_HOURS:.*24/);
+  assert.match(workflow, /LI_TEACHER_LOOKBACK_HOURS:.*12/);
   assert.doesNotMatch(workflow, /schedule:/);
   assert.doesNotMatch(workflow, /collection-cadence-gate/);
   assert.doesNotMatch(workflow, /COLLECTION_CADENCE_MINUTES/);

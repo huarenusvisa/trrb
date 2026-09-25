@@ -3,7 +3,7 @@ import process from "node:process";
 
 const X_API = "https://api.x.com/2";
 const REQUIRED = ["X_BEARER_TOKEN", "SUPABASE_URL", "SUPABASE_SERVICE_ROLE_KEY"];
-const LOOKBACK_HOURS = Number(process.env.ICE_ADDED_SOURCE_LOOKBACK_HOURS || 12);
+const LOOKBACK_HOURS = Math.min(12, Number(process.env.ICE_ADDED_SOURCE_LOOKBACK_HOURS || 12));
 const MAX_PAGES = Math.max(1, Math.min(3, Number(process.env.ICE_ADDED_SOURCE_MAX_PAGES || 2)));
 
 const SOURCES = [

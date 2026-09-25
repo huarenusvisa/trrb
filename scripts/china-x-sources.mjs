@@ -40,14 +40,14 @@ export function politicalReviewReason(tweet) {
  if ((hasChinaSeniorSubject(text) || /Xi Jinping|Chinese leadership/i.test(text)) && /政变|政變|兵变|兵變|夺权|奪權|软禁|軟禁|送医|送醫|抢救|搶救|病危|住院|晕倒|暈倒|派系.*共识|派系.*共識|元老.*共识|元老.*共識|coup|hospitali[sz]ed/i.test(text)) return '重大政治或健康说法：需核查直接证据和独立来源，不能凭照片、缺席或转述自动发布';
  return '';
 }
-export async function collectChinaMediaPosts({request,readJson,bearer,lookbackHours=24,mediaFor,includeMonitors=false}) {
+export async function collectChinaMediaPosts({request,readJson,bearer,lookbackHours=12,mediaFor,includeMonitors=false}) {
  const collected=[];
  for(const source of [...CHINA_X_SOURCES,...(includeMonitors?CHINA_X_MONITORS:[])]) {
   for (const query of chinaMediaQueries(source)) {
   try {
    const url=new URL('https://api.x.com/2/tweets/search/recent');
    url.searchParams.set('query',query);url.searchParams.set('max_results','20');
-   url.searchParams.set('start_time',new Date(Date.now()-lookbackHours*3600000).toISOString());
+   url.searchParams.set('start_time',new Date(Date.now()-Math.min(12,lookbackHours)*3600000).toISOString());
    url.searchParams.set('tweet.fields','id,text,note_tweet,created_at,lang,author_id,entities,public_metrics,attachments,referenced_tweets');
    url.searchParams.set('expansions','author_id,attachments.media_keys');url.searchParams.set('user.fields','username');
    url.searchParams.set('media.fields','media_key,type,url,preview_image_url,width,height');

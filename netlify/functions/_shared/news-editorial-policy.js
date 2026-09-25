@@ -55,4 +55,8 @@ function manualEditorialMetadata(story,title,content) {
   return {editorial_policy_version:EDITORIAL_POLICY_VERSION,editorial_depth:depth,article_format:depth==='deep'?'deep_analysis':depth==='brief'?'hot_brief':'report',body_character_count:n,editorial_review:checked?p.editorial_review:null,context_research:p.context_research||null,supporting_sources:p.context_research?.sources||[],manual_content_review:true};
 }
 
-module.exports = {EDITORIAL_POLICY_VERSION, ICE_TRANSLATION_VERSION, DEEP_MIN, DEEP_MAX, DEEP_REVIEW_FIELDS, countChinese, contentDigest, sourcePublisher, factualSources, independentSourceCount, deepQualityErrors, reviewedStoryReady, DEEP_RESEARCH_INSTRUCTIONS, manualEditorialMetadata};
+function sourceWithinCollectionWindow(value,now=Date.now()) {
+  const time=Date.parse(value || '');
+  return Number.isFinite(time) && now-time>=0 && now-time<=12*3600000;
+}
+module.exports = {EDITORIAL_POLICY_VERSION, ICE_TRANSLATION_VERSION, DEEP_MIN, DEEP_MAX, DEEP_REVIEW_FIELDS, countChinese, contentDigest, sourcePublisher, factualSources, independentSourceCount, deepQualityErrors, reviewedStoryReady, DEEP_RESEARCH_INSTRUCTIONS, manualEditorialMetadata,sourceWithinCollectionWindow};

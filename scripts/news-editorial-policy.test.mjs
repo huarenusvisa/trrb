@@ -56,7 +56,7 @@ test('unrelated, opinion-only and old uploads remain ineligible',()=>{
 });
 test('official feed rejects foreign hosts, old items, missing dates and future timestamps',()=>{
  const now=Date.parse('2026-09-25T10:00:00Z');const item=(url,date)=>`<item><title>DOJ issued charges</title><link>${url}</link><pubDate>${date}</pubDate><description>Facts</description></item>`;
- const xml='<rss><channel>'+item('https://www.justice.gov/opa/a','Thu, 24 Sep 2026 12:00:00 GMT')+item('https://justice.gov.evil.test/a','Thu, 24 Sep 2026 12:00:00 GMT')+item('https://www.justice.gov/opa/b','2025-01-01')+item('https://www.justice.gov/opa/c','2027-01-01')+'</channel></rss>';
+ const xml='<rss><channel>'+item('https://www.justice.gov/opa/a','Fri, 25 Sep 2026 00:00:00 GMT')+item('https://justice.gov.evil.test/a','Fri, 25 Sep 2026 00:00:00 GMT')+item('https://www.justice.gov/opa/b','2025-01-01')+item('https://www.justice.gov/opa/c','2027-01-01')+'</channel></rss>';
  assert.equal(parseOfficialFeed(xml,now).length,1);assert.equal(allowedOfficialUrl('https://user@justice.gov/a'),false);
  assert.equal(officialArticleText('<main><p>Original statement</p><script>invented</script></main>'),'Original statement');
 });
@@ -106,10 +106,12 @@ test('human approval of an edited policy story remains publishable but loses unc
 });
 
 import {isOlderThanCutoff} from './ice-drop-stale-posts.mjs';
-test('official web releases survive 12-hour social cleanup and expire at 24 hours',()=>{
+test('official websites obey the same strict 12-hour limit as social sources',()=>{
  const now=Date.parse('2026-09-25T02:00:00Z'),cutoff=now-12*3600000;
  const release={source_created_at:'2026-09-24T12:00:00Z',source_type:'official',trust_tier:1,raw_payload:{source_platform:'official_web'},x_url:'https://www.justice.gov/opa/release'};
- assert.equal(isOlderThanCutoff(release,cutoff,now),false);
+ assert.equal(isOlderThanCutoff(release,cutoff,now),true);
+ assert.equal(isOlderThanCutoff({...release,source_created_at:'2026-09-24T15:00:00Z'},cutoff,now),false);
+ assert.equal(parseOfficialFeed('<rss><item><title>Official release</title><link>https://www.justice.gov/opa/release</link><pubDate>2026-09-24T12:00:00Z</pubDate></item></rss>',now).length,0);
  assert.equal(isOlderThanCutoff({...release,raw_payload:{source_platform:'x'}},cutoff,now),true);
  assert.equal(isOlderThanCutoff({...release,trust_tier:2},cutoff,now),true);
  assert.equal(isOlderThanCutoff({...release,x_url:'https://justice.gov.evil.test/release'},cutoff,now),true);
@@ -122,4 +124,11 @@ test('nonofficial political and court candidates retain their route without gain
  const media={source_type:'major_media',source_username:'Reuters',trust_tier:2,source_text:'A federal court issued a new injunction on immigration policy.'};
  const routes=candidateRoutes(story,[media]);assert.equal(routes.candidate.key,'us-politics');assert.equal(routes.official,null);
  const officialRoutes=candidateRoutes(story,[{...media,source_type:'official',trust_tier:1}]);assert.equal(officialRoutes.official.key,'us-politics');
+});
+
+import {sourceWithinCollectionWindow} from './news-editorial-policy.mjs';
+test('source freshness uses original time and fails closed outside twelve hours',()=>{
+ const now=Date.parse('2026-09-25T02:00:00Z');
+ assert.equal(sourceWithinCollectionWindow('2026-09-24T14:00:00Z',now),true);
+ for(const time of ['2026-09-24T13:59:59Z','2026-09-25T02:00:01Z','',null])assert.equal(sourceWithinCollectionWindow(time,now),false);
 });

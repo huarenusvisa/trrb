@@ -5,7 +5,7 @@ import {loadChinaPeople,CHINA_PEOPLE_QUERY,findChinaPeople,CHINA_REGISTRY_VERSIO
 import {collectChinaMediaPosts, chinaMediaSource, politicalReviewReason} from "./china-x-sources.mjs";
 import newsScope from "../netlify/functions/_shared/news-collection-scope.js";
 import {articleUpdateBody,verifyArticleUpdate} from "./news-article-updates.mjs";
-import {contentDigest} from "./news-editorial-policy.mjs";
+import {contentDigest,sourceWithinCollectionWindow} from "./news-editorial-policy.mjs";
 import {EDITORIAL_POLICY_VERSION, DEEP_REVIEW_FIELDS, DEEP_RESEARCH_INSTRUCTIONS, deepQualityErrors, independentSourceCount, factualSources} from "./news-editorial-policy.mjs";
 import { researchEvent, contextRetryEligible } from "./china-context-research.mjs";
 import { pathToFileURL } from "node:url";
@@ -29,7 +29,7 @@ const RECOVER_ARCHIVED = process.argv.includes("--recover-archived");
 const REPAIR_TODAY = process.argv.includes("--repair-today");
 const REPAIR_SINCE = cleanText(process.env.CHINA_HOT_REPAIR_SINCE || "2026-08-24T00:00:00Z", 100);
 const EXPANSION_VERSION = EDITORIAL_POLICY_VERSION;
-const LOOKBACK_HOURS = intEnv("LI_TEACHER_LOOKBACK_HOURS", 6, 3, 24);
+const LOOKBACK_HOURS = intEnv("LI_TEACHER_LOOKBACK_HOURS", 12, 3, 12);
 const MAX_FETCH = intEnv("LI_TEACHER_MAX_FETCH", 100, 10, 200);
 const REN_ZHENGFEI_MAX_FETCH = intEnv("REN_ZHENGFEI_MAX_FETCH", 300, 10, 500);
 const MAX_PUBLISH = intEnv("LI_TEACHER_MAX_PUBLISH", RECOVER_ARCHIVED ? 150 : 20, 1, 150);
@@ -1269,7 +1269,7 @@ export async function run() {
     const qualified = qualifyTweet(tweet);
     if (tweet.id && shouldRetryCandidate(row, qualified)) tweetsById.set(String(tweet.id), { ...tweetsById.get(String(tweet.id)), ...tweet });
   }
-  const tweets = [...tweetsById.values()];
+  const tweets = [...tweetsById.values()].filter(tweet=>sourceWithinCollectionWindow(tweet.created_at));
   const recentArticles = await recentChinaArticles();
   const recentRenArticles = [];
   const results = [];

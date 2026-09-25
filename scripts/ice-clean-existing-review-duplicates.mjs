@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import { readDatabaseQuery } from "./paged-read.mjs";
+import { distinctOfficialReleases } from './ice-fast-intake.mjs';
 async function sb(table, options = {}) {
   const { method = "GET", query = {} } = options;
   return method === "GET"
@@ -10,7 +11,7 @@ import process from "node:process";
 import {reviewedStoryReady} from "./news-editorial-policy.mjs";
 
 const REQUIRED = ["SUPABASE_URL", "SUPABASE_SERVICE_ROLE_KEY"];
-const MAX_AGE_MINUTES = Number(process.env.ICE_MAX_SOURCE_AGE_MINUTES || 60);
+const MAX_AGE_MINUTES = Math.min(720, Number(process.env.ICE_MAX_SOURCE_AGE_MINUTES || 60));
 const PUBLISHED_DAYS = Number(process.env.ICE_PUBLISHED_DEDUPE_DAYS || 730);
 const THRESHOLD = Number(process.env.ICE_REVIEW_DUPLICATE_THRESHOLD || 0.42);
 const OFFICIAL_TYPES = /^(official|government|agency)$/i;
@@ -63,6 +64,7 @@ function fingerprint(row) {
   return text(row?.event_fingerprint || metadata.event_fingerprint);
 }
 function sameEvent(a, b) {
+  if (distinctOfficialReleases(a,b)) return false;
   const left = fingerprint(a), right = fingerprint(b);
   return Boolean(left && right && left === right)
     || similar(combined(a), combined(b))

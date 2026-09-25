@@ -37,7 +37,7 @@ env:
   ICE_NEWS_QUALITY_MAX: "4000"
   ICE_CANDIDATE_GATE_LOOKBACK_HOURS: "8"
   ICE_CANDIDATE_GATE_MAX: "4000"
-  ICE_MAX_SOURCE_AGE_MINUTES: "1440"
+  ICE_MAX_SOURCE_AGE_MINUTES: "720"
   ICE_RECENT_DUPLICATE_WINDOW_MINUTES: "720"
   ICE_PUBLISHED_DEDUPE_DAYS: "730"
   ICE_PUBLISHED_SIMILARITY_THRESHOLD: "0.92"
@@ -58,8 +58,8 @@ env:
   ICE_AUTO_PUBLISH_SCORE: "80"
   ICE_AI_CONFIDENCE: "80"
   ICE_TRUSTED_AUTO_CONFIDENCE: "0"
-  ICE_TRUSTED_MAX_AGE_MINUTES: "1440"
-  ICE_UNREVIEWED_EXPIRE_HOURS: "24"
+  ICE_TRUSTED_MAX_AGE_MINUTES: "720"
+  ICE_UNREVIEWED_EXPIRE_HOURS: "12"
   ICE_DEDUPE_HOURS: "720"
   ICE_PUBLISH_INTERVAL_MINUTES: "10"
 
@@ -68,7 +68,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
-      - name: Enable 24-hour ICE collection
+      - name: Enable around-the-clock collection with a 12-hour source limit
         id: window
         shell: bash
         run: |

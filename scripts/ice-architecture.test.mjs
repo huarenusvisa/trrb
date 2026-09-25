@@ -48,7 +48,7 @@ test("ICE官方来源直发，非官方来源仍由后台真实管理员审核",
   assert.match(collector, /humanReviewStatus = "required"/);
   assert.match(publisher, /humanApproved = story\.human_review_status === "approved" && Boolean\(story\.reviewed_by\)/);
   assert.match(publisher, /officialApproved = story\.human_review_status === "not_required_official"/);
-  assert.match(publisher, /officialEvidence\(story\.id\)/);
+  assert.match(publisher, /officialEvidence\(story\)/);
   assert.match(publisher, /必须由后台真实管理员审核批准/);
   assert.doesNotMatch(publisher, /runOfficialUrgentPromotion/);
   assert.match(trusted, /status: blockedByRisk \? "pending_review" : "approved"/);
@@ -63,7 +63,7 @@ test("ERO地区官方补抓使用可配置时间窗并支持分页去重", () =>
   const launcher = read("scripts/ice-enable-first-backfill.mjs");
   syntaxCheck("scripts/ice-ero-official-discovery.mjs");
   syntaxCheck("scripts/ice-enable-first-backfill.mjs");
-  assert.match(ero, /const LOOKBACK_HOURS = Number\(process\.env\.ICE_ERO_LOOKBACK_HOURS \|\| 12\)/);
+  assert.match(ero, /const LOOKBACK_HOURS = Math\.min\(12, Number\(process\.env\.ICE_ERO_LOOKBACK_HOURS \|\| 12\)\)/);
   assert.match(ero, /max_results", "100"/);
   assert.match(ero, /start_time", lookbackStart\(\)/);
   assert.match(ero, /last_seen_id/);
@@ -94,16 +94,16 @@ test("ICE发布器在发布边界复核官方来源和风险标记", () => {
   assert.doesNotMatch(publisher, /runOfficialUrgentPromotion/);
   assert.match(publisher, /review_status: officialApproved \? "official_source_auto_published" : "human_approved"/);
   assert.match(publisher, /发布边界复核未通过，已转人工审核/);
-  assert.match(publisher, /category_name: "ICE执法动态"/);
-  assert.match(publisher, /topic_key: "ice"/);
-  assert.match(publisher, /distribution_channels: \["ICE执法动态", "ICE实时追踪"\]/);
+  assert.match(publisher, /category_name: route\.categoryName/);
+  assert.match(publisher, /topic_key: route\.topicKey \|\| null/);
+  assert.match(publisher, /distribution_channels: route\.key === "ice" \? \["ICE执法动态", "ICE实时追踪"\]/);
 });
 
 test("同一ICE信息按来源帖子和事件指纹双重去重", () => {
   const publisher = read("scripts/ice-publish-due.mjs");
-  assert.match(publisher, /existingArticle\(postId, eventFingerprint\)/);
+  assert.match(publisher, /existingArticle\(postId, eventFingerprint, routeKey = "ice"\)/);
   assert.match(publisher, /source_post_id: `eq\.\$\{postId\}`/);
-  assert.match(publisher, /slug: `eq\.ice-\$\{eventFingerprint\}`/);
+  assert.match(publisher, /slug: `eq\.\$\{routeKey\}-\$\{eventFingerprint\}`/);
   assert.match(publisher, /同一来源帖子或事件指纹已发布/);
 });
 
@@ -161,9 +161,9 @@ test("ICE人工发布同步公开状态、专题路由和大规模人数", () =>
   const frontend = read("topic/ice/ice.js");
   const people = require(path.join(root, "netlify/functions/_shared/ice-people-count.js"));
   assert.match(publish, /visibility: "public"/);
-  assert.match(publish, /topic_key: "ice"/);
+  assert.match(publish, /topic_key: route\.topicKey \|\| null/);
   assert.match(frontend, /MAX_SINGLE_EVENT = 10000000/);
-  assert.match(frontend, /n <= MAX_SINGLE_EVENT/);
+  assert.match(frontend, /value <= MAX_SINGLE_EVENT/);
   assert.equal(people.extractPeopleCount("警方配合ICE逮捕超过1800人").value, 1800);
   assert.equal(people.extractPeopleCount("ICE遣返逾两千名恐怖分子").value, 2000);
 });

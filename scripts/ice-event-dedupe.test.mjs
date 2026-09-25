@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { eventSignature, hasMaterialUpdate } from "./ice-fast-intake.mjs";
+import { eventSignature, hasMaterialUpdate,findDuplicateStory,distinctOfficialReleases } from "./ice-fast-intake.mjs";
 import { isKnownOldEvent } from "./ice-precollect-published-dedupe.mjs";
 
 test("reposts on different days keep the same event fingerprint", () => {
@@ -39,4 +39,11 @@ test("confirmed historical Georgia and Leqaa Kordia reposts are blocked before A
   assert.equal(isKnownOldEvent("ICE raid at the Hyundai battery plant in Georgia detained 475 people"), true);
   assert.equal(isKnownOldEvent("ICE arrested Columbia protester Leqaa Kordia after her visa was revoked"), true);
   assert.equal(isKnownOldEvent("ICE announced a new operation in Boston today"), false);
+});
+test('different official releases do not merge on agency names and common release dates',()=>{
+ const titles=['Justice Department Ends Over 50 Half-Century-Old Desegregation Cases Throughout the United States','DOJ Announces $25M ANGEL Grant Opportunity for Local Law Enforcement','United States Files Request to Intervene in Case Brought by X Corp. and Elon Musk'];
+ const posts=titles.map((title,i)=>({x_url:`https://www.justice.gov/opa/release-${i}`,source_text:`${title}\nThu, 24 Sep 2026 12:00:00 +0000\nPress Release Office of Public Affairs United States Department of Justice`,raw_payload:{source_platform:'official_web'}}));
+ const story={event_fingerprint:eventSignature(posts[0]),ai_payload:{lead_source_url:posts[0].x_url,lead_source_platform:'official_web',lead_source_text_original:posts[0].source_text}};
+ for(const post of posts.slice(1)){assert.notEqual(eventSignature(post),story.event_fingerprint);assert.equal(findDuplicateStory(post,[story]),null);assert.equal(distinctOfficialReleases(post,story),true);}
+ assert.equal(findDuplicateStory(posts[0],[story]),story);
 });

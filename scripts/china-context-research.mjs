@@ -1,4 +1,4 @@
-import {DEEP_RESEARCH_INSTRUCTIONS} from './news-editorial-policy.mjs';
+import {DEEP_RESEARCH_INSTRUCTIONS,EDITORIAL_POLICY_VERSION} from './news-editorial-policy.mjs';
 // Bounded research for one event. Only tool-cited sources become evidence.
 export function citedResearch(response) {
   if (!response?.output?.some(x => x.type === 'web_search_call' && x.status === 'completed')) return null;
@@ -16,7 +16,7 @@ export function citedResearch(response) {
   if (!sources.size || !texts.join('').trim()) return null;
   return {web_search_completed: true, text: texts.join('\n').slice(0, 16000), sources: [...sources.values()].slice(0, 12)};
 }
-export function contextRetryEligible(candidate, now = Date.now(), version = 'political-routing-deep-2500-3500-v8') {
+export function contextRetryEligible(candidate, now = Date.now(), version = EDITORIAL_POLICY_VERSION) {
   const payload = candidate?.ai_payload || {};
   const date = Date.parse(candidate?.raw_payload?.source_created_at || candidate?.collected_at || '');
   const reason = candidate?.decision_reason || '';

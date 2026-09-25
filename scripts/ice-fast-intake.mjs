@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import { readDatabaseQuery } from "./paged-read.mjs";
+import {sourceWithinCollectionWindow} from './news-editorial-policy.mjs';
 import crypto from "node:crypto";
 import process from "node:process";
 import { fileURLToPath } from "node:url";
@@ -181,6 +182,8 @@ function isDuplicateText(a, b) {
   return commonTokens >= 3 && score >= DEDUPE_THRESHOLD;
 }
 function eventSignature(post) {
+  const release = officialRelease(post);
+  if (release) return `web-${hash(release.url).slice(0,40)}`;
   const text = safeText(post.source_text, 30000);
   // Never use the X repost timestamp as the event date. Doing so made the same
   // historical event acquire a new fingerprint every day it was reposted.
@@ -239,11 +242,32 @@ function storyText(story) {
   const payload = safeJson(story.ai_payload, {});
   return [payload.lead_source_text_original, story.title, story.summary, story.content].filter(Boolean).join(" ");
 }
+function officialRelease(row) {
+  const p = safeJson(row.ai_payload, {}), raw = safeJson(row.raw_payload, {});
+  if ((raw.source_platform || p.lead_source_platform) !== 'official_web') return null;
+  try {
+    const u = new URL(row.x_url || p.lead_source_url);
+    if (u.protocol !== 'https:' || !/^(www\.)?justice\.gov$/.test(u.hostname)) return null;
+    const title = String(row.source_text || p.lead_source_text_original || row.title || '').split('\n')[0];
+    return {url:`${u.origin}${u.pathname}`,title};
+  } catch { return null; }
+}
+function distinctOfficialReleases(a,b) {
+  const A=officialRelease(a),B=officialRelease(b);
+  return Boolean(A && B && A.url!==B.url && jaccard(tokenSet(A.title),tokenSet(B.title))<.72);
+}
 function findDuplicateStory(post, stories) {
   const raw = safeText(post.source_text, 30000);
   const signature = eventSignature(post);
   return stories.find((story) => {
     if (story.event_fingerprint === signature) return true;
+    if (distinctOfficialReleases(post,story)) return false;
+    if (officialRelease(post)) {
+      // Agency boilerplate, release dates and generic legal verbs do not
+      // establish that two full official releases describe the same event.
+      const original = safeJson(story.ai_payload,{}).lead_source_text_original;
+      return Boolean(original && jaccard(tokenSet(raw.split('\n')[0]),tokenSet(String(original).split('\n')[0]))>=.72);
+    }
     if (post.event_type && story.event_type && post.event_type !== "other" && story.event_type !== "other" && post.event_type !== story.event_type) {
       const bothCustody = /arrest|detention/.test(post.event_type) && /arrest|detention/.test(story.event_type);
       if (!bothCustody) return false;
@@ -399,7 +423,7 @@ async function createCandidate(post) {
       status: "pending_corroboration",
       human_review_status: "required",
       scheduled_at: null,
-      ai_payload: { fast_intake: true, fast_intake_at: time, lead_source_post_id: post.x_post_id || "", lead_source_text_original: raw, source_username: post.source_username || "", translation_pending: true, dedupe_version: 4, old_news_checked: false, manual_old_news_confirmation: false },
+      ai_payload: { fast_intake: true, fast_intake_at: time, lead_source_post_id: post.x_post_id || "", lead_source_text_original: raw, lead_source_url:post.x_url || '',lead_source_platform:post.raw_payload?.source_platform || '', source_username: post.source_username || "", translation_pending: true, dedupe_version: 4, old_news_checked: false, manual_old_news_confirmation: false },
       created_at: time,
       updated_at: time
     },
@@ -430,6 +454,10 @@ async function runFastIntake() {
   let failed = 0;
   for (const post of posts) {
     try {
+      if (!sourceWithinCollectionWindow(post.source_created_at)) {
+        await sb('ice_posts',{method:'PATCH',query:{id:`eq.${post.id}`},body:{relevant:false,processing_status:'irrelevant',last_error:'source_outside_12_hour_window'},prefer:'return=minimal'});
+        continue;
+      }
       if (isReply(post)) { await markReply(post); replies += 1; continue; }
       if (await existingEvidence(post.id)) { alreadyLinked += 1; continue; }
       const historical = historicalByFingerprint.get(eventSignature(post));
@@ -470,7 +498,7 @@ async function runFastIntake() {
   console.log(JSON.stringify(result));
   return result;
 }
-export { runFastIntake, isReply, firstSentence, summary, normalizeForDedupe, similarity, isDuplicateText, eventSignature, hasMaterialUpdate };
+export { runFastIntake, isReply, firstSentence, summary, normalizeForDedupe, similarity, isDuplicateText, eventSignature, hasMaterialUpdate, findDuplicateStory, distinctOfficialReleases };
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   runFastIntake().catch((error) => {
     console.error("ICE快速导入失败：", error);

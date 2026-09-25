@@ -56,7 +56,7 @@ test('unrelated, opinion-only and old uploads remain ineligible',()=>{
 });
 test('official feed rejects foreign hosts, old items, missing dates and future timestamps',()=>{
  const now=Date.parse('2026-09-25T10:00:00Z');const item=(url,date)=>`<item><title>DOJ issued charges</title><link>${url}</link><pubDate>${date}</pubDate><description>Facts</description></item>`;
- const xml='<rss><channel>'+item('https://www.justice.gov/opa/a','Thu, 24 Sep 2026 12:00:00 GMT')+item('https://justice.gov.evil.test/a','Thu, 24 Sep 2026 12:00:00 GMT')+item('https://www.justice.gov/opa/b','2025-01-01')+item('https://www.justice.gov/opa/c','2027-01-01')+'</channel></rss>';
+ const xml='<rss><channel>'+item('https://www.justice.gov/opa/a','Fri, 25 Sep 2026 00:00:00 GMT')+item('https://justice.gov.evil.test/a','Fri, 25 Sep 2026 00:00:00 GMT')+item('https://www.justice.gov/opa/b','2025-01-01')+item('https://www.justice.gov/opa/c','2027-01-01')+'</channel></rss>';
  assert.equal(parseOfficialFeed(xml,now).length,1);assert.equal(allowedOfficialUrl('https://user@justice.gov/a'),false);
  assert.equal(officialArticleText('<main><p>Original statement</p><script>invented</script></main>'),'Original statement');
 });
@@ -70,6 +70,22 @@ test('ICE deep writer research is reused when missing data requires a factual do
  });
  const result=await translate({},[{source_text:'A federal court issued an injunction on new immigration rules today.',x_url:'https://www.justice.gov/opa/primary'}]);
  assert.equal(searches,1);assert.equal(writes,2);assert.equal(reviews,2);assert.equal(result.editorial_depth,'brief');assert.equal(result.targetMax,799);
+});
+test('undersized drafts are reviewed under their actual lower tier and still require grounded facts',async(t)=>{
+ let length=500,requested='standard',grounded=true,writes=0,reviewedDepth='';
+ t.mock.method(globalThis,'fetch',async(_url,options)=>{
+  const body=JSON.parse(options.body);
+  if(body.tools)return Response.json({output:[{type:'web_search_call',status:'completed'},{content:[{type:'output_text',text:'Retrieved documents',annotations:research.sources.map(s=>({type:'url_citation',url:s.url}))}]}]});
+  if(body.text.format.name==='unified_news_review'){
+   reviewedDepth=JSON.parse(body.input[0].content[0].text).article.editorial_depth;
+   return Response.json({output_text:JSON.stringify({...review,grounded,reason:grounded?'事实有据':'缺少事实证据'})});
+  }
+  writes++;return Response.json({output_text:JSON.stringify({title:'联邦法院裁定新政策暂缓执行',content:'文'.repeat(length),summary:'法院发布裁定',editorial_depth:requested,source_sufficient:true,depth_reason:'仅有已核实事实',source_language:'en',image_observations:'',appears_old_news:false,old_news_reason:''})});
+ });
+ const posts=[{source_text:'A federal court issued an injunction on new immigration rules today.',x_url:'https://www.justice.gov/opa/primary'}];
+ const brief=await translate({},posts);assert.equal(brief.editorial_depth,'brief');assert.equal(reviewedDepth,'brief');assert.equal(writes,1);
+ length=1700;requested='deep';const standard=await translate({},posts);assert.equal(standard.editorial_depth,'standard');assert.equal(reviewedDepth,'standard');assert.equal(writes,2);
+ length=500;grounded=false;await assert.rejects(()=>translate({},posts),/独立复核未通过/);
 });
 
 import {articleUpdateBody,automationMayUpdate,verifyArticleUpdate} from './news-article-updates.mjs';
@@ -90,12 +106,29 @@ test('human approval of an edited policy story remains publishable but loses unc
 });
 
 import {isOlderThanCutoff} from './ice-drop-stale-posts.mjs';
-test('official web releases survive 12-hour social cleanup and expire at 24 hours',()=>{
+test('official websites obey the same strict 12-hour limit as social sources',()=>{
  const now=Date.parse('2026-09-25T02:00:00Z'),cutoff=now-12*3600000;
  const release={source_created_at:'2026-09-24T12:00:00Z',source_type:'official',trust_tier:1,raw_payload:{source_platform:'official_web'},x_url:'https://www.justice.gov/opa/release'};
- assert.equal(isOlderThanCutoff(release,cutoff,now),false);
+ assert.equal(isOlderThanCutoff(release,cutoff,now),true);
+ assert.equal(isOlderThanCutoff({...release,source_created_at:'2026-09-24T15:00:00Z'},cutoff,now),false);
+ assert.equal(parseOfficialFeed('<rss><item><title>Official release</title><link>https://www.justice.gov/opa/release</link><pubDate>2026-09-24T12:00:00Z</pubDate></item></rss>',now).length,0);
  assert.equal(isOlderThanCutoff({...release,raw_payload:{source_platform:'x'}},cutoff,now),true);
  assert.equal(isOlderThanCutoff({...release,trust_tier:2},cutoff,now),true);
  assert.equal(isOlderThanCutoff({...release,x_url:'https://justice.gov.evil.test/release'},cutoff,now),true);
  assert.equal(isOlderThanCutoff({...release,source_created_at:'2026-09-24T01:00:00Z'},cutoff,now),true);
+});
+
+import {candidateRoutes} from './ice-trusted-source-promote.mjs';
+test('nonofficial political and court candidates retain their route without gaining official approval',()=>{
+ const story={title:'美国联邦法院发布新裁定',summary:'法官宣布新政策暂缓执行',content:'美国联邦法院发布关于移民政策的裁定。'};
+ const media={source_type:'major_media',source_username:'Reuters',trust_tier:2,source_text:'A federal court issued a new injunction on immigration policy.'};
+ const routes=candidateRoutes(story,[media]);assert.equal(routes.candidate.key,'us-politics');assert.equal(routes.official,null);
+ const officialRoutes=candidateRoutes(story,[{...media,source_type:'official',trust_tier:1}]);assert.equal(officialRoutes.official.key,'us-politics');
+});
+
+import {sourceWithinCollectionWindow} from './news-editorial-policy.mjs';
+test('source freshness uses original time and fails closed outside twelve hours',()=>{
+ const now=Date.parse('2026-09-25T02:00:00Z');
+ assert.equal(sourceWithinCollectionWindow('2026-09-24T14:00:00Z',now),true);
+ for(const time of ['2026-09-24T13:59:59Z','2026-09-25T02:00:01Z','',null])assert.equal(sourceWithinCollectionWindow(time,now),false);
 });

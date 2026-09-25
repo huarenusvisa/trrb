@@ -11,7 +11,7 @@ export function allowedOfficialUrl(value) { try { const u=new URL(value);return 
 export function parseOfficialFeed(xml, now=Date.now()) {
   const tag=(item,name)=>decode(item.match(new RegExp(`<${name}\\b[^>]*>([\\s\\S]*?)<\\/${name}>`,'i'))?.[1] || '').trim();
   return [...String(xml).matchAll(/<item\b[^>]*>([\s\S]*?)<\/item>/gi)].map(([,item])=>({title:text(tag(item,'title')),url:tag(item,'link'),date:tag(item,'pubDate'),description:text(tag(item,'description'))}))
-    .filter(item=>allowedOfficialUrl(item.url)&&Number.isFinite(Date.parse(item.date))&&now-Date.parse(item.date)>=0&&now-Date.parse(item.date)<=24*3600000).slice(0,20);
+    .filter(item=>allowedOfficialUrl(item.url)&&Number.isFinite(Date.parse(item.date))&&now-Date.parse(item.date)>=0&&now-Date.parse(item.date)<=12*3600000).slice(0,20);
 }
 async function officialText(url) {
   if (!allowedOfficialUrl(url)) throw new Error('非许可官方网址');

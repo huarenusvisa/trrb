@@ -197,7 +197,7 @@ async function insertRows(rows) {
 async function main() {
   requireEnv();
 
-  const hours = envInt("ICE_HIGH_RECALL_LOOKBACK_HOURS", 24, 1, 168);
+  const hours = envInt("ICE_HIGH_RECALL_LOOKBACK_HOURS", 12, 1, 12);
   const startTime = new Date(Date.now() - hours * 60 * 60 * 1000).toISOString();
   const collected = new Map();
   let requests = 0;

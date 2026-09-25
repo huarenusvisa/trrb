@@ -4,7 +4,7 @@ import { readDatabaseQuery } from "./paged-read.mjs";
 import crypto from "node:crypto";
 import process from "node:process";
 import {articleUpdateBody,verifyArticleUpdate} from "./news-article-updates.mjs";
-import {ICE_TRANSLATION_VERSION, reviewedStoryReady, countChinese, manualEditorialMetadata} from "./news-editorial-policy.mjs";
+import {ICE_TRANSLATION_VERSION, reviewedStoryReady, countChinese, manualEditorialMetadata,sourceWithinCollectionWindow} from "./news-editorial-policy.mjs";
 import { fileURLToPath } from "node:url";
 import peopleCountModule from "../netlify/functions/_shared/ice-people-count.js";
 import iceClassifier from "../netlify/functions/_shared/ice-enforcement.js";
@@ -192,6 +192,10 @@ async function publish(story) {
   }
   const post = verifiedOfficial[0] || await leadPost(story);
   if (!post) throw new Error(`故事${story.id}没有来源帖子`);
+  if (officialApproved && !sourceWithinCollectionWindow(post.source_created_at)) {
+    await updateStory(story.id,{status:'pending_review',human_review_status:'required',scheduled_at:null,decision_reason:`${story.decision_reason || ''}；原始来源超过12小时或时间不可核实，禁止自动发布`});
+    return null;
+  }
   if (!editorialReady(story, post)) {
     await updateStory(story.id, { status: "pending_review", human_review_status: officialApproved ? "required" : story.human_review_status, scheduled_at: null, decision_reason: `${story.decision_reason || ""}；发布器拦截：中文翻译、读图或旧闻检查未通过` });
     return null;

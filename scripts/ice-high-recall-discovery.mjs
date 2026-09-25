@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import './news-budget-preload.mjs';
 import process from "node:process";
 import newsScope from "../netlify/functions/_shared/news-collection-scope.js";
 

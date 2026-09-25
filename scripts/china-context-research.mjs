@@ -1,3 +1,4 @@
+import './news-budget-preload.mjs';
 import {DEEP_RESEARCH_INSTRUCTIONS,EDITORIAL_POLICY_VERSION} from './news-editorial-policy.mjs';
 // Bounded research for one event. Only tool-cited sources become evidence.
 export function citedResearch(response) {

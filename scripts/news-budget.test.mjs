@@ -51,3 +51,31 @@ test('user cache prevents paid lookup; news reads never reuse stale cache; batch
  assert.equal((await(await fetch('https://api.x.com/2/users/by/username/FBI')).json()).data.id,'42');assert.equal(calls,0);
  await fetch('https://api.x.com/2/tweets/search/recent?max_results=100&start_time=2026-09-25T00:00:00Z');assert.equal(calls,1);
 });
+
+test('every production paid API module directly loads the guard (no runner env-file dependency)',async()=>{
+ const {readdir,readFile}=await import('node:fs/promises');
+ for(const name of await readdir(new URL('./',import.meta.url))) {
+  if(!/^(ice|china|news)-.*\.mjs$/.test(name) || /\.test\.mjs$|news-budget|news-cost-model/.test(name)) continue;
+  const source=await readFile(new URL(name,import.meta.url),'utf8');
+  if(/api\.(openai|x|twitter)\.com/.test(source)) assert.match(source,/import '\.\/news-budget-preload\.mjs';/,name);
+ }
+ for(const name of ['ice-unified-pipeline.yml','china-hot-li-teacher-ingest.yml']) {
+  const source=await readFile(new URL('../.github/workflows/'+name,import.meta.url),'utf8');
+  assert.match(source,/NEWS_BUDGET_ENFORCE: "1"/);
+  assert.doesNotMatch(source,/NODE_OPTIONS=.*GITHUB_ENV/);
+ }
+});
+
+test('imported production research module activates the guard and blocks paid fetch at runtime',async()=>{
+ const {execFileSync}=await import('node:child_process');
+ const code=`
+ process.env.NEWS_BUDGET_ENFORCE='1';process.env.NEWS_BUDGET_PIPELINE='china-hot';
+ process.env.SUPABASE_URL='https://budget.invalid';process.env.SUPABASE_SERVICE_ROLE_KEY='test-only';
+ let paid=0;
+ globalThis.fetch=async url=>{if(String(url).includes('api.openai.com')){paid++;throw Error('paid request escaped');}return Response.json({allowed:false,reason:'monthly_cap'});};
+ await import('./scripts/china-context-research.mjs');
+ try {await fetch('https://api.openai.com/v1/responses',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'gpt-4.1-mini',max_output_tokens:100,input:'test'})});throw Error('guard did not reject');}
+ catch(e){if(e.code!=='NEWS_BUDGET_DEFERRED')throw e;}
+ if(paid)throw Error('paid request sent');console.log('runtime-guard-passed');`;
+ assert.match(execFileSync(process.execPath,['--input-type=module','-e',code],{cwd:new URL('../',import.meta.url),encoding:'utf8'}),/runtime-guard-passed/);
+});

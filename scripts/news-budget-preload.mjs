@@ -66,6 +66,7 @@ export function budgetDatabase(nativeFetch=globalThis.fetch) {
 if (process.env.NEWS_BUDGET_ENFORCE==='1') {
   const pipeline=process.env.NEWS_BUDGET_PIPELINE;
   if (!['ice','china-hot'].includes(pipeline)) throw new Error('News budget pipeline is required');
+  console.log(JSON.stringify({event:'news-budget-enabled',pipeline,phase:basename(process.argv[1] || '')}));
   const nativeFetch=globalThis.fetch;
   globalThis.fetch=createBudgetFetch({nativeFetch,...budgetDatabase(nativeFetch),pipeline,phase:basename(process.argv[1] || ''),runId:process.env.GITHUB_RUN_ID || 'local'});
 }

@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import './news-budget-preload.mjs';
 import {compareNewsPriority} from './news-priority.mjs';
 import {isBudgetDeferred} from './news-cost-model.mjs';
 import { readAllPages, readWithRetry } from "./paged-read.mjs";

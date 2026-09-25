@@ -48,8 +48,6 @@ jobs:
         env:
           NEWS_BUDGET_ENFORCE: "0"
         run: node --test scripts/news-budget.test.mjs scripts/news-priority.test.mjs scripts/news-editorial-policy.test.mjs scripts/china-person-registry.test.mjs scripts/china-hot-li-teacher-ingest.test.mjs scripts/china-context-research.test.mjs scripts/china-editorial-update.test.mjs scripts/ren-zhengfei-news.test.mjs scripts/article-editorial-policy.test.mjs
-      - name: Enable shared budget after checkout and validation
-        run: echo 'NODE_OPTIONS=--import ./scripts/news-budget-preload.mjs' >> "$GITHUB_ENV"
       - name: Read China headlines category switches
         id: category
         run: node scripts/category-pipeline-gate.mjs hot-headlines

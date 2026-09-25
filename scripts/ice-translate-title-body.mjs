@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import './news-budget-preload.mjs';
 import { readDatabaseQuery } from "./paged-read.mjs";
 import process from "node:process";
 import {newsPriority,sourceFingerprint,editorialRetryAllowed} from './news-priority.mjs';

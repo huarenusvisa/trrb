@@ -18,7 +18,8 @@ export function newsPriority(row,now=Date.now()) {
   if (OPINION.test(text)) {score-=20;reasons.push('unverified_or_commentary');}
   if (row.requires_editor_review || row.source_type==='monitored_individual') {score-=10;reasons.push('manual_verification_required');}
   // No badge, follower count, outrage or engagement score can make a source factual.
-  return {score,eligible:ACTION.test(text),reasons};
+  // Ranking is not a new keyword veto: existing source/quality gates decide scope.
+  return {score,eligible:Boolean(text.trim()),reasons};
 }
 export function compareNewsPriority(a,b) {return newsPriority(b).score-newsPriority(a).score || Date.parse(b.source_created_at || b.created_at)-Date.parse(a.source_created_at || a.created_at);}
 export function sourceFingerprint(posts) {return createHash('sha256').update(JSON.stringify(posts.map(p=>[p.x_post_id,p.source_created_at,p.source_text]).sort((a,b)=>String(a[0]).localeCompare(String(b[0]))))).digest('hex');}

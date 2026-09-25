@@ -1,6 +1,6 @@
 # Shared news budget and selection
 
-The existing hourly ICE and China headlines jobs share one server-side budget. The Node fetch preload is enabled after checkout/tests, applies to all their child Node processes, and meters X reads plus OpenAI Responses (research, writing, review, retries, update checks). It does not intercept other robots or browser traffic.
+The existing hourly ICE and China headlines jobs share one server-side budget. Every paid API module directly imports the shared fetch guard when the workflow budget flag is enabled; this also covers child processes, and meters X reads plus OpenAI Responses (research, writing, review, retries, update checks). It does not intercept other robots or browser traffic.
 
 - Target: USD 1,000/month; metered API ceiling: USD 900. The remaining USD 100 is a buffer, not a guarantee about the entire provider invoice.
 - Daily limit: the smaller of USD 30 and USD 900 divided by the month's days. Hourly burst allowance: daily limit / 12; X and each robot are capped at 60% of that burst, keeping research capacity available. Each robot may use at most 60% of the daily shared limit; X at most 60%, reserving room for research and editorial review.

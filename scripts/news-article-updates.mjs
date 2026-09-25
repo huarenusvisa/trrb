@@ -1,3 +1,4 @@
+import './news-budget-preload.mjs';
 import {EDITORIAL_POLICY_VERSION,contentDigest} from './news-editorial-policy.mjs';
 export function automationMayUpdate(article) {
   const m=article?.metadata || {};

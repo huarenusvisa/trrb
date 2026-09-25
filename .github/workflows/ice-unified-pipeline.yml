@@ -91,9 +91,6 @@ jobs:
           NEWS_BUDGET_ENFORCE: "0"
         run: node --test scripts/news-budget.test.mjs scripts/news-priority.test.mjs scripts/news-editorial-policy.test.mjs scripts/ice-news-quality-gate.test.mjs scripts/official-content-routing.test.mjs scripts/ice-original-posts.test.mjs
 
-      - name: Enable shared budget after checkout and validation
-        run: echo 'NODE_OPTIONS=--max-http-header-size=65536 --import ./scripts/news-budget-preload.mjs' >> "$GITHUB_ENV"
-
       - name: Validate required secrets
         if: steps.window.outputs.allowed == 'true'
         shell: bash

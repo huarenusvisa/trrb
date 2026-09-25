@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import { readDatabaseQuery } from "./paged-read.mjs";
+import { distinctOfficialReleases } from './ice-fast-intake.mjs';
 async function sb(table, options = {}) {
   const { method = "GET", query = {} } = options;
   return method === "GET"
@@ -63,6 +64,7 @@ function fingerprint(row) {
   return text(row?.event_fingerprint || metadata.event_fingerprint);
 }
 function sameEvent(a, b) {
+  if (distinctOfficialReleases(a,b)) return false;
   const left = fingerprint(a), right = fingerprint(b);
   return Boolean(left && right && left === right)
     || similar(combined(a), combined(b))

@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import { readDatabaseQuery } from "./paged-read.mjs";
+import { distinctOfficialReleases } from './ice-fast-intake.mjs';
 async function rest(table, options = {}) {
   const { method = "GET", query = {} } = options;
   return method === "GET"
@@ -66,6 +67,7 @@ function dimensions(row) {
 }
 function exactFingerprint(row) { return String(row.event_fingerprint || metadata(row).event_fingerprint || "").trim(); }
 function sameEvent(a, b, { ignoreTime = false, publishedHistory = false } = {}) {
+  if (distinctOfficialReleases(a,b)) return {yes:false};
   const af = exactFingerprint(a), bf = exactFingerprint(b);
   if (af && bf && af === bf) return { yes: true, reason: "相同事件指纹" };
   if (!ignoreTime && Math.abs(timeOf(a) - timeOf(b)) > WINDOW_HOURS * 3600000) return { yes: false };

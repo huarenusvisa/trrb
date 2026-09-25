@@ -160,6 +160,12 @@ async function translate(story, posts, attempt = 0, context = null) {
   if (!parsed) throw new Error('OpenAI未返回完整可解析稿件');
   if (parsed.source_sufficient !== true) throw new Error(`事实资料不足：${parsed.depth_reason || '不能可靠成稿'}`);
   const count = countChinese(parsed.content);
+  // The model's tier is only a proposal. Downgrade an undersized draft before
+  // independent review; never infer deep eligibility from length alone.
+  const requestedDepth = parsed.editorial_depth;
+  if (['deep','standard'].includes(requestedDepth) && count >= 1 && count < 800) parsed.editorial_depth = 'brief';
+  else if (requestedDepth === 'deep' && count >= 800 && count < 2500) parsed.editorial_depth = 'standard';
+  if (parsed.editorial_depth !== requestedDepth) parsed.depth_reason = `${parsed.depth_reason || ''}；实际正文${count}个中文字符，由${requestedDepth}降为${parsed.editorial_depth}，仍须独立事实复核`;
   const depth = parsed.editorial_depth;
   const validLength = depth === 'deep' ? canDeep && count >= 2500 && count <= 3500 : depth === 'standard' ? count >= 800 && count <= 2499 : depth === 'brief' && count >= 1 && count <= 799;
   if (!validLength || !hasChinese(parsed.title) || chineseRatio(parsed.content) < .45) {

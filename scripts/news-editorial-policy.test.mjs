@@ -71,6 +71,22 @@ test('ICE deep writer research is reused when missing data requires a factual do
  const result=await translate({},[{source_text:'A federal court issued an injunction on new immigration rules today.',x_url:'https://www.justice.gov/opa/primary'}]);
  assert.equal(searches,1);assert.equal(writes,2);assert.equal(reviews,2);assert.equal(result.editorial_depth,'brief');assert.equal(result.targetMax,799);
 });
+test('undersized drafts are reviewed under their actual lower tier and still require grounded facts',async(t)=>{
+ let length=500,requested='standard',grounded=true,writes=0,reviewedDepth='';
+ t.mock.method(globalThis,'fetch',async(_url,options)=>{
+  const body=JSON.parse(options.body);
+  if(body.tools)return Response.json({output:[{type:'web_search_call',status:'completed'},{content:[{type:'output_text',text:'Retrieved documents',annotations:research.sources.map(s=>({type:'url_citation',url:s.url}))}]}]});
+  if(body.text.format.name==='unified_news_review'){
+   reviewedDepth=JSON.parse(body.input[0].content[0].text).article.editorial_depth;
+   return Response.json({output_text:JSON.stringify({...review,grounded,reason:grounded?'事实有据':'缺少事实证据'})});
+  }
+  writes++;return Response.json({output_text:JSON.stringify({title:'联邦法院裁定新政策暂缓执行',content:'文'.repeat(length),summary:'法院发布裁定',editorial_depth:requested,source_sufficient:true,depth_reason:'仅有已核实事实',source_language:'en',image_observations:'',appears_old_news:false,old_news_reason:''})});
+ });
+ const posts=[{source_text:'A federal court issued an injunction on new immigration rules today.',x_url:'https://www.justice.gov/opa/primary'}];
+ const brief=await translate({},posts);assert.equal(brief.editorial_depth,'brief');assert.equal(reviewedDepth,'brief');assert.equal(writes,1);
+ length=1700;requested='deep';const standard=await translate({},posts);assert.equal(standard.editorial_depth,'standard');assert.equal(reviewedDepth,'standard');assert.equal(writes,2);
+ length=500;grounded=false;await assert.rejects(()=>translate({},posts),/独立复核未通过/);
+});
 
 import {articleUpdateBody,automationMayUpdate,verifyArticleUpdate} from './news-article-updates.mjs';
 test('same-URL updates preserve publication identity and cannot overwrite human edits',async()=>{

@@ -92,7 +92,7 @@ jobs:
         run: node scripts/validate-site.mjs
       - name: Run SEO and internal 404 audit
         run: |
-          node --test scripts/china-hot-li-teacher-ingest.test.mjs
+          node --experimental-strip-types --test scripts/news-editorial-support.test.mjs scripts/china-hot-editor.test.mjs scripts/news-budget.test.mjs scripts/news-priority.test.mjs scripts/news-editorial-policy.test.mjs scripts/china-person-registry.test.mjs scripts/china-hot-li-teacher-ingest.test.mjs scripts/china-context-research.test.mjs scripts/china-editorial-update.test.mjs scripts/ren-zhengfei-news.test.mjs scripts/article-editorial-policy.test.mjs scripts/ice-news-quality-gate.test.mjs scripts/official-content-routing.test.mjs scripts/ice-original-posts.test.mjs
           node scripts/ice-history-list.test.mjs
           node scripts/seo-quality-contract.test.mjs
           node scripts/jobs-google-seo.test.mjs

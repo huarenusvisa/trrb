@@ -28,7 +28,7 @@ test('homepage screenshot: US titles and summaries do not create China political
 });
 test('630-character grounded article publishes in topic only without an 800-character rewrite',async t=>{
  let writes=0,reviews=0;
- t.mock.method(globalThis,'fetch',async(_url,options)=>{const input=JSON.parse(options.body);assert.equal(input.tools,undefined);if(input.text.format.name==='china_hot_editorial_review'){reviews++;return Response.json({output_text:JSON.stringify(verdict)});}writes++;assert.match(input.instructions,/600至3500/);return Response.json({output_text:JSON.stringify(draft)});});
+ t.mock.method(globalThis,'fetch',async(_url,options)=>{const input=JSON.parse(options.body);assert.equal(input.tools,undefined);if(input.text.format.name==='china_hot_editorial_review'){reviews++;return Response.json({output_text:JSON.stringify(verdict)});}writes++;assert.match(input.instructions,/600至1999/);return Response.json({output_text:JSON.stringify(draft)});});
  const qualified=qualifyTweet(source);const article=await generateArticle(qualified,{...source});const row=buildPublishedArticle(source,qualified,article);
  assert.equal(writes,1);assert.equal(reviews,1);assert.equal(row.status,'published');assert.equal(row.metadata.publication_scope,'topic_only');assert.equal(row.metadata.homepage_focus_override,'exclude');assert.deepEqual(row.metadata.image_evidence,draft.image_evidence);
 });
@@ -96,7 +96,7 @@ test('US copy completes the same writer and independent review, preserving real 
     assert.match(input.instructions,/虚构媒体、内部人员、知情人士/);
     return Response.json({output_text:JSON.stringify(verdict)});
   }
-  assert.match(input.instructions,/600至3500/);assert.match(input.instructions,/普通账号只能写某账号发文称/);
+  assert.match(input.instructions,/600至1999/);assert.match(input.instructions,/普通账号只能写某账号发文称/);
   return Response.json({output_text:JSON.stringify(generated)});
  });
  const q=qualifyTweet(tweet);const article=await generateArticle(q,tweet);
@@ -106,7 +106,7 @@ test('US copy completes the same writer and independent review, preserving real 
 test('oversize output cannot be published and fresh rejected routing records alone can retry',async()=>{
  const {assertPublicationQuality,shouldRetryCandidate}=await import('./china-hot-li-teacher-ingest.mjs');
  const long='美国国防部长举行会谈。'+Array.from({length:3501},(_,i)=>String.fromCharCode(0x4e00+i)).join('');
- assert.throws(()=>assertPublicationQuality(source,{...draft,content:long,editorial_review:verdict}),/超过3500/);
+ assert.throws(()=>assertPublicationQuality(source,{...draft,content:long,editorial_review:verdict}),/超过1999/);
  const now=Date.now();const q=qualifyTweet({...source,text:'美国国防部长在华盛顿会见德国国防部长。'});
  const row={decision:'rejected',article_id:null,collected_at:new Date(now).toISOString(),decision_reason:'自动分类过滤：不属于中国热门头条栏目；未创建或发布文章',ai_payload:{status:'filtered',filter_reason:'outside-china-hot'}};
  assert.equal(shouldRetryCandidate(row,q,now),true);

@@ -137,3 +137,12 @@ test('美国警情成稿和草稿都保留正确栏目，跨栏目改写无法�
  assert.equal(row.category_name,'美国警情');assert.equal(row.topic_key,'us-enforcement');assert.equal(row.metadata.china_politics_eligible,false);
  assert.throws(()=>buildPublishedArticle(tweet,q,{...article,title:'美国国防部长会谈',content:'美国国防部长会谈。'+body}),/栏目不一致/);
 });
+
+import {matchesCollectedRoute} from './china-hot-li-teacher-ingest.mjs';
+test('bilateral reporting keeps the collected route when the headline leads with a different president',()=>{
+ const source='9月24日，美国华盛顿特区白宫外的拉法耶特广场，抗议者殴打一个习近平沙袋。';
+ assert.equal(matchesCollectedRoute('us-politics','习近平访美期间白宫外出现抗议活动','9月24日，美国华盛顿白宫外，示威者举行针对中国国家主席习近平的抗议活动。',source),true);
+ assert.equal(matchesCollectedRoute('us-politics','中国国务院发布国内政策','中国国务院宣布实施政策。',source),false);
+ assert.equal(matchesCollectedRoute('us-politics','美国警方拘捕涉嫌诈骗人员','FBI逮捕一名嫌疑人。',source),false);
+ assert.equal(matchesCollectedRoute('us-politics','习近平访美与特朗普举行会谈','中国领导人在美国参加会谈。','美国国会讨论联邦预算。'),false);
+});

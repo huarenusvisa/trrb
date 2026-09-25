@@ -22,13 +22,13 @@ const REN_ZHENGFEI_QUERY = '("任正非" OR "Ren Zhengfei") -is:retweet -is:repl
 // retry, repair, clean or publish Ren Zhengfei items until a future explicit instruction.
 const REN_ZHENGFEI_COLLECTION_ENABLED = false;
 const PIPELINE = "china-hot-li-teacher-v2";
-const PROCESSING_VERSION = "editorial-paragraph-background-v10";
+const PROCESSING_VERSION = EDITORIAL_POLICY_VERSION;
 const WARNING = "真实性提示：本文所述信息可能尚未获得独立核实，部分细节可能存在偏差，请以权威部门后续通报为准。";
 const DRY_RUN = process.argv.includes("--dry-run");
 const RECOVER_ARCHIVED = process.argv.includes("--recover-archived");
 const REPAIR_TODAY = process.argv.includes("--repair-today");
 const REPAIR_SINCE = cleanText(process.env.CHINA_HOT_REPAIR_SINCE || "2026-08-24T00:00:00Z", 100);
-const EXPANSION_VERSION = "editorial-paragraph-background-v10";
+const EXPANSION_VERSION = EDITORIAL_POLICY_VERSION;
 const LOOKBACK_HOURS = intEnv("LI_TEACHER_LOOKBACK_HOURS", 6, 3, 24);
 const MAX_FETCH = intEnv("LI_TEACHER_MAX_FETCH", 100, 10, 200);
 const REN_ZHENGFEI_MAX_FETCH = intEnv("REN_ZHENGFEI_MAX_FETCH", 300, 10, 500);
@@ -167,6 +167,18 @@ export function collectedArticleRoute(title, content = "") {
   if (/(?:台海|台湾|台灣|臺灣)/.test(text) && /军售|軍售|解放军|解放軍|中国军|中國軍|海警|国防|國防|军舰|軍艦/.test(text)) return "china";
   if (/中资|中資|中国企业|中國企業|中国公民|中國公民/.test(text) && /袭击|襲擊|遇袭|遇襲|撤离|撤離|伤亡|傷亡|制裁/.test(text)) return "china";
   return "";
+}
+
+export function matchesCollectedRoute(route, title, content, sourceText = "") {
+  const detected = collectedArticleRoute(title,content);
+  if (detected === route) return true;
+  const us=/美国|美國|白宫|白宮|华盛顿|華盛頓|特朗普|川普|United States|White House|Trump/i;
+  const china=/中国|中國|中共|习近平|習近平|China|Chinese|Xi Jinping/i;
+  // Bilateral coverage can lead with either president without changing its event.
+  // The independent single-event/source review still has to pass.
+  return [route,detected].every(x=>["china","us-politics"].includes(x))
+    && us.test(sourceText) && china.test(sourceText)
+    && us.test(`${title} ${content}`) && china.test(`${title} ${content}`);
 }
 
 export function qualifyTweet(tweet) {
@@ -868,7 +880,7 @@ export async function generateArticle(qualified, tweet, attempt = 0, previous = 
   // After a bounded source lookup, insufficient evidence still cannot be padded into publication.
   assertBodyQuality(article);
   const subjectClear = qualified.route && qualified.route !== "china"
-    ? collectedArticleRoute(article.title, article.content) === qualified.route
+    ? matchesCollectedRoute(qualified.route,article.title,article.content,qualified.text)
     : (collectedArticleRoute(article.title, article.content) === "china" || isChinaHotHeadline(article.title, article.content)
       || isChinaPolitical(article)
       || (isSourceSocialReport(qualified.title, qualified.text) && isSourceSocialReport(article.title, article.content)));
@@ -880,7 +892,7 @@ export async function generateArticle(qualified, tweet, attempt = 0, previous = 
   if (invalid && attempt < 2) return generateArticle(qualified, tweet, attempt + 1, article, mode);
   if (!article.title || !article.content) throw new Error("生成标题和正文不能为空");
   if (containsBoilerplate(article.content)) throw new Error("生成正文含提醒、呼吁或宣传式套话，禁止自动发布");
-  if (!subjectClear) throw new Error("生成稿未明确对应栏目的新闻主体");
+  if (!subjectClear) throw new Error(`生成稿未明确对应栏目的新闻主体：原栏目=${qualified.route}；成稿栏目=${collectedArticleRoute(article.title,article.content)}；标题=${article.title}`);
   if (repeatedFields) throw new Error("标题、摘要和正文存在整段重复");
   if (article.appears_old_news) return { ...article, target };
   if (isChinaPolitical(article) && /传闻|傳聞|传言|傳言|网传|網傳|据传|據傳|未经证实|未經證實|rumou?r|unconfirmed/i.test(qualified.text)
@@ -932,7 +944,7 @@ export function buildPublishedArticle(tweet, qualified, article, publishedAt = n
   const route = qualified.route || "china";
   const usNews = route !== "china";
   const section = ROUTE_SECTIONS[route] || CHINA_HOT_CATEGORY;
-  if (usNews && collectedArticleRoute(article.title, article.content) !== route) throw qualityError("美国新闻原文与成稿栏目不一致");
+  if (usNews && !matchesCollectedRoute(route,article.title,article.content,qualified.text)) throw qualityError("美国新闻原文与成稿栏目不一致");
   if (article.appears_old_news) throw qualityError("旧闻不能重新自动发布");
   const coverImage = assertPublicationQuality(tweet, article);
   if (article.publication_scope === "topic_only" && qualified.accepted !== true) throw qualityError("短讯必须通过对应选题资格检查");

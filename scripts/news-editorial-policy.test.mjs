@@ -18,6 +18,7 @@ function story(chars=2000) {const title='联邦法院公布移民政策裁决',c
 test('deep limits apply at both ICE publication gates, including topic_only',()=>{
  for(const n of [1999,2000,3500,3501]) {const s=story(n);s.ai_payload.publication_scope='topic_only';assert.equal(publishReady(s,official),n>=2000&&n<=3500);assert.equal(promoteReady(s,[official]),n>=2000&&n<=3500);}
  assert.throws(()=>assertBodyQuality({editorial_depth:'deep',publication_scope:'topic_only',content:'文'.repeat(650)}),/2000/);
+ assert.throws(()=>assertBodyQuality({editorial_depth:'standard',content:'文'.repeat(2000)}),/超过1999/);
 });
 test('two links from one publisher, social comments and unexecuted searches cannot qualify depth',()=>{
  assert.equal(independentSourceCount({sources:research.sources}),0);

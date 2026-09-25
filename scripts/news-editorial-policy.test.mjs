@@ -88,3 +88,14 @@ test('human approval of an edited policy story remains publishable but loses unc
  const s=story();s.human_review_status='approved';s.reviewed_by='editor';s.ai_payload.manual_old_news_confirmation=true;s.content='编辑核验后的短讯';
  assert.equal(publishReady(s,official),true);assert.equal(manualEditorialMetadata(s,s.title,s.content).editorial_depth,'brief');
 });
+
+import {isOlderThanCutoff} from './ice-drop-stale-posts.mjs';
+test('official web releases survive 12-hour social cleanup and expire at 24 hours',()=>{
+ const now=Date.parse('2026-09-25T02:00:00Z'),cutoff=now-12*3600000;
+ const release={source_created_at:'2026-09-24T12:00:00Z',source_type:'official',trust_tier:1,raw_payload:{source_platform:'official_web'},x_url:'https://www.justice.gov/opa/release'};
+ assert.equal(isOlderThanCutoff(release,cutoff,now),false);
+ assert.equal(isOlderThanCutoff({...release,raw_payload:{source_platform:'x'}},cutoff,now),true);
+ assert.equal(isOlderThanCutoff({...release,trust_tier:2},cutoff,now),true);
+ assert.equal(isOlderThanCutoff({...release,x_url:'https://justice.gov.evil.test/release'},cutoff,now),true);
+ assert.equal(isOlderThanCutoff({...release,source_created_at:'2026-09-24T01:00:00Z'},cutoff,now),true);
+});

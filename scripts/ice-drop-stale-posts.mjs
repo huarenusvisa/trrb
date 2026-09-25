@@ -1,9 +1,11 @@
 #!/usr/bin/env node
 import process from "node:process";
+import {fileURLToPath} from "node:url";
+import {allowedOfficialUrl} from "./ice-official-web-discovery.mjs";
 
 const REQUIRED = ["SUPABASE_URL", "SUPABASE_SERVICE_ROLE_KEY"];
-// Production rule: ICE source content older than 12 hours must never remain in the pipeline.
-// Environment variables may request a shorter window, but can never extend it beyond 12 hours.
+// Social posts retain the existing 12-hour ceiling. Verified official website
+// releases use the approved 24-hour collection window (RSS dates can be date-only).
 const REQUESTED_MAX_AGE_HOURS = Number(process.env.ICE_MAX_SOURCE_AGE_HOURS || 12);
 const MAX_AGE_HOURS = Math.min(12, Math.max(0.25, Number.isFinite(REQUESTED_MAX_AGE_HOURS) ? REQUESTED_MAX_AGE_HOURS : 12));
 const BATCH_SIZE = 100;
@@ -44,7 +46,9 @@ function chunks(values, size) {
   for (let index = 0; index < values.length; index += size) result.push(values.slice(index, index + size));
   return result;
 }
-function isOlderThanCutoff(row, cutoffMs) {
+export function isOlderThanCutoff(row, cutoffMs, nowMs = Date.now()) {
+  const officialWeb = row.source_type === "official" && Number(row.trust_tier) === 1 && row.raw_payload?.source_platform === "official_web" && allowedOfficialUrl(row.x_url);
+  if (officialWeb) cutoffMs = nowMs - 24 * 3600000;
   const raw = row.source_created_at || row.created_at;
   const time = new Date(raw || 0).getTime();
   return Number.isFinite(time) && time > 0 && time < cutoffMs;
@@ -54,7 +58,7 @@ async function main() {
   const cutoffMs = Date.now() - MAX_AGE_HOURS * 60 * 60 * 1000;
   const rows = await sb("ice_posts", {
     query: {
-      select: "id,x_post_id,source_created_at,created_at,processing_status,event_fingerprint",
+      select: "id,x_post_id,x_url,source_type,trust_tier,raw_payload,source_created_at,created_at,processing_status,event_fingerprint",
       processing_status: "in.(collected,processing,extracted,failed)",
       order: "created_at.asc",
       limit: "5000"
@@ -64,9 +68,9 @@ async function main() {
   for (const batch of chunks(stale.map((row) => row.id), BATCH_SIZE)) {
     await sb("ice_posts", { method: "DELETE", query: { id: `in.(${batch.join(",")})` }, prefer: "return=minimal" });
   }
-  console.log(JSON.stringify({ stage: "ice-drop-stale-posts", requested_max_age_hours: REQUESTED_MAX_AGE_HOURS, enforced_max_age_hours: MAX_AGE_HOURS, scanned: Array.isArray(rows) ? rows.length : 0, deleted: stale.length, cutoff: new Date(cutoffMs).toISOString() }, null, 2));
+  console.log(JSON.stringify({ stage: "ice-drop-stale-posts", requested_max_age_hours: REQUESTED_MAX_AGE_HOURS, enforced_max_age_hours: MAX_AGE_HOURS, official_web_max_age_hours: 24, scanned: Array.isArray(rows) ? rows.length : 0, deleted: stale.length, cutoff: new Date(cutoffMs).toISOString() }, null, 2));
 }
-main().catch((error) => {
+if (process.argv[1] === fileURLToPath(import.meta.url)) main().catch((error) => {
   console.error(`清理超过${MAX_AGE_HOURS}小时的ICE来源帖子失败：`, error);
   process.exitCode = 1;
 });

@@ -49,9 +49,14 @@ jobs:
           if (index.duplicateBindingCount !== 0) throw new Error(`duplicate translation bindings=${index.duplicateBindingCount}`);
           const dir = 'data/legal/fulltext-zh';
           const files = fs.existsSync(dir) ? fs.readdirSync(dir).filter(n => n.endsWith('.json')) : [];
+          const eligibleIds = new Set(eligible.map(record => String(record.id)));
+          const obsoleteFiles = files.filter(name => !eligibleIds.has(path.basename(name, '.json')));
           let valid = 0;
-          for (const name of files) {
+          for (const record of eligible) {
+            const name = `${record.id}.json`;
+            if (!fs.existsSync(path.join(dir, name))) continue;
             const x = JSON.parse(fs.readFileSync(path.join(dir,name),'utf8'));
+            if (x.recordId !== record.id) throw new Error(`record/file binding mismatch: ${name}`);
             if (!x.recordId || !x.recordFingerprint || !x.sourceDigest || !x.sourceUrl) throw new Error(`missing audit binding: ${name}`);
             if (x.datasetVersion !== db.datasetVersion) throw new Error(`stale dataset binding: ${name}`);
             if (!Array.isArray(x.segments) || x.segments.length === 0) throw new Error(`empty translation: ${name}`);
@@ -60,7 +65,7 @@ jobs:
             valid++;
           }
           if (valid !== index.translatedRecordCount) throw new Error(`index/file count mismatch: ${index.translatedRecordCount}/${valid}`);
-          console.log(JSON.stringify({audit:'LEGAL-R1-N3-SAVED-BINDINGS',eligible:eligible.length,translated:valid,coveragePct:index.coveragePct,failures:index.failures?.length || 0,complete:index.complete},null,2));
+          console.log(JSON.stringify({audit:'LEGAL-R1-N3-SAVED-BINDINGS',eligible:eligible.length,translated:valid,obsoleteRetained:obsoleteFiles.length,coveragePct:index.coveragePct,failures:index.failures?.length || 0,complete:index.complete},null,2));
           NODE
       - name: Advance node state only on strict 100 percent completion
         run: |

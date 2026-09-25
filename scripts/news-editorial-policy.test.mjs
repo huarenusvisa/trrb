@@ -99,3 +99,11 @@ test('official web releases survive 12-hour social cleanup and expire at 24 hour
  assert.equal(isOlderThanCutoff({...release,x_url:'https://justice.gov.evil.test/release'},cutoff,now),true);
  assert.equal(isOlderThanCutoff({...release,source_created_at:'2026-09-24T01:00:00Z'},cutoff,now),true);
 });
+
+import {candidateRoutes} from './ice-trusted-source-promote.mjs';
+test('nonofficial political and court candidates retain their route without gaining official approval',()=>{
+ const story={title:'美国联邦法院发布新裁定',summary:'法官宣布新政策暂缓执行',content:'美国联邦法院发布关于移民政策的裁定。'};
+ const media={source_type:'major_media',source_username:'Reuters',trust_tier:2,source_text:'A federal court issued a new injunction on immigration policy.'};
+ const routes=candidateRoutes(story,[media]);assert.equal(routes.candidate.key,'us-politics');assert.equal(routes.official,null);
+ const officialRoutes=candidateRoutes(story,[{...media,source_type:'official',trust_tier:1}]);assert.equal(officialRoutes.official.key,'us-politics');
+});

@@ -57,6 +57,10 @@ function recentEnough(story) { const time = new Date(story.last_seen_at || story
 function hasChinese(value) { return /[\u3400-\u9fff]/.test(String(value || "")); }
 function mediaCount(evidence) { return evidence.reduce((count, post) => { const media = Array.isArray(post.media) ? post.media : []; return count + media.filter((item) => item?.url || item?.preview_image_url).length; }, 0); }
 function editorialReady(story, evidence) { const payload = story.ai_payload && typeof story.ai_payload === "object" ? story.ai_payload : {}; const officialAutoCheck = evidence.some(official) && payload.automatic_old_news_check_passed === true; const oldNewsConfirmed = payload.manual_old_news_confirmation === true || officialAutoCheck; const count = (String(story.content || "").match(/[\u3400-\u9fff]/gu) || []).length; return ACCEPTED_EDITORIAL_VERSIONS.has(payload.translation_version) && payload.translated_to_chinese === true && payload.old_news_checked === true && oldNewsConfirmed && payload.appears_old_news !== true && (payload.translation_version === ICE_TRANSLATION_VERSION ? reviewedStoryReady(story) : story.human_review_status === "approved" && Boolean(story.reviewed_by) && count >= 300 && count <= 1500) && hasChinese(story.title) && hasChinese(story.content) && (mediaCount(evidence) === 0 || payload.image_grounding_used === true); }
+export function candidateRoutes(story,evidence) {
+  const trusted = evidence.filter(official);
+  return {candidate:routeOfficialContent(story.title,story.summary,story.content,evidence),official:trusted.length ? routeOfficialContent(story.title,story.summary,story.content,trusted) : null};
+}
 function blocksAutomaticPublish(story, payload, isOfficial) {
   if (payload.appears_old_news === true) return true;
   // A Tier-1 agency post is the primary evidence. Generic conflict/privacy/model-risk
@@ -86,11 +90,10 @@ async function main() {
     const evidence = await evidenceFor(story);
     const payload = story.ai_payload && typeof story.ai_payload === "object" ? story.ai_payload : {};
     const allOfficialEvidence = evidence.filter(official);
-    const officialRoute = allOfficialEvidence.length
-      ? routeOfficialContent(story.title, story.summary, story.content, allOfficialEvidence)
-      : null;
+    const routes = candidateRoutes(story,evidence);
+    const officialRoute = routes.official;
     const iceStory = isIceEnforcementText(story.title, story.summary, story.content);
-    if (!iceStory && !officialRoute) {
+    if (!iceStory && !routes.candidate) {
       await sb("ice_stories", { method: "PATCH", query: { id: `eq.${story.id}`,human_review_status:"not.in.(editing,approved,rejected)",...(story.updated_at ? {updated_at:`eq.${story.updated_at}`} : {}) }, body: {
         status: "rejected", human_review_status: "rejected", scheduled_at: null,
         decision_reason: `${story.decision_reason || ""}；官方内容分流未命中美国时政、美国警情、ICE执法或移民知识库，禁止自动发布`,

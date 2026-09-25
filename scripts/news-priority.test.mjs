@@ -26,3 +26,7 @@ test('budget hold remains retryable while fresh, but cannot bypass manual hold o
  assert.equal(shouldRetryCandidate({...candidate,raw_payload:{source_created_at:new Date(now-13*3600000).toISOString()}},{accepted:true},now),false);
  assert.equal(shouldRetryCandidate({...candidate,ai_payload:{...candidate.ai_payload,manual_review_required:true}},{accepted:true},now),false);
 });
+
+test('priority ranking does not silently exclude new policy wording outside the scoring vocabulary',()=>{
+ assert.equal(newsPriority({...primary,source_text:'White House vetoes legislation; full text attached'}).eligible,true);
+});

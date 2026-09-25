@@ -1,3 +1,4 @@
+import './news-budget-preload.mjs';
 import {chinaPersonNames,findChinaPeople} from '../netlify/shared/china-person-registry.mjs';
 import {hasChinaSeniorSubject} from '../netlify/shared/editorial-topics.mjs';
 

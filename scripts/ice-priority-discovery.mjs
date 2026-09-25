@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import './news-budget-preload.mjs';
 import process from "node:process";
 
 const X_API = "https://api.x.com/2";

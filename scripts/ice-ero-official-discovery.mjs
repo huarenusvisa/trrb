@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import './news-budget-preload.mjs';
 import crypto from "node:crypto";
 import process from "node:process";
 

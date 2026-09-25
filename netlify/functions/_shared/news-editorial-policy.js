@@ -39,8 +39,11 @@ function reviewedStoryReady(story) {
   const p = story?.ai_payload || {};
   const r = p.editorial_review;
   if (p.editorial_policy_version !== EDITORIAL_POLICY_VERSION || p.reviewed_content_sha256 !== contentDigest(story.title, story.content)) return false;
-  if (!r || ['single_event','grounded','sufficient','source_chain_complete','analysis_grounded','depth_appropriate','court_status_correct','fresh_event','image_grounded'].some(k => r[k] !== true)) return false;
+  if (!r || ['single_event','grounded','sufficient','source_chain_complete','analysis_grounded','court_status_correct','fresh_event','image_grounded'].some(k => r[k] !== true)) return false;
   if (!['brief','standard','deep'].includes(p.editorial_depth)) return false;
+  // Brief/standard suitability is checked by sufficient + exact tier bounds below.
+  // The qualitative depth veto applies only to a claimed deep report.
+  if (p.editorial_depth === 'deep' && r.depth_appropriate !== true) return false;
   const n = countChinese(story.content);
   if (p.editorial_depth === 'brief' && (n < 1 || n > 799)) return false;
   if (p.editorial_depth === 'standard' && (n < 800 || n > 1999)) return false;

@@ -294,7 +294,7 @@ export function assertPublicationQuality(tweet, article) {
   if (bodyCharacterCount(article.content) < 800 && article.publication_scope !== "topic_only") throw qualityError("不足800字的短稿只能发布到对应选题");
   const review = article.editorial_review;
   if (!review || review.single_event !== true || review.grounded !== true || review.sufficient !== true || (usableMedia(tweet).length > 0 && review.image_relevant !== true)
-    || review.fresh_hot_event !== true || review.court_status_correct !== true || review.depth_appropriate !== true || review.analysis_grounded !== true || review.source_chain_complete !== true) {
+    || review.fresh_hot_event !== true || review.court_status_correct !== true || (article.editorial_depth === "deep" && review.depth_appropriate !== true) || review.analysis_grounded !== true || review.source_chain_complete !== true) {
     throw qualityError(review?.reason || "缺少单一主题、事实依据、来源链、深度适配及配图关联性复核");
   }
   const deepErrors = deepQualityErrors(article, tweet.context_research);
@@ -883,7 +883,7 @@ export async function generateArticle(qualified, tweet, attempt = 0, previous = 
     throw qualityError("政治传闻必须在标题或导语中明确未证实状态，不能改写为已确认事实");
   }
   article.editorial_review = await reviewArticle(qualified, tweet, article);
-  const core=['single_event','grounded','sufficient','source_chain_complete','analysis_grounded','depth_appropriate','court_status_correct','fresh_hot_event'];
+  const core=['single_event','grounded','sufficient','source_chain_complete','analysis_grounded','court_status_correct','fresh_hot_event',...(article.editorial_depth==='deep'?['depth_appropriate']:[])];
   if (needsReviewRecheck(article.editorial_review,core)) article.editorial_review=await reviewArticle(qualified,tweet,article,article.editorial_review);
   if (article.editorial_review.image_relevant !== true && usableMedia(tweet).length && core.every(k => article.editorial_review[k] === true)) {
     // A new factual review must pass without images before a text-only copy is accepted.

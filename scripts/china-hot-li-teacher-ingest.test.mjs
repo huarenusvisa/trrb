@@ -495,3 +495,10 @@ test("recovers interrupted automated processing only after timeout and within fr
     assert.equal(shouldRetryCandidate({...row,...patch},q,now),false);
   }
 });
+
+test('普通稿不因深度项失败被拒，事实不足仍禁止发布',()=>{
+ const article={title:'重庆学校公布最新安排',content:qualityBody,editorial_depth:'standard',editorial_review:{...editorial_review,depth_appropriate:false,data_context:false,news_downstream:false}};
+ assert.equal(assertPublicationQuality(chinaTweet,article),chinaTweet.media[0].url);
+ assert.throws(()=>assertPublicationQuality(chinaTweet,{...article,editorial_review:{...article.editorial_review,sufficient:false}}));
+ assert.throws(()=>assertPublicationQuality(chinaTweet,{...article,editorial_depth:'deep',content:'文'.repeat(2000)}));
+});

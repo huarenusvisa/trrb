@@ -186,7 +186,7 @@ async function translate(story, posts, attempt = 0, context = null) {
   parsed.title = fitTitle(parsed.title);
   parsed.content = safeText(parsed.content,Infinity);
   let review = await reviewTranslation(parsed,posts,context.research,images);
-  const core = ['single_event','grounded','sufficient','source_chain_complete','analysis_grounded','depth_appropriate','court_status_correct','fresh_event','image_grounded'];
+  const core = ['single_event','grounded','sufficient','source_chain_complete','analysis_grounded','court_status_correct','fresh_event','image_grounded',...(depth==='deep'?['depth_appropriate']:[])];
   if(needsReviewRecheck(review,core)) review=await reviewTranslation(parsed,posts,context.research,images,review);
   const deepErrors = deepQualityErrors(parsed,context.research,review);
   if (depth === 'deep' && deepErrors.length && review.grounded === true && review.single_event === true && attempt < 1) {

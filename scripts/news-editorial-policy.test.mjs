@@ -133,3 +133,26 @@ test('source freshness uses original time and fails closed outside twelve hours'
  assert.equal(sourceWithinCollectionWindow('2026-09-24T14:00:00Z',now),true);
  for(const time of ['2026-09-24T13:59:59Z','2026-09-25T02:00:01Z','',null])assert.equal(sourceWithinCollectionWindow(time,now),false);
 });
+
+test('a deep-report suitability flag cannot reject a factual lower-tier copy or bypass factual gates',()=>{
+ for(const [depth,n] of [['brief',500],['standard',900]]){
+  const s=story(n);s.ai_payload.editorial_depth=depth;
+  s.ai_payload.editorial_review={...review,depth_appropriate:false,...Object.fromEntries(DEEP_REVIEW_FIELDS.map(k=>[k,false]))};
+  assert.equal(reviewedStoryReady(s),true);
+  assert.equal(s.ai_payload.editorial_review.depth_appropriate,false,'retain the actual review instead of fabricating approval');
+  for(const key of ['grounded','sufficient','source_chain_complete','court_status_correct','fresh_event','analysis_grounded'])
+   assert.equal(reviewedStoryReady({...s,ai_payload:{...s.ai_payload,editorial_review:{...s.ai_payload.editorial_review,[key]:false}}}),false,key);
+ }
+ const deep=story();deep.ai_payload.editorial_review={...review,depth_appropriate:false};assert.equal(reviewedStoryReady(deep),false);
+});
+
+test('ICE writer accepts a factual brief when the reviewer only objects to missing depth',async t=>{
+ t.mock.method(globalThis,'fetch',async(_url,options)=>{
+  const request=JSON.parse(options.body);
+  if(request.tools)return Response.json({output:[]});
+  if(request.text.format.name==='unified_news_review')return Response.json({output_text:JSON.stringify({...review,depth_appropriate:false,reason:'事实与简讯篇幅合格，但没有深度分析',...Object.fromEntries(DEEP_REVIEW_FIELDS.map(k=>[k,false]))})});
+  return Response.json({output_text:JSON.stringify({title:'执法部门公布案件进展',summary:'通报已确认的案件事实',content:'文'.repeat(500),editorial_depth:'brief',source_sufficient:true,depth_reason:'仅有已核实事实',source_language:'en',image_observations:'',appears_old_news:false,old_news_reason:''})});
+ });
+ const result=await translate({},[{source_text:'Police announced an arrest and released the case facts today.',source_created_at:new Date().toISOString()}]);
+ assert.equal(result.editorial_depth,'brief');assert.equal(result.editorial_review.depth_appropriate,false);
+});

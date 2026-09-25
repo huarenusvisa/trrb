@@ -34,7 +34,8 @@ async function main() {
     query_text: `ICE pipeline heartbeat: ${stage}`,
     last_run_at: now,
     updated_at: now,
-    last_error: status === "failure" ? (errorText || `${stage} failed`) : null
+    last_result: {status,stage,at:now},
+    last_error: ["failure","degraded"].includes(status) ? (errorText || `${stage}: ${status}; inspect editorial hold counts`) : null
   };
   if (status === "success") row.last_success_at = now;
 

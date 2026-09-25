@@ -102,7 +102,7 @@ test("translation writes a factual brief and separately reviews it without paddi
     requests++;
     const body=JSON.parse(options.body);
     if(body.text?.format?.name==='unified_news_review')return Response.json({output_text:JSON.stringify(passingReview)});
-    assert.match(body.instructions,/2500至3500/);
+    assert.match(body.instructions,/2000至3500/);
     return Response.json({output_text:JSON.stringify({title:shortStory.title,content,summary:content,source_sufficient:true,editorial_depth:'brief',depth_reason:'单一官方事件，资料只支持短讯',source_language:'en',image_observations:'',appears_old_news:false,old_news_reason:''})});
   });
   const article=await translate(shortStory,[{source_text:'ICE arrested one person in New York.'}]);

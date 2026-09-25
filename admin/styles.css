@@ -605,3 +605,12 @@ th { background: #f1f5f9; }
 .automation-report-status.error{color:#b42318;font-weight:700}
 
 .article-search-toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:10px}.article-search-toolbar input{flex:1;min-width:220px;max-width:600px}.article-search-toolbar select{width:auto}#articles-list-note{color:#64748b;line-height:1.6}#articles-pagination{margin-top:18px;display:flex;align-items:center;gap:14px}
+
+/* Keep all newsroom actions visible at desktop and mobile widths. */
+.china-hot-pool-item { grid-template-columns:minmax(0,1fr); }
+.china-hot-pool-actions { justify-content:flex-start; max-width:100%; }
+#china-editor-modal { position:fixed; inset:0; z-index:3000; background:#0007; overflow:auto; padding:20px; }
+#china-editor-modal.hidden { display:none; }
+.china-editor-dialog { max-width:900px; margin:20px auto; padding:24px; background:white; border-radius:14px; }
+.china-editor-dialog textarea,.china-editor-dialog input[type=text] { width:100%; box-sizing:border-box; margin:6px 0 12px; padding:10px; }
+.china-editor-dialog pre { white-space:pre-wrap; overflow-wrap:anywhere; background:#f3f4f6; padding:12px; }

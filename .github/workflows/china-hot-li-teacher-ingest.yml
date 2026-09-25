@@ -47,7 +47,7 @@ jobs:
       - name: Run collector tests
         env:
           NEWS_BUDGET_ENFORCE: "0"
-        run: node --test scripts/news-budget.test.mjs scripts/news-priority.test.mjs scripts/news-editorial-policy.test.mjs scripts/china-person-registry.test.mjs scripts/china-hot-li-teacher-ingest.test.mjs scripts/china-context-research.test.mjs scripts/china-editorial-update.test.mjs scripts/ren-zhengfei-news.test.mjs scripts/article-editorial-policy.test.mjs
+        run: node --experimental-strip-types --test scripts/news-editorial-support.test.mjs scripts/china-hot-editor.test.mjs scripts/news-budget.test.mjs scripts/news-priority.test.mjs scripts/news-editorial-policy.test.mjs scripts/china-person-registry.test.mjs scripts/china-hot-li-teacher-ingest.test.mjs scripts/china-context-research.test.mjs scripts/china-editorial-update.test.mjs scripts/ren-zhengfei-news.test.mjs scripts/article-editorial-policy.test.mjs
       - name: Read China headlines category switches
         id: category
         run: node scripts/category-pipeline-gate.mjs hot-headlines
@@ -66,3 +66,7 @@ jobs:
       - name: Report shared news budget
         if: always()
         run: node scripts/news-budget-report.mjs
+
+      - name: Report verified seven-day news quality
+        if: always()
+        run: node scripts/news-quality-report.mjs

@@ -1,8 +1,8 @@
 const crypto = require('node:crypto');
 
-const EDITORIAL_POLICY_VERSION = 'unified-news-research-2500-3500-v1';
-const ICE_TRANSLATION_VERSION = 'zh-title-body-v11-unified-research';
-const DEEP_MIN = 2500;
+const EDITORIAL_POLICY_VERSION = 'unified-news-research-2000-3500-v2';
+const ICE_TRANSLATION_VERSION = 'zh-title-body-v12-tiered-review';
+const DEEP_MIN = 2000;
 const DEEP_MAX = 3500;
 const DEEP_REVIEW_FIELDS = ['independent_sources', 'data_verified', 'data_context', 'news_upstream', 'news_downstream', 'event_upstream', 'event_downstream', 'reader_impact_examined'];
 function countChinese(value) {
@@ -43,10 +43,10 @@ function reviewedStoryReady(story) {
   if (!['brief','standard','deep'].includes(p.editorial_depth)) return false;
   const n = countChinese(story.content);
   if (p.editorial_depth === 'brief' && (n < 1 || n > 799)) return false;
-  if (p.editorial_depth === 'standard' && (n < 800 || n > 2499)) return false;
+  if (p.editorial_depth === 'standard' && (n < 800 || n > 1999)) return false;
   return deepQualityErrors({content:story.content,editorial_depth:p.editorial_depth}, p.context_research, r).length === 0;
 }
-const DEEP_RESEARCH_INSTRUCTIONS = '优质实时热点可写2500至3500个中文字符的深度稿，但必须具备可核验数据（日期、统计周期、样本/分母、口径及可比性），新闻上游（原始发布、文件、原始报道）、新闻下游（独立跟进、当事人回应），事件上游（时间线、政策/判例依据、已证实原因）、事件下游（已发生结果和下一程序节点；预判必须注明条件与不确定性）。考察与华人具体相关的法律适用范围、签证/身份、留学、工作、经商、税务、家庭或安全影响；没有依据就明确无法确认直接影响，不能因姓名或族裔猜测。法院材料必须区分起诉、临时禁令、裁决、判例效力、上诉、暂缓与生效范围。评论只能是明确归因的观点，不能当作事实、数据、独立来源或民意比例。任何维度资料不足时降为普通稿/短讯，不能凑字冒充深度稿。';
+const DEEP_RESEARCH_INSTRUCTIONS = '优质实时热点可写2000至3500个中文字符的深度稿，但必须具备可核验数据（日期、统计周期、样本/分母、口径及可比性），新闻上游（原始发布、文件、原始报道）、新闻下游（独立跟进、当事人回应），事件上游（时间线、政策/判例依据、已证实原因）、事件下游（已发生结果和下一程序节点；预判必须注明条件与不确定性）。考察与华人具体相关的法律适用范围、签证/身份、留学、工作、经商、税务、家庭或安全影响；没有依据就明确无法确认直接影响，不能因姓名或族裔猜测。法院材料必须区分起诉、临时禁令、裁决、判例效力、上诉、暂缓与生效范围。评论只能是明确归因的观点，不能当作事实、数据、独立来源或民意比例。任何维度资料不足时降为普通稿/短讯，不能凑字冒充深度稿。';
 
 function manualEditorialMetadata(story,title,content) {
   const p=story.ai_payload||{};

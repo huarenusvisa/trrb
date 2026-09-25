@@ -89,7 +89,7 @@ jobs:
       - name: Validate unified editorial and collection rules
         env:
           NEWS_BUDGET_ENFORCE: "0"
-        run: node --test scripts/news-budget.test.mjs scripts/news-priority.test.mjs scripts/news-editorial-policy.test.mjs scripts/ice-news-quality-gate.test.mjs scripts/official-content-routing.test.mjs scripts/ice-original-posts.test.mjs
+        run: node --experimental-strip-types --test scripts/news-editorial-support.test.mjs scripts/china-hot-editor.test.mjs scripts/news-budget.test.mjs scripts/news-priority.test.mjs scripts/news-editorial-policy.test.mjs scripts/ice-news-quality-gate.test.mjs scripts/official-content-routing.test.mjs scripts/ice-original-posts.test.mjs
 
       - name: Validate required secrets
         if: steps.window.outputs.allowed == 'true'
@@ -149,6 +149,7 @@ jobs:
           node scripts/ice-dedupe-v3.mjs
 
       - name: AI edit and translate
+        id: editorial
         if: steps.window.outputs.allowed == 'true' && steps.category.outputs.enabled == 'true' && steps.category.outputs.ai_rewrite == 'true'
         shell: bash
         run: |
@@ -177,7 +178,7 @@ jobs:
         if: success() && steps.window.outputs.allowed == 'true' && steps.category.outputs.enabled == 'true'
         env:
           ICE_HEARTBEAT_STAGE: "parallel-pipeline"
-          ICE_HEARTBEAT_STATUS: "success"
+          ICE_HEARTBEAT_STATUS: ${{ steps.editorial.outputs.editorial_status || 'success' }}
         run: |
           node scripts/ice-pipeline-heartbeat.mjs || true
 
@@ -192,3 +193,7 @@ jobs:
       - name: Report shared news budget
         if: always()
         run: node scripts/news-budget-report.mjs
+
+      - name: Report verified seven-day news quality
+        if: always()
+        run: node scripts/news-quality-report.mjs

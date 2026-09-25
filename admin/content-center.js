@@ -1,5 +1,5 @@
 (function () {
-  const state = { items: [], trumpItems: [], activeTrump: null };
+  const state = { items: [], trumpItems: [], activeTrump: null, activeChina:null };
   const el = (id) => document.getElementById(id);
   const esc = (value) => String(value ?? "").replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[char]));
   const decisionLabels = {
@@ -17,6 +17,45 @@
     const data = await response.json().catch(() => ({}));
     if (!response.ok) throw new Error(data.error || `请求失败（${response.status}）`);
     return data;
+  }
+
+  async function chinaEditApi(body) {
+    const token=await window.getAdminAccessToken?.();
+    const response=await fetch('/.netlify/functions/china-hot-editor',{method:'POST',headers:{Authorization:`Bearer ${token}`,'Content-Type':'application/json'},body:JSON.stringify(body)});
+    const result=await response.json();if(!response.ok)throw new Error(result.error||'编辑失败');return result;
+  }
+  function ensureChinaEditor() {
+    if(el('china-editor-modal'))return;
+    const modal=document.createElement('div');modal.id='china-editor-modal';modal.className='hidden';
+    modal.innerHTML=`<div class="china-editor-dialog" role="dialog" aria-modal="true" aria-labelledby="china-editor-heading"><h3 id="china-editor-heading">核实与编辑新闻</h3><p>保存草稿不等于批准发布。请核实来源，区分事实、指控和推测。</p><details><summary>原始材料与处理说明</summary><pre id="china-editor-source"></pre><p id="china-editor-reason"></p></details><label>标题<input type="text" id="china-editor-title"></label><label>摘要<textarea id="china-editor-summary" rows="2"></textarea></label><label>正文<textarea id="china-editor-content" rows="15"></textarea></label><label>配图地址（可留空）<input type="text" id="china-editor-cover"></label><label>核实依据链接（每行一个）<textarea id="china-editor-links" rows="3"></textarea></label><label>具体核实说明<textarea id="china-editor-note" rows="3" placeholder="说明哪些来源支持事件、日期及核心主张"></textarea></label><p><label><input type="checkbox" id="china-editor-facts"> 已核实核心事实及来源，明确标注未证实内容</label></p><p><label><input type="checkbox" id="china-editor-fresh"> 已确认事件或实质新进展，并非旧闻重新传播</label></p><p id="china-editor-message" role="status"></p><div class="china-hot-pool-actions"><button id="china-editor-save">保存草稿</button><button id="china-editor-publish">核实后发布</button><button id="china-editor-close">关闭</button></div></div>`;
+    document.body.appendChild(modal);
+    el('china-editor-close').onclick=()=>{modal.classList.add('hidden');state.activeChina=null;};
+    for(const action of ['save','publish'])el('china-editor-'+action).onclick=()=>saveChinaEditor(action);
+  }
+  async function openChinaEditor(id) {
+    ensureChinaEditor();const data=await chinaEditApi({action:'detail',id});state.activeChina=data;
+    const c=data.candidate,a=data.article||{},p=c.ai_payload||{},m=a.metadata||{};
+    el('china-editor-title').value=a.title||p.title||p.proposed_title||'';
+    el('china-editor-summary').value=/自动加工未完成/.test(a.summary||'')?'':a.summary||p.summary||'';
+    el('china-editor-content').value=/自动加工未完成|未经编辑不得发布|【编辑提示】/.test(a.content||'')?'':a.content||p.last_generated_draft?.content||'';
+    el('china-editor-cover').value=a.cover_image||'';
+    el('china-editor-source').textContent=c.raw_text||m.source_text_original||'原始材料已清理，请重新核实来源';
+    el('china-editor-reason').textContent=c.decision_reason||'';
+    el('china-editor-links').value=(m.manual_evidence_urls||p.context_research?.sources?.map(x=>x.url)||[]).join('\n');
+    el('china-editor-note').value=m.manual_verification_note||'';
+    el('china-editor-facts').checked=false;el('china-editor-fresh').checked=false;
+    el('china-editor-message').textContent='';el('china-editor-modal').classList.remove('hidden');
+  }
+  async function saveChinaEditor(action) {
+    const current=state.activeChina;if(!current)return;
+    const buttons=['save','publish'].map(x=>el('china-editor-'+x));buttons.forEach(x=>x.disabled=true);
+    el('china-editor-message').textContent=action==='publish'?'正在查重并发布…':'正在保存…';
+    try {
+      await chinaEditApi({action,id:current.candidate.id,updated_at:current.candidate.updated_at,title:el('china-editor-title').value,summary:el('china-editor-summary').value,content:el('china-editor-content').value,cover_image:el('china-editor-cover').value,evidence_urls:el('china-editor-links').value,verification_note:el('china-editor-note').value,facts_confirmed:el('china-editor-facts').checked,freshness_confirmed:el('china-editor-fresh').checked});
+      if(action==='publish'){el('china-editor-modal').classList.add('hidden');state.activeChina=null;await load();}
+      else {state.activeChina=await chinaEditApi({action:'detail',id:current.candidate.id});el('china-editor-message').textContent='草稿已保存，可继续核实和编辑。';await load();}
+    }catch(error){el('china-editor-message').textContent=error.message;}
+    finally{buttons.forEach(x=>x.disabled=false);}
   }
 
   async function trumpApi(body) {
@@ -37,8 +76,8 @@
       const source = item.source_url ? `<a class="source-link" href="${esc(item.source_url)}" target="_blank" rel="noopener noreferrer">查看原始来源</a>` : "";
       const articleAction = published
         ? `<a href="/article.html?id=${encodeURIComponent(item.article_id)}" target="_blank" rel="noopener">查看文章</a>`
-        : item.article_id ? `<button data-pool-edit="${esc(item.article_id)}">编辑草稿</button>` : "";
-      return `<article class="china-hot-pool-item"><div><span class="tag">${esc(item.ai_payload?.manual_review_required ? "已采编·待审核" : decisionLabels[item.decision] || item.decision || "未处理")}</span><span class="tag">${esc(item.proposed_section || "待分流")}</span><time>${esc(timeOf(item))}</time><h4>${esc(titleOf(item))}</h4><p>${esc(String(summary).slice(0, 240))}</p><p class="pool-reason"><b>处理说明：</b>${esc(reason)}</p>${source}</div><div class="china-hot-pool-actions">${articleAction}<button data-pool-download="${esc(item.id)}">下载</button>${published ? `<button data-pool-action="take_down" data-pool-id="${esc(item.id)}">下架</button>` : ""}${takenDown ? `<button data-pool-action="restore" data-pool-id="${esc(item.id)}">恢复</button>` : ""}<button class="danger" data-pool-action="delete" data-pool-id="${esc(item.id)}">删除文章</button></div></article>`;
+        : `<button data-pool-edit="${esc(item.id)}">编辑、核实与发布</button>`;
+      return `<article class="china-hot-pool-item"><div><span class="tag">${esc(item.ai_payload?.manual_review_required ? "待核实·可编辑" : decisionLabels[item.decision] || item.decision || "未处理")}</span><span class="tag">${esc(item.proposed_section || "待分流")}</span><time>${esc(timeOf(item))}</time><h4>${esc(titleOf(item))}</h4><p>${esc(String(summary).slice(0, 240))}</p><p class="pool-reason"><b>处理说明：</b>${esc(reason)}</p>${source}</div><div class="china-hot-pool-actions">${articleAction}<button data-pool-download="${esc(item.id)}">下载</button>${published ? `<button data-pool-action="take_down" data-pool-id="${esc(item.id)}">下架</button>` : ""}${takenDown ? `<button data-pool-action="restore" data-pool-id="${esc(item.id)}">恢复</button>` : ""}<button class="danger" data-pool-action="delete" data-pool-id="${esc(item.id)}">删除文章</button></div></article>`;
     }).join("") : "<div class=\"panel\">内容池暂时为空。</div>";
   }
 
@@ -46,8 +85,8 @@
     el("china-hot-pool-message").textContent = "正在读取内容池…";
     try {
       const data = await api({ action: "list" });
-      const terminal = new Set(["published", "rejected", "deleted", "duplicate", "legacy_archived", "failed"]);
-      state.items = (data.items || []).filter((item) => !terminal.has(item.decision) && (item.decision !== "review_required" || item.ai_payload?.manual_review_required === true));
+      const terminal = new Set(["published", "rejected", "deleted", "duplicate", "legacy_archived"]);
+      state.items = (data.items || []).filter((item) => !terminal.has(item.decision));
       render();
       el("china-hot-pool-message").textContent = `待处理 ${state.items.length} 条；重复稿、已发布稿和其他已完成记录不会出现在后台。`;
     }
@@ -124,9 +163,9 @@
       if (china) load(); else if (ice) window.loadReviewQueue?.(); else loadTrump();
     }
     const dl = event.target.closest("[data-pool-download]");
-    if (dl) download(state.items.find((item) => item.id === dl.dataset.poolDownload));
+    if (dl) download(state.items.find((item) => String(item.id) === dl.dataset.poolDownload));
     const edit = event.target.closest("[data-pool-edit]");
-    if (edit) window.editArticle?.(edit.dataset.poolEdit);
+    if (edit) {edit.disabled=true;try{await openChinaEditor(edit.dataset.poolEdit);}catch(error){alert(error.message);}finally{edit.disabled=false;}}
     const action = event.target.closest("[data-pool-action]");
     if (action) {
       const label = action.dataset.poolAction === "delete" ? "删除关联文章（内容池原始记录仍保留）" : action.textContent.trim();

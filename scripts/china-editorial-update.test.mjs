@@ -6,7 +6,7 @@ import {collectChinaMediaPosts,CHINA_X_SOURCES,CHINA_X_MONITORS,chinaMediaQuery,
 const body='重庆学校发布开学通知。'+Array.from({length:630},(_,i)=>String.fromCharCode(0x4e00+i)).join('');
 const source={id:'12345',text:'重庆学校今日公布开学安排，通知说明报到时间及校方调整安排。',created_at:new Date().toISOString(),media:[{type:'photo',url:'https://pbs.twimg.com/media/test.jpg'}]};
 const draft={title:'重庆学校公布开学安排',summary:'学校通知载明报到时间与调整安排。',content:body,source_sufficient:true,appears_old_news:false,old_news_reason:'',rejection_reason:'',seo_keywords:'重庆,开学',image_evidence:[{image_index:0,visible_text:'开学通知'}]};
-const verdict={single_event:true,grounded:true,sufficient:true,image_relevant:true,depth_appropriate:true,analysis_grounded:true,source_chain_complete:true,cover_index:0,image_description:'学校开学通知截图',fresh_hot_event:true,freshness_evidence:'原帖及学校通知明确是今日公布的新安排',reason:''};
+const verdict={single_event:true,grounded:true,sufficient:true,image_relevant:true,court_status_correct:true,depth_appropriate:true,analysis_grounded:true,source_chain_complete:true,cover_index:0,image_description:'学校开学通知截图',fresh_hot_event:true,freshness_evidence:'原帖及学校通知明确是今日公布的新安排',reason:''};
 test('politics excludes community activity, corporate/school trivia and foreign personnel news',()=>{
  for(const title of ['王岐山大秘毕井泉受贿案宣判','薄熙来近况传闻引发议论','张又侠相关军队政变传闻待核实','应急管理部原党委书记、部长王祥喜被开除党籍','省委书记履新','习近平出席政治局会议']) assert.equal(isChinaPolitical({title}),true,title);
  for(const title of ['洛杉矶华人招募参加习近平访美欢迎活动','中共统战部在大连举办民营企业美食节','牡丹江企业欠薪引发关注','高中教学楼安装栅栏','美国部长任命公布','台湾官员落马','重庆副市长被开除党籍','某县党委书记被查','康威市长疑似被ICE误捕传闻尚未证实','ICE扩招压力引爆审查危机！17年资深官员揭招聘内幕','厦门城市职业学院南校区楼梯口墙面贴习近平重要讲话摘录','上海因私出入境服务行业协会召开会议研讨国务院出入境新规']) assert.equal(isChinaPolitical({title}),false,title);

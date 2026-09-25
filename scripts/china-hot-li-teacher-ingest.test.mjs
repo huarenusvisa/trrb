@@ -6,7 +6,7 @@ import { assertPublicationQuality, bodyCharacterCount, isHeadlineDigest, buildCa
 
 // Distinct characters isolate length/transport tests from the repetition gate.
 const qualityBody = "重庆学校公布安排。" + Array.from({ length: 820 }, (_, i) => String.fromCharCode(0x4e00 + i)).join("");
-const editorial_review = { single_event: true, grounded: true, sufficient: true, image_relevant: true, depth_appropriate: true, analysis_grounded: true, source_chain_complete: true, cover_index: 0, image_description: "校方公布的开学安排通知", reason: "输入材料支持成稿" };
+const editorial_review = { independent_sources:true,data_verified:true,data_context:true,news_upstream:true,news_downstream:true,event_upstream:true,event_downstream:true,reader_impact_examined:true, single_event: true, grounded: true, sufficient: true, image_relevant: true, court_status_correct: true, depth_appropriate: true, analysis_grounded: true, source_chain_complete: true, cover_index: 0, image_description: "校方公布的开学安排通知", reason: "输入材料支持成稿" };
 
 const chinaTweet = {
   id: "123", created_at: "2026-08-23T08:00:00.000Z", lang: "zh",
@@ -31,8 +31,8 @@ test("中国热门头条采用600至3500字目标且不截断事实", () => {
   }
 });
 
-test("总编辑可按选题价值选择1500至3000字深度稿，标题型素材强制补链", () => {
-  assert.deepEqual(editorialTarget("deep"), { min: 1500, max: 3000, band: "深度稿1500至3000个中文字符，解释因果、节点、数据与可能方向" });
+test("总编辑可按选题价值选择2500至3500字深度稿，标题型素材强制补链", () => {
+  assert.deepEqual(editorialTarget("deep"), { min: 2500, max: 3500, band: "深度稿2500至3500个中文字符，解释因果、节点、数据与可能方向" });
   assert.equal(isThinSourceMaterial("北京国家信访局门口：两名访民喝农药自杀"), true);
   assert.equal(isThinSourceMaterial(chinaTweet.text), false);
 });
@@ -405,12 +405,12 @@ test("短稿检索同一事件背景，扩写后将资料交给独立质检并�
   });
   const article=await generateArticle(qualifyTweet(tweet),tweet);
   assert.equal(writes,2);assert.equal(researches,1);assert.equal(reviews,1);
-  assert.deepEqual(buildPublishedArticle(tweet,qualifyTweet(tweet),article).supporting_sources,[source]);
+  assert.deepEqual(buildPublishedArticle(tweet,qualifyTweet(tweet),article).supporting_sources,[{...source,kind:"web_evidence",tool_cited:true}]);
 });
 
-test("高价值选题由总编辑判定为深度稿后，必须补足双来源并写到1500至3000字", async (t) => {
+test("高价值选题由总编辑判定为深度稿后，必须补足双来源并写到2500至3500字", async (t) => {
   const tweet = {...chinaTweet, text: qualityBody};
-  const deepBody = "重庆学校发布通知，因持续高温调整开学安排。这是一篇基于公开资料的深度报道。" + Array.from({length: 1650}, (_, i) => String.fromCodePoint(0x4e00 + i)).join("");
+  const deepBody = "重庆学校发布通知，因持续高温调整开学安排。这是一篇基于公开资料的深度报道。" + Array.from({length: 2650}, (_, i) => String.fromCodePoint(0x4e00 + i)).join("");
   const sources = [
     {url:"https://example.com/primary", title:"原始文件"},
     {url:"https://example.org/data", title:"统计资料"},
@@ -432,8 +432,8 @@ test("高价值选题由总编辑判定为深度稿后，必须补足双来源�
   });
   const article = await generateArticle(qualifyTweet(tweet), tweet);
   assert.equal(article.editorial_depth, "deep");
-  assert.equal(article.target.min, 1500);
-  assert.ok(bodyCharacterCount(article.content) >= 1500);
+  assert.equal(article.target.min, 2500);
+  assert.ok(bodyCharacterCount(article.content) >= 2500);
   assert.equal(researches, 1);
   assert.equal(writes, 3);
   assert.equal(reviews, 1);

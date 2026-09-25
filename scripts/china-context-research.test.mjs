@@ -5,7 +5,7 @@ test('obsolete database length failures retry once; political and fact-check hol
  const now=Date.parse('2026-09-16T22:00:00Z');
  const row={decision:'review_required',decision_reason:'自动扩写或发布失败: PATCH articles violates check constraint articles_china_hot_editorial_minimum',raw_payload:{source_created_at:'2026-09-16T12:00:00Z'},ai_payload:{quality_hold:true,processing_version:'china-300-600-image-v5'}};
  assert.equal(contextRetryEligible(row,now),true);
- assert.equal(contextRetryEligible({...row,ai_payload:{...row.ai_payload,processing_version:'political-routing-600-3500-v7'}},now),false);
+ assert.equal(contextRetryEligible({...row,ai_payload:{...row.ai_payload,processing_version:'political-routing-deep-2500-3500-v8'}},now),false);
  assert.equal(contextRetryEligible({...row,decision_reason:'政治线索待核查：政变传闻'},now),false);
  assert.equal(contextRetryEligible({...row,decision_reason:'自动扩写或发布失败:事实无法核实'},now),false);
 });
@@ -22,7 +22,7 @@ test('only recent automated length holds retry once; manual, old and current-ver
   assert.equal(contextRetryEligible({...row,decision:'rejected'},now),false);
   assert.equal(contextRetryEligible({...row,decision_reason:'人工审核:正文仅440字'},now),false);
   assert.equal(contextRetryEligible({...row,collected_at:'2026-08-01'},now),false);
-  assert.equal(contextRetryEligible({...row,ai_payload:{quality_hold:true,processing_version:'political-routing-600-3500-v7'}},now),false);
+  assert.equal(contextRetryEligible({...row,ai_payload:{quality_hold:true,processing_version:'political-routing-deep-2500-3500-v8'}},now),false);
 });
 
 test('only retrieved same-conversation public replies can be attributed, never counted as verified facts',async()=>{

@@ -7,6 +7,7 @@ async function sb(table, options = {}) {
     : sbOnce(table, options);
 }
 import process from "node:process";
+import newsScope from "../netlify/functions/_shared/news-collection-scope.js";
 import { pathToFileURL } from "node:url";
 
 const REQUIRED = ["SUPABASE_URL", "SUPABASE_SERVICE_ROLE_KEY"];
@@ -90,6 +91,8 @@ export function classifyNewsQuality(row) {
   const agencyRoleEvent = hasAgencyRoleEvent(text);
 
   if (NOISE.test(text) && !STRONG_AGENCY_ACTION.test(text)) return { keep: false, reason: "ice_lexical_noise_filtered" };
+  const scope = newsScope.collectionScope(text, row);
+  if (scope && (!staleRecap(text) || FRESH_UPDATE.test(text) || judicial) && (!HYPOTHETICAL_OR_OPINION.test(text) || /announced|issued|ruled|filed|signed|adopted|released|宣布|发布|裁定|通过|起诉/i.test(text))) return {keep:true, reason:scope.reason};
   if (!agency && !native) return { keep: false, reason: "missing_ice_agency_context" };
 
   if (ANTI_ICE_PROTEST.test(text) && !agencyRoleEvent && !judicial) {
@@ -129,7 +132,7 @@ async function main() {
   const cutoff = new Date(Date.now() - LOOKBACK_HOURS * 3600000).toISOString();
   const rows = await sb("ice_posts", {
     query: {
-      select: "id,source_username,source_type,source_text,processing_status,relevant,source_created_at,created_at",
+      select: "id,source_username,source_type,trust_tier,source_text,processing_status,relevant,source_created_at,created_at",
       created_at: `gte.${cutoff}`,
       order: "created_at.desc",
       limit: String(MAX_ROWS)

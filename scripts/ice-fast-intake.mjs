@@ -331,6 +331,10 @@ async function linkEvidence(story, post) {
   });
 }
 async function mergeIntoStory(story, post) {
+  if (["editing","approved","rejected"].includes(story.human_review_status) || story.reviewed_by) {
+    await linkEvidence(story,post);
+    return; // New evidence never revokes a human decision or replaces an editor's copy.
+  }
   const type = post.source_type || "individual";
   const key = post.independence_key || post.source_username || String(post.id);
   const sameSource = await evidenceByIndependenceKey(story.id, key);
@@ -343,13 +347,15 @@ async function mergeIntoStory(story, post) {
     individual_source_count: Number(story.individual_source_count || 0) + (!sameSource && type === "individual" ? 1 : 0),
     updated_at: nowIso()
   };
-  if (story.status === "rejected") {
+  { // Every substantive update must re-enter research and independent review.
     patch.status = "pending_corroboration";
     patch.human_review_status = "required";
     patch.scheduled_at = null;
     patch.ai_payload = {
       ...safeJson(story.ai_payload, {}),
       translation_pending: true,
+      translation_version: null,
+      material_update_pending: true,
       old_news_checked: false,
       manual_old_news_confirmation: false,
       revived_by_material_update: true,

@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import { readDatabaseQuery } from "./paged-read.mjs";
 import process from "node:process";
+import {ICE_TRANSLATION_VERSION, reviewedStoryReady, countChinese} from "./news-editorial-policy.mjs";
 import { fileURLToPath } from "node:url";
 import iceClassifier from "../netlify/functions/_shared/ice-enforcement.js";
 import officialRouting from "../netlify/functions/_shared/official-content-routing.js";
@@ -20,7 +21,7 @@ const TRUSTED_MEDIA_HANDLES = new Set([
 ]);
 const AUTO_PUBLISH_SCORE = Number(process.env.ICE_AUTO_PUBLISH_SCORE || 80);
 const MAX_AGE_MINUTES = Number(process.env.ICE_TRUSTED_MAX_AGE_MINUTES || 120);
-const ACCEPTED_EDITORIAL_VERSIONS = new Set(["zh-title-body-v10-official-context-flex-300-1500", "zh-title-body-v9-official-context-300-1500", "zh-title-body-v8-source-led", "zh-title-body-v7-300-600-800-context-image"]);
+const ACCEPTED_EDITORIAL_VERSIONS = new Set([ICE_TRANSLATION_VERSION, "zh-title-body-v10-official-context-flex-300-1500", "zh-title-body-v9-official-context-300-1500", "zh-title-body-v8-source-led", "zh-title-body-v7-300-600-800-context-image"]);
 
 function nowIso() { return new Date().toISOString(); }
 function requireEnv() { const missing = REQUIRED.filter((name) => !process.env[name]); if (missing.length) throw new Error(`缺少 GitHub Secret：${missing.join(", ")}`); }
@@ -55,12 +56,12 @@ function trustedMedia(post) {
 function recentEnough(story) { const time = new Date(story.last_seen_at || story.first_seen_at || story.created_at || 0).getTime(); return Number.isFinite(time) && Date.now() - time <= MAX_AGE_MINUTES * 60000; }
 function hasChinese(value) { return /[\u3400-\u9fff]/.test(String(value || "")); }
 function mediaCount(evidence) { return evidence.reduce((count, post) => { const media = Array.isArray(post.media) ? post.media : []; return count + media.filter((item) => item?.url || item?.preview_image_url).length; }, 0); }
-function editorialReady(story, evidence) { const payload = story.ai_payload && typeof story.ai_payload === "object" ? story.ai_payload : {}; const officialAutoCheck = evidence.some(official) && payload.automatic_old_news_check_passed === true; const oldNewsConfirmed = payload.manual_old_news_confirmation === true || officialAutoCheck; const count = (String(story.content || "").match(/[\u3400-\u9fff]/gu) || []).length; return ACCEPTED_EDITORIAL_VERSIONS.has(payload.translation_version) && payload.translated_to_chinese === true && payload.old_news_checked === true && oldNewsConfirmed && payload.appears_old_news !== true && count >= 300 && count <= 1500 && hasChinese(story.title) && hasChinese(story.content) && (mediaCount(evidence) === 0 || payload.image_grounding_used === true); }
+function editorialReady(story, evidence) { const payload = story.ai_payload && typeof story.ai_payload === "object" ? story.ai_payload : {}; const officialAutoCheck = evidence.some(official) && payload.automatic_old_news_check_passed === true; const oldNewsConfirmed = payload.manual_old_news_confirmation === true || officialAutoCheck; const count = (String(story.content || "").match(/[\u3400-\u9fff]/gu) || []).length; return ACCEPTED_EDITORIAL_VERSIONS.has(payload.translation_version) && payload.translated_to_chinese === true && payload.old_news_checked === true && oldNewsConfirmed && payload.appears_old_news !== true && (payload.translation_version === ICE_TRANSLATION_VERSION ? reviewedStoryReady(story) : story.human_review_status === "approved" && Boolean(story.reviewed_by) && count >= 300 && count <= 1500) && hasChinese(story.title) && hasChinese(story.content) && (mediaCount(evidence) === 0 || payload.image_grounding_used === true); }
 function blocksAutomaticPublish(story, payload, isOfficial) {
   if (payload.appears_old_news === true) return true;
   // A Tier-1 agency post is the primary evidence. Generic conflict/privacy/model-risk
   // flags remain in the audit record but must not silently defeat official direct publish.
-  if (isOfficial) return false;
+  if (isOfficial) return !reviewedStoryReady(story);
   const hasUnconfirmedClaims = Array.isArray(payload.unconfirmed_claims) && payload.unconfirmed_claims.length > 0;
   return Boolean(story.conflict_detected || story.privacy_risk || story.fabrication_risk || hasUnconfirmedClaims);
 }
@@ -70,9 +71,10 @@ async function main() {
   const rows = await sb("ice_stories", { query: { select: "*", status: "in.(collecting,pending_review,pending_corroboration,approved)", order: "updated_at.desc", limit: "1000" } });
   let autoApproved = 0, trustedMediaApproved = 0, manual = 0, incomplete = 0, stale = 0, riskBlocked = 0, rejectedNonIce = 0;
   for (const story of Array.isArray(rows) ? rows : []) {
+    if (["editing","approved","rejected"].includes(story.human_review_status) || story.reviewed_by) { manual += 1; continue; }
     if (!recentEnough(story)) {
       if (story.status === "approved" && story.human_review_status !== "approved") {
-        await sb("ice_stories", { method: "PATCH", query: { id: `eq.${story.id}` }, body: {
+        await sb("ice_stories", { method: "PATCH", query: { id: `eq.${story.id}`,human_review_status:"not.in.(editing,approved,rejected)",...(story.updated_at ? {updated_at:`eq.${story.updated_at}`} : {}) }, body: {
           status: "rejected", human_review_status: "rejected", scheduled_at: null,
           decision_reason: `${story.decision_reason || ""}；超过官方自动发布新鲜度窗口，禁止作为新内容发布`,
           updated_at: nowIso()
@@ -89,7 +91,7 @@ async function main() {
       : null;
     const iceStory = isIceEnforcementText(story.title, story.summary, story.content);
     if (!iceStory && !officialRoute) {
-      await sb("ice_stories", { method: "PATCH", query: { id: `eq.${story.id}` }, body: {
+      await sb("ice_stories", { method: "PATCH", query: { id: `eq.${story.id}`,human_review_status:"not.in.(editing,approved,rejected)",...(story.updated_at ? {updated_at:`eq.${story.updated_at}`} : {}) }, body: {
         status: "rejected", human_review_status: "rejected", scheduled_at: null,
         decision_reason: `${story.decision_reason || ""}；官方内容分流未命中美国时政、美国警情、ICE执法或移民知识库，禁止自动发布`,
         updated_at: nowIso()
@@ -103,9 +105,9 @@ async function main() {
       : [];
     const trustedMediaEvidence = iceStory ? evidence.filter((post) => trustedMedia(post) && isIceEnforcementEvidence(post.source_text, post.source_username)) : [];
     const mediaScoreReady = Number(story.total_score || 0) >= AUTO_PUBLISH_SCORE;
-    const trustedEvidence = officialEvidence.length ? officialEvidence : (mediaScoreReady ? trustedMediaEvidence : []);
+    const trustedEvidence = officialEvidence; // Only verified official sources may bypass human review.
     if (!trustedEvidence.length) {
-      await sb("ice_stories", { method: "PATCH", query: { id: `eq.${story.id}` }, body: {
+      await sb("ice_stories", { method: "PATCH", query: { id: `eq.${story.id}`,human_review_status:"not.in.(editing,approved,rejected)",...(story.updated_at ? {updated_at:`eq.${story.updated_at}`} : {}) }, body: {
         status: "pending_review", human_review_status: "required", scheduled_at: null,
         decision_reason: `${story.decision_reason || ""}；${trustedMediaEvidence.length ? `可信媒体评分未达到自动发布门槛${AUTO_PUBLISH_SCORE}` : "非官方单一来源，保留人工审核"}`,
         updated_at: nowIso()
@@ -116,7 +118,7 @@ async function main() {
     const isOfficial = officialEvidence.length > 0;
     const sources = [...new Set(trustedEvidence.map((post) => post.source_username).filter(Boolean))];
     const blockedByRisk = blocksAutomaticPublish(story, payload, isOfficial);
-    await sb("ice_stories", { method: "PATCH", query: { id: `eq.${story.id}` }, body: {
+    await sb("ice_stories", { method: "PATCH", query: { id: `eq.${story.id}`,human_review_status:"not.in.(editing,approved,rejected)",...(story.updated_at ? {updated_at:`eq.${story.updated_at}`} : {}) }, body: {
       status: blockedByRisk ? "pending_review" : "approved",
       human_review_status: blockedByRisk ? "required" : (isOfficial ? "not_required_official" : "not_required_trusted_media"),
       scheduled_at: blockedByRisk ? null : nowIso(),

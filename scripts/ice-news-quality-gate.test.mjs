@@ -18,8 +18,8 @@ test("纯观点和假设性ICE内容被过滤", () => {
 
 test("只是顺便提到ICE、但ICE不是行动主体时被过滤", () => {
   const localArrest = classifyNewsQuality(row("An illegal alien has been arrested for rape in Fairfax County, and local officials refused to notify ICE."));
-  assert.equal(localArrest.keep, false);
-  assert.equal(localArrest.reason, "ice_mentioned_but_not_actor");
+  assert.equal(localArrest.keep, true);
+  assert.equal(localArrest.reason, "law-enforcement development");
 
   const policy = classifyNewsQuality(row("The concern is that a liability policy is helping ICE arrest people while protecting local law enforcement."));
   assert.equal(policy.keep, false);

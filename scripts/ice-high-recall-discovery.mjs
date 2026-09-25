@@ -203,7 +203,7 @@ async function main() {
   let requests = 0;
   let failedQueries = 0;
 
-  for (const query of SEARCH_QUERIES) {
+  for (const query of SEARCH_QUERIES.filter((_,i)=>i%4===Math.floor(Date.now()/3600000)%4)) {
     try {
       const pages = await searchX(query, startTime);
       requests += pages.length;

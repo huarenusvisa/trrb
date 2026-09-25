@@ -68,10 +68,11 @@ async function resolveUser(username) {
   return (await request(url, { headers: { Authorization: `Bearer ${process.env.X_BEARER_TOKEN}` } }))?.data || null;
 }
 async function timeline(user, startTime) {
-  const url = new URL(`${X_API}/users/${encodeURIComponent(user.id)}/tweets`);
-  url.searchParams.set("max_results", "100");
+  const url = new URL(`${X_API}/tweets/search/recent`);
+  url.searchParams.set("max_results", "20");
+  url.searchParams.set("query", `from:${user.username} (ICE OR immigration OR HSI OR arrest OR court OR policy OR border OR detention OR deportation) -is:retweet -is:reply`);
   url.searchParams.set("start_time", startTime);
-  url.searchParams.set("exclude", "retweets,replies");
+
   url.searchParams.set("tweet.fields", "id,text,author_id,created_at,lang,public_metrics,possibly_sensitive,attachments");
   url.searchParams.set("expansions", "attachments.media_keys");
   url.searchParams.set("media.fields", "media_key,type,url,preview_image_url,width,height,duration_ms,variants");
@@ -100,7 +101,7 @@ async function main() {
   const startTime = new Date(Date.now() - LOOKBACK_MINUTES * 60000).toISOString();
   const rows = [];
   const stats = { handles: HANDLES, returned: 0, relevant: 0, inserted: 0, failed: [] };
-  for (const username of HANDLES) {
+  for (const username of HANDLES.filter((_,i)=>i%4===Math.floor(Date.now()/3600000)%4)) {
     try {
       const user = await resolveUser(username);
       if (!user) throw new Error("账号不存在或无法解析");

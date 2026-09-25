@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import {compareNewsPriority} from './news-priority.mjs';
+import {isBudgetDeferred} from './news-cost-model.mjs';
 import { readAllPages, readWithRetry } from "./paged-read.mjs";
 import process from "node:process";
 import {loadChinaPeople,CHINA_PEOPLE_QUERY,findChinaPeople,CHINA_REGISTRY_VERSION} from "../netlify/shared/china-person-registry.mjs";
@@ -450,6 +452,9 @@ async function markFilteredCandidate(candidate, tweet, qualified) {
 
 export function shouldRetryCandidate(candidate, qualified, now = Date.now()) {
   if (!candidate || !qualified?.accepted) return false;
+  if (candidate.decision==='review_required' && candidate.ai_payload?.budget_deferred===true && candidate.ai_payload?.manual_review_required!==true) {
+    return sourceWithinCollectionWindow(candidate.raw_payload?.source_created_at || candidate.collected_at,now);
+  }
   if (candidate.decision === "processing") {
     const updated = Date.parse(candidate.updated_at || candidate.collected_at || "");
     return !candidate.article_id && candidate.ai_payload?.status === "queued"
@@ -625,7 +630,7 @@ async function patchCandidate(id, body) {
 
 function isAutomaticUnusableCandidate(candidate = {}) {
   if (!["failed", "review_required"].includes(candidate.decision)) return false;
-  if (candidate.ai_payload?.manual_review_required === true) return false;
+  if (candidate.ai_payload?.manual_review_required === true || candidate.ai_payload?.budget_deferred === true) return false;
   if (candidate.decision === "failed"
     && candidate.ai_payload?.status === "technical_retry_scheduled"
     && candidate.ai_payload?.automatic_retry_exhausted !== true) return false;
@@ -1104,7 +1109,12 @@ async function recoverArchivedBatch() {
         counters.published += 1;
         results.push({ tweetId: tweet.id, status: DRY_RUN ? "dry-run" : "published", articleId: saved?.id || null, title: generated.title });
       } catch (error) {
-        const reason = `自动扩写或发布失败：${cleanText(error?.message || error, 600)}；不可用稿件已删除`;
+        if (isBudgetDeferred(error)) {
+        await patchCandidate(candidate?.id, {decision:'review_required',decision_reason:'预算保护：等待下一可用额度，未视为质量失败',ai_payload:{...(candidate?.ai_payload || {}),quality_hold:true,automatic_retry_exhausted:false,automatic_retry_attempts:Number(candidate?.ai_payload?.automatic_retry_attempts || 0),budget_deferred:true},updated_at:new Date().toISOString()});
+        results.push({tweetId:tweet.id,status:'budget-deferred'});
+        break;
+      }
+      const reason = `自动扩写或发布失败：${cleanText(error?.message || error, 600)}；不可用稿件已删除`;
         const prior = await existingArticle(tweet);
         await discardUnusableCandidates([{ ...row, article_id: row.article_id || prior?.id }], reason);
         counters.filtered = Number(counters.filtered || 0) + 1;
@@ -1277,7 +1287,7 @@ export async function run() {
   const filteredReasons = {};
   let processingAttempts = 0;
   const processingDeadline = Date.now() + 40 * 60_000;
-  for (const tweet of tweets.sort((a, b) => Number(Boolean(b.editorial_processing_requested)) - Number(Boolean(a.editorial_processing_requested)) || Number(Boolean(b.candidateId)) - Number(Boolean(a.candidateId)) || Date.parse(b.created_at || 0) - Date.parse(a.created_at || 0))) {
+  for (const tweet of tweets.sort((a, b) => Number(Boolean(b.editorial_processing_requested)) - Number(Boolean(a.editorial_processing_requested)) || compareNewsPriority(a,b) || Number(Boolean(b.candidateId)) - Number(Boolean(a.candidateId)))) {
     const qualified = qualifyTweet(tweet);
     if (!qualified.accepted) {
       counters.filtered += 1;
@@ -1373,6 +1383,11 @@ export async function run() {
       console.log(JSON.stringify({event:"published",tweetId:tweet.id,articleId:saved?.id,bodyChars:bodyCharacterCount(generated.content),contextSources:tweet.context_research?.sources?.length||0}));
       counters.published += 1; results.push({ tweetId: tweet.id, status: DRY_RUN ? "dry-run" : "published", articleId: saved?.id || null, title: generated.title });
     } catch (error) {
+      if (isBudgetDeferred(error)) {
+        await patchCandidate(candidate?.id, {decision:'review_required',decision_reason:'预算保护：等待下一可用额度，未视为质量失败',ai_payload:{...(candidate?.ai_payload || {}),quality_hold:true,automatic_retry_exhausted:false,automatic_retry_attempts:Number(candidate?.ai_payload?.automatic_retry_attempts || 0),budget_deferred:true},updated_at:new Date().toISOString()});
+        results.push({tweetId:tweet.id,status:'budget-deferred'});
+        break;
+      }
       const reason = `自动扩写或发布失败：${cleanText(error?.message || error, 600)}`;
       const retryAttempts = Number(candidate?.ai_payload?.automatic_retry_attempts || 0) + 1;
       const discardNow = error.code === "EDITORIAL_QUALITY_HOLD" || retryAttempts >= 3;

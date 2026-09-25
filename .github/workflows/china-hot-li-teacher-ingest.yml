@@ -16,6 +16,8 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 60
     env:
+      NEWS_BUDGET_ENFORCE: "1"
+      NEWS_BUDGET_PIPELINE: "china-hot"
       SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
       SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
       X_BEARER_TOKEN: ${{ secrets.X_BEARER_TOKEN }}
@@ -43,7 +45,11 @@ jobs:
           if [[ "${{ inputs.recover_archived }}" != "true" && "${{ inputs.repair_today }}" != "true" ]]; then test -n "$X_BEARER_TOKEN"; fi
           test -n "$OPENAI_API_KEY"
       - name: Run collector tests
-        run: node --test scripts/news-editorial-policy.test.mjs scripts/china-person-registry.test.mjs scripts/china-hot-li-teacher-ingest.test.mjs scripts/china-context-research.test.mjs scripts/china-editorial-update.test.mjs scripts/ren-zhengfei-news.test.mjs scripts/article-editorial-policy.test.mjs
+        env:
+          NEWS_BUDGET_ENFORCE: "0"
+        run: node --test scripts/news-budget.test.mjs scripts/news-priority.test.mjs scripts/news-editorial-policy.test.mjs scripts/china-person-registry.test.mjs scripts/china-hot-li-teacher-ingest.test.mjs scripts/china-context-research.test.mjs scripts/china-editorial-update.test.mjs scripts/ren-zhengfei-news.test.mjs scripts/article-editorial-policy.test.mjs
+      - name: Enable shared budget after checkout and validation
+        run: echo 'NODE_OPTIONS=--import ./scripts/news-budget-preload.mjs' >> "$GITHUB_ENV"
       - name: Read China headlines category switches
         id: category
         run: node scripts/category-pipeline-gate.mjs hot-headlines
@@ -58,3 +64,7 @@ jobs:
             args+=(--recover-archived)
           fi
           node scripts/china-hot-li-teacher-ingest.mjs "${args[@]}"
+
+      - name: Report shared news budget
+        if: always()
+        run: node scripts/news-budget-report.mjs

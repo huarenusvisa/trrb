@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import {newsPriority} from './news-priority.mjs';
 import { readDatabaseQuery } from "./paged-read.mjs";
 import process from "node:process";
 import { fileURLToPath } from "node:url";
@@ -225,7 +226,7 @@ async function storiesToNormalize() {
 async function postsFor(story) {
   const rows = await sb("ice_posts", {
     query: {
-      select: "id,x_post_id,x_url,source_username,source_display_name,source_type,source_created_at,source_text,location_text,city,state_code,claims",
+      select: "id,x_post_id,x_url,source_username,source_display_name,source_type,trust_tier,source_created_at,source_text,location_text,city,state_code,claims",
       event_fingerprint: `eq.${story.event_fingerprint}`,
       order: "trust_tier.asc,source_created_at.asc",
       limit: "20"
@@ -284,14 +285,21 @@ async function restoreSavedEditorial(story, posts) {
 
 async function main() {
   requireEnvironment();
-  const stories = await storiesToNormalize();
+  const loaded = await storiesToNormalize();
+  const prepared=[];
+  for(const story of loaded) {
+    if (['editing','approved','rejected'].includes(story.human_review_status)) continue;
+    const posts=await postsFor(story);
+    if (!posts.some(p=>newsPriority(p).eligible)) continue;
+    prepared.push({story,posts,score:Math.max(...posts.map(p=>newsPriority(p).score))});
+  }
+  const stories=prepared.sort((a,b)=>b.score-a.score);
   let changed = 0;
 
-  for (const story of stories) {
+  for (const {story,posts} of stories) {
     if (looksNormalized(story)) continue;
     if (["editing", "approved", "rejected"].includes(story.human_review_status)) continue;
 
-    const posts = await postsFor(story);
     if (!posts.length) continue;
 
     try {

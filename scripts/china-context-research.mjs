@@ -45,7 +45,8 @@ async function readThread(tweet, {request, readJson, bearer}) {
   if (!bearer || !/^\d+$/.test(String(tweet.id))) return [];
   const url = new URL('https://api.x.com/2/tweets/search/recent');
   url.searchParams.set('query', `conversation_id:${tweet.id} -is:retweet`);
-  url.searchParams.set('max_results', '20');
+  url.searchParams.set('max_results', '10');
+  url.searchParams.set('start_time',new Date(Date.now()-12*3600000).toISOString());
   url.searchParams.set('tweet.fields', 'id,text,author_id,conversation_id,created_at,referenced_tweets');
   url.searchParams.set('expansions', 'author_id');url.searchParams.set('user.fields', 'username');
   return threadMaterials(await readJson(await request(url, {headers:{Authorization:`Bearer ${bearer}`,Accept:'application/json'}}, 20000)), String(tweet.id), tweet.source_username);

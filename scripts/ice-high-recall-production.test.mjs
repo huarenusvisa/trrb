@@ -10,8 +10,8 @@ test("生产ICE流水线启用高召回但优先最近内容且成本有上限",
   const workflow = read(".github/workflows/ice-unified-pipeline.yml");
   assert.match(workflow, /scripts\/ice-high-recall-discovery\.mjs/);
   assert.match(workflow, /ICE_HIGH_RECALL_LOOKBACK_HOURS: "6"/);
-  assert.match(workflow, /ICE_HIGH_RECALL_MAX_PAGES: "2"/);
-  assert.match(workflow, /ICE_HIGH_RECALL_RESULTS_PER_QUERY: "50"/);
+  assert.match(workflow, /ICE_HIGH_RECALL_MAX_PAGES: "1"/);
+  assert.match(workflow, /ICE_HIGH_RECALL_RESULTS_PER_QUERY: "10"/);
   assert.match(workflow, /ICE_HIGH_RECALL_MIN_SCORE: "60"/);
   assert.match(workflow, /ICE_HIGH_RECALL_MIN_FOLLOWERS: "1000"/);
 });

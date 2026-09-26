@@ -1,0 +1,20 @@
+import {readFileSync,writeFileSync} from 'node:fs';
+const reportPath='.community-public-fix.json';
+const report=JSON.parse(readFileSync(reportPath,'utf8'));
+function save(path,content){writeFileSync(path,content);if(!report.changed_files.includes(path))report.changed_files.push(path);}
+const test='scripts/community-public-profile.e2e.mjs';
+let t=readFileSync(test,'utf8');
+t=t.replace("await page.getByText('测试正文最后一段：内容没有丢失。',{exact:false}).waitFor();","await page.locator('#post-detail').getByText('测试正文最后一段：内容没有丢失。',{exact:false}).waitFor();");
+save(test,t);
+const path='netlify.toml';
+const source=readFileSync(path,'utf8');
+const old='"/community", "/community/*", "/reset-password"';
+if(source.split(old).length!==4)throw new Error('Expected exactly three ordered edge route exclusions');
+save(path,source.split(old).join('"/community", "/community/*", "/user", "/user/*", "/reset-password"'));
+const user='user/profile.js';
+const js=readFileSync(user,'utf8');
+const logout="$('logout-button').addEventListener('click',async()=>{await window.supabaseClient.auth.signOut();await refresh();});";
+if(!js.includes(logout))throw new Error('Logout handler changed');
+save(user,js.replace(logout,"$('logout-button').addEventListener('click',async()=>{document.querySelectorAll('dialog[open]').forEach(d=>d.close());state.detailVersion++;state.posts=[];state.communityPosts=[];$('post-detail-content').innerHTML='';await window.supabaseClient.auth.signOut();await refresh();});"));
+writeFileSync(reportPath,JSON.stringify(report,null,2));
+console.log('Profile routes bypass legacy article rescue; logout clears private content.');

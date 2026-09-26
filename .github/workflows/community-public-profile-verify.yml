@@ -44,10 +44,10 @@ jobs:
           node scripts/community-public-profile.e2e.mjs
       - name: Commit tested static pages and public avatar field on this branch only
         run: |
-          if test -f .community-public-fix.json; then
-            node --input-type=module <<'JS'
-            import {readFileSync,writeFileSync} from 'node:fs';
-            import {execFileSync} from 'node:child_process';
+          node --input-type=module <<'JS'
+          import {existsSync,readFileSync,writeFileSync} from 'node:fs';
+          import {execFileSync} from 'node:child_process';
+          if (existsSync('.community-public-fix.json')) {
             const report=JSON.parse(readFileSync('.community-public-fix.json','utf8'));
             const marker='scripts/community-public-profile-installation.json';
             writeFileSync(marker,JSON.stringify({...report,verification_run:process.env.GITHUB_RUN_ID,unit_tests:8,browser_scenarios:6},null,2)+'\n');
@@ -57,8 +57,8 @@ jobs:
             execFileSync('git',['config','user.email','41898282+github-actions[bot]@users.noreply.github.com']);
             execFileSync('git',['commit','-m','fix(community): display all author works and separate public profile from personal center'],{stdio:'inherit'});
             execFileSync('git',['push','origin','HEAD:fix/community-public-profiles-20260926'],{stdio:'inherit'});
-            JS
-          fi
+          }
+          JS
       - uses: actions/upload-artifact@v4
         if: always()
         with:

@@ -5,7 +5,7 @@ const origin='https://trrb.net',deadline=Date.now()+7*60000;
 let ready=false;
 while(Date.now()<deadline){try{const r=await fetch(origin+'/community/?qa='+Date.now(),{signal:AbortSignal.timeout(15000)});if(r.ok&&(await r.text()).includes('community-composer.js?v=20260926-simple-media-1')){ready=true;break;}}catch{}await new Promise(r=>setTimeout(r,10000));}
 assert.ok(ready,'Simple community composer has not reached production');
-const response=await fetch(origin+'/.netlify/functions/community-api?limit=1');assert.ok(response.ok());const data=await response.json();assert.equal(data.media_policy.video_max_bytes,12582912);
+const response=await fetch(origin+'/.netlify/functions/community-api?limit=1',{signal:AbortSignal.timeout(20000)});assert.ok(response.ok);const data=await response.json();assert.equal(data.media_policy.video_max_bytes,12582912);
 const browser=await chromium.launch({headless:true});mkdirSync('artifacts/simple-community-live',{recursive:true});const checks=[];
 try{
  for(const width of [1440,390]){

@@ -34,19 +34,6 @@ alter table public.profile_posts
   add constraint profile_posts_tags_count_check
   check (cardinality(tags) <= 8);
 
-alter table public.profile_posts
-  drop constraint if exists profile_posts_tags_values_check;
-alter table public.profile_posts
-  add constraint profile_posts_tags_values_check
-  check (
-    not exists (
-      select 1
-      from unnest(tags) tag
-      where char_length(btrim(tag)) < 1
-         or char_length(btrim(tag)) > 24
-    )
-  );
-
 grant insert on public.profile_posts to authenticated;
 grant select on public.profile_posts to anon, authenticated;
 grant select, insert, update, delete on public.profile_posts to service_role;

@@ -79,6 +79,7 @@
     $('profile-cover').style.backgroundImage=cover?`url("${cover.replaceAll('"','%22')}")`:'';
     const own=state.session?.user?.id===state.userId;
     $('follow-button').classList.toggle('hidden',own);
+    $('publish-dynamic').classList.toggle('hidden',!own);
     $('follow-button').textContent=state.relation==='accepted'?'已关注':state.relation==='pending'?'已申请':p.is_private?'申请关注':'关注';
     $('profile-hero').classList.remove('hidden');
   }
@@ -134,6 +135,130 @@
     finally{button.disabled=false;}
   }
 
+
+  function parseTags(value) {
+    return Array.from(new Set(String(value || '').split(/[，,\s#]+/).map((tag)=>tag.trim()).filter(Boolean))).slice(0,5);
+  }
+
+  function safeFileName(name) {
+    return String(name || 'upload').replace(/[^a-zA-Z0-9._-]+/g,'-').slice(-80) || 'upload';
+  }
+
+  function mediaKind(file) {
+    return file.type.startsWith('video/') ? 'video' : file.type.startsWith('image/') ? 'image' : '';
+  }
+
+  async function videoDurationMs(file) {
+    return new Promise((resolve,reject)=>{
+      const url=URL.createObjectURL(file);
+      const video=document.createElement('video');
+      video.preload='metadata';
+      video.onloadedmetadata=()=>{const value=Number.isFinite(video.duration)?Math.round(video.duration*1000):0;URL.revokeObjectURL(url);resolve(value);};
+      video.onerror=()=>{URL.revokeObjectURL(url);reject(new Error('无法读取视频时长'));};
+      video.src=url;
+    });
+  }
+
+  async function validateDynamicFiles(files) {
+    const list=Array.from(files || []);
+    if(!list.length) throw new Error('请至少选择一张图片或一个视频。');
+    if(list.length>4) throw new Error('每条动态最多选择 4 张图片。');
+    const kinds=list.map(mediaKind);
+    if(kinds.some((kind)=>!kind)) throw new Error('存在不支持的媒体格式。');
+    const videos=kinds.filter((kind)=>kind==='video').length;
+    if(videos && (videos>1 || list.length>1)) throw new Error('视频需要单独发布，每条动态最多 1 个视频。');
+    for(const file of list){
+      const kind=mediaKind(file);
+      const limit=kind==='video'?80*1024*1024:12*1024*1024;
+      if(file.size>limit) throw new Error(kind==='video'?'视频不能超过 80MB。':'单张图片不能超过 12MB。');
+      if(kind==='video'){
+        const duration=await videoDurationMs(file);
+        if(duration>120000) throw new Error('视频最长 2 分钟。');
+      }
+    }
+    return list;
+  }
+
+  async function imageDimensions(file) {
+    if(!file.type.startsWith('image/')) return { width:null, height:null };
+    return new Promise((resolve)=>{
+      const url=URL.createObjectURL(file);
+      const img=new Image();
+      img.onload=()=>{const result={width:img.naturalWidth||null,height:img.naturalHeight||null};URL.revokeObjectURL(url);resolve(result);};
+      img.onerror=()=>{URL.revokeObjectURL(url);resolve({width:null,height:null});};
+      img.src=url;
+    });
+  }
+
+  function updateDynamicMediaSummary() {
+    const files=Array.from($('dynamic-media').files || []);
+    if(!files.length){$('dynamic-media-summary').textContent='尚未选择媒体';return;}
+    $('dynamic-media-summary').textContent=files.map((file)=>`${mediaKind(file)==='video'?'视频':'图片'} · ${file.name} · ${(file.size/1024/1024).toFixed(1)}MB`).join('；');
+  }
+
+  async function publishDynamic(event) {
+    event.preventDefault();
+    if(!state.session || state.session.user.id!==state.userId){$('auth-dialog').showModal();return;}
+    const button=$('dynamic-submit');
+    button.disabled=true;
+    $('dynamic-message').textContent='正在检查媒体…';
+    let postId='';
+    const uploaded=[];
+    try{
+      const files=await validateDynamicFiles($('dynamic-media').files);
+      const tags=parseTags($('dynamic-tags').value);
+      if(tags.some((tag)=>tag.length>24)) throw new Error('单个标签不能超过 24 个字符。');
+      const caption=$('dynamic-caption').value.trim();
+      $('dynamic-message').textContent='正在创建动态…';
+      const {data:post,error:postError}=await window.supabaseClient.from('profile_posts').insert({
+        user_id:state.session.user.id,caption,tags,status:'published'
+      }).select('id').single();
+      if(postError) throw postError;
+      postId=post.id;
+
+      for(let index=0;index<files.length;index+=1){
+        const file=files[index];
+        $('dynamic-message').textContent=`正在上传第 ${index+1}/${files.length} 个文件…`;
+        const path=`${state.session.user.id}/${postId}/${Date.now()}-${index}-${safeFileName(file.name)}`;
+        const {error:uploadError}=await window.supabaseClient.storage.from('profile-post-media').upload(path,file,{contentType:file.type||undefined,upsert:false,cacheControl:'31536000'});
+        if(uploadError) throw uploadError;
+        uploaded.push(path);
+        const kind=mediaKind(file);
+        const dims=await imageDimensions(file);
+        const durationMs=kind==='video'?await videoDurationMs(file):null;
+        const {error:mediaError}=await window.supabaseClient.from('profile_post_media').insert({
+          post_id:postId,
+          owner_user_id:state.session.user.id,
+          media_type:kind,
+          storage_path:path,
+          mime_type:file.type || (kind==='video'?'video/mp4':'image/jpeg'),
+          width:dims.width,
+          height:dims.height,
+          duration_ms:durationMs,
+          sort_order:index
+        });
+        if(mediaError) throw mediaError;
+      }
+
+      $('dynamic-message').textContent='发布成功。';
+      $('dynamic-form').reset();
+      $('dynamic-media-summary').textContent='尚未选择媒体';
+      $('dynamic-counter').textContent='0/2000';
+      $('dynamic-dialog').close();
+      await refresh();
+      document.querySelector('.content-section')?.scrollIntoView({behavior:'smooth',block:'start'});
+    }catch(error){
+      if(uploaded.length) await window.supabaseClient.storage.from('profile-post-media').remove(uploaded).catch(()=>undefined);
+      if(postId){
+        await window.supabaseClient.from('profile_post_media').delete().eq('post_id',postId).catch(()=>undefined);
+        await window.supabaseClient.from('profile_posts').update({status:'deleted'}).eq('id',postId).catch(()=>undefined);
+      }
+      $('dynamic-message').textContent=error.message||'发布失败，请重试。';
+    }finally{
+      button.disabled=false;
+    }
+  }
+
   async function handleAuth(event){
     event.preventDefault();
     const button=event.submitter||event.currentTarget.querySelector('button[type="submit"]');button.disabled=true;
@@ -151,6 +276,10 @@
     $('logout-button').addEventListener('click',async()=>{await window.supabaseClient.auth.signOut();await refresh();});
     $('auth-form').addEventListener('submit',handleAuth);
     $('follow-button').addEventListener('click',()=>void toggleFollow());
+    $('publish-dynamic').addEventListener('click',()=>{$('dynamic-message').textContent='';$('dynamic-dialog').showModal();});
+    $('dynamic-form').addEventListener('submit',publishDynamic);
+    $('dynamic-media').addEventListener('change',updateDynamicMediaSummary);
+    $('dynamic-caption').addEventListener('input',()=>{$('dynamic-counter').textContent=`${$('dynamic-caption').value.length}/2000`;});
     document.querySelectorAll('[data-filter]').forEach((button)=>button.addEventListener('click',()=>{state.filter=button.dataset.filter;document.querySelectorAll('[data-filter]').forEach((x)=>x.classList.toggle('active',x===button));renderPosts();}));
     document.addEventListener('click',(event)=>{const close=event.target.closest('[data-close]');if(close)$(close.dataset.close)?.close();});
   }

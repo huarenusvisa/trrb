@@ -12,7 +12,7 @@ import { clearProfilePostDraft, loadProfilePostDraft, saveProfilePostDraft } fro
 export default function ProfileComposeScreen() {
   const { t } = useI18n();
   const [assets, setAssets] = useState<ImagePicker.ImagePickerAsset[]>([]);
-  const [caption, setCaption] = useState('');
+  const [caption, setCaption] = useState('');\n  const [tagsText, setTagsText] = useState('');
   const [busy, setBusy] = useState(false);
   const [draftReady, setDraftReady] = useState(false);
   const [draftRestored, setDraftRestored] = useState(false);
@@ -67,12 +67,12 @@ export default function ProfileComposeScreen() {
     Keyboard.dismiss();
     setBusy(true); setFailure(''); setProgress(t('profileCompose.preparing'));
     try {
-      await createProfilePost(caption, assets, ({ completed, total }) => {
+      const tags = tagsText.split(/[，,\\s#]+/).map((tag) => tag.trim()).filter(Boolean).slice(0, 8);\n      await createProfilePost(caption, assets, tags, ({ completed, total }) => {
         setProgress(completed >= total ? t('profileCompose.finishing') : t('profileCompose.uploading', { current: completed + 1, total }));
       });
       if (draftUserId.current) await clearProfilePostDraft(draftUserId.current);
       latestCaption.current = '';
-      setCaption(''); setAssets([]); setDraftRestored(false); setProgress('');
+      setCaption(''); setTagsText(''); setAssets([]); setDraftRestored(false); setProgress('');
       Alert.alert(t('profileCompose.publishedTitle'), t('profileCompose.publishedBody'), [{ text: t('profileCompose.done'), onPress: () => router.back() }]);
     } catch (error) {
       setFailure(error instanceof Error ? error.message : t('profileCompose.failed'));
@@ -84,7 +84,7 @@ export default function ProfileComposeScreen() {
     if (busy) return;
     if (saveTimer.current) clearTimeout(saveTimer.current);
     latestCaption.current = '';
-    setCaption(''); setAssets([]); setDraftRestored(false); setFailure('');
+    setCaption(''); setTagsText(''); setAssets([]); setDraftRestored(false); setFailure('');
     if (draftUserId.current) await clearProfilePostDraft(draftUserId.current).catch(() => undefined);
   };
 
@@ -97,7 +97,7 @@ export default function ProfileComposeScreen() {
       {asset.type === 'video' ? <View style={styles.videoPreview}><Text style={styles.videoIcon}>▶</Text><Text style={styles.videoText}>{t('profileCompose.videoDuration', { seconds: Math.ceil((asset.duration || 0) / 1000) })}</Text></View> : <Image source={{ uri: asset.uri }} contentFit="cover" style={styles.preview} />}
     </View>)}<Pressable accessibilityRole="button" accessibilityLabel={t('profileCompose.clearMedia')} disabled={busy} style={styles.clearMedia} onPress={() => setAssets([])}><Text style={styles.clearMediaText}>{t('profileCompose.clearMedia')}</Text></Pressable></View> : null}
     <View style={styles.labelRow}><Text style={styles.label}>{t('profileCompose.caption')}</Text>{caption || assets.length ? <Pressable accessibilityRole="button" accessibilityLabel={t('profileCompose.clearDraft')} disabled={busy} onPress={() => void clearDraft()}><Text style={styles.clearDraft}>{t('profileCompose.clearDraft')}</Text></Pressable> : null}</View>
-    <TextInput testID="profile-compose-caption" accessibilityLabel={t('profileCompose.captionA11y')} value={caption} onChangeText={(value) => { latestCaption.current = value; setCaption(value); setDraftRestored(false); }} editable={!busy} maxLength={2000} multiline textAlignVertical="top" placeholder={t('profileCompose.captionPlaceholder')} style={styles.input} /><Text style={styles.counter}>{t('profileCompose.draftCounter', { count: caption.length })}</Text>
+    <TextInput testID="profile-compose-tags" accessibilityLabel="动态标签" value={tagsText} onChangeText={setTagsText} editable={!busy} maxLength={220} placeholder="添加标签，用空格或逗号分隔，例如：中秋节 刘欢 一人食" style={styles.tagsInput} />\n    <Text style={styles.tagsHint}>最多 8 个标签，每个标签最多 24 个字符；发布后会显示为 #标签。</Text>\n    <TextInput testID="profile-compose-caption" accessibilityLabel={t('profileCompose.captionA11y')} value={caption} onChangeText={(value) => { latestCaption.current = value; setCaption(value); setDraftRestored(false); }} editable={!busy} maxLength={2000} multiline textAlignVertical="top" placeholder={t('profileCompose.captionPlaceholder')} style={styles.input} /><Text style={styles.counter}>{t('profileCompose.draftCounter', { count: caption.length })}</Text>
     <Text style={styles.notice}>{t('profileCompose.privacyNotice')}</Text>
     {failure ? <AsyncStatePanel testID="profile-compose-error" title={t('profileCompose.incomplete')} message={`${failure} ${t('profileCompose.failurePreserved')}`} tone="error" actionLabel={assets.length ? t('profileCompose.retry') : t('profileCompose.reselectMedia')} onAction={assets.length ? () => void submit() : () => void pick()} busy={busy} /> : null}
     {progress ? <Text testID="profile-compose-progress" accessibilityRole="alert" accessibilityLiveRegion="polite" style={styles.progress}>{progress}</Text> : null}
@@ -106,5 +106,5 @@ export default function ProfileComposeScreen() {
 }
 
 const styles = StyleSheet.create({
-  page:{flex:1,backgroundColor:'#f5f6f8'},content:{padding:18,paddingBottom:50,gap:12},title:{fontSize:28,fontWeight:'900',color:'#101828'},hint:{color:'#667085',lineHeight:21,marginTop:6,marginBottom:6},draftNotice:{backgroundColor:'#ecfdf3',borderWidth:1,borderColor:'#abefc6',borderRadius:12,padding:12},draftNoticeTitle:{color:'#067647',fontWeight:'900'},draftNoticeText:{color:'#067647',lineHeight:20,marginTop:3},picker:{height:130,borderWidth:1.5,borderStyle:'dashed',borderColor:'#98a2b3',borderRadius:16,alignItems:'center',justifyContent:'center',backgroundColor:'#fff'},pickerIcon:{fontSize:34,color:'#c8211e'},pickerText:{fontWeight:'900',color:'#344054',marginTop:4},previewGrid:{flexDirection:'row',flexWrap:'wrap',gap:7},previewWrap:{width:'48%',aspectRatio:1,borderRadius:12,overflow:'hidden'},preview:{width:'100%',height:'100%'},videoPreview:{flex:1,backgroundColor:'#101828',alignItems:'center',justifyContent:'center'},videoIcon:{color:'#fff',fontSize:32},videoText:{color:'#fff',fontWeight:'800',marginTop:8},clearMedia:{minHeight:44,justifyContent:'center',paddingHorizontal:6},clearMediaText:{color:'#b42318',fontWeight:'800'},labelRow:{flexDirection:'row',alignItems:'center',justifyContent:'space-between',marginTop:6},label:{fontWeight:'900',color:'#344054'},clearDraft:{color:'#b42318',fontWeight:'800',paddingVertical:10},input:{minHeight:130,backgroundColor:'#fff',borderWidth:1,borderColor:'#d0d5dd',borderRadius:13,padding:13,fontSize:16,color:'#101828'},counter:{textAlign:'right',color:'#98a2b3'},notice:{backgroundColor:'#fffaeb',color:'#7a2e0e',padding:12,borderRadius:10,lineHeight:20},progress:{color:'#344054',fontWeight:'800',textAlign:'center'},submit:{minHeight:52,backgroundColor:'#c8211e',paddingVertical:15,borderRadius:12,alignItems:'center',justifyContent:'center',flexDirection:'row',gap:8},disabled:{opacity:.45},submitText:{color:'#fff',fontWeight:'900',fontSize:16},busyText:{color:'#fff',fontWeight:'800'}
+  page:{flex:1,backgroundColor:'#f5f6f8'},content:{padding:18,paddingBottom:50,gap:12},title:{fontSize:28,fontWeight:'900',color:'#101828'},hint:{color:'#667085',lineHeight:21,marginTop:6,marginBottom:6},draftNotice:{backgroundColor:'#ecfdf3',borderWidth:1,borderColor:'#abefc6',borderRadius:12,padding:12},draftNoticeTitle:{color:'#067647',fontWeight:'900'},draftNoticeText:{color:'#067647',lineHeight:20,marginTop:3},picker:{height:130,borderWidth:1.5,borderStyle:'dashed',borderColor:'#98a2b3',borderRadius:16,alignItems:'center',justifyContent:'center',backgroundColor:'#fff'},pickerIcon:{fontSize:34,color:'#c8211e'},pickerText:{fontWeight:'900',color:'#344054',marginTop:4},previewGrid:{flexDirection:'row',flexWrap:'wrap',gap:7},previewWrap:{width:'48%',aspectRatio:1,borderRadius:12,overflow:'hidden'},preview:{width:'100%',height:'100%'},videoPreview:{flex:1,backgroundColor:'#101828',alignItems:'center',justifyContent:'center'},videoIcon:{color:'#fff',fontSize:32},videoText:{color:'#fff',fontWeight:'800',marginTop:8},clearMedia:{minHeight:44,justifyContent:'center',paddingHorizontal:6},clearMediaText:{color:'#b42318',fontWeight:'800'},labelRow:{flexDirection:'row',alignItems:'center',justifyContent:'space-between',marginTop:6},label:{fontWeight:'900',color:'#344054'},clearDraft:{color:'#b42318',fontWeight:'800',paddingVertical:10},tagsInput:{backgroundColor:'#fff',borderWidth:1,borderColor:'#d0d5dd',borderRadius:13,paddingHorizontal:13,paddingVertical:12,fontSize:16,color:'#101828'},tagsHint:{color:'#667085',fontSize:12,lineHeight:18},input:{minHeight:130,backgroundColor:'#fff',borderWidth:1,borderColor:'#d0d5dd',borderRadius:13,padding:13,fontSize:16,color:'#101828'},counter:{textAlign:'right',color:'#98a2b3'},notice:{backgroundColor:'#fffaeb',color:'#7a2e0e',padding:12,borderRadius:10,lineHeight:20},progress:{color:'#344054',fontWeight:'800',textAlign:'center'},submit:{minHeight:52,backgroundColor:'#c8211e',paddingVertical:15,borderRadius:12,alignItems:'center',justifyContent:'center',flexDirection:'row',gap:8},disabled:{opacity:.45},submitText:{color:'#fff',fontWeight:'900',fontSize:16},busyText:{color:'#fff',fontWeight:'800'}
 });

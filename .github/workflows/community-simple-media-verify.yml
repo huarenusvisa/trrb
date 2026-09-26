@@ -1,0 +1,94 @@
+name: Simple community publishing verification
+on:
+  push:
+    branches: [fix/community-simple-media-20260926, main]
+    paths:
+      - '.github/workflows/community-simple-media-verify.yml'
+      - 'scripts/community-simple-media*'
+      - 'assets/community-composer*'
+      - 'assets/community-media-policy.js'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: community-simple-media-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  branch-verification:
+    if: github.ref != 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/community-simple-media-20260926
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Integrate reviewed source and test policy API and existing profiles
+        run: |
+          if ! test -f scripts/community-simple-media-installation.json; then
+            node scripts/community-simple-media-upgrade.mjs
+          fi
+          node --check assets/community-composer.js
+          node --check scripts/community-simple-media.e2e.mjs
+          node --test scripts/community-simple-media.test.mjs scripts/community-public-profile.test.mjs
+      - name: Prepare isolated browser
+        run: |
+          npm install --prefix /tmp/community-browser --no-save playwright@1.51.1
+          /tmp/community-browser/node_modules/.bin/playwright install --with-deps chromium
+      - name: Test uploads rejection retry and unchanged public/private and PC/mobile views
+        run: |
+          python3 -m http.server 8123 >/tmp/simple-community-http.log 2>&1 &
+          node scripts/community-simple-media.e2e.mjs
+          node scripts/community-public-profile.e2e.mjs
+          node scripts/social-detail-layout.e2e.mjs
+      - name: Commit only successfully tested integration to the feature branch
+        run: |
+          node --input-type=module <<'JS'
+          import {existsSync,readFileSync,writeFileSync} from 'node:fs';
+          import {execFileSync} from 'node:child_process';
+          if(existsSync('.community-simple-media.json')){
+            const r=JSON.parse(readFileSync('.community-simple-media.json','utf8'));
+            const marker='scripts/community-simple-media-installation.json';
+            writeFileSync(marker,JSON.stringify({...r,verification_run:process.env.GITHUB_RUN_ID,database_migration_required:'20260926210000_community_simple_media.sql'},null,2)+'\n');
+            execFileSync('git',['add','--',...r.changed_files,marker],{stdio:'inherit'});
+            execFileSync('git',['diff','--cached','--check'],{stdio:'inherit'});
+            execFileSync('git',['config','user.name','github-actions[bot]']);
+            execFileSync('git',['config','user.email','41898282+github-actions[bot]@users.noreply.github.com']);
+            execFileSync('git',['commit','-m','fix(community): simplify publishing and attach verified limited-size media'],{stdio:'inherit'});
+            execFileSync('git',['push','origin','HEAD:fix/community-simple-media-20260926'],{stdio:'inherit'});
+          }
+          JS
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: simple-community-browser-verification
+          path: |
+            artifacts/simple-community
+            artifacts/community-profile
+            artifacts/social-detail
+          if-no-files-found: ignore
+  production-acceptance:
+    if: github.ref == 'refs/heads/main'
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Prepare read-only browser
+        run: |
+          npm install --prefix /tmp/community-browser --no-save playwright@1.51.1
+          /tmp/community-browser/node_modules/.bin/playwright install --with-deps chromium
+      - name: Validate live simple form and video limit without publishing test content
+        run: node scripts/community-simple-media-live.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: simple-community-production-acceptance
+          path: artifacts/simple-community-live
+          if-no-files-found: ignore

@@ -1,6 +1,6 @@
 (() => {
   const accountUrl = '/.netlify/functions/unified-account-login';
-  const state = { session:null, profile:null, posts:[], filter:'all', relation:'none', userId:'' };
+  const state = { session:null, profile:null, posts:[], filter:'all', relation:'none', userId:'', draftId:null };
   const $ = (id) => document.getElementById(id);
   const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
   const dateText = (value) => value ? new Intl.DateTimeFormat('zh-CN',{year:'numeric',month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}).format(new Date(value)) : '';
@@ -136,6 +136,75 @@
   }
 
 
+
+  const PC_DRAFT_MAX = 5;
+  const pcDraftKey = () => `trrb:pc-profile-drafts:${state.userId || 'guest'}`;
+
+  function loadLocalDrafts() {
+    try {
+      const raw = localStorage.getItem(pcDraftKey());
+      const rows = raw ? JSON.parse(raw) : [];
+      return Array.isArray(rows) ? rows.filter((row)=>row && typeof row.id==='string').slice(0,PC_DRAFT_MAX) : [];
+    } catch { return []; }
+  }
+
+  function writeLocalDrafts(rows) {
+    localStorage.setItem(pcDraftKey(), JSON.stringify(rows.slice(0,PC_DRAFT_MAX)));
+  }
+
+  function renderLocalDrafts() {
+    const rows=loadLocalDrafts();
+    const box=$('pc-draft-list');
+    if(!box) return;
+    box.innerHTML=rows.length?rows.map((draft)=>`
+      <div class="pc-draft-item">
+        <button type="button" class="pc-draft-main" data-load-pc-draft="${esc(draft.id)}">
+          <strong>${esc((draft.caption||draft.tags||'未命名草稿').slice(0,60))}</strong>
+          <small>${esc(dateText(draft.savedAt))}</small>
+        </button>
+        <button type="button" class="pc-draft-delete" data-delete-pc-draft="${esc(draft.id)}">删除</button>
+      </div>`).join(''):'<div class="media-summary">暂无本地草稿。</div>';
+  }
+
+  function saveLocalDraft() {
+    const caption=$('dynamic-caption').value.slice(0,2000);
+    const tags=$('dynamic-tags').value.slice(0,220);
+    if(!caption.trim() && !tags.trim()) { $('dynamic-message').textContent='没有可保存的文字或标签。'; return; }
+    const rows=loadLocalDrafts();
+    const id=state.draftId || `${Date.now()}-${Math.random().toString(36).slice(2,8)}`;
+    const next=[{id,caption,tags,savedAt:Date.now()},...rows.filter((row)=>row.id!==id)].slice(0,PC_DRAFT_MAX);
+    writeLocalDrafts(next);
+    state.draftId=id;
+    $('dynamic-message').textContent='已保存到当前浏览器草稿箱。';
+    renderLocalDrafts();
+  }
+
+  function loadLocalDraft(id) {
+    const draft=loadLocalDrafts().find((row)=>row.id===id);
+    if(!draft) return;
+    state.draftId=draft.id;
+    $('dynamic-caption').value=draft.caption||'';
+    $('dynamic-tags').value=draft.tags||'';
+    $('dynamic-counter').textContent=`${$('dynamic-caption').value.length}/2000`;
+    $('dynamic-message').textContent='已载入本地草稿。图片和视频需要重新选择。';
+  }
+
+  function deleteLocalDraft(id) {
+    writeLocalDrafts(loadLocalDrafts().filter((row)=>row.id!==id));
+    if(state.draftId===id) state.draftId=null;
+    renderLocalDrafts();
+  }
+
+  function newLocalDraft() {
+    state.draftId=null;
+    $('dynamic-caption').value='';
+    $('dynamic-tags').value='';
+    $('dynamic-media').value='';
+    $('dynamic-counter').textContent='0/2000';
+    $('dynamic-media-summary').textContent='尚未选择媒体';
+    $('dynamic-message').textContent='已新建空白草稿。';
+  }
+
   function parseTags(value) {
     return Array.from(new Set(String(value || '').split(/[，,\s#]+/).map((tag)=>tag.trim()).filter(Boolean))).slice(0,5);
   }
@@ -241,6 +310,8 @@
       }
 
       $('dynamic-message').textContent='发布成功。';
+      if(state.draftId) deleteLocalDraft(state.draftId);
+      state.draftId=null;
       $('dynamic-form').reset();
       $('dynamic-media-summary').textContent='尚未选择媒体';
       $('dynamic-counter').textContent='0/2000';
@@ -276,12 +347,14 @@
     $('logout-button').addEventListener('click',async()=>{await window.supabaseClient.auth.signOut();await refresh();});
     $('auth-form').addEventListener('submit',handleAuth);
     $('follow-button').addEventListener('click',()=>void toggleFollow());
-    $('publish-dynamic').addEventListener('click',()=>{$('dynamic-message').textContent='';$('dynamic-dialog').showModal();});
+    $('publish-dynamic').addEventListener('click',()=>{$('dynamic-message').textContent='';renderLocalDrafts();$('dynamic-dialog').showModal();});
     $('dynamic-form').addEventListener('submit',publishDynamic);
     $('dynamic-media').addEventListener('change',updateDynamicMediaSummary);
+    $('save-local-draft').addEventListener('click',saveLocalDraft);
+    $('new-local-draft').addEventListener('click',newLocalDraft);
     $('dynamic-caption').addEventListener('input',()=>{$('dynamic-counter').textContent=`${$('dynamic-caption').value.length}/2000`;});
     document.querySelectorAll('[data-filter]').forEach((button)=>button.addEventListener('click',()=>{state.filter=button.dataset.filter;document.querySelectorAll('[data-filter]').forEach((x)=>x.classList.toggle('active',x===button));renderPosts();}));
-    document.addEventListener('click',(event)=>{const close=event.target.closest('[data-close]');if(close)$(close.dataset.close)?.close();});
+    document.addEventListener('click',(event)=>{const close=event.target.closest('[data-close]');if(close)$(close.dataset.close)?.close();const load=event.target.closest('[data-load-pc-draft]');if(load)loadLocalDraft(load.dataset.loadPcDraft);const del=event.target.closest('[data-delete-pc-draft]');if(del)deleteLocalDraft(del.dataset.deletePcDraft);});
   }
 
   const params=new URLSearchParams(location.search);

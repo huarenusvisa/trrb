@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import {forwardQuery} from './news-forward-policy.mjs';
 import { publicEvidence } from '../netlify/shared/publication.mjs';
 import { readDatabaseQuery } from "./paged-read.mjs";
 import crypto from "node:crypto";
@@ -56,6 +57,7 @@ function headers(prefer = "") {
   return { apikey: process.env.SUPABASE_SERVICE_ROLE_KEY, Authorization: `Bearer ${process.env.SUPABASE_SERVICE_ROLE_KEY}`, "Content-Type": "application/json", ...(prefer ? { Prefer: prefer } : {}) };
 }
 async function sb(table, { method = "GET", query = {}, body, prefer = "" } = {}) {
+  if(method === 'GET' && table === 'ice_stories' && /approved/.test(query.status || '') && !/published/.test(query.status || '')) query = {...query,...forwardQuery()};
   const execute = async (pageQuery) => {
     const base = String(process.env.SUPABASE_URL || "").replace(/\/+$/, "");
     const url = new URL(`${base}/rest/v1/${table}`);

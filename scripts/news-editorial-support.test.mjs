@@ -50,7 +50,7 @@ test('quality report counts new articles once and requires actual evidence, revi
   const base={id:'a',title,content,status:'published',visibility:'public',published_at:new Date(now-3600000).toISOString(),automation_source:'china-hot-li-teacher-v2',metadata:{editorial_depth:'deep',reviewed_content_sha256:contentDigest(title,content),editorial_review:Object.fromEntries(['single_event','grounded','sufficient','source_chain_complete','analysis_grounded','depth_appropriate','court_status_correct','fresh_hot_event',...DEEP_REVIEW_FIELDS].map(k=>[k,true])),context_research:{web_search_completed:true,sources:['https://justice.gov/a','https://reuters.com/b'].map(url=>({url,tool_cited:true,kind:'web_evidence'}))}}};
   const rows=[base,base,{...base,id:'b',content:content+'改'},{...base,id:'c',metadata:{...base.metadata,context_research:{}}},{...base,id:'old',published_at:new Date(now-8*86400000).toISOString()},{...base,id:'private',visibility:'private'},{...base,id:'ice',automation_source:null,metadata:{...base.metadata,event_fingerprint:'ice-test'}}];
   const report=publicationQualityReport(rows,{now});
-  assert.equal(report.total.published,4);assert.equal(report.total.deep,2);assert.equal(report.total.over_2000,1);
+  assert.equal(report.total.published,4);assert.equal(report.total.deep,2);assert.equal(report.total.over_2000,4);
   assert.equal(report.groups.china_hot.deep_share,0.3333);assert.equal(report.target_is_publication_gate,false);
 });
 

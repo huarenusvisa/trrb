@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import {forwardQuery,depthInstruction,logDepthOutcome} from './news-forward-policy.mjs';
 import './news-budget-preload.mjs';
 import {appendFileSync} from 'node:fs';
 import {TIER_REVIEW_INSTRUCTIONS,needsReviewRecheck,verifyFreshDevelopment} from './news-editorial-support.mjs';
@@ -40,6 +41,7 @@ async function readJson(response) { const text = await response.text(); if (!tex
 async function request(url, options = {}) { const response = await fetch(url, {...options,signal:options.signal || AbortSignal.timeout(210000)}); const body = await readJson(response); if (!response.ok) throw new Error(body?.message || body?.details || body?.error?.message || body?.error || body?.raw || `${response.status}`); return body; }
 function headers(prefer = "") { return { apikey: process.env.SUPABASE_SERVICE_ROLE_KEY, Authorization: `Bearer ${process.env.SUPABASE_SERVICE_ROLE_KEY}`, "Content-Type": "application/json", ...(prefer ? { Prefer: prefer } : {}) }; }
 async function sb(table, { method = "GET", query = {}, body, prefer = "" } = {}) {
+  if(method === 'GET' && table === 'ice_stories' && /approved/.test(query.status || '') && !/published/.test(query.status || '')) query = {...query,...forwardQuery()};
   const execute = async (pageQuery) => {
     const base = String(process.env.SUPABASE_URL || "").replace(/\/+$/, "");
     const url = new URL(`${base}/rest/v1/${table}`);
@@ -136,11 +138,11 @@ async function translate(story, posts, attempt = 0, context = null) {
     let research = null, researchError = '';
     if (priority) {
       try { research = await researchForStory(story,posts); }
-      catch (error) { researchError = String(error.message || error).slice(0,500); }
+      catch (error) { if(isBudgetDeferred(error)) throw error; researchError = String(error.message || error).slice(0,500); }
     }
     context = {research,research_attempted:priority,research_error:researchError,force_standard:false};
   }
-  const canDeep = !context.force_standard && independentSourceCount(context.research) >= 2;
+  const canDeep = !context.force_standard && independentSourceCount(context.research) >= 2 && (!context.research?.depth_assignment || context.research.depth_assignment.requested_depth === 'deep');
   const response = await request('https://api.openai.com/v1/responses', {
     method:'POST',headers:{Authorization:`Bearer ${process.env.OPENAI_API_KEY}`,'Content-Type':'application/json'},
     body:JSON.stringify({model:process.env.OPENAI_MODEL,store:false,max_output_tokens:canDeep ? 14000 : 8500,
@@ -154,6 +156,7 @@ async function translate(story, posts, attempt = 0, context = null) {
         '实际事实不能来自通用ICE背景；仅在ICE/ERO/HSI相关时可将提供的制度背景单独明确写作一般程序，不能套在USCIS、FBI或中国政治报道上。不得猜测个人身份、国籍、族群、动机、住址或法律状态。',
         '有图片须核对实际可辨信息；视频缩略图不证明连续过程。image_observations只记实际读到的画面内容，无图留空。',
         `当前时间${nowIso()}。检查原事件日期和实质新进展，旧视频、回顾、周年或旧事无新进展则appears_old_news=true并记证据；不得仅凭上传日期判断。`,
+        context.force_standard ? '' : depthInstruction(context.research),
         context.rewrite_reason || ''
       ].join('\n'),
       input:[{role:'user',content:[{type:'input_text',text:JSON.stringify({current_story:{title:story.title,event_type:story.event_type},sources:posts.slice(0,20).map(p=>({text:p.source_text,url:p.x_url,date:p.source_created_at,username:p.source_username,source_type:p.source_type,trust_tier:p.trust_tier})),context_research:context.research,research_error:context.research_error,verified_editorial_background:VERIFIED_ICE_EDITORIAL_CONTEXT})},...images.map(image_url=>({type:'input_image',image_url,detail:'high'}))]}],
@@ -173,7 +176,7 @@ async function translate(story, posts, attempt = 0, context = null) {
   // The model's tier is only a proposal. Downgrade an undersized draft before
   // independent review; never infer deep eligibility from length alone.
   const requestedDepth = parsed.editorial_depth;
-  if(requestedDepth==='deep' && canDeep && count<2000 && attempt<1) return translate(story,posts,attempt+1,{...context,rewrite_reason:'已选深度选题但正文不足2000字。仅依据已有真实资料回答数据、新闻及事件上下游，写2000至3500字；资料不足请明确降级，不能凑字。'});
+  if((requestedDepth==='deep' || context.research?.depth_assignment?.requested_depth==='deep') && canDeep && count<2000 && attempt<1) return translate(story,posts,attempt+1,{...context,rewrite_reason:'已选深度选题但正文不足2000字。仅依据已有真实资料回答数据、新闻及事件上下游，写2000至3500字；资料不足请明确降级，不能凑字。'});
   if (['deep','standard'].includes(requestedDepth) && count >= 1 && count < 800) parsed.editorial_depth = 'brief';
   else if (requestedDepth === 'deep' && count >= 800 && count < 2000) parsed.editorial_depth = 'standard';
   if (parsed.editorial_depth !== requestedDepth) parsed.depth_reason = `${parsed.depth_reason || ''}；实际正文${count}个中文字符，由${requestedDepth}降为${parsed.editorial_depth}，仍须独立事实复核`;
@@ -195,6 +198,7 @@ async function translate(story, posts, attempt = 0, context = null) {
   if (core.some(k=>review[k] !== true) || deepErrors.length) throw new Error(`独立复核未通过：${review.reason || deepErrors.join('；')}`);
   const min = depth === 'deep' ? 2000 : depth === 'standard' ? 800 : 1;
   const max = depth === 'deep' ? 3500 : depth === 'standard' ? 1999 : 799;
+  logDepthOutcome(context.research,depth,count);
   return {...parsed,editorial_review:review,context_research:context.research,research_attempted:context.research_attempted,research_error:context.research_error,sourceLength,imageCount:images.length,targetMin:min,preferredMin:min,targetMax:max,lengthPolicy:EDITORIAL_POLICY_VERSION};
 }
 async function storiesToTranslate() { const rows = await sb("ice_stories", { query: { select: "*", status: "in.(collecting,pending_review,pending_corroboration,approved)", order: "updated_at.desc", limit: String(intEnv("ICE_TRANSLATE_MAX_STORIES", 120, 1, 300)) } }); return Array.isArray(rows) ? rows : []; }
@@ -214,7 +218,7 @@ async function patchStory(story, translated, posts) {
   const reviewPayload = {editorial_policy_version:EDITORIAL_POLICY_VERSION,editorial_depth:translated.editorial_depth,editorial_depth_reason:translated.depth_reason,editorial_review:translated.editorial_review,context_research:translated.context_research,research_attempted:translated.research_attempted,research_error:translated.research_error,reviewed_content_sha256:contentDigest(title,content)};
   if (!reviewedStoryReady({title,content,ai_payload:reviewPayload})) throw new Error("稿型或独立复核校验失败，禁止保存为合格稿");
   const appearsOldNews = Boolean(translated.appears_old_news);
-  const saved = await sb("ice_stories", { method: "PATCH", query: { id: `eq.${story.id}`,human_review_status:"not.in.(editing,approved,rejected)",...(story.updated_at ? {updated_at:`eq.${story.updated_at}`} : {}) }, body: { title, summary: summary || content.slice(0, 180), content, final_title: title, final_summary: summary || content.slice(0, 180), final_content: content, ai_payload: { ...payload, ...reviewPayload, translation_version: VERSION, context_expansion_version: CONTEXT_EXPANSION_VERSION, translated_at: nowIso(), translated_source_count: posts.length, translated_to_chinese: true, source_language: translated.source_language || "unknown", title_length: titleLength(title), body_character_count: length, body_chinese_character_count: length, source_character_count: translated.sourceLength, target_min_chars: targetMin, preferred_min_chars: Number(translated.preferredMin || band.preferredMin), target_max_chars: targetMax, length_policy: translated.lengthPolicy || band.policy, image_grounding_used: translated.imageCount > 0, image_count: translated.imageCount, image_observations: safeText(translated.image_observations, 2000), appears_old_news: appearsOldNews, old_news_reason: safeText(translated.old_news_reason, 1000), old_news_checked: true, automatic_old_news_check_passed: !appearsOldNews, manual_old_news_confirmation: false }, updated_at: nowIso() }, prefer: "return=representation" });
+  const saved = await sb("ice_stories", { method: "PATCH", query: { id: `eq.${story.id}`,human_review_status:"not.in.(editing,approved,rejected)",...(story.updated_at ? {updated_at:`eq.${story.updated_at}`} : {}) }, body: { title, summary: summary || content.slice(0, 180), content, final_title: title, final_summary: summary || content.slice(0, 180), final_content: content, ai_payload: { ...payload, ...reviewPayload, editorial_failure: null, translation_version: VERSION, context_expansion_version: CONTEXT_EXPANSION_VERSION, translated_at: nowIso(), translated_source_count: posts.length, translated_to_chinese: true, source_language: translated.source_language || "unknown", title_length: titleLength(title), body_character_count: length, body_chinese_character_count: length, source_character_count: translated.sourceLength, target_min_chars: targetMin, preferred_min_chars: Number(translated.preferredMin || band.preferredMin), target_max_chars: targetMax, length_policy: translated.lengthPolicy || band.policy, image_grounding_used: translated.imageCount > 0, image_count: translated.imageCount, image_observations: safeText(translated.image_observations, 2000), appears_old_news: appearsOldNews, old_news_reason: safeText(translated.old_news_reason, 1000), old_news_checked: true, automatic_old_news_check_passed: !appearsOldNews, manual_old_news_confirmation: false }, updated_at: nowIso() }, prefer: "return=representation" });
   if (!saved?.length) throw new Error("采编期间稿件已被修改或锁定，未覆盖编辑内容");
 }
 async function main() {

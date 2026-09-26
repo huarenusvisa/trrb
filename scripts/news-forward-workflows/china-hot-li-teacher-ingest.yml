@@ -1,0 +1,76 @@
+name: China Hot · X Content Intake
+
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: china-hot-li-teacher-content-intake
+  cancel-in-progress: false
+
+jobs:
+  collect-to-content-center:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    env:
+      NEWS_BUDGET_ENFORCE: "1"
+      NEWS_DEPTH_COMMISSION: "1"
+      NEWS_FORWARD_ONLY_FROM: "2026-09-26T19:16:05.375Z"
+      NEWS_BUDGET_PIPELINE: "china-hot"
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      X_BEARER_TOKEN: ${{ secrets.X_BEARER_TOKEN }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      OPENAI_MODEL: ${{ secrets.OPENAI_MODEL }}
+      # 所有新采集来源最多回看12小时；不能通过扩大窗口补抓旧闻。
+      LI_TEACHER_LOOKBACK_HOURS: "12"
+      LI_TEACHER_MAX_FETCH: ${{ inputs.recover_archived && '200' || '100' }}
+      # 任正非专题按编辑要求暂停；即使本工作流手动开启，也不再搜索或更新该专题。
+      LI_TEACHER_MAX_PUBLISH: ${{ inputs.recover_archived && '150' || '20' }}
+      LI_TEACHER_PUBLISH_CONCURRENCY: "8"
+      CHINA_HOT_REPAIR_SINCE: "2026-08-24T00:00:00Z"
+      CHRT_INGEST_URL: "https://chinahumanrightstracker.org/api/ingest/trrb"
+      CHRT_SYNC_LOOKBACK_HOURS: "72"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Validate secrets
+        shell: bash
+        run: |
+          test -n "$SUPABASE_URL"
+          test -n "$SUPABASE_SERVICE_ROLE_KEY"
+          if [[ "${{ inputs.recover_archived }}" != "true" && "${{ inputs.repair_today }}" != "true" ]]; then test -n "$X_BEARER_TOKEN"; fi
+          test -n "$OPENAI_API_KEY"
+      # Keep these editorial gates covered by the pre-merge SEO integrity workflow.
+      - name: Run collector tests
+        env:
+          NEWS_BUDGET_ENFORCE: "0"
+          NEWS_DEPTH_COMMISSION: "0"
+        run: node --experimental-strip-types --test scripts/news-editorial-support.test.mjs scripts/china-hot-editor.test.mjs scripts/news-budget.test.mjs scripts/news-priority.test.mjs scripts/news-editorial-policy.test.mjs scripts/china-person-registry.test.mjs scripts/china-hot-li-teacher-ingest.test.mjs scripts/china-context-research.test.mjs scripts/china-editorial-update.test.mjs scripts/ren-zhengfei-news.test.mjs scripts/article-editorial-policy.test.mjs
+      - name: Read China headlines category switches
+        id: category
+        run: node scripts/category-pipeline-gate.mjs hot-headlines
+      - name: Collect China headlines and publish automatically
+        if: steps.category.outputs.auto_fetch == 'true' && steps.category.outputs.ai_rewrite == 'true' && steps.category.outputs.auto_publish == 'true'
+        shell: bash
+        run: |
+          args=()
+          if [[ "${{ inputs.repair_today }}" == "true" ]]; then
+            args+=(--repair-today)
+          elif [[ "${{ inputs.recover_archived }}" == "true" ]]; then
+            args+=(--recover-archived)
+          fi
+          node scripts/china-hot-li-teacher-ingest.mjs "${args[@]}"
+
+      - name: Report shared news budget
+        if: always()
+        run: node scripts/news-budget-report.mjs
+
+      - name: Report verified seven-day news quality
+        if: always()
+        run: node scripts/news-quality-report.mjs

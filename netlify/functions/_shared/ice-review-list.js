@@ -36,6 +36,10 @@ function keywords(value, limit = 30) {
 }
 
 function sameEvent(a, b) {
+  // Different explicit event fingerprints are different stories. Do not collapse
+  // separate Tier-1 agency releases merely because they share ICE vocabulary,
+  // nationality, location, or event type.
+  if (a.event_fingerprint && b.event_fingerprint && a.event_fingerprint !== b.event_fingerprint) return false;
   const left = normalized(a.text);
   const right = normalized(b.text);
   if (left.length >= 80 && right.length >= 80 && (left.includes(right) || right.includes(left))) return true;
@@ -102,7 +106,8 @@ function prepareStories(stories, postsByFingerprint) {
         words: keywords(text),
         event_type: story.event_type || post.event_type || "other",
         event_date: post.event_date || "",
-        state_code: post.state_code || ""
+        state_code: post.state_code || "",
+        event_fingerprint: safeText(story.event_fingerprint || post.event_fingerprint, 200)
       }
     };
   }).sort((a, b) => b._sort_time - a._sort_time);

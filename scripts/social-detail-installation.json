@@ -8,10 +8,12 @@
     "user/center/index.html",
     "community/index.html",
     "scripts/social-detail-layout.e2e.mjs",
-    "scripts/social-detail-live.mjs"
+    "scripts/social-detail-live.mjs",
+    "scripts/validate-site.mjs"
   ],
   "database_writes": false,
   "mobile_layout": "image-above-body",
   "desktop_layout": "image-left-body-right",
-  "verification_run": "36269119827"
+  "verification_run": "36269465898",
+  "cache_contract": "versioned detail dependency order and responsive stylesheet required"
 }

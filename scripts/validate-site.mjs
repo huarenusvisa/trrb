@@ -68,7 +68,9 @@ const communityClient = await text("community/community.js");
 requireMatch(communityClient, /event\.submitter\s*\|\|\s*event\.currentTarget\.querySelector/, "community forms must support Enter-key submission");
 requireMatch(communityClient, /notice success/, "community publishing must render inline success feedback");
 forbidMatch(communityClient, /alert\(data\.message\)/, "community publishing must not block on a native success alert");
-requireMatch(community, /community\.js\?v=20260906-1/, "community PC flow cache token is stale");
+requireMatch(community, /community\.js\?v=20260926-social-2-detail-1["']/, "community PC flow cache token is stale");
+requireMatch(community, /social-detail\.js\?v=20260926-detail-1["'][\s\S]*community\.js\?v=/, "community detail helper must load before the community client");
+requireMatch(community, /social-detail\.css\?v=20260926-detail-1["']/, "community detail responsive styles are missing");
 
 const asylumCommunity = await text("asylumjudge-community.html");
 requireMatch(asylumCommunity, /^\s*<!doctype html>/i, "asylumjudge community page is not HTML");

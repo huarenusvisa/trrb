@@ -1,0 +1,78 @@
+/* Detail-view styles only: discovery cards and private management forms are untouched. */
+html.trrb-detail-open{overflow:hidden;scrollbar-gutter:stable}
+dialog.trrb-detail-modal{width:min(760px,calc(100vw - 72px));height:min(820px,calc(100vh - 64px));height:min(820px,calc(100dvh - 64px));max-width:none;max-height:none;padding:0;border:0;border-radius:18px;overflow:hidden;background:#fff;box-shadow:0 24px 90px rgba(0,0,0,.28)}
+dialog.trrb-detail-modal.detail-has-media{width:min(1180px,calc(100vw - 72px))}
+dialog.trrb-detail-modal::backdrop{background:rgba(16,20,24,.58);backdrop-filter:blur(2px)}
+dialog.trrb-detail-modal>.modal-card{position:relative;height:100%;max-height:none;margin:0;padding:0;overflow:hidden;background:#fff}
+dialog.trrb-detail-modal #post-detail-content,dialog.trrb-detail-modal #post-detail{height:100%;min-height:0}
+dialog.trrb-detail-modal .modal-close{position:absolute;inset:17px 17px auto auto;z-index:5;width:36px;height:36px;padding:0;display:grid;place-items:center;border:0;border-radius:50%;font-size:25px;line-height:1;background:#f3f4f5;color:#26313d;cursor:pointer}
+dialog.trrb-detail-modal .modal-close:hover{background:#e8eaed}
+dialog.trrb-detail-modal .detail-layout{height:100%;display:grid;grid-template-columns:minmax(0,1.45fr) minmax(370px,1fr);min-width:0;min-height:0}
+dialog.trrb-detail-modal .detail-layout-text{grid-template-columns:minmax(0,1fr)}
+dialog.trrb-detail-modal .detail-gallery{position:relative;min-width:0;min-height:0;height:100%;overflow:hidden;background:#f1f2f3;isolation:isolate}
+dialog.trrb-detail-modal .detail-gallery-stage{height:100%;position:relative;touch-action:pan-y pinch-zoom;user-select:none;-webkit-user-select:none}
+dialog.trrb-detail-modal .detail-slide{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;min-width:0;min-height:0}
+dialog.trrb-detail-modal .detail-slide[hidden],dialog.trrb-detail-modal [hidden]{display:none!important}
+dialog.trrb-detail-modal .detail-slide>.detail-media{display:block;width:100%;height:100%;max-width:100%;max-height:100%;margin:0;border-radius:0;object-fit:contain;object-position:center;background:transparent}
+dialog.trrb-detail-modal .detail-media-error,dialog.trrb-detail-modal .detail-media-unavailable{margin:30px;color:#657080;font-size:14px;text-align:center;line-height:1.7}
+dialog.trrb-detail-modal .detail-gallery-arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:2;width:44px;height:44px;display:grid;place-items:center;padding:0;background:rgba(20,25,31,.54);color:#fff;border:1px solid rgba(255,255,255,.2);border-radius:50%;font-size:34px;font-weight:500;line-height:1;cursor:pointer}
+dialog.trrb-detail-modal .detail-gallery-arrow:hover{background:rgba(20,25,31,.78)}
+dialog.trrb-detail-modal .detail-prev{left:16px}
+dialog.trrb-detail-modal .detail-next{right:16px}
+dialog.trrb-detail-modal .detail-gallery-counter{position:absolute;top:17px;left:50%;transform:translateX(-50%);background:rgba(20,25,31,.6);color:#fff;border-radius:20px;padding:4px 11px;font-size:12px;line-height:1.5;font-variant-numeric:tabular-nums;pointer-events:none}
+dialog.trrb-detail-modal .detail-gallery-dots{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:0;max-width:90%;padding:0 5px;border-radius:22px;background:rgba(20,25,31,.45)}
+dialog.trrb-detail-modal .detail-gallery-dot{position:relative;width:34px;height:38px;border:0;background:none;padding:0;border-radius:8px;cursor:pointer}
+dialog.trrb-detail-modal .detail-gallery-dot:after{content:'';position:absolute;width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.55);left:50%;top:50%;transform:translate(-50%,-50%)}
+dialog.trrb-detail-modal .detail-gallery-dot.active:after{width:18px;background:#fff;border-radius:4px}
+dialog.trrb-detail-modal .detail-content-panel{display:grid;grid-template-rows:auto minmax(0,1fr) auto;height:100%;min-height:0;min-width:0;background:#fff;border-left:1px solid #ebedf0;overflow:hidden}
+dialog.trrb-detail-modal .detail-no-composer{grid-template-rows:auto minmax(0,1fr)}
+dialog.trrb-detail-modal .detail-author-header{display:flex;align-items:center;gap:13px;min-height:80px;padding:17px 65px 17px 23px;border-bottom:1px solid #eff0f2;background:#fff;position:relative;z-index:2}
+dialog.trrb-detail-modal .detail-author-header>.author-line{display:flex;align-items:center;gap:9px;flex:1;min-width:0;padding:0;margin:0;flex-wrap:nowrap}
+dialog.trrb-detail-modal .detail-author-header a{color:#26323e;font-size:16px;font-weight:700;text-decoration:none}
+dialog.trrb-detail-modal .detail-author-header a:hover{color:#b4232d}
+dialog.trrb-detail-modal .detail-author-header .note-author{max-width:100%;gap:11px}
+dialog.trrb-detail-modal .detail-author-header .social-avatar{width:42px;height:42px;font-size:17px;flex-shrink:0}
+dialog.trrb-detail-modal .detail-author-header small{display:block;color:#8b939e;font-size:11px;font-weight:400}
+dialog.trrb-detail-modal .detail-author-header .profile-name{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:200px}
+dialog.trrb-detail-modal .detail-follow{flex-shrink:0;padding:7px 17px;min-height:36px;max-width:110px;border:0;border-radius:20px;background:#bc2335;color:#fff;font-size:14px;font-weight:700;white-space:nowrap;cursor:pointer}
+dialog.trrb-detail-modal .detail-follow:disabled{opacity:.6;cursor:wait}
+dialog.trrb-detail-modal .detail-content-scroll{min-height:0;overflow:auto;overscroll-behavior:contain;padding:22px 24px 28px;scrollbar-width:thin;scrollbar-color:#c6ccd1 transparent;outline-offset:-3px}
+dialog.trrb-detail-modal .detail-content-scroll h2{font-family:inherit;font-size:22px;line-height:1.5;margin:0 0 14px;padding:0;overflow-wrap:anywhere}
+dialog.trrb-detail-modal .detail-copy,dialog.trrb-detail-modal .detail-body{margin:0 0 16px;font-size:15px;line-height:1.85;white-space:pre-wrap;overflow-wrap:anywhere;color:#344054}
+dialog.trrb-detail-modal .detail-copy a,dialog.trrb-detail-modal .detail-body a{color:#195da6;text-decoration:underline}
+dialog.trrb-detail-modal .detail-publication-time{display:block;margin:13px 0 19px;color:#8a929b;font-size:12px}
+dialog.trrb-detail-modal .detail-comment-head{border-top:1px solid #eceef1;margin-top:20px;padding-top:16px}
+dialog.trrb-detail-modal .detail-comment-head h3,dialog.trrb-detail-modal .comment-list h3{margin:0 0 14px;font-size:14px;color:#7b8490;font-weight:500}
+dialog.trrb-detail-modal .detail-comment{padding:12px 0;background:none;border-radius:0;border-bottom:1px solid #f2f3f5}
+dialog.trrb-detail-modal .detail-comment-top{align-items:center;font-size:12px}
+dialog.trrb-detail-modal .detail-comment-top .note-author{max-width:76%;color:#727c87}
+dialog.trrb-detail-modal .detail-comment p{font-size:14px;line-height:1.7;padding-left:32px;overflow-wrap:anywhere}
+dialog.trrb-detail-modal .detail-comment-top small{white-space:nowrap;font-size:11px}
+dialog.trrb-detail-modal .detail-composer{margin:0;padding:14px 18px max(14px,env(safe-area-inset-bottom));border-top:1px solid #eceef1;background:#fff;color:#657080;min-height:68px}
+dialog.trrb-detail-modal .detail-composer p{margin:0;font-size:13px;line-height:1.8}
+dialog.trrb-detail-modal .detail-composer .detail-comment-form,dialog.trrb-detail-modal .detail-composer .comment-form{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:end;margin:0}
+dialog.trrb-detail-modal .detail-composer textarea{height:48px;min-height:48px;max-height:120px;margin:0;resize:vertical;background:#f7f8f9;border:1px solid #e2e5e9;border-radius:12px;padding:11px 12px;font:inherit;font-size:13px;line-height:1.7;color:#344054;width:100%}
+dialog.trrb-detail-modal .detail-composer button{border-radius:20px;padding:10px 13px;font-size:13px;white-space:nowrap}
+dialog.trrb-detail-modal .detail-composer .form-message{grid-column:1/-1;margin:0;font-size:12px}
+dialog.trrb-detail-modal .detail-composer .form-message:empty{display:none}
+dialog.trrb-detail-modal #post-detail-content>.notice,dialog.trrb-detail-modal #post-detail>.notice{margin:64px 24px 24px}
+dialog.trrb-detail-modal button:focus-visible,dialog.trrb-detail-modal a:focus-visible{outline:3px solid #d95365;outline-offset:3px}
+@media(max-width:760px){
+  dialog.trrb-detail-modal,dialog.trrb-detail-modal.detail-has-media{width:calc(100vw - 20px);height:calc(100vh - 28px);height:calc(100dvh - 28px);border-radius:14px}
+  dialog.trrb-detail-modal .detail-layout{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(180px,40dvh) minmax(0,1fr)}
+  dialog.trrb-detail-modal .detail-layout-text{grid-template-rows:minmax(0,1fr)}
+  dialog.trrb-detail-modal .detail-content-panel{border-left:0}
+  dialog.trrb-detail-modal .detail-author-header{min-height:64px;padding:11px 19px;gap:12px}
+  dialog.trrb-detail-modal .detail-layout-text .detail-author-header{padding-right:62px}
+  dialog.trrb-detail-modal .detail-author-header .social-avatar{width:36px;height:36px;font-size:15px}
+  dialog.trrb-detail-modal .detail-author-header a{font-size:15px}
+  dialog.trrb-detail-modal .detail-author-header .profile-name{max-width:175px}
+  dialog.trrb-detail-modal .modal-close{top:12px;right:12px;width:34px;height:34px;background:rgba(255,255,255,.93)}
+  dialog.trrb-detail-modal .detail-content-scroll{padding:16px 18px 22px}
+  dialog.trrb-detail-modal .detail-copy,dialog.trrb-detail-modal .detail-body{font-size:14px}
+  dialog.trrb-detail-modal .detail-composer{padding:10px 12px max(10px,env(safe-area-inset-bottom));min-height:56px}
+  dialog.trrb-detail-modal .detail-gallery-arrow{width:38px;height:44px;font-size:30px}
+  dialog.trrb-detail-modal .detail-prev{left:9px}dialog.trrb-detail-modal .detail-next{right:9px}
+  dialog.trrb-detail-modal .detail-gallery-dots{bottom:9px}
+}
+@media(max-height:520px) and (min-width:761px){dialog.trrb-detail-modal{height:calc(100dvh - 24px)}dialog.trrb-detail-modal .detail-author-header{min-height:64px;padding-top:10px;padding-bottom:10px}dialog.trrb-detail-modal .detail-content-scroll{padding-top:14px}}

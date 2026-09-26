@@ -34,7 +34,7 @@ export async function createProfilePost(caption: string, assets: ImagePickerAsse
     const limit = asset.type === 'video' ? 80 * 1024 * 1024 : 12 * 1024 * 1024;
     if (asset.fileSize && asset.fileSize > limit) throw new Error(asset.type === 'video' ? '视频不能超过 80MB。' : '单张图片不能超过 12MB。');
   }
-  const normalizedTags = Array.from(new Set(tags.map((tag) => tag.replace(/^#+/, '').trim()).filter(Boolean))).slice(0, 8);
+  const normalizedTags = Array.from(new Set(tags.map((tag) => tag.replace(/^#+/, '').trim()).filter(Boolean))).slice(0, 5);
   if (normalizedTags.some((tag) => tag.length > 24)) throw new Error('单个标签不能超过 24 个字符。');
   const { data: post, error: postError } = await supabase.from('profile_posts').insert({ user_id: userId, caption: caption.trim(), tags: normalizedTags, status: 'published' }).select('id').single();
   if (postError) throw postError;

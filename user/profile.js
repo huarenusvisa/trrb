@@ -102,6 +102,7 @@
     if($('manage-my-account'))$('manage-my-account').classList.toggle('hidden',!own||state.ownerView);
     $('follow-button').textContent=state.relation==='accepted'?'已关注':state.relation==='pending'?'已申请':p.is_private?'申请关注':'关注';
     $('profile-hero').classList.remove('hidden');
+    window.TrrbDetail.syncFollow($('post-detail-dialog'));
   }
 
   function renderPosts() {
@@ -130,6 +131,7 @@
   async function openPcPost(postId) {
     if(!social.uuid(postId))return;
     const version=++state.detailVersion;
+    window.TrrbDetail.prepare($('post-detail-dialog'),postId);
     $('post-detail-content').innerHTML='<div class="notice">正在打开内容…</div>';
     if(!$('post-detail-dialog').open)$('post-detail-dialog').showModal();
     try{
@@ -142,14 +144,18 @@
       const media=(post.profile_post_media||[]).slice().sort((a,b)=>a.sort_order-b.sort_order);
       await Promise.all(media.map(async item=>{item.signed_url=await signedPostMedia(item.storage_path);}));
       if(version!==state.detailVersion)return;
-      const mediaHtml=media.map(item=>!item.signed_url?'<p class="notice">媒体暂时不可用，正文仍可阅读。</p>':item.media_type==='video'
+      const mediaHtml=media.map(item=>!item.signed_url?'<p class="notice detail-media-error">媒体暂时不可用，正文仍可阅读。</p>':item.media_type==='video'
         ?`<video class="detail-media" controls playsinline preload="metadata" src="${esc(item.signed_url)}"></video>`
         :`<img class="detail-media" src="${esc(item.signed_url)}" alt="动态图片" />`).join('');
       $('post-detail-content').innerHTML=`<div class="author-line"><a class="note-author" href="${social.profileHref(state.userId)}">${social.avatar(state.profile,window.supabaseClient)}<span>${esc(state.profile?.display_name||'唐人用户')}</span></a></div>${mediaHtml}${post.caption?`<div class="detail-copy">${social.linkify(post.caption)}</div>`:''}${post.tags?.length?`<div class="detail-tags">${post.tags.slice(0,5).map(tag=>`<span class="tag">#${esc(tag)}</span>`).join('')}</div>`:''}<div class="detail-comment-head"><h3>评论</h3></div>${state.session?`<form class="detail-comment-form" data-pc-comment-form="${esc(post.id)}"><textarea name="content" maxlength="3000" placeholder="写下你的评论…" required></textarea><button type="submit">发表评论</button><div class="form-message"></div></form>`:'<p>登录后可以发表评论。<button type="button" data-detail-login>登录</button></p>'}<div id="dynamic-comment-results" aria-live="polite">正在读取评论…</div>`;
+      window.TrrbDetail.enhance($('post-detail-dialog'),{
+        postId,followSource:$('follow-button'),onFollow:toggleFollow,publishedAt:post.created_at
+      });
       // The article opens independently; a comment-service error cannot blank it.
       try{
         const comments=await loadPcPostComments(postId);if(version!==state.detailVersion)return;
         $('dynamic-comment-results').innerHTML=comments.length?comments.map(comment=>`<article class="detail-comment"><div class="detail-comment-top"><a class="note-author" href="${social.profileHref(comment.user_id)}">${social.avatar(comment.profiles,window.supabaseClient)}<strong>${esc(comment.profiles?.display_name||'唐人用户')}</strong></a><small>${esc(dateText(comment.created_at))}</small></div><p>${social.linkify(comment.content)}</p></article>`).join(''):'<p>暂无评论。</p>';
+        window.TrrbDetail.restoreScroll($('post-detail-dialog'));
       }catch(error){if(version===state.detailVersion&&$('dynamic-comment-results'))$('dynamic-comment-results').innerHTML=`<p class="notice">评论暂时无法读取，正文不受影响。<button type="button" data-retry-dynamic="${esc(postId)}">重试</button></p>`;}
     }catch(error){if(version===state.detailVersion)$('post-detail-content').innerHTML=`<div class="notice error">${esc(error.message||'内容读取失败')}</div>`;}
   }
@@ -159,11 +165,12 @@
     const content=form.elements.content.value.trim();
     if(!content) return;
     const message=form.querySelector('.form-message');
+    const activeDetailVersion=state.detailVersion;
     try{
       const {error}=await window.supabaseClient.rpc('create_profile_post_comment',{p_post_id:form.dataset.pcCommentForm,p_content:content});
       if(error) throw error;
       form.reset();
-      await openPcPost(form.dataset.pcCommentForm);
+      if($('post-detail-dialog').open&&state.detailVersion===activeDetailVersion)await openPcPost(form.dataset.pcCommentForm);
     }catch(error){message.textContent=error.message||'评论失败';}
   }
 
@@ -415,6 +422,7 @@
   }
 
   function bind(){
+    window.TrrbDetail.bind($('post-detail-dialog'),()=>{state.detailVersion++;});
     $('login-open').addEventListener('click',()=>$('auth-dialog').showModal());
     $('logout-button').addEventListener('click',async()=>{document.querySelectorAll('dialog[open]').forEach(d=>d.close());state.detailVersion++;state.posts=[];state.communityPosts=[];$('post-detail-content').innerHTML='';await window.supabaseClient.auth.signOut();await refresh();});
     $('auth-form').addEventListener('submit',handleAuth);

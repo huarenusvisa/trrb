@@ -215,18 +215,22 @@
     }
   }
 
+  let communityDetailVersion=0;
   async function openPost(postId) {
     if (!window.TrrbSocial.uuid(postId)) return;
+    const version=++communityDetailVersion;
+    window.TrrbDetail.prepare($('post-dialog'),postId);
     $('post-detail').innerHTML='<div class="notice">正在打开内容…</div>';
     if (!$('post-dialog').open) $('post-dialog').showModal();
     try {
       const data = await api('GET', null, `?post_id=${encodeURIComponent(postId)}`);
+      if(version!==communityDetailVersion||!$('post-dialog').open)return;
       const post = data.posts?.[0];
       if (!post) throw new Error('帖子不存在或仍在审核');
       const comments = data.comments || [];
       $('post-detail').innerHTML = `<p class="eyebrow">${esc(categoryNames[post.category] || '')}</p><h2>${esc(post.title)}</h2><div class="author-line"><a class="profile-link" href="/user/?id=${encodeURIComponent(post.user_id)}">${window.TrrbSocial.avatar(post.profiles,window.supabaseClient)}</a><div><a class="profile-name" href="/user/?id=${encodeURIComponent(post.user_id)}">${esc(post.profiles?.display_name || '唐人用户')}</a><small>${esc(dateText(post.created_at))}</small></div></div><div class="post-meta">${postMeta(post).map((item) => `<span>${esc(item)}</span>`).join('')}</div><p class="detail-body">${window.TrrbSocial.linkify(post.content)}</p><div class="comment-list"><h3>评论</h3>${comments.length ? comments.map((comment) => `<article class="comment"><b>${esc(comment.profiles?.display_name || '唐人用户')}</b><p>${esc(comment.content)}</p><small>${esc(dateText(comment.created_at))}${comment.status !== 'published' ? ' · 审核中' : ''}</small></article>`).join('') : '<p>暂无评论</p>'}</div><form class="comment-form" data-comment-form="${esc(post.id)}"><textarea name="content" maxlength="3000" placeholder="写下你的回复（需要登录）" required></textarea><button type="submit">发表评论</button><div class="form-message"></div></form>`;
-      if (!$('post-dialog').open) $('post-dialog').showModal();
-    } catch (error) { $('post-detail').innerHTML=`<div class="notice error">${esc(error.message || '内容暂不可用')}</div>`; }
+      window.TrrbDetail.enhance($('post-dialog'),{postId});
+    } catch (error) { if(version!==communityDetailVersion)return; $('post-detail').innerHTML=`<div class="notice error">${esc(error.message || '内容暂不可用')}</div>`; }
   }
 
   async function handleAuth(event) {
@@ -289,6 +293,7 @@
   }
 
   function bind() {
+    window.TrrbDetail.bind($('post-dialog'),()=>{communityDetailVersion++;});
     $('login-open').addEventListener('click', () => $('auth-dialog').showModal());
     $('publish-open').addEventListener('click', () => openComposer(state.category || 'uscis_interview'));
     $('auth-form').addEventListener('submit', handleAuth);
@@ -325,7 +330,7 @@
     });
     $('post-detail').addEventListener('submit', (event) => {
       const form = event.target.closest('[data-comment-form]'); if (!form) return;
-      event.preventDefault(); requireLogin(async () => { const message=form.querySelector('.form-message'); try { const data=await mutatePost('create_comment', form.dataset.commentForm, {content:form.elements.content.value}); message.textContent=data.pending?'评论已提交审核':'评论成功'; form.reset(); await openPost(form.dataset.commentForm); } catch (error) { message.textContent=error.message; } });
+      event.preventDefault(); requireLogin(async () => { const message=form.querySelector('.form-message'); try { const data=await mutatePost('create_comment', form.dataset.commentForm, {content:form.elements.content.value}); message.textContent=data.pending?'评论已提交审核':'评论成功'; form.reset(); if($('post-dialog').open)await openPost(form.dataset.commentForm); } catch (error) { message.textContent=error.message; } });
     });
     $('logout-button').addEventListener('click', async () => { await window.supabaseClient.auth.signOut(); state.session=null; state.profile=null; syncAccountUi(); loadFeed(); });
   }

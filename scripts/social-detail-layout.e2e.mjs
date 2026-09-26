@@ -6,7 +6,7 @@ const script=readFileSync('assets/social-detail.js','utf8');
 const browser=await chromium.launch({headless:true});
 const checks=[];
 mkdirSync('artifacts/social-detail',{recursive:true});
-function fixtureHTML(){return '<!doctype html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"><style>'+css+'</style></head><body class="social-discovery user-public"><button id="open">打开作品</button><button id="follow-source">关注</button><dialog id="post-detail-dialog" class="modal wide"><section class="modal-card"><button class="modal-close" type="button" aria-label="关闭">×</button><div id="post-detail-content"></div></section></dialog></body></html>';}
+function fixtureHTML(){return '<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>'+css+'</style></head><body class="social-discovery user-public"><button id="open">打开作品</button><button id="follow-source">关注</button><dialog id="post-detail-dialog" class="modal wide"><section class="modal-card"><button class="modal-close" type="button" aria-label="关闭">×</button><div id="post-detail-content"></div></section></dialog></body></html>';}
 async function make(width=1440,height=960,touch=false){
   const context=await browser.newContext({viewport:{width,height},hasTouch:touch,isMobile:touch});
   const page=await context.newPage();
@@ -65,6 +65,7 @@ try{
     await page.locator('.detail-slide:visible img').click();assert.equal(await page.locator('dialog[open]').count(),1);
     await page.mouse.move(gallery.x+50,gallery.y+50);await page.mouse.down();await page.mouse.move(5,5);await page.mouse.up();assert.equal(await page.locator('dialog[open]').count(),1,'Dragging from inside to outside does not dismiss');
     await page.mouse.click(5,5);await page.waitForFunction(()=>!document.querySelector('dialog').open);
+    await page.waitForFunction(()=>!new URL(location.href).searchParams.has('post'));
     assert.ok(!new URL(page.url()).searchParams.has('post'));
     assert.equal(await page.evaluate(()=>document.documentElement.classList.contains('trrb-detail-open')),false);
     await page.locator('#open').click();assert.equal(await page.locator('.detail-gallery-counter').innerText(),'1 / 3');

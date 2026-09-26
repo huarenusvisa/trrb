@@ -29,7 +29,8 @@ try{
   await page.locator('.detail-prev').click();assert.equal(await page.locator('.detail-gallery-counter').innerText(),'1 / 3');
   await page.screenshot({path:'artifacts/social-detail-live/PC-left-image-right-content.png'});
   await page.mouse.click(5,5);await page.waitForFunction(()=>!document.querySelector('#post-detail-dialog').open);
-  assert.ok(!new URL(page.url()).searchParams.has('post'));
+  await page.waitForFunction(()=>!new URL(location.href).searchParams.has('post'));
+    assert.ok(!new URL(page.url()).searchParams.has('post'));
   report.checks.push('PC: real three-photo post, left carousel, right author/body, original public profile link and backdrop close');
   await desktop.close();
   const mobile=await browser.newContext({viewport:{width:390,height:844},isMobile:true,hasTouch:true}),phone=await mobile.newPage();

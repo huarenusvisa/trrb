@@ -1,0 +1,17 @@
+{
+  "version": "20260926-detail-1",
+  "changed_files": [
+    "assets/social-detail.css",
+    "user/profile.js",
+    "community/community.js",
+    "user/index.html",
+    "user/center/index.html",
+    "community/index.html",
+    "scripts/social-detail-layout.e2e.mjs",
+    "scripts/social-detail-live.mjs"
+  ],
+  "database_writes": false,
+  "mobile_layout": "image-above-body",
+  "desktop_layout": "image-left-body-right",
+  "verification_run": "36269119827"
+}

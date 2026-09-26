@@ -57,7 +57,7 @@ dialog.trrb-detail-modal .detail-composer .form-message{grid-column:1/-1;margin:
 dialog.trrb-detail-modal .detail-composer .form-message:empty{display:none}
 dialog.trrb-detail-modal #post-detail-content>.notice,dialog.trrb-detail-modal #post-detail>.notice{margin:64px 24px 24px}
 dialog.trrb-detail-modal button:focus-visible,dialog.trrb-detail-modal a:focus-visible{outline:3px solid #d95365;outline-offset:3px}
-@media(max-width:760px){
+@media(max-width:900px){
   dialog.trrb-detail-modal,dialog.trrb-detail-modal.detail-has-media{width:calc(100vw - 20px);height:calc(100vh - 28px);height:calc(100dvh - 28px);border-radius:14px}
   dialog.trrb-detail-modal .detail-layout{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(180px,40dvh) minmax(0,1fr)}
   dialog.trrb-detail-modal .detail-layout-text{grid-template-rows:minmax(0,1fr)}
@@ -75,4 +75,4 @@ dialog.trrb-detail-modal button:focus-visible,dialog.trrb-detail-modal a:focus-v
   dialog.trrb-detail-modal .detail-prev{left:9px}dialog.trrb-detail-modal .detail-next{right:9px}
   dialog.trrb-detail-modal .detail-gallery-dots{bottom:9px}
 }
-@media(max-height:520px) and (min-width:761px){dialog.trrb-detail-modal{height:calc(100dvh - 24px)}dialog.trrb-detail-modal .detail-author-header{min-height:64px;padding-top:10px;padding-bottom:10px}dialog.trrb-detail-modal .detail-content-scroll{padding-top:14px}}
+@media(max-height:520px) and (min-width:901px){dialog.trrb-detail-modal{height:calc(100dvh - 24px)}dialog.trrb-detail-modal .detail-author-header{min-height:64px;padding-top:10px;padding-bottom:10px}dialog.trrb-detail-modal .detail-content-scroll{padding-top:14px}}

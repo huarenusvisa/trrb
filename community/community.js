@@ -111,7 +111,7 @@
     const own = state.session?.user?.id === post.user_id;
     const pending = post.status !== 'published';
     return `<article class="post-card" data-post-id="${esc(post.id)}">
-      <header><div class="author-line"><span class="avatar">${esc(initial(post))}</span><div><b>${esc(author)}</b><small>${esc(dateText(post.created_at))}</small></div></div><div><span class="badge category">${esc(categoryNames[post.category] || post.category)}</span> ${pending ? '<span class="badge pending">审核中</span>' : ''}</div></header>
+      <header><div class="author-line"><a class="profile-link" href="/user/?id=${encodeURIComponent(post.user_id)}"><span class="avatar">${esc(initial(post))}</span></a><div><a class="profile-name" href="/user/?id=${encodeURIComponent(post.user_id)}">${esc(author)}</a><small>${esc(dateText(post.created_at))}</small></div></div><div><span class="badge category">${esc(categoryNames[post.category] || post.category)}</span> ${pending ? '<span class="badge pending">审核中</span>' : ''}</div></header>
       <h3><button type="button" data-open-post="${esc(post.id)}">${esc(post.title)}</button></h3>
       <p class="excerpt">${esc(post.content.slice(0, 260))}${post.content.length > 260 ? '…' : ''}</p>
       <div class="post-meta"><span class="badge">${esc(labelNames[post.content_label] || '个人经历')}</span>${postMeta(post).map((item) => `<span>${esc(item)}</span>`).join('')}</div>
@@ -184,7 +184,7 @@
       ? `<div class="dynamic-video-wrap"><video class="dynamic-media" controls preload="metadata" src="${esc(first.signed_url)}"></video><span class="video-badge">视频${media.length > 1 ? ` · ${media.length}` : ''}</span></div>`
       : `<img class="dynamic-media" loading="lazy" src="${esc(first.signed_url)}" alt="" />`;
     return `<article class="dynamic-card" data-profile-post-id="${esc(post.id)}">
-      <div class="author-line"><span class="avatar">${esc(String(author).trim().slice(0,1).toUpperCase())}</span><div><b>${esc(author)}</b><small>${esc(dateText(post.created_at))}</small></div><span class="dynamic-type">主页动态</span></div>
+      <div class="author-line"><a class="profile-link" href="/user/?id=${encodeURIComponent(post.user_id)}"><span class="avatar">${esc(String(author).trim().slice(0,1).toUpperCase())}</span></a><div><a class="profile-name" href="/user/?id=${encodeURIComponent(post.user_id)}">${esc(author)}</a><small>${esc(dateText(post.created_at))}</small></div><span class="dynamic-type">主页动态</span></div>
       ${mediaHtml}
       <div class="dynamic-body">
         ${post.caption ? `<p class="dynamic-caption">${esc(post.caption)}</p>` : ''}
@@ -247,7 +247,7 @@
       const post = data.posts?.[0];
       if (!post) throw new Error('帖子不存在或仍在审核');
       const comments = data.comments || [];
-      $('post-detail').innerHTML = `<p class="eyebrow">${esc(categoryNames[post.category] || '')}</p><h2>${esc(post.title)}</h2><div class="author-line"><span class="avatar">${esc(initial(post))}</span><div><b>${esc(post.profiles?.display_name || '唐人用户')}</b><small>${esc(dateText(post.created_at))}</small></div></div><div class="post-meta">${postMeta(post).map((item) => `<span>${esc(item)}</span>`).join('')}</div><p class="detail-body">${esc(post.content)}</p><div class="comment-list"><h3>评论</h3>${comments.length ? comments.map((comment) => `<article class="comment"><b>${esc(comment.profiles?.display_name || '唐人用户')}</b><p>${esc(comment.content)}</p><small>${esc(dateText(comment.created_at))}${comment.status !== 'published' ? ' · 审核中' : ''}</small></article>`).join('') : '<p>暂无评论</p>'}</div><form class="comment-form" data-comment-form="${esc(post.id)}"><textarea name="content" maxlength="3000" placeholder="写下你的回复（需要登录）" required></textarea><button type="submit">发表评论</button><div class="form-message"></div></form>`;
+      $('post-detail').innerHTML = `<p class="eyebrow">${esc(categoryNames[post.category] || '')}</p><h2>${esc(post.title)}</h2><div class="author-line"><a class="profile-link" href="/user/?id=${encodeURIComponent(post.user_id)}"><span class="avatar">${esc(initial(post))}</span></a><div><a class="profile-name" href="/user/?id=${encodeURIComponent(post.user_id)}">${esc(post.profiles?.display_name || '唐人用户')}</a><small>${esc(dateText(post.created_at))}</small></div></div><div class="post-meta">${postMeta(post).map((item) => `<span>${esc(item)}</span>`).join('')}</div><p class="detail-body">${esc(post.content)}</p><div class="comment-list"><h3>评论</h3>${comments.length ? comments.map((comment) => `<article class="comment"><b>${esc(comment.profiles?.display_name || '唐人用户')}</b><p>${esc(comment.content)}</p><small>${esc(dateText(comment.created_at))}${comment.status !== 'published' ? ' · 审核中' : ''}</small></article>`).join('') : '<p>暂无评论</p>'}</div><form class="comment-form" data-comment-form="${esc(post.id)}"><textarea name="content" maxlength="3000" placeholder="写下你的回复（需要登录）" required></textarea><button type="submit">发表评论</button><div class="form-message"></div></form>`;
       if (!$('post-dialog').open) $('post-dialog').showModal();
     } catch (error) { alert(error.message); }
   }

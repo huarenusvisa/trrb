@@ -48,6 +48,14 @@ jobs:
           if(!text.includes(before))throw new Error('Missing recent-story scope fields');
           text=text.replace(before,'status,human_review_status,reviewed_by,created_at,updated_at,last_seen_at,first_seen_at');
           writeFileSync(p,text);
+          const testPath='scripts/news-editorial-support.test.mjs';
+          let testText=readFileSync(testPath,'utf8');
+          const old='assert.equal(report.total.over_2000,1);';
+          if(testText.split(old).length!==2)throw new Error('Missing exact 2000-character boundary assertion');
+          testText=testText.replace(old,'assert.equal(report.total.over_2000,4);');
+          writeFileSync(testPath,testText);
+          report.changed_files.push(testPath);
+          writeFileSync('.news-forward-apply.json',JSON.stringify(report,null,2));
           JS
       - name: Test identity, future-only processing, source checks and depth commissioning
         run: |

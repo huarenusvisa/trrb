@@ -1,6 +1,8 @@
 (() => {
   const accountUrl = '/.netlify/functions/unified-account-login';
-  const state = { session:null, profile:null, posts:[], filter:'all', relation:'none', userId:'', draftId:null };
+  const state = { session:null, profile:null, posts:[], communityPosts:[], filter:'all', relation:'none', userId:'', draftId:null, ownerView:document.body.dataset.profileView==='owner', communityTotal:0, dynamicTotal:0, loadWarning:'', detailVersion:0 };
+  const social=window.TrrbSocial;
+  const canManage=()=>state.ownerView && Boolean(state.session?.user?.id) && state.session.user.id===state.userId;
   const $ = (id) => document.getElementById(id);
   const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
   const dateText = (value) => value ? new Intl.DateTimeFormat('zh-CN',{year:'numeric',month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}).format(new Date(value)) : '';
@@ -51,16 +53,33 @@
     state.profile = data;
   }
 
-  async function loadPosts() {
-    const { data, error } = await window.supabaseClient.from('profile_posts')
-      .select('id,user_id,caption,tags,status,created_at,updated_at,profile_post_media(id,post_id,owner_user_id,media_type,storage_path,mime_type,width,height,duration_ms,sort_order)')
-      .eq('user_id',state.userId).eq('status','published').order('created_at',{ascending:false}).limit(60);
-    if (error) throw error;
-    state.posts = data || [];
-    for (const post of state.posts) {
-      post.profile_post_media = (post.profile_post_media || []).sort((a,b)=>a.sort_order-b.sort_order);
-      for (const media of post.profile_post_media) media.signed_url = await signedPostMedia(media.storage_path);
+  async function loadPosts(append=false) {
+    if(!append){state.posts=[];state.communityPosts=[];state.communityTotal=0;state.dynamicTotal=0;}
+    state.loadWarning='';
+    const dynamicOffset=state.posts.length, communityOffset=state.communityPosts.length;
+    async function dynamics(){
+      if(append&&dynamicOffset>=state.dynamicTotal)return;
+      let q=window.supabaseClient.from('profile_posts').select('id,user_id,caption,tags,status,created_at,updated_at,profile_post_media(id,post_id,owner_user_id,media_type,storage_path,mime_type,width,height,duration_ms,sort_order)',{count:'exact'}).eq('user_id',state.userId);
+      q=canManage()?q.neq('status','deleted'):q.eq('status','published');
+      const {data,error,count}=await q.order('created_at',{ascending:false}).order('id',{ascending:false}).range(dynamicOffset,dynamicOffset+29);
+      if(error)throw error;
+      const rows=data||[];
+      await Promise.all(rows.map(async post=>{
+        post.profiles=state.profile;
+        post.profile_post_media=(post.profile_post_media||[]).sort((a,b)=>a.sort_order-b.sort_order);
+        const first=post.profile_post_media[0];if(first)first.signed_url=await signedPostMedia(first.storage_path);
+      }));
+      state.posts.push(...rows);state.dynamicTotal=count??state.posts.length;
     }
+    async function community(){
+      if(append&&communityOffset>=state.communityTotal)return;
+      const result=await social.authorCommunityPosts(window.supabaseClient,state.userId,{offset:communityOffset,owner:canManage()});
+      state.communityPosts.push(...result.posts);state.communityTotal=result.count;
+    }
+    const results=await Promise.allSettled([dynamics(),community()]);
+    if(results.every(r=>r.status==='rejected'))throw new Error('作品读取失败，请刷新重试');
+    const failed=results.map((r,i)=>r.status==='rejected'?(i?'社区帖子':'主页动态'):'').filter(Boolean);
+    if(failed.length)state.loadWarning=failed.join('、')+'暂时读取失败，已展示其他可用内容，请刷新重试。';
   }
 
   function renderHero(counts) {
@@ -70,39 +89,36 @@
     $('privacy-badge').classList.toggle('hidden',!p.is_private);
     $('followers-count').innerHTML=`${counts.followers} <span>粉丝</span>`;
     $('following-count').innerHTML=`${counts.following} <span>关注</span>`;
-    $('post-count').innerHTML=`${state.posts.length} <span>动态</span>`;
-    const avatar=publicMedia('profile-media',p.avatar_path);
+    $('post-count').innerHTML=`${state.dynamicTotal+state.communityTotal} <span>作品</span>`;
     const cover=publicMedia('profile-media',p.cover_path);
-    const av=$('profile-avatar');
-    av.textContent=avatar?'':String(p.display_name||'唐').trim().slice(0,1).toUpperCase();
-    av.style.backgroundImage=avatar?`url("${avatar.replaceAll('"','%22')}")`:'';
+    const av=$('profile-avatar');av.style.backgroundImage='';av.innerHTML=social.avatar(p,window.supabaseClient,true);
     $('profile-cover').style.backgroundImage=cover?`url("${cover.replaceAll('"','%22')}")`:'';
+
     const own=state.session?.user?.id===state.userId;
     $('follow-button').classList.toggle('hidden',own);
-    $('publish-dynamic').classList.toggle('hidden',!own);
+    $('publish-dynamic').classList.toggle('hidden',!canManage());
+    $('owner-panel')?.classList.toggle('hidden',!canManage());
+    if($('preview-public-profile'))$('preview-public-profile').href=social.profileHref(state.userId);
+    if($('manage-my-account'))$('manage-my-account').classList.toggle('hidden',!own||state.ownerView);
     $('follow-button').textContent=state.relation==='accepted'?'已关注':state.relation==='pending'?'已申请':p.is_private?'申请关注':'关注';
     $('profile-hero').classList.remove('hidden');
   }
 
   function renderPosts() {
-    const rows=state.posts.filter((post)=>{
+    const rows=social.merge(state.communityPosts,state.posts).filter(item=>{
       if(state.filter==='all')return true;
-      return (post.profile_post_media||[]).some((media)=>media.media_type===state.filter);
+      if(state.filter==='community')return item.type==='community';
+      if(state.filter==='dynamic')return item.type==='profile';
+      return item.type==='profile'&&(item.post.profile_post_media||[]).some(m=>m.media_type===state.filter);
     });
-    $('profile-posts').innerHTML=rows.length?rows.map((post)=>{
-      const media=post.profile_post_media||[], first=media[0];
-      const mediaHtml=!first?'':first.media_type==='video'
-        ?`<div class="video-wrap"><video class="post-media" controls preload="metadata" src="${esc(first.signed_url)}"></video><span class="video-badge">视频</span></div>`
-        :`<img class="post-media" loading="lazy" src="${esc(first.signed_url)}" alt="" />`;
-      return `<article class="post-card" data-open-profile-post="${esc(post.id)}">${mediaHtml}<div class="post-body">${post.caption?`<p class="post-caption">${esc(post.caption)}</p>`:''}${post.tags?.length?`<div class="tags">${post.tags.slice(0,5).map(tag=>`<span class="tag">#${esc(tag)}</span>`).join('')}</div>`:''}<div class="post-time">${esc(dateText(post.created_at))}${media.length>1?` · ${media.length} 个媒体`:''}</div></div></article>`;
-    }).join(''):'<div class="empty">暂无符合条件的主页动态。</div>';
+    $('profile-posts').innerHTML=rows.length?rows.map(item=>social.card(item.post,item.type,{client:window.supabaseClient,owner:canManage()})).join(''):'<div class="empty">当前分类暂无作品。可切换“全部”查看公开动态和社区帖子。</div>';
+    $('profile-load-more')?.classList.toggle('hidden',state.posts.length>=state.dynamicTotal&&state.communityPosts.length>=state.communityTotal);
   }
-
 
   async function loadPcPostComments(postId) {
     const { data, error } = await window.supabaseClient
       .from('profile_post_comments')
-      .select('id,post_id,user_id,content,status,created_at,profiles!profile_post_comments_user_id_fkey(display_name,avatar_key)')
+      .select('id,post_id,user_id,content,status,created_at,profiles!profile_post_comments_user_id_fkey(display_name,avatar_key,avatar_path)')
       .eq('post_id',postId)
       .eq('status','published')
       .order('created_at',{ascending:true})
@@ -112,24 +128,30 @@
   }
 
   async function openPcPost(postId) {
-    const post=state.posts.find((item)=>item.id===postId);
-    if(!post) return;
+    if(!social.uuid(postId))return;
+    const version=++state.detailVersion;
+    $('post-detail-content').innerHTML='<div class="notice">正在打开内容…</div>';
+    if(!$('post-detail-dialog').open)$('post-detail-dialog').showModal();
     try{
-      const comments=await loadPcPostComments(postId);
-      const media=post.profile_post_media||[];
-      const mediaHtml=media.map((item)=>item.media_type==='video'
-        ? `<video class="detail-media" controls preload="metadata" src="${esc(item.signed_url)}"></video>`
-        : `<img class="detail-media" src="${esc(item.signed_url)}" alt="" />`).join('');
-      $('post-detail-content').innerHTML=`
-        <p class="eyebrow">PROFILE POST</p>
-        ${mediaHtml}
-        ${post.caption?`<div class="detail-copy">${esc(post.caption)}</div>`:''}
-        ${post.tags?.length?`<div class="detail-tags">${post.tags.slice(0,5).map((tag)=>`<span class="tag">#${esc(tag)}</span>`).join('')}</div>`:''}
-        <div class="detail-comment-head"><h3>评论</h3><span>${comments.length}</span></div>
-        ${state.session?`<form class="detail-comment-form" data-pc-comment-form="${esc(post.id)}"><textarea name="content" maxlength="3000" placeholder="写下你的评论…" required></textarea><button type="submit">发表评论</button><div class="form-message"></div></form>`:'<p class="bio">登录后可以发表评论。</p>'}
-        <div class="detail-comment-list">${comments.length?comments.map((comment)=>`<article class="detail-comment"><div class="detail-comment-top"><strong>${esc(comment.profiles?.display_name||'唐人用户')}</strong><small>${esc(dateText(comment.created_at))}</small></div><p>${esc(comment.content)}</p></article>`).join(''):'<div class="media-summary">暂无评论。</div>'}</div>`;
-      $('post-detail-dialog').showModal();
-    }catch(error){alert(error.message||'评论读取失败');}
+      let post=state.posts.find(p=>p.id===postId);
+      if(!post){
+        const {data,error}=await window.supabaseClient.from('profile_posts').select('id,user_id,caption,tags,status,created_at,profile_post_media(*)').eq('id',postId).eq('user_id',state.userId).eq('status','published').maybeSingle();
+        if(error)throw error;post=data;
+      }
+      if(!post)throw new Error('这条内容已下架、未公开或你暂无查看权限。');
+      const media=(post.profile_post_media||[]).slice().sort((a,b)=>a.sort_order-b.sort_order);
+      await Promise.all(media.map(async item=>{item.signed_url=await signedPostMedia(item.storage_path);}));
+      if(version!==state.detailVersion)return;
+      const mediaHtml=media.map(item=>!item.signed_url?'<p class="notice">媒体暂时不可用，正文仍可阅读。</p>':item.media_type==='video'
+        ?`<video class="detail-media" controls playsinline preload="metadata" src="${esc(item.signed_url)}"></video>`
+        :`<img class="detail-media" src="${esc(item.signed_url)}" alt="动态图片" />`).join('');
+      $('post-detail-content').innerHTML=`<div class="author-line"><a class="note-author" href="${social.profileHref(state.userId)}">${social.avatar(state.profile,window.supabaseClient)}<span>${esc(state.profile?.display_name||'唐人用户')}</span></a></div>${mediaHtml}${post.caption?`<div class="detail-copy">${social.linkify(post.caption)}</div>`:''}${post.tags?.length?`<div class="detail-tags">${post.tags.slice(0,5).map(tag=>`<span class="tag">#${esc(tag)}</span>`).join('')}</div>`:''}<div class="detail-comment-head"><h3>评论</h3></div>${state.session?`<form class="detail-comment-form" data-pc-comment-form="${esc(post.id)}"><textarea name="content" maxlength="3000" placeholder="写下你的评论…" required></textarea><button type="submit">发表评论</button><div class="form-message"></div></form>`:'<p>登录后可以发表评论。<button type="button" data-detail-login>登录</button></p>'}<div id="dynamic-comment-results" aria-live="polite">正在读取评论…</div>`;
+      // The article opens independently; a comment-service error cannot blank it.
+      try{
+        const comments=await loadPcPostComments(postId);if(version!==state.detailVersion)return;
+        $('dynamic-comment-results').innerHTML=comments.length?comments.map(comment=>`<article class="detail-comment"><div class="detail-comment-top"><a class="note-author" href="${social.profileHref(comment.user_id)}">${social.avatar(comment.profiles,window.supabaseClient)}<strong>${esc(comment.profiles?.display_name||'唐人用户')}</strong></a><small>${esc(dateText(comment.created_at))}</small></div><p>${social.linkify(comment.content)}</p></article>`).join(''):'<p>暂无评论。</p>';
+      }catch(error){if(version===state.detailVersion&&$('dynamic-comment-results'))$('dynamic-comment-results').innerHTML=`<p class="notice">评论暂时无法读取，正文不受影响。<button type="button" data-retry-dynamic="${esc(postId)}">重试</button></p>`;}
+    }catch(error){if(version===state.detailVersion)$('post-detail-content').innerHTML=`<div class="notice error">${esc(error.message||'内容读取失败')}</div>`;}
   }
 
   async function submitPcComment(form) {
@@ -146,21 +168,24 @@
   }
 
   async function refresh() {
-    $('page-message').className='notice'; $('page-message').textContent='正在读取用户主页…';
+    $('profile-hero').classList.add('hidden');$('content-section').classList.add('hidden');$('private-panel').classList.add('hidden');$('owner-panel')?.classList.add('hidden');
+    $('page-message').className='notice';$('page-message').textContent='正在读取作品…';
     try {
       await auth();
-      await loadProfile();
-      await loadRelation();
-      const [counts] = await Promise.all([followCounts(),loadPosts()]);
-      renderHero(counts);
+      if(state.ownerView){
+        state.userId=state.session?.user?.id||'';
+        if(!state.userId){state.posts=[];state.communityPosts=[];$('profile-posts').innerHTML='';$('post-detail-dialog').close();$('dynamic-dialog').close();$('page-message').textContent='请先登录，个人中心只展示你自己的作品和本地草稿。';return;}
+      }
+      await loadProfile();await loadRelation();
       const locked=state.profile.is_private && state.session?.user?.id!==state.userId && state.relation!=='accepted';
-      $('private-panel').classList.toggle('hidden',!locked);
-      $('content-section').classList.toggle('hidden',locked);
-      if(!locked) renderPosts();
-      $('page-message').classList.add('hidden');
-    } catch(error) {
-      $('page-message').className='notice error'; $('page-message').textContent=error.message||'暂时无法读取用户主页';
-    }
+      state.loadWarning='';
+      const counts=await followCounts();
+      if(!locked)await loadPosts();else{state.posts=[];state.communityPosts=[];state.dynamicTotal=0;state.communityTotal=0;$('profile-posts').innerHTML='';}
+      renderHero(counts);
+      $('private-panel').classList.toggle('hidden',!locked);$('content-section').classList.toggle('hidden',locked);
+      if(!locked)renderPosts();
+      if(state.loadWarning){$('page-message').className='notice error';$('page-message').textContent=state.loadWarning;}else $('page-message').classList.add('hidden');
+    }catch(error){$('page-message').className='notice error';$('page-message').textContent=error.message||'暂时无法读取用户主页';}
   }
 
   async function toggleFollow() {
@@ -314,7 +339,7 @@
 
   async function publishDynamic(event) {
     event.preventDefault();
-    if(!state.session || state.session.user.id!==state.userId){$('auth-dialog').showModal();return;}
+    if(!canManage()){$('auth-dialog').showModal();return;}
     const button=$('dynamic-submit');
     button.disabled=true;
     $('dynamic-message').textContent='正在检查媒体…';
@@ -391,22 +416,47 @@
 
   function bind(){
     $('login-open').addEventListener('click',()=>$('auth-dialog').showModal());
-    $('logout-button').addEventListener('click',async()=>{await window.supabaseClient.auth.signOut();await refresh();});
+    $('logout-button').addEventListener('click',async()=>{document.querySelectorAll('dialog[open]').forEach(d=>d.close());state.detailVersion++;state.posts=[];state.communityPosts=[];$('post-detail-content').innerHTML='';await window.supabaseClient.auth.signOut();await refresh();});
     $('auth-form').addEventListener('submit',handleAuth);
     $('follow-button').addEventListener('click',()=>void toggleFollow());
-    $('publish-dynamic').addEventListener('click',()=>{$('dynamic-message').textContent='';renderLocalDrafts();$('dynamic-dialog').showModal();});
+    $('publish-dynamic').addEventListener('click',()=>{if(!canManage())return;$('dynamic-message').textContent='';renderLocalDrafts();$('dynamic-dialog').showModal();});
     $('dynamic-form').addEventListener('submit',publishDynamic);
     $('dynamic-media').addEventListener('change',updateDynamicMediaSummary);
     $('save-local-draft').addEventListener('click',saveLocalDraft);
     $('new-local-draft').addEventListener('click',newLocalDraft);
     $('dynamic-caption').addEventListener('input',()=>{$('dynamic-counter').textContent=`${$('dynamic-caption').value.length}/2000`;});
     document.querySelectorAll('[data-filter]').forEach((button)=>button.addEventListener('click',()=>{state.filter=button.dataset.filter;document.querySelectorAll('[data-filter]').forEach((x)=>x.classList.toggle('active',x===button));renderPosts();}));
-    document.addEventListener('click',(event)=>{const close=event.target.closest('[data-close]');if(close)$(close.dataset.close)?.close();const load=event.target.closest('[data-load-pc-draft]');if(load)loadLocalDraft(load.dataset.loadPcDraft);const del=event.target.closest('[data-delete-pc-draft]');if(del)deleteLocalDraft(del.dataset.deletePcDraft);const post=event.target.closest('[data-open-profile-post]');if(post)void openPcPost(post.dataset.openProfilePost);});
+    document.addEventListener('click',(event)=>{const close=event.target.closest('[data-close]');if(close)$(close.dataset.close)?.close();const load=event.target.closest('[data-load-pc-draft]');if(load)loadLocalDraft(load.dataset.loadPcDraft);const del=event.target.closest('[data-delete-pc-draft]');if(del)deleteLocalDraft(del.dataset.deletePcDraft);const post=event.target.closest('[data-open-profile-post]');if(post){event.preventDefault();void openPcPost(post.dataset.openProfilePost);}});
     $('post-detail-content').addEventListener('submit',(event)=>{const form=event.target.closest('[data-pc-comment-form]');if(!form)return;event.preventDefault();void submitPcComment(form);});
   }
 
+  function bindOwnerCenter(){
+    $('profile-load-more')?.addEventListener('click',async()=>{const b=$('profile-load-more');b.disabled=true;try{await loadPosts(true);renderPosts();if(state.loadWarning)throw new Error(state.loadWarning);}catch(e){$('page-message').className='notice error';$('page-message').textContent=e.message;}finally{b.disabled=false;}});
+    document.addEventListener('click',async event=>{
+      const retry=event.target.closest('[data-retry-dynamic]');if(retry){void openPcPost(retry.dataset.retryDynamic);return;}
+      if(event.target.closest('[data-detail-login]')){$('auth-dialog').showModal();return;}
+      if(!canManage())return;
+      const edit=event.target.closest('[data-edit-own-dynamic]');
+      if(edit){const post=state.posts.find(p=>p.id===edit.dataset.editOwnDynamic);if(!post||post.user_id!==state.session.user.id)return;state.editPostId=post.id;$('edit-dynamic-caption').value=post.caption||'';$('edit-dynamic-tags').value=(post.tags||[]).join(' ');$('edit-dynamic-message').textContent='';$('edit-dynamic-dialog').showModal();}
+      const remove=event.target.closest('[data-remove-own-content]');
+      if(remove&&confirm('确定下架这条内容吗？')){
+        try{if(remove.dataset.kind==='profile'){const {error}=await window.supabaseClient.from('profile_posts').update({status:'deleted'}).eq('id',remove.dataset.removeOwnContent).eq('user_id',state.session.user.id);if(error)throw error;}
+        else{const r=await fetch('/.netlify/functions/community-api',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+state.session.access_token},body:JSON.stringify({action:'unpublish_post',post_id:remove.dataset.removeOwnContent})});if(!r.ok)throw new Error('下架失败');}await refresh();}catch(e){alert(e.message);}
+      }
+    });
+    $('owner-drafts')?.addEventListener('click',()=>{if(canManage())$('publish-dynamic').click();});
+    $('edit-dynamic-form')?.addEventListener('submit',async event=>{
+      event.preventDefault();if(!canManage())return;const b=event.submitter;b.disabled=true;
+      try{const {error}=await window.supabaseClient.rpc('update_my_profile_post',{p_post_id:state.editPostId,p_caption:$('edit-dynamic-caption').value,p_tags:parseTags($('edit-dynamic-tags').value)});if(error)throw error;$('edit-dynamic-dialog').close();await refresh();}catch(e){$('edit-dynamic-message').textContent=e.message;}finally{b.disabled=false;}
+    });
+  }
+
   const params=new URLSearchParams(location.search);
-  state.userId=params.get('id')||'';
-  if(!state.userId){$('page-message').className='notice error';$('page-message').textContent='缺少用户编号。';return;}
-  bind(); refresh();
+  state.userId=state.ownerView?'':params.get('id')||'';
+  if(!state.ownerView&&!social.uuid(state.userId)){$('page-message').className='notice error';$('page-message').textContent='缺少或无效的用户编号。';return;}
+  bind();bindOwnerCenter();
+  refresh().then(async()=>{
+    if(params.get('post')&&!$('content-section').classList.contains('hidden'))await openPcPost(params.get('post'));
+    if(state.ownerView&&canManage()&&params.get('drafts')==='1')$('publish-dynamic').click();
+  });
 })();

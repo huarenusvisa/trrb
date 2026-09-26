@@ -147,7 +147,7 @@ async function feed(event) {
   const postId = clean(event.queryStringParameters?.post_id, 80);
   const page = feedPagination(event.queryStringParameters);
   const query = {
-    select: 'id,user_id,category,title,content,content_label,location_state,location_city,agency_office,case_type,event_date,outcome,judge_name,judge_slug,lawyer_or_firm,status,moderation_state,risk_level,is_indexable,like_count,comment_count,published_at,created_at,updated_at,profiles!community_posts_user_id_fkey(display_name,avatar_key)',
+    select: 'id,user_id,category,title,content,content_label,location_state,location_city,agency_office,case_type,event_date,outcome,judge_name,judge_slug,lawyer_or_firm,status,moderation_state,risk_level,is_indexable,like_count,comment_count,published_at,created_at,updated_at,profiles!community_posts_user_id_fkey(display_name,avatar_key,avatar_path)',
     order: 'created_at.desc,id.desc',
     limit: postId ? '1' : String(page.limit + 1)
   };
@@ -176,7 +176,7 @@ async function feed(event) {
   if (postId && posts.length) {
     const commentRows = await rest('community_post_comments', {
       query: {
-        select: 'id,post_id,user_id,parent_id,content,status,risk_level,like_count,created_at,profiles!community_post_comments_user_id_fkey(display_name,avatar_key)',
+        select: 'id,post_id,user_id,parent_id,content,status,risk_level,like_count,created_at,profiles!community_post_comments_user_id_fkey(display_name,avatar_key,avatar_path)',
         post_id: `eq.${postId}`,
         order: 'created_at.asc',
         limit: '300'

@@ -6,7 +6,7 @@
   const uuid = value => /^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/i.test(String(value || ''));
   const profileHref = id => `/user/?id=${encodeURIComponent(id || '')}`;
   const detailHref = (post, type) => type === 'community' ? `/community/?post=${encodeURIComponent(post.id)}` : `${profileHref(post.user_id)}&post=${encodeURIComponent(post.id)}`;
-  const safeUrl = value => {try {const u=new URL(String(value || ''), 'https://trrb.net');return u.protocol==='https:' || u.protocol==='http:' ? u.href : '';}catch{return '';}};
+  const safeUrl = value => {if(!value)return '';try {const u=new URL(String(value || ''), 'https://trrb.net');return u.protocol==='https:' || u.protocol==='http:' ? u.href : '';}catch{return '';}};
   function dateText(value) {const d=new Date(value);return Number.isFinite(d.getTime()) ? new Intl.DateTimeFormat('zh-CN',{month:'short',day:'numeric'}).format(d) : '';}
   function avatarUrl(profile, client) {
     if (!profile?.avatar_path || !client?.storage) return '';

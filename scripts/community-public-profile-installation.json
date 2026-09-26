@@ -1,0 +1,18 @@
+{
+  "changed_files": [
+    "assets/social-cards.js",
+    "community/community.js",
+    "netlify/functions/community-api.js",
+    "user/profile.js",
+    "community/index.html",
+    "user/index.html",
+    "user/center/index.html",
+    "scripts/community-public-profile.e2e.mjs",
+    "netlify.toml"
+  ],
+  "version": "20260926-social-2",
+  "historical_content_mutations": false,
+  "verification_run": "36267642897",
+  "unit_tests": 8,
+  "browser_scenarios": 6
+}

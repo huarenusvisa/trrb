@@ -3,14 +3,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>用户主页｜唐人日报</title>
+  <title>个人中心｜唐人日报</title>
   <meta name="description" content="唐人日报用户主页，查看公开动态、图片、视频、标签以及关注信息。" />
-  <meta name="robots" content="noindex,follow" />
+  <meta name="robots" content="noindex,nofollow" />
   <link rel="icon" href="/favicon.ico" />
   <link rel="stylesheet" href="/user/profile.css?v=20260926-4" />
   <link rel="stylesheet" href="/assets/social-discovery.css?v=20260926-social-2" />
 </head>
-<body class="social-discovery user-public" data-profile-view="public">
+<body class="social-discovery user-owner" data-profile-view="owner">
   <header class="site-header">
     <div class="shell header-row">
       <a class="brand" href="/" aria-label="返回唐人日报"><img src="/trrb-logo-cropped.webp" alt="唐人日报" width="220" height="64" /></a>
@@ -20,6 +20,7 @@
   </header>
 
   <main class="shell page">
+    <section id="owner-panel" class="owner-panel hidden"><h2>个人中心</h2><p>这里用于管理你自己的内容；别人访问你的公开主页时不会看到这些管理入口。</p><nav><a id="preview-public-profile" href="/user/">预览公开主页</a><a href="/community/">社区与帖子</a><button id="owner-drafts" type="button" class="secondary">本地草稿箱</button></nav></section>
     <div id="page-message" class="notice">正在读取用户主页…</div>
 
     <section id="profile-hero" class="profile-hero hidden">
@@ -83,6 +84,7 @@
     </form>
   </dialog>
 
+  <dialog id="edit-dynamic-dialog" class="modal wide"><form id="edit-dynamic-form" class="modal-card"><button class="modal-close" type="button" data-close="edit-dynamic-dialog" aria-label="关闭">×</button><h2>编辑我的动态</h2><p>图片和视频保持不变。</p><label>文字<textarea id="edit-dynamic-caption" maxlength="2000" rows="8"></textarea></label><label>标签<input id="edit-dynamic-tags" maxlength="220" /></label><button type="submit">保存修改</button><div id="edit-dynamic-message" class="form-message"></div></form></dialog>
   <footer><div class="shell"><span>© 2026 唐人日报 Tang Ren Daily</span><a href="/community/">社区</a><a href="/privacy.html">隐私政策</a><a href="/terms.html">使用条款</a></div></footer>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4/dist/umd/supabase.min.js"></script>
   <script src="/assets/supabase-client.js?v=20260825-community"></script>

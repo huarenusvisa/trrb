@@ -75,7 +75,7 @@ try{
     await page.screenshot({path:'artifacts/community-profile/public-guide-desktop.png',fullPage:true});
     await page.locator('.note-cover').click();
     await page.locator('#post-dialog[open]').waitFor();
-    await page.getByText('测试正文最后一段：内容没有丢失。',{exact:false}).waitFor();
+    await page.locator('#post-detail').getByText('测试正文最后一段：内容没有丢失。',{exact:false}).waitFor();
     assert.match(await page.locator('#post-detail').innerText(),/测试正文最后一段/);
     assert.equal(await page.locator('#post-detail a[href="https://epay.eoir.justice.gov/"]').count(),1);
     results.push('public guide is shown and opens complete body with usable link');

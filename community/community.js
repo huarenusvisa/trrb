@@ -55,6 +55,8 @@
     $('login-open').classList.toggle('hidden', Boolean(state.session));
     $('logout-button').classList.toggle('hidden', !state.session);
     $('account-label').textContent = state.profile?.display_name || (state.session ? '已登录' : '');
+    const mine=$('my-public-profile');
+    if(mine){mine.classList.toggle('hidden',!state.session);mine.href=window.TrrbSocial.profileHref(state.session?.user?.id);}
   }
 
   function requireLogin(next) {
@@ -106,19 +108,7 @@
     return bits;
   }
 
-  function card(post) {
-    const author = post.profiles?.display_name || '唐人用户';
-    const own = state.session?.user?.id === post.user_id;
-    const pending = post.status !== 'published';
-    return `<article class="post-card" data-post-id="${esc(post.id)}">
-      <header><div class="author-line"><a class="profile-link" href="/user/?id=${encodeURIComponent(post.user_id)}"><span class="avatar">${esc(initial(post))}</span></a><div><a class="profile-name" href="/user/?id=${encodeURIComponent(post.user_id)}">${esc(author)}</a><small>${esc(dateText(post.created_at))}</small></div></div><div><span class="badge category">${esc(categoryNames[post.category] || post.category)}</span> ${pending ? '<span class="badge pending">审核中</span>' : ''}</div></header>
-      <h3><button type="button" data-open-post="${esc(post.id)}">${esc(post.title)}</button></h3>
-      <p class="excerpt">${esc(post.content.slice(0, 260))}${post.content.length > 260 ? '…' : ''}</p>
-      <div class="post-meta"><span class="badge">${esc(labelNames[post.content_label] || '个人经历')}</span>${postMeta(post).map((item) => `<span>${esc(item)}</span>`).join('')}</div>
-      <div class="post-actions"><button type="button" data-like-post="${esc(post.id)}">赞 ${Number(post.like_count || 0)}</button><button type="button" data-open-post="${esc(post.id)}">评论 ${Number(post.comment_count || 0)}</button><button type="button" data-report-post="${esc(post.id)}">举报</button>${own ? `<button type="button" data-delete-post="${esc(post.id)}">下架</button>` : ''}</div>
-    </article>`;
-  }
-
+  function card(post) { return window.TrrbSocial.card(post,'community',{client:window.supabaseClient}); }
 
   const topicKeywords = {
     life: ['生活','日常','美食','旅行','家庭','vlog'],
@@ -147,7 +137,7 @@
   async function loadProfilePosts() {
     let query = window.supabaseClient
       .from('profile_posts')
-      .select('id,user_id,caption,tags,status,created_at,updated_at,profiles!profile_posts_user_id_fkey(display_name,avatar_key),profile_post_media(id,post_id,owner_user_id,media_type,storage_path,mime_type,width,height,duration_ms,sort_order)')
+      .select('id,user_id,caption,tags,status,created_at,updated_at,profiles!profile_posts_user_id_fkey(display_name,avatar_key,avatar_path),profile_post_media(id,post_id,owner_user_id,media_type,storage_path,mime_type,width,height,duration_ms,sort_order)')
       .eq('status', 'published')
       .order('created_at', { ascending: false })
       .limit(40);
@@ -176,23 +166,7 @@
     return state.category && categoryNames[state.category] ? [] : rows;
   }
 
-  function profileCard(post) {
-    const author = post.profiles?.display_name || '唐人用户';
-    const media = post.profile_post_media || [];
-    const first = media[0];
-    const mediaHtml = !first ? '' : first.media_type === 'video'
-      ? `<div class="dynamic-video-wrap"><video class="dynamic-media" controls preload="metadata" src="${esc(first.signed_url)}"></video><span class="video-badge">视频${media.length > 1 ? ` · ${media.length}` : ''}</span></div>`
-      : `<img class="dynamic-media" loading="lazy" src="${esc(first.signed_url)}" alt="" />`;
-    return `<article class="dynamic-card" data-profile-post-id="${esc(post.id)}">
-      <div class="author-line"><a class="profile-link" href="/user/?id=${encodeURIComponent(post.user_id)}"><span class="avatar">${esc(String(author).trim().slice(0,1).toUpperCase())}</span></a><div><a class="profile-name" href="/user/?id=${encodeURIComponent(post.user_id)}">${esc(author)}</a><small>${esc(dateText(post.created_at))}</small></div><span class="dynamic-type">主页动态</span></div>
-      ${mediaHtml}
-      <div class="dynamic-body">
-        ${post.caption ? `<p class="dynamic-caption">${esc(post.caption)}</p>` : ''}
-        ${post.tags?.length ? `<div class="dynamic-tags">${post.tags.slice(0,5).map((tag) => `<span class="dynamic-tag">#${esc(tag)}</span>`).join('')}</div>` : ''}
-        <div class="dynamic-actions"><span>来自 APP / 个人主页</span>${media.length > 1 ? `<span>${media.length} 个媒体</span>` : ''}</div>
-      </div>
-    </article>`;
-  }
+  function profileCard(post) { return window.TrrbSocial.card(post,'profile',{client:window.supabaseClient}); }
 
   function mergedFeedItems() {
     const communityItems = state.posts.map((post) => ({ type:'community', created_at:post.created_at, post }));
@@ -242,14 +216,17 @@
   }
 
   async function openPost(postId) {
+    if (!window.TrrbSocial.uuid(postId)) return;
+    $('post-detail').innerHTML='<div class="notice">正在打开内容…</div>';
+    if (!$('post-dialog').open) $('post-dialog').showModal();
     try {
       const data = await api('GET', null, `?post_id=${encodeURIComponent(postId)}`);
       const post = data.posts?.[0];
       if (!post) throw new Error('帖子不存在或仍在审核');
       const comments = data.comments || [];
-      $('post-detail').innerHTML = `<p class="eyebrow">${esc(categoryNames[post.category] || '')}</p><h2>${esc(post.title)}</h2><div class="author-line"><a class="profile-link" href="/user/?id=${encodeURIComponent(post.user_id)}"><span class="avatar">${esc(initial(post))}</span></a><div><a class="profile-name" href="/user/?id=${encodeURIComponent(post.user_id)}">${esc(post.profiles?.display_name || '唐人用户')}</a><small>${esc(dateText(post.created_at))}</small></div></div><div class="post-meta">${postMeta(post).map((item) => `<span>${esc(item)}</span>`).join('')}</div><p class="detail-body">${esc(post.content)}</p><div class="comment-list"><h3>评论</h3>${comments.length ? comments.map((comment) => `<article class="comment"><b>${esc(comment.profiles?.display_name || '唐人用户')}</b><p>${esc(comment.content)}</p><small>${esc(dateText(comment.created_at))}${comment.status !== 'published' ? ' · 审核中' : ''}</small></article>`).join('') : '<p>暂无评论</p>'}</div><form class="comment-form" data-comment-form="${esc(post.id)}"><textarea name="content" maxlength="3000" placeholder="写下你的回复（需要登录）" required></textarea><button type="submit">发表评论</button><div class="form-message"></div></form>`;
+      $('post-detail').innerHTML = `<p class="eyebrow">${esc(categoryNames[post.category] || '')}</p><h2>${esc(post.title)}</h2><div class="author-line"><a class="profile-link" href="/user/?id=${encodeURIComponent(post.user_id)}">${window.TrrbSocial.avatar(post.profiles,window.supabaseClient)}</a><div><a class="profile-name" href="/user/?id=${encodeURIComponent(post.user_id)}">${esc(post.profiles?.display_name || '唐人用户')}</a><small>${esc(dateText(post.created_at))}</small></div></div><div class="post-meta">${postMeta(post).map((item) => `<span>${esc(item)}</span>`).join('')}</div><p class="detail-body">${window.TrrbSocial.linkify(post.content)}</p><div class="comment-list"><h3>评论</h3>${comments.length ? comments.map((comment) => `<article class="comment"><b>${esc(comment.profiles?.display_name || '唐人用户')}</b><p>${esc(comment.content)}</p><small>${esc(dateText(comment.created_at))}${comment.status !== 'published' ? ' · 审核中' : ''}</small></article>`).join('') : '<p>暂无评论</p>'}</div><form class="comment-form" data-comment-form="${esc(post.id)}"><textarea name="content" maxlength="3000" placeholder="写下你的回复（需要登录）" required></textarea><button type="submit">发表评论</button><div class="form-message"></div></form>`;
       if (!$('post-dialog').open) $('post-dialog').showModal();
-    } catch (error) { alert(error.message); }
+    } catch (error) { $('post-detail').innerHTML=`<div class="notice error">${esc(error.message || '内容暂不可用')}</div>`; }
   }
 
   async function handleAuth(event) {
@@ -338,10 +315,10 @@
       if ((state.mode === 'following' || state.mode === 'mine') && !state.session) return requireLogin(() => loadFeed());
       loadFeed();
     }));
-    $('app-drafts-info')?.addEventListener('click', () => alert('APP 草稿箱最多保留 5 个草稿。草稿目前保存在发布设备本地，图片和视频不会跨会话保存。'));
+
     document.addEventListener('click', async (event) => {
       const close = event.target.closest('[data-close]'); if (close) $(close.dataset.close)?.close();
-      const open = event.target.closest('[data-open-post]'); if (open) openPost(open.dataset.openPost);
+      const open = event.target.closest('[data-open-post]'); if (open) { event.preventDefault(); void openPost(open.dataset.openPost); }
       const like = event.target.closest('[data-like-post]'); if (like) requireLogin(async () => { try { await mutatePost('toggle_like', like.dataset.likePost); await loadFeed(); } catch (error) { alert(error.message); } });
       const report = event.target.closest('[data-report-post]'); if (report) requireLogin(async () => { const reason=prompt('请简要填写举报理由'); if (!reason) return; try { await mutatePost('report_post', report.dataset.reportPost, {reason}); alert('举报已提交'); } catch (error) { alert(error.message); } });
       const remove = event.target.closest('[data-delete-post]'); if (remove && confirm('确定下架这篇帖子吗？')) { try { await mutatePost('unpublish_post', remove.dataset.deletePost); await loadFeed(); } catch (error) { alert(error.message); } }
@@ -361,6 +338,8 @@
       document.querySelector(`[data-category="${requestedCategory}"]`)?.classList.add('active');
     }
     renderStructuredFields(); bind(); await token(); syncAccountUi(); await loadFeed();
+    const requestedPost=new URLSearchParams(location.search).get('post');
+    if(requestedPost) await openPost(requestedPost);
     window.supabaseClient.auth.onAuthStateChange((_event, session) => { state.session=session; syncAccountUi(); });
   }
   init().catch((error) => { $('feed-message').textContent = error.message; });

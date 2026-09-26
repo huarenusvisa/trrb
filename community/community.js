@@ -8,7 +8,7 @@
   };
   const labelNames = { official_policy: '官方政策', personal_experience: '个人经历', community_summary: '社区整理', question: '问题求助' };
   const REQUEST_TIMEOUT_MS = 15000;
-  const state = { session: null, profile: null, category: '', posts: [] };
+  const state = { session: null, profile: null, category: '', mode: 'latest', posts: [], profilePosts: [], followingIds: new Set() };
   const $ = (id) => document.getElementById(id);
   const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[char]));
   const initial = (post) => String(post?.profiles?.display_name || '唐').trim().slice(0, 1).toUpperCase();
@@ -119,17 +119,114 @@
     </article>`;
   }
 
+
+  const topicKeywords = {
+    life: ['生活','日常','美食','旅行','家庭','vlog'],
+    jobs: ['工作','招聘','求职','职场'],
+    property: ['房产','买房','租房','地产']
+  };
+
+  async function loadFollowingIds() {
+    state.followingIds = new Set();
+    if (!state.session?.user?.id) return;
+    const { data, error } = await window.supabaseClient
+      .from('user_follows')
+      .select('followed_user_id')
+      .eq('follower_user_id', state.session.user.id)
+      .eq('status', 'accepted')
+      .limit(500);
+    if (!error) state.followingIds = new Set((data || []).map((row) => row.followed_user_id));
+  }
+
+  async function signedDynamicMedia(path) {
+    if (!path) return '';
+    const { data, error } = await window.supabaseClient.storage.from('profile-post-media').createSignedUrl(path, 3600);
+    return error ? '' : (data?.signedUrl || '');
+  }
+
+  async function loadProfilePosts() {
+    let query = window.supabaseClient
+      .from('profile_posts')
+      .select('id,user_id,caption,tags,status,created_at,updated_at,profiles!profile_posts_user_id_fkey(display_name,avatar_key),profile_post_media(id,post_id,owner_user_id,media_type,storage_path,mime_type,width,height,duration_ms,sort_order)')
+      .eq('status', 'published')
+      .order('created_at', { ascending: false })
+      .limit(40);
+    if (state.mode === 'following') {
+      if (!state.session) return [];
+      if (!state.followingIds.size) return [];
+      query = query.in('user_id', Array.from(state.followingIds));
+    }
+    const { data, error } = await query;
+    if (error) throw error;
+    const rows = data || [];
+    for (const post of rows) {
+      post.profile_post_media = (post.profile_post_media || []).sort((a,b) => a.sort_order - b.sort_order);
+      for (const media of post.profile_post_media) media.signed_url = await signedDynamicMedia(media.storage_path);
+    }
+    if (state.category && topicKeywords[state.category]) {
+      const keywords = topicKeywords[state.category];
+      return rows.filter((post) => {
+        const haystack = `${post.caption || ''} ${(post.tags || []).join(' ')}`.toLowerCase();
+        return keywords.some((keyword) => haystack.includes(keyword.toLowerCase()));
+      });
+    }
+    return state.category && categoryNames[state.category] ? [] : rows;
+  }
+
+  function profileCard(post) {
+    const author = post.profiles?.display_name || '唐人用户';
+    const media = post.profile_post_media || [];
+    const first = media[0];
+    const mediaHtml = !first ? '' : first.media_type === 'video'
+      ? `<div class="dynamic-video-wrap"><video class="dynamic-media" controls preload="metadata" src="${esc(first.signed_url)}"></video><span class="video-badge">视频${media.length > 1 ? ` · ${media.length}` : ''}</span></div>`
+      : `<img class="dynamic-media" loading="lazy" src="${esc(first.signed_url)}" alt="" />`;
+    return `<article class="dynamic-card" data-profile-post-id="${esc(post.id)}">
+      <div class="author-line"><span class="avatar">${esc(String(author).trim().slice(0,1).toUpperCase())}</span><div><b>${esc(author)}</b><small>${esc(dateText(post.created_at))}</small></div><span class="dynamic-type">主页动态</span></div>
+      ${mediaHtml}
+      <div class="dynamic-body">
+        ${post.caption ? `<p class="dynamic-caption">${esc(post.caption)}</p>` : ''}
+        ${post.tags?.length ? `<div class="dynamic-tags">${post.tags.slice(0,5).map((tag) => `<span class="dynamic-tag">#${esc(tag)}</span>`).join('')}</div>` : ''}
+        <div class="dynamic-actions"><span>来自 APP / 个人主页</span>${media.length > 1 ? `<span>${media.length} 个媒体</span>` : ''}</div>
+      </div>
+    </article>`;
+  }
+
+  function mergedFeedItems() {
+    const communityItems = state.posts.map((post) => ({ type:'community', created_at:post.created_at, post }));
+    const profileItems = state.profilePosts.map((post) => ({ type:'profile', created_at:post.created_at, post }));
+    if (state.mode === 'community') return communityItems;
+    return [...communityItems, ...profileItems].sort((a,b) => new Date(b.created_at) - new Date(a.created_at));
+  }
+
   function renderFeed() {
-    $('post-feed').innerHTML = state.posts.length ? state.posts.map(card).join('') : '<div class="empty">这个板块还没有公开帖子。你可以成为第一个分享经历的人。</div>';
+    const items = mergedFeedItems();
+    $('post-feed').classList.toggle('community-only', state.mode === 'community');
+    $('post-feed').innerHTML = items.length
+      ? items.map((item) => item.type === 'community' ? card(item.post) : profileCard(item.post)).join('')
+      : '<div class="empty">这里暂时还没有公开内容。</div>';
   }
 
   async function loadFeed() {
     $('feed-message').className = 'notice';
-    $('feed-message').textContent = '正在读取社区内容…';
+    $('feed-message').textContent = '正在读取内容…';
     try {
-      const query = state.category ? `?category=${encodeURIComponent(state.category)}` : '';
-      const data = await api('GET', null, query);
-      state.posts = data.posts || [];
+      await token();
+      await loadFollowingIds();
+      const communityCategory = state.category && categoryNames[state.category] ? state.category : '';
+      const communityPromise = state.category && topicKeywords[state.category]
+        ? Promise.resolve({ posts: [] })
+        : api('GET', null, communityCategory ? `?category=${encodeURIComponent(communityCategory)}` : '');
+      const [communityData, profilePosts] = await Promise.all([
+        communityPromise,
+        state.mode === 'community' ? Promise.resolve([]) : loadProfilePosts()
+      ]);
+      let communityPosts = communityData.posts || [];
+      if (state.mode === 'following') {
+        if (!state.session) communityPosts = [];
+        else communityPosts = communityPosts.filter((post) => state.followingIds.has(post.user_id));
+      }
+      state.posts = communityPosts;
+      state.profilePosts = profilePosts;
       $('feed-message').classList.add('hidden');
       renderFeed();
     } catch (error) {
@@ -215,14 +312,25 @@
     $('composer-form').addEventListener('submit', handleCompose);
     $('post-category').addEventListener('change', renderStructuredFields);
     $('feed-refresh').addEventListener('click', loadFeed);
-    $('show-all').addEventListener('click', () => { state.category=''; $('feed-title').textContent='最新帖子'; document.querySelectorAll('[data-category]').forEach((item)=>item.classList.remove('active')); loadFeed(); });
+    $('show-all').addEventListener('click', () => {
+      state.category='';
+      document.querySelectorAll('[data-category]').forEach((item)=>item.classList.toggle('active', item.dataset.category === ''));
+      $('feed-title').textContent = state.mode === 'community' ? '社区帖子' : state.mode === 'following' ? '关注动态' : '推荐内容';
+      loadFeed();
+    });
     $('category-grid').addEventListener('click', (event) => {
       const button = event.target.closest('[data-category]'); if (!button) return;
-      state.category = button.dataset.category;
-      $('feed-title').textContent = categoryNames[state.category];
+      state.category = button.dataset.category || '';
+      $('feed-title').textContent = state.category ? (categoryNames[state.category] || button.textContent.trim()) : (state.mode === 'community' ? '社区帖子' : state.mode === 'following' ? '关注动态' : '推荐内容');
       document.querySelectorAll('[data-category]').forEach((item)=>item.classList.toggle('active', item === button));
-      document.querySelector('.community-layout').scrollIntoView({behavior:'smooth'}); loadFeed();
+      loadFeed();
     });
+    document.querySelectorAll('[data-mode]').forEach((button) => button.addEventListener('click', () => {
+      state.mode = button.dataset.mode || 'latest';
+      document.querySelectorAll('[data-mode]').forEach((item) => item.classList.toggle('active', item === button));
+      $('feed-title').textContent = state.mode === 'community' ? '社区帖子' : state.mode === 'following' ? '关注动态' : '推荐内容';
+      loadFeed();
+    }));
     document.addEventListener('click', async (event) => {
       const close = event.target.closest('[data-close]'); if (close) $(close.dataset.close)?.close();
       const open = event.target.closest('[data-open-post]'); if (open) openPost(open.dataset.openPost);
@@ -241,7 +349,7 @@
     const requestedCategory = new URLSearchParams(window.location.search).get('category');
     if (requestedCategory && categoryNames[requestedCategory]) {
       state.category = requestedCategory;
-      $('feed-title').textContent = categoryNames[requestedCategory];
+      $('feed-title').textContent = categoryNames[requestedCategory] || '推荐内容';
       document.querySelector(`[data-category="${requestedCategory}"]`)?.classList.add('active');
     }
     renderStructuredFields(); bind(); await token(); syncAccountUi(); await loadFeed();

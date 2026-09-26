@@ -248,10 +248,10 @@
       await refresh();
       document.querySelector('.content-section')?.scrollIntoView({behavior:'smooth',block:'start'});
     }catch(error){
-      if(uploaded.length) await window.supabaseClient.storage.from('profile-post-media').remove(uploaded).catch(()=>undefined);
+      if(uploaded.length){ try{ await window.supabaseClient.storage.from('profile-post-media').remove(uploaded); }catch{} }
       if(postId){
-        await window.supabaseClient.from('profile_post_media').delete().eq('post_id',postId).catch(()=>undefined);
-        await window.supabaseClient.from('profile_posts').update({status:'deleted'}).eq('id',postId).catch(()=>undefined);
+        try{ await window.supabaseClient.from('profile_post_media').delete().eq('post_id',postId); }catch{}
+        try{ await window.supabaseClient.from('profile_posts').update({status:'deleted'}).eq('id',postId); }catch{}
       }
       $('dynamic-message').textContent=error.message||'发布失败，请重试。';
     }finally{

@@ -9,7 +9,7 @@ export type ProfilePostUploadProgress = {
   total: number;
 };
 
-const POST_SELECT = 'id,user_id,caption,status,created_at,updated_at,profile_post_media(id,post_id,owner_user_id,media_type,storage_path,mime_type,width,height,duration_ms,sort_order)';
+const POST_SELECT = 'id,user_id,caption,tags,status,created_at,updated_at,profile_post_media(id,post_id,owner_user_id,media_type,storage_path,mime_type,width,height,duration_ms,sort_order)';
 
 async function withSignedUrls(rows: unknown[]) {
   return Promise.all((rows as ProfilePost[]).map(async (post) => ({
@@ -24,7 +24,7 @@ export async function listProfilePosts(userId: string) {
   return withSignedUrls(data || []);
 }
 
-export async function createProfilePost(caption: string, assets: ImagePickerAsset[], onProgress?: (progress: ProfilePostUploadProgress) => void) {
+export async function createProfilePost(caption: string, assets: ImagePickerAsset[], tags: string[] = [], onProgress?: (progress: ProfilePostUploadProgress) => void) {
   const userId = await currentUserId();
   if (!assets.length) throw new Error('请至少选择一张图片或一个视频。');
   if (assets.length > 4) throw new Error('每条动态最多选择 4 张图片。');
@@ -34,7 +34,7 @@ export async function createProfilePost(caption: string, assets: ImagePickerAsse
     const limit = asset.type === 'video' ? 80 * 1024 * 1024 : 12 * 1024 * 1024;
     if (asset.fileSize && asset.fileSize > limit) throw new Error(asset.type === 'video' ? '视频不能超过 80MB。' : '单张图片不能超过 12MB。');
   }
-  const { data: post, error: postError } = await supabase.from('profile_posts').insert({ user_id: userId, caption: caption.trim(), status: 'published' }).select('id').single();
+  const normalizedTags = Array.from(new Set(tags.map((tag) => tag.replace(/^#+/, '').trim()).filter(Boolean))).slice(0, 8);\n  if (normalizedTags.some((tag) => tag.length > 24)) throw new Error('单个标签不能超过 24 个字符。');\n  const { data: post, error: postError } = await supabase.from('profile_posts').insert({ user_id: userId, caption: caption.trim(), tags: normalizedTags, status: 'published' }).select('id').single();
   if (postError) throw postError;
   const uploaded: string[] = [];
   try {

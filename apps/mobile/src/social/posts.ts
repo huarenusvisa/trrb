@@ -37,6 +37,13 @@ async function withSignedUrls(rows: unknown[]) {
   })));
 }
 
+export async function getProfilePost(postId: string) {
+  const { data, error } = await supabase.from('profile_posts').select(POST_SELECT).eq('id', postId).single();
+  if (error) throw error;
+  const rows = await withSignedUrls([data]);
+  return rows[0];
+}
+
 export async function listProfilePosts(userId: string) {
   const { data, error } = await supabase.from('profile_posts').select(POST_SELECT).eq('user_id', userId).eq('status', 'published').order('created_at', { ascending: false }).limit(60);
   if (error) throw error;

@@ -1,0 +1,64 @@
+name: Community public profile verification
+on:
+  push:
+    branches: [fix/community-public-profiles-20260926]
+    paths:
+      - '.github/workflows/community-public-profile-verify.yml'
+      - 'scripts/community-public-profile-upgrade.mjs'
+      - 'scripts/community-public-profile.test.mjs'
+      - 'scripts/community-public-profile.e2e.mjs'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: community-public-profile-verification
+  cancel-in-progress: false
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/community-public-profiles-20260926
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Apply scoped source changes
+        run: |
+          if ! test -f scripts/community-public-profile-installation.json; then
+            node scripts/community-public-profile-upgrade.mjs
+          fi
+      - name: Unit and source regressions
+        run: node --test scripts/community-public-profile.test.mjs
+      - name: Prepare isolated browser tests without production credentials
+        run: |
+          npm install --prefix /tmp/community-browser --no-save playwright@1.51.1
+          /tmp/community-browser/node_modules/.bin/playwright install --with-deps chromium
+      - name: Browser navigation, avatars, guide and privacy regression
+        run: |
+          python3 -m http.server 8123 > /tmp/community-http.log 2>&1 &
+          node scripts/community-public-profile.e2e.mjs
+      - name: Commit tested static pages and public avatar field on this branch only
+        run: |
+          if test -f .community-public-fix.json; then
+            node --input-type=module <<'JS'
+            import {readFileSync,writeFileSync} from 'node:fs';
+            import {execFileSync} from 'node:child_process';
+            const report=JSON.parse(readFileSync('.community-public-fix.json','utf8'));
+            const marker='scripts/community-public-profile-installation.json';
+            writeFileSync(marker,JSON.stringify({...report,verification_run:process.env.GITHUB_RUN_ID,unit_tests:8,browser_scenarios:6},null,2)+'\n');
+            execFileSync('git',['add','--',...report.changed_files,marker],{stdio:'inherit'});
+            execFileSync('git',['diff','--cached','--check'],{stdio:'inherit'});
+            execFileSync('git',['config','user.name','github-actions[bot]']);
+            execFileSync('git',['config','user.email','41898282+github-actions[bot]@users.noreply.github.com']);
+            execFileSync('git',['commit','-m','fix(community): display all author works and separate public profile from personal center'],{stdio:'inherit'});
+            execFileSync('git',['push','origin','HEAD:fix/community-public-profiles-20260926'],{stdio:'inherit'});
+            JS
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: community-profile-browser-verification
+          path: artifacts/community-profile
+          if-no-files-found: ignore

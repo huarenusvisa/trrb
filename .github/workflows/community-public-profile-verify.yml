@@ -5,6 +5,7 @@ on:
     paths:
       - '.github/workflows/community-public-profile-verify.yml'
       - 'scripts/community-public-profile-upgrade.mjs'
+      - 'scripts/community-profile-finish.mjs'
       - 'scripts/community-public-profile.test.mjs'
       - 'scripts/community-public-profile.e2e.mjs'
   workflow_dispatch:
@@ -28,7 +29,9 @@ jobs:
         run: |
           if ! test -f scripts/community-public-profile-installation.json; then
             node scripts/community-public-profile-upgrade.mjs
+            node scripts/community-profile-finish.mjs
           fi
+          node --check scripts/community-public-profile.e2e.mjs
       - name: Unit and source regressions
         run: node --test scripts/community-public-profile.test.mjs
       - name: Prepare isolated browser tests without production credentials

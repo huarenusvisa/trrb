@@ -36,7 +36,12 @@ for(const path of ['user/index.html','user/center/index.html','community/index.h
   const script=path.startsWith('community/')?'community/community.js':'user/profile.js';
   once(path,`  <script src="/${script}?v=20260926-social-2"></script>`,`  <script src="/assets/social-detail.js?v=20260926-detail-1"></script>\n  <script src="/${script}?v=20260926-social-2-detail-1"></script>`);
 }
-for(const [path,content] of changed){writeFileSync(path,content);if(path.endsWith('.js'))execFileSync('node',['--check',path],{stdio:'inherit'});}
+// Native close is asynchronous: verify cleanup after the close event, not just open=false.
+for(const path of ['scripts/social-detail-layout.e2e.mjs','scripts/social-detail-live.mjs']){
+  once(path,"assert.ok(!new URL(page.url()).searchParams.has('post'));","await page.waitForFunction(()=>!new URL(location.href).searchParams.has('post'));\n    assert.ok(!new URL(page.url()).searchParams.has('post'));");
+}
+once('scripts/social-detail-layout.e2e.mjs','<html><head><meta name="viewport"','<html><head><meta charset="utf-8"><meta name="viewport"');
+for(const [path,content] of changed){writeFileSync(path,content);if(path.endsWith('.js')||path.endsWith('.mjs'))execFileSync('node',['--check',path],{stdio:'inherit'});}
 execFileSync('node',['--check','assets/social-detail.js'],{stdio:'inherit'});
 writeFileSync('.social-detail-integration.json',JSON.stringify({version:'20260926-detail-1',changed_files:[...changed.keys()],database_writes:false,mobile_layout:'image-above-body',desktop_layout:'image-left-body-right'},null,2));
 console.log(JSON.stringify({event:'social-detail-integrated',files:[...changed.keys()]}));

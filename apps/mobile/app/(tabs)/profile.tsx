@@ -153,7 +153,7 @@ export default function ProfileScreen() {
         <Pressable accessibilityRole="button" style={styles.action} onPress={() => router.push('/follow-requests')}><Text style={styles.actionTitle}>{t('profile.followRequests')}{followRequests ? t('profile.pendingCount', { count: followRequests }) : ''}</Text><Text style={styles.actionMeta}>{t('profile.followRequestsMeta')}</Text></Pressable>
       </View>
       <View style={styles.sectionHead}><Text style={styles.sectionTitle}>{t('profile.myPosts')}</Text><Text style={styles.sectionMeta}>{t('profile.postCount', { count: posts.length })}</Text></View>
-      <ProfilePostList posts={posts} own onDelete={removePost} />
+      <ProfilePostList posts={posts} own />
       <Text style={styles.groupTitle}>{t('profile.contentInteraction')}</Text>
       <View style={styles.menuGroup}>
         <Menu testID="profile-find-people" title={t('profile.findPeople')} meta={t('profile.findPeopleMeta')} onPress={() => router.push('/user-search')} />

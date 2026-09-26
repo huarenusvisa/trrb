@@ -7,7 +7,7 @@
   <meta name="description" content="唐人日报用户主页，查看公开动态、图片、视频、标签以及关注信息。" />
   <meta name="robots" content="noindex,follow" />
   <link rel="icon" href="/favicon.ico" />
-  <link rel="stylesheet" href="/user/profile.css?v=20260926-2" />
+  <link rel="stylesheet" href="/user/profile.css?v=20260926-3" />
 </head>
 <body>
   <header class="site-header">
@@ -54,7 +54,12 @@
       <label>标签<input id="dynamic-tags" maxlength="220" placeholder="最多 5 个，用空格、逗号或 # 分隔，例如：中秋节 法拉盛 美食" /></label>
       <label>文字说明<textarea id="dynamic-caption" maxlength="2000" rows="7" placeholder="说点什么……"></textarea></label>
       <div class="composer-meta"><span id="dynamic-counter">0/2000</span><span>最多 5 个标签</span></div>
-      <div class="privacy-note">请勿发布他人的电话、证件、详细住址或未成年人隐私。</div>
+      <div class="draft-box">
+        <div class="draft-box-head"><strong>本地草稿箱</strong><span>最多保留 5 个，仅保存在当前浏览器</span></div>
+        <div id="pc-draft-list" class="pc-draft-list"></div>
+        <div class="draft-actions"><button id="save-local-draft" class="secondary" type="button">保存到本地草稿</button><button id="new-local-draft" class="secondary" type="button">新建草稿</button></div>
+      </div>
+      <div class="privacy-note">草稿不会上传云端；图片和视频不保存到草稿，请发布时重新选择。请勿发布他人的电话、证件、详细住址或未成年人隐私。</div>
       <button id="dynamic-submit" type="submit">发布到我的主页</button>
       <div id="dynamic-message" class="form-message"></div>
     </form>
@@ -73,6 +78,6 @@
   <footer><div class="shell"><span>© 2026 唐人日报 Tang Ren Daily</span><a href="/community/">社区</a><a href="/privacy.html">隐私政策</a><a href="/terms.html">使用条款</a></div></footer>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4/dist/umd/supabase.min.js"></script>
   <script src="/assets/supabase-client.js?v=20260825-community"></script>
-  <script src="/user/profile.js?v=20260926-2"></script>
+  <script src="/user/profile.js?v=20260926-3"></script>
 </body>
 </html>

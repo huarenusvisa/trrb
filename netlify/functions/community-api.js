@@ -1,3 +1,4 @@
+const simpleMedia = require('../../assets/community-media-policy.js');
 const {
   SUPABASE_URL,
   SERVICE_KEY,
@@ -147,7 +148,7 @@ async function feed(event) {
   const postId = clean(event.queryStringParameters?.post_id, 80);
   const page = feedPagination(event.queryStringParameters);
   const query = {
-    select: 'id,user_id,category,title,content,content_label,location_state,location_city,agency_office,case_type,event_date,outcome,judge_name,judge_slug,lawyer_or_firm,status,moderation_state,risk_level,is_indexable,like_count,comment_count,published_at,created_at,updated_at,profiles!community_posts_user_id_fkey(display_name,avatar_key,avatar_path)',
+    select: 'id,user_id,category,title,content,media,content_label,location_state,location_city,agency_office,case_type,event_date,outcome,judge_name,judge_slug,lawyer_or_firm,status,moderation_state,risk_level,is_indexable,like_count,comment_count,published_at,created_at,updated_at,profiles!community_posts_user_id_fkey(display_name,avatar_key,avatar_path)',
     order: 'created_at.desc,id.desc',
     limit: postId ? '1' : String(page.limit + 1)
   };
@@ -196,17 +197,28 @@ async function feed(event) {
     }
     comments = withViewerCommentLikeState(comments, viewerCommentLikes);
   }
-  return json(200, { ok: true, posts, comments, viewer_user_id: user?.id || null, next_offset: nextOffset });
+  return json(200, { ok: true, posts, comments, viewer_user_id: user?.id || null, next_offset: nextOffset, media_policy: {version:'simple-media-v1',video_max_bytes:simpleMedia.MAX_BYTES,image_max_bytes:simpleMedia.MAX_BYTES,max_images:simpleMedia.MAX_IMAGES,max_videos:1} });
 }
 
 async function createPost(event, user, profile, body) {
   const category = clean(body.category, 50);
-  const title = clean(body.title, 120);
-  const content = clean(body.content, 12000);
-  const contentLabel = LABELS.has(body.content_label) ? body.content_label : 'personal_experience';
-  if (!CATEGORIES.has(category)) return json(400, { error: '请选择有效板块' });
-  if (title.length < 4) return json(400, { error: '标题至少需要 4 个字' });
-  if (content.length < 20) return json(400, { error: '正文至少需要 20 个字' });
+  const simple=body.composer_version==='simple-media-v1';
+  const normalized=simple?simpleMedia.normalizeSimplePost(body,user.id):null;
+  const title=normalized?.title||clean(body.title,120);
+  const content=normalized?normalized.content:clean(body.content,12000);
+  const media=normalized?.media||[];
+  const contentLabel=simple?'personal_experience':(LABELS.has(body.content_label)?body.content_label:'personal_experience');
+  if (!CATEGORIES.has(category)) return json(400,{error:'请选择有效板块'});
+  if (!simple && title.length<4) return json(400,{error:'标题至少需要 4 个字'});
+  if (!simple && content.length<20) return json(400,{error:'正文至少需要 20 个字'});
+  if (!simple && body.media?.length) return json(400,{error:'请使用新版发布框上传附件'});
+  async function previousAttempt(){
+    if(!normalized)return null;
+    const prior=await rest('community_posts',{query:{select:'*',id:'eq.'+normalized.id,user_id:'eq.'+user.id,limit:'1'}});
+    return Array.isArray(prior)?prior[0]:null;
+  }
+  const previous=await previousAttempt();
+  if(previous)return json(200,{ok:true,post:previous,profile,replayed:true,message:previous.status==='published'?'发布成功':'已提交，进入人工审核'});
 
   const recent = await rest('community_posts', {
     query: {
@@ -219,6 +231,8 @@ async function createPost(event, user, profile, body) {
 
   const review = moderation(category, title, content);
   const payload = {
+    ...(normalized?{id:normalized.id}:{}),
+    media,
     user_id: user.id,
     category,
     title,
@@ -235,7 +249,14 @@ async function createPost(event, user, profile, body) {
     lawyer_or_firm: clean(body.lawyer_or_firm, 220) || null,
     ...review
   };
-  const rows = await rest('community_posts', { method: 'POST', body: payload, prefer: 'return=representation' });
+  let rows;
+  try{rows=await rest('community_posts',{method:'POST',body:payload,prefer:'return=representation'});}
+  catch(error){
+    const previous=await previousAttempt();
+    if(previous)return json(200,{ok:true,post:previous,profile,replayed:true,message:previous.status==='published'?'发布成功':'已提交，进入人工审核'});
+    if(/媒体|12 MB|文件尚未上传|文件大小|媒体格式|仅可发布1个视频/.test(error.message||''))error.statusCode=422;
+    throw error;
+  }
   return json(201, {
     ok: true,
     post: Array.isArray(rows) ? rows[0] : null,
@@ -421,7 +442,7 @@ exports.handler = async (event) => {
     const profile = await ensureProfile(user);
     const body = JSON.parse(event.body || '{}');
     const action = clean(body.action, 60);
-    if (action === 'create_post') return createPost(event, user, profile, body);
+    if (action === 'create_post') return await createPost(event, user, profile, body);
     if (action === 'create_comment') return createComment(user, body);
     if (action === 'unpublish_comment') return unpublishComment(user, body);
     if (action === 'toggle_like') return toggleLike(user, body);
@@ -436,4 +457,4 @@ exports.handler = async (event) => {
   }
 };
 
-exports._test = { moderation, untrustedLinkCount, clean, commentCountAfterUnpublish, withViewerLikeState, withViewerCommentLikeState, resolveLikeMutation, feedPagination };
+exports._test = { createPost, simpleMedia, moderation, untrustedLinkCount, clean, commentCountAfterUnpublish, withViewerLikeState, withViewerCommentLikeState, resolveLikeMutation, feedPagination };

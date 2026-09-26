@@ -69,6 +69,7 @@
     requireLogin(() => {
       $('post-category').value = categoryNames[category] ? category : 'uscis_interview';
       renderStructuredFields();
+      state.composer?.prepareForAccount();
       $('composer-dialog').showModal();
     });
   }
@@ -76,6 +77,7 @@
   function renderStructuredFields() {
     const category = $('post-category').value;
     const box = $('structured-fields');
+    if(!box){$('review-note').textContent=['lawyer_review','tipoff'].includes(category)?'请勿泄露他人隐私；本板块保留人工审核。':'请勿泄露他人隐私；敏感内容保留审核。';return;}
     const field = (label, id, placeholder = '', type = 'text') => `<label>${label}<input id="${id}" type="${type}" placeholder="${esc(placeholder)}" /></label>`;
     if (category === 'uscis_interview') {
       box.innerHTML = `${field('州/地区','field-state','例如 NY')}${field('面谈办公室','field-office','例如 New York Asylum Office')}${field('申请类型','field-case','庇护、婚姻绿卡、入籍等')}${field('面谈日期','field-date','', 'date')}<label>目前结果<select id="field-outcome"><option value="">尚未公布</option><option>通过</option><option>等待决定</option><option>补件/RFE</option><option>二次面谈</option><option>转移民法庭</option><option>其他</option></select></label>${field('城市','field-city','可选')}`;
@@ -205,6 +207,7 @@
         if (!state.session) communityPosts = [];
         else communityPosts = communityPosts.filter((post) => post.user_id === state.session.user.id);
       }
+      await window.TrrbSocial.hydrateCommunityMedia(communityPosts,window.supabaseClient);
       state.posts = communityPosts;
       state.profilePosts = profilePosts;
       $('feed-message').classList.add('hidden');
@@ -228,7 +231,9 @@
       const post = data.posts?.[0];
       if (!post) throw new Error('帖子不存在或仍在审核');
       const comments = data.comments || [];
-      $('post-detail').innerHTML = `<p class="eyebrow">${esc(categoryNames[post.category] || '')}</p><h2>${esc(post.title)}</h2><div class="author-line"><a class="profile-link" href="/user/?id=${encodeURIComponent(post.user_id)}">${window.TrrbSocial.avatar(post.profiles,window.supabaseClient)}</a><div><a class="profile-name" href="/user/?id=${encodeURIComponent(post.user_id)}">${esc(post.profiles?.display_name || '唐人用户')}</a><small>${esc(dateText(post.created_at))}</small></div></div><div class="post-meta">${postMeta(post).map((item) => `<span>${esc(item)}</span>`).join('')}</div><p class="detail-body">${window.TrrbSocial.linkify(post.content)}</p><div class="comment-list"><h3>评论</h3>${comments.length ? comments.map((comment) => `<article class="comment"><b>${esc(comment.profiles?.display_name || '唐人用户')}</b><p>${esc(comment.content)}</p><small>${esc(dateText(comment.created_at))}${comment.status !== 'published' ? ' · 审核中' : ''}</small></article>`).join('') : '<p>暂无评论</p>'}</div><form class="comment-form" data-comment-form="${esc(post.id)}"><textarea name="content" maxlength="3000" placeholder="写下你的回复（需要登录）" required></textarea><button type="submit">发表评论</button><div class="form-message"></div></form>`;
+      await window.TrrbSocial.hydrateCommunityMedia([post],window.supabaseClient,{all:true});
+      if(version!==communityDetailVersion||!$('post-dialog').open)return;
+      $('post-detail').innerHTML = `<p class="eyebrow">${esc(categoryNames[post.category] || '')}</p><h2>${esc(post.title)}</h2><div class="author-line"><a class="profile-link" href="/user/?id=${encodeURIComponent(post.user_id)}">${window.TrrbSocial.avatar(post.profiles,window.supabaseClient)}</a><div><a class="profile-name" href="/user/?id=${encodeURIComponent(post.user_id)}">${esc(post.profiles?.display_name || '唐人用户')}</a><small>${esc(dateText(post.created_at))}</small></div></div>${window.TrrbSocial.communityMediaHtml(post)}<div class="post-meta">${postMeta(post).map((item) => `<span>${esc(item)}</span>`).join('')}</div><p class="detail-body">${window.TrrbSocial.linkify(post.content)}</p><div class="comment-list"><h3>评论</h3>${comments.length ? comments.map((comment) => `<article class="comment"><b>${esc(comment.profiles?.display_name || '唐人用户')}</b><p>${esc(comment.content)}</p><small>${esc(dateText(comment.created_at))}${comment.status !== 'published' ? ' · 审核中' : ''}</small></article>`).join('') : '<p>暂无评论</p>'}</div><form class="comment-form" data-comment-form="${esc(post.id)}"><textarea name="content" maxlength="3000" placeholder="写下你的回复（需要登录）" required></textarea><button type="submit">发表评论</button><div class="form-message"></div></form>`;
       window.TrrbDetail.enhance($('post-dialog'),{postId});
     } catch (error) { if(version!==communityDetailVersion)return; $('post-detail').innerHTML=`<div class="notice error">${esc(error.message || '内容暂不可用')}</div>`; }
   }
@@ -266,7 +271,7 @@
     button.disabled = true;
     $('composer-message').textContent = '正在检查并提交…';
     try {
-      const data = await api('POST', {
+      const data = state.composer ? await state.composer.submit(api) : await api('POST', {
         action:'create_post', category:$('post-category').value, content_label:$('post-label').value,
         title:$('post-title').value, content:$('post-content').value,
         location_state:fieldValue('field-state'), location_city:fieldValue('field-city'), agency_office:fieldValue('field-office'),
@@ -276,8 +281,10 @@
       state.profile = data.profile || state.profile;
       syncAccountUi();
       $('composer-dialog').close();
+      state.composer?.reset();
       $('composer-form').reset();
       renderStructuredFields();
+      if(data.post?.status==='published'&&state.composer){state.category=data.post.category;state.mode='community';document.querySelectorAll('[data-category]').forEach(b=>b.classList.toggle('active',b.dataset.category===state.category));document.querySelectorAll('[data-mode]').forEach(b=>b.classList.toggle('active',b.dataset.mode==='community'));$('feed-title').textContent=categoryNames[state.category]||'社区帖子';}
       await loadFeed();
       $('feed-message').className = 'notice success';
       $('feed-message').textContent = data.message === '发布成功' ? '发布成功，帖子已经显示在下方。' : data.message;
@@ -293,6 +300,7 @@
   }
 
   function bind() {
+    if($('post-media-picker')&&window.TrrbCommunityComposer)state.composer=window.TrrbCommunityComposer.create({client:window.supabaseClient,getSession:()=>state.session});
     window.TrrbDetail.bind($('post-dialog'),()=>{communityDetailVersion++;});
     $('login-open').addEventListener('click', () => $('auth-dialog').showModal());
     $('publish-open').addEventListener('click', () => openComposer(state.category || 'uscis_interview'));
@@ -332,7 +340,7 @@
       const form = event.target.closest('[data-comment-form]'); if (!form) return;
       event.preventDefault(); requireLogin(async () => { const message=form.querySelector('.form-message'); try { const data=await mutatePost('create_comment', form.dataset.commentForm, {content:form.elements.content.value}); message.textContent=data.pending?'评论已提交审核':'评论成功'; form.reset(); if($('post-dialog').open)await openPost(form.dataset.commentForm); } catch (error) { message.textContent=error.message; } });
     });
-    $('logout-button').addEventListener('click', async () => { await window.supabaseClient.auth.signOut(); state.session=null; state.profile=null; syncAccountUi(); loadFeed(); });
+    $('logout-button').addEventListener('click', async () => { if(state.composer?.isBusy())return;state.composer?.clearForLogout();await window.supabaseClient.auth.signOut(); state.session=null; state.profile=null; syncAccountUi(); loadFeed(); });
   }
 
   async function init() {

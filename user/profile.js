@@ -110,7 +110,7 @@
       if(state.filter==='all')return true;
       if(state.filter==='community')return item.type==='community';
       if(state.filter==='dynamic')return item.type==='profile';
-      return item.type==='profile'&&(item.post.profile_post_media||[]).some(m=>m.media_type===state.filter);
+      return (item.type==='profile'?(item.post.profile_post_media||[]):(item.post.media||[])).some(m=>m.media_type===state.filter);
     });
     $('profile-posts').innerHTML=rows.length?rows.map(item=>social.card(item.post,item.type,{client:window.supabaseClient,owner:canManage()})).join(''):'<div class="empty">当前分类暂无作品。可切换“全部”查看公开动态和社区帖子。</div>';
     $('profile-load-more')?.classList.toggle('hidden',state.posts.length>=state.dynamicTotal&&state.communityPosts.length>=state.communityTotal);

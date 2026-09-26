@@ -1,0 +1,17 @@
+{
+  "version": "simple-media-v1",
+  "changed_files": [
+    "netlify/functions/community-api.js",
+    "community/index.html",
+    "community/community.js",
+    "assets/social-cards.js",
+    "user/profile.js",
+    "user/index.html",
+    "user/center/index.html",
+    "scripts/validate-site.mjs"
+  ],
+  "video_max_bytes": 12582912,
+  "old_posts_deleted": false,
+  "verification_run": "36270358537",
+  "database_migration_required": "20260926210000_community_simple_media.sql"
+}

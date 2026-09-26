@@ -22,7 +22,7 @@
     const profile=post.profiles || {}, name=profile.display_name || '唐人用户';
     const text=String(type==='community'?post.content||'':post.caption||'');
     const title=String(type==='community'?post.title||'社区帖子':text.split(/\n/).find(x=>x.trim()) || '图片与视频动态').trim();
-    const media=(post.profile_post_media || []).slice().sort((a,b)=>(a.sort_order||0)-(b.sort_order||0)), first=media[0];
+    const media=(type==='community'?(post.media||[]):(post.profile_post_media || [])).slice().sort((a,b)=>(a.sort_order||0)-(b.sort_order||0)), first=media[0];
     const href=detailHref(post,type), attr=type==='community'?'data-open-post':'data-open-profile-post';
     const src=first?.signed_url ? safeUrl(first.signed_url) : '';
     const ratio=first?.width>0 && first?.height>0 ? Math.max(.7,Math.min(1.5,first.width/first.height)) : .8;
@@ -51,10 +51,27 @@
   }
   async function authorCommunityPosts(client,userId,{limit=30,offset=0,owner=false}={}) {
     if(!uuid(userId)) throw new Error('无效的用户编号');
-    let query=client.from('community_posts').select('id,user_id,title,content,category,status,created_at,updated_at,like_count,comment_count,profiles!community_posts_user_id_fkey(display_name,avatar_key,avatar_path)',{count:'exact'}).eq('user_id',userId);
+    let query=client.from('community_posts').select('id,user_id,title,content,media,category,status,created_at,updated_at,like_count,comment_count,profiles!community_posts_user_id_fkey(display_name,avatar_key,avatar_path)',{count:'exact'}).eq('user_id',userId);
     query=owner ? query.neq('status','deleted') : query.eq('status','published');
     const {data,error,count}=await query.order('created_at',{ascending:false}).order('id',{ascending:false}).range(offset,offset+limit-1);
-    if(error)throw error;return {posts:data||[],count:count??(data||[]).length};
+    if(error)throw error;await hydrateCommunityMedia(data||[],client);return {posts:data||[],count:count??(data||[]).length};
+  }
+  async function hydrateCommunityMedia(posts,client,{all=false}={}){
+    await Promise.all((posts||[]).map(async post=>{
+      if(!Array.isArray(post.media))post.media=[];
+      const wanted=all?post.media:post.media.slice(0,1);
+      await Promise.all(wanted.map(async item=>{
+        item.signed_url='';
+        if(!item.storage_path||!client?.storage)return;
+        try{const {data,error}=await client.storage.from('community-post-media').createSignedUrl(item.storage_path,600);if(!error)item.signed_url=safeUrl(data?.signedUrl||'');}catch{}
+      }));
+    }));return posts;
+  }
+  function communityMediaHtml(post){
+    return (post.media||[]).map(item=>{
+      const src=safeUrl(item.signed_url);if(!src)return '<p class="notice detail-media-error">附件暂时无法读取，正文仍可查看。</p>';
+      return item.media_type==='video'?`<video class="detail-media" controls playsinline preload="metadata" src="${esc(src)}"></video>`:`<img class="detail-media" src="${esc(src)}" alt="帖子图片" />`;
+    }).join('');
   }
   // Capture handles cached failures as well as errors that occur after rendering.
   if(root.document)root.document.addEventListener('error',event=>{
@@ -62,7 +79,7 @@
     if(el.closest('.social-avatar')){el.hidden=true;return;}
     const cover=el.closest('.note-cover');if(cover){el.hidden=true;const fallback=cover.querySelector('.note-media-error');if(fallback)fallback.hidden=false;}
   },true);
-  const api={esc,uuid,safeUrl,dateText,profileHref,detailHref,avatarUrl,avatar,card,merge,linkify,authorCommunityPosts};
+  const api={esc,uuid,safeUrl,dateText,profileHref,detailHref,avatarUrl,avatar,card,merge,linkify,authorCommunityPosts,hydrateCommunityMedia,communityMediaHtml};
   root.TrrbSocial=api;
   if(typeof module==='object'&&module.exports)module.exports=api;
 })(typeof window!=='undefined'?window:globalThis);

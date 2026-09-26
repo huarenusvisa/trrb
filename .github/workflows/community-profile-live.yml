@@ -1,0 +1,29 @@
+name: Community production acceptance
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/community-profile-live.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  read-only-acceptance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 13
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Prepare browser without account credentials
+        run: |
+          npm install --prefix /tmp/community-browser --no-save playwright@1.51.1
+          /tmp/community-browser/node_modules/.bin/playwright install --with-deps chromium
+      - name: Verify deployed guide, author avatar, separate center and mobile layout
+        run: node scripts/community-public-profile-live.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: community-production-acceptance
+          path: artifacts/community-production
+          if-no-files-found: ignore

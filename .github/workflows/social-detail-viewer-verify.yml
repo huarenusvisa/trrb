@@ -1,0 +1,91 @@
+name: Social detail PC and mobile verification
+on:
+  push:
+    branches: [fix/social-detail-carousel-20260926, main]
+    paths:
+      - '.github/workflows/social-detail-viewer-verify.yml'
+      - 'assets/social-detail.*'
+      - 'scripts/social-detail-*'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: social-detail-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  branch-verification:
+    if: github.ref == 'refs/heads/fix/social-detail-carousel-20260926'
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/social-detail-carousel-20260926
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Integrate only known source versions
+        run: |
+          if ! test -f scripts/social-detail-installation.json; then
+            node scripts/social-detail-upgrade.mjs
+          fi
+          node --check scripts/social-detail-layout.e2e.mjs
+          node --check scripts/social-detail-live.mjs
+          node --test scripts/community-public-profile.test.mjs
+      - name: Prepare isolated browser
+        run: |
+          npm install --prefix /tmp/community-browser --no-save playwright@1.51.1
+          /tmp/community-browser/node_modules/.bin/playwright install --with-deps chromium
+      - name: Test PC layout separately from mobile touch and preserve original author views
+        run: |
+          python3 -m http.server 8123 >/tmp/social-detail-http.log 2>&1 &
+          node scripts/social-detail-layout.e2e.mjs
+          node scripts/community-public-profile.e2e.mjs
+      - name: Commit integrated files only after both browser suites pass
+        run: |
+          node --input-type=module <<'JS'
+          import {existsSync,readFileSync,writeFileSync} from 'node:fs';
+          import {execFileSync} from 'node:child_process';
+          if(existsSync('.social-detail-integration.json')){
+            const report=JSON.parse(readFileSync('.social-detail-integration.json','utf8'));
+            const marker='scripts/social-detail-installation.json';
+            writeFileSync(marker,JSON.stringify({...report,verification_run:process.env.GITHUB_RUN_ID},null,2)+'\n');
+            execFileSync('git',['add','--',...report.changed_files,marker],{stdio:'inherit'});
+            execFileSync('git',['diff','--cached','--check'],{stdio:'inherit'});
+            execFileSync('git',['config','user.name','github-actions[bot]']);
+            execFileSync('git',['config','user.email','41898282+github-actions[bot]@users.noreply.github.com']);
+            execFileSync('git',['commit','-m','fix(community): desktop split detail and distinct mobile image-above-body swipe'],{stdio:'inherit'});
+            execFileSync('git',['push','origin','HEAD:fix/social-detail-carousel-20260926'],{stdio:'inherit'});
+          }
+          JS
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: social-detail-browser-verification
+          path: |
+            artifacts/social-detail
+            artifacts/community-profile
+          if-no-files-found: ignore
+  production-acceptance:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Prepare read-only production browser
+        run: |
+          npm install --prefix /tmp/community-browser --no-save playwright@1.51.1
+          /tmp/community-browser/node_modules/.bin/playwright install --with-deps chromium
+      - name: Verify live PC and phone using the reported three-photo post
+        run: node scripts/social-detail-live.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: social-detail-production-acceptance
+          path: artifacts/social-detail-live
+          if-no-files-found: ignore

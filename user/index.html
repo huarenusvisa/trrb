@@ -7,7 +7,7 @@
   <meta name="description" content="唐人日报用户主页，查看公开动态、图片、视频、标签以及关注信息。" />
   <meta name="robots" content="noindex,follow" />
   <link rel="icon" href="/favicon.ico" />
-  <link rel="stylesheet" href="/user/profile.css?v=20260926-1" />
+  <link rel="stylesheet" href="/user/profile.css?v=20260926-2" />
 </head>
 <body>
   <header class="site-header">
@@ -30,7 +30,7 @@
           <p id="profile-bio" class="bio">这个人还没有填写简介。</p>
           <div class="counts"><button id="followers-count" type="button">0 <span>粉丝</span></button><button id="following-count" type="button">0 <span>关注</span></button><span id="post-count">0 <span>动态</span></span></div>
         </div>
-        <div class="actions"><button id="follow-button" type="button">关注</button><a class="secondary action-link" href="/community/">返回社区</a></div>
+        <div class="actions"><button id="publish-dynamic" class="hidden" type="button">＋ 发布动态</button><button id="follow-button" type="button">关注</button><a class="secondary action-link" href="/community/">返回社区</a></div>
       </div>
     </section>
 
@@ -43,6 +43,22 @@
       <div id="profile-posts" class="profile-posts"></div>
     </section>
   </main>
+
+  <dialog id="dynamic-dialog" class="modal wide">
+    <form id="dynamic-form" class="modal-card">
+      <button class="modal-close" type="button" data-close="dynamic-dialog" aria-label="关闭">×</button>
+      <p class="eyebrow">PROFILE POST</p><h2>发布主页动态</h2>
+      <p>支持图片或视频。图片最多 4 张；视频每条 1 个、最长 2 分钟、最大 80MB。</p>
+      <label>图片 / 视频<input id="dynamic-media" type="file" accept="image/jpeg,image/png,image/webp,image/heic,image/heif,video/mp4,video/quicktime,video/webm" multiple required /></label>
+      <div id="dynamic-media-summary" class="media-summary">尚未选择媒体</div>
+      <label>标签<input id="dynamic-tags" maxlength="220" placeholder="最多 5 个，用空格、逗号或 # 分隔，例如：中秋节 法拉盛 美食" /></label>
+      <label>文字说明<textarea id="dynamic-caption" maxlength="2000" rows="7" placeholder="说点什么……"></textarea></label>
+      <div class="composer-meta"><span id="dynamic-counter">0/2000</span><span>最多 5 个标签</span></div>
+      <div class="privacy-note">请勿发布他人的电话、证件、详细住址或未成年人隐私。</div>
+      <button id="dynamic-submit" type="submit">发布到我的主页</button>
+      <div id="dynamic-message" class="form-message"></div>
+    </form>
+  </dialog>
 
   <dialog id="auth-dialog" class="modal">
     <form id="auth-form" class="modal-card">
@@ -57,6 +73,6 @@
   <footer><div class="shell"><span>© 2026 唐人日报 Tang Ren Daily</span><a href="/community/">社区</a><a href="/privacy.html">隐私政策</a><a href="/terms.html">使用条款</a></div></footer>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4/dist/umd/supabase.min.js"></script>
   <script src="/assets/supabase-client.js?v=20260825-community"></script>
-  <script src="/user/profile.js?v=20260926-1"></script>
+  <script src="/user/profile.js?v=20260926-2"></script>
 </body>
 </html>

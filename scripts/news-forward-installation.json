@@ -1,0 +1,32 @@
+{
+  "cutoff": "2026-09-26T19:16:05.375Z",
+  "changed_files": [
+    "scripts/ice-fast-intake.mjs",
+    "scripts/ice-precollect-published-dedupe.mjs",
+    "scripts/ice-translate-title-body.mjs",
+    "scripts/ice-trusted-source-promote.mjs",
+    "scripts/ice-publish-due.mjs",
+    "scripts/china-context-research.mjs",
+    "scripts/china-hot-li-teacher-ingest.mjs",
+    ".github/workflows/ice-unified-pipeline.yml",
+    ".github/workflows/china-hot-li-teacher-ingest.yml",
+    "scripts/news-quality-report.mjs",
+    "scripts/news-editorial-support.test.mjs"
+  ],
+  "base_sha": "a4be7d61e6171139e799b92cb26a33eb86e6d276",
+  "verification_run": "36265445268",
+  "tests_passed": 82,
+  "history_backfill": false,
+  "workflow_blobs": [
+    {
+      "path": ".github/workflows/ice-unified-pipeline.yml",
+      "copy": "scripts/news-forward-workflows/ice-unified-pipeline.yml",
+      "sha": "35d6bef186adc79ba27996414d5c91c2e488675b"
+    },
+    {
+      "path": ".github/workflows/china-hot-li-teacher-ingest.yml",
+      "copy": "scripts/news-forward-workflows/china-hot-li-teacher-ingest.yml",
+      "sha": "f09b0f1a2881b37995e163b34ab29170f9097cde"
+    }
+  ]
+}

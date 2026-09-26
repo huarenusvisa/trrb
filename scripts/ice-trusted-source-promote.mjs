@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import {forwardQuery} from './news-forward-policy.mjs';
 import { readDatabaseQuery } from "./paged-read.mjs";
 import process from "node:process";
 import {ICE_TRANSLATION_VERSION, reviewedStoryReady, countChinese} from "./news-editorial-policy.mjs";
@@ -29,6 +30,7 @@ function headers(prefer = "") { return { apikey: process.env.SUPABASE_SERVICE_RO
 async function readJson(response) { const text = await response.text(); if (!text) return null; try { return JSON.parse(text); } catch { return { raw: text }; } }
 async function request(url, options = {}) { const response = await fetch(url, options); const body = await readJson(response); if (!response.ok) throw new Error(body?.message || body?.details || body?.error || body?.raw || `请求失败（${response.status}）`); return body; }
 async function sb(table, { method = "GET", query = {}, body, prefer = "" } = {}) {
+  if(method === 'GET' && table === 'ice_stories' && /approved/.test(query.status || '') && !/published/.test(query.status || '')) query = {...query,...forwardQuery()};
   const execute = async (pageQuery) => {
     const base = String(process.env.SUPABASE_URL || "").replace(/\/+$/, "");
     const url = new URL(`${base}/rest/v1/${table}`);

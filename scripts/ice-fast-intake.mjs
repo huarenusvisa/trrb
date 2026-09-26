@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import {forwardQuery,inForwardScope,officialEventRelation,officialPostSignature} from './news-forward-policy.mjs';
 import { readDatabaseQuery } from "./paged-read.mjs";
 import {sourceWithinCollectionWindow} from './news-editorial-policy.mjs';
 import crypto from "node:crypto";
@@ -184,6 +185,8 @@ function isDuplicateText(a, b) {
 function eventSignature(post) {
   const release = officialRelease(post);
   if (release) return `web-${hash(release.url).slice(0,40)}`;
+  const directSignature = officialPostSignature(post);
+  if (directSignature) return directSignature;
   const text = safeText(post.source_text, 30000);
   // Never use the X repost timestamp as the event date. Doing so made the same
   // historical event acquire a new fingerprint every day it was reposted.
@@ -202,6 +205,7 @@ async function pendingPosts() {
   const rows = await sb("ice_posts", {
     query: {
       select: "*",
+      ...forwardQuery(),
       processing_status: "in.(collected,processing,extracted,failed)",
       or: "(relevant.is.null,relevant.eq.true)",
       order: "source_created_at.desc.nullslast,created_at.desc",
@@ -214,7 +218,7 @@ async function loadRecentStories() {
   const cutoff = new Date(Date.now() - DEDUPE_HOURS * 3600000).toISOString();
   const rows = await sb("ice_stories", {
     query: {
-      select: "id,event_fingerprint,event_type,title,summary,content,ai_payload,status,human_review_status,last_seen_at,first_seen_at,independent_source_count,official_source_count,media_source_count,organization_source_count,individual_source_count",
+      select: "id,event_fingerprint,event_type,title,summary,content,ai_payload,status,human_review_status,reviewed_by,created_at,updated_at,last_seen_at,first_seen_at,independent_source_count,official_source_count,media_source_count,organization_source_count,individual_source_count",
       status: "in.(collecting,pending_review,pending_corroboration,approved,published,rejected)",
       last_seen_at: `gte.${cutoff}`,
       order: "last_seen_at.desc",
@@ -253,6 +257,8 @@ function officialRelease(row) {
   } catch { return null; }
 }
 function distinctOfficialReleases(a,b) {
+  const relation = officialEventRelation(a,b);
+  if (relation !== null) return relation === false;
   const A=officialRelease(a),B=officialRelease(b);
   return Boolean(A && B && A.url!==B.url && jaccard(tokenSet(A.title),tokenSet(B.title))<.72);
 }
@@ -260,6 +266,8 @@ function findDuplicateStory(post, stories) {
   const raw = safeText(post.source_text, 30000);
   const signature = eventSignature(post);
   return stories.find((story) => {
+    const relation = officialEventRelation(post,story);
+    if (relation !== null) return relation;
     if (story.event_fingerprint === signature) return true;
     if (distinctOfficialReleases(post,story)) return false;
     if (officialRelease(post)) {
@@ -390,8 +398,8 @@ async function mergeIntoStory(story, post) {
   Object.assign(story, patch);
   await linkEvidence(story, post);
 }
-async function createCandidate(post) {
-  const fingerprint = eventSignature(post);
+async function createCandidate(post, separateForwardUpdate = false) {
+  const fingerprint = separateForwardUpdate ? `forward-${hash(post.x_post_id || post.id).slice(0,40)}` : eventSignature(post);
   const raw = safeText(post.source_text, 30000);
   const title = firstSentence(raw);
   const brief = summary(raw);
@@ -423,7 +431,7 @@ async function createCandidate(post) {
       status: "pending_corroboration",
       human_review_status: "required",
       scheduled_at: null,
-      ai_payload: { fast_intake: true, fast_intake_at: time, lead_source_post_id: post.x_post_id || "", lead_source_text_original: raw, lead_source_url:post.x_url || '',lead_source_platform:post.raw_payload?.source_platform || '', source_username: post.source_username || "", translation_pending: true, dedupe_version: 4, old_news_checked: false, manual_old_news_confirmation: false },
+      ai_payload: { fast_intake: true, fast_intake_at: time, lead_source_post_id: post.x_post_id || "", lead_source_type: post.source_type || "", lead_source_trust_tier: post.trust_tier, lead_source_created_at: post.source_created_at || null, lead_source_text_original: raw, lead_source_url:post.x_url || '',lead_source_platform:post.raw_payload?.source_platform || '', source_username: post.source_username || "", translation_pending: true, dedupe_version: 4, old_news_checked: false, manual_old_news_confirmation: false },
       created_at: time,
       updated_at: time
     },
@@ -469,6 +477,10 @@ async function runFastIntake() {
       const duplicate = findDuplicateStory(post, recentStories);
       if (duplicate) {
         if (hasMaterialUpdate(post, duplicate)) {
+          if (!inForwardScope(duplicate)) {
+            const freshStory = await createCandidate(post,true);
+            recentStories.unshift(freshStory); visible += 1; continue;
+          }
           await mergeIntoStory(duplicate, post);
           mergedDuplicates += 1;
         } else {
@@ -486,7 +498,7 @@ async function runFastIntake() {
     }
   }
   const result = {
-    stage: "ice-fast-intake-v3",
+    stage: "ice-fast-intake-v4-official-identity",
     scanned: posts.length,
     new_candidates: visible,
     merged_duplicates: mergedDuplicates,

@@ -17,6 +17,8 @@ jobs:
     timeout-minutes: 60
     env:
       NEWS_BUDGET_ENFORCE: "1"
+      NEWS_DEPTH_COMMISSION: "1"
+      NEWS_FORWARD_ONLY_FROM: "2026-09-26T19:16:05.375Z"
       NEWS_BUDGET_PIPELINE: "china-hot"
       SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
       SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
@@ -48,6 +50,7 @@ jobs:
       - name: Run collector tests
         env:
           NEWS_BUDGET_ENFORCE: "0"
+          NEWS_DEPTH_COMMISSION: "0"
         run: node --experimental-strip-types --test scripts/news-editorial-support.test.mjs scripts/china-hot-editor.test.mjs scripts/news-budget.test.mjs scripts/news-priority.test.mjs scripts/news-editorial-policy.test.mjs scripts/china-person-registry.test.mjs scripts/china-hot-li-teacher-ingest.test.mjs scripts/china-context-research.test.mjs scripts/china-editorial-update.test.mjs scripts/ren-zhengfei-news.test.mjs scripts/article-editorial-policy.test.mjs
       - name: Read China headlines category switches
         id: category

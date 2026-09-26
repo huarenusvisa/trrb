@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import {inForwardScope,depthInstruction,logDepthOutcome} from './news-forward-policy.mjs';
 import './news-budget-preload.mjs';
 import {compareNewsPriority,newsPriority} from './news-priority.mjs';
 import {TIER_REVIEW_INSTRUCTIONS,needsReviewRecheck,verifyFreshDevelopment,findSourceImages} from './news-editorial-support.mjs';
@@ -782,6 +783,7 @@ export async function generateArticle(qualified, tweet, attempt = 0, previous = 
       model: OPENAI_MODEL, store: false, max_output_tokens: 12000,
       instructions: [
         DEEP_RESEARCH_INSTRUCTIONS,
+        !brief && mode !== 'standard' ? depthInstruction(tweet.context_research) : '',
         `当前UTC时间${new Date().toISOString()}；纽约日期${new Date().toLocaleDateString("en-CA",{timeZone:"America/New_York"})}。原始发布时间与事件日期分开核实。`,
         mode === "standard" ? "资料不足以支持深度稿，editorial_depth必须为standard，按已核实事实改写600至1999字；不可继续标为deep。" : "",
         `本稿目标栏目：${ROUTE_SECTIONS[qualified.route] || CHINA_HOT_CATEGORY}。保持原事件主体，不得添加国家或执法机构以迎合分类。`,
@@ -840,7 +842,7 @@ export async function generateArticle(qualified, tweet, attempt = 0, previous = 
   if (!brief && article.editorial_depth === "deep" && independentSourceCount(tweet.context_research) < 2) {
     return generateArticle(qualified, tweet, 0, {...article, rewrite_reason:"实际取得的独立事实来源不足，降为普通稿或短讯，不能用评论补足证据"}, "standard");
   }
-  if (!brief && article.editorial_depth === "deep" && article.source_sufficient === true && bodyCharacterCount(article.content) < 2000 && attempt < 1) {
+  if (!brief && mode !== 'standard' && (article.editorial_depth === "deep" || tweet.context_research?.depth_assignment?.requested_depth === 'deep') && article.source_sufficient === true && bodyCharacterCount(article.content) < 2000 && attempt < 1) {
     return generateArticle(qualified, tweet, attempt + 1, {...article, rewrite_reason: `已判定为深度选题，但正文仅${bodyCharacterCount(article.content)}个中文字符。请用已给来源回答analysis_angles中的问题，补充可核对的时间线、数据口径、因果与情景分析，写至2000–3500字；不得重复或虚构`});
   }
   if (article.editorial_depth === "deep" && bodyCharacterCount(article.content) < 2000) return generateArticle(qualified, tweet, 0, {...article,rewrite_reason:"有据扩写后仍不足2000字，改为普通稿，保留已核实核心事实"}, "standard");
@@ -895,6 +897,7 @@ export async function generateArticle(qualified, tweet, attempt = 0, previous = 
     return generateArticle(qualified, tweet, 0, {...article,rewrite_reason:"深度数据或上下游材料未通过独立复核："+deepQualityErrors(article,tweet.context_research).join("；")}, "standard");
   }
   assertPublicationQuality(tweet, article);
+  logDepthOutcome(tweet.context_research,article.editorial_depth,bodyCharacterCount(article.content));
   return { ...article, seo_keywords: cleanText(article.seo_keywords, 300), target };
 }
 
@@ -1254,8 +1257,8 @@ async function repairTodayBatch() {
 export async function run() {
   requiredEnvironment();
   await loadChinaPeople(()=>supabase("china_political_people",{query:CHINA_PEOPLE_QUERY}),{force:true});
-  const deletedUnusableBacklog = await cleanupUnusableBacklog();
-  const deletedDuplicateBacklog = await cleanupDuplicateBacklog();
+  const deletedUnusableBacklog = process.env.NEWS_FORWARD_ONLY_FROM ? 0 : await cleanupUnusableBacklog();
+  const deletedDuplicateBacklog = process.env.NEWS_FORWARD_ONLY_FROM ? 0 : await cleanupDuplicateBacklog();
   if (REPAIR_TODAY) {
     const report = await repairTodayBatch();
     report.chrt = await syncPublishedArticlesToChrt();
@@ -1267,7 +1270,7 @@ export async function run() {
     return report;
   }
   const collectedTweets = await collectXPosts();
-  const retryRows = await reprocessableCandidates();
+  const retryRows = (await reprocessableCandidates()).filter(inForwardScope);
   const tweetsById = new Map(collectedTweets.map((tweet) => [String(tweet.id), tweet]));
   for (const row of retryRows) {
     const tweet = tweetFromCandidate(row);
@@ -1296,6 +1299,7 @@ export async function run() {
     }
     counters.qualified += 1;
     const priorCandidate = await existingCandidate(tweet);
+    if (priorCandidate && !inForwardScope(priorCandidate)) {counters.duplicate++;results.push({tweetId:tweet.id,status:'historical-not-reprocessed'});continue;}
     if (priorCandidate?.ai_payload?.manual_editor_lock) {counters.review_required++;results.push({tweetId:tweet.id,status:'editor-locked'});continue;}
     if (priorCandidate?.ai_payload?.quality_hold === true && !shouldRetryCandidate(priorCandidate, qualified)) {
       counters.review_required += 1;
@@ -1348,7 +1352,7 @@ export async function run() {
           const priorRows=await supabase("articles",{query:{select:"*",id:`eq.${similar.id}`,limit:"1"}});
           const existing=priorRows?.[0];
           const next=buildPublishedArticle(tweet,qualified,generated);
-          const reason=existing && await verifyArticleUpdate(existing,next,{request:async(url,options)=>readJson(await request(url,options,90000))});
+          const reason=existing && inForwardScope(existing) && await verifyArticleUpdate(existing,next,{request:async(url,options)=>readJson(await request(url,options,90000))});
           if(reason) {
             const updated=await supabase("articles",{method:"PATCH",query:{id:`eq.${existing.id}`,updated_at:`eq.${existing.updated_at}`,status:"eq.published",visibility:"eq.public"},body:articleUpdateBody(existing,next,reason),prefer:"return=representation"});
             if(!updated?.length) throw qualityError("更新期间原稿已被修改，保留待人工复核");

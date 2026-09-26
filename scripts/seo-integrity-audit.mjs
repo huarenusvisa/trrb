@@ -6,7 +6,10 @@ const ROOT = process.cwd();
 const SKIP_DIRS = new Set([".git", "node_modules", ".netlify"]);
 const SKIP_HTML_PREFIXES = ["admin/", "trrb_admin_v1/"];
 const EXTERNAL_PRODUCT_PREFIXES = ["asylumjudge/", "immigration-judge-approval-rate/", "jobs/", "huarengongzuo/"];
+// ACCOUNT_PROFILE_SHELLS_NOINDEX_V1: session/private center and query-dependent profile shells.
+const ACCOUNT_PROFILE_SHELLS = new Set(["user/index.html", "user/center/index.html"]);
 const INTENTIONAL_NOINDEX_HTML = new Set([
+  ...ACCOUNT_PROFILE_SHELLS,
   "404.html", "delete-account.html", "expose.html", "health.html", "thanks.html", "reset-password/index.html"
 ]);
 const DYNAMIC_SEO_HTML = new Set(["article.html", "listing.html", "legal/detail.html"]);
@@ -19,6 +22,7 @@ const ROUTE_PREFIXES = new Set([
   "us-crime", "china-officialdom", "asylum", "asylumjudge", "immigration", "deport", "expose", "community", "jobs", "niulai", "ershou", "news"
 ]);
 const FORBIDDEN_SITEMAP_ROUTES = [
+  /https:\/\/trrb\.net\/user(?:\/|[?<]|$)/i,
   /https:\/\/trrb\.net\/niulai(?:\/|[?<]|$)/i,
   /https:\/\/trrb\.net\/people(?:\/|[?<]|$)/i,
   /https:\/\/trrb\.net\/expose(?:\/|\?|<|$)/i,
@@ -144,6 +148,9 @@ for (const file of htmlFiles) {
     const intentionallyNoindex = is404 || INTENTIONAL_NOINDEX_HTML.has(name);
     const indexableStaticPage = !dynamicSeo && !externalProduct && !intentionallyNoindex;
 
+    if (ACCOUNT_PROFILE_SHELLS.has(name) && !/name=["']robots["'][^>]*noindex/i.test(html)) {
+      errors.push(`${name}: 账号与动态个人主页壳必须保留 noindex`);
+    }
     if (is404) {
       if (!/noindex/i.test(html)) errors.push(`${name}: 404页面必须 noindex`);
     } else if (indexableStaticPage && /name=["']robots["'][^>]*noindex/i.test(html)) {

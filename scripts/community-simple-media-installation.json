@@ -8,10 +8,12 @@
     "user/profile.js",
     "user/index.html",
     "user/center/index.html",
-    "scripts/validate-site.mjs"
+    "scripts/validate-site.mjs",
+    "scripts/seo-integrity-audit.mjs"
   ],
   "video_max_bytes": 12582912,
   "old_posts_deleted": false,
-  "verification_run": "36270358537",
-  "database_migration_required": "20260926210000_community_simple_media.sql"
+  "verification_run": "36270776795",
+  "database_migration_required": "20260926210000_community_simple_media.sql",
+  "profile_noindex_preserved": true
 }

@@ -4,10 +4,12 @@ on:
     branches: [fix/community-public-profiles-20260926]
     paths:
       - '.github/workflows/community-public-profile-verify.yml'
+      - 'assets/social-*'
       - 'scripts/community-public-profile-upgrade.mjs'
       - 'scripts/community-profile-finish.mjs'
       - 'scripts/community-public-profile.test.mjs'
       - 'scripts/community-public-profile.e2e.mjs'
+      - 'scripts/community-masonry-smoke.mjs'
   workflow_dispatch:
 permissions:
   contents: write
@@ -38,9 +40,10 @@ jobs:
         run: |
           npm install --prefix /tmp/community-browser --no-save playwright@1.51.1
           /tmp/community-browser/node_modules/.bin/playwright install --with-deps chromium
-      - name: Browser navigation, avatars, guide and privacy regression
+      - name: Browser navigation, masonry placement, avatars, guide and privacy regression
         run: |
           python3 -m http.server 8123 > /tmp/community-http.log 2>&1 &
+          node scripts/community-masonry-smoke.mjs
           node scripts/community-public-profile.e2e.mjs
       - name: Commit tested static pages and public avatar field on this branch only
         run: |

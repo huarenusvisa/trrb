@@ -1,8 +1,8 @@
+import './news-budget-preload.mjs';
 import {createHash} from 'node:crypto';
 import {factualSources,independentSourceCount} from './news-editorial-policy.mjs';
 
-// This boundary applies to new processing only; old articles remain read-only
-// comparison evidence. It is set once by the repair installation, not each run.
+// Fixed at installation, not reset each run. Historical rows are comparison-only.
 export function forwardQuery() {
   const value=process.env.NEWS_FORWARD_ONLY_FROM;
   if(!value)return {};
@@ -36,8 +36,7 @@ function people(row){
 }
 function action(row){return original(row).match(/\b(arrested|apprehended|detained|removed|deported|extradited|indicted|charged|sentenced|released)\b/i)?.[1]?.toLowerCase()||'';}
 function day(row){const p=payload(row),value=row?.event_date||p.event_date||row?.source_created_at||p.lead_source_created_at;return /^\d{4}-\d{2}-\d{2}/.test(String(value||''))?String(value).slice(0,10):'';}
-// null = ordinary nonofficial pair. Official pairs require positive identity
-// evidence; nationality, agency, state, boilerplate or shared numbers never suffice.
+// null = ordinary nonofficial pair. Official pairs need positive identity evidence.
 export function officialEventRelation(a,b){
   if(!isOfficialRecord(a)&&!isOfficialRecord(b))return null;
   const A=sourceId(a),B=sourceId(b),au=canonicalSource(a),bu=canonicalSource(b);
@@ -54,13 +53,33 @@ export function officialPostSignature(post){
   return identity?'official-'+createHash('sha256').update(String(identity)).digest('hex').slice(0,40):'';
 }
 
-export const DEPTH_PLAN_SCHEMA={type:'object',additionalProperties:false,required:['public_interest','fresh_development','reason','missing_material','sections'],properties:{
-  public_interest:{type:'boolean'},fresh_development:{type:'boolean'},reason:{type:'string'},missing_material:{type:'array',items:{type:'string'}},
-  sections:{type:'array',maxItems:8,items:{type:'object',additionalProperties:false,required:['question','facts'],properties:{question:{type:'string'},facts:{type:'array',minItems:1,maxItems:5,items:{type:'object',additionalProperties:false,required:['fact','source_urls'],properties:{fact:{type:'string'},source_urls:{type:'array',minItems:1,items:{type:'string'}}}}}}}
-}};
+const FACT_SCHEMA={
+  type:'object',additionalProperties:false,required:['fact','source_urls'],
+  properties:{fact:{type:'string'},source_urls:{type:'array',minItems:1,items:{type:'string'}}}
+};
+const SECTION_SCHEMA={
+  type:'object',additionalProperties:false,required:['question','facts'],
+  properties:{question:{type:'string'},facts:{type:'array',minItems:1,maxItems:5,items:FACT_SCHEMA}}
+};
+export const DEPTH_PLAN_SCHEMA={
+  type:'object',additionalProperties:false,
+  required:['public_interest','fresh_development','reason','missing_material','sections'],
+  properties:{
+    public_interest:{type:'boolean'},fresh_development:{type:'boolean'},reason:{type:'string'},
+    missing_material:{type:'array',items:{type:'string'}},
+    sections:{type:'array',maxItems:8,items:SECTION_SCHEMA}
+  }
+};
 export function depthAssignment(research,plan){
   const allowed=new Set(factualSources(research).map(s=>s.url));
-  const sections=(plan?.sections||[]).filter(s=>String(s.question||'').trim()&&s.facts?.length>=2&&s.facts.every(f=>String(f.fact||'').trim()&&f.source_urls?.length&&f.source_urls.every(u=>allowed.has(u))));
+  const questions=new Set(),facts=new Set();
+  const sections=(plan?.sections||[]).filter(s=>{
+    const q=normalized(s.question);
+    if(!q||questions.has(q)||!Array.isArray(s.facts)||s.facts.length<2)return false;
+    if(!s.facts.every(f=>normalized(f.fact)&&!facts.has(normalized(f.fact))&&f.source_urls?.length&&f.source_urls.every(u=>allowed.has(u))))return false;
+    if(new Set(s.facts.map(f=>normalized(f.fact))).size!==s.facts.length)return false;
+    questions.add(q);s.facts.forEach(f=>facts.add(normalized(f.fact)));return true;
+  });
   const used=new Set(sections.flatMap(s=>s.facts.flatMap(f=>f.source_urls)));
   const cited={...research,sources:(research?.sources||[]).filter(s=>used.has(s.url))};
   const missing=[...(plan?.missing_material||[])];

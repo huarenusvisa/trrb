@@ -25,14 +25,15 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - name: Integrate reviewed source and test policy API and existing profiles
+      - name: Integrate reviewed source and test policy API profiles and privacy-aware SEO
         run: |
           if ! test -f scripts/community-simple-media-installation.json; then
             node scripts/community-simple-media-upgrade.mjs
           fi
+          node scripts/community-simple-media-seo-fix.mjs
           node --check assets/community-composer.js
           node --check scripts/community-simple-media.e2e.mjs
-          node --test scripts/community-simple-media.test.mjs scripts/community-public-profile.test.mjs
+          node --test scripts/community-simple-media.test.mjs scripts/community-public-profile.test.mjs scripts/community-simple-media-seo.test.mjs
       - name: Prepare isolated browser
         run: |
           npm install --prefix /tmp/community-browser --no-save playwright@1.51.1
@@ -56,7 +57,7 @@ jobs:
             execFileSync('git',['diff','--cached','--check'],{stdio:'inherit'});
             execFileSync('git',['config','user.name','github-actions[bot]']);
             execFileSync('git',['config','user.email','41898282+github-actions[bot]@users.noreply.github.com']);
-            execFileSync('git',['commit','-m','fix(community): simplify publishing and attach verified limited-size media'],{stdio:'inherit'});
+            execFileSync('git',['commit','-m','fix(community): simplify publishing and preserve private profile indexing policy'],{stdio:'inherit'});
             execFileSync('git',['push','origin','HEAD:fix/community-simple-media-20260926'],{stdio:'inherit'});
           }
           JS

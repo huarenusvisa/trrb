@@ -155,6 +155,9 @@
       if (!state.session) return [];
       if (!state.followingIds.size) return [];
       query = query.in('user_id', Array.from(state.followingIds));
+    } else if (state.mode === 'mine') {
+      if (!state.session) return [];
+      query = query.eq('user_id', state.session.user.id);
     }
     const { data, error } = await query;
     if (error) throw error;
@@ -224,6 +227,9 @@
       if (state.mode === 'following') {
         if (!state.session) communityPosts = [];
         else communityPosts = communityPosts.filter((post) => state.followingIds.has(post.user_id));
+      } else if (state.mode === 'mine') {
+        if (!state.session) communityPosts = [];
+        else communityPosts = communityPosts.filter((post) => post.user_id === state.session.user.id);
       }
       state.posts = communityPosts;
       state.profilePosts = profilePosts;
@@ -315,22 +321,24 @@
     $('show-all').addEventListener('click', () => {
       state.category='';
       document.querySelectorAll('[data-category]').forEach((item)=>item.classList.toggle('active', item.dataset.category === ''));
-      $('feed-title').textContent = state.mode === 'community' ? '社区帖子' : state.mode === 'following' ? '关注动态' : '推荐内容';
+      $('feed-title').textContent = state.mode === 'community' ? '社区帖子' : state.mode === 'following' ? '关注动态' : state.mode === 'mine' ? '我的主页' : '推荐内容';
       loadFeed();
     });
     $('category-grid').addEventListener('click', (event) => {
       const button = event.target.closest('[data-category]'); if (!button) return;
       state.category = button.dataset.category || '';
-      $('feed-title').textContent = state.category ? (categoryNames[state.category] || button.textContent.trim()) : (state.mode === 'community' ? '社区帖子' : state.mode === 'following' ? '关注动态' : '推荐内容');
+      $('feed-title').textContent = state.category ? (categoryNames[state.category] || button.textContent.trim()) : (state.mode === 'community' ? '社区帖子' : state.mode === 'following' ? '关注动态' : state.mode === 'mine' ? '我的主页' : '推荐内容');
       document.querySelectorAll('[data-category]').forEach((item)=>item.classList.toggle('active', item === button));
       loadFeed();
     });
     document.querySelectorAll('[data-mode]').forEach((button) => button.addEventListener('click', () => {
       state.mode = button.dataset.mode || 'latest';
       document.querySelectorAll('[data-mode]').forEach((item) => item.classList.toggle('active', item === button));
-      $('feed-title').textContent = state.mode === 'community' ? '社区帖子' : state.mode === 'following' ? '关注动态' : '推荐内容';
+      $('feed-title').textContent = state.mode === 'community' ? '社区帖子' : state.mode === 'following' ? '关注动态' : state.mode === 'mine' ? '我的主页' : '推荐内容';
+      if ((state.mode === 'following' || state.mode === 'mine') && !state.session) return requireLogin(() => loadFeed());
       loadFeed();
     }));
+    $('app-drafts-info')?.addEventListener('click', () => alert('APP 草稿箱最多保留 5 个草稿。草稿目前保存在发布设备本地，图片和视频不会跨会话保存。'));
     document.addEventListener('click', async (event) => {
       const close = event.target.closest('[data-close]'); if (close) $(close.dataset.close)?.close();
       const open = event.target.closest('[data-open-post]'); if (open) openPost(open.dataset.openPost);

@@ -30,6 +30,7 @@ export type ProfilePost = {
   id: string;
   user_id: string;
   caption: string;
+  tags: string[];
   status: 'published' | 'deleted';
   created_at: string;
   updated_at: string;

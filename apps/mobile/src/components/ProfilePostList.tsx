@@ -36,7 +36,7 @@ export function ProfilePostList({ posts, own }: Props) {
 const styles = StyleSheet.create({
   grid:{flexDirection:'row',flexWrap:'wrap',gap:4},
   tile:{width:'32.6%',aspectRatio:.78,backgroundColor:'#111',overflow:'hidden',position:'relative'},
-  tileMedia:{position:'absolute',inset:0,width:'100%',height:'100%',backgroundColor:'#e9edf2'},
+  tileMedia:{position:'absolute',top:0,right:0,bottom:0,left:0,width:'100%',height:'100%',backgroundColor:'#e9edf2'},
   videoTile:{alignItems:'center',justifyContent:'center',backgroundColor:'#1d2939'},
   play:{fontSize:28,color:'#fff'},videoLabel:{color:'#fff',fontWeight:'900',fontSize:12,marginTop:6},
   textTile:{padding:10,justifyContent:'center',backgroundColor:'#f8fafc'},

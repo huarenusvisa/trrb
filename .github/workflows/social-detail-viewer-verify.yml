@@ -6,7 +6,7 @@ on:
       - '.github/workflows/social-detail-viewer-verify.yml'
       - 'assets/social-detail.*'
       - 'scripts/social-detail-*'
-  workflow_dispatch:
+      - 'scripts/fix-community-detail-cache-contract.mjs'
 permissions:
   contents: read
 concurrency:
@@ -31,6 +31,8 @@ jobs:
           if ! test -f scripts/social-detail-installation.json; then
             node scripts/social-detail-upgrade.mjs
           fi
+          node scripts/fix-community-detail-cache-contract.mjs
+          node --check scripts/validate-site.mjs
           node --check scripts/social-detail-layout.e2e.mjs
           node --check scripts/social-detail-live.mjs
           node --test scripts/community-public-profile.test.mjs
@@ -56,7 +58,7 @@ jobs:
             execFileSync('git',['diff','--cached','--check'],{stdio:'inherit'});
             execFileSync('git',['config','user.name','github-actions[bot]']);
             execFileSync('git',['config','user.email','41898282+github-actions[bot]@users.noreply.github.com']);
-            execFileSync('git',['commit','-m','fix(community): desktop split detail and distinct mobile image-above-body swipe'],{stdio:'inherit'});
+            execFileSync('git',['commit','-m','fix(community): validate current split detail assets and distinct mobile layout'],{stdio:'inherit'});
             execFileSync('git',['push','origin','HEAD:fix/social-detail-carousel-20260926'],{stdio:'inherit'});
           }
           JS

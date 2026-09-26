@@ -12,7 +12,8 @@ import { clearProfilePostDraft, loadProfilePostDraft, saveProfilePostDraft } fro
 export default function ProfileComposeScreen() {
   const { t } = useI18n();
   const [assets, setAssets] = useState<ImagePicker.ImagePickerAsset[]>([]);
-  const [caption, setCaption] = useState('');\n  const [tagsText, setTagsText] = useState('');
+  const [caption, setCaption] = useState('');
+  const [tagsText, setTagsText] = useState('');
   const [busy, setBusy] = useState(false);
   const [draftReady, setDraftReady] = useState(false);
   const [draftRestored, setDraftRestored] = useState(false);
@@ -67,7 +68,8 @@ export default function ProfileComposeScreen() {
     Keyboard.dismiss();
     setBusy(true); setFailure(''); setProgress(t('profileCompose.preparing'));
     try {
-      const tags = tagsText.split(/[，,\\s#]+/).map((tag) => tag.trim()).filter(Boolean).slice(0, 8);\n      await createProfilePost(caption, assets, tags, ({ completed, total }) => {
+      const tags = tagsText.split(/[，,\\s#]+/).map((tag) => tag.trim()).filter(Boolean).slice(0, 8);
+      await createProfilePost(caption, assets, tags, ({ completed, total }) => {
         setProgress(completed >= total ? t('profileCompose.finishing') : t('profileCompose.uploading', { current: completed + 1, total }));
       });
       if (draftUserId.current) await clearProfilePostDraft(draftUserId.current);
@@ -97,7 +99,9 @@ export default function ProfileComposeScreen() {
       {asset.type === 'video' ? <View style={styles.videoPreview}><Text style={styles.videoIcon}>▶</Text><Text style={styles.videoText}>{t('profileCompose.videoDuration', { seconds: Math.ceil((asset.duration || 0) / 1000) })}</Text></View> : <Image source={{ uri: asset.uri }} contentFit="cover" style={styles.preview} />}
     </View>)}<Pressable accessibilityRole="button" accessibilityLabel={t('profileCompose.clearMedia')} disabled={busy} style={styles.clearMedia} onPress={() => setAssets([])}><Text style={styles.clearMediaText}>{t('profileCompose.clearMedia')}</Text></Pressable></View> : null}
     <View style={styles.labelRow}><Text style={styles.label}>{t('profileCompose.caption')}</Text>{caption || assets.length ? <Pressable accessibilityRole="button" accessibilityLabel={t('profileCompose.clearDraft')} disabled={busy} onPress={() => void clearDraft()}><Text style={styles.clearDraft}>{t('profileCompose.clearDraft')}</Text></Pressable> : null}</View>
-    <TextInput testID="profile-compose-tags" accessibilityLabel="动态标签" value={tagsText} onChangeText={setTagsText} editable={!busy} maxLength={220} placeholder="添加标签，用空格或逗号分隔，例如：中秋节 刘欢 一人食" style={styles.tagsInput} />\n    <Text style={styles.tagsHint}>最多 8 个标签，每个标签最多 24 个字符；发布后会显示为 #标签。</Text>\n    <TextInput testID="profile-compose-caption" accessibilityLabel={t('profileCompose.captionA11y')} value={caption} onChangeText={(value) => { latestCaption.current = value; setCaption(value); setDraftRestored(false); }} editable={!busy} maxLength={2000} multiline textAlignVertical="top" placeholder={t('profileCompose.captionPlaceholder')} style={styles.input} /><Text style={styles.counter}>{t('profileCompose.draftCounter', { count: caption.length })}</Text>
+    <TextInput testID="profile-compose-tags" accessibilityLabel="动态标签" value={tagsText} onChangeText={setTagsText} editable={!busy} maxLength={220} placeholder="添加标签，用空格或逗号分隔，例如：中秋节 刘欢 一人食" style={styles.tagsInput} />
+    <Text style={styles.tagsHint}>最多 8 个标签，每个标签最多 24 个字符；发布后会显示为 #标签。</Text>
+    <TextInput testID="profile-compose-caption" accessibilityLabel={t('profileCompose.captionA11y')} value={caption} onChangeText={(value) => { latestCaption.current = value; setCaption(value); setDraftRestored(false); }} editable={!busy} maxLength={2000} multiline textAlignVertical="top" placeholder={t('profileCompose.captionPlaceholder')} style={styles.input} /><Text style={styles.counter}>{t('profileCompose.draftCounter', { count: caption.length })}</Text>
     <Text style={styles.notice}>{t('profileCompose.privacyNotice')}</Text>
     {failure ? <AsyncStatePanel testID="profile-compose-error" title={t('profileCompose.incomplete')} message={`${failure} ${t('profileCompose.failurePreserved')}`} tone="error" actionLabel={assets.length ? t('profileCompose.retry') : t('profileCompose.reselectMedia')} onAction={assets.length ? () => void submit() : () => void pick()} busy={busy} /> : null}
     {progress ? <Text testID="profile-compose-progress" accessibilityRole="alert" accessibilityLiveRegion="polite" style={styles.progress}>{progress}</Text> : null}

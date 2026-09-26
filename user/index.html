@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>用户主页｜唐人日报</title>
+  <meta name="description" content="唐人日报用户主页，查看公开动态、图片、视频、标签以及关注信息。" />
+  <meta name="robots" content="noindex,follow" />
+  <link rel="icon" href="/favicon.ico" />
+  <link rel="stylesheet" href="/user/profile.css?v=20260926-1" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="shell header-row">
+      <a class="brand" href="/" aria-label="返回唐人日报"><img src="/trrb-logo-cropped.webp" alt="唐人日报" width="220" height="64" /></a>
+      <nav><a href="/">新闻首页</a><a href="/community/">社区</a><a href="/immigrate/">移民知识</a><a href="/legal/">判例与新规</a></nav>
+      <div class="account-actions"><span id="account-label"></span><button class="secondary" id="login-open" type="button">登录 / 注册</button><button class="secondary hidden" id="logout-button" type="button">退出</button></div>
+    </div>
+  </header>
+
+  <main class="shell page">
+    <div id="page-message" class="notice">正在读取用户主页…</div>
+
+    <section id="profile-hero" class="profile-hero hidden">
+      <div class="cover" id="profile-cover"></div>
+      <div class="profile-body">
+        <div class="avatar-wrap"><div id="profile-avatar" class="avatar large">唐</div></div>
+        <div class="identity">
+          <div class="name-row"><h1 id="profile-name">唐人用户</h1><span id="privacy-badge" class="privacy-badge hidden">🔒 隐私账号</span></div>
+          <p id="profile-bio" class="bio">这个人还没有填写简介。</p>
+          <div class="counts"><button id="followers-count" type="button">0 <span>粉丝</span></button><button id="following-count" type="button">0 <span>关注</span></button><span id="post-count">0 <span>动态</span></span></div>
+        </div>
+        <div class="actions"><button id="follow-button" type="button">关注</button><a class="secondary action-link" href="/community/">返回社区</a></div>
+      </div>
+    </section>
+
+    <section id="private-panel" class="private-panel hidden">
+      <div class="lock">🔒</div><h2>这是隐私账号</h2><p>关注申请通过后，才能查看对方发布的主页动态。</p>
+    </section>
+
+    <section id="content-section" class="content-section hidden">
+      <div class="section-head"><div><p class="eyebrow">PROFILE POSTS</p><h2>主页动态</h2></div><div class="view-tabs"><button class="active" data-filter="all">全部</button><button data-filter="image">图片</button><button data-filter="video">视频</button></div></div>
+      <div id="profile-posts" class="profile-posts"></div>
+    </section>
+  </main>
+
+  <dialog id="auth-dialog" class="modal">
+    <form id="auth-form" class="modal-card">
+      <button class="modal-close" type="button" data-close="auth-dialog" aria-label="关闭">×</button>
+      <p class="eyebrow">统一账号</p><h2>登录或注册</h2><p>第一次使用会自动注册。可用邮箱或美国/国际手机号。</p>
+      <label>邮箱或手机号<input id="auth-identifier" autocomplete="username" required /></label>
+      <label>密码<input id="auth-password" type="password" autocomplete="current-password" minlength="8" maxlength="128" required /></label>
+      <button type="submit">继续</button><div id="auth-message" class="form-message"></div>
+    </form>
+  </dialog>
+
+  <footer><div class="shell"><span>© 2026 唐人日报 Tang Ren Daily</span><a href="/community/">社区</a><a href="/privacy.html">隐私政策</a><a href="/terms.html">使用条款</a></div></footer>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4/dist/umd/supabase.min.js"></script>
+  <script src="/assets/supabase-client.js?v=20260825-community"></script>
+  <script src="/user/profile.js?v=20260926-1"></script>
+</body>
+</html>

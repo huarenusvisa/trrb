@@ -31,6 +31,7 @@ export type ProfilePost = {
   user_id: string;
   caption: string;
   tags: string[];
+  comment_count: number;
   status: 'published' | 'deleted';
   created_at: string;
   updated_at: string;
@@ -71,4 +72,19 @@ export type ConversationSummary = DirectConversation & {
   partner: SocialProfile | null;
   latest_message: DirectMessage | null;
   unread_count: number;
+};
+
+
+export type ProfilePostComment = {
+  id: string;
+  post_id: string;
+  user_id: string;
+  content: string;
+  status: 'published' | 'deleted';
+  created_at: string;
+  updated_at: string;
+  profiles?: {
+    display_name: string | null;
+    avatar_key: string | null;
+  } | null;
 };

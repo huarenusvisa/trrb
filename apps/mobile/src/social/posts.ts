@@ -28,7 +28,7 @@ export async function updateProfilePost(postId: string, caption: string, tags: s
 }
 
 
-const POST_SELECT = 'id,user_id,caption,tags,status,created_at,updated_at,profile_post_media(id,post_id,owner_user_id,media_type,storage_path,mime_type,width,height,duration_ms,sort_order)';
+const POST_SELECT = 'id,user_id,caption,tags,comment_count,status,created_at,updated_at,profile_post_media(id,post_id,owner_user_id,media_type,storage_path,mime_type,width,height,duration_ms,sort_order)';
 
 async function withSignedUrls(rows: unknown[]) {
   return Promise.all((rows as ProfilePost[]).map(async (post) => ({
@@ -94,4 +94,31 @@ export async function deleteProfilePost(post: ProfilePost) {
   const paths = post.profile_post_media.map((media) => media.storage_path);
   if (paths.length) await supabase.storage.from(PROFILE_POST_MEDIA_BUCKET).remove(paths).catch(() => undefined);
   await supabase.from('profile_post_media').delete().eq('post_id', post.id);
+}
+
+
+export async function listProfilePostComments(postId: string) {
+  const { data, error } = await supabase
+    .from('profile_post_comments')
+    .select('id,post_id,user_id,content,status,created_at,updated_at,profiles!profile_post_comments_user_id_fkey(display_name,avatar_key)')
+    .eq('post_id', postId)
+    .eq('status', 'published')
+    .order('created_at', { ascending: true })
+    .limit(300);
+  if (error) throw error;
+  return data || [];
+}
+
+export async function createProfilePostComment(postId: string, content: string) {
+  const { data, error } = await supabase.rpc('create_profile_post_comment', {
+    p_post_id: postId,
+    p_content: content,
+  });
+  if (error) throw error;
+  return data;
+}
+
+export async function deleteProfilePostComment(commentId: string) {
+  const { error } = await supabase.rpc('delete_my_profile_post_comment', { p_comment_id: commentId });
+  if (error) throw error;
 }

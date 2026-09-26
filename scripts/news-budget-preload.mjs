@@ -3,33 +3,40 @@ import {basename} from 'node:path';
 import {requestEstimate,responseCost,NewsBudgetDeferred} from './news-cost-model.mjs';
 
 export function createBudgetFetch({nativeFetch,rpc,pipeline,phase,runId,checkpointRead,checkpointWrite}) {
+  function deferred(reason,stage,provider) {
+    const error=new NewsBudgetDeferred(reason);
+    console.warn(JSON.stringify({event:'news-budget-deferred',pipeline,phase,run_id:runId,provider,stage,reason:String(reason).slice(0,120)}));
+    return error;
+  }
   return async function budgetFetch(input, options={}) {
     const original=new URL(input instanceof Request ? input.url : String(input));
     if (!['api.openai.com','api.x.com','api.twitter.com'].includes(original.hostname)) return nativeFetch(input,options);
     const req=new Request(input,options);
-    if (req.method !== (original.hostname==='api.openai.com'?'POST':'GET')) throw new NewsBudgetDeferred('unpriced_method');
+    const provider=original.hostname==='api.openai.com'?'openai':'x';
+    if (req.method !== (provider==='openai'?'POST':'GET')) throw deferred('unpriced_method','request_contract',provider);
     let body={};
-    if (req.method==='POST') { try { body=await req.clone().json(); } catch { throw new NewsBudgetDeferred('invalid_paid_body'); } }
+    if (req.method==='POST') { try { body=await req.clone().json(); } catch { throw deferred('invalid_paid_body','request_contract',provider); } }
     const url=new URL(original);
-    // Cache identical reads briefly; never advance a watermark before the collector saves its rows.
-    // User lookup metadata can safely be shared for 24h; news responses expire after 10m.
+    // Only user lookup metadata is shared for 24h. Fresh news reads remain metered.
     let key=null;
-    if (original.hostname!=='api.openai.com' && checkpointRead) {
+    if (provider!=='openai' && checkpointRead) {
       const userLookup=/^\/2\/users(?:\/by(?:\/username\/[^/]+)?|\/\d+)?$/.test(url.pathname);
       const canonical=new URL(url); canonical.searchParams.sort();
       if (userLookup) key=createHash('sha256').update(canonical.href).digest('hex');
       const prior=key ? await checkpointRead(key) : null;
-      if (prior && Date.now()-Date.parse(prior.updated_at)<(userLookup?86400000:600000)) return Response.json(prior.payload);
+      if (prior && Date.now()-Date.parse(prior.updated_at)<86400000) return Response.json(prior.payload);
     }
-    if (original.hostname!=='api.openai.com' && url.searchParams.has('max_results')) {
+    if (provider!=='openai' && url.searchParams.has('max_results')) {
       url.searchParams.set('max_results',String(Math.min(20,Number(url.searchParams.get('max_results')))));
     }
-    const estimate=requestEstimate(url.href,body);
+    let estimate;
+    try {estimate=requestEstimate(url.href,body);}
+    catch(error){if(error?.code==='NEWS_BUDGET_DEFERRED')throw deferred(String(error.message).replace(/^NEWS_BUDGET_DEFERRED:\s*/,''),'request_contract',provider);throw error;}
     const id=randomUUID();
     let reservation;
     try { reservation=await rpc('news_budget_reserve',{p_id:id,p_pipeline:pipeline,p_provider:estimate.provider,p_phase:phase,p_run_id:runId,p_micros:estimate.micros,p_priority:!/(extra-monitored|high-recall|added-source)/.test(phase)}); }
-    catch { throw new NewsBudgetDeferred('budget_service_unavailable'); }
-    if (!reservation?.allowed) throw new NewsBudgetDeferred(reservation?.reason || 'reservation_denied');
+    catch { throw deferred('budget_service_unavailable','reservation',provider); }
+    if (!reservation?.allowed) throw deferred(reservation?.reason || 'reservation_denied','reservation',provider);
     // No retry here. Timeout/crash/ambiguous error leaves the full reservation charged.
     const response=await nativeFetch(url.href,req);
     if (response.ok) {

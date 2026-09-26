@@ -94,8 +94,55 @@
       const mediaHtml=!first?'':first.media_type==='video'
         ?`<div class="video-wrap"><video class="post-media" controls preload="metadata" src="${esc(first.signed_url)}"></video><span class="video-badge">视频</span></div>`
         :`<img class="post-media" loading="lazy" src="${esc(first.signed_url)}" alt="" />`;
-      return `<article class="post-card">${mediaHtml}<div class="post-body">${post.caption?`<p class="post-caption">${esc(post.caption)}</p>`:''}${post.tags?.length?`<div class="tags">${post.tags.slice(0,5).map(tag=>`<span class="tag">#${esc(tag)}</span>`).join('')}</div>`:''}<div class="post-time">${esc(dateText(post.created_at))}${media.length>1?` · ${media.length} 个媒体`:''}</div></div></article>`;
+      return `<article class="post-card" data-open-profile-post="${esc(post.id)}">${mediaHtml}<div class="post-body">${post.caption?`<p class="post-caption">${esc(post.caption)}</p>`:''}${post.tags?.length?`<div class="tags">${post.tags.slice(0,5).map(tag=>`<span class="tag">#${esc(tag)}</span>`).join('')}</div>`:''}<div class="post-time">${esc(dateText(post.created_at))}${media.length>1?` · ${media.length} 个媒体`:''}</div></div></article>`;
     }).join(''):'<div class="empty">暂无符合条件的主页动态。</div>';
+  }
+
+
+  async function loadPcPostComments(postId) {
+    const { data, error } = await window.supabaseClient
+      .from('profile_post_comments')
+      .select('id,post_id,user_id,content,status,created_at,profiles!profile_post_comments_user_id_fkey(display_name,avatar_key)')
+      .eq('post_id',postId)
+      .eq('status','published')
+      .order('created_at',{ascending:true})
+      .limit(300);
+    if(error) throw error;
+    return data || [];
+  }
+
+  async function openPcPost(postId) {
+    const post=state.posts.find((item)=>item.id===postId);
+    if(!post) return;
+    try{
+      const comments=await loadPcPostComments(postId);
+      const media=post.profile_post_media||[];
+      const mediaHtml=media.map((item)=>item.media_type==='video'
+        ? `<video class="detail-media" controls preload="metadata" src="${esc(item.signed_url)}"></video>`
+        : `<img class="detail-media" src="${esc(item.signed_url)}" alt="" />`).join('');
+      $('post-detail-content').innerHTML=`
+        <p class="eyebrow">PROFILE POST</p>
+        ${mediaHtml}
+        ${post.caption?`<div class="detail-copy">${esc(post.caption)}</div>`:''}
+        ${post.tags?.length?`<div class="detail-tags">${post.tags.slice(0,5).map((tag)=>`<span class="tag">#${esc(tag)}</span>`).join('')}</div>`:''}
+        <div class="detail-comment-head"><h3>评论</h3><span>${comments.length}</span></div>
+        ${state.session?`<form class="detail-comment-form" data-pc-comment-form="${esc(post.id)}"><textarea name="content" maxlength="3000" placeholder="写下你的评论…" required></textarea><button type="submit">发表评论</button><div class="form-message"></div></form>`:'<p class="bio">登录后可以发表评论。</p>'}
+        <div class="detail-comment-list">${comments.length?comments.map((comment)=>`<article class="detail-comment"><div class="detail-comment-top"><strong>${esc(comment.profiles?.display_name||'唐人用户')}</strong><small>${esc(dateText(comment.created_at))}</small></div><p>${esc(comment.content)}</p></article>`).join(''):'<div class="media-summary">暂无评论。</div>'}</div>`;
+      $('post-detail-dialog').showModal();
+    }catch(error){alert(error.message||'评论读取失败');}
+  }
+
+  async function submitPcComment(form) {
+    if(!state.session){$('auth-dialog').showModal();return;}
+    const content=form.elements.content.value.trim();
+    if(!content) return;
+    const message=form.querySelector('.form-message');
+    try{
+      const {error}=await window.supabaseClient.rpc('create_profile_post_comment',{p_post_id:form.dataset.pcCommentForm,p_content:content});
+      if(error) throw error;
+      form.reset();
+      await openPcPost(form.dataset.pcCommentForm);
+    }catch(error){message.textContent=error.message||'评论失败';}
   }
 
   async function refresh() {
@@ -354,7 +401,8 @@
     $('new-local-draft').addEventListener('click',newLocalDraft);
     $('dynamic-caption').addEventListener('input',()=>{$('dynamic-counter').textContent=`${$('dynamic-caption').value.length}/2000`;});
     document.querySelectorAll('[data-filter]').forEach((button)=>button.addEventListener('click',()=>{state.filter=button.dataset.filter;document.querySelectorAll('[data-filter]').forEach((x)=>x.classList.toggle('active',x===button));renderPosts();}));
-    document.addEventListener('click',(event)=>{const close=event.target.closest('[data-close]');if(close)$(close.dataset.close)?.close();const load=event.target.closest('[data-load-pc-draft]');if(load)loadLocalDraft(load.dataset.loadPcDraft);const del=event.target.closest('[data-delete-pc-draft]');if(del)deleteLocalDraft(del.dataset.deletePcDraft);});
+    document.addEventListener('click',(event)=>{const close=event.target.closest('[data-close]');if(close)$(close.dataset.close)?.close();const load=event.target.closest('[data-load-pc-draft]');if(load)loadLocalDraft(load.dataset.loadPcDraft);const del=event.target.closest('[data-delete-pc-draft]');if(del)deleteLocalDraft(del.dataset.deletePcDraft);const post=event.target.closest('[data-open-profile-post]');if(post)void openPcPost(post.dataset.openProfilePost);});
+    $('post-detail-content').addEventListener('submit',(event)=>{const form=event.target.closest('[data-pc-comment-form]');if(!form)return;event.preventDefault();void submitPcComment(form);});
   }
 
   const params=new URLSearchParams(location.search);

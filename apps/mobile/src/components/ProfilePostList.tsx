@@ -23,6 +23,7 @@ export function ProfilePostList({ posts, own, onDelete }: Props) {
   return <View style={styles.list}>{posts.map((post) => <View key={post.id} style={styles.card}>
     <View style={styles.cardHead}><Text style={styles.time}>{new Date(post.created_at).toLocaleString(localeDateTag(locale))}</Text>{own && onDelete ? <Pressable accessibilityRole="button" accessibilityLabel={t('userProfile.deletePostA11y')} onPress={() => Alert.alert(t('userProfile.deletePostTitle'), t('userProfile.deletePostBody'), [{ text: t('userProfile.cancel'), style: 'cancel' }, { text: t('userProfile.delete'), style: 'destructive', onPress: () => void onDelete(post) }])}><Text style={styles.delete}>{t('userProfile.delete')}</Text></Pressable> : null}</View>
     {post.caption ? <Text style={styles.caption}>{post.caption}</Text> : null}
+    {post.tags?.length ? <View style={styles.tags}>{post.tags.map((tag) => <Text key={tag} style={styles.tag}>#{tag}</Text>)}</View> : null}
     <View style={post.profile_post_media.length > 1 ? styles.mediaGrid : styles.mediaSingle}>{post.profile_post_media.map((media) => <Media key={media.id} media={media} multiple={post.profile_post_media.length > 1} />)}</View>
   </View>)}</View>;
 }

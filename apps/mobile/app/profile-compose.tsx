@@ -68,7 +68,7 @@ export default function ProfileComposeScreen() {
     Keyboard.dismiss();
     setBusy(true); setFailure(''); setProgress(t('profileCompose.preparing'));
     try {
-      const tags = tagsText.split(/[，,\\s#]+/).map((tag) => tag.trim()).filter(Boolean).slice(0, 8);
+      const tags = tagsText.split(/[，,\s#]+/).map((tag) => tag.trim()).filter(Boolean).slice(0, 8);
       await createProfilePost(caption, assets, tags, ({ completed, total }) => {
         setProgress(completed >= total ? t('profileCompose.finishing') : t('profileCompose.uploading', { current: completed + 1, total }));
       });

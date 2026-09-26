@@ -9,6 +9,25 @@ export type ProfilePostUploadProgress = {
   total: number;
 };
 
+export function normalizeProfilePostTags(caption: string, tags: string[] = []) {
+  const inline = Array.from(String(caption || '').matchAll(/(?:^|\s)#([^#\s，,]{1,24})/gu)).map((match) => match[1]);
+  return Array.from(new Set([...tags, ...inline].map((tag) => tag.replace(/^#+/, '').trim()).filter(Boolean)))
+    .filter((tag) => tag.length <= 24)
+    .slice(0, 5);
+}
+
+export async function updateProfilePost(postId: string, caption: string, tags: string[] = []) {
+  const normalizedTags = normalizeProfilePostTags(caption, tags);
+  const { data, error } = await supabase.rpc('update_my_profile_post', {
+    p_post_id: postId,
+    p_caption: caption.trim(),
+    p_tags: normalizedTags,
+  });
+  if (error) throw error;
+  return data as ProfilePost;
+}
+
+
 const POST_SELECT = 'id,user_id,caption,tags,status,created_at,updated_at,profile_post_media(id,post_id,owner_user_id,media_type,storage_path,mime_type,width,height,duration_ms,sort_order)';
 
 async function withSignedUrls(rows: unknown[]) {
@@ -34,8 +53,7 @@ export async function createProfilePost(caption: string, assets: ImagePickerAsse
     const limit = asset.type === 'video' ? 80 * 1024 * 1024 : 12 * 1024 * 1024;
     if (asset.fileSize && asset.fileSize > limit) throw new Error(asset.type === 'video' ? '视频不能超过 80MB。' : '单张图片不能超过 12MB。');
   }
-  const normalizedTags = Array.from(new Set(tags.map((tag) => tag.replace(/^#+/, '').trim()).filter(Boolean))).slice(0, 5);
-  if (normalizedTags.some((tag) => tag.length > 24)) throw new Error('单个标签不能超过 24 个字符。');
+  const normalizedTags = normalizeProfilePostTags(caption, tags);
   const { data: post, error: postError } = await supabase.from('profile_posts').insert({ user_id: userId, caption: caption.trim(), tags: normalizedTags, status: 'published' }).select('id').single();
   if (postError) throw postError;
   const uploaded: string[] = [];

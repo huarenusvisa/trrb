@@ -1,0 +1,101 @@
+name: News forward-only repair and verification
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/news-forward-fix-install.yml'
+      - 'scripts/install-news-forward-fix.mjs'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: news-forward-fix-install
+  cancel-in-progress: false
+
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      NEWS_BUDGET_ENFORCE: '0'
+      NEWS_DEPTH_COMMISSION: '0'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Apply reviewed source changes without accessing production data
+        run: |
+          set -euo pipefail
+          node scripts/install-news-forward-fix.mjs
+          node --input-type=module <<'JS'
+          import {readFileSync,writeFileSync} from 'node:fs';
+          const report=JSON.parse(readFileSync('.news-forward-apply.json','utf8'));
+          for(const path of report.changed_files.filter(p=>p.endsWith('.yml'))){
+            let text=readFileSync(path,'utf8');
+            text=text.replace(/^(\s*)NEWS_BUDGET_ENFORCE: ["']?0["']?\s*$/gm,(line,indent)=>line+'\n'+indent+'NEWS_DEPTH_COMMISSION: "0"');
+            writeFileSync(path,text);
+          }
+          const p='scripts/ice-fast-intake.mjs';
+          let text=readFileSync(p,'utf8');
+          const before='status,human_review_status,last_seen_at,first_seen_at';
+          if(!text.includes(before))throw new Error('Missing recent-story scope fields');
+          text=text.replace(before,'status,human_review_status,reviewed_by,created_at,updated_at,last_seen_at,first_seen_at');
+          writeFileSync(p,text);
+          JS
+      - name: Test identity, future-only processing, source checks and depth commissioning
+        run: |
+          set -euo pipefail
+          node --experimental-strip-types --test \
+            scripts/news-forward-policy.test.mjs \
+            scripts/news-editorial-support.test.mjs \
+            scripts/china-hot-editor.test.mjs \
+            scripts/news-budget.test.mjs \
+            scripts/news-priority.test.mjs \
+            scripts/news-editorial-policy.test.mjs \
+            scripts/ice-news-quality-gate.test.mjs \
+            scripts/official-content-routing.test.mjs \
+            scripts/ice-original-posts.test.mjs
+      - name: Commit only the tested application and existing workflow changes
+        id: commit
+        run: |
+          set -euo pipefail
+          mapfile -t paths < <(node -e "for(const p of require('./.news-forward-apply.json').changed_files) console.log(p)")
+          git add -- "${paths[@]}"
+          git diff --cached --check
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'fix(news): isolate new official events and execute evidence-backed deep commissions'
+          git push origin HEAD:main
+          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+          node --input-type=module <<'JS'
+          import {readFileSync,appendFileSync} from 'node:fs';
+          const r=JSON.parse(readFileSync('.news-forward-apply.json','utf8'));
+          appendFileSync(process.env.GITHUB_STEP_SUMMARY,'\n## Forward-only news repair\n\nNew processing boundary: '+r.cutoff+'\n\nExisting daily/monthly budgets and factual publication gates retained. No historical database repair or backfill was run.\n\nChanged files:\n'+r.changed_files.map(p=>'- `'+p+'`').join('\n')+'\n');
+          JS
+      - name: Wake the existing ICE and China pipelines, without creating schedules
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+        run: |
+          node --input-type=module <<'JS'
+          for(const module of ['ice','china-hot']){
+            const response=await fetch(`https://api.github.com/repos/${process.env.REPOSITORY}/actions/workflows/operations-control-plane.yml/dispatches`,{method:'POST',headers:{Authorization:`Bearer ${process.env.GH_TOKEN}`,Accept:'application/vnd.github+json','Content-Type':'application/json','X-GitHub-Api-Version':'2022-11-28'},body:JSON.stringify({ref:'main',inputs:{module}})});
+            if(response.status!==204)throw new Error(`Existing ${module} pipeline dispatch failed (${response.status}): ${(await response.text()).slice(0,300)}`);
+            console.log(JSON.stringify({event:'existing-news-pipeline-dispatched',module,ref:'main'}));
+          }
+          JS
+      - name: Preserve source repair verification record
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: news-forward-repair-verification
+          path: .news-forward-apply.json
+          include-hidden-files: true
+          if-no-files-found: ignore

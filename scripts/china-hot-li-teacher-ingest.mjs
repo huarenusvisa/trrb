@@ -290,19 +290,29 @@ export function assertBodyQuality(article) {
   if (isHeadlineDigest(article.content) || isHeadlineDigest(article.title)) throw qualityError("多主题节目标题或宣传摘要不能作为新闻正文");
 }
 
+export function isReviewedRegular(article) {
+  const review = article?.editorial_review;
+  return ['brief', 'standard'].includes(article?.editorial_depth)
+    && bodyCharacterCount(article.content) >= 50
+    && article.appears_old_news === false && review?.fresh_hot_event === false
+    && Boolean(cleanText(review.freshness_evidence, 1000))
+    && ['single_event', 'grounded', 'sufficient', 'source_chain_complete', 'analysis_grounded', 'court_status_correct'].every(k => review[k] === true);
+}
+
 export function assertPublicationQuality(tweet, article) {
   assertBodyQuality(article);
   if (bodyCharacterCount(article.content) < 800 && article.publication_scope !== "topic_only") throw qualityError("不足800字的短稿只能发布到对应选题");
   const review = article.editorial_review;
+  const regular = isReviewedRegular(article);
   if (!review || review.single_event !== true || review.grounded !== true || review.sufficient !== true || (usableMedia(tweet).length > 0 && review.image_relevant !== true)
-    || review.fresh_hot_event !== true || review.court_status_correct !== true || (article.editorial_depth === "deep" && review.depth_appropriate !== true) || review.analysis_grounded !== true || review.source_chain_complete !== true) {
+    || (review.fresh_hot_event !== true && !regular) || review.court_status_correct !== true || (article.editorial_depth === "deep" && review.depth_appropriate !== true) || review.analysis_grounded !== true || review.source_chain_complete !== true) {
     throw qualityError(review?.reason || "缺少单一主题、事实依据、来源链、深度适配及配图关联性复核");
   }
   const deepErrors = deepQualityErrors(article, tweet.context_research);
   if (deepErrors.length) throw qualityError(deepErrors.join("；"));
   if (article.publication_scope === "topic_only" && (
     !isFreshBriefSource(tweet) || (bodyCharacterCount(article.content) < 600 && !tweet.context_research_attempted) || article.appears_old_news
-    || review.fresh_hot_event !== true || !cleanText(review.freshness_evidence, 1000)
+    || (review.fresh_hot_event !== true && !regular) || !cleanText(review.freshness_evidence, 1000)
   )) throw qualityError("短讯仅限已核对时效的新热点，须先尝试资料扩充并说明新进展依据");
   const media = usableMedia(tweet);
   if (!media.length) return "";
@@ -885,7 +895,7 @@ export async function generateArticle(qualified, tweet, attempt = 0, previous = 
     throw qualityError("政治传闻必须在标题或导语中明确未证实状态，不能改写为已确认事实");
   }
   article.editorial_review = await reviewArticle(qualified, tweet, article);
-  const core=['single_event','grounded','sufficient','source_chain_complete','analysis_grounded','court_status_correct','fresh_hot_event',...(article.editorial_depth==='deep'?['depth_appropriate']:[])];
+  const core=['single_event','grounded','sufficient','source_chain_complete','analysis_grounded','court_status_correct',...(article.editorial_depth==='deep'?['fresh_hot_event','depth_appropriate']:[])];
   if (needsReviewRecheck(article.editorial_review,core)) article.editorial_review=await reviewArticle(qualified,tweet,article,article.editorial_review);
   if (article.editorial_review.image_relevant !== true && usableMedia(tweet).length && core.every(k => article.editorial_review[k] === true)) {
     // A new factual review must pass without images before a text-only copy is accepted.
@@ -956,7 +966,8 @@ export function buildPublishedArticle(tweet, qualified, article, publishedAt = n
       collector: PIPELINE, automatic_publish: true, manual_review_required: false, review_status: "auto_published",
       publication_scope: article.publication_scope || "standard", article_format: article.editorial_depth === "deep" ? "deep_analysis" : article.publication_scope === "topic_only" ? "hot_brief" : "report",
       reviewed_content_sha256:contentDigest(article.title,article.content), editorial_policy_version: EDITORIAL_POLICY_VERSION, editorial_depth: article.editorial_depth || "standard", editorial_depth_reason: article.depth_reason || "", analysis_angles: article.analysis_angles || [],
-      homepage_focus_override: !coverImage || article.publication_scope === "topic_only" ? "exclude" : "auto",
+      publication_mode: isReviewedRegular(article) ? 'reviewed_regular' : 'current_news',
+      homepage_focus_override: !coverImage || article.publication_scope === "topic_only" || isReviewedRegular(article) ? "exclude" : "auto",
       text_only_verified: !coverImage, image_lookup_attempted:tweet.image_lookup_attempted===true, image_source_page:usableMedia(tweet)[article.editorial_review.cover_index]?.source_page || null,
       category_display_name: section, unverified_public_claim: true, content_warning: WARNING,
       category_policy_version: "source-social-v3",

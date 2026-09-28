@@ -26,3 +26,18 @@ Missing images trigger bounded source-page image discovery. Unmatched images nev
 The rolling-seven-day deep share target is 30%, with 50% possible when evidence supports it. Neither the ratio nor the combined 100–200/day aspiration overrides a publication gate. The report counts unique new publication IDs and validates body length, independent sources, review flags and the reviewed content digest. Old-URL updates are excluded from new publication volume.
 
 Priority calls may borrow elapsed-day unused allowance, with a burst ceiling of one quarter of the daily budget. Broad discovery retains the old hourly pace. Atomic reservations and daily/monthly/provider shares remain unchanged. This changes pacing, not the monthly spending ceiling.
+
+## Reviewed ordinary publication (2026-09-28)
+
+A brief or standard report with a completed factual/source/legal review and an
+explicit date explanation may publish as `reviewed_regular` when the only remaining
+veto is `fresh_hot_event=false`. It stays out of homepage focus. Original review
+flags and dates remain intact; old-news detection, the 12-hour source collection
+window, duplicate checks, and deep-report requirements remain in force.
+
+The publisher separately authorized the six items shown in the September 28
+content-pool screenshots for immediate publication. Those releases record the
+publisher instruction, original source, content digest and prior review rather
+than setting automated or manual factual-verification flags to true. Article
+writes remain admin-only. Changing the approved title, body or source invalidates
+this authorization route. This is not approval of the remaining content pool.

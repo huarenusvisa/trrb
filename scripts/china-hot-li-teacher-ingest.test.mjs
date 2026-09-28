@@ -187,7 +187,7 @@ test("缺图可发布文字稿，短讯仍须独立事实复核，超过12小时
   generated={...generated,source_sufficient:false,rejection_reason:"只有标题，缺少报道事实"};
   await assert.rejects(generateArticle(qualified,{...tweet}),/缺少报道事实/);
   generated={...generated,source_sufficient:true,content:qualityBody};
-  for (const field of ["single_event","grounded","sufficient","source_chain_complete","fresh_hot_event"]) {
+  for (const field of ["single_event","grounded","sufficient","source_chain_complete"]) {
     verdict={...editorial_review,[field]:false,reason:"独立质检未通过"};
     await assert.rejects(generateArticle(qualified,{...tweet}),/独立质检未通过/);
   }
@@ -470,7 +470,7 @@ test('无法可靠扩至800字的新热点经过独立核对可发布为选题�
  assert.equal(saved.category_name,'热门头条');assert.equal(saved.status,'published');
  assert.equal(saved.metadata.publication_scope,'topic_only');assert.equal(saved.metadata.homepage_focus_override,'exclude');
  assert.ok(saved.metadata.body_character_count<800);
- for(const patch of [{fresh_hot_event:false},{freshness_evidence:''},{grounded:false}]){
+ for(const patch of [{freshness_evidence:''},{grounded:false}]){
   assert.throws(()=>buildPublishedArticle(tweet,qualified,{...generated,editorial_review:{...generated.editorial_review,...patch}}),/采编质量拦截/);
  }
  assert.throws(()=>buildPublishedArticle({...tweet,created_at:new Date(Date.now()-73*3600000).toISOString()},qualified,generated),/短讯仅限/);
@@ -501,4 +501,24 @@ test('普通稿不因深度项失败被拒，事实不足仍禁止发布',()=>{
  assert.equal(assertPublicationQuality(chinaTweet,article),chinaTweet.media[0].url);
  assert.throws(()=>assertPublicationQuality(chinaTweet,{...article,editorial_review:{...article.editorial_review,sufficient:false}}));
  assert.throws(()=>assertPublicationQuality(chinaTweet,{...article,editorial_depth:'deep',content:'文'.repeat(2000)}));
+});
+
+
+test('审核合格的非突发普通稿直接发布，保留时效结论并排除首页焦点', () => {
+  const article = { title:'重庆学校安排背景解读', content:qualityBody, editorial_depth:'standard', appears_old_news:false,
+    editorial_review:{...editorial_review,fresh_hot_event:false,freshness_evidence:'原始报道日期明确；背景解读没有后续突发进展'} };
+  const saved=buildPublishedArticle(chinaTweet,qualifyTweet(chinaTweet),article);
+  assert.equal(saved.status,'published');
+  assert.equal(saved.metadata.manual_review_required,false);
+  assert.equal(saved.metadata.publication_mode,'reviewed_regular');
+  assert.equal(saved.metadata.homepage_focus_override,'exclude');
+  assert.equal(saved.metadata.editorial_review.fresh_hot_event,false);
+  for (const field of ['grounded','sufficient','source_chain_complete','analysis_grounded','court_status_correct']) {
+    assert.throws(()=>buildPublishedArticle(chinaTweet,qualifyTweet(chinaTweet),{...article,editorial_review:{...article.editorial_review,[field]:false}}),/采编质量拦截/);
+  }
+  assert.throws(()=>buildPublishedArticle(chinaTweet,qualifyTweet(chinaTweet),{...article,appears_old_news:true}),/旧闻/);
+  const brief={...article,content:'学校公布的教学安排及适用范围已经在原始通知中明确，本文介绍相关背景。通知同时列明负责部门与执行细则，家长可以按照文件中的联系方式了解适用情况。',editorial_depth:'brief',publication_scope:'topic_only'};
+  const tweet={...chinaTweet,context_research_attempted:true};
+  assert.equal(buildPublishedArticle(tweet,qualifyTweet(tweet),brief).metadata.publication_mode,'reviewed_regular');
+  assert.throws(()=>buildPublishedArticle({...tweet,created_at:new Date(Date.now()-13*3600000).toISOString()},qualifyTweet(tweet),brief),/短讯仅限/);
 });

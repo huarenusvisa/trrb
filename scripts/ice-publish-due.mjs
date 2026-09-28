@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { reviewedSourceReady } from './ice-reviewed-publication.mjs';
 import {forwardQuery} from './news-forward-policy.mjs';
 import { publicEvidence } from '../netlify/shared/publication.mjs';
 import { readDatabaseQuery } from "./paged-read.mjs";
@@ -35,7 +36,7 @@ function safeJson(value, fallback = null) {
 function hasChinese(value) { return /[\u3400-\u9fff]/u.test(String(value || "")); }
 function chineseRatio(value) { const text = String(value || "").replace(/\s+/g, ""); return text ? (text.match(/[\u3400-\u9fff]/gu) || []).length / Array.from(text).length : 0; }
 function hasVisualMedia(post) { const media = safeJson(post?.media, post?.media || []); return (Array.isArray(media) ? media : []).some((item) => item?.url || item?.preview_image_url); }
-function editorialReady(story, post) { const payload = safeJson(story?.ai_payload, story?.ai_payload || {}); const officialAutoCheck = officialPost(post) && payload?.automatic_old_news_check_passed === true; const oldNewsConfirmed = payload?.manual_old_news_confirmation === true || officialAutoCheck; const count = (String(story.content || "").match(/[\u3400-\u9fff]/gu) || []).length; return (ACCEPTED_EDITORIAL_VERSIONS.has(payload?.translation_version) || story.human_review_status === "approved" && Boolean(story.reviewed_by)) && (payload?.translated_to_chinese === true || story.human_review_status === "approved" && Boolean(story.reviewed_by)) && payload?.old_news_checked === true && oldNewsConfirmed && payload?.appears_old_news !== true && (story.human_review_status === "approved" && Boolean(story.reviewed_by) ? count > 0 : payload.translation_version === ICE_TRANSLATION_VERSION && reviewedStoryReady(story)) && hasChinese(story.title) && hasChinese(story.content) && chineseRatio(story.content) >= 0.45 && (!hasVisualMedia(post) || payload?.image_grounding_used === true); }
+function editorialReady(story, post) { if (reviewedSourceReady(story, post)) return true; const payload = safeJson(story?.ai_payload, story?.ai_payload || {}); const officialAutoCheck = officialPost(post) && payload?.automatic_old_news_check_passed === true; const oldNewsConfirmed = payload?.manual_old_news_confirmation === true || officialAutoCheck; const count = (String(story.content || "").match(/[\u3400-\u9fff]/gu) || []).length; return (ACCEPTED_EDITORIAL_VERSIONS.has(payload?.translation_version) || story.human_review_status === "approved" && Boolean(story.reviewed_by)) && (payload?.translated_to_chinese === true || story.human_review_status === "approved" && Boolean(story.reviewed_by)) && payload?.old_news_checked === true && oldNewsConfirmed && payload?.appears_old_news !== true && (story.human_review_status === "approved" && Boolean(story.reviewed_by) ? count > 0 : payload.translation_version === ICE_TRANSLATION_VERSION && reviewedStoryReady(story)) && hasChinese(story.title) && hasChinese(story.content) && chineseRatio(story.content) >= 0.45 && (!hasVisualMedia(post) || payload?.image_grounding_used === true); }
 function shingles(value) { const text = String(value || "").toLowerCase().replace(/[^a-z0-9\u3400-\u9fff]+/g, ""); const out = new Set(); for (let i = 0; i < text.length - 1; i += 1) out.add(text.slice(i, i + 2)); return out; }
 function similarity(a, b) { const left = shingles(a), right = shingles(b); if (!left.size || !right.size) return 0; let common = 0; for (const token of left) if (right.has(token)) common += 1; return common / (left.size + right.size - common); }
 function isOfficialUrgent(story) {
@@ -93,7 +94,8 @@ async function dueStories(limit) {
     const payload = safeJson(story?.ai_payload, story?.ai_payload || {});
     const humanApproved = story.human_review_status === "approved" && Boolean(story.reviewed_by);
     const officialApproved = story.human_review_status === "not_required_official" && payload?.official_direct_publish === true;
-    return humanApproved || officialApproved;
+    const reviewedApproved = story.human_review_status === "not_required_reviewed" && payload.reviewed_source_auto === true && reviewedStoryReady(story);
+    return humanApproved || officialApproved || reviewedApproved;
   });
   const urgentCap = intEnv("ICE_URGENT_MAX_PER_RUN", 20, 1, 50);
   const urgent = stories.filter(isOfficialUrgent).slice(0, urgentCap);
@@ -150,14 +152,15 @@ async function publish(story) {
   const payload = safeJson(story?.ai_payload, story?.ai_payload || {});
   const humanApproved = story.human_review_status === "approved" && Boolean(story.reviewed_by);
   const officialApproved = story.human_review_status === "not_required_official" && payload?.official_direct_publish === true;
+  const reviewedApproved = story.human_review_status === "not_required_reviewed" && payload.reviewed_source_auto === true;
   const officialUrgent = isOfficialUrgent(story);
 
-  if (!humanApproved && !officialApproved) {
+  if (!humanApproved && !officialApproved && !reviewedApproved) {
     await updateStory(story.id, {
       status: "pending_review",
       human_review_status: "required",
       scheduled_at: null,
-      decision_reason: `${story.decision_reason || ""}；发布器拦截：必须由后台真实管理员审核批准`
+      decision_reason: `${story.decision_reason || ""}；发布器拦截：缺少有效内容审核或发布批准`
     });
     return null;
   }
@@ -194,6 +197,11 @@ async function publish(story) {
   }
   const post = verifiedOfficial[0] || await leadPost(story);
   if (!post) throw new Error(`故事${story.id}没有来源帖子`);
+  if (reviewedApproved && !reviewedSourceReady(story, post)) {
+    await updateStory(story.id, {status: "pending_review", human_review_status: "required", scheduled_at: null,
+      decision_reason: "发布前校验未通过：稿件、来源、时效或风险状态已变化"});
+    return null;
+  }
   if (officialApproved && !sourceWithinCollectionWindow(post.source_created_at)) {
     await updateStory(story.id,{status:'pending_review',human_review_status:'required',scheduled_at:null,decision_reason:`${story.decision_reason || ''}；原始来源超过12小时或时间不可核实，禁止自动发布`});
     return null;
@@ -262,7 +270,7 @@ async function publish(story) {
       author: "唐人日报编辑部", status: "published", visibility: "public", published_at: time, created_at: time, topic_key: route.topicKey || null, source_platform: /^official-web-/.test(post.x_post_id) ? "official_web" : "x",
       source_post_id: post.x_post_id, source_url: post.x_url, source_account: post.source_username, source_created_at: post.source_created_at,
       ai_confidence: story.ai_confidence,
-      review_status: officialApproved ? "official_source_auto_published" : "human_approved",
+      review_status: reviewedApproved ? "reviewed_source_auto_published" : officialApproved ? "official_source_auto_published" : "human_approved",
       metadata: {
         publication_quality_version: "ice-evidence-v2-unified-research",
         editorial_policy_version:payload?.editorial_policy_version,editorial_depth:payload?.editorial_depth || "standard",editorial_depth_reason:payload?.editorial_depth_reason,
@@ -274,6 +282,7 @@ async function publish(story) {
         independent_source_count: story.independent_source_count, official_source_count: story.official_source_count, media_source_count: story.media_source_count,
         organization_source_count: story.organization_source_count, decision_reason: story.decision_reason, human_review_status: story.human_review_status,
         reviewed_by: story.reviewed_by || null, reviewed_at: story.reviewed_at || null, editor_notes: story.editor_notes || "", official_urgent: officialUrgent,
+        reviewed_source_auto: reviewedApproved,
         official_source_auto: officialApproved, official_direct_publish: officialApproved, translated_to_chinese: true,
         source_character_count: payload?.source_character_count, target_min_chars: payload?.target_min_chars, target_max_chars: payload?.target_max_chars,
         image_grounding_used: payload?.image_grounding_used === true, image_count: payload?.image_count || 0, image_observations: payload?.image_observations || "",
@@ -309,5 +318,5 @@ async function main() {
   }
   console.log(`ICE规律发布器完成：${published}条`);
 }
-export { editorialReady };
+export { editorialReady, publish, dueStories };
 if (process.argv[1] === fileURLToPath(import.meta.url)) main().catch((error) => { console.error("ICE规律发布器失败：", error); process.exitCode = 1; });

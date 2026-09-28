@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { reviewedSourceReady } from './ice-reviewed-publication.mjs';
 import {forwardQuery} from './news-forward-policy.mjs';
 import { readDatabaseQuery } from "./paged-read.mjs";
 import process from "node:process";
@@ -42,7 +43,7 @@ async function sb(table, { method = "GET", query = {}, body, prefer = "" } = {})
   return method === "GET" ? readDatabaseQuery(query, execute) : execute(query);
 }
 async function evidenceFor(story) {
-  const select = "id,source_type,source_username,source_display_name,source_text,trust_tier,source_created_at,media";
+  const select = "id,x_post_id,x_url,source_type,source_username,source_display_name,source_text,trust_tier,source_created_at,media";
   const links = await sb("ice_story_evidence", { query: { select: "post_id", story_id: `eq.${story.id}`, limit: "100" } });
   const ids = (Array.isArray(links) ? links : []).map((row) => row.post_id).filter(Boolean);
   const linked = ids.length ? await sb("ice_posts", { query: { select, id: `in.(${ids.join(",")})`, limit: "100" } }) : [];
@@ -58,7 +59,7 @@ function trustedMedia(post) {
 function recentEnough(story) { const time = new Date(story.last_seen_at || story.first_seen_at || story.created_at || 0).getTime(); return Number.isFinite(time) && Date.now() - time <= MAX_AGE_MINUTES * 60000; }
 function hasChinese(value) { return /[\u3400-\u9fff]/.test(String(value || "")); }
 function mediaCount(evidence) { return evidence.reduce((count, post) => { const media = Array.isArray(post.media) ? post.media : []; return count + media.filter((item) => item?.url || item?.preview_image_url).length; }, 0); }
-function editorialReady(story, evidence) { const payload = story.ai_payload && typeof story.ai_payload === "object" ? story.ai_payload : {}; const officialAutoCheck = evidence.some(official) && payload.automatic_old_news_check_passed === true; const oldNewsConfirmed = payload.manual_old_news_confirmation === true || officialAutoCheck; const count = (String(story.content || "").match(/[\u3400-\u9fff]/gu) || []).length; return ACCEPTED_EDITORIAL_VERSIONS.has(payload.translation_version) && payload.translated_to_chinese === true && payload.old_news_checked === true && oldNewsConfirmed && payload.appears_old_news !== true && (payload.translation_version === ICE_TRANSLATION_VERSION ? reviewedStoryReady(story) : story.human_review_status === "approved" && Boolean(story.reviewed_by) && count >= 300 && count <= 1500) && hasChinese(story.title) && hasChinese(story.content) && (mediaCount(evidence) === 0 || payload.image_grounding_used === true); }
+function editorialReady(story, evidence) { if (evidence.some(post => reviewedSourceReady(story, post))) return true; const payload = story.ai_payload && typeof story.ai_payload === "object" ? story.ai_payload : {}; const officialAutoCheck = evidence.some(official) && payload.automatic_old_news_check_passed === true; const oldNewsConfirmed = payload.manual_old_news_confirmation === true || officialAutoCheck; const count = (String(story.content || "").match(/[\u3400-\u9fff]/gu) || []).length; return ACCEPTED_EDITORIAL_VERSIONS.has(payload.translation_version) && payload.translated_to_chinese === true && payload.old_news_checked === true && oldNewsConfirmed && payload.appears_old_news !== true && (payload.translation_version === ICE_TRANSLATION_VERSION ? reviewedStoryReady(story) : story.human_review_status === "approved" && Boolean(story.reviewed_by) && count >= 300 && count <= 1500) && hasChinese(story.title) && hasChinese(story.content) && (mediaCount(evidence) === 0 || payload.image_grounding_used === true); }
 export function candidateRoutes(story,evidence) {
   const trusted = evidence.filter(official);
   return {candidate:routeOfficialContent(story.title,story.summary,story.content,evidence),official:trusted.length ? routeOfficialContent(story.title,story.summary,story.content,trusted) : null};
@@ -75,10 +76,12 @@ function blocksAutomaticPublish(story, payload, isOfficial) {
 async function main() {
   requireEnv();
   const rows = await sb("ice_stories", { query: { select: "*", status: "in.(collecting,pending_review,pending_corroboration,approved)", order: "updated_at.desc", limit: "1000" } });
-  let autoApproved = 0, trustedMediaApproved = 0, manual = 0, incomplete = 0, stale = 0, riskBlocked = 0, rejectedNonIce = 0;
+  let reviewedApproved = 0, autoApproved = 0, trustedMediaApproved = 0, manual = 0, incomplete = 0, stale = 0, riskBlocked = 0, rejectedNonIce = 0;
   for (const story of Array.isArray(rows) ? rows : []) {
     if (["editing","approved","rejected"].includes(story.human_review_status) || story.reviewed_by) { manual += 1; continue; }
-    if (!recentEnough(story)) {
+    const evidence = await evidenceFor(story);
+    const reviewedPost = evidence.find(post => reviewedSourceReady(story, post));
+    if (!reviewedPost && !recentEnough(story)) {
       if (story.status === "approved" && story.human_review_status !== "approved") {
         await sb("ice_stories", { method: "PATCH", query: { id: `eq.${story.id}`,human_review_status:"not.in.(editing,approved,rejected)",...(story.updated_at ? {updated_at:`eq.${story.updated_at}`} : {}) }, body: {
           status: "rejected", human_review_status: "rejected", scheduled_at: null,
@@ -89,7 +92,6 @@ async function main() {
       stale += 1;
       continue;
     }
-    const evidence = await evidenceFor(story);
     const payload = story.ai_payload && typeof story.ai_payload === "object" ? story.ai_payload : {};
     const allOfficialEvidence = evidence.filter(official);
     const routes = candidateRoutes(story,evidence);
@@ -102,6 +104,19 @@ async function main() {
         updated_at: nowIso()
       }, prefer: "return=minimal" });
       rejectedNonIce += 1;
+      continue;
+    }
+    if (reviewedPost && routes.candidate) {
+      await sb("ice_stories", { method: "PATCH", query: {
+        id: `eq.${story.id}`, reviewed_by: "is.null", human_review_status: "not.in.(editing,approved,rejected)",
+        ...(story.updated_at ? {updated_at: `eq.${story.updated_at}`} : {})
+      }, body: {
+        status: "approved", human_review_status: "not_required_reviewed", scheduled_at: nowIso(),
+        ai_payload: {...payload, reviewed_source_auto: true, reviewed_source_verified_at: nowIso()},
+        decision_reason: "内容审核通过且原始来源完整，直接发布，无需重复人工审核",
+        updated_at: nowIso()
+      }, prefer: "return=minimal" });
+      reviewedApproved += 1;
       continue;
     }
     if (!editorialReady(story, evidence)) { incomplete += 1; continue; }
@@ -149,8 +164,8 @@ async function main() {
     else if (isOfficial) autoApproved += 1;
     else trustedMediaApproved += 1;
   }
-  console.log(JSON.stringify({ stage: "official-content-auto-routing-v9", checked: Array.isArray(rows) ? rows.length : 0, official_auto_approved: autoApproved, trusted_media_auto_approved: trustedMediaApproved, official_risk_blocked: riskBlocked, rejected_unroutable: rejectedNonIce, manual_non_official: manual, incomplete_or_not_chinese: incomplete, stale }, null, 2));
+  console.log(JSON.stringify({ stage: "reviewed-source-auto-routing-v10", reviewed_source_approved: reviewedApproved, checked: Array.isArray(rows) ? rows.length : 0, official_auto_approved: autoApproved, trusted_media_auto_approved: trustedMediaApproved, official_risk_blocked: riskBlocked, rejected_unroutable: rejectedNonIce, manual_non_official: manual, incomplete_or_not_chinese: incomplete, stale }, null, 2));
 }
 
-export { editorialReady, blocksAutomaticPublish };
+export { editorialReady, blocksAutomaticPublish, main };
 if (process.argv[1] === fileURLToPath(import.meta.url)) main().catch((error) => { console.error("ICE官方信源自动发布分流失败：", error); process.exitCode = 1; });

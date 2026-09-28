@@ -38,7 +38,7 @@ test("ICE开关派发后立即采集，不受三小时节奏锁阻挡", () => {
   assert.match(workflow, /Collect all ICE sources/);
 });
 
-test("ICE官方来源直发，非官方来源仍由后台真实管理员审核", () => {
+test("ICE保留官方及人工发布，并允许已完成内容审核的稿件直接发布", () => {
   const collector = read("scripts/ice-multisource.mjs");
   const publisher = read("scripts/ice-publish-due.mjs");
   const trusted = read("scripts/ice-trusted-source-promote.mjs");
@@ -49,7 +49,9 @@ test("ICE官方来源直发，非官方来源仍由后台真实管理员审核",
   assert.match(publisher, /humanApproved = story\.human_review_status === "approved" && Boolean\(story\.reviewed_by\)/);
   assert.match(publisher, /officialApproved = story\.human_review_status === "not_required_official"/);
   assert.match(publisher, /officialEvidence\(story\)/);
-  assert.match(publisher, /必须由后台真实管理员审核批准/);
+  assert.match(publisher, /缺少有效内容审核或发布批准/);
+  assert.match(publisher, /reviewedApproved && !reviewedSourceReady\(story, post\)/);
+  assert.match(trusted, /human_review_status: "not_required_reviewed"/);
   assert.doesNotMatch(publisher, /runOfficialUrgentPromotion/);
   assert.match(trusted, /status: blockedByRisk \? "pending_review" : "approved"/);
   assert.match(trusted, /human_review_status: blockedByRisk \? "required" : \(isOfficial \? "not_required_official" : "not_required_trusted_media"\)/);
@@ -92,7 +94,7 @@ test("ICE发布器在发布边界复核官方来源和风险标记", () => {
   assert.match(promoter, /official_urgent: true/);
   assert.match(promoter, /story\.conflict_detected \|\| story\.privacy_risk \|\| story\.fabrication_risk/);
   assert.doesNotMatch(publisher, /runOfficialUrgentPromotion/);
-  assert.match(publisher, /review_status: officialApproved \? "official_source_auto_published" : "human_approved"/);
+  assert.match(publisher, /review_status: reviewedApproved \? "reviewed_source_auto_published" : officialApproved \? "official_source_auto_published" : "human_approved"/);
   assert.match(publisher, /发布边界复核未通过，已转人工审核/);
   assert.match(publisher, /category_name: route\.categoryName/);
   assert.match(publisher, /topic_key: route\.topicKey \|\| null/);

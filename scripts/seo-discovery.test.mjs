@@ -46,7 +46,7 @@ test('community renders only public indexable cards and does not forward credent
   return Response.json({posts:[{id:'a',status:'published',is_indexable:true,title:'<script>alert(1)</script>',content:'公开内容'}, {id:'b',status:'draft',is_indexable:true,title:'PRIVATE'}, {id:'c',status:'published',is_indexable:false,title:'NOINDEX'}]});
  });
  const response=await community(new Request('https://trrb.net/community/',{headers:{Cookie:'secret',Authorization:'secret'}}),{next:async()=>new Response(fs.readFileSync('community/index.html','utf8'),{headers:{'content-type':'text/html'}})});
- const html=await response.text();assert.match(html,/href="\/community\/\?post=a"/);assert.ok(!html.includes('PRIVATE'));assert.ok(!html.includes('NOINDEX'));assert.match(html,/&lt;script&gt;alert/);assert.equal(response.headers.get('cache-control'),'no-store');
+ const html=await response.text();assert.match(html,/href="\/community\/\?post=a"/);assert.ok(!html.includes('PRIVATE'));assert.ok(!html.includes('NOINDEX'));assert.match(html,/&lt;script&gt;alert/);assert.equal(response.headers.get('cache-control'),'no-store');assert.match(html,/移民社区导读/);assert.match(html,/href="\/ice\/news"/);
 });
 test('community API failure keeps the page usable; detail views are untouched',async t=>{
  t.mock.method(globalThis,'fetch',async()=>{throw new Error('offline');});

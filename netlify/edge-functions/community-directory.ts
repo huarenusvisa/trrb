@@ -17,6 +17,8 @@ export default async (request: Request, context: any) => {
   } catch(error) {console.warn('Public community directory temporarily unavailable');}
   let html=await upstream.text();
   html=html.replace('<h1 id="feed-title">推荐内容</h1>','<h1 id="feed-title">美国移民社区</h1>');
+  const intro='<section class="discovery-notes" aria-label="移民社区导读"><p>这里汇集美国移民互助、USCIS面谈、移民法庭上庭交流和ICE经历。可浏览公开内容，或登录后发布自己的经历与问题。</p><p>查阅相关资料：<a href="/immigrate/center?path=humanitarian&amp;topic=asylum-process">庇护申请与面谈</a> · <a href="/immigrate/center?path=humanitarian&amp;topic=immigration-court">移民法庭与保释</a> · <a href="/immigrate/center?path=family">家庭移民知识</a> · <a href="/ice/news">ICE执法新闻</a></p></section>';
+  html=html.replace('<div id="feed-message"',intro+'<div id="feed-message"');
   html=html.replace('<div id="post-feed" class="post-feed mixed-feed"></div>',`<div id="post-feed" class="post-feed mixed-feed">${cards}</div>`);
   const headers=new Headers(upstream.headers);
   headers.delete('content-length');headers.delete('etag');

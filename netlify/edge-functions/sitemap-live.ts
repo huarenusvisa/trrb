@@ -48,9 +48,6 @@ function visibleText(value: unknown): string {
     .trim();
 }
 
-function normalizedTitle(value: unknown): string {
-  return visibleText(value).toLowerCase().replace(/[\p{P}\p{S}\s]+/gu, "");
-}
 
 function esc(value: unknown): string {
   return clean(value)
@@ -201,7 +198,6 @@ export default async (request: Request, context: any) => {
     // trrb.net/jobs and /huarengongzuo are permanent entry redirects and
     // therefore must not be emitted as indexable trrb.net sitemap URLs.
 
-    const seenTitles = new Set<string>();
     const seenBodies = new Set<string>();
     let excludedEmpty = 0;
     let excludedDuplicate = 0;
@@ -226,13 +222,11 @@ export default async (request: Request, context: any) => {
         continue;
       }
 
-      const titleKey = normalizedTitle(article?.title);
       const bodyKey = body.length >= 120 ? body : "";
-      if ((titleKey.length >= 8 && seenTitles.has(titleKey)) || (bodyKey && seenBodies.has(bodyKey))) {
+      if (bodyKey && seenBodies.has(bodyKey)) {
         excludedDuplicate++;
         continue;
       }
-      if (titleKey.length >= 8) seenTitles.add(titleKey);
       if (bodyKey) seenBodies.add(bodyKey);
 
       const section = sectionFor(article, byId, byName);

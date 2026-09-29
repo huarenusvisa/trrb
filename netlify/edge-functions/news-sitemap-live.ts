@@ -25,7 +25,6 @@ const ALIASES: Record<string,string> = {
 const clean=(v:unknown)=>String(v??"").replace(/\s+/g," ").trim();
 const canonicalSection=(v:unknown)=>ALIASES[clean(v)]||clean(v);
 const visible=(v:unknown)=>clean(v).replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi," ").replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi," ").replace(/<[^>]+>/g," ").replace(/&nbsp;|&#160;/gi," ").replace(/&[a-z0-9#]+;/gi," ").replace(/\s+/g," ").trim();
-const normalizedTitle=(v:unknown)=>visible(v).toLowerCase().replace(/[\p{P}\p{S}\s]+/gu,"");
 const esc=(v:unknown)=>clean(v).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&apos;");
 function isIceArticle(a:any){const t=clean(a?.topic_key).toLowerCase();const c=clean(a?.category_name);return t==="ice"||c==="ICE执法动态"||c==="ICE执法";}
 function isSpecialTopicArticle(a:any){const t=clean(a?.topic_key).toLowerCase();return t==="ice"||t==="trump";}
@@ -52,7 +51,6 @@ export default async(request:Request,context:any)=>{
       .filter((x:any)=>Number.isFinite(x.ts)&&x.ts>=cutoff&&x.ts<=now+300000&&clean(x.a.title))
       .sort((x:any,y:any)=>y.ts-x.ts);
 
-    const seenTitles=new Set<string>();
     const seenBodies=new Set<string>();
     let excludedDuplicate=0;
     let excludedEmpty=0;
@@ -70,10 +68,8 @@ export default async(request:Request,context:any)=>{
       const {indexable,body}=articleIndexability(a);
       if(!indexable){excludedEmpty++;continue;}
 
-      const titleKey=normalizedTitle(a.title);
       const bodyKey=body.length>=120?body:"";
-      if((titleKey.length>=8&&seenTitles.has(titleKey))||(bodyKey&&seenBodies.has(bodyKey))){excludedDuplicate++;continue;}
-      if(titleKey.length>=8)seenTitles.add(titleKey);
+      if(bodyKey&&seenBodies.has(bodyKey)){excludedDuplicate++;continue;}
       if(bodyKey)seenBodies.add(bodyKey);
 
       const slug=clean(a.slug)||clean(a.id);

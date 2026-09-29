@@ -171,3 +171,13 @@ test('WordPress query IDs reach their dedicated resolver without a malformed UUI
     assert.equal(await response.text(),'legacy resolver');
   }
 });
+
+
+test('live sitemap endpoints retain same-title reports with different facts',async t=>{
+  useFixture(t,[article({title:'相同标题仍有不同报道事实',content:'第一篇报道事实'.repeat(40)}),article({id:'second',slug:'different-facts',title:'相同标题仍有不同报道事实',content:'第二篇报道事实'.repeat(40)})]);
+  for(const [handler,path] of [[liveSitemap,'/_internal/sitemap-live.xml'],[newsSitemap,'/news-sitemap.xml']]) {
+    const response=await handler(new Request('https://trrb.net'+path),context);
+    const xml=await response.text();
+    assert.match(xml,/short-news<\/loc>/);assert.match(xml,/different-facts<\/loc>/);
+  }
+});

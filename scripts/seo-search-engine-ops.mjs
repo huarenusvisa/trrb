@@ -215,7 +215,7 @@ try {
       throw new Error(`Inventory ${method} ${table} HTTP ${r.status}: ${String(detail.code||'')} ${String(detail.message||'').slice(0,250)}`);
     }
   };
-  const persist = row => persistInventory(row,request);
+  const persist = row => persistInventory(row,request,{onCleanupWarning:message=>report.warnings.push(message)});
   const retired = (await fs.readFile('retired-indexnow-urls.txt','utf8').catch(()=>'' )).split(/\r?\n/).filter(x=>/^https?:/.test(x));
   report.local.inventorySitemapUrls = await sitemapUrls();
   report.inventory = await saveInventory(report,{rest,persist,retired});

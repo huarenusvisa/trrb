@@ -68,7 +68,7 @@ export async function saveInventory(search, {rest, persist, retired=[]}) {
 
 // Stage bounded batches, then publish the ledger only after all rows exist.
 // Idempotent upserts allow an interrupted batch to be retried safely.
-export async function persistInventory(row, request, {batchSize=200}={}) {
+export async function persistInventory(row, request, {batchSize=200,onCleanupWarning=console.warn}={}) {
   const id=randomUUID();
   await request('POST','seo_content_inventory_runs',{}, {id,commit_sha:row.commit_sha,summary:row.summary,items:[],is_complete:false});
   for(let offset=0;offset<row.items.length;offset+=batchSize) {
@@ -76,9 +76,32 @@ export async function persistInventory(row, request, {batchSize=200}={}) {
     await request('POST','seo_content_inventory_items',{},batch);
   }
   await request('PATCH','seo_content_inventory_runs',{id:`eq.${id}`},{is_complete:true});
-  // Keep complete summaries for comparisons; only the newest two need full detail.
-  // Never delete an incomplete run's batches while another controller may be writing.
-  const older=await request('GET','seo_content_inventory_runs',{select:'id',is_complete:'eq.true',order:'created_at.desc',offset:'2',limit:'100'});
-  if(older.length)await request('DELETE','seo_content_inventory_items',{run_id:`in.(${older.map(x=>x.id).join(',')})`});
+  // Retention is maintenance, not evidence that the newly published ledger failed.
+  try {
+    const cleanup=await pruneInventory(request);
+    if(cleanup.pending)onCleanupWarning('Inventory retention reached its batch budget; remaining old details will be retried next run');
+  } catch(error) {
+    onCleanupWarning(`Inventory retention deferred; current ledger is complete: ${error.message}`);
+  }
   return id;
+}
+
+export async function pruneInventory(request, {batchSize=200,maxBatches=300}={}) {
+  if(!Number.isInteger(batchSize)||batchSize<1||batchSize>200||!Number.isInteger(maxBatches)||maxBatches<1)throw new Error('Invalid inventory cleanup limits');
+  // Freeze eligible complete runs, preserving the latest two and all staged runs.
+  const older=await request('GET','seo_content_inventory_runs',{select:'id',is_complete:'eq.true',order:'created_at.desc,id.desc',offset:'2',limit:'100'});
+  let batches=0,deleted=0;
+  for(const run of older) {
+    for(;;) {
+      const rows=await request('GET','seo_content_inventory_items',{select:'article_id',run_id:`eq.${run.id}`,order:'article_id.asc',limit:String(batchSize)});
+      if(!Array.isArray(rows)||rows.length>batchSize||rows.some(x=>!x.article_id))throw new Error('Invalid inventory cleanup page');
+      if(!rows.length)break;
+      if(batches>=maxBatches)return {batches,deleted,pending:true};
+      // Match both primary-key columns; never issue an unbounded run-wide DELETE.
+      await request('DELETE','seo_content_inventory_items',{run_id:`eq.${run.id}`,article_id:`in.(${rows.map(x=>x.article_id).join(',')})`});
+      batches++;deleted+=rows.length;
+      // Re-read from the start after deletion so removing a page cannot skip rows.
+    }
+  }
+  return {batches,deleted,pending:false};
 }

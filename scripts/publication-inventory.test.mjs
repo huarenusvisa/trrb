@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
 import {publicationUrl,publicEvidence} from '../netlify/shared/publication.mjs';
-import {buildInventory,readInventory,persistInventory} from './content-inventory.mjs';
+import {buildInventory,readInventory,persistInventory,pruneInventory} from './content-inventory.mjs';
 import articlePage from '../netlify/edge-functions/article-prerender.ts';
 const now = new Date('2026-09-24T12:00:00Z');
 const article = {id:'a',title:'现场报道',slug:'a',content:'现场事实',category_name:'ICE执法动态',topic_key:'ice',status:'published',visibility:'public',published_at:'2026-09-23T12:00:00Z',publication_path:'/ice/a',publication_revision:'v1',source_url:'https://www.ice.gov/news/a'};
@@ -65,4 +65,51 @@ test('inventory writes bounded batches and publishes only after all succeed',asy
  assert.equal(calls[0].body.is_complete,false);assert.equal(calls[4].body.is_complete,true);
  const failed=[];await assert.rejects(persistInventory({summary:{},items:[{...article,pilot:true,issues:[]}]},async(method,table,q,body)=>{failed.push({method,body});if(table==='seo_content_inventory_items')throw new Error('batch unavailable');return [];}),/batch unavailable/);
  assert.equal(failed.some(x=>x.body?.is_complete===true),false);
+});
+
+function retentionStore() {
+ const runs=[{id:'newest',complete:true},{id:'previous',complete:true},{id:'staged',complete:false},{id:'old',complete:true},{id:'older',complete:true}];
+ const items=runs.flatMap(run=>Array.from({length:5},(_,i)=>({run_id:run.id,article_id:String(i)})));
+ const calls=[];
+ const request=async(method,table,q)=>{
+  calls.push({method,table,q});
+  if(table==='seo_content_inventory_runs'){
+   assert.equal(q.is_complete,'eq.true');assert.equal(q.offset,'2');
+   return runs.filter(x=>x.complete).slice(+q.offset,+q.offset + +q.limit);
+  }
+  const run=q.run_id.slice(3);
+  if(method==='GET')return items.filter(x=>x.run_id===run).slice(0,+q.limit).map(x=>({article_id:x.article_id}));
+  assert.equal(method,'DELETE');assert.ok(q.article_id);
+  const ids=q.article_id.slice(4,-1).split(',');
+  for(let i=items.length-1;i>=0;i--)if(items[i].run_id===run&&ids.includes(items[i].article_id))items.splice(i,1);
+ };
+ return {request,items,calls};
+}
+test('retention deletes bounded primary-key batches without skipping rows or touching retained/staged runs',async()=>{
+ const store=retentionStore();const result=await pruneInventory(store.request,{batchSize:2});
+ assert.deepEqual(result,{batches:6,deleted:10,pending:false});
+ assert.equal(store.items.length,15);
+ assert.deepEqual([...new Set(store.items.map(x=>x.run_id))],['newest','previous','staged']);
+ assert.ok(store.calls.filter(x=>x.method==='DELETE').every(x=>x.q.article_id.slice(4,-1).split(',').length<=2));
+});
+test('retention resumes after its bounded work budget',async()=>{
+ const store=retentionStore();
+ assert.deepEqual(await pruneInventory(store.request,{batchSize:2,maxBatches:1}),{batches:1,deleted:2,pending:true});
+ assert.deepEqual(await pruneInventory(store.request,{batchSize:2}),{batches:5,deleted:8,pending:false});
+});
+test('cleanup timeout preserves a completed ledger and emits a visible warning',async()=>{
+ const warnings=[],writes=[];
+ const id=await persistInventory({summary:{total:0},items:[]},async(method,table,q,body)=>{
+  if(method==='GET')throw new Error('57014 statement timeout');
+  writes.push(body);
+ },{onCleanupWarning:message=>warnings.push(message)});
+ assert.equal(writes[0].id,id);assert.equal(writes[1].is_complete,true);
+ assert.equal(warnings.length,1);assert.match(warnings[0],/current ledger is complete.*57014/);
+});
+test('ledger completion failure remains fatal and never starts retention',async()=>{
+ const calls=[];
+ await assert.rejects(persistInventory({summary:{},items:[]},async(method)=>{
+  calls.push(method);if(method==='PATCH')throw new Error('completion failed');
+ }),/completion failed/);
+ assert.deepEqual(calls,['POST','PATCH']);
 });

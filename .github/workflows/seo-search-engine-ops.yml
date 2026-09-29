@@ -12,6 +12,8 @@ on:
     paths:
       - '.github/workflows/seo-search-engine-ops.yml'
       - 'scripts/seo-search-engine-ops.mjs'
+      - 'scripts/content-inventory.mjs'
+      - 'scripts/publication-inventory.test.mjs'
       - 'scripts/generate-sitemaps.mjs'
       - 'scripts/paged-read.mjs'
       - 'scripts/category-ice-indexability.test.mjs'
@@ -71,7 +73,7 @@ jobs:
           node-version: '22'
       - name: Verify category indexability and ICE routing
         id: page_regressions
-        run: node --experimental-strip-types --test scripts/category-ice-indexability.test.mjs
+        run: node --experimental-strip-types --test scripts/category-ice-indexability.test.mjs scripts/publication-inventory.test.mjs
       - name: Install Google API client
         id: install_google
         run: npm install --no-save googleapis@144

@@ -218,8 +218,14 @@ try {
   const persist = row => persistInventory(row,request,{onCleanupWarning:message=>report.warnings.push(message)});
   const retired = (await fs.readFile('retired-indexnow-urls.txt','utf8').catch(()=>'' )).split(/\r?\n/).filter(x=>/^https?:/.test(x));
   report.local.inventorySitemapUrls = await sitemapUrls();
+  try {
+    const response=await fetch(`${SITE_ORIGIN}/seo/sitemap-exclusions.json`,{signal:AbortSignal.timeout(15000),cache:'no-store'});
+    if(!response.ok)throw new Error(`HTTP ${response.status}`);
+    report.local.inventorySitemapExclusions=await response.json();
+  } catch(error) {report.warnings.push(`Sitemap exclusions unavailable; unresolved URLs remain review tasks: ${error.message}`);}
   report.inventory = await saveInventory(report,{rest,persist,retired});
   delete report.local.inventorySitemapUrls;
+  delete report.local.inventorySitemapExclusions;
 } catch(error) {report.failures.push(`Full content inventory: ${error.message}`);}
 
 if(!report.google.configured){

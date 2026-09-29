@@ -1,3 +1,4 @@
+import {renderImmigrationDirectory} from './_shared/immigration-directory.ts';
 import { immigrationCategory, immigrationTopic } from "./_shared/immigration-knowledge-routes.ts";
 
 const SITE = "https://trrb.net";
@@ -238,11 +239,13 @@ export default async (request: Request, context: any) => {
     const contentType = upstream.headers.get("content-type") || "";
     if (!upstream.ok || !/text\/html/i.test(contentType)) return upstream;
     const html = await upstream.text();
-    const body = injectSeo(html, seo);
+    const body = injectSeo(renderImmigrationDirectory(html,url), seo);
     const headers = new Headers(upstream.headers);
+    headers.delete("content-length");
+    headers.delete("etag");
     headers.set("content-type", "text/html; charset=UTF-8");
     headers.set("link", `<${seo.canonical}>; rel=\"canonical\"`);
-    headers.set("x-trrb-seo-route-meta", "round10-v7-shared-immigration-routes");
+    headers.set("x-trrb-seo-route-meta", "round10-v8-visible-immigration-directory");
     if (/^noindex/i.test(seo.robots || "")) headers.set("x-robots-tag", seo.robots || "noindex,follow");
     else headers.delete("x-robots-tag");
     return new Response(request.method === "HEAD" ? null : body, { status: upstream.status, headers });

@@ -1,3 +1,4 @@
+import {createSitemapDecisions} from './sitemap-decisions.mjs';
 import { publicationUrl } from "../netlify/shared/publication.mjs";
 import { fetchPublishedArticles } from './sitemap-article-reader.mjs';
 import { readWithRetry } from "./paged-read.mjs";
@@ -99,7 +100,6 @@ const visibleText = (value = '') => cleanText(value)
   .replace(/&[a-z0-9#]+;/gi, ' ')
   .replace(/\s+/g, ' ')
   .trim();
-const normalizedTitle = (value = '') => visibleText(value).toLowerCase().replace(/[\p{P}\p{S}\s]+/gu, '');
 const isIceArticle = (article) => {
   const topic = cleanText(article?.topic_key || '').toLowerCase();
   const category = cleanText(article?.category_name || '');
@@ -266,33 +266,31 @@ const isAllowed = (article, idSet, nameSet, slugSet) => {
 };
 
 const byUrl = new Map(staticEntries.map((entry) => [entry.loc, entry]));
-const seenTitles = new Set();
-const seenBodies = new Set();
+const decisions = createSitemapDecisions();
 let emptyExcluded = 0;
 let specialTopicPreserved = 0;
 let duplicateExcluded = 0;
 const articleEntries = [];
 for (const article of databaseArticles) {
-  if (!article?.id || !cleanText(article?.title)) continue;
-  if (!isAllowed(article, sitemapCategoryIds, sitemapCategoryNames, sitemapCategorySlugs)) continue;
+  if (!article?.id) continue;
+  if (!cleanText(article?.title)) { decisions.exclude(article,'empty-content'); continue; }
+  if (!isAllowed(article, sitemapCategoryIds, sitemapCategoryNames, sitemapCategorySlugs)) { decisions.exclude(article,'category-policy'); continue; }
   if (isSpecialTopicArticle(article)) specialTopicPreserved += 1;
 
   const { body } = articleIndexability(article);
   if (!isIndexableArticle(article)) {
     emptyExcluded += 1;
+    decisions.exclude(article,'empty-content');
     continue;
   }
-  const titleKey = normalizedTitle(article?.title || '');
-  const bodyKey = body.length >= 120 ? body : '';
-  if ((titleKey.length >= 8 && seenTitles.has(titleKey)) || (bodyKey && seenBodies.has(bodyKey))) {
-    duplicateExcluded += 1;
-    continue;
-  }
-  if (titleKey.length >= 8) seenTitles.add(titleKey);
-  if (bodyKey) seenBodies.add(bodyKey);
-
   const loc = canonicalArticleUrl(article);
-  if (!loc) continue;
+  if (!loc) { decisions.exclude(article,'invalid-url'); continue; }
+  const duplicateOf = decisions.duplicateOf(article, body);
+  if (duplicateOf) {
+    duplicateExcluded += 1;
+    decisions.exclude(article,'exact-body-duplicate',duplicateOf);
+    continue;
+  }
   const published = parsePublicationDate(article);
   const date = published?.dateOnly || TODAY;
   articleEntries.push({ loc, lastmod: date, priority: '0.6', changefreq: 'weekly', article, published });
@@ -305,6 +303,8 @@ articleEntries
 const entries = [...byUrl.values()].sort((a, b) => b.lastmod.localeCompare(a.lastmod));
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${entries.map(({ loc, lastmod, changefreq, priority }) => `  <url>\n    <loc>${escapeXml(loc)}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>${changefreq}</changefreq>\n    <priority>${priority}</priority>\n  </url>`).join('\n')}\n</urlset>\n`;
 fs.writeFileSync(path.join(ROOT, 'sitemap.xml'), sitemap);
+fs.mkdirSync(path.join(ROOT,'seo'),{recursive:true});
+fs.writeFileSync(path.join(ROOT,'seo/sitemap-exclusions.json'),JSON.stringify({version:1,generatedAt:NOW.toISOString(),exclusions:decisions.exclusions})+'\n');
 
 const recentNews = entries
   .filter((entry) => entry.article && entry.published)

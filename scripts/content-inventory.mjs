@@ -1,3 +1,4 @@
+import {verifiedSitemapExclusion} from './sitemap-decisions.mjs';
 import { createHash, randomUUID } from 'node:crypto';
 import { articleIndexability } from '../netlify/shared/article-indexability.mjs';
 import { publicationUrl, publicEvidence } from '../netlify/shared/publication.mjs';
@@ -30,14 +31,15 @@ export function buildInventory(articles, {now = new Date(), search = {}, retired
     if (publicNow && !url) issues.push('missing-publication-path');
     if (publicNow && !a.publication_revision) issues.push('missing-publication-snapshot');
     if (publicNow) issues.push(...policy.reasons);
-    if (publicNow && policy.indexable && url && sitemap && !sitemap.has(url)) issues.push('missing-from-sitemap-review');
+    const sitemapExclusion = publicNow && sitemap && !sitemap.has(url) ? verifiedSitemapExclusion(a,search.local?.inventorySitemapExclusions,now) : null;
+    if (publicNow && policy.indexable && url && sitemap && !sitemap.has(url)) issues.push(sitemapExclusion ? `sitemap-excluded-${sitemapExclusion.reason}-review` : 'missing-from-sitemap-review');
     const sources = publicEvidence(a);
     if (publicNow && !sources.length) issues.push('missing-external-source');
     const inspection = inspections.get(url), performance = pages.get(url);
     const row = {id:a.id,title:a.title,url,category:a.category_name,topic:a.topic_key,publishedAt:a.published_at,
       cohort:`${ice ? 'ice' : 'other'}:${String(a.published_at || a.created_at).slice(0,7)}`,pilot:ice,
       state:!publicNow ? 'not-public' : policy.indexable ? 'eligible-for-indexing' : 'needs-content',
-      inSitemap:sitemap ? sitemap.has(url) : null,revision:a.publication_revision,sourceCount:sources.length,issues,
+      sitemapExclusion,inSitemap:sitemap ? sitemap.has(url) : null,revision:a.publication_revision,sourceCount:sources.length,issues,
       google:{inspection:inspection || null,status:inspection && !inspection.error ? 'inspection-returned' : 'unknown',performance:performance || null},
       bing:{status:'unknown',reason:'site-level report does not establish per-URL indexing'},
       duplicateCandidateOf:null};
@@ -54,6 +56,7 @@ export function buildInventory(articles, {now = new Date(), search = {}, retired
   return {summary:{generatedAt:now.toISOString(),total:items.length,public:items.filter(x=>x.state!=='not-public').length,
     missingSnapshots:items.filter(x=>x.issues.includes('missing-publication-snapshot')).length,
     duplicateCandidates:items.filter(x=>x.duplicateCandidateOf).length,sourceGaps:items.filter(x=>x.issues.includes('missing-external-source')).length,
+    sitemapExcludedByPolicy:items.filter(x=>x.sitemapExclusion?.reason==='category-policy').length,sitemapExcludedDuplicates:items.filter(x=>x.sitemapExclusion?.reason==='exact-body-duplicate').length,
     sitemapUrls:sitemap?.size ?? null,missingFromSitemap:items.filter(x=>x.issues.includes('missing-from-sitemap-review')).length,pilot:'ICE',cohorts,retiredUrls:retired.length,retiredPolicy:'keep existing 404/410; no WordPress recovery',
     googleWindows:search.google?.performance28d?.windows || null,googleAvailability:search.google?.performance28d?.status || 'unavailable',
     bingAvailability:search.bing?.configured ? 'site-level-only' : 'unavailable',

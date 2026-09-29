@@ -110,7 +110,7 @@ test('News sitemap keeps its 48-hour eligibility window', async t => {
 
 test('production sitemap build includes short articles and only public published records', async t => {
   const knowledge = article({id:'knowledge',title:'庇护历史知识归档',slug:'knowledge-history',content:'经整理的历史知识正文',category_id:null,category_name:'移民美国·境内身份转换·历史知识文章',knowledge_migration_batch:'20260923-asylum-knowledge',knowledge_path:'change-status',knowledge_topic:'i485'});
-  useFixture(t, [article(), article({ id:'empty', slug: 'empty', content: '' }), article({ id:'private', slug: 'private', visibility: 'private' }),knowledge,{...knowledge,id:'private-knowledge',slug:'private-knowledge',visibility:'private'}]);
+  useFixture(t, [article(),article({id:'same-title',slug:'same-title',content:'不同事实的独立报道'}), article({id:'policy-excluded',slug:'policy-excluded',category_id:'disabled'}), article({ id:'empty', slug: 'empty', content: '' }), article({ id:'private', slug: 'private', visibility: 'private' }),knowledge,{...knowledge,id:'private-knowledge',slug:'private-knowledge',visibility:'private'}]);
   const originalFetch=globalThis.fetch;
   t.mock.method(globalThis,'fetch',async input=>new URL(String(input)).pathname==='/rest/v1/categories'
     ? Response.json([...categories,{id:'knowledge-cat',name:'移民美国知识库',slug:'immigrate',is_active:true,include_in_sitemap:true,include_in_google_news:false}]) : originalFetch(input));
@@ -129,7 +129,13 @@ test('production sitemap build includes short articles and only public published
       assert.match(xml, /\/hot-headlines\/short-news<\/loc>/);
       assert.doesNotMatch(xml, /\/hot-headlines\/(?:empty|private)</);
       assert.doesNotMatch(xml, /private-knowledge/);
-      if (name==='sitemap.xml') assert.match(xml,/\/news\/knowledge-history<\/loc>/);
+      if (name==='sitemap.xml') {
+        assert.match(xml,/\/news\/knowledge-history<\/loc>/);
+        assert.match(xml,/\/hot-headlines\/same-title<\/loc>/);
+        const manifest=JSON.parse(readFileSync(path.join(working,'seo/sitemap-exclusions.json'),'utf8'));
+        assert.equal(manifest.exclusions.find(x=>x.id==='policy-excluded').reason,'category-policy');
+        assert.equal(manifest.exclusions.find(x=>x.id==='empty').reason,'empty-content');
+      }
       else assert.doesNotMatch(xml,/knowledge-history/);
     }
   } finally {

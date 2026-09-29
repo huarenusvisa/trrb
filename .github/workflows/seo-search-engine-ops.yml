@@ -13,6 +13,12 @@ on:
       - '.github/workflows/seo-search-engine-ops.yml'
       - 'scripts/seo-search-engine-ops.mjs'
       - 'scripts/content-inventory.mjs'
+      - 'scripts/sitemap-decisions.mjs'
+      - 'scripts/seo-discovery.test.mjs'
+      - 'netlify/edge-functions/seo-route-meta.ts'
+      - 'netlify/edge-functions/_shared/immigration-directory.ts'
+      - 'netlify/edge-functions/community-directory.ts'
+      - 'netlify/shared/publication.mjs'
       - 'scripts/publication-inventory.test.mjs'
       - 'scripts/generate-sitemaps.mjs'
       - 'scripts/paged-read.mjs'
@@ -73,7 +79,7 @@ jobs:
           node-version: '22'
       - name: Verify category indexability and ICE routing
         id: page_regressions
-        run: node --experimental-strip-types --test scripts/category-ice-indexability.test.mjs scripts/publication-inventory.test.mjs
+        run: node --experimental-strip-types --test scripts/category-ice-indexability.test.mjs scripts/publication-inventory.test.mjs scripts/seo-discovery.test.mjs
       - name: Install Google API client
         id: install_google
         run: npm install --no-save googleapis@144

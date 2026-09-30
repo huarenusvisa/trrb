@@ -3,6 +3,11 @@ name: 生产部署与当前产品验收
 
 on:
   workflow_dispatch:
+    inputs:
+      force_redeploy:
+        description: 'Force production redeploy after environment variable changes'
+        type: boolean
+        default: false
   push:
     branches: [main]
     paths:
@@ -74,6 +79,10 @@ jobs:
             );
             process.stdout.write(hit ? "true" : "false");
           ')"
+          if [ "${{ inputs.force_redeploy }}" = "true" ]; then
+            already_accepted=false
+            echo "Forced redeploy requested for production configuration refresh."
+          fi
           echo "SKIP_DEPLOY=$already_accepted" >> "$GITHUB_ENV"
           echo "already_accepted=$already_accepted"
 

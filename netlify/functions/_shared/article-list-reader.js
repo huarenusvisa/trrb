@@ -4,7 +4,7 @@ const {partitionedSearch}=require('./article-partition-search');
 const MAINTENANCE_NOTICE='完整正文检索暂时未完成，当前先显示标题和摘要的匹配结果；仅正文命中的文章可能暂未列出。';
 const uuid=v=>/^[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}$/i.test(v||'');
 
-function listRequest(input={}, {publicOnly=false,now=Date.now(),indexReady=false}={}){
+function listRequest(input={}, {publicOnly=false,now=Date.now()}={}){
   const spec=articleListQuery(input,{publicOnly,now});
   const {query,text,pageSize}=spec;
   if(input.offset!==undefined){const offset=Number(input.offset);if(!Number.isInteger(offset)||offset<0||offset>10000000)throw new Error('无效的查询起始位置');query.offset=String(offset);spec.page=Math.floor(offset/pageSize)+1;}
@@ -19,21 +19,14 @@ function listRequest(input={}, {publicOnly=false,now=Date.now(),indexReady=false
     query.order='homepage_pinned_at.desc,published_at.desc.nullslast,id.desc';
     if(!text)delete query.and;
   }
-  // The experimental persisted index is NOT activated by environment changes.
-  // Production uses complete primary-key partitions and needs no new DB writes.
-  // indexReady exists solely for isolated tests / a separately verified rollout.
-  const useIndex=Boolean(text&&!uuid(text)&&indexReady);
-  if(text&&!uuid(text)&&!useIndex){
+  // This is only the fast degraded query. readArticleList first runs complete
+  // primary-key-range matching, including content, without any duplicate store.
+  const limited=Boolean(text&&!uuid(text));
+  if(limited){
     const filters=searchTerms(text).map(term=>`or(title.ilike.*${term}*,summary.ilike.*${term}*)`);
     query.and=`(${filters.join(',')})`;
   }
-  let resource='articles',options={query};
-  if(useIndex){
-    resource='rpc/trrb_search_articles_v2';
-    options={method:'POST',query:{select:query.select},body:{p_terms:searchTerms(text),p_public_only:publicOnly,p_status:pinnedOnly?null:input.status||null,p_category:input.category||null,p_offset:Number(query.offset),p_limit:pageSize+1,p_article_id:null,p_pinned_only:pinnedOnly,p_ice_category:false}};
-  }
-  const limited=Boolean(text&&!uuid(text)&&!useIndex);
-  return {...spec,resource,options,pinnedOnly,search_scope:useIndex?'full_text':limited?'title_summary':uuid(text)?'article_id':'list',search_limited:limited,search_notice:limited?MAINTENANCE_NOTICE:null,recent_hours:!publicOnly&&!text&&!pinnedOnly?72:null};
+  return {...spec,resource:'articles',options:{query},pinnedOnly,search_scope:limited?'title_summary':uuid(text)?'article_id':'list',search_limited:limited,search_notice:limited?MAINTENANCE_NOTICE:null,recent_hours:!publicOnly&&!text&&!pinnedOnly?72:null};
 }
 async function readArticleList(input,settings={},rest){
   const spec=listRequest(input,settings);

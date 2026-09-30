@@ -66,7 +66,7 @@ test('integrated admin uses authenticated pin API, explicit cancel and visible p
  const ui=readFileSync('admin/admin-publisher-v2.js','utf8'),html=readFileSync('admin/index.html','utf8'),backend=readFileSync('netlify/functions/admin-articles.js','utf8');
  assert.match(html,/<option value="pinned">已置顶<\/option>/);assert.match(html,/article-pin-policy.js/);assert.match(ui,/取消置顶/);assert.match(ui,/置顶48小时/);assert.match(ui,/publisherApi\('pin'/);
  const setter=ui.slice(ui.indexOf('window.setHomepageFocusMode ='),ui.indexOf('handleSaveArticle ='));assert.doesNotMatch(setter,/\.from\("articles"\)/);
- assert.match(backend,/await authenticateAdmin/);assert.match(backend,/trrb_set_homepage_pin/);assert.match(backend,/publicDatabaseError/);
+ assert.match(backend,/await authenticateAdmin/);assert.match(backend+readFileSync('netlify/functions/_shared/article-admin-actions.js','utf8'),/trrb_set_homepage_pin/);assert.match(backend,/publicDatabaseError/);
 });
 
 test('homepage honors active old pin and removes expired pin from noneligible category',async t=>{

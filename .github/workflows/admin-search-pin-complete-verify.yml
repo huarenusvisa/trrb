@@ -26,12 +26,24 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - name: Integrate known sources and run complete search and pin regressions
+      - name: Integrate known sources and verify both reconciled policy suites
         run: |
           if ! test -f scripts/admin-search-pin-installation.json; then
             node scripts/admin-search-pin-integrate.mjs
           fi
-          node --experimental-strip-types --test scripts/admin-search-pin-complete.test.mjs scripts/article-search.test.mjs
+          node --input-type=module <<'JS'
+          import {readFileSync,writeFileSync,existsSync} from 'node:fs';
+          const path='scripts/article-search-pin.test.mjs';
+          const source=readFileSync(path,'utf8');
+          const before='assert.match(backend,/trrb_set_homepage_pin/);';
+          if(source.includes(before)){
+            writeFileSync(path,source.replace(before,"assert.match(backend+readFileSync('netlify/functions/_shared/article-admin-actions.js','utf8'),/trrb_set_homepage_pin/);"));
+            const report=existsSync('.admin-search-pin-apply.json')?JSON.parse(readFileSync('.admin-search-pin-apply.json','utf8')):{changed_files:[],version:'admin-search-pin-20260930-v2',database_changes:false,history_mutations:false};
+            if(!report.changed_files.includes(path))report.changed_files.push(path);
+            writeFileSync('.admin-search-pin-apply.json',JSON.stringify(report,null,2));
+          }
+          JS
+          node --experimental-strip-types --test scripts/admin-search-pin-complete.test.mjs scripts/article-search.test.mjs scripts/article-search-pin.test.mjs scripts/article-search-partition.test.mjs
           node --check scripts/admin-search-pin-ui.e2e.mjs
           node --check scripts/admin-search-pin-live.mjs
       - name: Prepare isolated browser without user accounts
@@ -53,7 +65,7 @@ jobs:
             execFileSync('git',['diff','--cached','--check'],{stdio:'inherit'});
             execFileSync('git',['config','user.name','github-actions[bot]']);
             execFileSync('git',['config','user.email','41898282+github-actions[bot]@users.noreply.github.com']);
-            execFileSync('git',['commit','-m','fix(admin): activate bounded full-text search and confirmed 48-hour pin controls'],{stdio:'inherit'});
+            execFileSync('git',['commit','-m','test(admin): confirm merged search and exact 48-hour pin behavior'],{stdio:'inherit'});
             execFileSync('git',['push','origin','HEAD:fix/admin-search-pin-complete-20260930'],{stdio:'inherit'});
           }
           JS

@@ -1,0 +1,31 @@
+import {readFileSync,writeFileSync} from 'node:fs';
+import {execFileSync} from 'node:child_process';
+const files=new Map();
+const api='netlify/functions/admin-articles.js',ui='admin/admin-publisher-v2.js',db='netlify/functions/_shared/supabase-admin.js',html='admin/index.html',images='netlify/functions/_shared/article-ai.js';
+const read=p=>{if(!files.has(p))files.set(p,readFileSync(p,'utf8'));return files.get(p);};
+function replace(p,a,b){const s=read(p);if(s.split(a).length!==2)throw new Error('Expected exactly one reviewed anchor in '+p+': '+a.slice(0,100));files.set(p,s.replace(a,b));}
+for(const [p,sha] of [[api,'8339e49fc9af610c9db7186d2e05ea7f3318dcdd'],[ui,'f302327813a36a6ecf2320bf2e516d4995e5b66d']])if(execFileSync('git',['hash-object',p],{encoding:'utf8'}).trim()!==sha)throw new Error('Source changed; reconcile '+p);
+replace(api,'const ALLOWED_STATUS =',"const {saveManualArticle,lookupManualPublication}=require('./_shared/manual-article-save');\nconst ALLOWED_STATUS =");
+replace(api,'  if (requestedStatus === "published") await assertNoPublishedDuplicate(title);','  // The indexed database trigger remains authoritative for title deduplication.\n  // Do not scan 500 unrelated articles before every manual write.');
+replace(api,'  const rows = await rest("articles", {\n    method: "POST",\n    body: payload,\n    prefer: "return=representation"\n  });\n  const article = Array.isArray(rows) ? rows[0] : rows;\n  if (!article?.id) throw new Error("文章写入成功，但数据库没有返回文章ID");','  const receipt=await saveManualArticle(payload,input,actor,rest);\n  const article=receipt.article;');
+replace(api,'  return {\n    article,\n    seo_keywords:','  return {\n    ...receipt,\n    article,\n    seo_keywords:');
+replace(api,'    if (action === "save_article") return json(200, await saveArticle(input, actor));','    if (action === "save_article") return json(200, await saveArticle(input, actor));\n    if (action === "publication_status") return json(200, await lookupManualPublication(input,actor,rest));');
+replace(api,'    const payload = { error: error.message || String(error) };','    const payload = { error: error.message || String(error), code:error.code || undefined, request_id:error.requestId || undefined };');
+replace(db,'async function rest(table, { method = "GET", query = {}, body, prefer = "" } = {}) {','async function rest(table, { method = "GET", query = {}, body, prefer = "", timeoutMs = 0 } = {}) {');
+replace(db,'    body: body === undefined ? undefined : JSON.stringify(body)','    ...(timeoutMs > 0 ? {signal:AbortSignal.timeout(timeoutMs)} : {}),\n    body: body === undefined ? undefined : JSON.stringify(body)');
+replace(images,'    body: bytes\n  });','    body: bytes,\n    signal:AbortSignal.timeout(12000)\n  });');
+replace(ui,'  async function publisherApi(action, payload = {}) {','  const uploadedCovers=new WeakMap();\n  async function publisherApi(action, payload = {}) {\n    if(["save_article","upload_cover","publication_status"].includes(action))return window.TrrbManualPublish.call({api:API,token:await authToken(),action,payload});');
+replace(ui,'      if (selectedCoverFile) {\n        coverImage = await uploadCoverImage(selectedCoverFile, title);\n        el("article-cover").value = coverImage;\n      }','      if (selectedCoverFile) {\n        const file=selectedCoverFile;\n        coverImage=uploadedCovers.get(file)||await uploadCoverImage(file,title);\n        uploadedCovers.set(file,coverImage);\n        el("article-cover").value=coverImage;\n      }');
+replace(ui,'      if (result.article?.status === "published") {','      if(!result.confirmed||!result.article?.id)throw new Error("发布结果尚未确认，请保留正文后核对。");\n      if(title!==el("article-title").value.trim()||content!==el("article-content").value.trim()){\n        el("article-message").textContent="刚才提交的版本已保存；你随后修改的内容仍保留在编辑框中，尚未提交。";\n        return;\n      }\n      if (result.article?.status === "published" && result.article?.visibility === "public") {');
+replace(ui,'        el("article-message").textContent = "发布成功。图片为可选项，无图文章也会正常显示。";','        el("article-message").textContent = result.replayed ? "已核实文章保存成功，没有重复建稿。" : "发布成功，已收到数据库保存确认。";');
+replace(ui,'        el("article-message").textContent = "草稿保存成功，摘要和SEO已自动生成。";','        el("article-message").textContent = "文章已保存，当前状态：" + statusLabel(result.article.status) + "。";');
+replace(ui,'      await loadArticles();\n      window.setTimeout(() => showPage("articles"), 900);','      // A later list refresh failure is not a publication failure.\n      loadArticles().catch(error=>console.warn("文章已保存，列表刷新暂时失败",error.message));\n      window.setTimeout(() => showPage("articles"), 900);');
+replace(ui,'      el("article-message").textContent = `发布失败：${error.message}`;','      el("article-message").textContent = error.message || "发布结果尚未确认，请保留正文后重试。";');
+let page=read(html);
+const script=/<script src="\.\/admin-publisher-v2\.js\?v=[^"]+"><\/script>/;
+if(!script.test(page))throw new Error('Publisher script tag not found');
+page=page.replace(script,'<script src="./manual-publish-request.js?v=20260930-publish-504-v1"></script>\n  <script src="./admin-publisher-v2.js?v=20260930-publish-504-v1"></script>');
+files.set(html,page);
+for(const [p,s] of files){writeFileSync(p,s);if(p.endsWith('.js'))execFileSync('node',['--check',p],{stdio:'inherit'});}
+writeFileSync('.manual-publish-apply.json',JSON.stringify({changed_files:[...files.keys()],version:'20260930-publish-504-v1',production_article_writes:false},null,2));
+console.log('Bounded manual publisher integrated. Existing pin/search/authentication rules retained.');

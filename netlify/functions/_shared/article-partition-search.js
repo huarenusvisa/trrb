@@ -9,7 +9,7 @@ const compare=(a,b)=>timestamp(b.published_at)-timestamp(a.published_at)||timest
 // index, no hidden date cutoff. Only IDs and sort clocks are collected first.
 async function partitionedSearch(input,spec,settings,rest){
  const original=articleListQuery(input,settings).query;
- const base={...spec.query,and:original.and,select:'id,published_at,created_at',order:'id.asc',limit:'1000'};
+ const base={...spec.query,and:original.and,select:spec.pinnedOnly?'id,published_at,created_at,homepage_pinned_at':'id,published_at,created_at',order:'id.asc',limit:'1000'};
  delete base.offset;
  const matches=new Map();let next=0,stopped=false;
  const deadline=Date.now()+(settings.searchBudgetMs||16000);
@@ -34,8 +34,8 @@ async function partitionedSearch(input,spec,settings,rest){
  async function worker(){while(next<16&&!stopped){const part=next++;try{await scan(part);}catch(error){stopped=true;throw error;}}}
  // Two workers cap simultaneous database pressure. Every range must succeed.
  await Promise.all([worker(),worker()]);
- const all=[...matches.values()].sort(compare);
- const offset=(spec.page-1)*spec.pageSize;
+ const all=[...matches.values()].sort((a,b)=>(spec.pinnedOnly?(timestamp(b.homepage_pinned_at)-timestamp(a.homepage_pinned_at)):0)||compare(a,b));
+ const offset=Number(spec.query.offset);
  const selected=all.slice(offset,offset+spec.pageSize+1);
  if(!selected.length)return [];
  const q={...spec.query,and:original.and,id:'in.('+selected.map(r=>r.id).join(',')+')',offset:'0',limit:String(selected.length)};

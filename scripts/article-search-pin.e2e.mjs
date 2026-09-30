@@ -9,7 +9,7 @@ assert.ok(section);
 try{
  for(const width of [1440,390]){
   const page=await browser.newPage({viewport:{width,height:1000}});
-  await page.setContent(`<style>body{font:15px system-ui;padding:16px;margin:0}input,select,button{font:inherit;padding:9px;margin:4px}table{border-collapse:collapse;width:100%}td,th{padding:10px;border:1px solid #ddd;text-align:left}.hidden{display:none}.table-wrap{overflow:auto}small{color:#5c6878}button{cursor:pointer}button:disabled{cursor:not-allowed}#articles-pin-notice{color:#a21b26}</style><div id="count-articles"></div><div id="count-published"></div><div id="count-draft"></div>${section}`);
+  await page.setContent(`<style>body{font:15px system-ui;padding:16px;margin:0}input,select,button{font:inherit;padding:9px;margin:4px}table{border-collapse:collapse;width:100%}td,th{padding:10px;border:1px solid #ddd;text-align:left}.hidden{display:none}.table-wrap{overflow:auto}small{color:#5c6878}button{cursor:pointer}button:disabled{cursor:not-allowed}#articles-pin-notice{color:#a21b26}</style><article><strong id="count-articles"></strong><span></span></article><article><strong id="count-published"></strong><span></span></article><article><strong id="count-draft"></strong><span></span></article>${section}`);
   await page.evaluate(()=>{
    document.getElementById('articles-page').classList.remove('hidden');
    window.uploadCoverImage=null;window.generateAiCover=null;window.loadArticles=null;window.handleSaveArticle=null;

@@ -1,0 +1,21 @@
+{
+  "changed_files": [
+    "netlify/functions/admin-articles.js",
+    "netlify/functions/public-article-search.ts",
+    "netlify/functions/public-articles.js",
+    "netlify/functions/public-home-focus.ts",
+    "admin/admin-publisher-v2.js",
+    "admin/index.html",
+    "listing.js",
+    "scripts/article-search-pin.e2e.mjs",
+    "netlify/functions/_shared/article-partition-search.js"
+  ],
+  "version": "20260930-search-pin",
+  "index_ready": false,
+  "full_text_rollout_blocked": "Persisted experimental index is not activated; primary-key range searches do not depend on it.",
+  "old_articles_deleted": false,
+  "search_strategy": "Complete full-body matching across 16 indexed UUID ranges, 2 workers; explicit title/summary fallback only if a range fails.",
+  "database_writes_for_search": 0,
+  "verification_run": "36669690641",
+  "production_write_verification": false
+}

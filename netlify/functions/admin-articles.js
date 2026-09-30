@@ -18,6 +18,7 @@ const { routeOfficialContent } = require("./_shared/official-content-routing");
 const { CHINA_HOT_CATEGORY, isChinaHotCategory, isChinaHotHeadline } = require("./_shared/china-hot-headlines");
 const { articleListQuery, articleCategoryLabel } = require("./_shared/article-search");
 
+const { readArticleList, publicDatabaseError } = require('./_shared/article-list-reader');
 const ALLOWED_STATUS = new Set(["draft", "published", "hidden"]);
 const ICE_CATEGORIES = new Set(["ICE执法动态", "ICE执法", "驱逐快报"]);
 const IMMIGRATION_CATEGORY = "移民美国";
@@ -128,10 +129,16 @@ async function assertNoPublishedDuplicate(title, excludeId = "") {
 }
 
 async function listArticles(input) {
-  const { query, page, pageSize, text, emptySearch } = articleListQuery(input);
-  const rows = emptySearch ? [] : await rest("articles", { query });
-  return { articles: rows.slice(0, pageSize).map(row => ({...row, category_label: articleCategoryLabel(row)})), page, page_size: pageSize,
-    has_more: rows.length > pageSize, search: text, recent_hours: text ? null : 72 };
+  const result=await readArticleList(input,{},rest);
+  return {...result,articles:result.articles.map(row=>({...row,category_label:articleCategoryLabel(row)}))};
+}
+
+async function setPin(input,actor){
+  const id=safeText(input.article_id,100),mode=safeText(input.mode,20);
+  if(!/^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/i.test(id)||!['force','auto','exclude'].includes(mode)){const e=new Error('无效的文章或置顶操作');e.statusCode=400;throw e;}
+  const rows=await rest('rpc/trrb_set_homepage_pin',{method:'POST',query:{select:'id,title,status,visibility,published_at,created_at,hidden_at,archived_at,metadata,homepage_pinned_at,homepage_pin_expires_at'},body:{p_article_id:id,p_mode:mode,p_actor:actor.user.id}});
+  if(!rows?.[0])throw new Error('未收到置顶保存确认，请刷新检查');
+  return {article:rows[0],pin:require('../../article-pin-policy').pinState(rows[0]),message:mode==='force'?'已置顶，48小时后自动取消':mode==='auto'?'已取消置顶，恢复正常排序':'已设为不推荐'};
 }
 
 async function updateStatus(input) {
@@ -287,6 +294,7 @@ exports.handler = async (event) => {
     const action = safeText(input.action, 60);
 
     if (action === "list") return json(200, await listArticles(input));
+    if (action === "pin") return json(200, await setPin(input,actor));
     if (action === "status") return json(200, { article: await updateStatus(input) });
     if (action === "suggest_titles") return json(200, { titles: await suggestTitles(input) });
     if (action === "upload_cover") return json(200, { url: await uploadManualCover(input) });
@@ -295,6 +303,8 @@ exports.handler = async (event) => {
     return json(400, { error: "未知操作" });
   } catch (error) {
     console.error("Admin article API error:", error);
+    const known=publicDatabaseError(error);
+    if(known)return json(known.status,{error:known.message,code:known.code});
     const payload = { error: error.message || String(error) };
     if (error.existingArticleId) payload.existing_article_id = error.existingArticleId;
     return json(error.statusCode || 500, payload);

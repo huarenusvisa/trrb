@@ -363,7 +363,7 @@ async function linkEvidence(story, post) {
   });
 }
 async function mergeIntoStory(story, post) {
-  if (["editing","approved","rejected"].includes(story.human_review_status) || story.reviewed_by) {
+  if (["editing","approved","rejected"].includes(story.human_review_status) || story.reviewed_by || story.ai_payload?.editorial_lock || story.ai_payload?.manual_override) {
     await linkEvidence(story,post);
     return; // New evidence never revokes a human decision or replaces an editor's copy.
   }

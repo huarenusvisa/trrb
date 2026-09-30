@@ -10,7 +10,7 @@ import {newsPriority,sourceFingerprint,editorialRetryAllowed} from './news-prior
 import {isBudgetDeferred} from './news-cost-model.mjs';
 import {researchEvent} from "./china-context-research.mjs";
 import newsScope from "../netlify/functions/_shared/news-collection-scope.js";
-import {EDITORIAL_POLICY_VERSION, ICE_TRANSLATION_VERSION, DEEP_REVIEW_FIELDS, DEEP_RESEARCH_INSTRUCTIONS, independentSourceCount, deepQualityErrors, reviewedStoryReady, countChinese, contentDigest} from "./news-editorial-policy.mjs";
+import {EDITORIAL_POLICY_VERSION, ICE_TRANSLATION_VERSION, DEEP_REVIEW_FIELDS, DEEP_RESEARCH_INSTRUCTIONS, independentSourceCount, deepQualityErrors, reviewedStoryReady, countChinese, contentDigest, sourceWithinCollectionWindow} from "./news-editorial-policy.mjs";
 import { fileURLToPath } from "node:url";
 
 const VERSION = ICE_TRANSLATION_VERSION;
@@ -77,6 +77,7 @@ function needsTranslation(story, sourceLength = 0, mediaCount = 0) {
   const content = safeText(story.content || story.summary, Infinity);
   return !ACCEPTED_VERSIONS.has(payload.translation_version)
     || !reviewedStoryReady(story)
+    || (payload.material_update_pending === true && !sourceWithinCollectionWindow(payload.lead_source_created_at))
     || payload.translated_to_chinese !== true
     || !hasChinese(story.title) || !hasChinese(content) || chineseRatio(content) < 0.45
     || (mediaCount > 0 && payload.image_grounding_used !== true);
@@ -226,7 +227,7 @@ async function patchStory(story, translated, posts) {
   const reviewPayload = {editorial_policy_version:EDITORIAL_POLICY_VERSION,editorial_depth:translated.editorial_depth,editorial_depth_reason:translated.depth_reason,editorial_review:translated.editorial_review,context_research:translated.context_research,research_attempted:translated.research_attempted,research_error:translated.research_error,reviewed_content_sha256:contentDigest(title,content)};
   if (!reviewedStoryReady({title,content,ai_payload:reviewPayload})) throw new Error("稿型或独立复核校验失败，禁止保存为合格稿");
   const appearsOldNews = Boolean(translated.appears_old_news);
-  const saved = await sb("ice_stories", { method: "PATCH", query: { id: `eq.${story.id}`,human_review_status:"not.in.(editing,approved,rejected)",...(story.updated_at ? {updated_at:`eq.${story.updated_at}`} : {}) }, body: { title, summary: summary || content.slice(0, 180), content, final_title: title, final_summary: summary || content.slice(0, 180), final_content: content, ai_payload: { ...payload, ...reviewPayload, editorial_failure: null, translation_version: VERSION, context_expansion_version: CONTEXT_EXPANSION_VERSION, translated_at: nowIso(), translated_source_count: posts.length, translated_to_chinese: true, source_language: translated.source_language || "unknown", title_length: titleLength(title), body_character_count: length, body_chinese_character_count: length, source_character_count: translated.sourceLength, target_min_chars: targetMin, preferred_min_chars: Number(translated.preferredMin || band.preferredMin), target_max_chars: targetMax, length_policy: translated.lengthPolicy || band.policy, image_grounding_used: translated.imageCount > 0, image_count: translated.imageCount, image_observations: safeText(translated.image_observations, 2000), appears_old_news: appearsOldNews, old_news_reason: safeText(translated.old_news_reason, 1000), old_news_checked: true, automatic_old_news_check_passed: !appearsOldNews, manual_old_news_confirmation: false }, updated_at: nowIso() }, prefer: "return=representation" });
+  const saved = await sb("ice_stories", { method: "PATCH", query: { id: `eq.${story.id}`,human_review_status:"not.in.(editing,approved,rejected)",...(story.updated_at ? {updated_at:`eq.${story.updated_at}`} : {}) }, body: { title, summary: summary || content.slice(0, 180), content, final_title: title, final_summary: summary || content.slice(0, 180), final_content: content, ai_payload: { ...payload, ...reviewPayload, lead_source_post_id:posts[0].x_post_id, lead_source_url:posts[0].x_url, lead_source_created_at:posts[0].source_created_at, lead_source_text_original:posts[0].source_text, source_username:posts[0].source_username, translation_pending:false, material_update_pending:false, editorial_failure: null, translation_version: VERSION, context_expansion_version: CONTEXT_EXPANSION_VERSION, translated_at: nowIso(), translated_source_count: posts.length, translated_to_chinese: true, source_language: translated.source_language || "unknown", title_length: titleLength(title), body_character_count: length, body_chinese_character_count: length, source_character_count: translated.sourceLength, target_min_chars: targetMin, preferred_min_chars: Number(translated.preferredMin || band.preferredMin), target_max_chars: targetMax, length_policy: translated.lengthPolicy || band.policy, image_grounding_used: translated.imageCount > 0, image_count: translated.imageCount, image_observations: safeText(translated.image_observations, 2000), appears_old_news: appearsOldNews, old_news_reason: safeText(translated.old_news_reason, 1000), old_news_checked: true, automatic_old_news_check_passed: !appearsOldNews, manual_old_news_confirmation: false }, updated_at: nowIso() }, prefer: "return=representation" });
   if (!saved?.length) throw new Error("采编期间稿件已被修改或锁定，未覆盖编辑内容");
 }
 async function main() {
@@ -234,8 +235,8 @@ async function main() {
   const loaded = await storiesToTranslate();
   const prepared=[];
   for (const story of loaded) {
-    if (['editing','approved','rejected'].includes(story.human_review_status)) continue;
-    const posts=await postsFor(story);
+    if (['editing','approved','rejected'].includes(story.human_review_status) || story.ai_payload?.editorial_lock || story.ai_payload?.manual_override) continue;
+    const posts=(await postsFor(story)).filter(p=>sourceWithinCollectionWindow(p.source_created_at));
     const priorities=posts.map(p=>newsPriority(p));
     if (!priorities.some(p=>p.eligible)) continue;
     prepared.push({story,posts,score:Math.max(...priorities.map(p=>p.score))});

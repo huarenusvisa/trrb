@@ -188,6 +188,23 @@ exports.handler = async (event) => {
     const input = JSON.parse(event.body || "{}");
     if (safeText(input.action, 40) !== "list") return json(400, { error: "只支持list操作" });
     const stories = await loadStories();
+    // A pending update does not unpublish the existing article.
+    const ids=[...new Set(stories.map(s=>s.article_id).filter(Boolean))];
+    const published=new Map();
+    for(let offset=0;offset<ids.length;offset+=100){
+      const rows=await rest('articles',{query:{select:'id,title,summary,content,published_at',id:`in.(${ids.slice(offset,offset+100).join(',')})`,status:'eq.published',visibility:'eq.public',limit:100}});
+      for(const article of rows||[])published.set(String(article.id),article);
+    }
+    for(const story of stories){
+      const article=published.get(String(story.article_id));
+      if(article && !['published','rejected','failed'].includes(story.status)){
+        story.pending_update=true;
+        story.status='published';
+        story.title=article.title;story.summary=article.summary;story.content=article.content;
+        story.published_at=article.published_at;
+        story.decision_reason='文章已发布；新材料仍在处理，不影响现有公开页面。';
+      }
+    }
     const activeStories = stories.filter((story) => !["rejected", "failed"].includes(String(story.status || "")));
     const postsByFingerprint = await loadLeadPosts(activeStories);
     const prepared = prepareStories(activeStories, postsByFingerprint)

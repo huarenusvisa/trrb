@@ -88,7 +88,7 @@ async function github(path, options = {}) {
   });
   if (!response.ok) {
     const payload = await response.json().catch(() => ({}));
-    const error = new Error(payload.message || `GitHub 工作流请求失败（${response.status}）`);
+    const error = new Error(response.status === 401 ? "GitHub 即时启动凭据已失效，请更新 Netlify 的 GITHUB_AUTOMATION_TOKEN；开关已保存，定时总控不受此凭据影响" : (payload.message || `GitHub 工作流请求失败（${response.status}）`));
     error.statusCode = response.status;
     throw error;
   }

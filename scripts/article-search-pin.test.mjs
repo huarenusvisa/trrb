@@ -40,9 +40,10 @@ test('maintenance does not silently use a partly filled index or call a global f
   const spec=listRequest({q},{indexReady:false});assert.equal(spec.resource,'articles');assert.equal(spec.search_scope,'title_summary');assert.equal(spec.search_limited,true);assert.match(spec.search_notice,/仅正文命中/);assert.doesNotMatch(spec.query.and,/content\./);assert.match(spec.query.and,/title\.ilike/);assert.equal(spec.recent_hours,null);
  }
 });
-test('fully verified index opt-in uses bound RPC arguments and safe public projection',()=>{
+test('retired experimental index cannot be accidentally re-enabled',()=>{
  const spec=listRequest({q:'倒习',status:'hidden'},{publicOnly:true,indexReady:true,now:start});
- assert.equal(spec.resource,'rpc/trrb_search_articles_v2');assert.equal(spec.options.method,'POST');assert.equal(spec.options.body.p_public_only,true);assert.deepEqual(spec.options.body.p_terms,['倒习']);assert.doesNotMatch(spec.options.query.select,/metadata|content|visibility/);assert.equal(spec.search_limited,false);
+ assert.equal(spec.resource,'articles');assert.equal(spec.options.query.status,'eq.published');assert.doesNotMatch(spec.options.query.select,/metadata|content|visibility/);
+ assert.doesNotMatch(readFileSync('netlify/functions/_shared/article-list-reader.js','utf8'),/rpc\/trrb_search_articles_v2/);
 });
 test('public query always excludes drafts, private, withdrawn and future publications',()=>{
  const spec=listRequest({q:'任志强',status:'pinned'},{publicOnly:true,indexReady:false,now:start});

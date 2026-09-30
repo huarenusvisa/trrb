@@ -8,14 +8,62 @@
     "admin/index.html",
     "listing.js",
     "scripts/article-search-pin.e2e.mjs",
-    "netlify/functions/_shared/article-partition-search.js"
+    "netlify/functions/_shared/article-partition-search.js",
+    "scripts/article-search-pin.test.mjs"
   ],
   "version": "20260930-search-pin",
   "index_ready": false,
-  "full_text_rollout_blocked": "Persisted experimental index is not activated; primary-key range searches do not depend on it.",
   "old_articles_deleted": false,
   "search_strategy": "Complete full-body matching across 16 indexed UUID ranges, 2 workers; explicit title/summary fallback only if a range fails.",
   "database_writes_for_search": 0,
-  "verification_run": "36669690641",
-  "production_write_verification": false
+  "verification_run": "36670081046",
+  "production_write_verification": false,
+  "experimental_index_retired": true,
+  "database_read_write_rechecked_at": "2026-09-30T04:37:45Z",
+  "database_pin_transaction_tests": {
+    "pin": true,
+    "cancel": true,
+    "ttl_hours": 48,
+    "ordinary_edit_does_not_renew": true,
+    "content_and_publication_time_preserved": true,
+    "rolled_back": true
+  },
+  "real_data_search": {
+    "results": [
+      {
+        "q": "任志强",
+        "scope": "admin",
+        "matching_first_page": 8,
+        "reported_article_found": true,
+        "full_text": true,
+        "elapsed_ms": 6361
+      },
+      {
+        "q": "任志强",
+        "scope": "public",
+        "matching_first_page": 1,
+        "reported_article_found": true,
+        "full_text": true,
+        "elapsed_ms": 2114
+      },
+      {
+        "q": "倒习",
+        "scope": "admin",
+        "matching_first_page": 2,
+        "reported_article_found": true,
+        "full_text": true,
+        "elapsed_ms": 2270
+      },
+      {
+        "q": "倒习",
+        "scope": "public",
+        "matching_first_page": 2,
+        "reported_article_found": true,
+        "full_text": true,
+        "elapsed_ms": 1947
+      }
+    ],
+    "production_writes": 0
+  },
+  "production_test_posts_created": 0
 }

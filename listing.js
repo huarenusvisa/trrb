@@ -97,7 +97,7 @@ async function fetchLiveSearchArticles(query, page = 1, category = "") {
   if (category) params.set("category", category);
   const payload = await fetchJsonWithTimeout(`/.netlify/functions/public-article-search?${params}`, {
     cache: "no-store", headers: { Accept: "application/json" }
-  }, 15000);
+  }, 30000);
   return { ...payload, articles: (payload.articles || []).map(mapLiveArticle) };
 }
 
@@ -197,6 +197,9 @@ async function initListing() {
       // The server already searched title, summary and body; do not filter its
       // results again against the shortened display summary.
       renderArticles(result.articles, 1);
+      let notice=document.getElementById('search-scope-notice');
+      if(!notice){notice=document.createElement('p');notice.id='search-scope-notice';notice.setAttribute('role','status');document.querySelector('#listing-grid').before(notice);}
+      notice.textContent=result.search_notice||'';notice.hidden=!result.search_notice;
       const nav = document.querySelector("#pagination");
       if (nav) nav.innerHTML = `${page > 1 ? pageLink("上一页", page - 1, false, category, query) : ""}<span class="page-link is-disabled">第 ${page} 页</span>${result.has_more ? pageLink("下一页", page + 1, false, category, query) : ""}`;
       return;

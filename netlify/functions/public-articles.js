@@ -16,6 +16,8 @@ function json(statusCode, body) {
   };
 }
 
+const {readArticleList}=require('./_shared/article-list-reader');
+
 function cleanSearch(value) {
   return String(value || "").trim().replace(/[(),]/g, " ").replace(/\s+/g, " ").slice(0, 120);
 }
@@ -33,6 +35,10 @@ exports.handler = async (event) => {
     const isIceCategory = category === "ICE执法动态";
     const q = cleanSearch(event.queryStringParameters?.q || "");
 
+    if(q){
+      const result=await readArticleList({q,category:category||null,offset,page_size:limit},{publicOnly:true},rest);
+      return json(200,{...result,generated_at:new Date().toISOString(),count:result.articles.length,offset,limit:result.page_size,next_offset:result.has_more?offset+result.page_size:null,category:category||null,q});
+    }
     const query = {
       select: "id,title,slug,publication_path,summary,content,category_name,cover_image,author,status,visibility,published_at,created_at,source_url,source_name,source_account,source_platform",
       status: "eq.published",

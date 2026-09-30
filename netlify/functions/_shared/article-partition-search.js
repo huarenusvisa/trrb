@@ -4,9 +4,9 @@ const lowerBound=n=>n.toString(16)+'0000000-0000-0000-0000-000000000000';
 const timestamp=v=>{const n=Date.parse(v||'');return Number.isFinite(n)?n:-Infinity;};
 const compare=(a,b)=>timestamp(b.published_at)-timestamp(a.published_at)||timestamp(b.created_at)-timestamp(a.created_at)||String(b.id).localeCompare(String(a.id));
 
-// Scan all 16 disjoint UUID ranges through the existing primary key. Each
-// query is bounded, including Chinese two-character body searches. Do not
-// impose a hidden date limit or return partial ranges as complete results.
+// This fallback reads all 16 disjoint UUID ranges, using the existing primary
+// key index. No expensive global OR scan, no database write, no partial search
+// index, no hidden date cutoff. Only IDs and sort clocks are collected first.
 async function partitionedSearch(input,spec,settings,rest){
  const original=articleListQuery(input,settings).query;
  const base={...spec.query,and:original.and,select:spec.pinnedOnly?'id,published_at,created_at,homepage_pinned_at':'id,published_at,created_at',order:'id.asc',limit:'1000'};
@@ -32,16 +32,18 @@ async function partitionedSearch(input,spec,settings,rest){
   }
  }
  async function worker(){while(next<16&&!stopped){const part=next++;try{await scan(part);}catch(error){stopped=true;throw error;}}}
+ // Two workers cap simultaneous database pressure. Every range must succeed.
  await Promise.all([worker(),worker()]);
  const all=[...matches.values()].sort((a,b)=>(spec.pinnedOnly?(timestamp(b.homepage_pinned_at)-timestamp(a.homepage_pinned_at)):0)||compare(a,b));
- const selected=all.slice(Number(spec.query.offset),Number(spec.query.offset)+spec.pageSize+1);
+ const offset=Number(spec.query.offset);
+ const selected=all.slice(offset,offset+spec.pageSize+1);
  if(!selected.length)return [];
  const q={...spec.query,and:original.and,id:'in.('+selected.map(r=>r.id).join(',')+')',offset:'0',limit:String(selected.length)};
  const details=await rest('articles',{query:q});
  if(!Array.isArray(details))throw new Error('Invalid search detail response');
  const byId=new Map(details.map(r=>[r.id,r]));
- // Recheck live status/visibility at detail fetch so concurrent withdrawals
- // disappear rather than expose private records from an earlier ID pass.
+ // Re-read current status/visibility in the detail query. Concurrent withdrawals
+// disappear rather than leaking a stale private result.
  return selected.map(r=>byId.get(r.id)).filter(Boolean);
 }
 module.exports={partitionedSearch,compare,lowerBound};

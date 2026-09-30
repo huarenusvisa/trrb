@@ -6,7 +6,7 @@ export default async (request: Request) => {
   if (!['GET', 'HEAD'].includes(request.method)) return new Response(null, { status: 405, headers });
   try {
     const input = Object.fromEntries(new URL(request.url).searchParams);
-    const result=await reader.readArticleList(input,{publicOnly:true},rest);
+    const result = await reader.readArticleList(input,{publicOnly:true},rest);
 
     return new Response(request.method === 'HEAD' ? null : JSON.stringify(result), { headers });
   } catch (error) {

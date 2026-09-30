@@ -205,7 +205,8 @@
     const metadata = article.metadata && typeof article.metadata === "object" ? article.metadata : {};
     const processing = Boolean(metadata.ai_cover_processing);
     const failed = Boolean(metadata.ai_cover_error);
-    const focusMode = String(metadata.homepage_focus_override || "auto");
+    const pin=window.TrrbArticlePins.pinState(article);
+    const focusMode=pin.mode;
     const statusText = processing
       ? "AI封面生成中"
       : failed
@@ -213,9 +214,9 @@
         : statusLabel(article.status);
     const statusClass = processing ? "status-draft" : failed ? "status-hidden" : `status-${escapeHtml(article.status)}`;
     return `
-      <tr>
+      <tr data-article-row="${escapeAttr(article.id)}">
         <td><b>${escapeHtml(article.title)}</b><br><small>${escapeHtml(article.id)}</small></td>
-        <td>${escapeHtml(article.category_label || article.category_name || "-")}<br><small>${escapeHtml(focusModeLabel(focusMode))}</small></td>
+        <td>${escapeHtml(article.category_label || article.category_name || "-")}<br><small>${escapeHtml(focusModeLabel(focusMode))}</small>${pin.active?`<br><small>到期：${escapeHtml(formatDate(pin.expires_at))}（48小时）</small>`:""}</td>
         <td><span class="status-pill ${statusClass}">${escapeHtml(statusText)}</span>${failed ? `<br><small>${escapeHtml(metadata.ai_cover_error)}</small>` : ""}</td>
         <td>${escapeHtml(formatDate(article.published_at || article.created_at))}</td>
         <td>
@@ -223,14 +224,16 @@
           <button class="small-btn" onclick="changeArticleStatus('${escapeAttr(article.id)}','draft')">草稿</button>
           <button class="small-btn" onclick="changeArticleStatus('${escapeAttr(article.id)}','hidden')">隐藏</button>
           <br>
-          <button class="small-btn" onclick="setHomepageFocusMode('${escapeAttr(article.id)}','force')">首页置顶</button>
-          <button class="small-btn" onclick="setHomepageFocusMode('${escapeAttr(article.id)}','auto')">自动推荐</button>
+          ${pin.active ? `<button class="small-btn" onclick="setHomepageFocusMode('${escapeAttr(article.id)}','auto')">取消置顶</button>` : `<button class="small-btn" ${article.status!=='published'||article.visibility!=='public'?'disabled':''} onclick="setHomepageFocusMode('${escapeAttr(article.id)}','force')">置顶48小时</button>`}
+          <button class="small-btn" onclick="setHomepageFocusMode('${escapeAttr(article.id)}','auto')">恢复自动推荐</button>
           <button class="small-btn" onclick="setHomepageFocusMode('${escapeAttr(article.id)}','exclude')">不推荐</button>
         </td>
       </tr>
     `;
   }
 
+  let articleRows = new Map();
+  const pendingPinActions = new Set();
   let articlePage = 1;
   let articleSearch = "";
   let articleStatus = "";
@@ -257,11 +260,13 @@
     try {
       const result = await publisherApi("list", { q: articleSearch, status: articleStatus, page: articlePage, page_size: 50 });
       if (request !== articleRequest) return;
-      el("articles-list-note").textContent = articleSearch
+      el("articles-list-note").textContent = articleStatus === "pinned" ? `仅显示尚未到期的置顶文章，不受72小时列表限制；每条从置顶操作起算48小时，第${articlePage}页。` : articleSearch
         ? `全库搜索“${articleSearch}”，包含72小时以前的新闻；第${articlePage}页。`
         : `默认只显示最近72小时的新闻；更早新闻仍保留并正常公开，输入关键词即可查找。第${articlePage}页。`;
+      if(result.search_notice)el("articles-list-note").textContent += " " + result.search_notice;
       el("articles-pagination").innerHTML = `${articlePage > 1 ? `<button type="button" data-article-page="${articlePage - 1}">上一页</button>` : ""}<span>第 ${articlePage} 页</span>${result.has_more ? `<button type="button" data-article-page="${articlePage + 1}">下一页</button>` : ""}`;
       const articles = result.articles || [];
+      articleRows = new Map(articles.map(row=>[row.id,row]));
       ["articles", "published", "draft"].forEach(name => {
         const label = el(`count-${name}`)?.nextElementSibling;
         if (label) label.textContent = { articles: "本页文章", published: "本页已发布", draft: "本页草稿" }[name];
@@ -275,7 +280,7 @@
     } catch (error) {
       if (request !== articleRequest) return;
       console.error(error);
-      el("articles-list-note").textContent = "查询失败，请重试。";
+      el("articles-list-note").textContent = "查询失败，不代表文章不存在。";
       el("articles-pagination").innerHTML = "";
       el("articles-tbody").innerHTML = `<tr><td colspan="5">文章读取失败：${escapeHtml(error.message)}</td></tr>`;
     }
@@ -291,28 +296,27 @@
   };
 
   window.setHomepageFocusMode = async function setHomepageFocusMode(id, mode) {
+    if(pendingPinActions.has(id)||!['force','auto','exclude'].includes(mode))return;
+    const article=articleRows.get(id);
+    const title=article?.title || '这篇文章';
+    const message=mode==='force'
+      ? '确定将「'+title+'」置顶吗？从本次设置起48小时后自动取消，不会因编辑文章而延长。'
+      : mode==='auto'
+        ? '确定取消「'+title+'」的置顶并恢复自动推荐吗？文章仍然保留并公开。'
+        : '确定取消「'+title+'」的置顶并设为不推荐吗？文章不会被删除。';
+    if(!window.confirm(message))return;
+    pendingPinActions.add(id);
+    const notice=el('articles-pin-notice');
+    const row=Array.from(document.querySelectorAll('[data-article-row]')).find(r=>r.dataset.articleRow===id);
+    const buttons=Array.from(row?.querySelectorAll('button')||[]).map(b=>({button:b,disabled:b.disabled}));
+    buttons.forEach(({button})=>button.disabled=true);
+    notice.textContent='正在保存，请稍候…';
     try {
-      if (!new Set(["auto", "force", "exclude"]).has(mode)) throw new Error("无效的首页推荐模式");
-      const { data, error } = await supabaseClient
-        .from("articles")
-        .select("metadata,is_featured")
-        .eq("id", id)
-        .maybeSingle();
-      if (error) throw error;
-      if (!data) throw new Error("找不到文章");
-      const metadata = data.metadata && typeof data.metadata === "object" ? { ...data.metadata } : {};
-      if (mode === "auto") delete metadata.homepage_focus_override;
-      else metadata.homepage_focus_override = mode;
-      metadata.homepage_focus_updated_at = new Date().toISOString();
-      const update = await supabaseClient
-        .from("articles")
-        .update({ metadata, is_featured: mode === "force" })
-        .eq("id", id);
-      if (update.error) throw update.error;
+      const result=await publisherApi('pin',{article_id:id,mode});
       await loadArticles();
-    } catch (error) {
-      alert(`首页推荐设置失败：${error.message}`);
-    }
+      notice.textContent=(result.message||'设置已保存')+(result.pin?.active&&result.pin.expires_at?' 到期时间：'+formatDate(result.pin.expires_at):'');
+    } catch(error){notice.textContent='保存失败：'+error.message;}
+    finally{pendingPinActions.delete(id);buttons.forEach(({button,disabled})=>button.disabled=disabled);}
   };
 
   handleSaveArticle = async function handleSaveArticleV2(event) {

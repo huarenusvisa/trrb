@@ -1,4 +1,5 @@
 import policy from "../../article-editorial-policy.js";
+import pins from "../../article-pin-policy.js";
 import { rest } from "./_shared/supabase-admin.js";
 import { isIceEnforcementText } from "./_shared/ice-enforcement.js";
 
@@ -32,10 +33,7 @@ function timeOf(row) {
   return Number.isFinite(value) ? value : 0;
 }
 
-function overrideOf(row) {
-  const metadata = row?.metadata && typeof row.metadata === "object" ? row.metadata : {};
-  return String(metadata.homepage_focus_override || "auto").trim().toLowerCase();
-}
+function overrideOf(row) { return pins.effectiveMode(row); }
 
 const textLength = policy.bodyCharacterCount;
 
@@ -91,6 +89,7 @@ function publicArticle(row) {
     longform_chars: textLength(content),
     body_character_count: textLength(content), editorial_policy_version: policy.VERSION,
     publication_scope: row.publication_scope || row.metadata?.publication_scope || "standard",
+    homepage_pin: pins.pinState(row),
     homepage_focus_source: isManualFocus(row) ? "editor" : isIceFocusCandidate(row) ? "ICE执法动态" : "美国时政"
   };
 }
@@ -101,11 +100,12 @@ export default async (event: Request) => {
 
   try {
     const cutoff = new Date(Date.now() - HOME_MAX_AGE_MS).toISOString();
-    const select = "id,title,slug,publication_path,summary,content,category_name,topic_key,cover_image,author,status,visibility,published_at,created_at,is_featured,is_breaking,rank_score,metadata";
+    const select = "id,title,slug,publication_path,summary,content,category_name,topic_key,cover_image,author,status,visibility,published_at,created_at,is_featured,is_breaking,rank_score,metadata,homepage_pinned_at,homepage_pin_expires_at,hidden_at,archived_at";
     const baseQuery = {
       select,
       status: "eq.published",
       visibility: "eq.public",
+      hidden_at: "is.null", archived_at: "is.null",
       published_at: `gte.${cutoff}`,
       order: "published_at.desc.nullslast,created_at.desc"
     };
@@ -127,7 +127,9 @@ export default async (event: Request) => {
       rest("articles", {
         query: {
           ...baseQuery,
+          published_at: `lte.${new Date().toISOString()}`,
           metadata: `cs.{"homepage_focus_override":"${MANUAL_FORCE}"}`,
+          homepage_pin_expires_at: `gt.${new Date().toISOString()}`,
           limit: "50"
         }
       })
@@ -143,7 +145,7 @@ export default async (event: Request) => {
 
     const now = Date.now();
     const articles = (Array.isArray(rows) ? rows : [])
-      .filter((row) => timeOf(row) >= now - HOME_MAX_AGE_MS && timeOf(row) <= now)
+      .filter((row) => (pins.isPinned(row,now) || timeOf(row) >= now - HOME_MAX_AGE_MS) && timeOf(row) <= now)
       .filter(isEligibleLongform)
       .map((row) => ({ ...row, homepage_focus_score: Math.round(scoreRow(row, now)) }))
       .filter((row) => row.homepage_focus_score > -1000)
@@ -157,6 +159,7 @@ export default async (event: Request) => {
       source_category: "美国时政、ICE执法动态（编辑可手动加入重大新闻）",
       min_longform_chars: MIN_LONGFORM_CHARS,
       max_age_hours: HOME_MAX_AGE_HOURS,
+      manual_pin_hours: 48,
       sort: "homepage_focus_score.desc,published_at.desc",
       generated_at: new Date().toISOString(),
       count: articles.length,

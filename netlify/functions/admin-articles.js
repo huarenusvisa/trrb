@@ -16,7 +16,8 @@ const {
 const { isIceEnforcementText } = require("./_shared/ice-enforcement");
 const { routeOfficialContent } = require("./_shared/official-content-routing");
 const { CHINA_HOT_CATEGORY, isChinaHotCategory, isChinaHotHeadline } = require("./_shared/china-hot-headlines");
-const { articleListQuery, articleCategoryLabel } = require("./_shared/article-search");
+const { listManagedArticles, setManagedArticlePin } = require("./_shared/article-admin-actions");
+const { publicDatabaseError } = require("./_shared/article-list-reader");
 
 const ALLOWED_STATUS = new Set(["draft", "published", "hidden"]);
 const ICE_CATEGORIES = new Set(["ICE执法动态", "ICE执法", "驱逐快报"]);
@@ -128,10 +129,7 @@ async function assertNoPublishedDuplicate(title, excludeId = "") {
 }
 
 async function listArticles(input) {
-  const { query, page, pageSize, text, emptySearch } = articleListQuery(input);
-  const rows = emptySearch ? [] : await rest("articles", { query });
-  return { articles: rows.slice(0, pageSize).map(row => ({...row, category_label: articleCategoryLabel(row)})), page, page_size: pageSize,
-    has_more: rows.length > pageSize, search: text, recent_hours: text ? null : 72 };
+  return listManagedArticles(input,rest);
 }
 
 async function updateStatus(input) {
@@ -287,6 +285,7 @@ exports.handler = async (event) => {
     const action = safeText(input.action, 60);
 
     if (action === "list") return json(200, await listArticles(input));
+    if (action === "pin") return json(200, await setManagedArticlePin(input,actor,rest));
     if (action === "status") return json(200, { article: await updateStatus(input) });
     if (action === "suggest_titles") return json(200, { titles: await suggestTitles(input) });
     if (action === "upload_cover") return json(200, { url: await uploadManualCover(input) });
@@ -295,6 +294,8 @@ exports.handler = async (event) => {
     return json(400, { error: "未知操作" });
   } catch (error) {
     console.error("Admin article API error:", error);
+    const databaseError=publicDatabaseError(error);
+    if(databaseError)return json(databaseError.status,{error:databaseError.message,code:databaseError.code});
     const payload = { error: error.message || String(error) };
     if (error.existingArticleId) payload.existing_article_id = error.existingArticleId;
     return json(error.statusCode || 500, payload);

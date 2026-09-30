@@ -89,7 +89,8 @@ async function uploadImageBytes(bytes, contentType, folder = "manual") {
       "x-upsert": "false",
       "Cache-Control": "31536000"
     },
-    body: bytes
+    body: bytes,
+    signal:AbortSignal.timeout(12000)
   });
   if (!response.ok) throw new Error(`封面上传失败：${await response.text()}`);
   return `${SUPABASE_URL}/storage/v1/object/public/${ARTICLE_IMAGE_BUCKET}/${path}`;

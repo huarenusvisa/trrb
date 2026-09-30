@@ -1,0 +1,13 @@
+{
+  "changed_files": [
+    "netlify/functions/admin-articles.js",
+    "netlify/functions/_shared/supabase-admin.js",
+    "netlify/functions/_shared/article-ai.js",
+    "admin/admin-publisher-v2.js",
+    "admin/index.html"
+  ],
+  "version": "20260930-publish-504-v1",
+  "production_article_writes": false,
+  "verified_run": "36686280632",
+  "simulated_error_browser_verified": true
+}

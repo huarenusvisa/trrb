@@ -19,6 +19,7 @@ const { CHINA_HOT_CATEGORY, isChinaHotCategory, isChinaHotHeadline } = require("
 const { listManagedArticles, setManagedArticlePin } = require("./_shared/article-admin-actions");
 const { publicDatabaseError } = require("./_shared/article-list-reader");
 
+const {saveManualArticle,lookupManualPublication}=require('./_shared/manual-article-save');
 const ALLOWED_STATUS = new Set(["draft", "published", "hidden"]);
 const ICE_CATEGORIES = new Set(["ICE执法动态", "ICE执法", "驱逐快报"]);
 const IMMIGRATION_CATEGORY = "移民美国";
@@ -212,7 +213,8 @@ async function saveArticle(input, actor) {
     error.statusCode = 400;
     throw error;
   }
-  if (requestedStatus === "published") await assertNoPublishedDuplicate(title);
+  // The indexed database trigger remains authoritative for title deduplication.
+  // Do not scan 500 unrelated articles before every manual write.
 
   const summary = generateSummary(content, title);
   const seoKeywords = generateSeoKeywords(title, categoryName, content);
@@ -256,15 +258,11 @@ async function saveArticle(input, actor) {
     }
   };
 
-  const rows = await rest("articles", {
-    method: "POST",
-    body: payload,
-    prefer: "return=representation"
-  });
-  const article = Array.isArray(rows) ? rows[0] : rows;
-  if (!article?.id) throw new Error("文章写入成功，但数据库没有返回文章ID");
+  const receipt=await saveManualArticle(payload,input,actor,rest);
+  const article=receipt.article;
 
   return {
+    ...receipt,
     article,
     seo_keywords: seoKeywords,
     summary,
@@ -291,12 +289,13 @@ exports.handler = async (event) => {
     if (action === "upload_cover") return json(200, { url: await uploadManualCover(input) });
     if (action === "generate_cover") return json(200, { url: await generateCover(input), ai_generated: true });
     if (action === "save_article") return json(200, await saveArticle(input, actor));
+    if (action === "publication_status") return json(200, await lookupManualPublication(input,actor,rest));
     return json(400, { error: "未知操作" });
   } catch (error) {
     console.error("Admin article API error:", error);
     const databaseError=publicDatabaseError(error);
     if(databaseError)return json(databaseError.status,{error:databaseError.message,code:databaseError.code});
-    const payload = { error: error.message || String(error) };
+    const payload = { error: error.message || String(error), code:error.code || undefined, request_id:error.requestId || undefined };
     if (error.existingArticleId) payload.existing_article_id = error.existingArticleId;
     return json(error.statusCode || 500, payload);
   }

@@ -33,7 +33,7 @@ async function requestJson(url, options = {}) {
   return body;
 }
 
-async function rest(table, { method = "GET", query = {}, body, prefer = "" } = {}) {
+async function rest(table, { method = "GET", query = {}, body, prefer = "", timeoutMs = 0 } = {}) {
   requireSupabase();
   const url = new URL(`${SUPABASE_URL}/rest/v1/${table}`);
   for (const [key, value] of Object.entries(query)) {
@@ -47,6 +47,7 @@ async function rest(table, { method = "GET", query = {}, body, prefer = "" } = {
       "Content-Type": "application/json",
       ...(prefer ? { Prefer: prefer } : {})
     },
+    ...(timeoutMs > 0 ? {signal:AbortSignal.timeout(timeoutMs)} : {}),
     body: body === undefined ? undefined : JSON.stringify(body)
   });
 }

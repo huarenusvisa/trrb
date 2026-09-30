@@ -15,7 +15,9 @@
     return token;
   }
 
+  const uploadedCovers=new WeakMap();
   async function publisherApi(action, payload = {}) {
+    if(["save_article","upload_cover","publication_status"].includes(action))return window.TrrbManualPublish.call({api:API,token:await authToken(),action,payload});
     const response = await fetch(API, {
       method: "POST",
       headers: {
@@ -342,8 +344,10 @@
     try {
       let coverImage = el("article-cover").value.trim();
       if (selectedCoverFile) {
-        coverImage = await uploadCoverImage(selectedCoverFile, title);
-        el("article-cover").value = coverImage;
+        const file=selectedCoverFile;
+        coverImage=uploadedCovers.get(file)||await uploadCoverImage(file,title);
+        uploadedCovers.set(file,coverImage);
+        el("article-cover").value=coverImage;
       }
 
       const result = await publisherApi("save_article", {
@@ -357,15 +361,20 @@
         status
       });
 
-      if (result.article?.status === "published") {
+      if(!result.confirmed||!result.article?.id)throw new Error("发布结果尚未确认，请保留正文后核对。");
+      if(title!==el("article-title").value.trim()||content!==el("article-content").value.trim()){
+        el("article-message").textContent="刚才提交的版本已保存；你随后修改的内容仍保留在编辑框中，尚未提交。";
+        return;
+      }
+      if (result.article?.status === "published" && result.article?.visibility === "public") {
         if (autoAiCover && !coverImage && result.article?.id) {
           startBackgroundPublication(result.article.id).catch((error) => {
             console.warn("可选AI封面生成失败，不影响文章发布", error);
           });
         }
-        el("article-message").textContent = "发布成功。图片为可选项，无图文章也会正常显示。";
+        el("article-message").textContent = result.replayed ? "已核实文章保存成功，没有重复建稿。" : "发布成功，已收到数据库保存确认。";
       } else {
-        el("article-message").textContent = "草稿保存成功，摘要和SEO已自动生成。";
+        el("article-message").textContent = "文章已保存，当前状态：" + statusLabel(result.article.status) + "。";
       }
 
       el("article-form").reset();
@@ -376,11 +385,12 @@
       renderTitleSuggestions([]);
       lastTitleSignature = "";
       updateSubmitLabel();
-      await loadArticles();
+      // A later list refresh failure is not a publication failure.
+      loadArticles().catch(error=>console.warn("文章已保存，列表刷新暂时失败",error.message));
       window.setTimeout(() => showPage("articles"), 900);
     } catch (error) {
       console.error(error);
-      el("article-message").textContent = `发布失败：${error.message}`;
+      el("article-message").textContent = error.message || "发布结果尚未确认，请保留正文后重试。";
     } finally {
       submitButton.disabled = false;
       updateSubmitLabel();

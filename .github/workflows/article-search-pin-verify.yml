@@ -4,15 +4,16 @@ on:
     branches: [fix/article-search-pin-48h-20260930]
     paths:
       - '.github/workflows/article-search-pin-verify.yml'
-      - 'scripts/article-search-pin*'
+      - 'scripts/article-search-*'
       - 'article-pin-policy.js'
       - 'netlify/functions/_shared/article-list-reader.js'
+      - 'netlify/functions/_shared/article-partition-search.js'
   workflow_dispatch:
 permissions:
   contents: write
 concurrency:
   group: article-search-pin-verification
-  cancel-in-progress: false
+  cancel-in-progress: true
 jobs:
   verify:
     runs-on: ubuntu-latest
@@ -28,9 +29,10 @@ jobs:
         run: |
           if ! test -f scripts/article-search-pin-installation.json; then
             node scripts/article-search-pin-upgrade.mjs
+            node scripts/article-search-pin-finish.mjs
           fi
           node --check scripts/article-search-pin.e2e.mjs
-          node --experimental-strip-types --test scripts/article-search-pin.test.mjs scripts/article-search.test.mjs scripts/article-editorial-policy.test.mjs
+          node --experimental-strip-types --test scripts/article-search-partition.test.mjs scripts/article-search-pin.test.mjs scripts/article-search.test.mjs scripts/article-editorial-policy.test.mjs
       - name: Prepare isolated browser
         run: |
           npm install --prefix /tmp/article-admin-browser --no-save playwright@1.51.1
@@ -50,7 +52,7 @@ jobs:
             execFileSync('git',['diff','--cached','--check'],{stdio:'inherit'});
             execFileSync('git',['config','user.name','github-actions[bot]']);
             execFileSync('git',['config','user.email','41898282+github-actions[bot]@users.noreply.github.com']);
-            execFileSync('git',['commit','-m','fix(articles): restore safe search and expose expiring homepage pins'],{stdio:'inherit'});
+            execFileSync('git',['commit','-m','fix(articles): restore complete bounded search and expose expiring homepage pins'],{stdio:'inherit'});
             execFileSync('git',['push','origin','HEAD:fix/article-search-pin-48h-20260930'],{stdio:'inherit'});
           }
           JS

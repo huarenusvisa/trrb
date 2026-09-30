@@ -14,3 +14,16 @@ export function publicationReviewFields(article) {
   const sourceField=sourceReviewPassed(article) && article.editorial_review?.source_chain_complete !== true ? 'attributed_source' : 'source_chain_complete';
   return ['single_event','grounded','sufficient',sourceField,'analysis_grounded','court_status_correct',...(article.editorial_depth==='deep'?['fresh_hot_event','depth_appropriate']:[])];
 }
+
+export function makeAttributionExplicit(article, sourceName) {
+  if (!['brief','standard'].includes(article.editorial_depth) || article.editorial_review?.attributed_source !== true || article.editorial_review?.source_chain_complete === true) return false;
+  let changed=false;
+  if (!/^(?:网帖称|据.{1,35}(?:称|报道)|.{1,25}(?:称|报道)[：:])/u.test(article.title)) {
+    article.title='网帖称：'+article.title; changed=true;
+  }
+  const name=String(sourceName || '原发布者').slice(0,80);
+  if (!String(article.content).slice(0,180).includes(name)) {
+    article.content=`据X账号“${name}”发布的消息，${article.content}`; changed=true;
+  }
+  return changed;
+}

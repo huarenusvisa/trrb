@@ -2,7 +2,7 @@
 import {inForwardScope,depthInstruction,logDepthOutcome} from './news-forward-policy.mjs';
 import './news-budget-preload.mjs';
 import {compareNewsPriority,newsPriority} from './news-priority.mjs';
-import {ATTRIBUTED_REPORT_INSTRUCTIONS, sourceReviewPassed, publicationReviewFields} from './news-attributed-report-policy.mjs';
+import {ATTRIBUTED_REPORT_INSTRUCTIONS, sourceReviewPassed, publicationReviewFields, makeAttributionExplicit} from './news-attributed-report-policy.mjs';
 import {TIER_REVIEW_INSTRUCTIONS,needsReviewRecheck,verifyFreshDevelopment,findSourceImages} from './news-editorial-support.mjs';
 import {isBudgetDeferred} from './news-cost-model.mjs';
 import { readAllPages, readWithRetry } from "./paged-read.mjs";
@@ -898,6 +898,8 @@ export async function generateArticle(qualified, tweet, attempt = 0, previous = 
     throw qualityError("政治传闻必须在标题或导语中明确未证实状态，不能改写为已确认事实");
   }
   article.editorial_review = await reviewArticle(qualified, tweet, article);
+  // Attribution must be visible to the reader, not just a model boolean.
+  if (makeAttributionExplicit(article,sourceFor(tweet).name)) article.editorial_review=await reviewArticle(qualified,tweet,article);
   const core=publicationReviewFields(article);
   if (needsReviewRecheck(article.editorial_review,core)) article.editorial_review=await reviewArticle(qualified,tweet,article,article.editorial_review);
   if (article.editorial_review.image_relevant !== true && usableMedia(tweet).length && publicationReviewFields(article).every(k => article.editorial_review[k] === true)) {

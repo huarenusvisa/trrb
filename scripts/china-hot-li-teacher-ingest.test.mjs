@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import {makeAttributionExplicit} from './news-attributed-report-policy.mjs';
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import test from "node:test";
@@ -532,4 +533,11 @@ test('单源普通报道归因通过即可发布，多源与后续项保持真�
   for(const field of ['grounded','single_event','sufficient','analysis_grounded','attributed_source'])
     assert.throws(()=>assertPublicationQuality(chinaTweet,{...article,editorial_review:{...article.editorial_review,[field]:false}}),/采编质量拦截/);
   assert.throws(()=>assertPublicationQuality(chinaTweet,{...article,editorial_review:{...article.editorial_review,attribution_evidence:''}}),/采编质量拦截/);
+});
+
+test('单源声明不能只存在后台布尔值，标题和导语展示明确归因',()=>{
+ const article={title:'学校管理引发争议',content:'学校发生相关事件。',editorial_depth:'standard',editorial_review:{attributed_source:true,source_chain_complete:false}};
+ assert.equal(makeAttributionExplicit(article,'原帖账号'),true);
+ assert.match(article.title,/^网帖称/);assert.match(article.content,/^据X账号“原帖账号”/);
+ assert.equal(makeAttributionExplicit(article,'原帖账号'),false);
 });

@@ -447,7 +447,7 @@ test("只有标题的线索找不到原始出处和上下游资料时不得成�
     if (input.tools) return Response.json({output:[]});
     return Response.json({output_text:JSON.stringify({title:tweet.text,summary:"",content:"",seo_keywords:"",appears_old_news:false,old_news_reason:"",source_sufficient:false,rejection_reason:"未找到可核对原始出处",image_evidence:[],editorial_depth:"standard",depth_reason:"只有标题",analysis_angles:[]})});
   });
-  await assert.rejects(generateArticle({accepted:true,reason:"china-news",route:"china",text:tweet.text,title:tweet.text}, tweet), /标题型或高影响线索/);
+  await assert.rejects(generateArticle({accepted:true,reason:"china-news",route:"china",text:tweet.text,title:tweet.text}, tweet), /未找到可核对原始出处/);
 });
 
 test('无法可靠扩至800字的新热点经过独立核对可发布为选题短讯', async t => {
@@ -521,4 +521,15 @@ test('审核合格的非突发普通稿直接发布，保留时效结论并排�
   const tweet={...chinaTweet,context_research_attempted:true};
   assert.equal(buildPublishedArticle(tweet,qualifyTweet(tweet),brief).metadata.publication_mode,'reviewed_regular');
   assert.throws(()=>buildPublishedArticle({...tweet,created_at:new Date(Date.now()-13*3600000).toISOString()},qualifyTweet(tweet),brief),/短讯仅限/);
+});
+
+
+test('单源普通报道归因通过即可发布，多源与后续项保持真实的false', () => {
+  const article={title:'据原帖反映学校就厕安排',content:qualityBody,editorial_depth:'standard',appears_old_news:false,
+    editorial_review:{...editorial_review,source_chain_complete:false,independent_sources:false,news_downstream:false,event_downstream:false,attributed_source:true,attribution_evidence:'导语明确标注据原帖反映，正文所有核心说法均归属于原发布账号'}};
+  assert.doesNotThrow(()=>assertPublicationQuality(chinaTweet,article));
+  assert.doesNotThrow(()=>assertPublicationQuality(chinaTweet,{...article,editorial_review:{...article.editorial_review,fresh_hot_event:false}}));
+  for(const field of ['grounded','single_event','sufficient','analysis_grounded','attributed_source'])
+    assert.throws(()=>assertPublicationQuality(chinaTweet,{...article,editorial_review:{...article.editorial_review,[field]:false}}),/采编质量拦截/);
+  assert.throws(()=>assertPublicationQuality(chinaTweet,{...article,editorial_review:{...article.editorial_review,attribution_evidence:''}}),/采编质量拦截/);
 });

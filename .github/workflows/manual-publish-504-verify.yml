@@ -1,0 +1,98 @@
+name: Manual publication timeout recovery
+on:
+  push:
+    branches: [fix/manual-publish-504-20260930, main]
+    paths:
+      - '.github/workflows/manual-publish-504-verify.yml'
+      - 'scripts/manual-publish-504*'
+      - 'admin/manual-publish-request.js'
+      - 'netlify/functions/_shared/manual-article-save.js'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: manual-publish-504-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  verify:
+    if: github.ref != 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/manual-publish-504-20260930
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Integrate reviewed publisher only
+        run: |
+          if ! test -f scripts/manual-publish-504-installation.json; then
+            node scripts/manual-publish-504-integrate.mjs
+          fi
+          node --check scripts/manual-publish-504.e2e.mjs
+      - name: Test save recovery, permissions, unchanged search and 48-hour pins
+        run: node --experimental-strip-types --test scripts/manual-publish-504.test.mjs scripts/admin-search-pin-complete.test.mjs scripts/article-search-pin.test.mjs scripts/article-search-partition.test.mjs
+      - name: Prepare isolated browser
+        run: |
+          npm install --prefix /tmp/publisher-browser --no-save playwright@1.51.1
+          /tmp/publisher-browser/node_modules/.bin/playwright install --with-deps chromium
+      - name: Exercise actual PC and mobile editor with simulated upstream errors
+        run: node scripts/manual-publish-504.e2e.mjs
+      - name: Commit tested changes to feature branch, never main
+        run: |
+          node --input-type=module <<'JS'
+          import {existsSync,readFileSync,writeFileSync} from 'node:fs';
+          import {execFileSync} from 'node:child_process';
+          if(existsSync('.manual-publish-apply.json')){
+            const report=JSON.parse(readFileSync('.manual-publish-apply.json','utf8'));
+            const marker='scripts/manual-publish-504-installation.json';
+            writeFileSync(marker,JSON.stringify({...report,verified_run:process.env.GITHUB_RUN_ID,simulated_error_browser_verified:true},null,2)+'\n');
+            execFileSync('git',['add','--',...report.changed_files,marker]);
+            execFileSync('git',['diff','--cached','--check'],{stdio:'inherit'});
+            execFileSync('git',['config','user.name','github-actions[bot]']);
+            execFileSync('git',['config','user.email','41898282+github-actions[bot]@users.noreply.github.com']);
+            execFileSync('git',['commit','-m','fix(publisher): activate verified bounded publication with safe result reconciliation'],{stdio:'inherit'});
+            execFileSync('git',['push','origin','HEAD:fix/manual-publish-504-20260930'],{stdio:'inherit'});
+          }
+          JS
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-publish-504-browser
+          path: artifacts/manual-publish-504
+          if-no-files-found: ignore
+  production:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Verify deployed publisher and protected write endpoint, without publishing a test article
+        run: |
+          node --input-type=module <<'JS'
+          import assert from 'node:assert/strict';
+          import {mkdirSync,writeFileSync} from 'node:fs';
+          const until=Date.now()+7*60000,version='20260930-publish-504-v1';let ready=false;
+          while(Date.now()<until){
+            try{const r=await fetch('https://trrb.net/admin/?verify='+Date.now(),{signal:AbortSignal.timeout(12000)});if(r.ok&&(await r.text()).includes(version)){ready=true;break;}}catch{}
+            await new Promise(r=>setTimeout(r,10000));
+          }
+          assert.ok(ready,'Repaired publisher has not reached production');
+          const script=await fetch('https://trrb.net/admin/manual-publish-request.js?v='+version);assert.ok(script.ok());assert.match(await script.text(),/publication_status/);
+          const response=await fetch('https://trrb.net/.netlify/functions/admin-articles',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'save_article'}),signal:AbortSignal.timeout(15000)});
+          assert.equal(response.status,401,'Unauthenticated publication must remain denied');
+          const result={passed:true,sha:process.env.GITHUB_SHA,version,checked_at:new Date().toISOString(),publisher_deployed:true,unauthenticated_write_rejected:true,production_article_writes:0};
+          mkdirSync('artifacts/manual-publish-live',{recursive:true});writeFileSync('artifacts/manual-publish-live/result.json',JSON.stringify(result,null,2));console.log(JSON.stringify(result));
+          JS
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-publish-504-production
+          path: artifacts/manual-publish-live
+          if-no-files-found: ignore

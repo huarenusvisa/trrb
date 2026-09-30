@@ -64,3 +64,11 @@ test('editor endpoint requires the existing owner/editor authentication',async t
   assert.equal(response.status,401);assert.equal(response.headers.get('cache-control'),'no-store');
   assert.equal((await endpoint(new Request('https://example.org/editor'))).status,405);
 });
+
+test('short human confirmation is retained verbatim while blank notes are rejected',async()=>{
+ const f=fixture();
+ await assert.rejects(()=>handleChinaEdit({...f.input,...confirmed,action:'publish',verification_note:' '},{id:'editor'},f.context),/核实说明/);
+ await handleChinaEdit({...f.input,...confirmed,action:'publish',verification_note:'真实'},{id:'editor'},f.context);
+ assert.equal(f.article.metadata.manual_verification_note,'真实');
+ assert.equal(f.candidate.decision,'published');
+});

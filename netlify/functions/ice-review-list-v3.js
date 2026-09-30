@@ -126,8 +126,8 @@ async function pipelineStatus(stories) {
   const completionState = stateRows.find((row) => row.query_key === "pipeline:parallel-pipeline");
   const runStartedAt = collectionState?.last_run_at || null;
   const runStartMs = timeValue(runStartedAt);
-  const completionMs = timeValue(completionState?.last_success_at);
-  const runFinishedAt = completionMs >= runStartMs ? completionState.last_success_at : null;
+  const completionMs = timeValue(completionState?.last_result?.finished_at || completionState?.last_run_at);
+  const runFinishedAt = completionMs >= runStartMs ? (completionState.last_result?.finished_at || completionState.last_run_at) : null;
   const runEndMs = runFinishedAt ? completionMs : Date.now();
   const recentPosts = runStartMs
     ? postRows.filter((row) => withinRun(row.created_at, runStartMs, runEndMs))

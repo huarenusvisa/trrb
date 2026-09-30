@@ -19,7 +19,8 @@ async function handleChinaEdit(input,actor,{rest,now=()=>new Date().toISOString(
   const publishing=input.action==='publish',sources=evidenceUrls(input.evidence_urls),note=text(input.verification_note,4000);
   if(publishing){
     if(input.facts_confirmed!==true||input.freshness_confirmed!==true)fail('请核对事实来源及事件的新进展后勾选确认');
-    if(!sources.length||note.length<10)fail('请填写核实依据链接和具体核实说明');
+    if(!sources.length)fail('请填写至少一个有效的 HTTPS 核实依据链接');
+    if(!note)fail('请填写核实说明；简短说明也可提交');
     if(/自动加工未完成|未经编辑不得发布|请核对原始材料并重新加工|【编辑提示】|此稿未通过自动加工质量检查/.test(content)||countChinese(content)<50)fail('请完成新闻正文，不能发布占位草稿或标题');
     const sameSource=candidate.source_url?(await rest('articles',{query:{select:'id,title',status:'eq.published',source_url:`eq.${candidate.source_url}`,limit:'5'}}))||[]:[];
     const sameTitle=(await rest('articles',{query:{select:'id,title',status:'eq.published',title:`eq.${title}`,limit:'5'}}))||[];

@@ -34,10 +34,10 @@ async function main() {
     query_text: `ICE pipeline heartbeat: ${stage}`,
     last_run_at: now,
     updated_at: now,
-    last_result: {status,stage,at:now},
-    last_error: ["failure","degraded"].includes(status) ? (errorText || `${stage}: ${status}; inspect editorial hold counts`) : null
+    last_result: {status,stage,at:now,finished_at:status==='running'?null:now,editorial_held:Number(process.env.ICE_EDITORIAL_HELD||0),technical_failures:Number(process.env.ICE_TECHNICAL_FAILURES||0)},
+    last_error: ["failure","degraded"].includes(status) ? (errorText || `${stage}: 技术执行异常，请检查运行日志`) : null
   };
-  if (status === "success") row.last_success_at = now;
+  if (["success","editorial_hold","budget_deferred"].includes(status)) row.last_success_at = now;
 
   const url = new URL(`${String(process.env.SUPABASE_URL).replace(/\/+$/, "")}/rest/v1/ice_query_state`);
   url.searchParams.set("on_conflict", "query_key");

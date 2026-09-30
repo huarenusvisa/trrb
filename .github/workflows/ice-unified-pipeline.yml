@@ -178,6 +178,8 @@ jobs:
         env:
           ICE_HEARTBEAT_STAGE: "parallel-pipeline"
           ICE_HEARTBEAT_STATUS: ${{ steps.editorial.outputs.editorial_status || 'success' }}
+          ICE_EDITORIAL_HELD: ${{ steps.editorial.outputs.editorial_held || '0' }}
+          ICE_TECHNICAL_FAILURES: ${{ steps.editorial.outputs.technical_failures || '0' }}
         run: |
           node scripts/ice-pipeline-heartbeat.mjs || true
 

@@ -100,3 +100,16 @@ test('a changed source at publication cannot reuse the promoted review',async t=
   assert.equal(db.article,null);
   assert.equal(db.story.status,'pending_review');
 });
+
+test('attributed single-source news publishes without pretending independent corroboration',async t=>{
+ const initial=fixture();
+ const r=initial.story.ai_payload.editorial_review;
+ r.source_chain_complete=false;r.independent_sources=false;
+ r.attributed_source=true;r.attribution_evidence='正文准确归因至原始记者账号发布的执法消息。';
+ const db=database(t,initial);
+ await promote();
+ const due=await dueStories(10);assert.equal(due.length,1);
+ assert.ok(await publish(due[0]));
+ assert.equal(db.article.metadata.editorial_review.source_chain_complete,false);
+ assert.equal(db.article.metadata.editorial_review.independent_sources,false);
+});

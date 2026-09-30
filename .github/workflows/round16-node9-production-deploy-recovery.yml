@@ -95,6 +95,15 @@ jobs:
             "https://api.github.com/repos/$GITHUB_REPOSITORY/statuses/$DEPLOY_SHA" \
             -d '{"state":"pending","context":"trrb/production-accepted","description":"Waiting for Netlify Git deployment and production acceptance"}' >/dev/null
 
+      - name: 修复现有总控的即时启动凭据
+        if: env.SKIP_DEPLOY != 'true' && contains(github.event.head_commit.message, '[repair-automation]')
+        continue-on-error: true
+        env:
+          REPAIR_DISPATCH_TOKEN: ${{ secrets.ICE_GITHUB_DISPATCH_TOKEN }}
+          REPAIR_GH_PAT: ${{ secrets.GH_PAT }}
+          REPAIR_PERSONAL_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+        run: node scripts/repair-automation-credential.mjs
+
       - name: 绑定唐人日报附加域名
         if: env.SKIP_DEPLOY != 'true'
         shell: bash

@@ -1,0 +1,45 @@
+name: Manual publication database repair
+on:
+  push:
+    branches: [fix/manual-publish-504-20260930]
+    paths: ['.github/workflows/manual-publish-db-repair.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: manual-publish-db-repair
+  cancel-in-progress: false
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    timeout-minutes: 9
+    env:
+      SUPABASE_POOLER_URL: ${{ secrets.SUPABASE_POOLER_URL }}
+      SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL || secrets.SUPABASE_DATABASE_URL || secrets.DATABASE_URL }}
+      PGCONNECT_TIMEOUT: '12'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use existing encrypted connection; do not disclose credentials
+        run: |
+          set -euo pipefail
+          url="${SUPABASE_POOLER_URL:-${SUPABASE_DB_URL:-}}"
+          if [ -z "$url" ]; then echo 'Existing direct database connection is not configured; no change attempted.'; exit 2; fi
+          psql "$url" -X -v ON_ERROR_STOP=1 -Atc 'select 1;' > /dev/null
+      - name: Build only normalized title keys concurrently and retain factual publication gates
+        run: |
+          set -euo pipefail
+          url="${SUPABASE_POOLER_URL:-${SUPABASE_DB_URL:-}}"
+          psql "$url" -X -v ON_ERROR_STOP=1 -f supabase/migrations/20260930080000_manual_publish_title_lookup.sql
+      - name: Verify index-backed guard without creating a published test article
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts/manual-publish-db
+          url="${SUPABASE_POOLER_URL:-${SUPABASE_DB_URL:-}}"
+          psql "$url" -X -v ON_ERROR_STOP=1 -Atc "select jsonb_build_object('index_valid',i.indisvalid,'index_bytes',pg_relation_size(c.oid),'checked_at',clock_timestamp()) from pg_class c join pg_index i on i.indexrelid=c.oid where c.relname='articles_published_title_digest_idx';" > artifacts/manual-publish-db/index.json
+          psql "$url" -X -v ON_ERROR_STOP=1 -Atc "explain (analyze,buffers,format json) select id from public.articles where status='published' and md5(public.trrb_normalized_news_title(title))=md5('publicationverificationnonexistenttitle') and public.trrb_normalized_news_title(title)='publicationverificationnonexistenttitle' limit 1;" > artifacts/manual-publish-db/plan.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-publish-db-verification
+          path: artifacts/manual-publish-db
+          if-no-files-found: ignore

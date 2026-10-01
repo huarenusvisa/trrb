@@ -30,7 +30,9 @@ function deepQualityErrors(article, research, review = article.editorial_review)
   if (article.editorial_depth !== 'deep') return [];
   const errors = [];
   const count = countChinese(article.content);
-  if (count < DEEP_MIN || count > DEEP_MAX) errors.push(`深度稿正文必须为${DEEP_MIN}–${DEEP_MAX}个中文字符（实际${count}）`);
+  const min=article.daily_deep_commission === true ? 3500 : DEEP_MIN;
+  const max=article.daily_deep_commission === true ? 5000 : DEEP_MAX;
+  if (count < min || count > max) errors.push(`深度稿正文必须为${min}–${max}个中文字符（实际${count}）`);
   if (independentSourceCount(research) < 2) errors.push('深度稿至少需要两家独立来源的实际检索引文，评论及循环转载不计数');
   for (const field of DEEP_REVIEW_FIELDS) if (review?.[field] !== true) errors.push(`深度资料复核缺失：${field}`);
   return errors;

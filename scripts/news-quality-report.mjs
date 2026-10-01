@@ -16,11 +16,11 @@ export function publicationQualityReport(rows,{now=Date.now(),windowDays=7}={}) 
     if(m.editorial_depth==='deep' && m.reviewed_content_sha256===contentDigest(row.title,row.content)
       && core.every(k=>m.editorial_review?.[k]===true)
       && (m.editorial_review?.fresh_hot_event===true||m.editorial_review?.fresh_event===true)
-      && deepQualityErrors({content:row.content,editorial_depth:'deep'},m.context_research,m.editorial_review).length===0)group.deep++;
+      && deepQualityErrors({content:row.content,editorial_depth:'deep',daily_deep_commission:m.daily_deep_commission===true},m.context_research,m.editorial_review).length===0)group.deep++;
   }
   const total=Object.values(groups).reduce((a,g)=>({published:a.published+g.published,deep:a.deep+g.deep,over_2000:a.over_2000+g.over_2000}),{published:0,deep:0,over_2000:0});
   for(const g of [...Object.values(groups),total])g.deep_share=g.published?Number((g.deep/g.published).toFixed(4)):null;
-  return {event:'news-quality-seven-day',as_of:new Date(now).toISOString(),window_days:windowDays,deep_min:2000,deep_max:3500,deep_share_target:DEEP_SHARE_TARGET,target_is_publication_gate:false,daily_volume_goal:[100,200],groups,total};
+  return {event:'news-quality-seven-day',as_of:new Date(now).toISOString(),window_days:windowDays,deep_min:2000,deep_max:3500,daily_deep_min:3500,daily_deep_max:5000,deep_share_target:DEEP_SHARE_TARGET,target_is_publication_gate:false,daily_volume_goal:[100,200],groups,total};
 }
 export async function runQualityReport(){
   const now=Date.now(),base=String(process.env.SUPABASE_URL||'').replace(/\/$/,''),secret=process.env.SUPABASE_SERVICE_ROLE_KEY;
@@ -38,7 +38,7 @@ export async function runQualityReport(){
   console.log(JSON.stringify(report));
   const scope=report.forward_only || report;
   for(const [name,g] of Object.entries(scope.groups))if(g.published>=10&&g.deep===0)console.log(`::warning title=深度稿产出缺口::${name}: ${g.published}篇新增发布，合格深度稿0篇；检查news-depth-assignment和news-depth-outcome，不得凑字或降低审核。`);
-  if(process.env.GITHUB_STEP_SUMMARY)appendFileSync(process.env.GITHUB_STEP_SUMMARY,`\n## 新闻质量：滚动七天\n\n深度稿须2000—3500个中文字符且通过来源、数据及上下游复核；30%仅为观察目标，不影响单篇发布审核。旧稿更新不计新增。\n\n| 机器人 | 新增发布 | 合格深度稿 | 占比 |\n|---|---:|---:|---:|\n${Object.entries(report.groups).map(([name,g])=>`| ${name} | ${g.published} | ${g.deep} | ${g.deep_share===null?'无样本':(100*g.deep_share).toFixed(1)+'%'} |`).join('\n')}\n`);
+  if(process.env.GITHUB_STEP_SUMMARY)appendFileSync(process.env.GITHUB_STEP_SUMMARY,`\n## 新闻质量：滚动七天\n\n普通深度稿须2000—3500字，每日深度任务须3500—5000字，均须通过来源、数据及上下游复核；30%仅为观察目标，不影响单篇发布审核。旧稿更新不计新增。\n\n| 机器人 | 新增发布 | 合格深度稿 | 占比 |\n|---|---:|---:|---:|\n${Object.entries(report.groups).map(([name,g])=>`| ${name} | ${g.published} | ${g.deep} | ${g.deep_share===null?'无样本':(100*g.deep_share).toFixed(1)+'%'} |`).join('\n')}\n`);
   return report;
 }
 if(process.argv[1]===fileURLToPath(import.meta.url))await runQualityReport();

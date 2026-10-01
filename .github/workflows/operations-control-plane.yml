@@ -18,6 +18,7 @@ on:
       - 'scripts/news-budget*.mjs'
       - 'scripts/news-cost-model.mjs'
       - 'scripts/news-priority.mjs'
+      - 'scripts/news-daily-depth*.mjs'
       - 'scripts/news-article-updates.mjs'
       - 'scripts/ice-official-web-discovery.mjs'
       - 'scripts/ice-drop-stale-posts.mjs'

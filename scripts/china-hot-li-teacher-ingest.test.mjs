@@ -56,8 +56,8 @@ test("栏目资格同时检查原文与成稿，拒绝把无关外国稿标为�
   assert.equal(body.metadata.category_policy_version, "source-social-v3");
   assert.equal(body.metadata.human_category_override, undefined);
   const unrelated = { title: "美国国会讨论预算", summary: "美国讨论财政安排。", content: qualityBody, editorial_review };
-  assert.equal(buildPublishedArticle(tweet, qualified, unrelated).metadata.source_category_qualified, false);
-  assert.equal(buildPublishedArticle(tweet, { ...qualified, accepted: false }, copy).metadata.source_category_qualified, false);
+  assert.throws(() => buildPublishedArticle(tweet, qualified, unrelated), /栏目不一致/);
+  assert.throws(() => buildPublishedArticle(tweet, { ...qualified, accepted: false }, copy), /新闻主体无法分类/);
 });
 
 test("失败草稿使用短标题并明确阻止未经编辑直接发布", () => {
@@ -538,6 +538,15 @@ test('单源普通报道归因通过即可发布，多源与后续项保持真�
 test('单源声明不能只存在后台布尔值，标题和导语展示明确归因',()=>{
  const article={title:'学校管理引发争议',content:'学校发生相关事件。',editorial_depth:'standard',editorial_review:{attributed_source:true,source_chain_complete:false}};
  assert.equal(makeAttributionExplicit(article,'原帖账号'),true);
- assert.match(article.title,/^网帖称/);assert.match(article.content,/^据X账号“原帖账号”/);
+ assert.doesNotMatch(article.title,/^网帖称/);assert.match(article.content,/^据X账号“原帖账号”/);
  assert.equal(makeAttributionExplicit(article,'原帖账号'),false);
 });
+
+ test('机械归因前缀在各稿型去除，但保留指控的不确定性并重新复核',()=>{
+  for(const editorial_depth of ['brief','standard','deep']){
+   const article={title:'网帖称：某公司被指拖欠工资',content:'据当事人介绍，公司尚未支付工资。',editorial_depth,editorial_review:{source_chain_complete:true}};
+   assert.equal(makeAttributionExplicit(article,'账号'),true);
+   assert.equal(article.title,'某公司被指拖欠工资');
+   assert.equal(makeAttributionExplicit(article,'账号'),false);
+  }
+ });

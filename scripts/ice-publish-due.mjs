@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import {preferredPublicationSource} from './news-attributed-report-policy.mjs';
 import { reviewedSourceReady } from './ice-reviewed-publication.mjs';
 import {forwardQuery} from './news-forward-policy.mjs';
 import { publicEvidence } from '../netlify/shared/publication.mjs';
@@ -261,6 +262,7 @@ async function publish(story) {
   const time = nowIso();
   const video = bestVideo(post);
   const temporaryFeatured = Boolean(video && String(post.source_username || "").toLowerCase() === "ericleeatty");
+  const primarySource=preferredPublicationSource({editorial_review:payload?.editorial_review},payload?.context_research);
   const featuredUntil = temporaryFeatured ? new Date(Date.now() + 48 * 3600000).toISOString() : null;
   const rows = await sb("articles", {
     method: "POST",
@@ -268,11 +270,12 @@ async function publish(story) {
       id, title: story.title, slug: `${route.key}-${story.event_fingerprint}`, summary: story.summary, content: story.content,
       category_name: route.categoryName, cover_image: story.cover_image || video?.poster || "", seo_keywords: route.seoKeywords || "美国官方信息,移民政策,美国时政,美国警情,ICE执法",
       author: "唐人日报编辑部", status: "published", visibility: "public", published_at: time, created_at: time, topic_key: route.topicKey || null, source_platform: /^official-web-/.test(post.x_post_id) ? "official_web" : "x",
-      source_post_id: post.x_post_id, source_url: post.x_url, source_account: post.source_username, source_created_at: post.source_created_at,
+      source_post_id: post.x_post_id, source_url: primarySource?.url || post.x_url, source_name:primarySource?.name || post.source_username, source_account: primarySource ? "" : post.source_username, source_created_at: post.source_created_at,
       ai_confidence: story.ai_confidence,
       review_status: reviewedApproved ? "reviewed_source_auto_published" : officialApproved ? "official_source_auto_published" : "human_approved",
       metadata: {
         publication_quality_version: "ice-evidence-v2-unified-research",
+        preferred_publication_source:primarySource, collection_source:{name:post.source_username,url:post.x_url},
         editorial_policy_version:payload?.editorial_policy_version,editorial_depth:payload?.editorial_depth || "standard",editorial_depth_reason:payload?.editorial_depth_reason,
         article_format:payload?.editorial_depth === "deep" ? "deep_analysis" : payload?.editorial_depth === "brief" ? "hot_brief" : "report",
         body_character_count:countChinese(story.content),editorial_review:payload?.editorial_review,context_research:payload?.context_research,

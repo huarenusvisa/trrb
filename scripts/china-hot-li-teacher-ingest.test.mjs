@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import {makeAttributionExplicit} from './news-attributed-report-policy.mjs';
+import {makeAttributionExplicit,preferredPublicationSource} from './news-attributed-report-policy.mjs';
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import test from "node:test";
@@ -549,4 +549,16 @@ test('单源声明不能只存在后台布尔值，标题和导语展示明确�
    assert.equal(article.title,'某公司被指拖欠工资');
    assert.equal(makeAttributionExplicit(article,'账号'),false);
   }
+ });
+
+ test('已核验原始媒体优先，转载账号仅为线索；背景引文和伪造网址不能升级来源',()=>{
+  const research={web_search_completed:true,sources:[{url:'https://www.cnbc.com/news/report.html',kind:'web_evidence',tool_cited:true}]};
+  const review={attributed_source:true,primary_source_url:research.sources[0].url,primary_source_name:'CNBC',primary_source_supports_core:true};
+  const article={title:'CNBC公布调查',content:'据X账号“李老师不是你老师”发布的消息，CNBC公布调查细节。',editorial_depth:'standard',editorial_review:review};
+  assert.equal(makeAttributionExplicit(article,'李老师不是你老师',research),true);
+  assert.equal(article.content,'CNBC公布调查细节。');
+  assert.deepEqual(preferredPublicationSource(article,research),{name:'CNBC',url:research.sources[0].url});
+  assert.equal(preferredPublicationSource({...article,editorial_review:{...review,primary_source_supports_core:false}},research),null);
+  assert.equal(preferredPublicationSource({...article,editorial_review:{...review,primary_source_url:'https://www.cnbc.com/invented.html'}},research),null);
+  assert.equal(preferredPublicationSource(article,{...research,web_search_completed:false}),null);
  });

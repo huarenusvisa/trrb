@@ -2,7 +2,7 @@
 import {inForwardScope,depthInstruction,logDepthOutcome} from './news-forward-policy.mjs';
 import './news-budget-preload.mjs';
 import {compareNewsPriority,newsPriority} from './news-priority.mjs';
-import {ATTRIBUTED_REPORT_INSTRUCTIONS, sourceReviewPassed, publicationReviewFields, makeAttributionExplicit} from './news-attributed-report-policy.mjs';
+import {ATTRIBUTED_REPORT_INSTRUCTIONS, sourceReviewPassed, publicationReviewFields, makeAttributionExplicit, primarySourceReviewSchema, preferredPublicationSource} from './news-attributed-report-policy.mjs';
 import {TIER_REVIEW_INSTRUCTIONS,needsReviewRecheck,verifyFreshDevelopment,findSourceImages} from './news-editorial-support.mjs';
 import {isBudgetDeferred} from './news-cost-model.mjs';
 import { readAllPages, readWithRetry } from "./paged-read.mjs";
@@ -925,7 +925,7 @@ export async function generateArticle(qualified, tweet, attempt = 0, previous = 
   }
   article.editorial_review = await reviewArticle(qualified, tweet, article);
   // Attribution must be visible to the reader, not just a model boolean.
-  if (makeAttributionExplicit(article,sourceFor(tweet).name)) article.editorial_review=await reviewArticle(qualified,tweet,article);
+  if (makeAttributionExplicit(article,sourceFor(tweet).name,tweet.context_research)) article.editorial_review=await reviewArticle(qualified,tweet,article);
   const core=publicationReviewFields(article);
   if (needsReviewRecheck(article.editorial_review,core)) article.editorial_review=await reviewArticle(qualified,tweet,article,article.editorial_review);
   if (article.editorial_review.image_relevant !== true && usableMedia(tweet).length && publicationReviewFields(article).every(k => article.editorial_review[k] === true)) {
@@ -949,8 +949,9 @@ async function reviewArticle(qualified, tweet, article, previousReview=null) {
   const brief = article.publication_scope === "topic_only";
   const schema = {
     type: "object", additionalProperties: false,
-    required: ["single_event", "grounded", "sufficient", "image_relevant", "depth_appropriate", "analysis_grounded", "source_chain_complete", "attributed_source", "attribution_evidence", "cover_index", "image_description", "reason", "court_status_correct", ...DEEP_REVIEW_FIELDS, "fresh_hot_event", "freshness_evidence"],
+    required: [...Object.keys(primarySourceReviewSchema(tweet.context_research)), "single_event", "grounded", "sufficient", "image_relevant", "depth_appropriate", "analysis_grounded", "source_chain_complete", "attributed_source", "attribution_evidence", "cover_index", "image_description", "reason", "court_status_correct", ...DEEP_REVIEW_FIELDS, "fresh_hot_event", "freshness_evidence"],
     properties: {
+      ...primarySourceReviewSchema(tweet.context_research),
       ...Object.fromEntries([...DEEP_REVIEW_FIELDS,"court_status_correct"].map(key => [key,{type:"boolean"}])),
       single_event: { type: "boolean" }, grounded: { type: "boolean" }, sufficient: { type: "boolean" },
       depth_appropriate: {type:"boolean"}, analysis_grounded: {type:"boolean"}, source_chain_complete: {type:"boolean"}, attributed_source: {type:"boolean"}, attribution_evidence: {type:"string"},
@@ -979,6 +980,7 @@ export function buildPublishedArticle(tweet, qualified, article, publishedAt = n
   const attachments = Array.isArray(tweet.media) ? tweet.media : [];
   const route = resolvePublicationRoute(qualified,article);
   if (!route) throw qualityError("栏目不一致或新闻主体无法分类，保留复核");
+  const primarySource=preferredPublicationSource(article,tweet.context_research);
   const usNews = route !== "china";
   const section = ROUTE_SECTIONS[route] || CHINA_HOT_CATEGORY;
 
@@ -989,14 +991,15 @@ export function buildPublishedArticle(tweet, qualified, article, publishedAt = n
     title: article.title, slug: `${source.slugPrefix}-${tweetId}`, summary: article.summary, content: article.content,
     category_name: usNews ? section : CHINA_HOT_CATEGORY, cover_image: coverImage, image_alt: article.editorial_review.image_description, author: "唐人日报编辑部",
     status: "published", visibility: "public", published_at: publishedAt, created_at: publishedAt,
-    source_url: sourceUrl, source_name: source.name, source_account: `@${source.username}`, source_level: source.level,
-    source_platform: "x", source_post_id: tweetId, source_created_at: sourceCreatedAt, external_id: externalId(tweet),
+    source_url: primarySource?.url || sourceUrl, source_name: primarySource?.name || source.name, source_account: primarySource ? "" : `@${source.username}`, source_level: source.level,
+    source_platform: primarySource ? "web" : "x", source_post_id: tweetId, source_created_at: sourceCreatedAt, external_id: externalId(tweet),
     topic_key: usNews ? route : source.topicKey, primary_section: section, related_sections: usNews ? [section] : source.topicKey === REN_ZHENGFEI_TOPIC ? ["中国热门头条", "任正非动态"] : politicalSections(article),
     review_status: "automatic_china_hot", automation_source: PIPELINE, ai_confidence: 80, seo_title: article.title,
     seo_description: article.summary, seo_keywords: article.seo_keywords, independent_source_count: Math.max(1, independentSourceCount(tweet.context_research)),
     supporting_sources: tweet.context_research?.sources || [], risk_flags: ["unverified_public_claim"],
     metadata: {
       daily_deep_commission:article.daily_deep_commission === true,
+      collection_source:{name:source.name,url:sourceUrl}, preferred_publication_source:primarySource,
       collector: PIPELINE, automatic_publish: true, manual_review_required: false, review_status: "auto_published",
       publication_scope: article.publication_scope || "standard", article_format: article.editorial_depth === "deep" ? "deep_analysis" : article.publication_scope === "topic_only" ? "hot_brief" : "report",
       reviewed_content_sha256:contentDigest(article.title,article.content), editorial_policy_version: EDITORIAL_POLICY_VERSION, editorial_depth: article.editorial_depth || "standard", editorial_depth_reason: article.depth_reason || "", analysis_angles: article.analysis_angles || [],

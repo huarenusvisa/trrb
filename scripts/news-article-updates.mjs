@@ -11,7 +11,7 @@ export function articleUpdateBody(prior,next,reason,time=new Date().toISOString(
   // IDs, URL, slug, category, original source and published_at are deliberately absent.
   return {title:next.title,summary:next.summary,content:next.content,updated_at:time,
     supporting_sources:next.supporting_sources || next.metadata?.supporting_sources || [],
-    metadata:{...prior.metadata,...next.metadata,original_published_at:prior.metadata?.original_published_at || prior.published_at,content_updated_at:time,
+    metadata:{...prior.metadata,...next.metadata,original_published_at:prior.metadata?.original_published_at || prior.published_at,content_updated_at:time,update_source_created_at:next.source_created_at || next.metadata?.source_created_at || null,
       reviewed_content_sha256:contentDigest(next.title,next.content),
       update_history:[...(prior.metadata?.update_history || []),{at:time,source_url:next.source_url || '',reason}].slice(-20)}};
 }
@@ -25,3 +25,4 @@ export async function verifyArticleUpdate(prior,next,{request}) {
   let verdict;try{verdict=JSON.parse(text);}catch{return false;}
   return verdict.approve===true && typeof verdict.reason==='string' && verdict.reason.trim() ? verdict.reason : false;
 }
+

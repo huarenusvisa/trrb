@@ -160,8 +160,10 @@ export function isUsPoliticalReport(title, content = "") {
 }
 export const ROUTE_SECTIONS = {china: "中国热门头条", "us-politics": "美国时政", "us-enforcement": "美国警情", ice: "ICE执法动态"};
 export function collectedArticleRoute(title, content = "") {
-  const text = `${title} ${content}`;
-  const lead = `${title} ${content.slice(0,240)}`;
+  // A publisher's name is attribution, not the event's geography.
+  const stripAttribution = value => String(value || "").replace(/美国之音|美國之音|Voice of America/gi, "");
+  const text = stripAttribution(`${title} ${content}`);
+  const lead = stripAttribution(`${title} ${content.slice(0,240)}`);
   if (/^(?:中国|中國|西藏|新疆)/.test(title) && /当局|當局|中国|中國|西藏|新疆/.test(lead) && !/美国.{0,12}(?:政府|国会|总统)|白宫/.test(title)) return "china";
   if (/美国|美國|纽约|紐約|康奈尔|康奈爾|田纳西|田納西|Cornell|Tennessee/i.test(lead) && /检察|檢察|刑事|性侵|强暴|強暴|死刑|死囚|枪击|槍擊/.test(lead)) return "us-enforcement";
   if (isChinaPolitical({title, summary: content.slice(0, 1200)})) return "china";
@@ -1461,3 +1463,4 @@ export async function run() {
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) run().catch((error) => { console.error("中国热门头条采集发布失败：", error); process.exitCode = 1; });
+

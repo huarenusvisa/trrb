@@ -1,4 +1,4 @@
-import { publicationUrl, publicEvidence } from "../shared/publication.mjs";
+import { publicationUrl, publicEvidence, publicArticleData } from "../shared/publication.mjs";
 import { articleIndexability, visibleArticleText, ARTICLE_INDEXABILITY_POLICY } from "../shared/article-indexability.mjs";
 const SITE = "https://trrb.net";
 
@@ -353,7 +353,7 @@ function injectBody(html: string, article: any, canonical: string, stories: any[
       ${stories.length ? `<nav class="article-section-stories" aria-label="同栏目报道"><h2>同栏目报道</h2><ul>${stories.map((row) => `<li><a href="${esc(row.canonical_url)}">${esc(row.title)}</a></li>`).join("")}</ul></nav>` : ""}
       <nav class="article-neighbors" aria-label="上一篇和下一篇"></nav>
       <section class="related-news" hidden><h2>延伸阅读</h2><div class="related-carousel" aria-label="延伸阅读文章"><div class="related-track"></div></div></section>`;
-  const data = `<script id="trrb-prerendered-article" type="application/json">${escJson(article)}</script>`;
+  const data = `<script id="trrb-prerendered-article" type="application/json">${escJson(publicArticleData(article))}</script>`;
   return html
     .replace(/<article class="container article-page" id="article-root">[\s\S]*?<\/article>/i,
       `<article class="container article-page" id="article-root" data-prerendered="true" data-article-id="${esc(article.id)}">${prerender}</article>${data}`)

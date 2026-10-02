@@ -1,3 +1,4 @@
+const publicSource = row => /https?:\/\/(?:www\.)?(?:x\.com|twitter\.com)\/whyyoutouzhele(?:\/|$)/i.test(row?.source_url || '') ? {...row,source_url:''} : row;
 const { rest } = require("./_shared/supabase-admin");
 const { isIceEnforcementText } = require("./_shared/ice-enforcement");
 const { isChinaHotCategory, isChinaHotHeadline } = require("./_shared/china-hot-headlines");
@@ -37,7 +38,7 @@ exports.handler = async (event) => {
 
     if(q){
       const result=await readArticleList({q,category:category||null,offset,page_size:limit},{publicOnly:true},rest);
-      return json(200,{...result,generated_at:new Date().toISOString(),count:result.articles.length,offset,limit:result.page_size,next_offset:result.has_more?offset+result.page_size:null,category:category||null,q});
+      return json(200,{...result,articles:result.articles.map(publicSource),generated_at:new Date().toISOString(),count:result.articles.length,offset,limit:result.page_size,next_offset:result.has_more?offset+result.page_size:null,category:category||null,q});
     }
     const query = {
       select: "id,title,slug,publication_path,summary,content,category_name,cover_image,author,status,visibility,published_at,created_at,source_url,source_name,source_account,source_platform",
@@ -58,7 +59,7 @@ exports.handler = async (event) => {
     const articles = rawArticles
       .filter((row) => !isIceCategory || isIceEnforcementText(row.title, row.summary))
       .filter((row) => !isChinaHotCategory(category) || isChinaHotHeadline(row.title, `${row.summary || ""} ${row.content || ""}`))
-      .map(({ content: _content, ...row }) => row);
+      .map(({ content: _content, ...row }) => publicSource(row));
     return json(200, {
       generated_at: new Date().toISOString(),
       count: articles.length,

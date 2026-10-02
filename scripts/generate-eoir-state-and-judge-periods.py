@@ -70,8 +70,9 @@ def main():
           upper(trim(case_outcome)) case_outcome
         from read_parquet('{path_sql}') where judge_last is not null and trim(judge_last) <> '' and court_last is not null and trim(court_last) <> ''
           and ij_completion_date_last is not null and cast(ij_completion_date_last as date) between date '{SCOPE_START}' and date '{SCOPE_END}'
-          -- EOIR occasionally publishes internal test rows; OIT is explicitly named "Oit Sd Test".
-          and upper(regexp_extract(trim(court_last), '\\(([^()]{{2,4}})\\)\\s*
+          -- EOIR occasionally publishes internal test rows; OIT is explicitly named Oit Sd Test.
+          and upper(regexp_extract(trim(court_last), '\\(([^()]{{2,4}})\\)\\s*$', 1)) <> 'OIT'
+          and upper(trim(asylum_decision_last)) not in ('', 'NO APPLICATION')
       ) select *, case
         when asylum_outcome in ({grants_sql}) then 'grant'
         when withholding_outcome in ({grants_sql}) or cat_outcome in ({grants_sql}, 'GRANT WCAT')

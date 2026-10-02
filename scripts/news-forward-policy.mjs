@@ -86,7 +86,7 @@ export function depthAssignment(research,plan){
   if(independentSourceCount(cited)<2)missing.push('至少两家实际检索、直接引用的独立事实来源');
   if(sections.length<6)missing.push('六个有不同事实依据的问题，每节至少两项可溯源事实');
   const ready=plan?.public_interest===true&&plan?.fresh_development===true&&missing.length===0;
-  return {version:'depth-commission-v1',requested_depth:ready?'deep':'standard',target_chinese_chars:ready?[2000,3500]:null,reason:String(plan?.reason||'尚未形成足够的深度资料'),missing_material:[...new Set(missing)],sections,quality_over_quota:true};
+  return {public_interest:plan?.public_interest,fresh_development:plan?.fresh_development,version:'depth-commission-v1',requested_depth:ready?'deep':'standard',target_chinese_chars:ready?[2000,3500]:null,reason:String(plan?.reason||'尚未形成足够的深度资料'),missing_material:[...new Set(missing)],sections,quality_over_quota:true};
 }
 export async function commissionDepth(research,{request,readJson,model,key}){
   if(independentSourceCount(research)<2)return {...research,depth_assignment:depthAssignment(research,null)};

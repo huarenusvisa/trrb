@@ -69,7 +69,7 @@ export async function researchEvent(qualified, tweet, {request, readJson, model,
   if (research && priorResearch) research = {...research,text:[priorResearch.text,research.text].join('\n').slice(0,30000),sources:[...new Map([...(priorResearch.sources || []),...research.sources].map(s=>[s.url,s])).values()]};
   if (research && editorialDepth === 'deep' && process.env.NEWS_DEPTH_COMMISSION === '1') {
     research = await commissionDepth(research,{request,readJson,model,key});
-    if (researchRound === 0 && research.depth_assignment.requested_depth !== 'deep') {
+    if (researchRound === 0 && research.depth_assignment.requested_depth !== 'deep' && research.depth_assignment.public_interest !== false && research.depth_assignment.fresh_development !== false) {
       return researchEvent(qualified,tweet,{request,readJson,model,key,bearer,editorialDepth,analysisAngles,researchRound:1,priorResearch:research});
     }
     console.log(JSON.stringify({event:'news-depth-assignment',source_id:tweet.id,requested_depth:research.depth_assignment.requested_depth,reason:research.depth_assignment.reason,missing_material:research.depth_assignment.missing_material}));

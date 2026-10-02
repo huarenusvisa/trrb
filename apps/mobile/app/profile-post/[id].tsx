@@ -45,7 +45,10 @@ export default function ProfilePostDetailScreen() {
       setPost(nextPost);
       setCaption(nextPost.caption || '');
       setTagsText((nextPost.tags || []).join(' '));
-      setComments(nextComments as ProfilePostComment[]);
+      setComments(nextComments.map((comment) => ({
+        ...comment,
+        profiles: Array.isArray(comment.profiles) ? comment.profiles[0] ?? null : comment.profiles,
+      })));
     } catch (error) {
       Alert.alert('无法读取动态', error instanceof Error ? error.message : '请稍后重试');
       router.back();

@@ -4,6 +4,8 @@
   const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
   const pageSize = 30;
   let page = 0;
+  let generation=0;
+  let recommendation=null;
   let coords = null;
   let locationMode = 'all_us';
   let postalCode = null;
@@ -69,24 +71,15 @@
   }
 
   function params() {
-    return {
-      p_keyword: $('q').value.trim() || null,
-      p_category_slug: $('category').value || null,
-      p_employment_type: $('employment').value || null,
-      p_state_code: $('state').value.trim().toUpperCase() || null,
-      p_city: $('city').value.trim() || null,
-      p_county: $('county').value.trim() || null,
-      p_borough: $('borough').value.trim() || null,
-      p_neighborhood: $('neighborhood').value.trim() || null,
-      p_postal_code: postalCode || null,
-      p_salary_min: $('salary').value ? Number($('salary').value) : null,
-      p_sort: $('sort').value || 'relevance',
-      p_latitude: coords?.latitude ?? null,
-      p_longitude: coords?.longitude ?? null,
-      p_radius_miles: coords && $('radius').value ? Number($('radius').value) : null,
-      p_limit: pageSize,
-      p_offset: page * pageSize
-    };
+    const p=new URLSearchParams({limit:String(pageSize),offset:String(page*pageSize)});
+    ['q','category','employment','state','salary','sort'].forEach(key=>{if($(key).value.trim())p.set(key,$(key).value.trim());});
+    const place=$('neighborhood').value.trim() || $('borough').value.trim() || $('city').value.trim() || $('county').value.trim();
+    if(place)p.set('place',place);
+    if(postalCode)p.set('zip',postalCode);
+    if(coords){p.set('lat',coords.latitude);p.set('lng',coords.longitude);}
+    if($('radius').value)p.set('radius',$('radius').value);
+    if(recommendation?.radius_miles && page>0)p.set('nearby',recommendation.radius_miles);
+    return p;
   }
 
   function syncQueryString() {
@@ -95,6 +88,8 @@
       const value = $(key).value.trim(); if (value) p.set(key,value);
     });
     if (postalCode) p.set('zip', postalCode);
+    if(coords){p.set('lat',coords.latitude);p.set('lng',coords.longitude);}
+    if(recommendation?.radius_miles)p.set('nearby',recommendation.radius_miles);
     history.replaceState(null,'',`${location.pathname}${p.toString() ? `?${p}` : ''}`);
   }
 
@@ -102,7 +97,7 @@
     $('jobs-results').innerHTML = rows.length ? rows.map((row) => `
       <article class="result-card" data-job-id="${esc(row.id)}">
         <h2 data-i18n-skip>${esc(row.title)}</h2>
-        <div class="meta"><span class="salary">${esc(formatSalary(row))}</span><span class="pill">${esc(locationText(row))}</span>${row.distance_miles == null ? '' : `<span class="pill">距找工地点 ${esc(row.distance_miles)} miles</span>`}<span class="pill">${esc(row.category_slug)}</span><span class="pill">${esc(row.employment_type)}</span></div>
+        <div class="meta"><span class="salary">${esc(formatSalary(row))}</span><span class="pill">${esc(locationText(row))}</span>${row.distance_miles == null ? '' : `<span class="pill">${row.location_approximate ? '按城市中心估算约' : '直线距离约'} ${esc(row.distance_miles)} 英里</span>`}<span class="pill">${esc(row.category_slug)}</span><span class="pill">${esc(row.employment_type)}</span></div>
       </article>`).join('') : '<div class="empty result-card">没有找到符合条件的岗位。可减少筛选条件后重试。</div>';
   }
 
@@ -189,11 +184,11 @@
     groups.forEach((group) => {
       if (group.rows.length === 1) {
         const row = group.rows[0];
-        const popup = `<b>${esc(row.title)}</b><br>${esc(locationText(row))}<br>${esc(formatSalary(row))}${row.distance_miles == null ? '' : `<br>距找工地点 ${esc(row.distance_miles)} miles`}`;
+        const popup = `<b>${esc(row.title)}</b><br>${esc(locationText(row))}<br>${esc(formatSalary(row))}${row.location_approximate ? '<br>城市中心估算，非工作地址' : ''}${row.distance_miles == null ? '' : `<br>${row.location_approximate ? '按城市中心估算约' : '直线距离约'} ${esc(row.distance_miles)} 英里`}`;
         L.marker([group.lat,group.lng]).bindPopup(popup).addTo(markers);
       } else {
         const titles = group.rows.slice(0,4).map((row) => esc(row.title)).join('<br>');
-        L.circleMarker([group.lat,group.lng],{radius:13,weight:2,fillOpacity:.78}).bindTooltip(String(group.rows.length),{permanent:true,direction:'center',className:'job-count-label'}).bindPopup(`<b>${group.rows.length} 个附近岗位</b><br>${titles}`).addTo(markers);
+        L.circleMarker([group.lat,group.lng],{radius:13,weight:2,fillOpacity:.78}).bindTooltip(String(group.rows.length),{permanent:true,direction:'center',className:'job-count-label'}).bindPopup(`<b>${group.rows.length} 个岗位（城市中心估算）</b><br>${titles}`).addTo(markers);
       }
     });
     suppressMapMove = true;
@@ -203,25 +198,36 @@
   }
 
   async function search(resetPage = false) {
-    if (resetPage) page = 0;
-    if ($('radius').value && !coords) $('radius').value = '';
+    if (resetPage) {page = 0;recommendation=null;}
+    const requestGeneration=++generation;
+    const area=$('neighborhood').value.trim()||$('borough').value.trim()||$('city').value.trim()||$('county').value.trim()||$('state').value.trim();
+    if(area)setLocationSummary(area);
     syncQueryString();
     $('search-status').textContent = '正在搜索正式招聘数据…';
-    const { data, error } = await client.rpc('search_job_listings', params());
+    let data,error;
+    try {const response=await fetch('/.netlify/functions/public-jobs?'+params());data=await response.json();if(!response.ok)error={message:data.error||'读取失败'};}catch(e){error=e;}
+    if(requestGeneration!==generation)return;
     if (error) {
+      lastRows=[];
+      if(!$('jobs-map').classList.contains('hidden'))renderMap([]);
+      $('map-status').textContent='岗位未能读取，请重试。';
       $('search-status').textContent = `搜索失败：${error.message}`;
       $('jobs-results').innerHTML = '<div class="empty result-card">暂时无法读取招聘数据，请稍后再试。</div>';
       return;
     }
-    const rows = data || [];
+    const rows = data.items || [];
+    recommendation=data.recommendation;
+    syncQueryString();
     lastRows = rows;
-    const radiusLabel = coords && $('radius').value ? ` · ${$('radius').value} miles 内` : '';
+    const radiusLabel = recommendation ? ` · 附近 ${recommendation.radius_miles} 英里推荐` : '';
+    const mapped=rows.filter(row=>row.latitude!=null&&row.longitude!=null).length;
+    $('map-status').textContent=`本页 ${rows.length} 个岗位，${mapped} 个可在地图显示。标点按城市中心估算，非精确工作地址；距离为直线估算。${mapped<rows.length?'其余岗位未提供可识别的具体城市，请在列表查看。':''}`;
     $('search-status').textContent = `本页找到 ${rows.length} 个岗位${radiusLabel}`;
     $('results-heading').textContent = `${$('location-summary').textContent} · 招聘岗位`;
     renderList(rows);
     if (!$('jobs-map').classList.contains('hidden')) renderMap(rows);
     $('prev-page').disabled = page === 0;
-    $('next-page').disabled = rows.length < pageSize;
+    $('next-page').disabled = data.nextOffset == null;
   }
 
   async function applySelectedArea(row) {
@@ -234,7 +240,7 @@
     }
     const allowedRadius = new Set([5,10,25,50]);
     const radius = allowedRadius.has(Number(row.default_radius_miles)) ? Number(row.default_radius_miles) : 25;
-    coords = {latitude, longitude};
+    coords = null;
     postalCode = null;
     locationMode = row.area_type === 'region' ? 'region' : 'fixed_location';
     const mapping = {
@@ -246,7 +252,7 @@
     };
     Object.entries(mapping).forEach(([id,value]) => { if ($(id)) $(id).value = value; });
     $('location-zip').value = '';
-    $('radius').value = String(radius);
+    $('radius').value = '';
     $('sort').value = 'distance';
     setLocationSummary(row.label_zh || row.label_en || '已选地区');
     await persistLocation({
@@ -264,6 +270,10 @@
     ['q','category','employment','state','city','county','borough','neighborhood','salary','radius','sort'].forEach((key) => {
       if (p.has(key) && $(key)) $(key).value = p.get(key);
     });
+    if(p.has('place'))$('city').value=p.get('place');
+    if(p.has('lat')&&p.has('lng')&&p.get('lat')!==''&&p.get('lng')!==''&&Number.isFinite(Number(p.get('lat')))&&Number.isFinite(Number(p.get('lng'))))coords={latitude:Number(p.get('lat')),longitude:Number(p.get('lng'))};
+    if(p.has('nearby'))recommendation={radius_miles:Number(p.get('nearby'))};
+    const chosen=$('city').value||$('neighborhood').value||$('borough').value||$('state').value;if(chosen)setLocationSummary(chosen);
     if (p.has('zip')) {
       postalCode = p.get('zip');
       $('location-zip').value = postalCode;
@@ -271,7 +281,9 @@
     }
   }
 
+  window.addEventListener('hw:cities-selected',()=>{coords=null;postalCode=null;['state','county','borough','neighborhood'].forEach(id=>$(id).value='');$('location-zip').value='';$('radius').value='';setLocationSummary($('city').value||'全美国');$('location-panel').classList.add('hidden');search(true);});
   function showList() {
+    $('map-status').hidden=true;
     $('jobs-results').classList.remove('hidden'); $('jobs-map').classList.add('hidden');
     $('list-view').classList.add('is-active'); $('map-view').classList.remove('is-active');
   }
@@ -279,9 +291,11 @@
   function showMap() {
     $('jobs-results').classList.add('hidden'); $('jobs-map').classList.remove('hidden');
     $('map-view').classList.add('is-active'); $('list-view').classList.remove('is-active');
+    $('map-status').hidden=false;
     renderMap(lastRows);
   }
 
+  ['state','city','county','borough','neighborhood'].forEach(id=>$(id).addEventListener('input',()=>{coords=null;postalCode=null;$('location-zip').value='';}));
   $('jobs-search-form').addEventListener('submit', (event) => { event.preventDefault(); search(true); });
   $('prev-page').addEventListener('click', () => { if (page > 0) { page -= 1; search(false); } });
   $('next-page').addEventListener('click', () => { page += 1; search(false); });
@@ -289,11 +303,6 @@
   $('map-view').addEventListener('click', showMap);
   window.addEventListener('jobs:r2-search-area-selected', (event) => { applySelectedArea(event.detail); });
   $('location-trigger').addEventListener('click', () => $('location-panel').classList.toggle('hidden'));
-  $('choose-region').addEventListener('click', () => {
-    $('advanced-filters').open = true;
-    $('location-panel').classList.add('hidden');
-    $('state').focus();
-  });
   $('use-location').addEventListener('click', () => {
     if (!navigator.geolocation) { $('search-status').textContent = '当前浏览器不支持定位，可使用ZIP、地区或全美。'; return; }
     $('search-status').textContent = '正在请求定位授权…';
@@ -353,13 +362,13 @@
     search(true);
   });
   $('clear-location').addEventListener('click', () => {
-    coords = null; postalCode = null; $('radius').value = ''; if ($('sort').value === 'distance') $('sort').value = 'relevance'; setLocationSummary('全美国'); search(true);
+    coords = null; postalCode = null; ['state','city','county','borough','neighborhood'].forEach(id=>$(id).value='');$('location-zip').value=''; $('radius').value = ''; if ($('sort').value === 'distance') $('sort').value = 'relevance'; setLocationSummary('全美国'); search(true);
   });
 
   document.addEventListener('DOMContentLoaded', async () => {
-    hydrateFromQuery();
     await loadCategories();
-    await loadAccountLocation();
+    if(!location.search)await loadAccountLocation();
+    hydrateFromQuery();
     await search(true);
   });
 })();

@@ -1,5 +1,5 @@
 const { rest } = require('./_shared/supabase-admin');
-const regions = require('../../huarengongzuo/regions.json');
+const geography = require('./_shared/job-geography');
 
 const OFFICIAL_APPLY_SOURCE = /^(greenhouse_|jazzhr_|lever_|workday_|ashby_)/i;
 const PUBLIC_FIELDS = 'id,title,description,category_slug,employment_type,salary_min,salary_max,salary_period,state_code,city,county,borough,neighborhood,latitude,longitude,status,published_at,updated_at,listing_origin,contact_method,contact_value,contact_public,application_url,source_key';
@@ -58,7 +58,7 @@ function safeItem(row, contactRow = row) {
     id: row.id,
     title: row.title,
     description: row.description || null,
-    category_slug: row.category_slug || null,
+    category_slug: row.effective_category || row.category_slug || null,
     employment_type: row.employment_type || null,
     salary_min: row.salary_min ?? null,
     salary_max: row.salary_max ?? null,
@@ -72,118 +72,12 @@ function safeItem(row, contactRow = row) {
     published_at: row.published_at || row.created_at || null,
     updated_at: row.updated_at || row.created_at || null,
     contact: actionFor(contactRow),
-    distance_miles: row.distance_miles ?? null,
-    distance_approximate: row.distance_approximate || false,
+    latitude: row.map_latitude ?? row.latitude ?? null,
+    longitude: row.map_longitude ?? row.longitude ?? null,
+    location_approximate: row.location_approximate || false,
+    distance_miles: row.distance_miles == null ? null : Math.round(Number(row.distance_miles)*10)/10,
+    distance_approximate: row.location_approximate || false,
   };
-}
-
-async function directListingRows(requestedIds, limit) {
-  const query = {
-    select: PUBLIC_FIELDS,
-    status: 'eq.open',
-    moderation_hold: 'eq.false',
-    order: 'published_at.desc.nullslast,updated_at.desc',
-    limit: String(requestedIds.length ? Math.max(requestedIds.length, limit) : limit),
-  };
-  if (requestedIds.length) query.id = `in.(${requestedIds.join(',')})`;
-  return rest('job_listings', { query });
-}
-
-async function searchRows(keyword, category, offset, limit) {
-  return rest('rpc/search_job_listings', {
-    method: 'POST',
-    body: {
-      p_keyword: keyword || null,
-      p_category_slug: category || null,
-      p_employment_type: null,
-      p_state_code: null,
-      p_city: null,
-      p_county: null,
-      p_borough: null,
-      p_neighborhood: null,
-      p_postal_code: null,
-      p_salary_min: null,
-      p_sort: keyword ? 'relevance' : 'latest',
-      p_latitude: null,
-      p_longitude: null,
-      p_radius_miles: null,
-      p_limit: limit + 1,
-      p_offset: offset,
-    },
-  });
-}
-
-const normalize = value => String(value || '').normalize('NFKC').trim().toLowerCase();
-const literal = value => '"' + value.replace(/[\\"]/g, '\\$&') + '"';
-function resolvePlace(value) {
-  const key = normalize(value);
-  return regions.cities.find(city => [city.id,city.zh,city.en,...city.aliases].some(alias => normalize(alias) === key));
-}
-function placeClause(value) {
-  const city = resolvePlace(value);
-  const state = regions.states.find(row => normalize(row.code) === normalize(value) || row.zh === value);
-  if (state && !city) return `state_code.eq.${state.code}`;
-  const terms = city ? [city.en,city.zh,...city.aliases].filter(term => !/^[a-z]{1,3}$/i.test(term)) : [value];
-  const match = 'or(' + terms.flatMap(term => ['city','neighborhood','borough','county'].map(field => `${field}.ilike.${literal(city ? term : '*' + term.replace(/[%*]/g,'') + '*')}`)).join(',') + ')';
-  return city ? `and(state_code.eq.${city.state},${match})` : match;
-}
-function baseLocationQuery(keyword, category) {
-  const clauses = [`or(expires_at.is.null,expires_at.gt.${new Date().toISOString()})`,
-    'or(and(contact_public.eq.true,contact_value.not.is.null,contact_method.in.(phone,email)),and(or(source_key.like.greenhouse_*,source_key.like.jazzhr_*,source_key.like.lever_*,source_key.like.workday_*,source_key.like.ashby_*),application_url.not.is.null))'];
-  if (keyword) clauses.push('or(' + ['title','description'].map(field => `${field}.ilike.${literal('*' + keyword.replace(/[%*]/g,'') + '*')}`).join(',') + ')');
-  return {query:{select:PUBLIC_FIELDS,country_code:'eq.US',status:'eq.open',moderation_hold:'eq.false',order:'published_at.desc.nullslast,id.asc',...(category ? {category_slug:`eq.${category}`} : {})},clauses};
-}
-async function locationRows(places, zip, keyword, category, offset, limit) {
-  const {query,clauses} = baseLocationQuery(keyword,category);
-  if (zip) query.postal_code = `like.${zip.slice(0,5)}*`;
-  else clauses.push('or(' + places.map(placeClause).join(',') + ')');
-  query.and = '(' + clauses.join(',') + ')';
-  query.offset = String(offset); query.limit = String(limit + 1);
-  return rest('job_listings', {query});
-}
-function miles(a,b) {
-  const rad = n => n * Math.PI / 180;
-  const h = Math.sin(rad(b.lat-a.lat)/2)**2 + Math.cos(rad(a.lat))*Math.cos(rad(b.lat))*Math.sin(rad(b.lng-a.lng)/2)**2;
-  return 3958.7613 * 2 * Math.asin(Math.sqrt(Math.min(1,h)));
-}
-async function nearbyRows(origins, keyword, category, radius, offset, limit) {
-  const {query,clauses} = baseLocationQuery(keyword,category);
-  const candidates = regions.cities.filter(city => origins.some(origin => miles(origin,city) <= radius));
-  const boxes = origins.map(origin => {
-    const latDelta = radius / 69, lngDelta = radius / (69 * Math.cos(origin.lat * Math.PI / 180));
-    return `and(latitude.gte.${origin.lat-latDelta},latitude.lte.${origin.lat+latDelta},longitude.gte.${origin.lng-lngDelta},longitude.lte.${origin.lng+lngDelta})`;
-  });
-  const names = [...new Set(candidates.flatMap(city => [city.en,city.zh,...city.aliases].filter(term => !/^[a-z]{1,3}$/i.test(term))))].map(literal).join(',');
-  const named = names ? ['city','neighborhood','borough','county'].map(field => `${field}.in.(${names})`) : [];
-  clauses.push('or(' + [...boxes,...named].join(',') + ')');
-  query.state_code = `in.(${[...new Set([...candidates,...origins].map(city => city.state))].join(',')})`;
-  query.and = '(' + clauses.join(',') + ')'; query.limit = '1000';
-  const rows = [];
-  for (let start = 0; start < 10000; start += 1000) {
-    const batch = await rest('job_listings', {query:{...query,offset:String(start)}});
-    rows.push(...(Array.isArray(batch) ? batch : []));
-    if (!Array.isArray(batch) || batch.length < 1000) break;
-  }
-  return (Array.isArray(rows) ? rows : []).flatMap(row => {
-    const exact = row.latitude != null && row.longitude != null && Number.isFinite(Number(row.latitude)) && Number.isFinite(Number(row.longitude));
-    const center = exact ? {lat:Number(row.latitude),lng:Number(row.longitude)} : candidates.find(city => city.state === row.state_code && [row.neighborhood,row.borough,row.city,row.county].some(value => [city.en,city.zh,...city.aliases].some(alias => normalize(alias) === normalize(value))));
-    if (!center || !actionFor(row)) return [];
-    const distance = Math.min(...origins.map(origin => miles(origin,center)));
-    return distance <= radius ? [{...row,distance_miles:Math.round(distance*10)/10,distance_approximate:!exact}] : [];
-  }).sort((a,b) => a.distance_miles-b.distance_miles || String(b.published_at || '').localeCompare(String(a.published_at || '')) || a.id.localeCompare(b.id)).slice(offset,offset+limit+1);
-}
-
-async function contactRows(ids) {
-  if (!ids.length) return [];
-  return rest('job_listings', {
-    query: {
-      select: PUBLIC_FIELDS,
-      id: `in.(${ids.join(',')})`,
-      status: 'eq.open',
-      moderation_hold: 'eq.false',
-      limit: String(ids.length),
-    },
-  });
 }
 
 exports.handler = async (event) => {
@@ -192,7 +86,7 @@ exports.handler = async (event) => {
   try {
     const requestedIds = idsFrom(event);
     const limit = boundedInteger(event.queryStringParameters?.limit, 30, 1, 60);
-    const offset = boundedInteger(event.queryStringParameters?.offset, 0, 0, 10_000);
+    const offset = boundedInteger(event.queryStringParameters?.offset, 0, 0, 1_000_000);
     const keyword = safeQuery(event.queryStringParameters?.q);
     const category = safeQuery(event.queryStringParameters?.category);
     const place = String(event.queryStringParameters?.place || '').slice(0,800);
@@ -200,51 +94,48 @@ exports.handler = async (event) => {
     const zip = safeQuery(event.queryStringParameters?.zip);
     if (zip && !/^\d{5}(?:-\d{4})?$/.test(zip)) return json(400, {error:'Invalid ZIP Code'});
 
-    if (requestedIds.length) {
-      const rows = await directListingRows(requestedIds, limit);
-      return json(200, {
-        source: 'job_listings',
-        country_code: 'US',
-        query: null,
-        nextOffset: null,
-        items: (Array.isArray(rows) ? rows : []).map((row) => safeItem(row)),
-      });
+    const facets = await geography.locations();
+    if (event.queryStringParameters?.catalog === '1') {
+      const stateCode = safeQuery(event.queryStringParameters?.state).toUpperCase();
+      const search = geography.normalize(event.queryStringParameters?.search);
+      let cities = facets.cities;
+      if (stateCode || search) {
+        const live = new Map(cities.map(c=>[c.state+':'+geography.normalize(c.en),c]));
+        const extras = geography.catalog.cities.filter(c=>(!stateCode||c.state===stateCode) && (!search || [c.en,c.zh,...c.aliases].some(a=>geography.normalize(a).includes(search))));
+        cities = [...cities.filter(c=>(!stateCode||c.state===stateCode)&&(!search||[c.en,c.zh,...c.aliases].some(a=>geography.normalize(a).includes(search)))),...extras.filter(c=>!live.has(c.state+':'+geography.normalize(c.en))).map(c=>({...c,zh:c.zh||c.en,count:0,value:`${c.en}, ${c.state}`,located:true}))];
+      }
+      return json(200,{states:geography.catalog.states,cities:cities.sort((a,b)=>b.count-a.count||a.en.localeCompare(b.en)),source:geography.catalog.source});
     }
-
-    let recommendation = null;
-    let searched;
-    const origins = places.map(resolvePlace).filter(Boolean);
-    const requestedRadius = boundedInteger(event.queryStringParameters?.nearby,0,0,250);
-    if (requestedRadius && origins.length) {
-      searched = await nearbyRows(origins,keyword,category,requestedRadius,offset,limit);
-      recommendation = {type:'nearby',radius_miles:requestedRadius,places:places};
-    } else {
-      searched = places.length || zip ? await locationRows(places, zip, keyword, category, offset, limit) : await searchRows(keyword, category, offset, limit);
-      // Only expand an empty first page; reaching the end of local results must not change the search.
-      if (offset === 0 && !searched?.length && origins.length) {
-        for (const radius of [50,100,250]) {
-          searched = await nearbyRows(origins,keyword,category,radius,0,limit);
-          recommendation = {type:'nearby',radius_miles:radius,places:places};
-          if (searched.length) break;
-        }
+    const hint = safeQuery(event.queryStringParameters?.state).toUpperCase();
+    const origins = [];
+    const filters = places.map(value=>{
+      const city=geography.resolve(value,hint);
+      const state=geography.stateFor(value);
+      if (city) {origins.push({lat:city.lat,lng:city.lng});return {state:city.state,terms:[city.en,city.zh,...city.aliases].filter(t=>t&&!/^[a-z]{1,3}$/i.test(t))};}
+      if(state)return {state:state.code,terms:[]};
+      const pieces=value.split(',').map(s=>s.trim());
+      return {state:pieces.length>1?geography.stateFor(pieces.at(-1))?.code||hint:hint,terms:[pieces.length>1?pieces.slice(0,-1).join(','):value],fuzzy:pieces.length===1};
+    });
+    const zipCenter=geography.catalog.zips[zip.slice(0,5)];
+    if(zipCenter)origins.push({lat:zipCenter[0],lng:zipCenter[1]});
+    const rawLat=event.queryStringParameters?.lat,rawLng=event.queryStringParameters?.lng;
+    if(rawLat!=null && rawLng!=null && rawLat!=='' && rawLng!=='' && Number.isFinite(Number(rawLat)) && Number.isFinite(Number(rawLng)) && Math.abs(Number(rawLat))<=90 && Math.abs(Number(rawLng))<=180)origins.push({lat:Number(rawLat),lng:Number(rawLng)});
+    const opts={centers:facets.centers,places:filters,origins,state:hint,zip,q:keyword,category,employment:safeQuery(event.queryStringParameters?.employment),salary: /^\d+(?:\.\d+)?$/.test(event.queryStringParameters?.salary||'')?event.queryStringParameters.salary:'',sort:safeQuery(event.queryStringParameters?.sort),limit:limit+1,offset};
+    if(requestedIds.length)opts.ids=requestedIds;
+    let recommendation=null;
+    opts.radius=origins.length?boundedInteger(event.queryStringParameters?.nearby||event.queryStringParameters?.radius,zipCenter?10:0,0,250):0;
+    if(opts.radius)recommendation={type:'nearby',radius_miles:opts.radius,places:zip?[`ZIP ${zip}`]:places};
+    const queryFeed=()=>rest('rpc/search_public_job_feed',{method:'POST',body:{p_options:opts}});
+    const facetMode=safeQuery(event.queryStringParameters?.facets);
+    if(['states','categories'].includes(facetMode)){opts.facets=facetMode;return json(200,{counts:await queryFeed()});}
+    let page=await queryFeed();
+    if(!requestedIds.length && offset===0 && !page?.length && origins.length) {
+      for(const radius of (zipCenter?[25,50,100,250]:[50,100,250]).filter(r=>r>opts.radius)) {
+        opts.radius=radius;recommendation={type:'nearby',radius_miles:radius,places:zip?[`ZIP ${zip}`]:places};page=await queryFeed();if(page?.length)break;
       }
     }
-    const page = Array.isArray(searched) ? searched : [];
-    const hasMore = page.length > limit;
-    const visibleRows = page.slice(0, limit);
-    const contacts = await contactRows(visibleRows.map((row) => row.id));
-    const contactsById = new Map((Array.isArray(contacts) ? contacts : []).map((row) => [row.id, row]));
-    const items = visibleRows.map((row) => safeItem(row, contactsById.get(row.id) || {}));
-
-    return json(200, {
-      source: 'search_job_listings',
-      country_code: 'US',
-      query: keyword || null,
-      category: category || null,
-      recommendation,
-      nextOffset: hasMore ? offset + items.length : null,
-      items,
-    });
+    const items=(page||[]).slice(0,limit).map(row=>safeItem(row));
+    return json(200,{source:'search_public_job_feed',country_code:'US',query:keyword||null,category:category||null,recommendation,nextOffset:!requestedIds.length&&page.length>limit?offset+items.length:null,items});
   } catch (error) {
     console.error('Public jobs feed error:', error);
     return json(error.statusCode || 500, { error: error.message || String(error) });

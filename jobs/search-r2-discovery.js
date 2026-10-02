@@ -5,6 +5,7 @@
   const $ = (id) => document.getElementById(id);
   const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (ch) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[ch]));
 
+  const categoryNames={restaurant:'餐饮','beauty-nail':'美甲/美容',massage:'按摩',construction:'装修/建筑','logistics-warehouse':'物流/仓库','truck-driver':'卡车/司机','retail-grocery':'超市/零售','home-care':'家政/护理',legal:'律师/法律','accounting-finance':'会计/金融','real-estate':'地产',education:'教育','it-tech':'IT/科技','office-admin':'办公室/行政',sales:'销售',other:'其他'};
   const stateNames = {
     NY:'纽约州',CA:'加州',NJ:'新泽西州',TX:'德州',FL:'佛州',MA:'麻州',PA:'宾州',WA:'华盛顿州',IL:'伊利诺伊州',NV:'内华达州',GA:'乔治亚州',VA:'弗吉尼亚州',MD:'马里兰州',CT:'康涅狄格州',NC:'北卡州'
   };
@@ -24,7 +25,7 @@
       return;
     }
     box.innerHTML = '<span class="discovery-empty">正在统计岗位地区…</span>';
-    const {data,error} = await client.rpc('job_region_counts',{p_category_slug:category,p_limit:12});
+    let data,error;try{const response=await fetch('/.netlify/functions/public-jobs?facets=states&category='+encodeURIComponent(category));const payload=await response.json();data=payload.counts?.slice(0,12);if(!response.ok)error=true;}catch{error=true;}
     if (error || !data?.length) {
       box.innerHTML = '<span class="discovery-empty">暂时没有可显示的地区数量。</span>';
       return;
@@ -47,18 +48,17 @@
       return;
     }
     box.innerHTML = '<span class="discovery-empty">正在统计当地工作…</span>';
-    const {data,error} = await client.rpc('job_category_counts',{
-      p_state_code:state,p_city:city,p_borough:borough,p_neighborhood:neighborhood,p_limit:12
-    });
+    let data,error;try{const p=new URLSearchParams({facets:'categories'});if(state)p.set('state',state);if(neighborhood||borough||city)p.set('place',neighborhood||borough||city);const response=await fetch('/.netlify/functions/public-jobs?'+p);const payload=await response.json();data=payload.counts?.slice(0,12);if(!response.ok)error=true;}catch{error=true;}
     if (error || !data?.length) {
       box.innerHTML = '<span class="discovery-empty">这个地区暂时没有可显示的分类数量。</span>';
       return;
     }
     const area = neighborhood || borough || city || stateNames[state] || state || '这个地区';
     $('category-hints-title').textContent = `${area}：这里有什么工作？`;
-    box.innerHTML = data.map((row) => `<button type="button" data-category="${esc(row.category_slug)}">${esc(row.label_zh)} ${esc(row.job_count)}</button>`).join('');
+    box.innerHTML = data.map((row) => `<button type="button" data-category="${esc(row.category_slug)}">${esc(categoryNames[row.category_slug]||row.category_slug)} ${esc(row.job_count)}</button>`).join('');
   }
 
+  window.addEventListener('hw:cities-selected',loadCategoryHints);
   function bindClicks() {
     $('region-hints')?.addEventListener('click', (event) => {
       const button = event.target.closest('[data-state]');

@@ -41,7 +41,7 @@
   function refreshVisibleCount() {
     const count = document.querySelectorAll('#jobs-results .result-card[data-job-id]').length;
     const status = document.getElementById('search-status');
-    if (status) status.textContent = `本页显示 ${count} 个可直接联系或申请的岗位`;
+    if (status && !document.getElementById('map-status')) status.textContent = `本页显示 ${count} 个可直接联系或申请的岗位`;
   }
 
   function localizeMeta(card, row) {

@@ -41,12 +41,18 @@ for (const source of SOURCES) {
     if (!href || !/^https:\/\/(www\.)?justice\.gov\//i.test(href)) continue;
     if (!/\.pdf(?:$|[?#])|media|file|download/i.test(href + ' ' + clean(anchor[2]))) continue;
 
-    const before = clean(page.text.slice(Math.max(0, anchor.index - 1800), anchor.index));
-    const citationRe = /(Matter of\s+[^,]{1,180}?),?\s*(29|30)\s+I&N\s+Dec\.?\s*(\d+)\s*\(BIA\s+(\d{4})\)/gi;
+    // On current DOJ pages the formal citation may be either the linked title
+    // itself or a sibling immediately before the PDF link.
+    const before = clean(page.text.slice(Math.max(0, anchor.index - 1800), anchor.index) + ' ' + anchor[2]);
+    // DOJ renders the listing title in uppercase (for example C-M-H-H- or
+    // MORALES CUXUN). Keep this match case-sensitive so prose from a holding
+    // cannot be swallowed into the case name, which the previous /i regex did.
+    const citationRe = /([A-Z0-9][A-Z0-9'’.&()\-\s]{1,180}?),?\s*(29|30)\s+I&N\s+Dec\.?\s*(\d+)\s*\(BIA\s+(\d{4})\)/g;
     const hit = [...before.matchAll(citationRe)].at(-1);
     if (!hit || Number(hit[2]) !== source.volume) continue;
 
-    const caseName = hit[1].replace(/\s+/g, ' ').trim();
+    const title = hit[1].replace(/\s+/g, ' ').trim();
+    const caseName = /^Matter of\s+/i.test(title) ? title : `Matter of ${title}`;
     entries.push({
       court: 'Board of Immigration Appeals',
       authorityType: 'BIA precedent decision',

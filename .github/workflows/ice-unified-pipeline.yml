@@ -92,7 +92,7 @@ jobs:
         env:
           NEWS_BUDGET_ENFORCE: "0"
           NEWS_DEPTH_COMMISSION: "0"
-        run: node --experimental-strip-types --test scripts/news-editorial-support.test.mjs scripts/china-hot-editor.test.mjs scripts/news-budget.test.mjs scripts/news-priority.test.mjs scripts/news-editorial-policy.test.mjs scripts/ice-news-quality-gate.test.mjs scripts/official-content-routing.test.mjs scripts/ice-original-posts.test.mjs
+        run: node --experimental-strip-types --test scripts/news-office-scope.test.mjs scripts/news-editorial-support.test.mjs scripts/china-hot-editor.test.mjs scripts/news-budget.test.mjs scripts/news-priority.test.mjs scripts/news-editorial-policy.test.mjs scripts/ice-news-quality-gate.test.mjs scripts/official-content-routing.test.mjs scripts/ice-original-posts.test.mjs
 
       - name: Validate forward-only intake and deep commissioning
         env:

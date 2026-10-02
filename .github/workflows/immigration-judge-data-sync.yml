@@ -160,6 +160,7 @@ jobs:
           git add reports/immigration-judge-data-sync-latest.json \
             data/immigration-judge-nationality-periods*.json \
             data/immigration-judge-state-periods.json \
+            data/immigration-judge-trends*.json \
             data/immigration-judge-nationality-yearly*.json \
             data/immigration-judge-backgrounds.json \
             data/eoir-webex-links.json

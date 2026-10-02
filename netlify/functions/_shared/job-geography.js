@@ -4,7 +4,9 @@ const path = require('node:path');
 const {rest} = require('./supabase-admin');
 const normalize = value => String(value || '').normalize('NFKC').trim().toLowerCase();
 const spelling = value=>normalize(value).replace(/\bsaint\b/g,'st').replace(/[^a-z0-9\u3400-\u9fff]/g,'');
-const catalog = JSON.parse(zlib.gunzipSync(fs.readFileSync(path.join(__dirname,'geography/catalog.json.gz'))));
+const catalogPath=[path.join(__dirname,'geography/catalog.json.gz'),path.join(process.cwd(),'netlify/functions/_shared/geography/catalog.json.gz')].find(file=>fs.existsSync(file));
+if(!catalogPath)throw new Error('Job geography catalog is missing from the function bundle');
+const catalog = JSON.parse(zlib.gunzipSync(fs.readFileSync(catalogPath)));
 const index = new Map();
 for (const city of catalog.cities) for (const alias of [city.en,city.en.replace(/ Town$/,'').replace(/ urban county$/,''),city.zh,city.id,...city.aliases].filter(Boolean)) {
  const key=spelling(alias); const found=index.get(key)||[]; if(!found.includes(city)) found.push(city); index.set(key,found);

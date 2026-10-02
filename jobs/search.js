@@ -200,12 +200,17 @@
   async function search(resetPage = false) {
     if (resetPage) {page = 0;recommendation=null;}
     const requestGeneration=++generation;
+    const area=$('neighborhood').value.trim()||$('borough').value.trim()||$('city').value.trim()||$('county').value.trim()||$('state').value.trim();
+    if(area)setLocationSummary(area);
     syncQueryString();
     $('search-status').textContent = '正在搜索正式招聘数据…';
     let data,error;
     try {const response=await fetch('/.netlify/functions/public-jobs?'+params());data=await response.json();if(!response.ok)error={message:data.error||'读取失败'};}catch(e){error=e;}
     if(requestGeneration!==generation)return;
     if (error) {
+      lastRows=[];
+      if(!$('jobs-map').classList.contains('hidden'))renderMap([]);
+      $('map-status').textContent='岗位未能读取，请重试。';
       $('search-status').textContent = `搜索失败：${error.message}`;
       $('jobs-results').innerHTML = '<div class="empty result-card">暂时无法读取招聘数据，请稍后再试。</div>';
       return;
@@ -290,6 +295,7 @@
     renderMap(lastRows);
   }
 
+  ['state','city','county','borough','neighborhood'].forEach(id=>$(id).addEventListener('input',()=>{coords=null;postalCode=null;$('location-zip').value='';}));
   $('jobs-search-form').addEventListener('submit', (event) => { event.preventDefault(); search(true); });
   $('prev-page').addEventListener('click', () => { if (page > 0) { page -= 1; search(false); } });
   $('next-page').addEventListener('click', () => { page += 1; search(false); });

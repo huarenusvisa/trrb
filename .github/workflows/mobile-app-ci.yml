@@ -149,6 +149,7 @@ jobs:
         run: node --test scripts/validate-mobile-build-cost-control.test.mjs
       - name: Check mobile API syntax
         run: |
+          node --test scripts/public-home-latency.test.mjs
           node --check netlify/functions/public-article.js
           node --check netlify/functions/public-articles.js
           node --test netlify/functions/public-article-translation.test.js
@@ -230,3 +231,4 @@ jobs:
       - name: Export Expo web bundle
         working-directory: apps/mobile
         run: npm run export:web
+

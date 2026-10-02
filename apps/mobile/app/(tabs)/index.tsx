@@ -176,6 +176,7 @@ export default function HomeScreen() {
       const cachedEntry = await readCachedHomeFeedEnvelope().catch(() => null);
       const cached = cachedEntry?.snapshot ?? null;
       if (cached) {
+        if (sequence !== loadSequence.current) { clearTimeout(slowTimer); return; }
         restored = true;
         cachedFocus = cached.focusArticles || [];
         setArticles(cached.articles);
@@ -186,22 +187,34 @@ export default function HomeScreen() {
     }
     try {
       setError('');
-      const [global, focusResult] = await Promise.all([
-        fetchHomepageBundle(),
-        fetchHomepageFocus().catch(() => null),
-      ]);
+      // Focus is supplementary: never hold fresh headlines behind its retries.
+      const focusTask = fetchHomepageFocus().then((focus) => {
+        if (sequence === loadSequence.current) {
+          cachedFocus = focus;
+          setFocusArticles(focus);
+        }
+        return focus;
+      }).catch(() => null);
+      const global = await fetchHomepageBundle();
       if (sequence !== loadSequence.current) return;
       clearTimeout(slowTimer);
       setSlowLoading(false);
 
-      const focus = focusResult ?? cachedFocus;
+      const focus = cachedFocus;
       setArticles(global);
       setFocusArticles(focus);
       setCacheSavedAt(null);
       setLoading(false);
       setRefreshing(false);
       if (!restoreCache) AccessibilityInfo.announceForAccessibility(t('home.refreshSucceeded'));
-      void cacheHomeFeed(global, focus).catch(() => undefined);
+      // Serialize snapshot writes so a late focus refresh cannot overwrite itself.
+      const initialCacheWrite = cacheHomeFeed(global, focus).catch(() => undefined);
+      void focusTask.then(async (updatedFocus) => {
+        await initialCacheWrite;
+        if (updatedFocus !== null && sequence === loadSequence.current) {
+          await cacheHomeFeed(global, updatedFocus).catch(() => undefined);
+        }
+      });
 
     } catch {
       if (sequence !== loadSequence.current) return;
@@ -715,3 +728,4 @@ const styles = StyleSheet.create({
   stickySearch: { paddingHorizontal: 10, paddingVertical: 4 },
   stickySearchText: { color: '#101828', fontWeight: '800' },
 });
+

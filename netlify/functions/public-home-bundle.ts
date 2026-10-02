@@ -16,6 +16,7 @@ function response(statusCode, body) {
     headers: {
       "Content-Type": "application/json; charset=utf-8",
       "Cache-Control": "no-store, max-age=0",
+      ...(statusCode === 200 ? { "Netlify-CDN-Cache-Control": "public, durable, max-age=30, stale-while-revalidate=60" } : {}),
       "X-Content-Type-Options": "nosniff"
     }
   });
@@ -41,7 +42,7 @@ async function fetchArticles(limit, category = "") {
   };
   if (category === "ICE执法与警情") query.or = ENFORCEMENT_FILTER;
   else if (category) query.category_name = `eq.${category}`;
-  const rows = await rest("articles", { query });
+  const rows = await rest("articles", { query, timeoutMs: 8000 });
   return (Array.isArray(rows) ? rows : [])
     .filter((row) => timeOf(row) >= Date.now() - HOME_MAX_AGE_MS)
     .filter((row) => !isChinaHotCategory(row?.category_name) || isChinaHotHeadline(row.title, `${row.summary || ""} ${row.content || ""}`))
@@ -71,18 +72,21 @@ export default async (event: Request) => {
     const perCategory = Math.min(Math.max(Number(new URL(event.url).searchParams.get("per_category") || 12), 3), 20);
 
     const { editorialTopics, POLITICS_FILTER } = await import("../shared/editorial-topics.mjs");
-    const globalRows = await fetchArticles(globalLimit);
-    const politicalPage = await readPoliticalPage(({offset,limit})=>rest("articles", {query: {
+    // Start independent reads together; the old serial scan blocked all news.
+    const globalTask = fetchArticles(globalLimit);
+    const politicalTask = readPoliticalPage(({offset,limit})=>rest("articles", {query: {
       select: "id,title,slug,publication_path,summary,content,category_name,topic_key,cover_image,author,status,visibility,published_at,created_at,publication_scope:metadata->>publication_scope",
       status: "eq.published", visibility: "eq.public", published_at: `gte.${homeCutoffIso()}`,
       or: POLITICS_FILTER, order: "published_at.desc.nullslast,created_at.desc", limit: String(limit), offset: String(offset)
-    }}),{limit:perCategory}).catch(() => ({rows:[]}));
-    const politicalRows = politicalPage.rows;
+    }, timeoutMs: 5000}),{limit:perCategory,maxBatches:2}).catch(() => ({rows:[]}));
+    const globalRows = await globalTask;
     const counts = categoryCounts(globalRows);
     const sparseCategories = CORE_CATEGORIES.filter((category) => (counts.get(category) || 0) < perCategory);
-    const supplements = await Promise.all(
-      sparseCategories.map((category) => fetchArticles(perCategory, category).catch(() => []))
-    );
+    const [politicalPage, supplements] = await Promise.all([
+      politicalTask,
+      Promise.all(sparseCategories.map((category) => fetchArticles(perCategory, category).catch(() => [])))
+    ]);
+    const politicalRows = politicalPage.rows;
 
     const seen = new Set();
     const articles = [globalRows, politicalRows, ...supplements].flat()
@@ -112,3 +116,4 @@ export default async (event: Request) => {
 };
 
 export const config = {};
+

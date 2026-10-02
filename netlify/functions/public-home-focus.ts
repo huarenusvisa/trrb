@@ -23,6 +23,7 @@ function response(statusCode, body) {
     headers: {
       "Content-Type": "application/json; charset=utf-8",
       "Cache-Control": "no-store, max-age=0",
+      ...(statusCode === 200 ? { "Netlify-CDN-Cache-Control": "public, durable, max-age=30, stale-while-revalidate=60" } : {}),
       "X-Content-Type-Options": "nosniff"
     }
   });
@@ -111,6 +112,7 @@ export default async (event: Request) => {
     };
     const [politicsRows, iceRows, editorRows] = await Promise.all([
       rest("articles", {
+        timeoutMs: 8000,
         query: {
           ...baseQuery,
           category_name: "eq.美国时政",
@@ -118,6 +120,7 @@ export default async (event: Request) => {
         }
       }),
       rest("articles", {
+        timeoutMs: 8000,
         query: {
           ...baseQuery,
           or: "(topic_key.eq.ice,category_name.eq.ICE执法动态,category_name.eq.ICE执法,category_name.eq.驱逐快报)",
@@ -125,6 +128,7 @@ export default async (event: Request) => {
         }
       }),
       rest("articles", {
+        timeoutMs: 8000,
         query: {
           ...baseQuery,
           published_at: `lte.${new Date().toISOString()}`,
@@ -173,3 +177,4 @@ export default async (event: Request) => {
 };
 
 export const config = {};
+

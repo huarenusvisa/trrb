@@ -67,11 +67,15 @@ const HOMEPAGE_SUPPLEMENT_RULES = [
 
 const API_BASE = 'https://trrb.net/.netlify/functions';
 const REQUEST_TIMEOUT_MS = 12000;
+const HOMEPAGE_TIMEOUT_MS = 20000;
 const MAX_RETRIES = 2;
 const inflight = new Map<string, Promise<any>>();
 
 async function readJson(response: Response) {
-  const payload = await response.json().catch(() => null);
+  const payload = await response.json().catch((error) => {
+    if (error instanceof Error && error.name === 'AbortError') throw error;
+    return null;
+  });
   if (!response.ok) throw new Error(payload?.error || `TRRB API ${response.status}`);
   return payload;
 }
@@ -83,14 +87,22 @@ function wait(ms: number) {
 async function executeJsonRequest(url: string): Promise<any> {
   for (let attempt = 0; attempt <= MAX_RETRIES; attempt += 1) {
     const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
-    let response: Response;
+    const timeoutMs = /\/public-home-(?:bundle|focus)(?:\?|$)/.test(url) ? HOMEPAGE_TIMEOUT_MS : REQUEST_TIMEOUT_MS;
+    const timer = setTimeout(() => controller.abort(), timeoutMs);
+    let response: Response | undefined;
     try {
       response = await fetch(url, {
         headers: { Accept: 'application/json' },
         signal: controller.signal,
       });
+      if (response.status >= 500 && attempt < MAX_RETRIES) {
+        await wait(350 * (attempt + 1));
+        continue;
+      }
+      // Keep the deadline active while decoding the response body as well.
+      return await readJson(response);
     } catch (error) {
+      if (response && response.status >= 400 && response.status < 500) throw error;
       if (attempt < MAX_RETRIES) {
         await wait(350 * (attempt + 1));
         continue;
@@ -101,11 +113,7 @@ async function executeJsonRequest(url: string): Promise<any> {
       clearTimeout(timer);
     }
 
-    if (response.status >= 500 && attempt < MAX_RETRIES) {
-      await wait(350 * (attempt + 1));
-      continue;
-    }
-    return readJson(response);
+
   }
   throw new Error('请求失败，请稍后重试');
 }

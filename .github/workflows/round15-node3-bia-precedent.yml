@@ -2,6 +2,11 @@ name: 第十五轮节点3-BIA先例裁决自动采集
 
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/round15-node3-bia-precedent-collector.mjs'
+      - '.github/workflows/round15-node3-bia-precedent.yml'
 
 permissions:
   contents: write

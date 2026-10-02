@@ -2,7 +2,11 @@ name: Immigration Judge EOIR Data Sync (Manual Backup Only)
 
 on:
   workflow_dispatch:
-  # 自动调度与 workflow_call 已停用；仅管理员手动运行。
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/immigration-judge-data-sync.yml'
+  # 保留人工入口；官方快照月份变更提交时立即执行一次。
 
 permissions:
   contents: write
@@ -19,13 +23,13 @@ jobs:
       SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
       SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
       EOIR_PARQUET_PATH: /tmp/eoir-cases.parquet
-      EOIR_JUDGE_SOURCE_NAME: EOIR FOIA Case Data (July 2026; official authority, normalized derivative input)
+      EOIR_JUDGE_SOURCE_NAME: EOIR FOIA Case Data (August 2026; official authority, normalized derivative input)
       EOIR_JUDGE_SOURCE_URL: https://fileshare.eoir.justice.gov/EOIR%20Case%20Data.zip
-      EOIR_JUDGE_SOURCE_DATE: "2026-07-01"
+      EOIR_JUDGE_SOURCE_DATE: "2026-09-01"
       EOIR_JUDGE_PROCESSOR_NAME: Deportation Data Project
       EOIR_JUDGE_PROCESSOR_URL: https://deportationdata.org/data/processed/eoir.html
       EOIR_JUDGE_SCOPE_START: "2020-01-01"
-      EOIR_JUDGE_SCOPE_END: "2026-07-01"
+      EOIR_JUDGE_SCOPE_END: "2026-09-01"
       ASYLUMTRACKER_MANIFEST_URL: https://asylumtracker.com/data/dataset-manifest.json
     steps:
       - uses: actions/checkout@v4

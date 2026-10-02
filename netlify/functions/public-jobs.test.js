@@ -50,3 +50,9 @@ test('end of local pagination never switches to nearby recommendations', async (
   let calls=0;const run=withRest(async ()=>{calls++;return [];});
   const result=await run({place:'Atlanta',offset:'60'});assert.equal(result.recommendation,null);assert.equal(calls,1);
 });
+
+test('LA remains a Los Angeles alias while Chinese state names select the whole state', async () => {
+  let query;const run=withRest(async (table,args)=>{query ||= args.query;return [row('a','Los Angeles','CA')];});
+  await run({place:'LA'});assert.match(query.and,/state_code.eq.CA/);assert.match(query.and,/Los Angeles/);
+  query=null;await run({place:'路易斯安那州'});assert.match(query.and,/state_code.eq.LA/);
+});

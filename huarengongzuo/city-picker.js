@@ -20,7 +20,7 @@
     if (sort === 'alpha') cities = [...cities].sort((a,b) => a.en.localeCompare(b.en));
     const cityButton = city => `<button type="button" data-select="${esc(city.en)}" data-label="${esc(city.zh)}" aria-pressed="${selected.has(city.en)}"><span><strong>${esc(city.zh)}</strong><small>${esc(city.en)} · ${esc(city.state)}</small></span><b>${selected.has(city.en) ? '✓' : '+'}</b></button>`;
     const allState = catalog.states.find(row => row.code === state);
-    const statewide = allState ? `<button type="button" data-select="${state}" data-label="${esc('全'+allState.zh)}" aria-pressed="${selected.has(state)}"><span><strong>${esc('全'+allState.zh)}</strong><small>All ${esc(state)}</small></span><b>${selected.has(state) ? '✓' : '+'}</b></button>` : '';
+    const statewide = allState ? `<button type="button" data-select="${esc(allState.zh)}" data-label="${esc('全'+allState.zh)}" aria-pressed="${selected.has(allState.zh)}"><span><strong>${esc('全'+allState.zh)}</strong><small>All ${esc(state)}</small></span><b>${selected.has(allState.zh) ? '✓' : '+'}</b></button>` : '';
     const laCities = ['Los Angeles','Monterey Park','San Gabriel','Rosemead','Rowland Heights','Pasadena','Walnut','West Covina','Baldwin Park'];
     let groups = '';
     if (state === 'CA' && !search) {
@@ -40,7 +40,7 @@
       input.value.split(';').map(value => value.trim()).filter(Boolean).slice(0,10).forEach(value => {
         const city = catalog.cities.find(row => [row.id,row.en,row.zh,...row.aliases].some(alias => normalize(alias) === normalize(value)));
         const region = catalog.states.find(row => normalize(row.code) === normalize(value) || row.zh === value);
-        selected.set(city?.en || region?.code || value,city?.zh || region?.zh || value);
+        selected.set(city?.en || region?.zh || value,city?.zh || region?.zh || value);
       });
       render(); dialog.querySelector('#city-search').focus();
     } catch {dialog.querySelector('.city-options').textContent = '城市列表暂时未能载入，请关闭后重试。';}

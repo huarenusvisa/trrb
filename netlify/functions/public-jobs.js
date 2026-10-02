@@ -122,7 +122,7 @@ function resolvePlace(value) {
 function placeClause(value) {
   const city = resolvePlace(value);
   const state = regions.states.find(row => normalize(row.code) === normalize(value) || row.zh === value);
-  if (state) return `state_code.eq.${state.code}`;
+  if (state && !city) return `state_code.eq.${state.code}`;
   const terms = city ? [city.en,city.zh,...city.aliases].filter(term => !/^[a-z]{1,3}$/i.test(term)) : [value];
   const match = 'or(' + terms.flatMap(term => ['city','neighborhood','borough','county'].map(field => `${field}.ilike.${literal(city ? term : '*' + term.replace(/[%*]/g,'') + '*')}`)).join(',') + ')';
   return city ? `and(state_code.eq.${city.state},${match})` : match;

@@ -1,20 +1,20 @@
 {
-  "generatedAt": "2026-08-19T20:03:02.571Z",
+  "generatedAt": "2026-10-02T16:25:21.459Z",
   "node": "2 统一法律数据库自动重建与版本同步",
-  "datasetVersion": "587881e5a46c902baf5269a80ec8c15f74945dba42babb64eab4aa52c87dfc57",
-  "count": 630,
+  "datasetVersion": "dd9418ee7eeaf37fbc450cad3a54fd60d3f6ef314cfb40fc3dd2f72a9ac5419b",
+  "count": 699,
   "expectedCounts": {
     "SCOTUS": 68,
-    "US_CIRCUIT": 434,
-    "BIA": 68,
+    "US_CIRCUIT": 412,
+    "BIA": 159,
     "WHITE_HOUSE": 10,
     "FEDERAL_REGISTER": 50
   },
   "actualCounts": {
-    "BIA": 68,
+    "BIA": 159,
     "FEDERAL_REGISTER": 50,
     "SCOTUS": 68,
-    "US_CIRCUIT": 434,
+    "US_CIRCUIT": 412,
     "WHITE_HOUSE": 10
   },
   "checks": [
@@ -26,7 +26,7 @@
     {
       "ok": true,
       "label": "all five legal source systems represented",
-      "detail": "{\"BIA\":68,\"FEDERAL_REGISTER\":50,\"SCOTUS\":68,\"US_CIRCUIT\":434,\"WHITE_HOUSE\":10}"
+      "detail": "{\"BIA\":159,\"FEDERAL_REGISTER\":50,\"SCOTUS\":68,\"US_CIRCUIT\":412,\"WHITE_HOUSE\":10}"
     },
     {
       "ok": true,
@@ -36,12 +36,12 @@
     {
       "ok": true,
       "label": "US_CIRCUIT synchronized into unified database",
-      "detail": "source=434; unified=434"
+      "detail": "source=412; unified=412"
     },
     {
       "ok": true,
       "label": "BIA synchronized into unified database",
-      "detail": "source=68; unified=68"
+      "detail": "source=159; unified=159"
     },
     {
       "ok": true,
@@ -56,27 +56,27 @@
     {
       "ok": true,
       "label": "unified count metadata matches records",
-      "detail": "metadata=630; records=630"
+      "detail": "metadata=699; records=699"
     },
     {
       "ok": true,
       "label": "unified database rebuilt from current source snapshots",
-      "detail": "expected=630; actual=630"
+      "detail": "expected=699; actual=699"
     },
     {
       "ok": true,
       "label": "source keys remain unique",
-      "detail": "unique=630; records=630"
+      "detail": "unique=699; records=699"
     },
     {
       "ok": true,
       "label": "record IDs remain unique",
-      "detail": "unique=630; records=630"
+      "detail": "unique=699; records=699"
     },
     {
       "ok": true,
       "label": "dataset version matches normalized current records",
-      "detail": "587881e5a46c902baf5269a80ec8c15f74945dba42babb64eab4aa52c87dfc57"
+      "detail": "dd9418ee7eeaf37fbc450cad3a54fd60d3f6ef314cfb40fc3dd2f72a9ac5419b"
     },
     {
       "ok": true,

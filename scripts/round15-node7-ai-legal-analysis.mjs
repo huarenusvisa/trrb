@@ -6,7 +6,7 @@ import { join } from 'node:path';
 
 const KEY=process.env.OPENAI_API_KEY||'';
 const MODEL=process.env.OPENAI_MODEL||'gpt-5-mini';
-const LIMIT=Math.max(3,Math.min(60,Number(process.env.ROUND15_AI_BATCH||24)));
+const LIMIT=Math.max(3,Math.min(120,Number(process.env.ROUND15_AI_BATCH||24)));
 const DISCLAIMER='仅供信息参考，不构成法律意见，法律效力以官方原文及后续裁判/规则为准';
 if(!KEY) throw new Error('Missing OPENAI_API_KEY');
 const checks=[];let failures=0;

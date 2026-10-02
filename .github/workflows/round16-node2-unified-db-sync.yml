@@ -6,6 +6,7 @@ on:
     branches: [main]
     paths:
       - 'data/legal/bia-precedent-latest.json'
+      - '.github/workflows/round16-node2-unified-db-sync.yml'
 
 permissions:
   contents: write

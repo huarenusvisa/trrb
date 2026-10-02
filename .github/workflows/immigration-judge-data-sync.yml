@@ -6,6 +6,7 @@ on:
     branches: [main]
     paths:
       - '.github/workflows/immigration-judge-data-sync.yml'
+      - 'scripts/generate-eoir-state-and-judge-periods.py'
   # 保留人工入口；官方快照月份变更提交时立即执行一次。
 
 permissions:

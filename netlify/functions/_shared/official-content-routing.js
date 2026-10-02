@@ -1,4 +1,4 @@
-const { collectionScope } = require('./news-collection-scope');
+const { collectionScope, hasGeographicNexus } = require('./news-collection-scope');
 const { isIceEnforcementText } = require('./ice-enforcement');
 
 function normalize(...values) {
@@ -23,6 +23,8 @@ function knowledge(category, topic, reason) {
 function routeOfficialContent(title, summary, content, evidence = []) {
   const sourceText = evidence.map(post => `${post?.source_username || ''} ${post?.source_display_name || ''} ${post?.source_text || ''}`).join(' ');
   const text = normalize(title || '', summary || '', String(content || '').slice(0, 2400), sourceText);
+
+  if (!hasGeographicNexus(text)) return null;
 
   if (isIceEnforcementText(title, `${summary || ''} ${String(content || '').slice(0, 1200)} ${sourceText}`)) {
     return { key: 'ice', categoryName: 'ICE执法动态', topicKey: 'ice', reason: 'ICE agency and concrete enforcement action' };
@@ -58,3 +60,4 @@ function routeOfficialContent(title, summary, content, evidence = []) {
 }
 
 module.exports = { routeOfficialContent };
+

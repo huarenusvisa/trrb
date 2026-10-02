@@ -28,7 +28,7 @@ function factualSources(research) {
 function independentSourceCount(research) { return new Set(factualSources(research).map(s => sourcePublisher(s.url))).size; }
 function deepQualityErrors(article, research, review = article.editorial_review) {
   if (article.editorial_depth !== 'deep') return [];
-  const errors = [];
+  const errors = officeTitleErrors(article);
   const count = countChinese(article.content);
   const min=article.daily_deep_commission === true ? 3500 : DEEP_MIN;
   const max=article.daily_deep_commission === true ? 5000 : DEEP_MAX;
@@ -37,7 +37,20 @@ function deepQualityErrors(article, research, review = article.editorial_review)
   for (const field of DEEP_REVIEW_FIELDS) if (review?.[field] !== true) errors.push(`深度资料复核缺失：${field}`);
   return errors;
 }
+
+const OFFICE_TITLE_INSTRUCTIONS = '必须按事件发生日期核实人物现任职务，不能沿用模型记忆或旧报道称谓。特朗普自2025年1月20日起的第二任期报道应称美国总统特朗普，不得称前总统；2021至2024年历史事件必须明确日期和当时身份。第三国国内事件仅在原始事件有中国或美国实际参与或可核实直接影响时采编；外国最高法院、总统、议会、警察不等于美国机构，不能为了入选补写泛泛中美影响。';
+function officeTitleErrors(article, now = Date.now()) {
+  if (now < Date.parse('2025-01-20T17:00:00Z') || now >= Date.parse('2029-01-20T17:00:00Z')) return [];
+  const fields = [article?.title, article?.summary, article?.content, article?.seo_title];
+  const invalid = /(?<![此之以])前\s*(?:美国|美國)?\s*(?:总统|總統)\s*(?:唐纳德[·・\s]*|唐納德[·・\s]*)?(?:特朗普|川普)|former\s+(?:(?:US|U\.S\.)\s+)?president\s+(?:Donald\s+)?Trump|(?:特朗普|川普)\s*前(?:总统|總統)/i;
+  for (const field of fields) for (const sentence of String(field || '').split(/[。！？!?\n]/)) {
+    if (invalid.test(sentence) && !(/202[1-4]/.test(sentence) && /时任|時任|当时|當時|then[- ]/i.test(sentence))) return ['人物任职称谓错误：当前任期的特朗普不得称前总统；历史引用须写明事件日期和当时身份'];
+  }
+  return [];
+}
+
 function reviewedStoryReady(story) {
+  if (officeTitleErrors(story).length) return false;
   const p = story?.ai_payload || {};
   const r = p.editorial_review;
   if (p.editorial_policy_version !== EDITORIAL_POLICY_VERSION || p.reviewed_content_sha256 !== contentDigest(story.title, story.content)) return false;
@@ -53,7 +66,7 @@ function reviewedStoryReady(story) {
   if (p.editorial_depth === 'standard' && (n < 800 || n > 1999)) return false;
   return deepQualityErrors({content:story.content,editorial_depth:p.editorial_depth}, p.context_research, r).length === 0;
 }
-const DEEP_RESEARCH_INSTRUCTIONS = '优质实时热点可写2000至3500个中文字符的深度稿，但必须具备可核验数据（日期、统计周期、样本/分母、口径及可比性），新闻上游（原始发布、文件、原始报道）、新闻下游（独立跟进、当事人回应），事件上游（时间线、政策/判例依据、已证实原因）、事件下游（已发生结果和下一程序节点；预判必须注明条件与不确定性）。考察与华人具体相关的法律适用范围、签证/身份、留学、工作、经商、税务、家庭或安全影响；没有依据就明确无法确认直接影响，不能因姓名或族裔猜测。法院材料必须区分起诉、临时禁令、裁决、判例效力、上诉、暂缓与生效范围。评论只能是明确归因的观点，不能当作事实、数据、独立来源或民意比例。任何维度资料不足时降为普通稿/短讯，不能凑字冒充深度稿。';
+const DEEP_RESEARCH_INSTRUCTIONS = OFFICE_TITLE_INSTRUCTIONS + '优质实时热点可写2000至3500个中文字符的深度稿，但必须具备可核验数据（日期、统计周期、样本/分母、口径及可比性），新闻上游（原始发布、文件、原始报道）、新闻下游（独立跟进、当事人回应），事件上游（时间线、政策/判例依据、已证实原因）、事件下游（已发生结果和下一程序节点；预判必须注明条件与不确定性）。考察与华人具体相关的法律适用范围、签证/身份、留学、工作、经商、税务、家庭或安全影响；没有依据就明确无法确认直接影响，不能因姓名或族裔猜测。法院材料必须区分起诉、临时禁令、裁决、判例效力、上诉、暂缓与生效范围。评论只能是明确归因的观点，不能当作事实、数据、独立来源或民意比例。任何维度资料不足时降为普通稿/短讯，不能凑字冒充深度稿。';
 
 function manualEditorialMetadata(story,title,content) {
   const p=story.ai_payload||{};
@@ -66,4 +79,5 @@ function sourceWithinCollectionWindow(value,now=Date.now()) {
   const time=Date.parse(value || '');
   return Number.isFinite(time) && now-time>=0 && now-time<=12*3600000;
 }
-module.exports = {EDITORIAL_POLICY_VERSION, ICE_TRANSLATION_VERSION, DEEP_MIN, DEEP_MAX, DEEP_REVIEW_FIELDS, countChinese, contentDigest, sourcePublisher, factualSources, independentSourceCount, deepQualityErrors, reviewedStoryReady, DEEP_RESEARCH_INSTRUCTIONS, manualEditorialMetadata,sourceWithinCollectionWindow};
+module.exports = {officeTitleErrors, OFFICE_TITLE_INSTRUCTIONS, EDITORIAL_POLICY_VERSION, ICE_TRANSLATION_VERSION, DEEP_MIN, DEEP_MAX, DEEP_REVIEW_FIELDS, countChinese, contentDigest, sourcePublisher, factualSources, independentSourceCount, deepQualityErrors, reviewedStoryReady, DEEP_RESEARCH_INSTRUCTIONS, manualEditorialMetadata,sourceWithinCollectionWindow};
+

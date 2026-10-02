@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import publisherReview from '../netlify/functions/_shared/publisher-review-policy.js';
 import {inForwardScope,depthInstruction,logDepthOutcome} from './news-forward-policy.mjs';
 import './news-budget-preload.mjs';
 import {compareNewsPriority,newsPriority} from './news-priority.mjs';
@@ -1029,6 +1030,12 @@ export function buildPublishedArticle(tweet, qualified, article, publishedAt = n
   };
 }
 
+export function buildEvidencePendingArticle(tweet,qualified,reason,time=new Date().toISOString()) {
+  if (!qualified?.accepted || !collectedArticleRoute(qualified.title,qualified.text) || !sourceWithinCollectionWindow(tweet.created_at) || isHeadlineDigest(qualified.text)) throw qualityError("待人工核查稿须有合格选题、近期来源和单一事件");
+  const draft=buildReviewDraft(tweet,reason,time);
+  return publisherReview.evidencePendingArticle(draft,qualified.text,reason,time);
+}
+
 export function buildReviewDraft(tweet, reason, createdAt = new Date().toISOString()) {
   const tweetId = cleanText(tweet.id, 100);
   const source = sourceFor(tweet);
@@ -1351,12 +1358,12 @@ export async function run() {
     const priorCandidate = await existingCandidate(tweet);
     if (priorCandidate && !inForwardScope(priorCandidate)) {counters.duplicate++;results.push({tweetId:tweet.id,status:'historical-not-reprocessed'});continue;}
     if (priorCandidate?.ai_payload?.manual_editor_lock) {counters.review_required++;results.push({tweetId:tweet.id,status:'editor-locked'});continue;}
-    if (priorCandidate?.ai_payload?.quality_hold === true && !shouldRetryCandidate(priorCandidate, qualified)) {
+    if (priorCandidate?.ai_payload?.quality_hold === true && !shouldRetryCandidate(priorCandidate, qualified) && !publisherReview.evidenceHoldEligible(priorCandidate.decision_reason)) {
       counters.review_required += 1;
       results.push({ tweetId: tweet.id, status: "quality-held", articleId: priorCandidate.article_id });
       continue;
     }
-    const retryCandidate = shouldRetryCandidate(priorCandidate, qualified);
+    const retryCandidate = shouldRetryCandidate(priorCandidate, qualified) || publisherReview.evidenceHoldEligible(priorCandidate?.decision_reason);
     if (priorCandidate && priorCandidate.decision !== "failed" && !retryCandidate) { counters.duplicate += 1; results.push({ tweetId: tweet.id, status: "duplicate-pool", decision: priorCandidate.decision }); continue; }
     const priorArticle = await existingArticle(tweet);
     if (priorArticle?.status === "published" || (priorArticle && !retryCandidate && priorCandidate?.decision !== "failed")) { counters.duplicate += 1; results.push({ tweetId: tweet.id, status: "duplicate-article", articleId: priorArticle.id }); continue; }
@@ -1440,6 +1447,20 @@ export async function run() {
         break;
       }
       const reason = `自动扩写或发布失败：${cleanText(error?.message || error, 600)}`;
+      if (publisherReview.evidenceHoldEligible(reason) && qualified.route !== "ice") {
+        try {
+          const body=buildEvidencePendingArticle(tweet,qualified,reason);
+          const duplicate=await eventDuplicate({title:body.title,content:body.content},recentArticles,true);
+          if(duplicate) {
+            await discardDuplicateCandidate(candidate,duplicate.id,'资料不足稿与已发布内容属于同一事件');
+            counters.duplicate++;results.push({tweetId:tweet.id,status:'duplicate-content',articleId:duplicate.id});continue;
+          }
+          const saved=await publishArticle(body,priorArticle);
+          await patchCandidate(candidate?.id,{decision:'published',article_id:saved?.id,decision_reason:'资料不足已按来源消息发布，留待人工后续处理',processed_at:new Date().toISOString(),ai_payload:{...(candidate?.ai_payload || {}),status:'published',publish_status:'published',manual_review_required:true,post_publication_review_status:'pending',quality_hold:false,automatic_retry_exhausted:true}});
+          recentArticles.unshift({id:saved?.id,title:body.title,summary:body.summary,content:body.content});
+          counters.published++;results.push({tweetId:tweet.id,status:'published-pending-review',articleId:saved?.id});continue;
+        } catch(fallbackError) {console.log(JSON.stringify({event:'publish-then-review-held',tweetId:tweet.id,error:String(fallbackError.message)}));}
+      }
       const retryAttempts = Number(candidate?.ai_payload?.automatic_retry_attempts || 0) + 1;
       const discardNow = error.code === "EDITORIAL_QUALITY_HOLD" || retryAttempts >= 3;
       if (discardNow) {

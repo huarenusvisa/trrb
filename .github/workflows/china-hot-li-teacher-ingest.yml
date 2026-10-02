@@ -51,7 +51,7 @@ jobs:
         env:
           NEWS_BUDGET_ENFORCE: "0"
           NEWS_DEPTH_COMMISSION: "0"
-        run: node --experimental-strip-types --test scripts/news-depth-supplement.test.mjs scripts/news-office-scope.test.mjs scripts/news-daily-depth.test.mjs scripts/news-editorial-support.test.mjs scripts/china-hot-editor.test.mjs scripts/news-budget.test.mjs scripts/news-priority.test.mjs scripts/news-editorial-policy.test.mjs scripts/china-person-registry.test.mjs scripts/china-hot-li-teacher-ingest.test.mjs scripts/china-context-research.test.mjs scripts/china-editorial-update.test.mjs scripts/ren-zhengfei-news.test.mjs scripts/article-editorial-policy.test.mjs
+        run: node --experimental-strip-types --test scripts/publisher-review-policy.test.mjs scripts/news-depth-supplement.test.mjs scripts/news-office-scope.test.mjs scripts/news-daily-depth.test.mjs scripts/news-editorial-support.test.mjs scripts/china-hot-editor.test.mjs scripts/news-budget.test.mjs scripts/news-priority.test.mjs scripts/news-editorial-policy.test.mjs scripts/china-person-registry.test.mjs scripts/china-hot-li-teacher-ingest.test.mjs scripts/china-context-research.test.mjs scripts/china-editorial-update.test.mjs scripts/ren-zhengfei-news.test.mjs scripts/article-editorial-policy.test.mjs
       - name: Read China headlines category switches
         id: category
         run: node scripts/category-pipeline-gate.mjs hot-headlines

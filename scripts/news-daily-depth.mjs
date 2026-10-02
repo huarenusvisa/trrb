@@ -1,7 +1,7 @@
 import './news-budget-preload.mjs';
 import {appendFileSync} from 'node:fs';
 import {pathToFileURL} from 'node:url';
-import {supabase,tweetFromCandidate,qualifyTweet,generateArticle,buildPublishedArticle,publishArticle,existingArticle,recentChinaArticles,eventDuplicate,bodyCharacterCount} from './china-hot-li-teacher-ingest.mjs';
+import {supabase,tweetFromCandidate,qualifyTweet,generateArticle,buildPublishedArticle,publishArticle,existingArticle,recentChinaArticles,eventDuplicate,bodyCharacterCount,buildEvidencePendingArticle} from './china-hot-li-teacher-ingest.mjs';
 import {sourceWithinCollectionWindow,contentDigest,DEEP_REVIEW_FIELDS,deepQualityErrors} from './news-editorial-policy.mjs';
 import {compareNewsPriority} from './news-priority.mjs';
 import {articleUpdateBody,automationMayUpdate,verifyArticleUpdate} from './news-article-updates.mjs';
@@ -77,8 +77,27 @@ export async function runDailyDepth() {
       if(current && !current.ai_payload?.manual_editor_lock)await supabase('news_candidates',{method:'PATCH',query:{id:`eq.${row.id}`,updated_at:`eq.${current.updated_at}`},body:{decision:'published',article_id:saved.id,proposed_section:saved.category_name,decision_reason:'每日3500字深度稿已发布并回读验收',processed_at:new Date().toISOString(),ai_payload:{...current.ai_payload,daily_depth_attempt:{date,attempts,status:outcome.status},daily_depth_article_id:saved.id}}});
     } catch(error) {
       Object.assign(outcome,{status:isBudgetDeferred(error)?'budget-deferred':'not-published',reason:String(error.message).slice(0,700)});
+      // Standing publisher instruction: insufficient depth evidence is reviewed
+      // after publication; it does not turn a source report into a deep article.
+      if (!isBudgetDeferred(error) && /每日深度选题资料不足|每日深度稿证据|每日深度稿独立背景资料不足/.test(String(error.message))) {
+        try {
+          if (prior?.status==='published') {
+            await supabase('articles',{method:'PATCH',query:{id:`eq.${prior.id}`,updated_at:`eq.${prior.updated_at}`},body:{metadata:{...prior.metadata,manual_review_required:true,requires_editor_review:true,post_publication_review_status:'pending',post_publication_review_reason:outcome.reason},updated_at:new Date().toISOString()}});
+            Object.assign(outcome,{status:'existing-published-pending-review',article_id:prior.id});
+          } else {
+            const body=buildEvidencePendingArticle(tweet,qualified,outcome.reason);
+            const duplicate=await eventDuplicate({title:body.title,content:body.content},recent,true);
+            if (duplicate) Object.assign(outcome,{status:'existing-published-pending-review',article_id:duplicate.id});
+            else {
+              const saved=await publishArticle(body,prior);
+              if(saved?.status!=='published')throw new Error('来源消息未通过发布回读');
+              recent.unshift(saved);Object.assign(outcome,{status:'published-pending-review',article_id:saved.id,path:saved.publication_path});
+            }
+          }
+        } catch(fallbackError) {outcome.fallback_error=String(fallbackError.message).slice(0,700);}
+      }
       const current=(await supabase('news_candidates',{query:{select:'ai_payload,updated_at',id:`eq.${row.id}`,limit:'1'}}))?.[0];
-      if(current && !current.ai_payload?.manual_editor_lock)await supabase('news_candidates',{method:'PATCH',query:{id:`eq.${row.id}`,updated_at:`eq.${current.updated_at}`},body:{ai_payload:{...current.ai_payload,daily_depth_attempt:{date,attempts,...outcome}}}});
+      if(current && !current.ai_payload?.manual_editor_lock)await supabase('news_candidates',{method:'PATCH',query:{id:`eq.${row.id}`,updated_at:`eq.${current.updated_at}`},body:{...(outcome.article_id?{decision:'published',article_id:outcome.article_id,decision_reason:'已发布，资料不足留待人工后续核查',processed_at:new Date().toISOString()}:{}),ai_payload:{...current.ai_payload,...(outcome.article_id?{manual_review_required:true,post_publication_review_status:'pending'}:{}),daily_depth_attempt:{date,attempts,...outcome}}}});
     }
     report.results.push(outcome);console.log(JSON.stringify({event:'daily-depth-result',...outcome}));
     if(outcome.status==='budget-deferred')break;
@@ -87,7 +106,7 @@ export async function runDailyDepth() {
   report.status=report.remaining?'shortfall':'target-met';
   console.log(JSON.stringify({event:'daily-depth-report',...report},null,2));
   if(process.env.GITHUB_STEP_SUMMARY)appendFileSync(process.env.GITHUB_STEP_SUMMARY,`\n每日深度稿（纽约 ${date}）：${report.completed}/10，正文至少3500汉字；缺额${report.remaining}。\n\n`+report.results.map(r=>`- ${r.candidate_id}: ${r.status} ${r.reason || r.article_id || ''}`).join('\n')+'\n');
-  await supabase('automation_notifications',{method:'POST',body:{control_key:'china_hot',severity:report.remaining?'warning':'success',title:`每日深度稿 ${report.completed}/10（纽约 ${date}）`,message:`已验收${report.completed}篇3500字以上深度稿，尚缺${report.remaining}篇。${report.remaining?'现有总控下一轮继续补选；未达标稿不计数。':'今日目标已完成。'}`,details:report}});
+  await supabase('automation_notifications',{method:'POST',body:{control_key:'china_hot',severity:report.remaining?'warning':'success',title:`每日深度稿 ${report.completed}/10（纽约 ${date}）`,message:`已验收${report.completed}篇3500字以上深度稿，尚缺${report.remaining}篇。${report.remaining?'现有总控下一轮继续补选；资料不足可按来源消息发布并留待人工处理，普通稿不计入深度数量。':'今日目标已完成。'}`,details:report}});
   return report;
 }
 if(process.argv[1] && import.meta.url===pathToFileURL(process.argv[1]).href)runDailyDepth().catch(e=>{console.error(e);process.exitCode=1;});

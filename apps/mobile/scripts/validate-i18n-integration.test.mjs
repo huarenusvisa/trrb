@@ -211,7 +211,10 @@ test('localizes user profile actions while preserving names, bios and posts', ()
   assert.match(posts, /post\.caption/);
   assert.match(posts, /localeDateTag\(locale\)/);
   assert.ok(posts.includes("t('userProfile.noPublicPostsBody')"));
-  assert.ok(posts.includes("t('userProfile.deletePostTitle')"));
+  // Editing/deletion moved from the profile grid into the detail screen.
+  const detail = read('app/profile-post/[id].tsx');
+  assert.match(detail, /useI18n\(\)/);
+  assert.ok(detail.includes("t('userProfile.deletePostTitle')"));
   assert.doesNotMatch(posts, /toLocaleString\('zh-CN'\)/);
 });
 

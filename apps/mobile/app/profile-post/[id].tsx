@@ -3,6 +3,7 @@ import { Alert, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 
 import { Image } from 'expo-image';
 import { useVideoPlayer, VideoView } from 'expo-video';
 import { router, Stack, useLocalSearchParams } from 'expo-router';
+import { useI18n } from '../../src/i18n/I18nProvider';
 import { supabase } from '../../src/auth/supabase';
 import {
   createProfilePostComment,
@@ -21,6 +22,7 @@ function VideoMedia({ media }: { media: ProfilePostMedia }) {
 }
 
 export default function ProfilePostDetailScreen() {
+  const { t } = useI18n();
   const { id } = useLocalSearchParams<{ id: string }>();
   const postId = String(id || '');
   const [post, setPost] = useState<ProfilePost | null>(null);
@@ -77,7 +79,7 @@ export default function ProfilePostDetailScreen() {
 
   const remove = () => {
     if (!post || busy) return;
-    Alert.alert('删除这条动态？', '删除后将不再显示。', [
+    Alert.alert(t('userProfile.deletePostTitle'), '删除后将不再显示。', [
       { text: '取消', style: 'cancel' },
       { text: '删除', style: 'destructive', onPress: async () => {
         setBusy(true);

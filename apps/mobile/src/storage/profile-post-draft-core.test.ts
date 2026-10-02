@@ -5,7 +5,7 @@ import { parseProfilePostDraft, PROFILE_POST_DRAFT_MAX_AGE_MS } from './profile-
 test('restores a valid recent profile-post caption', () => {
   const now = 10_000_000;
   assert.deepEqual(parseProfilePostDraft(JSON.stringify({ caption: '尚未发布的文字', savedAt: now - 1_000 }), now), {
-    caption: '尚未发布的文字', savedAt: now - 1_000,
+    id: `legacy-${now - 1_000}`, caption: '尚未发布的文字', tagsText: '', savedAt: now - 1_000,
   });
 });
 

@@ -19,7 +19,7 @@ const STRICT_INDEXABLE_SEO_GATE = "STRICT_INDEXABLE_SEO_GATE_V2";
 const EDGE_COLLECTION_ROUTES = new Set(["xijinping", "china-politics", "iceandpolice", "midterm-elections"]);
 const ROUTE_PREFIXES = new Set([
   "ice", "iceandpolice", "trump", "immigrate", "important-news", "hot-headlines", "us-politics", "compare",
-  "us-crime", "china-officialdom", "asylum", "asylumjudge", "immigration", "deport", "expose", "community", "jobs", "niulai", "ershou", "news"
+  "china-politics", "us-crime", "china-officialdom", "asylum", "asylumjudge", "immigration", "deport", "expose", "community", "jobs", "niulai", "ershou", "news"
 ]);
 const FORBIDDEN_SITEMAP_ROUTES = [
   /https:\/\/trrb\.net\/user(?:\/|[?<]|$)/i,

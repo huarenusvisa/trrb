@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-08-23T10:46:53.777358+00:00",
+  "generated_at": "2026-10-02T16:29:24.989729+00:00",
   "source_url": "https://www.justice.gov/eoir/find-immigration-court-and-access-internet-based-hearings",
-  "source_updated_at": "August 21, 2026",
+  "source_updated_at": "October 2, 2026",
   "telephonic_number": "1-415-527-5035",
   "notice": "Confirm the hearing medium in the official case notice or with the immigration court; unrepresented respondents default to in-person.",
   "profiles": [
@@ -13,17 +13,6 @@
           "court_name": "Eloy Immigration Court",
           "webex_url": "https://eoir.webex.com/meet/IJ.Aaron.Ludwig",
           "access_code": "2822 058 9030"
-        }
-      ]
-    },
-    {
-      "judge_name": "Abby A. Batko-Taylor",
-      "name_key": "batko-taylor|abby",
-      "links": [
-        {
-          "court_name": "Falls Church Immigration Adjudication Center",
-          "webex_url": "https://eoir.webex.com/meet/IJ.Abby.Batko-Taylor",
-          "access_code": "2764 091 8122"
         }
       ]
     },
@@ -61,6 +50,17 @@
       ]
     },
     {
+      "judge_name": "Adam Jaffe",
+      "name_key": "jaffe|adam",
+      "links": [
+        {
+          "court_name": "Los Angeles - Van Nuys Boulevard Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Adam.Jaffe",
+          "access_code": "2830 475 4178"
+        }
+      ]
+    },
+    {
       "judge_name": "Adam Jovanovic",
       "name_key": "jovanovic|adam",
       "links": [
@@ -75,9 +75,25 @@
           "access_code": "2764 156 9287"
         },
         {
+          "court_name": "Pearsall Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Jovanovic",
+          "access_code": "2764 156 9287"
+        },
+        {
           "court_name": "San Antonio Immigration Court",
           "webex_url": "https://eoir.webex.com/meet/IJ.Jovanovic",
           "access_code": "2764 156 9287"
+        }
+      ]
+    },
+    {
+      "judge_name": "Adam Leonatti",
+      "name_key": "leonatti|adam",
+      "links": [
+        {
+          "court_name": "Chelmsford Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Adam.Leonatti",
+          "access_code": "2829 896 4768"
         }
       ]
     },
@@ -269,6 +285,17 @@
       ]
     },
     {
+      "judge_name": "Alison Fox",
+      "name_key": "fox|alison",
+      "links": [
+        {
+          "court_name": "Laredo Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Alison.Fox",
+          "access_code": "2827 514 9046"
+        }
+      ]
+    },
+    {
       "judge_name": "Alison Igoe",
       "name_key": "igoe|alison",
       "links": [
@@ -276,17 +303,6 @@
           "court_name": "Hyattsville Immigration Court",
           "webex_url": "https://eoir.webex.com/meet/IJ.Igoe",
           "access_code": "2764 488 3554"
-        }
-      ]
-    },
-    {
-      "judge_name": "Alison Kane",
-      "name_key": "kane|alison",
-      "links": [
-        {
-          "court_name": "Denver Immigration Court",
-          "webex_url": "https://eoir.webex.com/meet/IJ.Kane",
-          "access_code": "199 223 8820"
         }
       ]
     },
@@ -412,6 +428,17 @@
       ]
     },
     {
+      "judge_name": "Andrea Goode",
+      "name_key": "goode|andrea",
+      "links": [
+        {
+          "court_name": "San Diego Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Andrea.Goode",
+          "access_code": "2820 195 7222"
+        }
+      ]
+    },
+    {
       "judge_name": "Andrea Hong",
       "name_key": "hong|andrea",
       "links": [
@@ -478,6 +505,17 @@
       ]
     },
     {
+      "judge_name": "Andrew Hurd",
+      "name_key": "hurd|andrew",
+      "links": [
+        {
+          "court_name": "Denver Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Andrew.Hurd",
+          "access_code": "2826 324 8766"
+        }
+      ]
+    },
+    {
       "judge_name": "Andrew J. Slitt",
       "name_key": "slitt|andrew",
       "links": [
@@ -515,9 +553,20 @@
       "name_key": "carman|andre",
       "links": [
         {
-          "court_name": "Denver Immigration Court",
+          "court_name": "Concord Immigration Court",
           "webex_url": "https://eoir.webex.com/meet/IJ.Carman",
           "access_code": "2829 638 9570"
+        }
+      ]
+    },
+    {
+      "judge_name": "Angela Kaul",
+      "name_key": "kaul|angela",
+      "links": [
+        {
+          "court_name": "Concord Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Angela.Kaul",
+          "access_code": "2831 749 5649"
         }
       ]
     },
@@ -539,6 +588,17 @@
           "court_name": "Chelmsford Immigration Court",
           "webex_url": "https://eoir.webex.com/meet/IJ.Munson",
           "access_code": "199 569 1797"
+        }
+      ]
+    },
+    {
+      "judge_name": "Angelica Powers",
+      "name_key": "powers|angelica",
+      "links": [
+        {
+          "court_name": "Memphis Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Angelica.Powers",
+          "access_code": "2818 452 1889"
         }
       ]
     },
@@ -671,6 +731,17 @@
           "court_name": "Miami Immigration Court",
           "webex_url": "https://eoir.webex.com/meet/IJ.Maingot",
           "access_code": "199 675 0615"
+        }
+      ]
+    },
+    {
+      "judge_name": "Anthony Williams",
+      "name_key": "williams|anthony",
+      "links": [
+        {
+          "court_name": "Chicago Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Anthony.Williams",
+          "access_code": "2819 391 0708"
         }
       ]
     },
@@ -862,29 +933,13 @@
       ]
     },
     {
-      "judge_name": "Benjamin Kuipers",
+      "judge_name": "Benjamin S. Kuipers",
       "name_key": "kuipers|benjamin",
       "links": [
-        {
-          "court_name": "Phoenix Immigration Court",
-          "webex_url": "https://eoir.webex.com/meet/IJ.Kuipers",
-          "access_code": "2827 479 0358"
-        },
         {
           "court_name": "Otero Immigration Court",
           "webex_url": "https://eoir.webex.com/meet/IJ.Kuipers",
           "access_code": "2827 479 0358"
-        }
-      ]
-    },
-    {
-      "judge_name": "Benjamin Sky Brown",
-      "name_key": "brown|benjamin",
-      "links": [
-        {
-          "court_name": "Houston - Greenspoint Park Immigration Court",
-          "webex_url": "https://eoir.webex.com/meet/IJ.B.Brown",
-          "access_code": "2828 611 5677"
         }
       ]
     },
@@ -933,6 +988,17 @@
       ]
     },
     {
+      "judge_name": "Bledar Gora",
+      "name_key": "gora|bledar",
+      "links": [
+        {
+          "court_name": "Adelanto Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Bledar.Gora",
+          "access_code": "2819 503 0687"
+        }
+      ]
+    },
+    {
       "judge_name": "Bobbie C. Masters",
       "name_key": "masters|bobbie",
       "links": [
@@ -973,17 +1039,6 @@
           "court_name": "Buffalo Immigration Court",
           "webex_url": "https://eoir.webex.com/meet/IJ.Brandi.Lohr",
           "access_code": "2760 935 5179"
-        }
-      ]
-    },
-    {
-      "judge_name": "Brandon Alexander “Alex” Kennedy",
-      "name_key": "kennedy|brandon",
-      "links": [
-        {
-          "court_name": "Cleveland Immigration Court",
-          "webex_url": "https://eoir.webex.com/meet/IJ.Brandon.Kennedy",
-          "access_code": "2824 187 5618"
         }
       ]
     },
@@ -1054,6 +1109,17 @@
       ]
     },
     {
+      "judge_name": "Brett Geiger",
+      "name_key": "geiger|brett",
+      "links": [
+        {
+          "court_name": "New York - Federal Plaza Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Brett.Geiger",
+          "access_code": "2825 436 7649"
+        }
+      ]
+    },
+    {
       "judge_name": "Brett Parchert",
       "name_key": "parchert|brett",
       "links": [
@@ -1061,6 +1127,17 @@
           "court_name": "Seattle Immigration Court",
           "webex_url": "https://eoir.webex.com/meet/IJ.Parchert",
           "access_code": "199 624 7658"
+        }
+      ]
+    },
+    {
+      "judge_name": "Brian Boyd (BJD",
+      "name_key": "bjd|brian",
+      "links": [
+        {
+          "court_name": "New York - Federal Plaza Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Brian.Boyd",
+          "access_code": "2829 029 1005"
         }
       ]
     },
@@ -1087,6 +1164,17 @@
       ]
     },
     {
+      "judge_name": "Brian Frees",
+      "name_key": "frees|brian",
+      "links": [
+        {
+          "court_name": "Salt Lake City Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Brian.Frees",
+          "access_code": "2826 377 2795"
+        }
+      ]
+    },
+    {
       "judge_name": "Brian Palmer",
       "name_key": "palmer|brian",
       "links": [
@@ -1094,6 +1182,28 @@
           "court_name": "Richmond Immigration Adjudication Center",
           "webex_url": "https://eoir.webex.com/meet/IJ.Palmer",
           "access_code": "199 234 6261"
+        }
+      ]
+    },
+    {
+      "judge_name": "Brian Pearly",
+      "name_key": "pearly|brian",
+      "links": [
+        {
+          "court_name": "Chelmsford Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Brian.Pearly",
+          "access_code": "2830 963 6181"
+        }
+      ]
+    },
+    {
+      "judge_name": "Brian Salisbury",
+      "name_key": "salisbury|brian",
+      "links": [
+        {
+          "court_name": "Cleveland Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Brian.Salisbury",
+          "access_code": "2831 795 7375"
         }
       ]
     },
@@ -1274,25 +1384,9 @@
       ]
     },
     {
-      "judge_name": "Catherine G. Phillips",
-      "name_key": "phillips|catherine",
-      "links": [
-        {
-          "court_name": "New Orleans Immigration Court",
-          "webex_url": "https://eoir.webex.com/meet/IJ.Phillips",
-          "access_code": "2818 626 4646"
-        }
-      ]
-    },
-    {
       "judge_name": "Catherine Halliday-Roberts",
       "name_key": "halliday-roberts|catherine",
       "links": [
-        {
-          "court_name": "Otay Mesa Immigration Court",
-          "webex_url": "https://eoir.webex.com/meet/IJ.Halliday-Roberts",
-          "access_code": "199 824 4851"
-        },
         {
           "court_name": "San Diego Immigration Court",
           "webex_url": "https://eoir.webex.com/meet/IJ.Halliday-Roberts",
@@ -1305,7 +1399,7 @@
       "name_key": "sagesse|cathy",
       "links": [
         {
-          "court_name": "New York - Federal Plaza Immigration Court",
+          "court_name": "Miami Immigration Court",
           "webex_url": "https://eoir.webex.com/meet/IJ.Sagesse",
           "access_code": "199 220 9147"
         }
@@ -1330,6 +1424,17 @@
           "court_name": "Richmond Immigration Adjudication Center",
           "webex_url": "https://eoir.webex.com/meet/IJ.Dotson",
           "access_code": "2830 182 2434"
+        }
+      ]
+    },
+    {
+      "judge_name": "Chak Wong",
+      "name_key": "wong|chak",
+      "links": [
+        {
+          "court_name": "Newark Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Chak.Wong",
+          "access_code": "2821 731 8905"
         }
       ]
     },
@@ -1389,6 +1494,17 @@
       ]
     },
     {
+      "judge_name": "Charles Schofield",
+      "name_key": "schofield|charles",
+      "links": [
+        {
+          "court_name": "Chelmsford Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Charles.Schofield",
+          "access_code": "2828 444 6000"
+        }
+      ]
+    },
+    {
       "judge_name": "Charlotte Marquez",
       "name_key": "marquez|charlotte",
       "links": [
@@ -1396,17 +1512,6 @@
           "court_name": "New Orleans Immigration Court",
           "webex_url": "https://eoir.webex.com/meet/IJ.Marquez",
           "access_code": "199 389 466"
-        }
-      ]
-    },
-    {
-      "judge_name": "Chase Calder Cleveland",
-      "name_key": "cleveland|chase",
-      "links": [
-        {
-          "court_name": "Sterling Immigration Court",
-          "webex_url": "https://eoir.webex.com/meet/IJ.Chase.Cleveland",
-          "access_code": "2821 787 7251"
         }
       ]
     },
@@ -1598,6 +1703,17 @@
       ]
     },
     {
+      "judge_name": "Christy Kisner",
+      "name_key": "kisner|christy",
+      "links": [
+        {
+          "court_name": "Sterling Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Christy.Kisner",
+          "access_code": "2822 566 5020"
+        }
+      ]
+    },
+    {
       "judge_name": "Clayton M. Lawrence",
       "name_key": "lawrence|clayton",
       "links": [
@@ -1669,6 +1785,21 @@
       "links": [
         {
           "court_name": "Chicago Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Defoe",
+          "access_code": "199 747 8125"
+        },
+        {
+          "court_name": "Fort Snelling Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Defoe",
+          "access_code": "199 747 8125"
+        },
+        {
+          "court_name": "Kansas City Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Defoe",
+          "access_code": "199 747 8125"
+        },
+        {
+          "court_name": "Omaha Immigration Court",
           "webex_url": "https://eoir.webex.com/meet/IJ.Defoe",
           "access_code": "199 747 8125"
         }
@@ -1763,6 +1894,17 @@
       ]
     },
     {
+      "judge_name": "Dana Babbin",
+      "name_key": "babbin|dana",
+      "links": [
+        {
+          "court_name": "Chelmsford Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Dana.Babbin",
+          "access_code": "2831 128 9084"
+        }
+      ]
+    },
+    {
       "judge_name": "Dania Nassar",
       "name_key": "nassar|dania",
       "links": [
@@ -1807,6 +1949,17 @@
       ]
     },
     {
+      "judge_name": "Daniel Fellhauer",
+      "name_key": "fellhauer|daniel",
+      "links": [
+        {
+          "court_name": "New York - Federal Plaza Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Daniel.Fellhauer",
+          "access_code": "2827 450 8906"
+        }
+      ]
+    },
+    {
       "judge_name": "Daniel J. Daugherty",
       "name_key": "daugherty|daniel",
       "links": [
@@ -1840,6 +1993,17 @@
       ]
     },
     {
+      "judge_name": "Daniel Mulhern",
+      "name_key": "mulhern|daniel",
+      "links": [
+        {
+          "court_name": "Elizabeth Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Daniel.Mulhern",
+          "access_code": "2821 298 8438"
+        }
+      ]
+    },
+    {
       "judge_name": "Daniel P. Kinnicutt",
       "name_key": "kinnicutt|daniel",
       "links": [
@@ -1863,6 +2027,17 @@
           "court_name": "San Antonio Immigration Court",
           "webex_url": "https://eoir.webex.com/meet/IJ.Santander",
           "access_code": "199 160 4112"
+        }
+      ]
+    },
+    {
+      "judge_name": "Daniel Sherwood",
+      "name_key": "sherwood|daniel",
+      "links": [
+        {
+          "court_name": "Dallas Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Daniel.Sherwood",
+          "access_code": "2831 872 9882"
         }
       ]
     },
@@ -1922,17 +2097,6 @@
       ]
     },
     {
-      "judge_name": "Dat T. Vo",
-      "name_key": "vo|dat",
-      "links": [
-        {
-          "court_name": "Houston - S. Gessner Road Immigration Court",
-          "webex_url": "https://eoir.webex.com/meet/IJ.Vo",
-          "access_code": "2831 461 9384"
-        }
-      ]
-    },
-    {
       "judge_name": "David Anderson",
       "name_key": "anderson|david",
       "links": [
@@ -1949,11 +2113,6 @@
       "links": [
         {
           "court_name": "Portland Immigration Court",
-          "webex_url": "https://eoir.webex.com/meet/IJ.Evans",
-          "access_code": "199 394 6735"
-        },
-        {
-          "court_name": "Seattle Immigration Court",
           "webex_url": "https://eoir.webex.com/meet/IJ.Evans",
           "access_code": "199 394 6735"
         }
@@ -1982,6 +2141,17 @@
       ]
     },
     {
+      "judge_name": "David Illingworth",
+      "name_key": "illingworth|david",
+      "links": [
+        {
+          "court_name": "San Diego Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.David.Illingworth",
+          "access_code": "2819 460 9029"
+        }
+      ]
+    },
+    {
       "judge_name": "David J. Green",
       "name_key": "green|david",
       "links": [
@@ -2000,6 +2170,17 @@
           "court_name": "Hyattsville Immigration Court",
           "webex_url": "https://eoir.webex.com/meet/IJ.David.Jones",
           "access_code": "199 424 3989"
+        }
+      ]
+    },
+    {
+      "judge_name": "David Lo",
+      "name_key": "lo|david",
+      "links": [
+        {
+          "court_name": "New York - Federal Plaza Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.David.Lo",
+          "access_code": "2819 476 8516"
         }
       ]
     },
@@ -2088,6 +2269,17 @@
           "court_name": "El Paso SPC Immigration Court",
           "webex_url": "https://eoir.webex.com/meet/IJ.Tuckman",
           "access_code": "199 819 2307"
+        }
+      ]
+    },
+    {
+      "judge_name": "Debbie Lopez-Carr",
+      "name_key": "lopez-carr|debbie",
+      "links": [
+        {
+          "court_name": "Fort Worth Immigration Adjudication Center",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Debbie.Lopez-Carr",
+          "access_code": "2818 636 9387"
         }
       ]
     },
@@ -2191,6 +2383,17 @@
       ]
     },
     {
+      "judge_name": "Dennis Kohlhoff",
+      "name_key": "kohlhoff|dennis",
+      "links": [
+        {
+          "court_name": "Sterling Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Dennis.Kohlhoff",
+          "access_code": "2822 984 7625"
+        }
+      ]
+    },
+    {
       "judge_name": "Dennis Ryan",
       "name_key": "ryan|dennis",
       "links": [
@@ -2198,17 +2401,6 @@
           "court_name": "Newark Immigration Court",
           "webex_url": "https://eoir.webex.com/meet/IJ.Dennis.Ryan",
           "access_code": "2764 253 8414"
-        }
-      ]
-    },
-    {
-      "judge_name": "Devin A. Winklosky",
-      "name_key": "winklosky|devin",
-      "links": [
-        {
-          "court_name": "Philadelphia Immigration Court",
-          "webex_url": "https://eoir.webex.com/meet/IJ.Winklosky",
-          "access_code": "2828 715 5509"
         }
       ]
     },
@@ -2235,11 +2427,16 @@
       ]
     },
     {
-      "judge_name": "Dillon J. Ambrose",
-      "name_key": "ambrose|dillon",
+      "judge_name": "Dillion J. Ambrose",
+      "name_key": "ambrose|dillion",
       "links": [
         {
           "court_name": "Chicago Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Ambrose",
+          "access_code": "2823 223 8256"
+        },
+        {
+          "court_name": "Pearsall Immigration Court",
           "webex_url": "https://eoir.webex.com/meet/IJ.Ambrose",
           "access_code": "2823 223 8256"
         }
@@ -2264,6 +2461,17 @@
           "court_name": "Hyattsville Immigration Court",
           "webex_url": "https://eoir.webex.com/meet/IJ.Verma",
           "access_code": "199 545 6514"
+        }
+      ]
+    },
+    {
+      "judge_name": "Dixon Merkt",
+      "name_key": "merkt|dixon",
+      "links": [
+        {
+          "court_name": "Dallas Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Dixon.Merkt",
+          "access_code": "2825 697 4671"
         }
       ]
     },
@@ -2319,17 +2527,6 @@
           "court_name": "New York - Federal Plaza Immigration Court",
           "webex_url": "https://eoir.webex.com/meet/IJ.Harbeck",
           "access_code": "199 112 1235"
-        }
-      ]
-    },
-    {
-      "judge_name": "Drew T. Nishiyama",
-      "name_key": "nishiyama|drew",
-      "links": [
-        {
-          "court_name": "Seattle Immigration Court",
-          "webex_url": "https://eoir.webex.com/meet/IJ.Nishiyama",
-          "access_code": "2831 975 7881"
         }
       ]
     },
@@ -2449,17 +2646,6 @@
       ]
     },
     {
-      "judge_name": "Eric Levinson",
-      "name_key": "levinson|eric",
-      "links": [
-        {
-          "court_name": "Charlotte Immigration Court",
-          "webex_url": "https://eoir.webex.com/meet/IJ.Levinson",
-          "access_code": "2820 780 3106"
-        }
-      ]
-    },
-    {
       "judge_name": "Eric Marsteller",
       "name_key": "marsteller|eric",
       "links": [
@@ -2515,6 +2701,28 @@
       ]
     },
     {
+      "judge_name": "Eric Young",
+      "name_key": "young|eric",
+      "links": [
+        {
+          "court_name": "Boston Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Eric.Young",
+          "access_code": "2828 227 1240"
+        }
+      ]
+    },
+    {
+      "judge_name": "Ernie Dukes",
+      "name_key": "dukes|ernie",
+      "links": [
+        {
+          "court_name": "Elizabeth Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Ernie.Dukes",
+          "access_code": "2820 865 2445"
+        }
+      ]
+    },
+    {
       "judge_name": "Eugene Robinson",
       "name_key": "robinson|eugene",
       "links": [
@@ -2537,6 +2745,17 @@
       ]
     },
     {
+      "judge_name": "Fahimeh Kennedy",
+      "name_key": "kennedy|fahimeh",
+      "links": [
+        {
+          "court_name": "Chelmsford Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Fahimeh.Kennedy",
+          "access_code": "2827 287 1477"
+        }
+      ]
+    },
+    {
       "judge_name": "Fayaz Habib",
       "name_key": "habib|fayaz",
       "links": [
@@ -2548,13 +2767,13 @@
       ]
     },
     {
-      "judge_name": "Ferdinand Lugo Ortiz",
-      "name_key": "ortiz|ferdinand",
+      "judge_name": "Felicia Holloman",
+      "name_key": "holloman|felicia",
       "links": [
         {
-          "court_name": "Tacoma Immigration Court",
-          "webex_url": "https://eoir.webex.com/meet/IJ.Ortiz",
-          "access_code": "2828 047 6184"
+          "court_name": "Hyattsville Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Felicia.Holloman",
+          "access_code": "2830 882 2034"
         }
       ]
     },
@@ -2629,7 +2848,7 @@
       "name_key": "seminerio|frank",
       "links": [
         {
-          "court_name": "San Francisco Immigration Court",
+          "court_name": "Concord Immigration Court",
           "webex_url": "https://eoir.webex.com/meet/IJ.Seminerio",
           "access_code": "2760 317 9239"
         }
@@ -2746,6 +2965,17 @@
       ]
     },
     {
+      "judge_name": "Grant Pattison",
+      "name_key": "pattison|grant",
+      "links": [
+        {
+          "court_name": "Salt Lake City Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Grant.Pattison",
+          "access_code": "2828 279 9354"
+        }
+      ]
+    },
+    {
       "judge_name": "Gregory Simmons",
       "name_key": "simmons|gregory",
       "links": [
@@ -2808,6 +3038,17 @@
           "court_name": "Santa Ana Immigration Court",
           "webex_url": "https://eoir.webex.com/meet/IJ.Libeu",
           "access_code": "2762 120 9326"
+        }
+      ]
+    },
+    {
+      "judge_name": "Hector Hernandez",
+      "name_key": "hernandez|hector",
+      "links": [
+        {
+          "court_name": "Orlando Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Hector.Hernandez",
+          "access_code": "2818 956 1939"
         }
       ]
     },
@@ -2992,13 +3233,13 @@
       ]
     },
     {
-      "judge_name": "Jack D. Patten III",
-      "name_key": "patten|jack",
+      "judge_name": "Jackson Beach",
+      "name_key": "beach|jackson",
       "links": [
         {
-          "court_name": "Denver Immigration Court",
-          "webex_url": "https://eoir.webex.com/meet/IJ.Patten",
-          "access_code": "2819 630 5259"
+          "court_name": "Seattle Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Jackson.Beach",
+          "access_code": "2820 755 9815"
         }
       ]
     },
@@ -3032,17 +3273,6 @@
           "court_name": "Concord Immigration Court",
           "webex_url": "https://eoir.webex.com/meet/IJ.Stender",
           "access_code": "2761 725 1924"
-        }
-      ]
-    },
-    {
-      "judge_name": "Jacob Marshall",
-      "name_key": "marshall|jacob",
-      "links": [
-        {
-          "court_name": "Chicago Immigration Court",
-          "webex_url": "https://eoir.webex.com/meet/IJ.Jacob.Marshall",
-          "access_code": "2823 258 7940"
         }
       ]
     },
@@ -3113,6 +3343,28 @@
       ]
     },
     {
+      "judge_name": "James Abeshaus",
+      "name_key": "abeshaus|james",
+      "links": [
+        {
+          "court_name": "Houston - Greenspoint Park Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.James.Abeshaus",
+          "access_code": "2824 730 3543"
+        }
+      ]
+    },
+    {
+      "judge_name": "James Cavagnaro",
+      "name_key": "cavagnaro|james",
+      "links": [
+        {
+          "court_name": "Orlando Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.James.Cavagnaro",
+          "access_code": "2821 982 6302"
+        }
+      ]
+    },
+    {
       "judge_name": "James Crofts",
       "name_key": "crofts|james",
       "links": [
@@ -3157,13 +3409,13 @@
       ]
     },
     {
-      "judge_name": "James Holden",
-      "name_key": "holden|james",
+      "judge_name": "James Hong",
+      "name_key": "hong|james",
       "links": [
         {
-          "court_name": "Indianapolis Immigration Court",
-          "webex_url": "https://eoir.webex.com/meet/IJ.James.Holden",
-          "access_code": "2824 456 3136"
+          "court_name": "Santa Ana Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.James.Hong",
+          "access_code": "2828 584 3069"
         }
       ]
     },
@@ -3194,7 +3446,7 @@
       "name_key": "glober|james",
       "links": [
         {
-          "court_name": "Salt Lake City Immigration Court",
+          "court_name": "Concord Immigration Court",
           "webex_url": "https://eoir.webex.com/meet/IJ.Glober",
           "access_code": "2827 146 1833"
         }
@@ -3245,6 +3497,17 @@
       ]
     },
     {
+      "judge_name": "James Plott",
+      "name_key": "plott|james",
+      "links": [
+        {
+          "court_name": "Adelanto Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.James.Plott",
+          "access_code": "2818 897 9099"
+        }
+      ]
+    },
+    {
       "judge_name": "James R. McKee",
       "name_key": "mckee|james",
       "links": [
@@ -3274,6 +3537,17 @@
           "court_name": "Conroe Immigration Court",
           "webex_url": "https://eoir.webex.com/meet/IJ.James.Worley",
           "access_code": "2829 810 0474"
+        }
+      ]
+    },
+    {
+      "judge_name": "Jan Mangum-Merendino",
+      "name_key": "mangum-merendino|jan",
+      "links": [
+        {
+          "court_name": "Houston - Greenspoint Park Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Jan.Mangum-Merendino",
+          "access_code": "2820 580 0314"
         }
       ]
     },
@@ -3315,7 +3589,7 @@
       "name_key": "grimmer|jared",
       "links": [
         {
-          "court_name": "Kansas City Immigration Court",
+          "court_name": "Fort Snelling Immigration Court",
           "webex_url": "https://eoir.webex.com/meet/IJ.Jared.Grimmer",
           "access_code": "2823 122 9493"
         }
@@ -3333,6 +3607,17 @@
       ]
     },
     {
+      "judge_name": "Jared Matte",
+      "name_key": "matte|jared",
+      "links": [
+        {
+          "court_name": "Baton Rouge Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Jared.Matte",
+          "access_code": "2818 341 4828"
+        }
+      ]
+    },
+    {
       "judge_name": "Jason Braun",
       "name_key": "braun|jason",
       "links": [
@@ -3340,6 +3625,17 @@
           "court_name": "Annandale Immigration Court",
           "webex_url": "https://eoir.webex.com/meet/IJ.Jason.Braun",
           "access_code": "2761 140 0091"
+        }
+      ]
+    },
+    {
+      "judge_name": "Jason Frankenfield",
+      "name_key": "frankenfield|jason",
+      "links": [
+        {
+          "court_name": "Elizabeth Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Jason.Frankenfield",
+          "access_code": "2823 810 9283"
         }
       ]
     },
@@ -3431,27 +3727,6 @@
       ]
     },
     {
-      "judge_name": "Jayme Salinardi",
-      "name_key": "salinardi|jayme",
-      "links": [
-        {
-          "court_name": "Fort Snelling Immigration Court",
-          "webex_url": "https://eoir.webex.com/meet/ACIJ.Salinardi",
-          "access_code": "199 448 1129"
-        },
-        {
-          "court_name": "Kansas City Immigration Court",
-          "webex_url": "https://eoir.webex.com/meet/ACIJ.Salinardi",
-          "access_code": "199 448 1129"
-        },
-        {
-          "court_name": "Omaha Immigration Court",
-          "webex_url": "https://eoir.webex.com/meet/ACIJ.Salinardi",
-          "access_code": "199 448 1129"
-        }
-      ]
-    },
-    {
       "judge_name": "Jean M. Kilker",
       "name_key": "kilker|jean",
       "links": [
@@ -3459,6 +3734,17 @@
           "court_name": "New York - Federal Plaza Immigration Court",
           "webex_url": "https://eoir.webex.com/meet/IJ.Kilker",
           "access_code": "2826 019 8571"
+        }
+      ]
+    },
+    {
+      "judge_name": "Jeannette Bernstein",
+      "name_key": "bernstein|jeannette",
+      "links": [
+        {
+          "court_name": "Los Angeles - West Los Angeles Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Jeannette.Bernstein",
+          "access_code": "2829 649 9433"
         }
       ]
     },
@@ -3474,17 +3760,6 @@
       ]
     },
     {
-      "judge_name": "Jeffery Phillips",
-      "name_key": "phillips|jeffery",
-      "links": [
-        {
-          "court_name": "Concord Immigration Court",
-          "webex_url": "https://eoir.webex.com/meet/IJ.Jeffrey.Phillips",
-          "access_code": "2822 784 7026"
-        }
-      ]
-    },
-    {
       "judge_name": "Jeffrey Frederick",
       "name_key": "frederick|jeffrey",
       "links": [
@@ -3496,6 +3771,17 @@
       ]
     },
     {
+      "judge_name": "Jeffrey McCluskey",
+      "name_key": "mccluskey|jeffrey",
+      "links": [
+        {
+          "court_name": "Orlando Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Jeffrey.McCluskey",
+          "access_code": "2828 233 5643"
+        }
+      ]
+    },
+    {
       "judge_name": "Jeffrey Munoz",
       "name_key": "munoz|jeffrey",
       "links": [
@@ -3503,6 +3789,17 @@
           "court_name": "Imperial Immigration Court",
           "webex_url": "https://eoir.webex.com/meet/IJ.Munoz",
           "access_code": "199 019 1789"
+        }
+      ]
+    },
+    {
+      "judge_name": "Jeffrey Phillips",
+      "name_key": "phillips|jeffrey",
+      "links": [
+        {
+          "court_name": "Concord Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Jeffrey.Phillips",
+          "access_code": "2822 784 7026"
         }
       ]
     },
@@ -3530,17 +3827,6 @@
           "court_name": "Guaynabo Immigration Court",
           "webex_url": "https://eoir.webex.com/meet/IJ.Brady",
           "access_code": "2825 091 4306"
-        }
-      ]
-    },
-    {
-      "judge_name": "Jennifer C. Whitko",
-      "name_key": "whitko|jennifer",
-      "links": [
-        {
-          "court_name": "Denver Immigration Court",
-          "webex_url": "https://eoir.webex.com/meet/IJ.Whitko",
-          "access_code": "2818 608 3251"
         }
       ]
     },
@@ -3681,9 +3967,20 @@
       "name_key": "rovinsky|jeremy",
       "links": [
         {
-          "court_name": "Aurora Immigration Court",
+          "court_name": "Concord Immigration Court",
           "webex_url": "https://eoir.webex.com/meet/IJ.Rovinsky",
           "access_code": "2822 853 4333"
+        }
+      ]
+    },
+    {
+      "judge_name": "Jeremy Brooks",
+      "name_key": "brooks|jeremy",
+      "links": [
+        {
+          "court_name": "Annandale Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Jeremy.Brooks",
+          "access_code": "2831 396 6481"
         }
       ]
     },
@@ -3695,17 +3992,6 @@
           "court_name": "Cleveland Immigration Court",
           "webex_url": "https://eoir.webex.com/meet/IJ.Santoro",
           "access_code": "199 583 1374"
-        }
-      ]
-    },
-    {
-      "judge_name": "Jeremy Sibert",
-      "name_key": "sibert|jeremy",
-      "links": [
-        {
-          "court_name": "Denver Immigration Court",
-          "webex_url": "https://eoir.webex.com/meet/IJ.Sibert",
-          "access_code": "2829 963 3414"
         }
       ]
     },
@@ -3728,6 +4014,17 @@
           "court_name": "Stewart Immigration Court",
           "webex_url": "https://eoir.webex.com/meet/IJ.Jerrica.Harness",
           "access_code": "2828 863 6859"
+        }
+      ]
+    },
+    {
+      "judge_name": "Jesse Schaefer",
+      "name_key": "schaefer|jesse",
+      "links": [
+        {
+          "court_name": "New York - Federal Plaza Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Jesse.Schaefer",
+          "access_code": "2818 787 2718"
         }
       ]
     },
@@ -3783,6 +4080,17 @@
           "court_name": "Dallas Immigration Court",
           "webex_url": "https://eoir.webex.com/meet/IJ.Poore",
           "access_code": "2830 214 6323"
+        }
+      ]
+    },
+    {
+      "judge_name": "John Allison",
+      "name_key": "allison|john",
+      "links": [
+        {
+          "court_name": "New York - Federal Plaza Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.John.Allison",
+          "access_code": "2818 788 4485"
         }
       ]
     },
@@ -3858,17 +4166,6 @@
       ]
     },
     {
-      "judge_name": "John Gillies",
-      "name_key": "gillies|john",
-      "links": [
-        {
-          "court_name": "Sterling Immigration Court",
-          "webex_url": "https://eoir.webex.com/meet/IJ.Gillies",
-          "access_code": "199 056 2343"
-        }
-      ]
-    },
-    {
       "judge_name": "John J. Siemietkowski",
       "name_key": "siemietkowski|john",
       "links": [
@@ -3931,6 +4228,17 @@
           "court_name": "Hyattsville Immigration Court",
           "webex_url": "https://eoir.webex.com/meet/IJ.Rubenstein",
           "access_code": "2762 983 3535"
+        }
+      ]
+    },
+    {
+      "judge_name": "John Zachary",
+      "name_key": "zachary|john",
+      "links": [
+        {
+          "court_name": "Oakdale Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.John.Zachary",
+          "access_code": "2826 832 4526"
         }
       ]
     },
@@ -4038,6 +4346,17 @@
       ]
     },
     {
+      "judge_name": "Jordan D'Angelo",
+      "name_key": "d'angelo|jordan",
+      "links": [
+        {
+          "court_name": "Richmond Immigration Adjudication Center",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Jordan.DAngelo",
+          "access_code": "2818 827 6219"
+        }
+      ]
+    },
+    {
       "judge_name": "Jorene Soto",
       "name_key": "soto|jorene",
       "links": [
@@ -4078,6 +4397,28 @@
           "court_name": "Miami Immigration Court",
           "webex_url": "https://eoir.webex.com/meet/IJ.Rivera",
           "access_code": "199 682 3914"
+        }
+      ]
+    },
+    {
+      "judge_name": "Jose Rodriguez Rosado",
+      "name_key": "rosado|jose",
+      "links": [
+        {
+          "court_name": "Chelmsford Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Jose.Rosado",
+          "access_code": "2819 575 9742"
+        }
+      ]
+    },
+    {
+      "judge_name": "Joseph Ahlemeyer",
+      "name_key": "ahlemeyer|joseph",
+      "links": [
+        {
+          "court_name": "Kansas City Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Joseph.Ahlemeyer",
+          "access_code": "2826 060 7325"
         }
       ]
     },
@@ -4188,17 +4529,6 @@
           "court_name": "Annandale Immigration Court",
           "webex_url": "https://eoir.webex.com/meet/IJ.Joshua.Bennett",
           "access_code": "2826 760 9682"
-        }
-      ]
-    },
-    {
-      "judge_name": "Joshua D. Quidley",
-      "name_key": "quidley|joshua",
-      "links": [
-        {
-          "court_name": "Baltimore Immigration Court",
-          "webex_url": "https://eoir.webex.com/meet/IJ.Quidley",
-          "access_code": "2819 542 3889"
         }
       ]
     },
@@ -4354,9 +4684,9 @@
       "name_key": "adams|julie",
       "links": [
         {
-          "court_name": "Baltimore Immigration Court",
+          "court_name": "New York - Federal Plaza Immigration Court",
           "webex_url": "https://eoir.webex.com/meet/IJ.Julie.Adams",
-          "access_code": "2831 643 1828"
+          "access_code": "199 110 0474"
         }
       ]
     },
@@ -4370,7 +4700,12 @@
           "access_code": "199 628 9309"
         },
         {
-          "court_name": "San Francisco Immigration Court",
+          "court_name": "Otay Mesa Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/ACIJ.Nelson",
+          "access_code": "199 628 9309"
+        },
+        {
+          "court_name": "San Diego Immigration Court",
           "webex_url": "https://eoir.webex.com/meet/ACIJ.Nelson",
           "access_code": "199 628 9309"
         }
@@ -4410,17 +4745,6 @@
       ]
     },
     {
-      "judge_name": "Justin Bennett",
-      "name_key": "bennett|justin",
-      "links": [
-        {
-          "court_name": "Hartford Immigration Court",
-          "webex_url": "https://eoir.webex.com/meet/IJ.Justin.Bennett",
-          "access_code": "2826 349 2808"
-        }
-      ]
-    },
-    {
       "judge_name": "Justin Dinsdale",
       "name_key": "dinsdale|justin",
       "links": [
@@ -4428,17 +4752,6 @@
           "court_name": "Houston - Greenspoint Park Immigration Court",
           "webex_url": "https://eoir.webex.com/meet/IJ.Dinsdale",
           "access_code": "199 858 9434"
-        }
-      ]
-    },
-    {
-      "judge_name": "Justin Howard",
-      "name_key": "howard|justin",
-      "links": [
-        {
-          "court_name": "Kansas City Immigration Court",
-          "webex_url": "https://eoir.webex.com/meet/IJ.Howard",
-          "access_code": "199 102 9204"
         }
       ]
     },
@@ -4536,11 +4849,6 @@
       "links": [
         {
           "court_name": "Detroit Immigration Court",
-          "webex_url": "https://eoir.webex.com/meet/IJ.Hansen",
-          "access_code": "199 817 2956"
-        },
-        {
-          "court_name": "Fort Snelling Immigration Court",
           "webex_url": "https://eoir.webex.com/meet/IJ.Hansen",
           "access_code": "199 817 2956"
         }
@@ -4712,6 +5020,17 @@
       ]
     },
     {
+      "judge_name": "Kerry Vales",
+      "name_key": "vales|kerry",
+      "links": [
+        {
+          "court_name": "Indianapolis Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Kerry.Vales",
+          "access_code": "2819 525 0426"
+        }
+      ]
+    },
+    {
       "judge_name": "Kevin Brown",
       "name_key": "brown|kevin",
       "links": [
@@ -4723,17 +5042,6 @@
       ]
     },
     {
-      "judge_name": "Kevin D. Stroberg",
-      "name_key": "stroberg|kevin",
-      "links": [
-        {
-          "court_name": "Atlanta - W. Peachtree Street Immigration Court",
-          "webex_url": "https://eoir.webex.com/meet/IJ.Stroberg",
-          "access_code": "2831 692 2787"
-        }
-      ]
-    },
-    {
       "judge_name": "Kevin Gross",
       "name_key": "gross|kevin",
       "links": [
@@ -4741,6 +5049,17 @@
           "court_name": "Dallas Immigration Court",
           "webex_url": "https://eoir.webex.com/meet/IJ.Gross",
           "access_code": "2821 465 6824"
+        }
+      ]
+    },
+    {
+      "judge_name": "Kevin Hoffman",
+      "name_key": "hoffman|kevin",
+      "links": [
+        {
+          "court_name": "New York - Federal Plaza Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Kevin.Hoffman",
+          "access_code": "2818 876 0302"
         }
       ]
     },
@@ -4882,6 +5201,17 @@
       ]
     },
     {
+      "judge_name": "Kristina Reeves",
+      "name_key": "reeves|kristina",
+      "links": [
+        {
+          "court_name": "San Diego Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Kristina.Reeves",
+          "access_code": "2824 697 3779"
+        }
+      ]
+    },
+    {
       "judge_name": "Kristopher McDonald",
       "name_key": "mcdonald|kristopher",
       "links": [
@@ -4931,17 +5261,6 @@
       ]
     },
     {
-      "judge_name": "Kyle Pearson",
-      "name_key": "pearson|kyle",
-      "links": [
-        {
-          "court_name": "Atlanta - Ted Turner Drive Immigration Court",
-          "webex_url": "https://eoir.webex.com/meet/IJ.Pearson",
-          "access_code": "2819 911 3404"
-        }
-      ]
-    },
-    {
       "judge_name": "Kyung Auh",
       "name_key": "auh|kyung",
       "links": [
@@ -4975,6 +5294,17 @@
       ]
     },
     {
+      "judge_name": "Latosha Powell",
+      "name_key": "powell|latosha",
+      "links": [
+        {
+          "court_name": "Stewart Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Latosha.Powell",
+          "access_code": "2824 143 9460"
+        }
+      ]
+    },
+    {
       "judge_name": "Laura Figueroa",
       "name_key": "figueroa|laura",
       "links": [
@@ -4982,6 +5312,17 @@
           "court_name": "San Antonio Immigration Court",
           "webex_url": "https://eoir.webex.com/meet/IJ.Figueroa",
           "access_code": "199 476 4685"
+        }
+      ]
+    },
+    {
+      "judge_name": "Laura Ramos",
+      "name_key": "ramos|laura",
+      "links": [
+        {
+          "court_name": "Harlingen Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Laura.Ramos",
+          "access_code": "2819 789 2194"
         }
       ]
     },
@@ -5244,6 +5585,17 @@
       ]
     },
     {
+      "judge_name": "Loren Craft",
+      "name_key": "craft|loren",
+      "links": [
+        {
+          "court_name": "Salt Lake City Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Loren.Craft",
+          "access_code": "2826 590 7894"
+        }
+      ]
+    },
+    {
       "judge_name": "Lorianne M. Campanella",
       "name_key": "campanella|lorianne",
       "links": [
@@ -5251,17 +5603,6 @@
           "court_name": "Annandale Immigration Court",
           "webex_url": "https://eoir.webex.com/meet/IJ.Campanella",
           "access_code": "199 340 7724"
-        }
-      ]
-    },
-    {
-      "judge_name": "Lory G. Brown",
-      "name_key": "brown|lory",
-      "links": [
-        {
-          "court_name": "Baltimore Immigration Court",
-          "webex_url": "https://eoir.webex.com/meet/IJ.Lory.Brown",
-          "access_code": "2831 681 8563"
         }
       ]
     },
@@ -5339,6 +5680,17 @@
           "court_name": "New York - Federal Plaza Immigration Court",
           "webex_url": "https://eoir.webex.com/meet/IJ.Lucy.Baez",
           "access_code": "2762 544 4477"
+        }
+      ]
+    },
+    {
+      "judge_name": "Luis Guzman",
+      "name_key": "guzman|luis",
+      "links": [
+        {
+          "court_name": "Indianapolis Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Luis.Guzman",
+          "access_code": "2820 345 2275"
         }
       ]
     },
@@ -5442,6 +5794,17 @@
       ]
     },
     {
+      "judge_name": "Margaret Wright",
+      "name_key": "wright|margaret",
+      "links": [
+        {
+          "court_name": "Detroit Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Margaret.Wright",
+          "access_code": "2824 089 1982"
+        }
+      ]
+    },
+    {
       "judge_name": "Maria Akalski",
       "name_key": "akalski|maria",
       "links": [
@@ -5497,6 +5860,17 @@
       ]
     },
     {
+      "judge_name": "Marissa Hackert",
+      "name_key": "hackert|marissa",
+      "links": [
+        {
+          "court_name": "El Paso Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Marissa.Hackert",
+          "access_code": "2824 856 2035"
+        }
+      ]
+    },
+    {
       "judge_name": "Maritza Ramos",
       "name_key": "ramos|maritza",
       "links": [
@@ -5504,6 +5878,17 @@
           "court_name": "Houston - Jefferson Street Immigration Court",
           "webex_url": "https://eoir.webex.com/meet/IJ.Ramos",
           "access_code": "2760 282 5991"
+        }
+      ]
+    },
+    {
+      "judge_name": "Mark Baker",
+      "name_key": "baker|mark",
+      "links": [
+        {
+          "court_name": "Richmond Immigration Adjudication Center",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Mark.Baker",
+          "access_code": "2829 267 7507"
         }
       ]
     },
@@ -5548,6 +5933,17 @@
           "court_name": "Otay Mesa Immigration Court",
           "webex_url": "https://eoir.webex.com/meet/IJ.Mark.Sameit",
           "access_code": "2760 074 0858"
+        }
+      ]
+    },
+    {
+      "judge_name": "Mark Tomicich",
+      "name_key": "tomicich|mark",
+      "links": [
+        {
+          "court_name": "Richmond Immigration Adjudication Center",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Mark.Tomicich",
+          "access_code": "2826 425 2359"
         }
       ]
     },
@@ -5662,6 +6058,17 @@
       ]
     },
     {
+      "judge_name": "Mary Hackley",
+      "name_key": "hackley|mary",
+      "links": [
+        {
+          "court_name": "San Antonio Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Mary.Hackley",
+          "access_code": "2826 964 5328"
+        }
+      ]
+    },
+    {
       "judge_name": "Mary Lee",
       "name_key": "lee|mary",
       "links": [
@@ -5669,17 +6076,6 @@
           "court_name": "Philadelphia Immigration Court",
           "webex_url": "https://eoir.webex.com/meet/IJ.MaryLee",
           "access_code": "199 406 5821"
-        }
-      ]
-    },
-    {
-      "judge_name": "Matthew A. Kozyra",
-      "name_key": "kozyra|matthew",
-      "links": [
-        {
-          "court_name": "Orlando Immigration Court",
-          "webex_url": "https://eoir.webex.com/meet/IJ.Kozyra",
-          "access_code": "2818 309 4936"
         }
       ]
     },
@@ -5721,7 +6117,7 @@
       "name_key": "wallace|matthew",
       "links": [
         {
-          "court_name": "Denver Immigration Court",
+          "court_name": "Chelmsford Immigration Court",
           "webex_url": "https://eoir.webex.com/meet/IJ.Wallace",
           "access_code": "2819 956 4735"
         }
@@ -5735,6 +6131,17 @@
           "court_name": "Los Angeles - N. Los Angeles Street Immigration Court",
           "webex_url": "https://eoir.webex.com/meet/IJ.Matthew.Chan",
           "access_code": "2763 934 4801"
+        }
+      ]
+    },
+    {
+      "judge_name": "Matthew Davidhizar",
+      "name_key": "davidhizar|matthew",
+      "links": [
+        {
+          "court_name": "Tacoma Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Matthew.Davidhizar",
+          "access_code": "2819 257 5629"
         }
       ]
     },
@@ -5832,6 +6239,17 @@
       ]
     },
     {
+      "judge_name": "Meghan Lackey",
+      "name_key": "lackey|meghan",
+      "links": [
+        {
+          "court_name": "Sterling Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Meghan.Lackey",
+          "access_code": "2827 150 4024"
+        }
+      ]
+    },
+    {
       "judge_name": "Melissa Fox",
       "name_key": "fox|melissa",
       "links": [
@@ -5843,9 +6261,35 @@
       ]
     },
     {
+      "judge_name": "Melissa Handke",
+      "name_key": "handke|melissa",
+      "links": [
+        {
+          "court_name": "Concord Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Melissa.Handke",
+          "access_code": "2831 933 4217"
+        }
+      ]
+    },
+    {
       "judge_name": "Melissa Joy Garcia",
       "name_key": "garcia|melissa",
       "links": [
+        {
+          "court_name": "Otero Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/ACIJ.Garcia",
+          "access_code": "199 199 9420"
+        },
+        {
+          "court_name": "El Paso Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/ACIJ.Garcia",
+          "access_code": "199 199 9420"
+        },
+        {
+          "court_name": "El Paso SPC Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/ACIJ.Garcia",
+          "access_code": "199 199 9420"
+        },
         {
           "court_name": "Harlingen Immigration Court",
           "webex_url": "https://eoir.webex.com/meet/ACIJ.Garcia",
@@ -5915,17 +6359,6 @@
           "court_name": "San Antonio Immigration Court",
           "webex_url": "https://eoir.webex.com/meet/IJ.Tyrakoski",
           "access_code": "199 365 2165"
-        }
-      ]
-    },
-    {
-      "judge_name": "Michael C. Engel",
-      "name_key": "engel|michael",
-      "links": [
-        {
-          "court_name": "Hyattsville Immigration Court",
-          "webex_url": "https://eoir.webex.com/meet/IJ.Engel",
-          "access_code": "2818 617 9565"
         }
       ]
     },
@@ -6040,11 +6473,27 @@
       ]
     },
     {
+      "judge_name": "Michael Scharf",
+      "name_key": "scharf|michael",
+      "links": [
+        {
+          "court_name": "Stewart Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Michael.Scharf",
+          "access_code": "2819 613 0865"
+        }
+      ]
+    },
+    {
       "judge_name": "Michael Schnitzer",
       "name_key": "schnitzer|michael",
       "links": [
         {
           "court_name": "Eloy Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Schnitzer",
+          "access_code": "199 629 8289"
+        },
+        {
+          "court_name": "Phoenix Immigration Court",
           "webex_url": "https://eoir.webex.com/meet/IJ.Schnitzer",
           "access_code": "199 629 8289"
         }
@@ -6102,6 +6551,17 @@
           "court_name": "Miami Immigration Court",
           "webex_url": "https://eoir.webex.com/meet/IJ.Walleisa",
           "access_code": "199 958 8540"
+        }
+      ]
+    },
+    {
+      "judge_name": "Michele Renteria",
+      "name_key": "renteria|michele",
+      "links": [
+        {
+          "court_name": "San Antonio Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Michele.Renteria",
+          "access_code": "2818 532 6987"
         }
       ]
     },
@@ -6171,11 +6631,6 @@
         },
         {
           "court_name": "Guaynabo Immigration Court",
-          "webex_url": "https://eoir.webex.com/meet/IJ.Gonzalez",
-          "access_code": "199 289 9154"
-        },
-        {
-          "court_name": "Houston - S. Gessner Road Immigration Court",
           "webex_url": "https://eoir.webex.com/meet/IJ.Gonzalez",
           "access_code": "199 289 9154"
         }
@@ -6292,45 +6747,24 @@
       ]
     },
     {
+      "judge_name": "Natasha Howard",
+      "name_key": "howard|natasha",
+      "links": [
+        {
+          "court_name": "San Diego Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Natasha.Howard",
+          "access_code": "2819 595 5652"
+        }
+      ]
+    },
+    {
       "judge_name": "Nathan Herbert",
       "name_key": "herbert|nathan",
       "links": [
         {
-          "court_name": "Otero Immigration Court",
-          "webex_url": "https://eoir.webex.com/meet/IJ.Herbert",
-          "access_code": "199 450 6867"
-        },
-        {
           "court_name": "El Paso Immigration Court",
           "webex_url": "https://eoir.webex.com/meet/IJ.Herbert",
           "access_code": "199 450 6867"
-        },
-        {
-          "court_name": "Pearsall Immigration Court",
-          "webex_url": "https://eoir.webex.com/meet/IJ.Herbert",
-          "access_code": "199 450 6867"
-        }
-      ]
-    },
-    {
-      "judge_name": "Nathan Herbert (NHB",
-      "name_key": "nhb|nathan",
-      "links": [
-        {
-          "court_name": "El Paso SPC Immigration Court",
-          "webex_url": "https://eoir.webex.com/meet/IJ.Herbert",
-          "access_code": "199 450 6867"
-        }
-      ]
-    },
-    {
-      "judge_name": "Nathan M. Hansen",
-      "name_key": "hansen|nathan",
-      "links": [
-        {
-          "court_name": "Fort Snelling Immigration Court",
-          "webex_url": "https://eoir.webex.com/meet/IJ.Nathan.Hansen",
-          "access_code": "2819 229 8885"
         }
       ]
     },
@@ -6441,6 +6875,17 @@
           "court_name": "Newark Immigration Court",
           "webex_url": "https://eoir.webex.com/meet/IJ.Lane",
           "access_code": "2760 553 7603"
+        }
+      ]
+    },
+    {
+      "judge_name": "Niles Gerry",
+      "name_key": "gerry|niles",
+      "links": [
+        {
+          "court_name": "New York - Federal Plaza Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Niles.Gerry",
+          "access_code": "2818 402 2185"
         }
       ]
     },
@@ -6736,17 +7181,6 @@
       ]
     },
     {
-      "judge_name": "Peter T. McCary",
-      "name_key": "mccary|peter",
-      "links": [
-        {
-          "court_name": "Elizabeth Immigration Court",
-          "webex_url": "https://eoir.webex.com/meet/IJ.McCary",
-          "access_code": "2827 064 8845"
-        }
-      ]
-    },
-    {
       "judge_name": "Philip P. Taylor",
       "name_key": "taylor|philip",
       "links": [
@@ -6769,17 +7203,6 @@
       ]
     },
     {
-      "judge_name": "Rachel L. Wilson",
-      "name_key": "wilson|rachel",
-      "links": [
-        {
-          "court_name": "Memphis Immigration Court",
-          "webex_url": "https://eoir.webex.com/meet/IJ.Rachel.Wilson",
-          "access_code": "2824 160 3897"
-        }
-      ]
-    },
-    {
       "judge_name": "Rachel Ruane",
       "name_key": "ruane|rachel",
       "links": [
@@ -6798,17 +7221,6 @@
           "court_name": "Otero Immigration Court",
           "webex_url": "https://eoir.webex.com/meet/IJ.Girvin",
           "access_code": "199 277 9801"
-        }
-      ]
-    },
-    {
-      "judge_name": "Ramin Rastegar",
-      "name_key": "rastegar|ramin",
-      "links": [
-        {
-          "court_name": "Newark Immigration Court",
-          "webex_url": "https://eoir.webex.com/meet/IJ.Rastegar",
-          "access_code": "199 324 5743"
         }
       ]
     },
@@ -6901,6 +7313,17 @@
       ]
     },
     {
+      "judge_name": "Reynaldo Morin",
+      "name_key": "morin|reynaldo",
+      "links": [
+        {
+          "court_name": "Fort Worth Immigration Adjudication Center",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Reynaldo.Morin",
+          "access_code": "2819 035 9594"
+        }
+      ]
+    },
+    {
       "judge_name": "Rhonda M. Tucker",
       "name_key": "tucker|rhonda",
       "links": [
@@ -6963,17 +7386,6 @@
           "court_name": "Orlando Immigration Court",
           "webex_url": "https://eoir.webex.com/meet/IJ.Jamadar",
           "access_code": "199 093 8746"
-        }
-      ]
-    },
-    {
-      "judge_name": "Richard Ozmun",
-      "name_key": "ozmun|richard",
-      "links": [
-        {
-          "court_name": "Dallas Immigration Court",
-          "webex_url": "https://eoir.webex.com/meet/IJ.Ozmun",
-          "access_code": "199 764 8875"
         }
       ]
     },
@@ -7044,24 +7456,13 @@
       ]
     },
     {
-      "judge_name": "Robert C. O’Neil",
-      "name_key": "neil|robert",
+      "judge_name": "Robert Daly",
+      "name_key": "daly|robert",
       "links": [
         {
-          "court_name": "Los Angeles - West Los Angeles Immigration Court",
-          "webex_url": "https://eoir.webex.com/meet/IJ.ONeil",
-          "access_code": "2824 710 9801"
-        }
-      ]
-    },
-    {
-      "judge_name": "Robert G. Eastman",
-      "name_key": "eastman|robert",
-      "links": [
-        {
-          "court_name": "Memphis Immigration Court",
-          "webex_url": "https://eoir.webex.com/meet/IJ.Eastman",
-          "access_code": "2830 268 5004"
+          "court_name": "Florence Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Robert.Daly",
+          "access_code": "2821 954 3140"
         }
       ]
     },
@@ -7073,6 +7474,17 @@
           "court_name": "Orlando Immigration Court",
           "webex_url": "https://eoir.webex.com/meet/IJ.Robert.Palmer",
           "access_code": "2818 102 6527"
+        }
+      ]
+    },
+    {
+      "judge_name": "Robert Gray",
+      "name_key": "gray|robert",
+      "links": [
+        {
+          "court_name": "Memphis Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Robert.Gray",
+          "access_code": "2824 329 1808"
         }
       ]
     },
@@ -7122,17 +7534,6 @@
           "court_name": "Falls Church Immigration Adjudication Center",
           "webex_url": "https://eoir.webex.com/meet/IJ.Lewandowski",
           "access_code": "199 667 0530"
-        }
-      ]
-    },
-    {
-      "judge_name": "Robert McSeveney",
-      "name_key": "mcseveney|robert",
-      "links": [
-        {
-          "court_name": "Seattle Immigration Court",
-          "webex_url": "https://eoir.webex.com/meet/IJ.McSeveney",
-          "access_code": "199 358 5271"
         }
       ]
     },
@@ -7198,17 +7599,6 @@
           "court_name": "Los Angeles - Van Nuys Boulevard Immigration Court",
           "webex_url": "https://eoir.webex.com/meet/IJ.Amaya",
           "access_code": "2764 239 9581"
-        }
-      ]
-    },
-    {
-      "judge_name": "Robin Donato",
-      "name_key": "donato|robin",
-      "links": [
-        {
-          "court_name": "Richmond Immigration Adjudication Center",
-          "webex_url": "https://eoir.webex.com/meet/IJ.Donato",
-          "access_code": "2831 733 4234"
         }
       ]
     },
@@ -7279,6 +7669,17 @@
       ]
     },
     {
+      "judge_name": "Rory McGarry",
+      "name_key": "mcgarry|rory",
+      "links": [
+        {
+          "court_name": "Chicago Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Rory.McGarry",
+          "access_code": "2826 527 6162"
+        }
+      ]
+    },
+    {
       "judge_name": "Russell Wardlow",
       "name_key": "wardlow|russell",
       "links": [
@@ -7290,6 +7691,17 @@
       ]
     },
     {
+      "judge_name": "Ryan Byers",
+      "name_key": "byers|ryan",
+      "links": [
+        {
+          "court_name": "Concord Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Ryan.Byers",
+          "access_code": "2821 960 2511"
+        }
+      ]
+    },
+    {
       "judge_name": "Ryan Fisher",
       "name_key": "fisher|ryan",
       "links": [
@@ -7297,28 +7709,6 @@
           "court_name": "Atlanta - W. Peachtree Street Immigration Court",
           "webex_url": "https://eoir.webex.com/meet/IJ.Fisher",
           "access_code": "604 163 283"
-        }
-      ]
-    },
-    {
-      "judge_name": "Ryan J. Clark",
-      "name_key": "clark|ryan",
-      "links": [
-        {
-          "court_name": "Portland Immigration Court",
-          "webex_url": "https://eoir.webex.com/meet/IJ.Clark",
-          "access_code": "2828 209 9058"
-        }
-      ]
-    },
-    {
-      "judge_name": "Ryan Painter",
-      "name_key": "painter|ryan",
-      "links": [
-        {
-          "court_name": "Indianapolis Immigration Court",
-          "webex_url": "https://eoir.webex.com/meet/IJ.Ryan.Painter",
-          "access_code": "2827 265 8658"
         }
       ]
     },
@@ -7341,6 +7731,17 @@
           "court_name": "Houston - Jefferson Street Immigration Court",
           "webex_url": "https://eoir.webex.com/meet/IJ.Brown",
           "access_code": "199 834 1047"
+        }
+      ]
+    },
+    {
+      "judge_name": "Samantha Ellis",
+      "name_key": "ellis|samantha",
+      "links": [
+        {
+          "court_name": "Annandale Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Samantha.Ellis",
+          "access_code": "2823 718 1169"
         }
       ]
     },
@@ -7385,28 +7786,6 @@
           "court_name": "Los Angeles - Van Nuys Boulevard Immigration Court",
           "webex_url": "https://eoir.webex.com/meet/IJ.Santos-Garcia",
           "access_code": "198 671 2074"
-        }
-      ]
-    },
-    {
-      "judge_name": "Sarah B. Yeomans",
-      "name_key": "yeomans|sarah",
-      "links": [
-        {
-          "court_name": "Sterling Immigration Court",
-          "webex_url": "https://eoir.webex.com/meet/IJ.Sarah.Yeomans",
-          "access_code": "2761 056 1038"
-        }
-      ]
-    },
-    {
-      "judge_name": "Sarah Mazzie",
-      "name_key": "mazzie|sarah",
-      "links": [
-        {
-          "court_name": "Fort Snelling Immigration Court",
-          "webex_url": "https://eoir.webex.com/meet/IJ.Mazzie",
-          "access_code": "199 315 1370"
         }
       ]
     },
@@ -7477,17 +7856,6 @@
       ]
     },
     {
-      "judge_name": "Scott Ison",
-      "name_key": "ison|scott",
-      "links": [
-        {
-          "court_name": "Kansas City Immigration Court",
-          "webex_url": "https://eoir.webex.com/meet/IJ.Ison",
-          "access_code": "2828 001 7771"
-        }
-      ]
-    },
-    {
       "judge_name": "Scott Laragy",
       "name_key": "laragy|scott",
       "links": [
@@ -7528,17 +7896,6 @@
           "court_name": "Houston - Jefferson Street Immigration Court",
           "webex_url": "https://eoir.webex.com/meet/IJ.Scott.Greenbaum",
           "access_code": "2818 825 7769"
-        }
-      ]
-    },
-    {
-      "judge_name": "Seymour Gruber",
-      "name_key": "gruber|seymour",
-      "links": [
-        {
-          "court_name": "Florence Immigration Court",
-          "webex_url": "https://eoir.webex.com/meet/IJ.Seymour.Gruber",
-          "access_code": "2818 962 8287"
         }
       ]
     },
@@ -7609,6 +7966,17 @@
       ]
     },
     {
+      "judge_name": "Shawn Hammond",
+      "name_key": "hammond|shawn",
+      "links": [
+        {
+          "court_name": "Orlando Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Shawn.Hammond",
+          "access_code": "2827 416 8077"
+        }
+      ]
+    },
+    {
       "judge_name": "Shawn J. Abraham",
       "name_key": "abraham|shawn",
       "links": [
@@ -7624,20 +7992,14 @@
       "name_key": "mccarver|shawn",
       "links": [
         {
+          "court_name": "Santa Ana Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Shawn.McCarver",
+          "access_code": "2826 611 1727"
+        },
+        {
           "court_name": "Kansas City Immigration Court",
           "webex_url": "https://eoir.webex.com/meet/IJ.Shawn.McCarver",
           "access_code": "2826 611 1727"
-        }
-      ]
-    },
-    {
-      "judge_name": "Shayne M. Welling",
-      "name_key": "welling|shayne",
-      "links": [
-        {
-          "court_name": "Sterling Immigration Court",
-          "webex_url": "https://eoir.webex.com/meet/IJ.Welling",
-          "access_code": "2831 900 7419"
         }
       ]
     },
@@ -7649,6 +8011,17 @@
           "court_name": "New York - Varick Immigration Court",
           "webex_url": "https://eoir.webex.com/meet/IJ.Burnham",
           "access_code": "199 861 1125"
+        }
+      ]
+    },
+    {
+      "judge_name": "Shelly Kennedy",
+      "name_key": "kennedy|shelly",
+      "links": [
+        {
+          "court_name": "Detroit Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Shelly.Kennedy",
+          "access_code": "2824 057 3075"
         }
       ]
     },
@@ -7701,13 +8074,35 @@
       ]
     },
     {
+      "judge_name": "Shiv Sachdeva",
+      "name_key": "sachdeva|shiv",
+      "links": [
+        {
+          "court_name": "Atlanta - W. Peachtree Street Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Shiv.Sachdeva",
+          "access_code": "2829 525 5387"
+        }
+      ]
+    },
+    {
       "judge_name": "Stephanie Arrache",
       "name_key": "arrache|stephanie",
       "links": [
         {
-          "court_name": "Salt Lake City Immigration Court",
+          "court_name": "Concord Immigration Court",
           "webex_url": "https://eoir.webex.com/meet/IJ.Arrache",
           "access_code": "2819 526 4944"
+        }
+      ]
+    },
+    {
+      "judge_name": "Stephanie Cotton",
+      "name_key": "cotton|stephanie",
+      "links": [
+        {
+          "court_name": "LaSalle Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Stephanie.Cotton",
+          "access_code": "2831 621 1131"
         }
       ]
     },
@@ -7804,7 +8199,7 @@
       "name_key": "kirchner|steven",
       "links": [
         {
-          "court_name": "San Francisco Immigration Court",
+          "court_name": "Concord Immigration Court",
           "webex_url": "https://eoir.webex.com/meet/IJ.Kirchner",
           "access_code": "2764 623 8390"
         }
@@ -8128,6 +8523,17 @@
       ]
     },
     {
+      "judge_name": "Thomas Belsky",
+      "name_key": "belsky|thomas",
+      "links": [
+        {
+          "court_name": "Newark Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Thomas.Belsky",
+          "access_code": "2831 832 1967"
+        }
+      ]
+    },
+    {
       "judge_name": "Thomas C. Allmond",
       "name_key": "allmond|thomas",
       "links": [
@@ -8161,13 +8567,13 @@
       ]
     },
     {
-      "judge_name": "Thomas J. Shusted Jr.",
-      "name_key": "shusted|thomas",
+      "judge_name": "Thomas Shaia",
+      "name_key": "shaia|thomas",
       "links": [
         {
-          "court_name": "Elizabeth Immigration Court",
-          "webex_url": "https://eoir.webex.com/meet/IJ.Shusted",
-          "access_code": "2828 060 2645"
+          "court_name": "Indianapolis Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Thomas.Shaia",
+          "access_code": "2829 914 6679"
         }
       ]
     },
@@ -8190,6 +8596,17 @@
           "court_name": "Los Angeles - N. Los Angeles Street Immigration Court",
           "webex_url": "https://eoir.webex.com/meet/IJ.Everett",
           "access_code": "199 143 7412"
+        }
+      ]
+    },
+    {
+      "judge_name": "Timothy Kelly",
+      "name_key": "kelly|timothy",
+      "links": [
+        {
+          "court_name": "Philadelphia Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Timothy.Kelly",
+          "access_code": "2821 372 1785"
         }
       ]
     },
@@ -8255,7 +8672,7 @@
         {
           "court_name": "Tacoma Immigration Court",
           "webex_url": "https://eoir.webex.com/meet/IJ.Traci.Winder",
-          "access_code": "2822 512 4650"
+          "access_code": "2829 380 8961"
         }
       ]
     },
@@ -8321,6 +8738,28 @@
           "court_name": "Los Angeles - West Los Angeles Immigration Court",
           "webex_url": "https://eoir.webex.com/meet/IJ.Villegas",
           "access_code": "199 594 0630"
+        }
+      ]
+    },
+    {
+      "judge_name": "Veronika Rabon",
+      "name_key": "rabon|veronika",
+      "links": [
+        {
+          "court_name": "Houston - S. Gessner Road Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Veronika.Rabon",
+          "access_code": "2830 209 3010"
+        }
+      ]
+    },
+    {
+      "judge_name": "Veronique DeRouselle",
+      "name_key": "derouselle|veronique",
+      "links": [
+        {
+          "court_name": "Houston - Greenspoint Park Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Veronique.DeRouselle",
+          "access_code": "2826 382 9143"
         }
       ]
     },
@@ -8446,6 +8885,17 @@
       ]
     },
     {
+      "judge_name": "William LaFleur",
+      "name_key": "lafleur|william",
+      "links": [
+        {
+          "court_name": "Imperial Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.William.LaFleur",
+          "access_code": "2828 765 7355"
+        }
+      ]
+    },
+    {
       "judge_name": "William Mabry III",
       "name_key": "mabry|william",
       "links": [
@@ -8527,7 +8977,7 @@
       "name_key": "poyurs|yeshaya",
       "links": [
         {
-          "court_name": "Hyattsville Immigration Court",
+          "court_name": "New York - Federal Plaza Immigration Court",
           "webex_url": "https://eoir.webex.com/meet/IJ.Poyurs",
           "access_code": "2819 616 9701"
         }
@@ -8585,6 +9035,17 @@
           "court_name": "San Antonio Immigration Court",
           "webex_url": "https://eoir.webex.com/meet/IJ.YvonneGonzalez",
           "access_code": "199 811 8776"
+        }
+      ]
+    },
+    {
+      "judge_name": "Zachary Godsey",
+      "name_key": "godsey|zachary",
+      "links": [
+        {
+          "court_name": "New York - Federal Plaza Immigration Court",
+          "webex_url": "https://eoir.webex.com/meet/IJ.Zachary.Godsey",
+          "access_code": "2830 861 6259"
         }
       ]
     },

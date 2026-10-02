@@ -633,11 +633,19 @@ function renderReviewPipeline() {
   const counts = reviewPipeline.post_counts || {};
   const recent = reviewPipeline.run_summary || {};
   const pending = Number(counts.collected || 0) + Number(counts.processing || 0) + Number(counts.extracted || 0);
-  const errors = Array.isArray(reviewPipeline.recent_errors) ? reviewPipeline.recent_errors.slice(0, 3) : [];
+  const notices = [
+    ...(Array.isArray(reviewPipeline.recent_errors) ? reviewPipeline.recent_errors : []),
+    ...(Array.isArray(reviewPipeline.budget_deferrals) ? reviewPipeline.budget_deferrals : [])
+  ];
+  const messages = [...new Set(notices.flatMap((item) =>
+    String(item.error || "").split(/;\s*|；\s*|\n+/).map((message) => message.trim()).filter(Boolean)
+  ))];
+  const errors = messages.filter((message) => !/^NEWS_BUDGET_DEFERRED(?:\s*:|$)/.test(message)).slice(0, 3);
+  const budgetWaiting = messages.some((message) => /^NEWS_BUDGET_DEFERRED(?:\s*:|$)/.test(message));
   const recentLine = recent.started_at
     ? `最近一轮：原始抓取 <b>${Number(recent.collected || 0)}</b>　筛选保留 <b>${Number(recent.kept || 0)}</b>　形成候选 <b>${Number(recent.candidates || 0)}</b>　成功发布 <b>${Number(recent.published || 0)}</b>　过滤 <b>${Number(recent.filtered || 0)}</b>${recent.running ? "　（正在运行）" : ""}`
     : "最近一轮：尚无可统计的采集记录";
-  panel.innerHTML = `<h3>ICE采集状态</h3><p>最近运行：${escapeHtml(reviewTime(reviewPipeline.last_run_at))}　最近成功：${escapeHtml(reviewTime(reviewPipeline.last_success_at))}</p><p>${recentLine}</p><p>近${Number(reviewPipeline.freshness_hours || 72)}小时存量：待处理 ${pending}　已归并 ${Number(counts.clustered || 0)}　失败 ${Number(counts.failed || 0)}　后台可见 ${Number(reviewDedupe.visible || 0)}</p><p style="color:#667085;margin-top:8px">“待处理0”表示队列已处理完，不代表没有抓到内容。</p>${errors.length ? `<p style="color:#b91c1c;margin-top:10px">当前错误：${errors.map((item) => escapeHtml(String(item.error || "").slice(0, 180))).join("；")}</p>` : ""}`;
+  panel.innerHTML = `<h3>ICE采集状态</h3><p>最近运行：${escapeHtml(reviewTime(reviewPipeline.last_run_at))}　最近成功：${escapeHtml(reviewTime(reviewPipeline.last_success_at))}</p><p>${recentLine}</p><p>近${Number(reviewPipeline.freshness_hours || 72)}小时存量：待处理 ${pending}　已归并 ${Number(counts.clustered || 0)}　失败 ${Number(counts.failed || 0)}　后台可见 ${Number(reviewDedupe.visible || 0)}</p><p style="color:#667085;margin-top:8px">“待处理0”表示队列已处理完，不代表没有抓到内容。</p>${budgetWaiting ? `<p role="status" style="color:#b54708;margin-top:10px">预算等待：部分研究请求因预算保护暂缓，等待后续采集轮次重试。已发布内容正常显示。</p>` : ""}${errors.length ? `<p role="alert" style="color:#b91c1c;margin-top:10px">当前错误：${errors.map((message) => escapeHtml(message.slice(0, 180))).join("；")}</p>` : ""}`;
 }
 
 function updateReviewCounts() {

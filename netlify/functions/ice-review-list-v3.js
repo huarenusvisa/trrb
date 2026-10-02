@@ -142,7 +142,7 @@ async function pipelineStatus(stories) {
 
   const latestRunMs = timeValue(latestRun);
   const activeWindowStart = latestRunMs ? latestRunMs - 6 * 60 * 60 * 1000 : 0;
-  const errors = stateRows
+  const notices = stateRows
     .filter((row) => {
       if (!row.last_error) return false;
       const updatedMs = timeValue(row.updated_at || row.last_run_at);
@@ -151,12 +151,30 @@ async function pipelineStatus(stories) {
       if (activeWindowStart && updatedMs < activeWindowStart) return false;
       return true;
     })
-    .slice(0, 5)
     .map((row) => ({
       query_key: row.query_key,
       error: row.last_error,
       updated_at: row.updated_at
     }));
+
+
+  // Budget deferrals are waiting states, not technical failures. Split mixed
+  // messages so a real error alongside a deferral remains visible.
+  const errors = [];
+  const deferrals = [];
+  const seenErrors = new Set();
+  const seenDeferrals = new Set();
+  for (const notice of notices) {
+    for (const part of String(notice.error || "").split(/;\s*|；\s*|\n+/)) {
+      const message = part.trim();
+      if (!message) continue;
+      const deferred = /^NEWS_BUDGET_DEFERRED(?:\s*:|$)/.test(message);
+      const seen = deferred ? seenDeferrals : seenErrors;
+      if (seen.has(message)) continue;
+      seen.add(message);
+      (deferred ? deferrals : errors).push({ ...notice, error: message });
+    }
+  }
 
   return {
     last_run_at: latestRun,
@@ -174,7 +192,8 @@ async function pipelineStatus(stories) {
     },
     post_counts: countBy(postRows, "processing_status"),
     story_counts: countBy(stories, "status"),
-    recent_errors: errors,
+    recent_errors: errors.slice(0, 5),
+    budget_deferrals: deferrals.slice(0, 5),
     sampled_posts: postRows.length,
     query_count: stateRows.length
   };

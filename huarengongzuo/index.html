@@ -67,7 +67,7 @@
     ]
   }
   </script>
-  <link rel="stylesheet" href="/huarengongzuo/site.css?v=20260914-preview2">
+  <link rel="stylesheet" href="/huarengongzuo/site.css?v=20261002-city-picker">
   <link rel="stylesheet" href="/huarengongzuo/secondhand-entry.css?v=20260826-2">
 </head>
 <body>
@@ -97,7 +97,7 @@
           <p>先看岗位，再联系招聘方。不会英语、不会复杂筛选，也能按城市和常用工作快速找到机会。</p>
           <form id="job-search" class="search-box">
             <label><span>找什么工作</span><input id="job-q" autocomplete="off" placeholder="例如：餐馆、司机、仓库、美甲"></label>
-            <label><span>想在哪里</span><input id="place-q" autocomplete="off" placeholder="城市、州或社区"></label>
+            <label class="place-field"><span>想在哪里</span><div class="place-input-row"><input id="place-q" autocomplete="off" placeholder="城市、州、社区或邮编" aria-label="工作地区"><button id="choose-cities" type="button" aria-haspopup="dialog">选城市 ▾</button></div></label>
             <button type="submit">查看工作</button>
           </form>
           <div class="quick-cities" aria-label="热门找工地区">
@@ -145,6 +145,7 @@
 
   <footer><div class="shell footer-inner"><div><b>华人工作网</b><span>Huarengongzuo.com</span></div><p>与唐人日报共用招聘数据与人工审核系统</p></div></footer>
   <script src="/huarengongzuo/i18n.js?v=20260831-i18n-v1"></script>
-  <script src="/huarengongzuo/site.js?v=20261002-location-search" defer></script>
+  <script src="/huarengongzuo/city-picker.js?v=20261002-city-picker" defer></script>
+  <script src="/huarengongzuo/site.js?v=20261002-city-picker" defer></script>
 </body>
 </html>

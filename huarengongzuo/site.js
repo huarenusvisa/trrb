@@ -9,6 +9,7 @@
   let selectedCategory = '';
   let nextOffset = 0;
   let loading = false;
+  let recommendation = null;
   let opener = null;
   let scrollBeforeDialog = 0;
   let relatedRequest = 0;
@@ -60,7 +61,7 @@
   function card(job) {
     const facts = highlights(job);
     const summary = description(job).replace(/\s+/g, ' ');
-    return `<article class="job-card" data-job-id="${esc(job.id)}"><div><h3 data-i18n-skip><a data-job-open="${esc(job.id)}" href="${detailUrl(job)}">${esc(job.title)}</a></h3><div class="job-meta"><span>${esc(locationText(job) || '美国')}</span><button type="button" class="category-chip" data-category="${esc(category(job))}">${esc(categoryNames[category(job)] || '其他')}</button></div>${facts.length ? `<div class="job-highlights" data-i18n-skip>${facts.map((fact) => `<span>${esc(fact)}</span>`).join('')}</div>` : ''}<p class="job-summary" data-i18n-skip>${esc(summary || '点击查看岗位详情及联系方式')}</p><span class="job-preview-hint">点击查看完整详情</span></div>${contactMarkup(job)}</article>`;
+    return `<article class="job-card" data-job-id="${esc(job.id)}"><div><h3 data-i18n-skip><a data-job-open="${esc(job.id)}" href="${detailUrl(job)}">${esc(job.title)}</a></h3><div class="job-meta"><span>${esc(locationText(job) || '美国')}</span>${job.distance_miles != null ? `<span>${job.distance_approximate ? '距所选城市中心约' : '直线距离约'} ${esc(job.distance_miles)} 英里</span>` : ''}<button type="button" class="category-chip" data-category="${esc(category(job))}">${esc(categoryNames[category(job)] || '其他')}</button></div>${facts.length ? `<div class="job-highlights" data-i18n-skip>${facts.map((fact) => `<span>${esc(fact)}</span>`).join('')}</div>` : ''}<p class="job-summary" data-i18n-skip>${esc(summary || '点击查看岗位详情及联系方式')}</p><span class="job-preview-hint">点击查看完整详情</span></div>${contactMarkup(job)}</article>`;
   }
   const dialog = document.createElement('dialog');
   dialog.className = 'job-detail-dialog';
@@ -221,12 +222,13 @@
     const place = document.getElementById('place-q').value.trim();
     const state = document.getElementById('filter-state');
     state.hidden = !q && !place && !selectedCategory;
-    state.textContent = `当前筛选：${[selectedCategory && `类别“${categoryNames[selectedCategory]}”`, q && `工作“${q}”`, place && `地区“${place}”`].filter(Boolean).join('，')} · 已加载 ${jobs.length} 个匹配岗位`;
+    state.textContent = `当前筛选：${[selectedCategory && `类别“${categoryNames[selectedCategory]}”`, q && `工作“${q}”`, place && `地区“${place}”`].filter(Boolean).join('，')} · 已加载 ${jobs.length} 个${recommendation ? '附近推荐' : '匹配'}岗位`;
+    if (recommendation) state.textContent += `。所选地区暂无匹配岗位，已自动扩大至 ${recommendation.radius_miles} 英里内，按距离推荐（城市中心距离为估算）`;
     if (!state.hidden) state.insertAdjacentHTML('beforeend', ' <button type="button" data-clear-filters>清除筛选</button>');
     if (loading && !shown.length) {
       list.innerHTML = '<div class="empty">正在查找匹配岗位…</div>';
     } else if (!shown.length) {
-      list.innerHTML = '<div class="empty">暂时没有匹配岗位。可缩短关键词，或进入“附近工作”选择更多地区。</div>';
+      list.innerHTML = `<div class="empty">${recommendation ? `所选地区及周边 ${recommendation.radius_miles} 英里内暂无匹配岗位。` : '暂时没有匹配岗位。'} 可缩短关键词，或点击“选城市”选择更多地区。</div>`;
     } else {
       list.innerHTML = shown.map(card).join('');
     }
@@ -252,8 +254,9 @@
       const offset = nextOffset;
       const place = $('place-q').value.trim();
       const isZip = /^\d{5}(?:-\d{4})?$/.test(place);
-      const payload = await feed({limit:'60', offset:String(offset),q:$('job-q').value.trim(),category:selectedCategory,place:isZip ? '' : place,zip:isZip ? place : ''});
+      const payload = await feed({limit:'60', offset:String(offset),q:$('job-q').value.trim(),category:selectedCategory,place:isZip ? '' : place,zip:isZip ? place : '',nearby:recommendation?.radius_miles || ''});
       if (generation !== searchGeneration) return;
+      recommendation = payload.recommendation || null;
       const fresh = remember(payload.items);
       const existing = new Set(allJobs.map((job) => job.id));
       allJobs.push(...fresh.filter((job) => !existing.has(job.id)));
@@ -314,11 +317,12 @@
     return;
   }
   function resetSearch() {
-    searchGeneration++; loading = false; allJobs = []; nextOffset = 0; visible = 60; syncSearchUrl(); loadMore();
+    searchGeneration++; loading = false; allJobs = []; recommendation = null; nextOffset = 0; visible = 60; syncSearchUrl(); loadMore();
   }
   document.getElementById('job-search').addEventListener('submit', (event) => {event.preventDefault();selectedCategory = '';resetSearch();document.getElementById('latest-jobs').scrollIntoView({behavior:'smooth'});});
   document.querySelectorAll('[data-place]').forEach((button) => button.addEventListener('click', () => {document.getElementById('place-q').value = button.dataset.place;resetSearch();document.getElementById('latest-jobs').scrollIntoView({behavior:'smooth'});}));
   document.getElementById('show-more').addEventListener('click', async () => {visible += 60;if (filteredJobs().length < visible && nextOffset !== null) await loadMore();render();});
+  window.addEventListener('hw:cities-selected', () => {resetSearch();$('latest-jobs').scrollIntoView({behavior:'smooth'});});
   hydrateSearchFromUrl();
   loadMore();
 })();

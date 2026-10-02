@@ -47,7 +47,7 @@ test('research keeps retrieved comments separate from factual citations',async()
 });
 for(const [label,text,route] of [
  ['US policy','The White House announced new tariff rules today.','us-politics'],
- ['court','A federal court issued a preliminary injunction on immigration policy today.','us-politics'],
+ ['court','A US federal court issued a preliminary injunction on immigration policy today.','us-politics'],
  ['China politics','中国国务院发布政策并宣布修订管理条例。','china'],
  ['law enforcement','The FBI announced charges against a fraud ring.','us-crime'],
  ['Chinese readers','USCIS issued a new F-1 student visa policy for Chinese students.','immigration-knowledge']

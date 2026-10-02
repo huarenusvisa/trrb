@@ -110,6 +110,22 @@ async function searchRows(keyword, category, offset, limit) {
   });
 }
 
+async function locationRows(place, zip, keyword, category, offset, limit) {
+  const groups = [['flushing','法拉盛'],['queens','皇后区','皇后'],['new york','new york city','nyc','纽约','纽约市'],['brooklyn','布鲁克林'],['manhattan','曼哈顿'],['bronx','布朗克斯'],['staten island','史泰登岛','斯塔滕岛'],['los angeles','la','洛杉矶'],['boston','波士顿'],['houston','休斯顿','休斯敦']];
+  const normalized = place.normalize('NFKC').trim().toLowerCase();
+  const terms = groups.find(group => group.includes(normalized)) || [normalized];
+  const literal = value => '"' + value.replace(/[\\"]/g, '\\$&') + '"';
+  const query = {select:PUBLIC_FIELDS,country_code:'eq.US',status:'eq.open',moderation_hold:'eq.false',order:'published_at.desc.nullslast,id.asc',offset:String(offset),limit:String(limit + 1)};
+  const clauses = [`or(expires_at.is.null,expires_at.gt.${new Date().toISOString()})`];
+  if (zip) query.postal_code = `like.${zip.slice(0,5)}*`;
+  else clauses.push('or(' + terms.flatMap(term => ['city','neighborhood','borough','county','state_code'].map(field => `${field}.ilike.${literal(term.length < 4 && /^[a-z]+$/.test(term) ? term : '*' + term.replace(/[%*]/g,'') + '*')}`)).join(',') + ')');
+  if (terms.includes('flushing')) query.state_code = 'eq.NY';
+  if (category) query.category_slug = `eq.${category}`;
+  if (keyword) clauses.push('or(' + ['title','description'].map(field => `${field}.ilike.${literal('*' + keyword.replace(/[%*]/g,'') + '*')}`).join(',') + ')');
+  query.and = '(' + clauses.join(',') + ')';
+  return rest('job_listings', {query});
+}
+
 async function contactRows(ids) {
   if (!ids.length) return [];
   return rest('job_listings', {
@@ -132,6 +148,9 @@ exports.handler = async (event) => {
     const offset = boundedInteger(event.queryStringParameters?.offset, 0, 0, 10_000);
     const keyword = safeQuery(event.queryStringParameters?.q);
     const category = safeQuery(event.queryStringParameters?.category);
+    const place = safeQuery(event.queryStringParameters?.place);
+    const zip = safeQuery(event.queryStringParameters?.zip);
+    if (zip && !/^\d{5}(?:-\d{4})?$/.test(zip)) return json(400, {error:'Invalid ZIP Code'});
 
     if (requestedIds.length) {
       const rows = await directListingRows(requestedIds, limit);
@@ -144,7 +163,7 @@ exports.handler = async (event) => {
       });
     }
 
-    const searched = await searchRows(keyword, category, offset, limit);
+    const searched = place || zip ? await locationRows(place, zip, keyword, category, offset, limit) : await searchRows(keyword, category, offset, limit);
     const page = Array.isArray(searched) ? searched : [];
     const hasMore = page.length > limit;
     const visibleRows = page.slice(0, limit);

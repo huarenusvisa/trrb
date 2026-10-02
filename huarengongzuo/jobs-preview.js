@@ -54,7 +54,7 @@
   else {
     window.addEventListener('hw:preview-ready', boot, {once:true});
     const script = document.createElement('script');
-    script.src = '/huarengongzuo/site.js?v=20260914-search1';
+    script.src = '/huarengongzuo/site.js?v=20261002-location-search';
     document.head.appendChild(script);
   }
 })();

@@ -4,7 +4,8 @@
   const employmentNames = {full_time:'全职',part_time:'兼职',contract:'合同',temporary:'临时',internship:'实习',unspecified:''};
   const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (ch) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[ch]));
   let allJobs = [];
-  let visible = 12;
+  let visible = 60;
+  let searchGeneration = 0;
   let selectedCategory = '';
   let nextOffset = 0;
   let loading = false;
@@ -210,16 +211,7 @@
     return '';
   }
 
-  function filteredJobs() {
-    const q = document.getElementById('job-q').value.trim().toLowerCase();
-    const place = document.getElementById('place-q').value.trim();
-    const placeTerms = placeSearchTerms(place);
-    return allJobs.filter((job) => {
-      const work = [job.title, description(job), categoryNames[category(job)], category(job)].filter(Boolean).join(' ').toLowerCase();
-      const where = normalizePlace([job.neighborhood, job.borough, job.county, job.city, job.state_code].filter(Boolean).join(' '));
-      return (!selectedCategory || category(job) === selectedCategory) && (!q || work.includes(q)) && (!placeTerms.length || placeTerms.some((term) => placeTermMatches(where, term)));
-    });
-  }
+  function filteredJobs() { return allJobs; }
 
   function render() {
     const list = document.getElementById('jobs-list');
@@ -231,7 +223,9 @@
     state.hidden = !q && !place && !selectedCategory;
     state.textContent = `当前筛选：${[selectedCategory && `类别“${categoryNames[selectedCategory]}”`, q && `工作“${q}”`, place && `地区“${place}”`].filter(Boolean).join('，')} · 已加载 ${jobs.length} 个匹配岗位`;
     if (!state.hidden) state.insertAdjacentHTML('beforeend', ' <button type="button" data-clear-filters>清除筛选</button>');
-    if (!shown.length) {
+    if (loading && !shown.length) {
+      list.innerHTML = '<div class="empty">正在查找匹配岗位…</div>';
+    } else if (!shown.length) {
       list.innerHTML = '<div class="empty">暂时没有匹配岗位。可缩短关键词，或进入“附近工作”选择更多地区。</div>';
     } else {
       list.innerHTML = shown.map(card).join('');
@@ -250,12 +244,16 @@
   }
 
   async function loadMore() {
+    const generation = searchGeneration;
     if (loading || nextOffset === null) return;
     loading = true;
     render();
     try {
       const offset = nextOffset;
-      const payload = await feed({limit:'60', offset:String(offset)});
+      const place = $('place-q').value.trim();
+      const isZip = /^\d{5}(?:-\d{4})?$/.test(place);
+      const payload = await feed({limit:'60', offset:String(offset),q:$('job-q').value.trim(),category:selectedCategory,place:isZip ? '' : place,zip:isZip ? place : ''});
+      if (generation !== searchGeneration) return;
       const fresh = remember(payload.items);
       const existing = new Set(allJobs.map((job) => job.id));
       allJobs.push(...fresh.filter((job) => !existing.has(job.id)));
@@ -263,8 +261,9 @@
       renderFeatured();
       $('jobs-load-status').textContent = '';
     } catch {
+      if (generation !== searchGeneration) return;
       $('jobs-load-status').textContent = '岗位暂时未能载入，请点击“显示更多岗位”重试。';
-    } finally {loading = false;render();}
+    } finally {if (generation === searchGeneration) {loading = false;render();}}
   }
   if (!searchPage) {
   const loadStatus = document.createElement('p');
@@ -291,18 +290,12 @@
     if (chip) {
       selectedCategory = chip.dataset.category;
       $('job-q').value = '';
-      visible = 12;syncSearchUrl();render();
-      const requestedCategory = selectedCategory;
-      feed({limit:'60', category:requestedCategory}).then((payload) => {
-        const existing = new Set(allJobs.map((job) => job.id));
-        allJobs.push(...remember(payload.items).filter((job) => !existing.has(job.id)));
-        if (selectedCategory === requestedCategory && !dialog.open) render();
-      }).catch(() => {$('jobs-load-status').textContent = '更多同类岗位暂时未能载入，可稍后重新点击分类重试。';});
+      resetSearch();
       return;
     }
     if (event.target.closest('[data-clear-filters]')) {
       selectedCategory = ''; $('job-q').value = ''; $('place-q').value = '';
-      visible = 12;syncSearchUrl();render();return;
+      resetSearch();return;
     }
     const link = event.target.closest('[data-job-open]');
     const article = event.target.closest('[data-job-id]');
@@ -320,9 +313,12 @@
     window.dispatchEvent(new Event('hw:preview-ready'));
     return;
   }
-  document.getElementById('job-search').addEventListener('submit', (event) => {event.preventDefault();selectedCategory = '';visible = 12;syncSearchUrl();render();document.getElementById('latest-jobs').scrollIntoView({behavior:'smooth'});});
-  document.querySelectorAll('[data-place]').forEach((button) => button.addEventListener('click', () => {document.getElementById('place-q').value = button.dataset.place;visible = 12;syncSearchUrl();render();document.getElementById('latest-jobs').scrollIntoView({behavior:'smooth'});}));
-  document.getElementById('show-more').addEventListener('click', async () => {visible += 12;if (filteredJobs().length < visible && nextOffset !== null) await loadMore();render();});
+  function resetSearch() {
+    searchGeneration++; loading = false; allJobs = []; nextOffset = 0; visible = 60; syncSearchUrl(); loadMore();
+  }
+  document.getElementById('job-search').addEventListener('submit', (event) => {event.preventDefault();selectedCategory = '';resetSearch();document.getElementById('latest-jobs').scrollIntoView({behavior:'smooth'});});
+  document.querySelectorAll('[data-place]').forEach((button) => button.addEventListener('click', () => {document.getElementById('place-q').value = button.dataset.place;resetSearch();document.getElementById('latest-jobs').scrollIntoView({behavior:'smooth'});}));
+  document.getElementById('show-more').addEventListener('click', async () => {visible += 60;if (filteredJobs().length < visible && nextOffset !== null) await loadMore();render();});
   hydrateSearchFromUrl();
   loadMore();
 })();

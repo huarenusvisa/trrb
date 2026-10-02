@@ -85,7 +85,7 @@ export async function runDailyDepth() {
             await supabase('articles',{method:'PATCH',query:{id:`eq.${prior.id}`,updated_at:`eq.${prior.updated_at}`},body:{metadata:{...prior.metadata,manual_review_required:true,requires_editor_review:true,post_publication_review_status:'pending',post_publication_review_reason:outcome.reason},updated_at:new Date().toISOString()}});
             Object.assign(outcome,{status:'existing-published-pending-review',article_id:prior.id});
           } else {
-            const body=buildEvidencePendingArticle(tweet,qualified,outcome.reason);
+            const body=await buildEvidencePendingArticle(tweet,qualified,outcome.reason);
             const duplicate=await eventDuplicate({title:body.title,content:body.content},recent,true);
             if (duplicate) Object.assign(outcome,{status:'existing-published-pending-review',article_id:duplicate.id});
             else {

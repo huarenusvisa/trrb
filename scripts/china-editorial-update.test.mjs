@@ -6,7 +6,8 @@ import {collectChinaMediaPosts,CHINA_X_SOURCES,CHINA_X_MONITORS,chinaMediaQuery,
 const body='重庆学校发布开学通知。'+Array.from({length:630},(_,i)=>String.fromCharCode(0x4e00+i)).join('');
 const source={id:'12345',text:'重庆学校今日公布开学安排，通知说明报到时间及校方调整安排。',created_at:new Date().toISOString(),media:[{type:'photo',url:'https://pbs.twimg.com/media/test.jpg'}]};
 const draft={title:'重庆学校公布开学安排',summary:'学校通知载明报到时间与调整安排。',content:body,source_sufficient:true,appears_old_news:false,old_news_reason:'',rejection_reason:'',seo_keywords:'重庆,开学',image_evidence:[{image_index:0,visible_text:'开学通知'}]};
-const verdict={single_event:true,grounded:true,sufficient:true,image_relevant:true,court_status_correct:true,depth_appropriate:true,analysis_grounded:true,source_chain_complete:true,cover_index:0,image_description:'学校开学通知截图',fresh_hot_event:true,freshness_evidence:'原帖及学校通知明确是今日公布的新安排',reason:''};
+const usBody=body+Array.from({length:300},(_,i)=>String.fromCharCode(0x5200+i)).join('')+'。';
+const verdict={us_context_adequate:true,us_context_evidence:'正文说明美国官方参与及双方军售交付和生产协作事实，均来自输入原始资料。',single_event:true,grounded:true,sufficient:true,image_relevant:true,court_status_correct:true,depth_appropriate:true,analysis_grounded:true,source_chain_complete:true,cover_index:0,image_description:'学校开学通知截图',fresh_hot_event:true,freshness_evidence:'原帖及学校通知明确是今日公布的新安排',reason:''};
 test('politics excludes community activity, corporate/school trivia and foreign personnel news',()=>{
  for(const title of ['王岐山大秘毕井泉受贿案宣判','薄熙来近况传闻引发议论','张又侠相关军队政变传闻待核实','应急管理部原党委书记、部长王祥喜被开除党籍','省委书记履新','习近平出席政治局会议']) assert.equal(isChinaPolitical({title}),true,title);
  for(const title of ['洛杉矶华人招募参加习近平访美欢迎活动','中共统战部在大连举办民营企业美食节','牡丹江企业欠薪引发关注','高中教学楼安装栅栏','美国部长任命公布','台湾官员落马','重庆副市长被开除党籍','某县党委书记被查','康威市长疑似被ICE误捕传闻尚未证实','ICE扩招压力引爆审查危机！17年资深官员揭招聘内幕','厦门城市职业学院南校区楼梯口墙面贴习近平重要讲话摘录','上海因私出入境服务行业协会召开会议研讨国务院出入境新规']) assert.equal(isChinaPolitical({title}),false,title);
@@ -28,7 +29,7 @@ test('homepage screenshot: US titles and summaries do not create China political
 });
 test('630-character grounded article publishes in topic only without an 800-character rewrite',async t=>{
  let writes=0,reviews=0;
- t.mock.method(globalThis,'fetch',async(_url,options)=>{const input=JSON.parse(options.body);assert.equal(input.tools,undefined);if(input.text.format.name==='china_hot_editorial_review'){reviews++;return Response.json({output_text:JSON.stringify(verdict)});}writes++;assert.match(input.instructions,/600至1999/);return Response.json({output_text:JSON.stringify(draft)});});
+ t.mock.method(globalThis,'fetch',async(_url,options)=>{const input=JSON.parse(options.body);assert.equal(input.tools,undefined);if(input.text.format.name==='china_hot_editorial_review'){reviews++;return Response.json({output_text:JSON.stringify(verdict)});}writes++;assert.match(input.instructions,/800至1999/);return Response.json({output_text:JSON.stringify(draft)});});
  const qualified=qualifyTweet(source);const article=await generateArticle(qualified,{...source});const row=buildPublishedArticle(source,qualified,article);
  assert.equal(writes,1);assert.equal(reviews,1);assert.equal(row.status,'published');assert.equal(row.metadata.publication_scope,'topic_only');assert.equal(row.metadata.homepage_focus_override,'exclude');assert.deepEqual(row.metadata.image_evidence,draft.image_evidence);
 });
@@ -45,7 +46,7 @@ test('X media lookup verifies returned author and preserves images, source and o
  }});
  assert.equal(tweets.length,CHINA_X_SOURCES.length);assert.ok(tweets.every(t=>t.source_level==='publisher_account'&&t.media.length===1));
  assert.equal(sourceFor({...source,source_username:'BBCChinese',source_name:'BBC News 中文'}).externalId,'x:bbcchinese:12345');
- assert.equal(sourceFor(source).externalId,'x:whyyoutouzhele:12345');
+ assert.equal(sourceFor(source).externalId,'x:unknown:12345');
 });
 test('cross-source dedupe checks facts and allows substantive follow-up',async t=>{
  const prior={id:'prior',title:'河南超市购物卡风波，董事长作出承诺',summary:'河南超市购物卡兑付风波，董事长写下保证书。',content:'原报道'};
@@ -77,7 +78,7 @@ test('defense meeting and Taiwan arms story are collected and published under US
  for(const text of texts){
   const tweet={...source,text,source_username:'bbcchinese',source_name:'BBC News 中文'};
   const q=qualifyTweet(tweet);assert.equal(q.accepted,true);assert.equal(q.route,'us-politics');
-  const article={...draft,title:text.split('，')[0],summary:'两国部长讨论军工合作与供给安排。',content:text+body,publication_scope:'topic_only',editorial_review:verdict};
+  const article={...draft,title:text.split('，')[0],summary:'两国部长讨论军工合作与供给安排。',content:text+usBody,editorial_depth:'standard',publication_scope:'standard',editorial_review:verdict};
   const row=buildPublishedArticle(tweet,q,article);
   assert.equal(row.category_name,'美国时政');assert.equal(row.primary_section,'美国时政');assert.equal(row.topic_key,'us-politics');
   assert.deepEqual(row.related_sections,['美国时政']);assert.deepEqual(row.metadata.editorial_topics,[]);assert.equal(row.metadata.china_politics_eligible,false);assert.equal(row.metadata.source_category_qualified,false);
@@ -89,14 +90,14 @@ test('defense meeting and Taiwan arms story are collected and published under US
 
 test('US copy completes the same writer and independent review, preserving real attribution',async t=>{
  const tweet={...source,text:'美国国防部长赫格塞斯与德国国防部长会晤，讨论北约国防合作。'};
- const generated={...draft,title:'美德国防部长讨论北约合作',summary:'双方围绕武器供应与联合生产进行交流。',content:'美国国防部长赫格塞斯与德国国防部长举行会谈。'+body};
+ const generated={...draft,title:'美德国防部长讨论北约合作',summary:'双方围绕武器供应与联合生产进行交流。',content:'美国国防部长赫格塞斯与德国国防部长举行会谈。'+usBody};
  t.mock.method(globalThis,'fetch',async(_url,options)=>{
   const input=JSON.parse(options.body);
   if(input.text.format.name==='china_hot_editorial_review'){
     assert.match(input.instructions,/虚构媒体、内部人员、知情人士/);
     return Response.json({output_text:JSON.stringify(verdict)});
   }
-  assert.match(input.instructions,/600至1999/);assert.match(input.instructions,/普通账号只能写某账号发文称/);
+  assert.match(input.instructions,/800至1999/);assert.match(input.instructions,/普通账号只能写某账号发文称/);
   return Response.json({output_text:JSON.stringify(generated)});
  });
  const q=qualifyTweet(tweet);const article=await generateArticle(q,tweet);

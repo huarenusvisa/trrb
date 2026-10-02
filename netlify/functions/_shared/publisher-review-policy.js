@@ -1,15 +1,18 @@
+const writingStandard = require('./news-writing-standard.js');
 const crypto = require('node:crypto');
 const INSTRUCTION = '发布者2026-10-02明确授权：证据不足也可以发布，有问题由人工后续处理。';
-function evidencePendingArticle(draft, rawText, reason, time = new Date().toISOString()) {
+function evidencePendingArticle(draft, rawText, reason, time = new Date().toISOString(), edited) {
   const raw=String(rawText || '').replace(/\\n/g,'\n').trim();
   if (raw.replace(/\s/g,'').length < 20 || !/^https:\/\//.test(draft?.source_url || '')) throw new Error('缺少具体来源材料');
-  const title='来源消息：'+String(draft.title || '').replace(/^来源消息[：:]/,'');
-  const name=draft.source_name || draft.source_account || '原始来源';
-  const content='据'+name+'发布的消息，原文称：\n\n'+raw+'\n\n以上内容来自该来源，相关细节仍待进一步核实。';
-  const summary='据'+name+'消息：'+raw.slice(0,160);
+  if (!edited || edited.appears_old_news || edited.editorial_review?.single_event!==true || edited.editorial_review?.grounded!==true || edited.editorial_review?.analysis_grounded!==true || edited.editorial_review?.court_status_correct!==true) throw new Error('资料待核实不等于可以发布未经采写或无事实依据的线索');
+  const usPolitics=draft.category_name==='美国时政' || draft.primary_section==='美国时政';
+  const n=writingStandard.assertEditedContent({...edited,source_name:draft.source_name,source_account:draft.source_account},{usPolitics});
+  const title=String(edited.title).trim().replace(/^来源消息[：:]/,'');
+  const content=String(edited.content).trim();
+  const summary=String(edited.summary || '').trim();
   const hash=crypto.createHash('sha256').update(title+'\n'+content).digest('hex');
   return {...draft,title,summary,content,seo_title:title,seo_description:summary,status:'published',visibility:'public',published_at:time,updated_at:time,cover_image:'',image_alt:'',review_status:'published_pending_manual_review',risk_flags:['unverified_public_claim'],
-    metadata:{...draft.metadata,automatic_publish:true,manual_review_required:true,requires_editor_review:true,publication_blocked_until_edited:false,review_status:'published_pending_manual_review',post_publication_review_status:'pending',post_publication_review_reason:String(reason || '资料不足'),publication_mode:'publish_then_review',editorial_depth:'brief',daily_deep_commission:false,homepage_focus_override:'exclude',source_text_original:raw,reviewed_content_sha256:null,
+    metadata:{...draft.metadata,automatic_publish:true,manual_review_required:true,requires_editor_review:true,publication_blocked_until_edited:false,review_status:'published_pending_manual_review',post_publication_review_status:'pending',post_publication_review_reason:String(reason || '资料不足'),publication_mode:'publish_then_review',editorial_depth:n>=2000?'standard':n>=800?'standard':'brief',body_character_count:n,editorial_standard_version:writingStandard.VERSION,daily_deep_commission:false,homepage_focus_override:'exclude',source_text_original:raw,reviewed_content_sha256:null,editorial_review:edited.editorial_review,
       publisher_authorized_release:{version:'1',approved:true,content_sha256:hash,source_url:draft.source_url,approved_by:'publisher_standing_instruction_20261002',instruction:INSTRUCTION,approved_at:time}}};
 }
 function evidenceHoldEligible(reason) {

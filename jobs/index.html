@@ -117,6 +117,7 @@
     <div class="jobs-section-head"><div><h2>最新招聘岗位</h2><p>优先展示仍有效、可联系、信息完整的岗位。</p></div></div>
     <div class="toolbar"><strong id="results-heading">招聘岗位</strong><div class="view-switch"><button class="secondary is-active" id="list-view" type="button">列表</button><button class="secondary" id="map-view" type="button">地图</button></div></div>
     <section id="jobs-results" class="results" aria-live="polite"></section>
+    <p id="map-status" class="status" role="status" hidden></p>
     <section id="jobs-map" class="hidden" aria-label="附近招聘岗位地图"></section>
     <nav class="pagination"><button class="secondary" id="prev-page" type="button">上一页</button><button class="secondary" id="next-page" type="button">下一页</button></nav>
     <section class="seo-directory" aria-labelledby="jobs-directory-title">
@@ -127,10 +128,12 @@
   </main>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script src="./search.js?v=20260820-unified1"></script>
-  <script src="./search-r2-discovery.js?v=20260817-r2n4"></script>
-  <script src="./search-r2-geo.js?v=20260817-r2n4"></script>
-  <script src="./unified-ui.js?v=20260820-unified2"></script>
+  <link rel="stylesheet" href="/huarengongzuo/site.css?v=20261002-geography" />
+  <script src="/huarengongzuo/city-picker.js?v=20261002-geography"></script>
+  <script src="./search.js?v=20261002-geography"></script>
+  <script src="./search-r2-discovery.js?v=20261002-geography"></script>
+  <script src="./search-r2-geo.js?v=20261002-geography"></script>
+  <script src="./unified-ui.js?v=20261002-geography"></script>
   <script src="/huarengongzuo/domain-brand.js?v=20260914-preview1"></script>
   <script src="/huarengongzuo/i18n.js?v=20260831-i18n-v1"></script>
 </body>

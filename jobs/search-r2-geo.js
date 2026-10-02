@@ -114,6 +114,7 @@
     const picker = ensurePicker();
     const choose = $('choose-region');
     choose?.addEventListener('click', (event) => {
+      if(choose.dataset.sharedCityPicker==='true')return;
       event.preventDefault();
       event.stopImmediatePropagation();
       picker.classList.toggle('hidden');

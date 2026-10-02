@@ -118,6 +118,7 @@ const locationRules = [
 ];
 
 const categories = [
+  [/\b(?:CNA|HHA|RN|LPN)\b|nurs(?:e|ing)|home health aide|personal care aide|caregiver|护工|護工|护理|護理/i,"home-care"],
   [/餐厅|餐馆|中餐|日餐|外卖店|麻辣烫|厨师|炒锅|油锅|寿司|企台|起台|服务员|后厨|打包|奶茶|咖啡|restaurant|cook|server/i, "restaurant"],
   [/美甲|甲店|指甲店|美睫|美容|美发|理发|修甲|手足护理|nail|manicure|pedicure|beauty|lash|eyelash|cosmetology|esthetician|salon|stylist/i, "beauty-nail"],
   [/按摩|\bspa\b|massage/i, "massage"],
@@ -202,10 +203,15 @@ function pickLocation(text) {
 }
 
 function pickEnglishLocation(text) {
-  const known = pickLocation(text);
-  if (known) return known;
-  const match = String(text || "").match(/(?:^|,\s*)([A-Za-z .'-]+),\s*([A-Z]{2})(?:\s+\d{5})?(?:$|\b)/);
-  return match ? { state_code: match[2], city: match[1].trim() } : null;
+  const value=String(text||'').trim();
+  const codes=new Set('AL AK AZ AR CA CO CT DE DC FL GA HI ID IL IN IA KS KY LA ME MD MA MI MN MS MO MT NE NV NH NJ NM NY NC ND OH OK OR PA RI SC SD TN TX UT VT VA WA WV WI WY PR'.split(' '));
+  const match=value.match(/(?:^|;\s*)([A-Za-z .'-]+),\s*([A-Z]{2})(?:\s+\d{5})?(?:$|[,;])/);
+  if(match && codes.has(match[2]))return {state_code:match[2],city:match[1].trim()};
+  if(match)return null;
+  if(/\b(Canada|United Kingdom|London|Toronto|Vancouver|Dublin)\b/i.test(value) && !/\b(?:US|USA|United States)\b/i.test(value))return null;
+
+  const known=pickLocation(value);
+  return known;
 }
 
 function pickCategory(primaryText, supplementalText = "") {

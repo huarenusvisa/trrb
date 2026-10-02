@@ -179,6 +179,7 @@
   }
 
   function number(value) {
+    if(value==null || String(value).trim()==='')return null;
     const parsed = Number(value);
     return Number.isFinite(parsed) ? parsed : null;
   }
@@ -186,13 +187,14 @@
   function coordinateFor(item) {
     const lat = number(item.lat ?? item.latitude);
     const lng = number(item.lng ?? item.lon ?? item.longitude);
-    if (lat !== null && lng !== null) return [lat, lng];
+    if (lat !== null && lng !== null && Math.abs(lat)<=90 && Math.abs(lng)<=180) return [lat, lng];
 
     if (Array.isArray(item.coordinates) && item.coordinates.length >= 2) {
       const first = number(item.coordinates[0]);
       const second = number(item.coordinates[1]);
       if (first !== null && second !== null) {
-        return Math.abs(first) > 90 ? [second, first] : [first, second];
+        const pair=Math.abs(first)>90?[second,first]:[first,second];
+        if(Math.abs(pair[0])<=90 && Math.abs(pair[1])<=180)return pair;
       }
     }
 

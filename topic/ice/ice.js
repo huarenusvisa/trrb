@@ -206,7 +206,7 @@
   }
   function coordinateFor(item) {
     const lat = Number(item.lat), lng = Number(item.lng);
-    if (Number.isFinite(lat) && Number.isFinite(lng)) return [lat, lng];
+    if (item.lat!=null && item.lng!=null && String(item.lat).trim()!=='' && String(item.lng).trim()!=='' && Number.isFinite(lat) && Number.isFinite(lng) && Math.abs(lat)<=90 && Math.abs(lng)<=180) return [lat, lng];
     const text = normalize(`${item.location} ${item.city} ${item.state} ${item.title} ${item.summary}`);
     const key = Object.keys(PLACES).sort((a,b) => b.length-a.length).find((name) => text.includes(name));
     if (key) return PLACES[key];

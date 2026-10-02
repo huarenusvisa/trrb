@@ -346,3 +346,6 @@
   to = "https://new.trrb.net/:splat"
   status = 301
   force = true
+
+[functions.public-jobs]
+  included_files = ["netlify/functions/_shared/geography/*.json.gz"]

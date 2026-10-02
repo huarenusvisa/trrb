@@ -158,3 +158,14 @@ test("honors source rate-limit Retry-After seconds and dates",()=>{
   assert.equal(retryAfterMs('Wed, 23 Sep 2026 20:04:00 GMT',Date.parse('2026-09-23T20:03:00Z')),60000);
   assert.equal(retryAfterMs(null),0);
 });
+
+test('does not import foreign state abbreviations as US locations',()=>{
+ assert.equal(pickEnglishLocation('AB, BC'),null);
+ assert.equal(pickEnglishLocation('London, UK'),null);
+ assert.equal(pickEnglishLocation('Toronto, ON'),null);
+ assert.deepEqual(pickEnglishLocation('Wilmington, MA'),{state_code:'MA',city:'Wilmington'});
+ assert.deepEqual(pickEnglishLocation('Wilmington, DE'),{state_code:'DE',city:'Wilmington'});
+});
+test('nursing titles take precedence over driver and assistant keywords',()=>{
+ for(const title of ['HHA/CNA - ALL SHIFTS','Certified Nursing Assistant','CNA Driver','Registered Nurse'])assert.equal(pickCategory(title),'home-care');
+});

@@ -84,7 +84,9 @@ permissions:
 
 concurrency:
   group: trrb-operations-control-${{ github.event.schedule || inputs.module || github.ref }}
-  cancel-in-progress: false
+  # A code fix must replace an obsolete push run immediately. Scheduled and
+  # manually requested production runs retain their existing queue behavior.
+  cancel-in-progress: ${{ github.event_name == 'push' }}
 
 jobs:
   automation-gate:

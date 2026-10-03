@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import articlePage from '../netlify/edge-functions/article-prerender.ts';
 
-const article = { id: '00000000-0000-4000-8000-000000000001', slug: 'current', title: '当前报道', content: '已核实的新闻正文。', category_id: 'cat', category_name: '热门头条', status: 'published', visibility: 'public', published_at: '2026-09-01', source_url: 'https://example.org/report?a=1&b=2' };
+const article = { id: '00000000-0000-4000-8000-000000000001', slug: 'current', title: '当前报道', content: '已核实的新闻正文。', category_id: 'cat', category_name: '热门头条', status: 'published', visibility: 'public', published_at: '2026-09-01', source_url: 'https://example.org/report?a=1&b=2',source_name:'来源媒体',metadata:{unverified_public_claim:true,content_warning:'真实性提示：本文所述信息可能尚未获得独立核实'} };
 const story = { ...article, id: '00000000-0000-4000-8000-000000000002', title: '同栏目报道 <标题>', slug: 'other', canonical_url: 'https://trrb.net/hot-headlines/other' };
 const template = '<html><head><title>模板</title><meta name="robots" content="noindex"></head><body><article class="container article-page" id="article-root"></article></body></html>';
 function fixture(t, { source = article.source_url, outage = false } = {}) {
@@ -28,7 +28,7 @@ function fixture(t, { source = article.source_url, outage = false } = {}) {
   });
 }
 const render = () => articlePage(new Request('https://trrb.net/hot-headlines/current'), { next: () => new Response('', { status: 404 }) });
-test('raw HTML contains safe source and public same-section links without JavaScript', async t => {
+test('raw HTML hides source and boilerplate while keeping branded title and crawlable same-section links', async t => {
   fixture(t);
   const response = await render();
   const html = await response.text();
@@ -36,7 +36,10 @@ test('raw HTML contains safe source and public same-section links without JavaSc
   assert.equal(response.headers.get('content-length'), null);
   assert.equal(response.headers.get('x-robots-tag'), null);
   assert.match(html, /class="tag" href="\/hot-headlines"/);
-  assert.match(html, /href="https:\/\/example.org\/report\?a=1&amp;b=2"/);
+  assert.doesNotMatch(html, /example\.org|article-source|article-content-warning|article-evidence|真实性提示|来源媒体/);
+  assert.match(html, /<title>当前报道｜唐人日报<\/title>/);
+  assert.match(html, /property="og:title" content="当前报道｜唐人日报"/);
+  assert.match(html, /name="twitter:title" content="当前报道｜唐人日报"/);
   assert.equal((html.match(/href="https:\/\/trrb.net\/hot-headlines\/other"/g) || []).length, 1);
   assert.match(html, /同栏目报道 &lt;标题&gt;/);
   assert.match(html, /href="https:\/\/trrb.net\/hot-headlines\/fresh"/);

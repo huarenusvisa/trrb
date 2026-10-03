@@ -1,4 +1,4 @@
-import { publicationUrl, publicEvidence, publicArticleData } from "../shared/publication.mjs";
+import { publicationUrl, publicArticleData } from "../shared/publication.mjs";
 import { articleIndexability, visibleArticleText, ARTICLE_INDEXABILITY_POLICY } from "../shared/article-indexability.mjs";
 const SITE = "https://trrb.net";
 
@@ -57,12 +57,6 @@ function canonicalSection(value: unknown): string {
   return SECTION_ALIASES[raw] || raw;
 }
 
-
-function isIceArticle(article: any): boolean {
-  const topic = clean(article?.topic_key).toLowerCase();
-  const category = clean(article?.category_name);
-  return topic === "ice" || category === "ICE执法动态" || category === "ICE执法";
-}
 
 function isIndexableArticle(article: any): boolean {
   return articleIndexability(article).indexable;
@@ -233,7 +227,7 @@ function injectHead(html: string, article: any, canonical: string, prettyRoute: 
   };
   const seo = `
     ${prettyRoute ? '<base href="/" />' : ""}
-    <title>${esc(title)} - 唐人日报</title>
+    <title>${esc(title)}｜唐人日报</title>
     <meta name="description" content="${esc(summary)}" />
     <meta name="keywords" content="${esc(keywords)}" />
     <meta name="robots" content="${robots}" />
@@ -241,14 +235,14 @@ function injectHead(html: string, article: any, canonical: string, prettyRoute: 
     <link rel="alternate" type="application/rss+xml" title="唐人日报 RSS" href="${SITE}/feed.xml" />
     <meta property="og:type" content="article" />
     <meta property="og:site_name" content="唐人日报" />
-    <meta property="og:title" content="${esc(title)}" />
+    <meta property="og:title" content="${esc(title)}｜唐人日报" />
     <meta property="og:description" content="${esc(summary)}" />
     <meta property="og:url" content="${esc(canonical)}" />
     <meta property="og:image" content="${esc(image)}" />
     <meta property="article:published_time" content="${published}" />
     <meta property="article:section" content="${esc(displayCategory)}" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="${esc(title)}" />
+    <meta name="twitter:title" content="${esc(title)}｜唐人日报" />
     <meta name="twitter:description" content="${esc(summary)}" />
     <meta name="twitter:image" content="${esc(image)}" />
     <script type="application/ld+json" data-trrb-edge-schema>${escJson(schema)}</script>
@@ -262,16 +256,6 @@ function injectHead(html: string, article: any, canonical: string, prettyRoute: 
     .replace(/<link\s+rel=["']alternate["'][^>]*>/i, "")
     .replace(/<base\s+href=["'][^"']*["'][^>]*>/i, "")
     .replace(/<\/head>/i, `${seo}\n  </head>`);
-}
-
-function publicSource(value: unknown): string {
-  try {
-    const url = new URL(clean(value));
-    if (!/^https?:$/.test(url.protocol) || url.username || url.password) return "";
-    // WordPress imports use source_url as a migration key, not a citation.
-    if (/^(?:www\.)?(?:trrb\.(?:net|cc)|tangrenribao\.com)$/i.test(url.hostname)) return "";
-    return url.href;
-  } catch { return ""; }
 }
 
 async function sectionStories(article: any, canonical: string): Promise<any[]> {
@@ -324,19 +308,13 @@ function injectBody(html: string, article: any, canonical: string, stories: any[
   const displayCategory = category === "热门头条" ? "中国热门头条" : category;
   const author = clean(article.author) || "Tang Ren Daily";
   const sectionHref = `/${currentSection ? encodeURIComponent(currentSection) : new URL(canonical).pathname.split("/").filter(Boolean)[0]}`;
-  const source = publicSource(article.source_url);
   const published = isoDate(article.published_at || article.created_at).slice(0, 10);
   const content = String(visibleArticleText(article.content) ? article.content : article.summary || "").trim();
   const paragraphs = content.split(/\n{2,}|\r?\n/).map((p) => clean(p)).filter(Boolean);
   const image = clean(article.cover_image);
   const topic = clean(article.topic_key).toLowerCase();
-  const evidence = publicEvidence(article);
-  const iceEvidence = isIceArticle(article) ? `<aside class="article-evidence"><h2>报道来源与核实说明</h2>${evidence.length ? `<ul>${evidence.map(u => `<li><a href="${esc(u)}" rel="noopener noreferrer">${esc(new URL(u).hostname)}</a></li>`).join("")}</ul><p>以上为报道所依据的来源；来源陈述不等于独立核实结论。</p>` : `<p>本篇尚未附可核对的外部来源链接，待编辑补充。</p>`}<p><a href="/ice/news">查看 ICE 执法报道与后续进展</a></p></aside>` : "";
   const topicTimeline = topic === "ren-zhengfei"
     ? `<aside class="article-topic-timeline"><a href="/ren-zhengfei"><b>任正非新闻时间线</b><span>按时间查看全部相关新闻 →</span></a></aside>`
-    : "";
-  const warning = article?.metadata?.unverified_public_claim
-    ? clean(article?.metadata?.content_warning) || "真实性提示：本文所述信息可能尚未获得独立核实，部分细节可能存在偏差，请以权威部门后续通报为准。"
     : "";
   const prerender = `<a class="back-link" href="/">返回首页</a>
       <header class="article-header">
@@ -346,10 +324,7 @@ function injectBody(html: string, article: any, canonical: string, stories: any[
       </header>
       ${topicTimeline}
       ${image ? `<img class="article-image" src="${esc(image)}" loading="eager" fetchpriority="high" alt="${esc(title)}" />` : ""}
-      ${warning ? `<aside class="article-content-warning">${esc(warning)}</aside>` : ""}
       <div class="article-body">${article.publication_revision && article.publication_html != null ? article.publication_html : paragraphs.map((p) => `<p>${esc(p)}</p>`).join("")}</div>
-      ${source ? `<p class="article-source">来源链接：<a href="${esc(source)}" rel="noopener noreferrer">${esc(new URL(source).hostname)}</a></p>` : ""}
-      ${iceEvidence}
       ${stories.length ? `<nav class="article-section-stories" aria-label="同栏目报道"><h2>同栏目报道</h2><ul>${stories.map((row) => `<li><a href="${esc(row.canonical_url)}">${esc(row.title)}</a></li>`).join("")}</ul></nav>` : ""}
       <nav class="article-neighbors" aria-label="上一篇和下一篇"></nav>
       <section class="related-news" hidden><h2>延伸阅读</h2><div class="related-carousel" aria-label="延伸阅读文章"><div class="related-track"></div></div></section>`;

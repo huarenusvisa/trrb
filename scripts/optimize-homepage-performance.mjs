@@ -43,9 +43,9 @@ if (!html.includes('article-route-runtime.js')) {
 // their cache tokens at build time so a production deploy cannot serve an older
 // renderer after the underlying file changed.
 const coreVersions = new Map([
-  ['article-live-neighbors.js', '20260916-editorial-1'],
+  ['article-live-neighbors.js', '20261003-public-presentation'],
   ['homepage-secondary-hubs.bundle.js', '20260916-jobs-green-5'],
-  ['homepage-topic-runtime.bundle.js', '20260923-collections'],
+  ['homepage-topic-runtime.bundle.js', '20261003-public-presentation'],
   ['article-route-runtime.js', '20260916-category-alias'],
   ['homepage-ranking.js', '20260916-placement-1'],
   ['articles-home.js', '20260923-collections'],
@@ -55,7 +55,7 @@ const coreVersions = new Map([
   ['homepage-immigration-hub.js', '20260819-reuse-bundle-2'],
   ['jobs-home.js', '20260916-jobs-green-5'],
   ['articles-home-live-fix.js', '20260916-placement-1'],
-  ['category-runtime-v3.js', '20260923-collections'],
+  ['category-runtime-v3.js', '20261003-public-presentation'],
   ['homepage-startup-stability.js', '20260822-hotfix-1']
 ]);
 // Historical contract markers retained for older CI gates while the cache

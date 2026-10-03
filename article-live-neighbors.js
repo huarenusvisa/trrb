@@ -163,8 +163,6 @@
       const src = safeUrl(cover.getAttribute("src"), story.canonical);
       if (src) { img.src = src; img.alt = title; img.className = "continued-image"; img.loading = "lazy"; img.decoding = "async"; img.addEventListener("error", () => img.remove(), { once: true }); section.append(img); }
     }
-    const warning = sourceRoot.querySelector(".article-content-warning");
-    if (warning) { const aside = document.createElement("aside"); aside.className = "article-content-warning"; aside.textContent = warning.textContent; section.append(aside); }
     const body = document.createElement("div"); body.className = "continued-body";
     body.append(readableCopy(story.body, story.canonical)); section.append(body);
     const actions = document.createElement("div"); actions.className = "continued-actions";

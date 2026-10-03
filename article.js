@@ -149,7 +149,7 @@ function renderArticle(root, article, articles) {
   const coverFallback = typeof window.TRRB_categoryPlaceholder === "function" ? window.TRRB_categoryPlaceholder(article.category || "") : "./image-placeholder.svg";
   const hasCover = Boolean(coverUrl);
 
-  document.title = `${article.title} - 唐人日报`;
+  document.title = `${article.title}｜唐人日报`;
   updateSeoMeta(article);
 
   root.classList.toggle("has-no-image", !hasCover);
@@ -176,7 +176,6 @@ function renderArticle(root, article, articles) {
         alt="${escapeAttribute(article.title || "")}"
       />
     ` : ""}
-    ${article.metadata?.unverified_public_claim ? `<aside class="article-content-warning">${escapeHtml(article.metadata.content_warning || "真实性提示：本文所述信息可能尚未获得独立核实，部分细节可能存在偏差，请以权威部门后续通报为准。")}</aside>` : ""}
     <div class="article-body">
       ${(article.body || []).map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join("")}
     </div>

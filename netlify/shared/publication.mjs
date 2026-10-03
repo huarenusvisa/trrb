@@ -11,12 +11,12 @@ export function publicEvidence(article) {
   }))].slice(0, 10);
 }
 
-const PUBLIC_METADATA_KEYS=['unverified_public_claim','content_warning','editorial_depth','body_character_count','editorial_policy_version','editorial_standard_version','publication_scope','homepage_focus_override','category_display_name','editorial_topics','person_topic','publication_mode','text_only_verified'];
+const PUBLIC_METADATA_KEYS=['editorial_depth','body_character_count','editorial_policy_version','editorial_standard_version','publication_scope','homepage_focus_override','category_display_name','editorial_topics','person_topic','publication_mode','text_only_verified'];
 export function publicArticleData(article) {
  if(!article || typeof article!=='object')return article;
  const metadata=Object.fromEntries(PUBLIC_METADATA_KEYS.filter(k=>article.metadata?.[k]!==undefined).map(k=>[k,article.metadata[k]]));
  // Collection provenance and correction backups belong only in editorial storage.
  const copy={...article,metadata};
- if(/https?:\/\/(?:www\.)?(?:x\.com|twitter\.com)\/whyyoutouzhele(?:\/|$)/i.test(copy.source_url || ''))copy.source_url='';
+ for(const key of Object.keys(copy)) if(key.startsWith('source_') || key==='supporting_sources' || key==='sourceUrl')delete copy[key];
  return copy;
 }

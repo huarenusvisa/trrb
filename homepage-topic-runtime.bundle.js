@@ -50,35 +50,29 @@
     }
   }
 
-  function publicNavigation(channels) { return channels; }
+  // The eight public destinations mirror the homepage cards, including products
+  // which have no article-category row in the CMS.
+  const PUBLIC_NAVIGATION = [
+    {name:"中国热门头条",slug:"hot-headlines",href:"/hot-headlines"},
+    {name:"美国时政",slug:"us-politics",href:"/us-politics"},
+    {name:"ICE执法与警情",slug:"iceandpolice",href:"/iceandpolice"},
+    {name:"中国政治",slug:"china-politics",href:"/china-politics"},
+    {name:"移民法官通过率",slug:"immigration-judge-approval-rate",href:"https://asylumjudge.com/"},
+    {name:"美国判例与新规",slug:"legal",href:"/legal/"},
+    {name:"招聘求职",slug:"jobs",href:"https://huarengongzuo.com/"},
+    {name:"移民社区",slug:"community",href:"/community/"}
+  ];
+  function publicNavigation(channels) {
+    return PUBLIC_NAVIGATION.map((entry,index) => ({...channels.find(row=>row.slug===entry.slug),...entry,priority:index+1,showInNav:true}));
+  }
   function renderNavigation(channels) {
     channels = publicNavigation(channels);
     const nav = document.querySelector("#site-navigation .nav-inner");
     if (!nav) return;
 
-    // Reconcile known CMS entries so disabled navigation flags take effect.
-    // Independent products absent from the CMS (jobs, legal, exposure) stay intact.
-    const managedRoutes = new Set(["/important-news", "/hot-headlines", "/us-politics", "/china-politics", "/asylum", "/immigration", "/us-enforcement", "/iceandpolice", "/xijinping", ...channels.map(item => routeKey(item.href))]);
-    nav.querySelectorAll(":scope > a:not(.nav-expose-link)").forEach(node => {
-      if (node.dataset.dynamicCategory || managedRoutes.has(routeKey(node.getAttribute("href")))) node.remove();
-    });
-    const anchor = nav.querySelector(".nav-expose-link");
-    const existing = Array.from(nav.querySelectorAll(":scope > a:not(.nav-expose-link)"));
-
-    channels.filter((item) => item.showInNav).forEach((item) => {
-      const desiredRoute = routeKey(item.href);
-      const match = existing.find((node) =>
-        node.textContent.trim() === String(item.name || "").trim() || routeKey(node.getAttribute("href") || "") === desiredRoute
-      );
-
-      if (match) {
-        // Correct stale static aliases (for example /immigrate/ used as the old
-        // 移民美国 nav target) without deleting unrelated standalone entries.
-        match.href = item.href;
-        match.textContent = item.name;
-        return;
-      }
-
+    nav.querySelectorAll(":scope > a").forEach(node => node.remove());
+    const anchor = nav.querySelector(".nav-search, .mobile-utility-links");
+    channels.forEach((item) => {
       const link = document.createElement("a");
       link.href = item.href;
       link.textContent = item.name;

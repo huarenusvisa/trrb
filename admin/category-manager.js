@@ -18,12 +18,12 @@
     ...extra
   });
   const STANDARD_CATEGORIES = [
-    defaults("中国热门头条", "hot-headlines", 2),
+    defaults("中国热门头条", "hot-headlines", 1),
     defaults("ICE执法与警情", "iceandpolice", 3, {auto_fetch: true, auto_publish: true}),
-    defaults("美国时政", "us-politics", 4),
-    defaults("中国政治", "china-politics", 5),
-    defaults("移民法官通过率", "immigration-judge-approval-rate", 6),
-    defaults("移民社区", "community", 8, {show_in_navigation: false, show_on_homepage: false}),
+    defaults("美国时政", "us-politics", 2),
+    defaults("中国政治", "china-politics", 4),
+    defaults("移民法官通过率", "immigration-judge-approval-rate", 5),
+    defaults("移民社区", "community", 8, {show_in_navigation: true, show_on_homepage: false}),
     defaults("移民美国知识库", "immigrate", 9, {show_in_navigation: false, show_on_homepage: false}),
     defaults("特朗普实时动态", "trump", 20, {show_in_navigation: false, show_on_homepage: false, auto_fetch: true, auto_publish: true}),
     defaults("美国中期选举实时追踪", "midterm-elections", 90, {show_in_navigation: false, show_on_homepage: false}),

@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import process from "node:process";
+import { requestJson } from './lib/bounded-rest-request.mjs';
 
 const REQUIRED = ["SUPABASE_URL", "SUPABASE_SERVICE_ROLE_KEY"];
 const RETENTION_HOURS = Math.max(1, Number(process.env.ICE_REJECTED_RETENTION_HOURS || 1));
@@ -9,12 +10,6 @@ const MAX_BATCHES = Math.min(100, Math.max(1, Number(process.env.ICE_REJECTED_DE
 function requireEnv() {
   const missing = REQUIRED.filter((name) => !process.env[name]);
   if (missing.length) throw new Error(`缺少 GitHub Secret：${missing.join(", ")}`);
-}
-
-async function readJson(response) {
-  const text = await response.text();
-  if (!text) return null;
-  try { return JSON.parse(text); } catch { return { raw: text }; }
 }
 
 function headers(prefer = "") {
@@ -27,10 +22,11 @@ function headers(prefer = "") {
 }
 
 async function request(url, options = {}) {
-  const response = await fetch(url, options);
-  const body = await readJson(response);
-  if (!response.ok) throw new Error(body?.message || body?.details || body?.error || body?.raw || String(response.status));
-  return body;
+  return requestJson(url, options, {
+    onRetry: ({ attempt, maximum, status, code }) => console.warn(JSON.stringify({
+      stage: 'ice-cleanup-api-retry', attempt, maximum, status, code
+    }))
+  });
 }
 
 async function sb(table, { method = "GET", query = {}, body, prefer = "" } = {}) {

@@ -53,7 +53,7 @@ async function readThread(tweet, {request, readJson, bearer}) {
   url.searchParams.set('expansions', 'author_id');url.searchParams.set('user.fields', 'username');
   return threadMaterials(await readJson(await request(url, {headers:{Authorization:`Bearer ${bearer}`,Accept:'application/json'}}, 20000)), String(tweet.id), tweet.source_username);
 }
-export async function researchEvent(qualified, tweet, {request, readJson, model, key, bearer, editorialDepth = 'standard', analysisAngles = [], researchRound = 0, priorResearch = null}) {
+export async function researchEvent(qualified, tweet, {request, readJson, model, key, bearer, editorialDepth = 'standard', analysisAngles = [], researchRound = 0, priorResearch = null, forceCommission = false}) {
   let thread = [], threadError = '';
   try {if(editorialDepth !== 'deep' || process.env.NEWS_DEPTH_COMMISSION !== '1') thread = await readThread(tweet, {request, readJson, bearer});} catch {threadError = '原帖公开评论暂时无法取得';}
   const response = await readJson(await request('https://api.openai.com/v1/responses', {
@@ -67,10 +67,11 @@ export async function researchEvent(qualified, tweet, {request, readJson, model,
   }, 120000));
   let research = citedResearch(response);
   if (research && priorResearch) research = {...research,text:[priorResearch.text,research.text].join('\n').slice(0,30000),sources:[...new Map([...(priorResearch.sources || []),...research.sources].map(s=>[s.url,s])).values()]};
-  if (research && editorialDepth === 'deep' && process.env.NEWS_DEPTH_COMMISSION === '1') {
+  if (!research && researchRound===0 && (forceCommission || editorialDepth==='deep')) return researchEvent(qualified,tweet,{request,readJson,model,key,bearer,editorialDepth,analysisAngles,researchRound:1,priorResearch,forceCommission});
+  if (research && editorialDepth === 'deep' && (forceCommission || process.env.NEWS_DEPTH_COMMISSION === '1')) {
     research = await commissionDepth(research,{request,readJson,model,key});
     if (researchRound === 0 && research.depth_assignment.requested_depth !== 'deep' && research.depth_assignment.public_interest !== false && research.depth_assignment.fresh_development !== false) {
-      return researchEvent(qualified,tweet,{request,readJson,model,key,bearer,editorialDepth,analysisAngles,researchRound:1,priorResearch:research});
+      return researchEvent(qualified,tweet,{request,readJson,model,key,bearer,editorialDepth,analysisAngles,researchRound:1,priorResearch:research,forceCommission});
     }
     console.log(JSON.stringify({event:'news-depth-assignment',source_id:tweet.id,requested_depth:research.depth_assignment.requested_depth,reason:research.depth_assignment.reason,missing_material:research.depth_assignment.missing_material}));
   }

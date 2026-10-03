@@ -67,8 +67,12 @@ jobs:
           fi
           node scripts/china-hot-li-teacher-ingest.mjs "${args[@]}"
 
+      - name: Repair today's short automatic reports at their existing URLs
+        if: ${{ !cancelled() && steps.category.outputs.auto_fetch == 'true' && steps.category.outputs.ai_rewrite == 'true' && steps.category.outputs.auto_publish == 'true' }}
+        run: node scripts/news-repair-short-published.mjs
+
       - name: Produce ten evidence-backed daily depth articles
-        if: steps.category.outputs.auto_fetch == 'true' && steps.category.outputs.ai_rewrite == 'true' && steps.category.outputs.auto_publish == 'true'
+        if: ${{ !cancelled() && steps.category.outputs.auto_fetch == 'true' && steps.category.outputs.ai_rewrite == 'true' && steps.category.outputs.auto_publish == 'true' }}
         run: node scripts/news-daily-depth.mjs
 
       - name: Report shared news budget

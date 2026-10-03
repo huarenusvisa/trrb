@@ -3,7 +3,7 @@ import {EDITORIAL_POLICY_VERSION,contentDigest} from './news-editorial-policy.mj
 export function automationMayUpdate(article) {
   const m=article?.metadata || {};
   return article?.status === 'published' && article.visibility === 'public' && !article.reviewed_by && !m.reviewed_by && !m.reviewed_at && !m.manual_override && !m.manual_content_review && !m.human_category_override && !m.editorial_lock && !m.editor_locked
-    && ['automatic_china_hot','official_source_auto_published'].includes(article.review_status)
+    && ['automatic_china_hot','official_source_auto_published','reviewed_source_auto_published'].includes(article.review_status)
     && (m.reviewed_content_sha256 ? m.reviewed_content_sha256 === contentDigest(article.title,article.content) : article.automation_source === 'china-hot-li-teacher-v2' && m.editorial_policy_version === EDITORIAL_POLICY_VERSION);
 }
 export function articleUpdateBody(prior,next,reason,time=new Date().toISOString()) {

@@ -1,4 +1,5 @@
 import fs from 'node:fs/promises';
+import {insertUniqueKnowledge} from './knowledge-publication.mjs';
 import crypto from 'node:crypto';
 import {
   newYorkDateKey,
@@ -494,14 +495,14 @@ for (const [slug, topicName] of Object.entries(category.topics)) {
     }
 
     if (rows.length) {
-      const inserted = await sb('articles', { method: 'POST', body: JSON.stringify(rows) });
-      for (const row of inserted || rows) {
+      const inserted = await insertUniqueKnowledge(rows,row=>sb('articles',{method:'POST',body:JSON.stringify([row])}),title=>titleSet.add(title));
+      for (const row of inserted) {
         titleSet.add(String(row.title || '').trim());
         recent.push(row);
       }
-      totalPublished += rows.length;
-      results[slug].published += rows.length;
-      console.log(`[knowledge] ${category.name}/${topicName} published ${rows.length}, round ${round}`);
+      totalPublished += inserted.length;
+      results[slug].published += inserted.length;
+      console.log(`[knowledge] ${category.name}/${topicName} published ${inserted.length}, round ${round}`);
     }
 
     missing = Math.max(0, plannedTarget - recentTopicCount(topicName));

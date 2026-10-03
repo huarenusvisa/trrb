@@ -61,7 +61,7 @@ test("untranslated or unchecked stories require Chinese editorial processing", (
 });
 
 test("reviewed Chinese articles pass their actual brief or standard band", () => {
-  for (const content of ["据ICE通报，执法人员在纽约拘捕一名等待递解人员并说明行动安排。".repeat(25), "据ICE通报，执法人员在纽约拘捕一名等待递解人员并说明行动安排。".repeat(55)]) {
+  for (const content of ['据ICE通报，执法人员在纽约拘捕一名等待递解人员并说明行动安排。'+Array.from({length:900},(_,i)=>String.fromCharCode(0x4e00+i)).join('')+'。', '据ICE通报，执法人员在纽约拘捕一名等待递解人员并说明行动安排。'+Array.from({length:1500},(_,i)=>String.fromCharCode(0x4e00+i)).join('')+'。']) {
     const story = reviewed({ ...shortStory, content });
     assert.equal(needsTranslation(story, 10, 0), false);
     assert.equal(needsTranslation({ ...story, ai_payload: { ...checkedPayload, translation_version: "zh-title-body-v7-300-600-800-context-image", target_min_chars: 500, target_max_chars: 800 } }, 900, 0), true);
@@ -91,22 +91,22 @@ test("empty, English, old-news and unreviewed-image stories remain blocked", () 
     assert.throws(() => manualApprove.assertEditorialReady(story, story));
   }
   const unrelated = { ...shortStory, title: "天气预报", content: "纽约明天有雨。" };
-  assert.throws(() => manualPublish.assertEditorialReady(unrelated, unrelated.title, unrelated.content), /不是明确的ICE/);
-  assert.throws(() => manualApprove.assertEditorialReady(unrelated, unrelated), /不是明确的ICE/);
+  assert.throws(() => manualPublish.assertEditorialReady(unrelated, unrelated.title, unrelated.content), /不是明确的ICE|800/);
+  assert.throws(() => manualApprove.assertEditorialReady(unrelated, unrelated), /不是明确的ICE|800/);
 });
 
 test("translation writes a factual brief and separately reviews it without padding", async (t) => {
-  const content="据ICE通报，执法人员在纽约拘捕一人，案件仍在处理中。";
+  const content='据ICE通报，执法人员在纽约拘捕一名等待递解人员并说明行动安排。'+Array.from({length:900},(_,i)=>String.fromCharCode(0x4e00+i)).join('')+'。';
   let requests=0;
   t.mock.method(globalThis,"fetch",async (_url,options)=>{
     requests++;
     const body=JSON.parse(options.body);
     if(body.text?.format?.name==='unified_news_review')return Response.json({output_text:JSON.stringify(passingReview)});
-    assert.match(body.instructions,/2000至3500/);
-    return Response.json({output_text:JSON.stringify({title:shortStory.title,content,summary:content,source_sufficient:true,editorial_depth:'brief',depth_reason:'单一官方事件，资料只支持短讯',source_language:'en',image_observations:'',appears_old_news:false,old_news_reason:''})});
+    if(body.tools)return Response.json({output:[]});assert.match(body.instructions,/800/);
+    return Response.json({output_text:JSON.stringify({title:shortStory.title,content,summary:content,source_sufficient:true,editorial_depth:'standard',depth_reason:'单一官方事件，资料只支持短讯',source_language:'en',image_observations:'',appears_old_news:false,old_news_reason:''})});
   });
   const article=await translate(shortStory,[{source_text:'ICE arrested one person in New York.'}]);
-  assert.equal(article.content,content);assert.equal(article.editorial_depth,'brief');assert.equal(requests,2);
+  assert.equal(article.content,content);assert.equal(article.editorial_depth,'standard');assert.equal(requests,4);
 });
 
 test("translation persistence records pure Chinese count and automatic old-news check", async (t) => {
@@ -119,12 +119,12 @@ test("translation persistence records pure Chinese count and automatic old-news 
     return Response.json([{id:"saved"}]);
   });
   const title = "ICE通报纽约执法详情".repeat(30);
-  const content = "ICE通报在纽约核对身份并说明行动安排。".repeat(35);
-  await patchStory(shortStory, { title, content, summary: "执法通报", sourceLength: 60, imageCount: 0,editorial_depth:"brief",editorial_review:passingReview,targetMin:1,targetMax:799 }, [{}]);
+  const content = '据ICE通报，执法人员在纽约拘捕一名等待递解人员并说明行动安排。'+Array.from({length:900},(_,i)=>String.fromCharCode(0x4e00+i)).join('')+'。';
+  await patchStory(shortStory, { title, content, summary: "执法通报", sourceLength: 60, imageCount: 0,editorial_depth:"standard",editorial_review:passingReview,targetMin:800,targetMax:1999 }, [{}]);
   assert.equal(written.title, title);
   assert.equal(written.content, content);
-  assert.equal(written.ai_payload.target_min_chars, 1);
-  assert.equal(written.ai_payload.target_max_chars, 799);
+  assert.equal(written.ai_payload.target_min_chars, 800);
+  assert.equal(written.ai_payload.target_max_chars, 1999);
   assert.equal(written.ai_payload.body_chinese_character_count, chineseCharCount(content));
   assert.equal(written.ai_payload.old_news_checked, true);
   assert.equal(written.ai_payload.automatic_old_news_check_passed, true);
@@ -133,7 +133,7 @@ test("translation persistence records pure Chinese count and automatic old-news 
 });
 
 test("tier-one ICE or DHS evidence may use automatic old-news confirmation but other sources may not", () => {
-  const content = "据ICE通报，执法人员在纽约核对身份并说明行动安排。".repeat(32);
+  const content = "据ICE通报，执法人员在纽约核对身份并说明行动安排。".repeat(40);
   const story = reviewed({ title: "纽约ICE执法通报", content, ai_payload: { translation_version: "zh-title-body-v10-official-context-flex-300-1500", translated_to_chinese: true, old_news_checked: true, automatic_old_news_check_passed: true, manual_old_news_confirmation: false, appears_old_news: false } });
   const official = { source_type: "official", source_username: "ICEgov", trust_tier: 1, source_text: "ICE announced an immigration arrest in New York." };
   const unverified = { ...official, trust_tier: 2 };

@@ -62,6 +62,9 @@ jobs:
           test -n "$OPENAI_API_KEY"
           test -n "$SUPABASE_URL"
           test -n "$SUPABASE_SERVICE_ROLE_KEY"
+      - name: Verify duplicate titles do not interrupt the batch
+        if: steps.gate.outputs.run == 'true'
+        run: node --test scripts/knowledge-publication.test.mjs
       - name: 按五个编辑板块生成并补足当日50篇庇护知识
         if: steps.gate.outputs.run == 'true'
         run: node scripts/immigration-knowledge-daily.mjs humanitarian

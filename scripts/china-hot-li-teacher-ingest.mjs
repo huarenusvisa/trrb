@@ -252,7 +252,7 @@ export function formatNewsParagraphs(value, depth = "standard") {
 export function editorialTarget(depth = "standard", dailyDeep = false) {
   if (depth === "deep" && dailyDeep) return {min:3500,max:5000,band:"每日深度稿3500至5000个正文汉字，不含标题摘要链接和标点"};
   if (depth === "deep") return { min: 2000, max: 3500, band: "深度稿2000至3500个中文字符，解释因果、节点、数据与可能方向" };
-  if (depth === "brief") return { min: null, max: 799, band: "经核对的新热点短讯，仅限对应选题" };
+  if (depth === "brief") return { min:800, max:1999, band:"普通稿800至1999个正文汉字，不足须补采" };
   return { min:800, max:1999, band:"普通稿800至1999个中文字符，通常1200至1999字，保留已核实核心事实与直接相关背景" };
 }
 
@@ -303,7 +303,7 @@ export function assertBodyQuality(article) {
   const target = editorialTarget(article.editorial_depth || (article.publication_scope === "topic_only" ? "brief" : "standard"), article.daily_deep_commission === true);
   if (count > target.max) throw qualityError(`正文${count}字超过${target.max}字，须精简后再发布`);
   if (target.min && count < target.min && (article.editorial_depth === "deep" || article.publication_scope !== "topic_only")) throw qualityError(`正文仅${count}个中文字符，${article.editorial_depth === "deep" ? `深度稿至少需要${target.min}字` : "至少需要800字"}`);
-  if (!count || (count < 800 && article.publication_scope !== "topic_only")) throw qualityError(`正文仅${count}个中文字符，至少需要800字；须补充同一事件的真实素材`);
+  if (!count || count < 800) throw qualityError(`正文仅${count}个中文字符，至少需要800字；须补充同一事件的真实素材`);
   const sentences = cleanText(article.content, Infinity).split(/[。！？!?\n]+/u)
     .map(s => s.replace(/[\p{P}\p{S}\s\d]+/gu, "")).filter(s => s.length >= 12);
   const total = sentences.reduce((n, s) => n + s.length, 0);
@@ -315,7 +315,7 @@ export function assertBodyQuality(article) {
 export function isReviewedRegular(article) {
   const review = article?.editorial_review;
   return ['brief', 'standard'].includes(article?.editorial_depth)
-    && bodyCharacterCount(article.content) >= 50
+    && bodyCharacterCount(article.content) >= 800
     && article.appears_old_news === false && review?.fresh_hot_event === false
     && Boolean(cleanText(review.freshness_evidence, 1000))
     && ['single_event', 'grounded', 'sufficient', 'analysis_grounded', 'court_status_correct'].every(k => review[k] === true) && sourceReviewPassed(article);
@@ -785,7 +785,7 @@ function visualContext(tweet) {
 
 export async function generateArticle(qualified, tweet, attempt = 0, previous = null, mode = "report") {
   const dailyDeep = mode === "daily-deep";
-  const ordinaryMinimum=qualified.route==="us-politics"?800:600;
+  const ordinaryMinimum=800;
   if(writingStandard.sourceBlocked(tweet)) throw qualityError("来源已被发布者停用");
   const politicalHold = politicalReviewReason(tweet);
   if (politicalHold) throw qualityError(`政治线索待核查：${politicalHold}`);
@@ -793,7 +793,7 @@ export async function generateArticle(qualified, tweet, attempt = 0, previous = 
   if (!sourceWithinCollectionWindow(tweet.created_at)) throw qualityError("原始来源超过12小时，不再自动采编");
   if (!tweet.context_research_attempted && (dailyDeep || newsPriority(tweet).score >= 50 || requiresBackgroundResearch(qualified.text))) {
     tweet.context_research_attempted = true;
-    try {tweet.context_research = await researchEvent(qualified,tweet,{request,readJson,model:OPENAI_MODEL,key:process.env.OPENAI_API_KEY,bearer:bearerToken(),editorialDepth:'deep'});}
+    try {tweet.context_research = await researchEvent(qualified,tweet,{request,readJson,model:OPENAI_MODEL,key:process.env.OPENAI_API_KEY,bearer:bearerToken(),editorialDepth:'deep',forceCommission:dailyDeep});}
     catch(error) {if(isBudgetDeferred(error))throw error;tweet.context_research_error='资料检索暂未完成';}
   }
   if (!usableMedia(tweet).length && !tweet.image_lookup_attempted) {
@@ -801,7 +801,7 @@ export async function generateArticle(qualified, tweet, attempt = 0, previous = 
     tweet.media = await findSourceImages([...(tweet.source_links || []),...(tweet.context_research?.sources || []).map(s=>s.url)]);
   }
   if (dailyDeep && tweet.context_research?.depth_assignment?.requested_depth !== "deep") throw qualityError("每日深度选题资料不足：" + (tweet.context_research?.depth_assignment?.missing_material || ["未形成有据写作计划"]).join("；"));
-  const brief = mode === "brief" && qualified.route !== "us-politics";
+  const brief = false; // All published news now meets the publisher's 800-character minimum.
   const thinSource = isThinSourceMaterial(qualified.text);
   const backgroundResearchRequired = requiresBackgroundResearch(qualified.text);
   if (brief && (!qualified.accepted || !isFreshBriefSource(tweet) || !tweet.context_research_attempted)) throw qualityError("短讯仅限对应选题的新热点，旧稿不可借短讯补发");
@@ -861,7 +861,7 @@ export async function generateArticle(qualified, tweet, attempt = 0, previous = 
   const article = response;
   article.daily_deep_commission = dailyDeep;
   tweet.generated_draft = article;
-  article.title = cleanText(article.title, Infinity); article.summary = cleanText(article.summary, Infinity); article.content = cleanText(article.content, Infinity); article.old_news_reason = cleanText(article.old_news_reason, 800);
+  article.title = cleanText(article.title, Infinity); article.summary = cleanText(article.summary, Infinity); article.content = cleanText(article.content, Infinity).replace(/\\r\\n|\\n/g,"\n").replace(/\*/g,""); article.old_news_reason = cleanText(article.old_news_reason, 800);
   article.editorial_depth = dailyDeep ? "deep" : brief ? "brief" : mode === "standard" ? "standard" : article.editorial_depth === "deep" ? "deep" : "standard";
   article.content = formatNewsParagraphs(article.content, article.editorial_depth);
   article.depth_reason = cleanText(article.depth_reason, 1000);
@@ -896,11 +896,12 @@ export async function generateArticle(qualified, tweet, attempt = 0, previous = 
   if (!brief && tweet.context_research && article.source_sufficient === true && bodyCharacterCount(article.content) < ordinaryMinimum && attempt < 1) {
     return generateArticle(qualified, tweet, attempt + 1, {...article, rewrite_reason: `正文仅${bodyCharacterCount(article.content)}个中文字符，数字、标点与链接不计数。请依据已给资料补齐同一事件背景、当事人回应及明确归因的观点，目标800至1999个中文字符。不得重复或虚构；事实不足则source_sufficient=false`});
   }
-  if (!brief && (article.source_sufficient !== true || bodyCharacterCount(article.content) < ordinaryMinimum)
-    && qualified.route !== "us-politics" && isFreshBriefSource(tweet) && tweet.context_research_attempted) {
-    return generateArticle(qualified, tweet, 0, null, "brief");
+  if (!dailyDeep && article.source_sufficient === true && bodyCharacterCount(article.content)<800 && attempt<2) {
+    return generateArticle(qualified,tweet,attempt+1,{...article,rewrite_reason:'正文未达到800字。仅使用实际取得的同一事件资料补充时间线、各方回应、具体政策与适用范围，目标1200至1999字；不得重复或虚构。'},'standard');
   }
-  if (brief || (bodyCharacterCount(article.content) >= 600 && bodyCharacterCount(article.content) < 800)) article.publication_scope = "topic_only";
+  if(article.source_sufficient!==true)throw qualityError(article.rejection_reason || '素材不足以支持完整新闻');
+  if (bodyCharacterCount(article.content)<800) throw qualityError('正文不足800字，须补采后重新写作，不能降为短讯发布');
+  article.publication_scope = 'standard';
   if (article.source_sufficient !== true) throw qualityError(article.rejection_reason || "素材不足以支持完整新闻，须补充同一事件的事实材料");
   if (bodyCharacterCount(article.content) > target.max && attempt < 2) {
     return generateArticle(qualified, tweet, attempt + 1, {...article, rewrite_reason: `正文超过${target.max}字，请保留核心事实和来源归因，精简至${target.min || 0}–${target.max}字`}, mode);

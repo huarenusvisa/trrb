@@ -28,7 +28,7 @@ test('daily deep limits do not silently raise ordinary news limits',()=>{
 test('candidate retries preserve 12-hour window, human locks and bounded attempts',()=>{
  const r={external_id:'x:li-teacher:123',raw_text:'中国新闻',collected_at:new Date().toISOString(),raw_payload:{source_created_at:new Date().toISOString()},ai_payload:{},decision:'failed'};
  const date=nyDate();assert.equal(eligibleCandidate(r,date),true);
- for(const change of [x=>x.raw_payload.source_created_at=new Date(Date.now()-13*3600000).toISOString(),x=>x.ai_payload.manual_editor_lock=true,x=>x.ai_payload.manual_override=true,x=>x.decision='rejected',x=>x.ai_payload.daily_depth_attempt={date,attempts:2}]){const x=structuredClone(r);change(x);assert.equal(eligibleCandidate(x,date),false);}
+ for(const change of [x=>x.raw_payload.source_created_at=new Date(Date.now()-13*3600000).toISOString(),x=>x.ai_payload.manual_editor_lock=true,x=>x.ai_payload.manual_override=true,x=>x.decision='rejected',x=>x.ai_payload.daily_depth_attempt={date,attempts:3}]){const x=structuredClone(r);change(x);assert.equal(eligibleCandidate(x,date),false);}
 });
 test('source-led routing accepts Cornell, Tibet and Tennessee without foreign background relocating event',()=>{
  const cases=[['纽约检察官重启康奈尔大学性侵案调查','康奈尔大学案件获重新审查','us-enforcement'],['中国当局在西藏部署无人机，英国议员讨论采购限制','西藏无人机部署引发关注','china'],['美国田纳西州死刑执行受到质疑','田纳西州死刑程序接受审查','us-enforcement']];

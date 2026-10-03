@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {isChinaPolitical,editorialTopics,POLITICS_FILTER} from '../netlify/shared/editorial-topics.mjs';
 import {buildCandidate,generateArticle,qualifyTweet,buildPublishedArticle,sourceFor,parseModelJson,eventDuplicate} from './china-hot-li-teacher-ingest.mjs';
 import {collectChinaMediaPosts,CHINA_X_SOURCES,CHINA_X_MONITORS,chinaMediaQuery,politicalReviewReason} from './china-x-sources.mjs';
-const body='重庆学校发布开学通知。'+Array.from({length:630},(_,i)=>String.fromCharCode(0x4e00+i)).join('');
+const body='重庆学校发布开学通知。'+Array.from({length:900},(_,i)=>String.fromCharCode(0x4e00+i)).join('');
 const source={id:'12345',text:'重庆学校今日公布开学安排，通知说明报到时间及校方调整安排。',created_at:new Date().toISOString(),media:[{type:'photo',url:'https://pbs.twimg.com/media/test.jpg'}]};
 const draft={title:'重庆学校公布开学安排',summary:'学校通知载明报到时间与调整安排。',content:body,source_sufficient:true,appears_old_news:false,old_news_reason:'',rejection_reason:'',seo_keywords:'重庆,开学',image_evidence:[{image_index:0,visible_text:'开学通知'}]};
 const usBody=body+Array.from({length:300},(_,i)=>String.fromCharCode(0x5200+i)).join('')+'。';
@@ -27,11 +27,11 @@ test('homepage screenshot: US titles and summaries do not create China political
  assert.equal(isChinaPolitical({title:'重庆市长调任'}),true);
  assert.equal(isChinaPolitical({title:'美国议员批评习近平政策'}),true);
 });
-test('630-character grounded article publishes in topic only without an 800-character rewrite',async t=>{
+test('800-plus grounded article publishes as a complete standard report',async t=>{
  let writes=0,reviews=0;
  t.mock.method(globalThis,'fetch',async(_url,options)=>{const input=JSON.parse(options.body);assert.equal(input.tools,undefined);if(input.text.format.name==='china_hot_editorial_review'){reviews++;return Response.json({output_text:JSON.stringify(verdict)});}writes++;assert.match(input.instructions,/800至1999/);return Response.json({output_text:JSON.stringify(draft)});});
  const qualified=qualifyTweet(source);const article=await generateArticle(qualified,{...source});const row=buildPublishedArticle(source,qualified,article);
- assert.equal(writes,1);assert.equal(reviews,1);assert.equal(row.status,'published');assert.equal(row.metadata.publication_scope,'topic_only');assert.equal(row.metadata.homepage_focus_override,'exclude');assert.deepEqual(row.metadata.image_evidence,draft.image_evidence);
+ assert.equal(writes,1);assert.equal(reviews,1);assert.equal(row.status,'published');assert.equal(row.metadata.publication_scope,'standard');assert.equal(row.metadata.homepage_focus_override,'auto');assert.deepEqual(row.metadata.image_evidence,draft.image_evidence);
 });
 test('incomplete JSON is regenerated once and partial content is never published',async t=>{
  let writes=0;

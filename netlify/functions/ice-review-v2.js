@@ -1,3 +1,4 @@
+const writingStandard = require('./_shared/news-writing-standard');
 const {routeOfficialContent} = require('./_shared/official-content-routing');
 const {manualEditorialMetadata} = require('./_shared/news-editorial-policy');
 const crypto = require("node:crypto");
@@ -132,6 +133,7 @@ function chinese(value) { return /[\u3400-\u9fff]/u.test(String(value || "")); }
 function shingles(value) { const text = String(value || "").toLowerCase().replace(/[^a-z0-9\u3400-\u9fff]+/g, ""); const set = new Set(); for (let index = 0; index < text.length - 1; index += 1) set.add(text.slice(index, index + 2)); return set; }
 function similarity(a, b) { const left = shingles(a), right = shingles(b); if (!left.size || !right.size) return 0; let common = 0; for (const token of left) if (right.has(token)) common += 1; return common / (left.size + right.size - common); }
 function assertEditorialReady(story, title, content, input = {}) {
+  try {writingStandard.assertEditedContent({title,content});} catch(error) {error.statusCode=400;throw error;}
   const payload = story.ai_payload && typeof story.ai_payload === "object" ? story.ai_payload : {};
   if (!routeOfficialContent(title,story.summary,content)) throw Object.assign(new Error("该内容不是明确的ICE执法或已批准时政、法院、警情选题，不能发布"), { statusCode: 400 });
   if (!chinese(title) || !chinese(content)) throw Object.assign(new Error("标题和正文必须是中文，禁止直接发布英文原文"), { statusCode: 400 });

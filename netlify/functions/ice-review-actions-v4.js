@@ -1,3 +1,4 @@
+const writingStandard = require('./_shared/news-writing-standard');
 const {routeOfficialContent} = require('./_shared/official-content-routing');
 const {manualEditorialMetadata} = require('./_shared/news-editorial-policy');
 const { safeText, rest, authenticateStaff } = require('./_shared/supabase-admin');
@@ -18,6 +19,7 @@ function json(statusCode, body) {
 function nowIso() { return new Date().toISOString(); }
 function chinese(value) { return /[\u3400-\u9fff]/u.test(String(value || '')); }
 function assertEditorialReady(story, fields, input = {}) {
+  try {writingStandard.assertEditedContent(fields);} catch(error) {error.statusCode=400;throw error;}
   const payload = story.ai_payload && typeof story.ai_payload === 'object' ? story.ai_payload : {};
   if (!routeOfficialContent(fields.title,fields.summary,fields.content)) { const error = new Error('该内容不是明确的ICE执法或已批准时政、法院、警情选题，不能批准发布'); error.statusCode = 400; throw error; }
   if (!chinese(fields.title) || !chinese(fields.content)) { const error = new Error('标题和正文必须是中文，禁止直接发布英文原文'); error.statusCode = 400; throw error; }

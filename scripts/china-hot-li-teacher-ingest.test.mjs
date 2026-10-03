@@ -183,8 +183,7 @@ test("缺图可发布文字稿，短讯仍须独立事实复核，超过12小时
   assert.equal(published.metadata.homepage_focus_override,"exclude");
   assert.equal(published.metadata.text_only_verified,true);
   generated={...generated,content:"重庆学校公布开学安排，具体时间已向在校学生及家长发出通知。原文说明调整是因持续高温，教育部门还将根据天气情况继续评估安排。"};
-  const brief=await generateArticle(qualified,{...tweet});
-  assert.equal(brief.publication_scope,"topic_only");
+  await assert.rejects(()=>generateArticle(qualified,{...tweet}),/不足800/);
   generated={...generated,source_sufficient:false,rejection_reason:"只有标题，缺少报道事实"};
   await assert.rejects(generateArticle(qualified,{...tweet}),/缺少报道事实/);
   generated={...generated,source_sufficient:true,content:qualityBody};
@@ -451,32 +450,12 @@ test("只有标题的线索找不到原始出处和上下游资料时不得成�
   await assert.rejects(generateArticle({accepted:true,reason:"china-news",route:"china",text:tweet.text,title:tweet.text}, tweet), /未找到可核对原始出处/);
 });
 
-test('无法可靠扩至800字的新热点经过独立核对可发布为选题短讯', async t => {
- const tweet={...chinaTweet,created_at:new Date().toISOString()};
- const brief={title:'重庆学校调整开学安排',summary:'校方发布高温期间的教学通知。',content:chinaTweet.text+'原帖同时列明学校将根据天气情况继续评估，后续安排以实际通知为准。',seo_keywords:'重庆,学校',appears_old_news:false,old_news_reason:'',source_sufficient:true,rejection_reason:''};
- let writes=0,researches=0,reviews=0;
- t.mock.method(globalThis,'fetch',async(_url,options)=>{
-  const input=JSON.parse(options.body);
-  if(input.tools){researches++;return Response.json({output:[]});}
-  if(input.text.format.name==='china_hot_editorial_review'){
-   reviews++;assert.match(input.instructions,/短讯例外/);
-   return Response.json({output_text:JSON.stringify({...editorial_review,fresh_hot_event:true,freshness_evidence:'测试材料明确记载学校今日公布新的开学安排'})});
-  }
-  writes++;return Response.json({output_text:JSON.stringify(writes===1?{...brief,content:'',source_sufficient:false,rejection_reason:'素材不足以扩写800字'}:brief)});
- });
- const qualified=qualifyTweet(tweet);const generated=await generateArticle(qualified,tweet);
- assert.equal(researches,1);assert.equal(writes,2);assert.equal(reviews,1);
- assert.equal(generated.publication_scope,'topic_only');
- const saved=buildPublishedArticle(tweet,qualified,generated);
- assert.equal(saved.category_name,'热门头条');assert.equal(saved.status,'published');
- assert.equal(saved.metadata.publication_scope,'topic_only');assert.equal(saved.metadata.homepage_focus_override,'exclude');
- assert.ok(saved.metadata.body_character_count<800);
- for(const patch of [{freshness_evidence:''},{grounded:false}]){
-  assert.throws(()=>buildPublishedArticle(tweet,qualified,{...generated,editorial_review:{...generated.editorial_review,...patch}}),/采编质量拦截/);
- }
- assert.throws(()=>buildPublishedArticle({...tweet,created_at:new Date(Date.now()-73*3600000).toISOString()},qualified,generated),/短讯仅限/);
- assert.throws(()=>buildPublishedArticle({...tweet,context_research_attempted:false},qualified,generated),/短讯仅限/);
- assert.throws(()=>buildPublishedArticle({...tweet,created_at:new Date(Date.now()+3600000).toISOString()},qualified,generated),/短讯仅限/);
+test('short source reports cannot downgrade into a published brief after bounded rewriting',async t=>{
+ let writes=0;
+ const tweet={...chinaTweet,created_at:new Date().toISOString(),context_research_attempted:true,image_lookup_attempted:true};
+ t.mock.method(globalThis,'fetch',async(_url,options)=>{const input=JSON.parse(options.body);assert.notEqual(input.text?.format?.name,'china_hot_editorial_review','short drafts never reach publication review');writes++;return Response.json({output_text:JSON.stringify({title:'重庆学校调整开学安排',content:chinaTweet.text,summary:'安排更新',source_sufficient:true,appears_old_news:false,editorial_depth:'standard'})});});
+ await assert.rejects(()=>generateArticle(qualifyTweet(tweet),tweet),/不足800/);assert.equal(writes,3);
+ assert.throws(()=>buildPublishedArticle(tweet,qualifyTweet(tweet),{title:'重庆学校调整开学安排',content:chinaTweet.text,editorial_depth:'brief',publication_scope:'topic_only',editorial_review}),/800/);
 });
 
 test('同一新闻不能用短讯版本绕过长稿去重', async()=>{
@@ -520,8 +499,8 @@ test('审核合格的非突发普通稿直接发布，保留时效结论并排�
   assert.throws(()=>buildPublishedArticle(chinaTweet,qualifyTweet(chinaTweet),{...article,appears_old_news:true}),/旧闻/);
   const brief={...article,content:'学校公布的教学安排及适用范围已经在原始通知中明确，本文介绍相关背景。通知同时列明负责部门与执行细则，家长可以按照文件中的联系方式了解适用情况。',editorial_depth:'brief',publication_scope:'topic_only'};
   const tweet={...chinaTweet,context_research_attempted:true};
-  assert.equal(buildPublishedArticle(tweet,qualifyTweet(tweet),brief).metadata.publication_mode,'reviewed_regular');
-  assert.throws(()=>buildPublishedArticle({...tweet,created_at:new Date(Date.now()-13*3600000).toISOString()},qualifyTweet(tweet),brief),/短讯仅限/);
+  assert.throws(()=>buildPublishedArticle(tweet,qualifyTweet(tweet),brief),/800/);
+  assert.throws(()=>buildPublishedArticle({...tweet,created_at:new Date(Date.now()-13*3600000).toISOString()},qualifyTweet(tweet),brief),/800/);
 });
 
 

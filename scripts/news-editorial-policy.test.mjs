@@ -29,13 +29,13 @@ test('two links from one publisher, social comments and unexecuted searches cann
 test('each missing deep research dimension blocks publication and edits invalidate prior verdict',()=>{
  for(const key of DEEP_REVIEW_FIELDS){const s=story();s.ai_payload.editorial_review={...review,[key]:false};assert.equal(reviewedStoryReady(s),false,key);}
  const s=story();assert.equal(reviewedStoryReady(s),true);assert.equal(reviewedStoryReady({...s,content:s.content+'改'}),false);
- assert.equal(manualEditorialMetadata(s,s.title,'短讯').editorial_depth,'brief');
- assert.equal(manualEditorialMetadata(s,s.title,s.content).editorial_depth,'deep');
+ assert.throws(()=>manualEditorialMetadata(s,s.title,'短讯'),/800/);
+ const complete=Array.from({length:2000},(_,i)=>String.fromCharCode(0x4e00+i)).join('')+'。';s.content=complete;s.ai_payload.reviewed_content_sha256=contentDigest(s.title,complete);assert.equal(manualEditorialMetadata(s,s.title,complete).editorial_depth,'deep');
 });
 test('old unchecked official translations cannot bypass the new review but legacy human approval survives',()=>{
  const s=story(500);s.ai_payload.translation_version='zh-title-body-v10-official-context-flex-300-1500';s.ai_payload.manual_old_news_confirmation=true;
  assert.equal(publishReady(s,official),false);assert.equal(promoteReady(s,[official]),false);
- s.human_review_status='approved';s.reviewed_by='editor';assert.equal(publishReady(s,official),true);
+ s.human_review_status='approved';s.reviewed_by='editor';assert.equal(publishReady(s,official),false);s.content='文'.repeat(900);assert.equal(publishReady(s,official),true);
 });
 test('research keeps retrieved comments separate from factual citations',async()=>{
  let calls=0;
@@ -67,10 +67,10 @@ test('ICE deep writer research is reused when missing data requires a factual do
   const body=JSON.parse(options.body);
   if(body.tools){searches++;return Response.json({output:[{type:'web_search_call',status:'completed'},{content:[{type:'output_text',text:'Retrieved documents',annotations:research.sources.map(s=>({type:'url_citation',url:s.url}))}]}]});}
   if(body.text.format.name==='unified_news_review'){reviews++;return Response.json({output_text:JSON.stringify({...review,data_context:reviews!==1})});}
-  writes++;return Response.json({output_text:JSON.stringify({title:'联邦法院裁定新政策暂缓执行',content:'文'.repeat(writes===1?2600:500),summary:'法院发布裁定',editorial_depth:writes===1?'deep':'brief',source_sufficient:true,depth_reason:'材料决定稿型',source_language:'en',image_observations:'',appears_old_news:false,old_news_reason:''})});
+  writes++;return Response.json({output_text:JSON.stringify({title:'联邦法院裁定新政策暂缓执行',content:'文'.repeat(writes===1?2600:900),summary:'法院发布裁定',editorial_depth:writes===1?'deep':'standard',source_sufficient:true,depth_reason:'材料决定稿型',source_language:'en',image_observations:'',appears_old_news:false,old_news_reason:''})});
  });
  const result=await translate({},[{source_text:'A federal court issued an injunction on new immigration rules today.',x_url:'https://www.justice.gov/opa/primary'}]);
- assert.equal(searches,1);assert.equal(writes,2);assert.equal(reviews,2);assert.equal(result.editorial_depth,'brief');assert.equal(result.targetMax,799);
+ assert.equal(searches,1);assert.equal(writes,2);assert.equal(reviews,2);assert.equal(result.editorial_depth,'standard');assert.equal(result.targetMax,1999);
 });
 test('undersized drafts are reviewed under their actual lower tier and still require grounded facts',async(t)=>{
  let length=500,requested='standard',grounded=true,writes=0,reviewedDepth='';
@@ -84,9 +84,9 @@ test('undersized drafts are reviewed under their actual lower tier and still req
   writes++;return Response.json({output_text:JSON.stringify({title:'联邦法院裁定新政策暂缓执行',content:'文'.repeat(length),summary:'法院发布裁定',editorial_depth:requested,source_sufficient:true,depth_reason:'仅有已核实事实',source_language:'en',image_observations:'',appears_old_news:false,old_news_reason:''})});
  });
  const posts=[{source_text:'A federal court issued an injunction on new immigration rules today.',x_url:'https://www.justice.gov/opa/primary'}];
- const brief=await translate({},posts);assert.equal(brief.editorial_depth,'brief');assert.equal(reviewedDepth,'brief');assert.equal(writes,1);
- length=1700;requested='deep';const standard=await translate({},posts);assert.equal(standard.editorial_depth,'standard');assert.equal(reviewedDepth,'standard');assert.equal(writes,3);
- length=500;grounded=false;await assert.rejects(()=>translate({},posts),/独立复核未通过/);
+ await assert.rejects(()=>translate({},posts),/不足800/);assert.equal(writes,3);writes=0;
+ length=1700;requested='deep';const standard=await translate({},posts);assert.equal(standard.editorial_depth,'standard');assert.equal(reviewedDepth,'standard');assert.equal(writes,2);
+ length=900;grounded=false;await assert.rejects(()=>translate({},posts),/独立复核未通过/);
 });
 
 import {articleUpdateBody,automationMayUpdate,verifyArticleUpdate} from './news-article-updates.mjs';
@@ -103,7 +103,7 @@ test('same-URL updates preserve publication identity and cannot overwrite human 
 });
 test('human approval of an edited policy story remains publishable but loses unchecked depth label',()=>{
  const s=story();s.human_review_status='approved';s.reviewed_by='editor';s.ai_payload.manual_old_news_confirmation=true;s.content='编辑核验后的短讯';
- assert.equal(publishReady(s,official),true);assert.equal(manualEditorialMetadata(s,s.title,s.content).editorial_depth,'brief');
+ assert.equal(publishReady(s,official),false);assert.throws(()=>manualEditorialMetadata(s,s.title,s.content),/800/);s.content=Array.from({length:900},(_,i)=>String.fromCharCode(0x4e00+i)).join('')+'。';assert.equal(publishReady(s,official),true);assert.equal(manualEditorialMetadata(s,s.title,s.content).editorial_depth,'standard');
 });
 
 import {isOlderThanCutoff} from './ice-drop-stale-posts.mjs';
@@ -135,7 +135,7 @@ test('source freshness uses original time and fails closed outside twelve hours'
 });
 
 test('a deep-report suitability flag cannot reject a factual lower-tier copy or bypass factual gates',()=>{
- for(const [depth,n] of [['brief',500],['standard',900]]){
+ for(const [depth,n] of [['standard',900]]){
   const s=story(n);s.ai_payload.editorial_depth=depth;
   s.ai_payload.editorial_review={...review,depth_appropriate:false,...Object.fromEntries(DEEP_REVIEW_FIELDS.map(k=>[k,false]))};
   assert.equal(reviewedStoryReady(s),true);
@@ -146,13 +146,13 @@ test('a deep-report suitability flag cannot reject a factual lower-tier copy or 
  const deep=story();deep.ai_payload.editorial_review={...review,depth_appropriate:false};assert.equal(reviewedStoryReady(deep),false);
 });
 
-test('ICE writer accepts a factual brief when the reviewer only objects to missing depth',async t=>{
+test('ICE writer accepts an 800-plus ordinary report without requiring deep dimensions',async t=>{
  t.mock.method(globalThis,'fetch',async(_url,options)=>{
   const request=JSON.parse(options.body);
   if(request.tools)return Response.json({output:[]});
   if(request.text.format.name==='unified_news_review')return Response.json({output_text:JSON.stringify({...review,depth_appropriate:false,reason:'事实与简讯篇幅合格，但没有深度分析',...Object.fromEntries(DEEP_REVIEW_FIELDS.map(k=>[k,false]))})});
-  return Response.json({output_text:JSON.stringify({title:'执法部门公布案件进展',summary:'通报已确认的案件事实',content:'文'.repeat(500),editorial_depth:'brief',source_sufficient:true,depth_reason:'仅有已核实事实',source_language:'en',image_observations:'',appears_old_news:false,old_news_reason:''})});
+  return Response.json({output_text:JSON.stringify({title:'执法部门公布案件进展',summary:'通报已确认的案件事实',content:'文'.repeat(900),editorial_depth:'standard',source_sufficient:true,depth_reason:'仅有已核实事实',source_language:'en',image_observations:'',appears_old_news:false,old_news_reason:''})});
  });
  const result=await translate({},[{source_text:'Police announced an arrest and released the case facts today.',source_created_at:new Date().toISOString()}]);
- assert.equal(result.editorial_depth,'brief');assert.equal(result.editorial_review.depth_appropriate,false);
+ assert.equal(result.editorial_depth,'standard');assert.equal(result.editorial_review.depth_appropriate,false);
 });

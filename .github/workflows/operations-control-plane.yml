@@ -92,6 +92,9 @@ jobs:
   automation-gate:
     name: 读取机器人硬开关
     runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      actions: write
     outputs:
       global: ${{ steps.gate.outputs.global }}
       ice: ${{ steps.gate.outputs.ice }}
@@ -107,6 +110,25 @@ jobs:
       legacy_recovery: ${{ steps.gate.outputs.legacy_recovery }}
     steps:
       - uses: actions/checkout@v4
+      - name: Replace obsolete editorial producers after a code fix
+        if: github.event_name == 'push'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+          CURRENT_SHA: ${{ github.sha }}
+        run: |
+          node --input-type=module <<'JS'
+          const base=`https://api.github.com/repos/${process.env.REPOSITORY}`;
+          const headers={Authorization:`Bearer ${process.env.GH_TOKEN}`,Accept:'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'};
+          const response=await fetch(`${base}/actions/workflows/operations-control-plane.yml/runs?status=in_progress&per_page=100`,{headers});
+          if(!response.ok)throw new Error(`Read obsolete producers: ${response.status}`);
+          for(const run of (await response.json()).workflow_runs || []) {
+            if(run.head_branch!=='main' || run.head_sha===process.env.CURRENT_SHA || !/^TRRB Operations \[(?:china-hot|ice)\]$/.test(run.name))continue;
+            const cancelled=await fetch(`${base}/actions/runs/${run.id}/cancel`,{method:'POST',headers});
+            if(![202,409].includes(cancelled.status))throw new Error(`Cancel obsolete producer ${run.id}: ${cancelled.status}`);
+            console.log(JSON.stringify({event:'obsolete-editorial-producer-replaced',run_id:run.id,old_sha:run.head_sha}));
+          }
+          JS
       - id: gate
         name: 从正式数据库读取开关（失败即暂停）
         env:

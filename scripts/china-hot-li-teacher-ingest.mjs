@@ -460,7 +460,7 @@ async function existingCandidate(tweet) {
 }
 
 export async function existingArticle(tweet) {
-  const rows = await supabase("articles", { query: { select: "id,title,summary,content,status,created_at,metadata", external_id: `eq.${externalId(tweet)}`, limit: "1" } });
+  const rows = await supabase("articles", { query: { select: "*", external_id: `eq.${externalId(tweet)}`, limit: "1" } });
   return Array.isArray(rows) ? rows[0] || null : null;
 }
 
@@ -794,13 +794,13 @@ export async function generateArticle(qualified, tweet, attempt = 0, previous = 
   if (!tweet.context_research_attempted && (dailyDeep || newsPriority(tweet).score >= 50 || requiresBackgroundResearch(qualified.text))) {
     tweet.context_research_attempted = true;
     try {tweet.context_research = await researchEvent(qualified,tweet,{request,readJson,model:OPENAI_MODEL,key:process.env.OPENAI_API_KEY,bearer:bearerToken(),editorialDepth:'deep',forceCommission:dailyDeep});}
-    catch(error) {if(isBudgetDeferred(error))throw error;tweet.context_research_error='资料检索暂未完成';}
+    catch(error) {if(isBudgetDeferred(error))throw error;tweet.context_research_error='资料检索暂未完成：'+String(error.message).slice(0,500);}
   }
   if (!usableMedia(tweet).length && !tweet.image_lookup_attempted) {
     tweet.image_lookup_attempted = true;
     tweet.media = await findSourceImages([...(tweet.source_links || []),...(tweet.context_research?.sources || []).map(s=>s.url)]);
   }
-  if (dailyDeep && tweet.context_research?.depth_assignment?.requested_depth !== "deep") throw qualityError("每日深度选题资料不足：" + (tweet.context_research?.depth_assignment?.missing_material || ["未形成有据写作计划"]).join("；"));
+  if (dailyDeep && tweet.context_research?.depth_assignment?.requested_depth !== "deep") throw qualityError("每日深度选题资料不足：" + (tweet.context_research?.depth_assignment?.missing_material || [tweet.context_research_error || "未形成有据写作计划"]).join("；"));
   const brief = false; // All published news now meets the publisher's 800-character minimum.
   const thinSource = isThinSourceMaterial(qualified.text);
   const backgroundResearchRequired = requiresBackgroundResearch(qualified.text);
@@ -1503,4 +1503,3 @@ export async function run() {
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) run().catch((error) => { console.error("中国热门头条采集发布失败：", error); process.exitCode = 1; });
-

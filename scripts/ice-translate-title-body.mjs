@@ -89,7 +89,7 @@ function schemaFor() {
     required: ["title", "summary", "content", "source_language", "image_observations", "appears_old_news", "old_news_reason", "editorial_depth", "depth_reason", "source_sufficient"],
     properties: {
       title: { type: "string" }, summary: { type: "string" }, content: { type: "string" },
-      editorial_depth:{type:"string",enum:["brief","standard","deep"]},depth_reason:{type:"string"},source_sufficient:{type:"boolean"},
+      editorial_depth:{type:"string",enum:["standard","deep"]},depth_reason:{type:"string"},source_sufficient:{type:"boolean"},
       source_language: { type: "string", enum: ["en", "zh", "mixed", "unknown"] },
       image_observations: { type: "string" }, appears_old_news: { type: "boolean" }, old_news_reason: { type: "string" }
     }
@@ -157,7 +157,7 @@ async function translate(story, posts, attempt = 0, context = null) {
         '正文必须以原始sources中的具体事件为主线。研究材料只用于核对同一事件，禁止把研究搜到的另一案件、TPS政策或通用背景替换为原帖事件。来源间存在说法分歧时分别归因，不替任何一方裁定。',
         canDeep ? '选题有重大公共影响或实时热点价值且资料满足全部深度要求时，editorial_depth=deep，目标2000至3500个纯中文汉字。先判断资料是否足够，不得为了长稿虚构。' : '本次实际资料不足以支持深度稿，editorial_depth必须为standard，正文至少800汉字。',
         '普通稿800至1999个正文汉字，优先1200至1800字；禁止短讯降级发布。完整交代已核实核心事实和同一事件有来源的背景。无具体可核实事件、只有标题、观点或节目预告时source_sufficient=false并留空正文。字数不计英文、数字、链接、标点。depth_reason说明选择依据和未补齐资料。',
-        '正文用空行分段，短讯至少两段、普通稿至少三段、深度稿至少六段，每段一个信息点；不重复摘要和标题，不插无关历史、口号、提醒、呼吁和广告，不在正文末尾堆关键词。',
+        '普通稿先从实际材料选出六个不同且有来源的信息点，再写六至八段，每段约150至220汉字，总正文1200至1800汉字。可报道事件进展、时间线、官方文件具体条款、当事人立场、适用范围、下一程序节点；只写已经取得依据的内容。段落用空行分开，深度稿至少六段。不重复摘要标题，不插无关历史、口号、提醒、呼吁、广告或关键词。',
         '所有输出使用简体中文，机构缩写可保留。标题准确概括主体和动作，summary简明，标题和摘要无字数限制。每一处来自官方的单方说法持续归因“该机构通报称”；诉状指控不得写成定罪。',
         '实际事实不能来自通用ICE背景；仅在ICE/ERO/HSI相关时可将提供的制度背景单独明确写作一般程序，不能套在USCIS、FBI或中国政治报道上。不得猜测个人身份、国籍、族群、动机、住址或法律状态。',
         '有图片须核对实际可辨信息；视频缩略图不证明连续过程。image_observations只记实际读到的画面内容，无图留空。',
@@ -181,7 +181,7 @@ async function translate(story, posts, attempt = 0, context = null) {
   parsed.content=String(parsed.content || '').replace(/\\r\\n|\\n/g,'\n').replace(/\*/g,'');
   const count = countChinese(parsed.content);
   if(count<800) {
-    if(attempt<2)return translate(story,posts,attempt+1,{...context,force_standard:context.force_standard || !canDeep,rewrite_reason:'正文不足800汉字。根据实际检索笔记补写本事件时间线、当事人回应和有来源政策背景至1200至1800字；一般程序不得冒充个案事实，不能凑字。'});
+    if(attempt<2)return translate(story,posts,attempt+1,{...context,force_standard:context.force_standard || !canDeep,rewrite_reason:`上一稿实际只有${count}个汉字，未达到发布下限。请重新组织六至八个有来源信息段，每段约150至220汉字，完整重写至1200至1800汉字；一般程序不得冒充个案事实，不能凑字。上一稿仅供改写参考，不是事实来源：`+parsed.content});
     throw new Error('正文不足800字，补采未完成，禁止短讯发布');
   }
   if(parsed.editorial_depth==='brief')parsed.editorial_depth='standard';

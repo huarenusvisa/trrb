@@ -211,6 +211,9 @@ jobs:
       - name: Test chat recording gestures and upload progress
         working-directory: apps/mobile
         run: npm run test:chat
+
+      - name: Verify TXT publishing
+        run: npm run test:txt-publish
       - name: Audit push security and lifecycle contract
         run: node scripts/audit-app-batch2-node7.mjs
       - name: Validate store build configuration

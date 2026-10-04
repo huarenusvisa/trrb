@@ -2,6 +2,24 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const { normalizePhone, normalizeIdentifier } = require('./unified-account-login')._test;
 const fs = require('node:fs');
+const vm = require('node:vm');
+
+test('TXT login-only rejects bad credentials without creating a new account', async () => {
+  const requests = [];
+  const context = { exports: {}, process: { env: {} }, console: { error() {} }, Date, JSON,
+    require(name) {
+      if (name === 'node:crypto') return require(name);
+      return { SUPABASE_URL: 'https://auth.test', SERVICE_KEY: 'test-key', safeText: value => String(value || ''),
+        rest: async () => [], requestJson: async url => { requests.push(url); throw Error('invalid credentials'); } };
+    },
+  };
+  vm.createContext(context);
+  vm.runInContext(fs.readFileSync(require.resolve('./unified-account-login'), 'utf8'), context);
+  const result = await context.exports.handler({ httpMethod: 'POST', headers: {}, body: JSON.stringify({ identifier: 'editor@example.com', password: 'wrong-password', login_only: true }) });
+  assert.equal(result.statusCode, 401);
+  assert.equal(requests.length, 1);
+  assert.ok(!requests.some(url => url.includes('/admin/users')));
+});
 
 test('normalizes US phone numbers', () => {
   assert.equal(normalizePhone('(347) 873-8860'), '+13478738860');

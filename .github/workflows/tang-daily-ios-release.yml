@@ -123,6 +123,7 @@ jobs:
           npm run test:i18n
           npm run test:social
           npm run test:chat
+          npm run test:txt-publish
 
       - name: Preflight Tang Daily iOS JavaScript bundle
         run: npx expo export --platform ios --output-dir /tmp/tang-daily-ios-preflight --clear

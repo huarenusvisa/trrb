@@ -171,7 +171,7 @@ exports.handler = async (event) => {
       // A mapped phone identifier already belongs to a user whose underlying
       // Auth email may be a recovery address. Never create a duplicate alias
       // account when the password is wrong.
-      if (resolved.mapped) {
+      if (resolved.mapped || body.login_only === true) {
         await recordAttempt(identifierHash, ipHash, false);
         return json(401, { error: '账号或密码错误' }, event);
       }

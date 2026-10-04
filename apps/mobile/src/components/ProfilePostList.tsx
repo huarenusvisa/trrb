@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Image } from 'expo-image';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { router } from 'expo-router';
@@ -7,14 +8,15 @@ import { useI18n } from '../i18n/I18nProvider';
 
 type Props = { posts: ProfilePost[]; own?: boolean };
 
-function PostTile({ post, own }: { post: ProfilePost; own?: boolean }) {
+function PostTile({ post, own, width }: { post: ProfilePost; own?: boolean; width: number }) {
+  const [imageFailed, setImageFailed] = useState(false);
   const { locale } = useI18n();
   const first = post.profile_post_media?.[0];
   const open = () => router.push({ pathname: '/profile-post/[id]', params: { id: post.id, own: own ? '1' : '0' } });
 
-  return <Pressable accessibilityRole="button" accessibilityLabel="打开动态" onPress={open} style={styles.tile}>
-    {first?.media_type === 'image' && first.signed_url
-      ? <Image source={{ uri: first.signed_url }} contentFit="cover" transition={120} style={styles.tileMedia} />
+  return <Pressable accessibilityRole="button" accessibilityLabel="打开动态" onPress={open} style={[styles.tile, { width, height: width / 0.78 }]}>
+    {first?.media_type === 'image' && first.signed_url && !imageFailed
+      ? <Image source={{ uri: first.signed_url }} contentFit="cover" transition={120} onError={() => setImageFailed(true)} style={styles.tileMedia} />
       : first?.media_type === 'video'
         ? <View style={[styles.tileMedia, styles.videoTile]}><Text style={styles.play}>▶</Text><Text style={styles.videoLabel}>视频</Text></View>
         : <View style={[styles.tileMedia, styles.textTile]}><Text numberOfLines={7} style={styles.textTileCopy}>{post.caption || '动态'}</Text></View>}
@@ -29,13 +31,14 @@ function PostTile({ post, own }: { post: ProfilePost; own?: boolean }) {
 
 export function ProfilePostList({ posts, own }: Props) {
   const { t } = useI18n();
+  const [gridWidth, setGridWidth] = useState(0);
   if (!posts.length) return <View style={styles.empty}><Text style={styles.emptyIcon}>▧</Text><Text style={styles.emptyTitle}>{t('userProfile.noPosts')}</Text><Text style={styles.emptyText}>{own ? t('userProfile.noOwnPostsBody') : t('userProfile.noPublicPostsBody')}</Text></View>;
-  return <View style={styles.grid}>{posts.map((post) => <PostTile key={post.id} post={post} own={own} />)}</View>;
+  return <View style={styles.grid} onLayout={(event) => setGridWidth(event.nativeEvent.layout.width)}>{gridWidth > 0 ? posts.map((post) => <PostTile key={post.id} post={post} own={own} width={Math.max(1, (gridWidth - 8) / 3)} />) : null}</View>;
 }
 
 const styles = StyleSheet.create({
   grid:{flexDirection:'row',flexWrap:'wrap',gap:4},
-  tile:{width:'32.6%',aspectRatio:.78,backgroundColor:'#111',overflow:'hidden',position:'relative'},
+  tile:{backgroundColor:'#111',overflow:'hidden',position:'relative'},
   tileMedia:{position:'absolute',top:0,right:0,bottom:0,left:0,width:'100%',height:'100%',backgroundColor:'#e9edf2'},
   videoTile:{alignItems:'center',justifyContent:'center',backgroundColor:'#1d2939'},
   play:{fontSize:28,color:'#fff'},videoLabel:{color:'#fff',fontWeight:'900',fontSize:12,marginTop:6},

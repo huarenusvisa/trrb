@@ -18,6 +18,7 @@ import { getReadingPreferences, ReadingPreferences, setReadingFontScale } from '
 import { disableCurrentDevicePushToken } from '../../src/push/registration';
 import { useI18n } from '../../src/i18n/I18nProvider';
 import { languageName, MessageKey, SupportedLocale } from '../../src/i18n/i18n-core';
+import { withUiTimeout } from '../../src/utils/async-state-core';
 import { useUnreadCounts } from '../../src/notifications/UnreadProvider';
 
 const FONT_OPTIONS: { label: MessageKey; scale: ReadingPreferences['fontScale'] }[] = [
@@ -46,6 +47,7 @@ export default function ProfileScreen() {
   const [profileError, setProfileError] = useState('');
   const [fontScale, setFontScale] = useState<ReadingPreferences['fontScale']>(1);
   const profileRequest = useRef(0);
+  const profileUser = useRef<string | null>(null);
 
   const loadProfile = useCallback(async (activeSession: Session | null) => {
     const requestId = ++profileRequest.current;
@@ -54,14 +56,23 @@ export default function ProfileScreen() {
       setProfile(null); setPosts([]); setCounts({ followers: 0, following: 0 }); setFollowRequests(0); setProfileError('');
       return;
     }
+    if (profileUser.current !== userId) { setProfile(null); setPosts([]); setCounts({ followers: 0, following: 0 }); setFollowRequests(0); profileUser.current = userId; }
     setProfileError('');
     try {
-      const [nextProfile, nextPosts, nextCounts, requests] = await Promise.all([
-        loadSocialProfile(userId), listProfilePosts(userId), getFollowCounts(userId),
-        listFollowRequests().catch(() => []),
+      const details = Promise.allSettled([
+        withUiTimeout(listProfilePosts(userId), t('profile.retryLater'), 16_000),
+        withUiTimeout(getFollowCounts(userId), t('profile.retryLater'), 16_000),
+        withUiTimeout(listFollowRequests(), t('profile.retryLater'), 16_000),
       ]);
+      const nextProfile = await withUiTimeout(loadSocialProfile(userId), t('profile.retryLater'), 16_000);
       if (requestId !== profileRequest.current) return;
-      setProfile(nextProfile); setPosts(nextPosts); setCounts(nextCounts); setFollowRequests(requests.length);
+      setProfile(nextProfile); setLoading(false);
+      const [nextPosts, nextCounts, requests] = await details;
+      if (requestId !== profileRequest.current) return;
+      if (nextPosts.status === 'fulfilled') setPosts(nextPosts.value);
+      if (nextCounts.status === 'fulfilled') setCounts(nextCounts.value);
+      if (requests.status === 'fulfilled') setFollowRequests(requests.value.length);
+      if ([nextPosts, nextCounts, requests].some(result => result.status === 'rejected')) setProfileError(t('profile.retryLater'));
     } catch (error) {
       if (requestId !== profileRequest.current) return;
       setProfileError(error instanceof Error ? error.message : t('profile.retryLater'));

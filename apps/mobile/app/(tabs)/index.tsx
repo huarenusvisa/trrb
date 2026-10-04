@@ -245,6 +245,13 @@ export default function HomeScreen() {
   }
 
   useEffect(() => { void load(true); void loadWeather(); }, []);
+  useEffect(() => {
+    if (!error || loading || refreshing) return;
+    // Retry in-place as connectivity returns; users need not leave the App.
+    const timer = setTimeout(() => { setRefreshing(true); void load(); }, 30_000);
+    return () => clearTimeout(timer);
+  }, [error, loading, refreshing]);
+
 
   useEffect(() => {
     const task = InteractionManager.runAfterInteractions(() => {

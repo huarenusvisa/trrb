@@ -4,7 +4,7 @@ import { AppState, Platform } from 'react-native';
 import { createClient } from '@supabase/supabase-js';
 import { isSafePublicSupabaseConfig, resolvePublicSupabaseConfig } from './public-supabase-config';
 
-const publicConfig = resolvePublicSupabaseConfig({
+export const publicConfig = resolvePublicSupabaseConfig({
   url: process.env.EXPO_PUBLIC_SUPABASE_URL,
   key: process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY,
 });

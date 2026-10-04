@@ -75,7 +75,8 @@ test('mobile screens expose refined profile, custom media and protected messagin
   assert.match(chat, /testID="chat-share-media"/);
   assert.match(chat, /testID="chat-share-file"/);
   assert.match(chat, /uploadMessageFile/);
-  assert.match(chat, /useAudioRecorder/);
+  assert.match(chat, /HoldToTalk/);
+  assert.match(read('src/components/HoldToTalk.tsx'), /useAudioRecorder/);
   assert.match(chat, /useFocusEffect/);
   assert.match(compose, /mediaTypes: \['images', 'videos'\]/);
 });

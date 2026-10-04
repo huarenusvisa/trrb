@@ -1,9 +1,12 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Alert, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { Image } from 'expo-image';
 import { useVideoPlayer, VideoView } from 'expo-video';
 import { router, Stack, useLocalSearchParams } from 'expo-router';
 import { useI18n } from '../../src/i18n/I18nProvider';
+import { AsyncStatePanel } from '../../src/components/AsyncStatePanel';
+import { useForegroundRetry } from '../../src/hooks/useForegroundRetry';
+import { withUiTimeout } from '../../src/utils/async-state-core';
 import { supabase } from '../../src/auth/supabase';
 import {
   createProfilePostComment,
@@ -34,32 +37,28 @@ export default function ProfilePostDetailScreen() {
   const [tagsText, setTagsText] = useState('');
   const [commentText, setCommentText] = useState('');
   const [busy, setBusy] = useState(false);
+  const [loadError, setLoadError] = useState('');
+  const [commentError, setCommentError] = useState('');
+  const request = useRef(0);
 
   const load = useCallback(async () => {
-    setLoading(true);
+    const sequence = ++request.current;
+    setLoading(true); setLoadError(''); setCommentError('');
+    // Comment failure must never discard the article or navigate away.
+    void withUiTimeout(listProfilePostComments(postId), t('chat.timeout'), 16_000).then(nextComments => {
+      if (sequence !== request.current) return;
+      setComments(nextComments.map(comment => ({ ...comment, profiles: Array.isArray(comment.profiles) ? comment.profiles[0] ?? null : comment.profiles })));
+    }).catch(error => { if (sequence === request.current) setCommentError(error instanceof Error ? error.message : t('chat.tryAgain')); });
+    void supabase.auth.getUser().then(({ data: auth }) => { if (sequence === request.current) setMe(auth.user?.id || null); }).catch(() => { if (sequence === request.current) setMe(null); });
     try {
-      const [{ data: auth }, nextPost, nextComments] = await Promise.all([
-        supabase.auth.getUser(),
-        getProfilePost(postId),
-        listProfilePostComments(postId),
-      ]);
-      setMe(auth.user?.id || null);
-      setPost(nextPost);
-      setCaption(nextPost.caption || '');
-      setTagsText((nextPost.tags || []).join(' '));
-      setComments(nextComments.map((comment) => ({
-        ...comment,
-        profiles: Array.isArray(comment.profiles) ? comment.profiles[0] ?? null : comment.profiles,
-      })));
-    } catch (error) {
-      Alert.alert('无法读取动态', error instanceof Error ? error.message : '请稍后重试');
-      router.back();
-    } finally {
-      setLoading(false);
-    }
-  }, [postId]);
-
-  useEffect(() => { if (postId) void load(); }, [load, postId]);
+      const nextPost = await withUiTimeout(getProfilePost(postId), t('chat.timeout'), 16_000);
+      if (sequence !== request.current) return;
+      setPost(nextPost); setCaption(nextPost.caption || ''); setTagsText((nextPost.tags || []).join(' '));
+    } catch (error) { if (sequence === request.current) setLoadError(error instanceof Error ? error.message : t('chat.tryAgain')); }
+    finally { if (sequence === request.current) setLoading(false); }
+  }, [postId, t]);
+  useEffect(() => { if (postId) void load(); return () => { request.current++; }; }, [load, postId]);
+  useForegroundRetry(Boolean(loadError || commentError) && !editing, () => void load());
 
   const save = async () => {
     if (!post || busy) return;
@@ -119,11 +118,12 @@ export default function ProfilePostDetailScreen() {
     ]);
   };
 
-  if (loading || !post) return <View style={styles.center}><Text style={styles.muted}>正在读取动态…</Text></View>;
+  if (!post) return <View style={styles.center}><AsyncStatePanel testID="profile-post-detail-state" title={t(loadError ? 'profile.loadFailed' : 'profile.loading')} message={loadError || t('profile.loadingMeta')} tone={loadError ? 'error' : 'neutral'} busy={loading} actionLabel={loadError ? t('profile.reload') : undefined} onAction={() => void load()} /></View>;
   const own = me === post.user_id;
 
   return <><Stack.Screen options={{ headerShown: true, title: '动态详情', headerBackTitle: '返回' }} />
-    <ScrollView style={styles.page} contentContainerStyle={styles.content}>
+    <ScrollView style={styles.page} contentContainerStyle={styles.content} automaticallyAdjustKeyboardInsets>
+      {loadError ? <AsyncStatePanel title={t('profile.loadFailed')} message={loadError} tone="error" actionLabel={t('profile.reload')} onAction={() => void load()} /> : null}
       <View style={styles.topRow}>
         <Text style={styles.time}>{new Date(post.created_at).toLocaleString()}</Text>
         {own ? <View style={styles.actions}>
@@ -157,6 +157,7 @@ export default function ProfilePostDetailScreen() {
           <Pressable disabled={busy || !commentText.trim()} onPress={() => void submitComment()} style={[styles.commentButton, (!commentText.trim() || busy) && styles.disabled]}><Text style={styles.commentButtonText}>发表评论</Text></Pressable>
         </View> : <Text style={styles.loginHint}>登录后可以发表评论。</Text>}
 
+        {commentError ? <AsyncStatePanel testID="profile-post-comment-error" title={t('myComments.loadFailed')} message={commentError} tone="error" actionLabel={t('profile.reload')} onAction={() => void load()} /> : null}
         <View style={styles.commentList}>
           {comments.length ? comments.map((comment) => <View key={comment.id} style={styles.commentCard}>
             <View style={styles.commentTop}>

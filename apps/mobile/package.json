@@ -13,7 +13,7 @@
     "test:comments": "node --experimental-strip-types --test src/api/comment-like-state.test.ts src/community/comment-presentation.test.ts scripts/cleanup-news-comments-e2e.test.mjs",
     "test:library": "node --experimental-strip-types --test src/storage/account-storage-scope.test.ts src/storage/article-cache-core.test.ts src/storage/article-translation-cache-core.test.ts src/storage/news-feed-cache-core.test.ts src/storage/legal-cache-core.test.ts src/storage/favorites-sync-core.test.ts src/storage/history-sync-core.test.ts src/storage/jobs-cache-core.test.ts src/storage/profile-post-draft-core.test.ts src/storage/community-post-draft-core.test.ts src/storage/comment-draft-core.test.ts src/storage/notification-cache-core.test.ts",
     "test:data-settings": "node --test scripts/validate-data-settings-integration.test.mjs scripts/validate-library-comments-data.test.mjs",
-    "test:social": "node --test scripts/validate-social-profile.test.mjs",
+    "test:social": "node --test scripts/validate-social-profile.test.mjs scripts/profile-post-recovery.test.mjs",
     "test:push": "node --experimental-strip-types --test src/push/push-core.test.ts src/push/registration-core.test.ts src/push/registration-api.test.ts src/notifications/unread-core.test.ts src/notifications/notification-action-core.test.ts",
     "test:store-assets": "node --test scripts/store-submission-assets-core.test.mjs",
     "test:store-screenshot-evidence": "node --test scripts/store-screenshot-evidence.test.mjs",
@@ -45,7 +45,8 @@
     "store:screenshot-evidence-check": "node scripts/store-screenshot-evidence.mjs",
     "store:release-candidate-freeze": "node scripts/store-release-candidate-freeze.mjs",
     "store:release-candidate-check": "node scripts/store-release-candidate.mjs",
-    "export:web": "expo export --platform web --output-dir .expo-export --clear"
+    "export:web": "expo export --platform web --output-dir .expo-export --clear",
+    "test:chat": "node --experimental-strip-types --test src/social/chat-interaction-core.test.ts src/social/upload-transport.test.ts"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "2.2.0",
@@ -54,6 +55,7 @@
     "expo-audio": "~57.0.4",
     "expo-clipboard": "~57.0.1",
     "expo-constants": "~57.0.8",
+    "expo-crypto": "~57.0.3",
     "expo-document-picker": "~57.0.1",
     "expo-image": "~57.0.1",
     "expo-image-picker": "~57.0.16",
@@ -79,4 +81,3 @@
     "typescript": "~6.0.3"
   }
 }
-

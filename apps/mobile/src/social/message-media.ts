@@ -1,4 +1,5 @@
-import { supabase } from '../auth/supabase';
+import { publicConfig, supabase } from '../auth/supabase';
+import { uploadJsonWithProgress } from './upload-transport';
 
 export const MAX_MESSAGE_FILE_BYTES = 12 * 1024 * 1024;
 
@@ -17,20 +18,27 @@ export async function uploadMessageFile(input: {
   contentType: string;
   fileName?: string | null;
   knownSize?: number | null;
+  onProgress?: (percent: number) => void;
+  signal?: AbortSignal;
 }) {
   if (input.knownSize && input.knownSize > MAX_MESSAGE_FILE_BYTES) throw new Error('文件不能超过 12 MB。');
   const response = await fetch(input.uri);
   if (!response.ok) throw new Error('无法读取所选文件，请重新选择。');
   const buffer = await response.arrayBuffer();
   if (!buffer.byteLength || buffer.byteLength > MAX_MESSAGE_FILE_BYTES) throw new Error('文件不能超过 12 MB。');
-  const { data, error } = await supabase.functions.invoke('direct-message-media', {
+  const { data: auth, error: authError } = await supabase.auth.getSession();
+  if (authError) throw authError;
+  if (!auth.session) throw new Error('请先登录后发送附件。');
+  const data = await uploadJsonWithProgress({
+    url: `${publicConfig.url}/functions/v1/direct-message-media`,
+    token: auth.session.access_token, apiKey: publicConfig.key,
+    onProgress: input.onProgress, signal: input.signal,
     body: {
       action: 'upload', conversationId: input.conversationId,
       contentType: input.contentType, fileName: input.fileName || null,
       base64: arrayBufferToBase64(buffer),
     },
   });
-  if (error) throw error;
   if (!data?.path || typeof data.path !== 'string') throw new Error('附件上传失败，请重试。');
   return { path: data.path as string, size: Number(data.size || buffer.byteLength) };
 }

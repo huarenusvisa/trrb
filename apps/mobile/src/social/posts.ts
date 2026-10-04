@@ -33,7 +33,7 @@ const POST_SELECT = 'id,user_id,caption,tags,comment_count,status,created_at,upd
 async function withSignedUrls(rows: unknown[]) {
   return Promise.all((rows as ProfilePost[]).map(async (post) => ({
     ...post,
-    profile_post_media: await Promise.all((post.profile_post_media || []).sort((a, b) => a.sort_order - b.sort_order).map(async (media) => ({ ...media, signed_url: await signedPostMediaUrl(media.storage_path) }))),
+    profile_post_media: await Promise.all((post.profile_post_media || []).sort((a, b) => a.sort_order - b.sort_order).map(async (media) => ({ ...media, signed_url: await signedPostMediaUrl(media.storage_path).catch(() => undefined) }))),
   })));
 }
 

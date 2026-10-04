@@ -56,6 +56,26 @@ test('commission planner sees cited research and never makes a paid call with fe
  const result=await commissionDepth(research,options);assert.equal(result.depth_assignment.requested_depth,'deep');assert.equal(calls,1);
  const short=await commissionDepth({...research,sources:sources.slice(0,1)},options);assert.equal(short.depth_assignment.requested_depth,'standard');assert.equal(calls,1);
 });
+test('unpublished information is recorded as a limit, not a veto of fully sourced coverage',()=>{
+ const limitPlan={...plan,known_limits:['The investigation outcome is not published']};
+ const assignment=depthAssignment(research,limitPlan);
+ assert.equal(assignment.requested_depth,'deep');
+ assert.deepEqual(assignment.known_limits,limitPlan.known_limits);
+ assert.equal(depthAssignment(research,{...limitPlan,missing_material:['The identity claim has no source']}).requested_depth,'standard');
+ assert.equal(depthAssignment(research,{...limitPlan,sections:plan.sections.slice(0,5)}).requested_depth,'standard');
+});
+test('planner gets one bounded opportunity to redesign an overly ambitious evidence plan',async()=>{
+ let calls=0;
+ const options={model:'test',key:'test',readJson:r=>r.json(),request:async(url,init)=>{
+   calls++;const input=JSON.parse(JSON.parse(init.body).input);
+   if(calls===1)return jsonResponse({...plan,missing_material:['Unknown future investigation result'],sections:plan.sections.slice(0,4)});
+   assert.equal(input.replanning,true);assert.ok(input.previous_plan.missing_material.length);
+   return jsonResponse({...plan,known_limits:['Unknown future investigation result']});
+ }};
+ assert.equal((await commissionDepth(research,options)).depth_assignment.requested_depth,'deep');assert.equal(calls,2);
+ calls=0;options.request=async()=>{calls++;return jsonResponse({...plan,missing_material:['Actual core evidence missing']});};
+ assert.equal((await commissionDepth(research,options)).depth_assignment.requested_depth,'standard');assert.equal(calls,2);
+});
 test('a commissioned deep task cannot silently complete as a brief: writer retries once, then independently reviews',async()=>{
  const previous=globalThis.fetch;let writes=0,reviews=0;
  const completeReview=Object.fromEntries([...DEEP_REVIEW_FIELDS,'single_event','grounded','sufficient','source_chain_complete','analysis_grounded','depth_appropriate','court_status_correct','fresh_event','image_grounded'].map(k=>[k,true]));completeReview.reason='Synthetic review fixture only';

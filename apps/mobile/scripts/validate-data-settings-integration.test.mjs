@@ -73,10 +73,11 @@ test('isolates local favorites, history and personal-post drafts by account', ()
   assert.match(library, /resolveAccountStorageKey\(AsyncStorage, FAVORITES_KEY, userId,/);
   assert.match(library, /resolveAccountStorageKey\(AsyncStorage, HISTORY_KEY, userId,/);
   assert.match(library, /writeList\(scope\.key, next\)/);
+  assert.match(draft, /resolveAccountStorageKey\(AsyncStorage, KEY, userId\)/);
   assert.match(draft, /loadProfilePostDraft\(userId: string\)/);
-  assert.match(draft, /saveProfilePostDraft\(userId: string, caption: string\)/);
+  assert.match(draft, /saveProfilePostDraft\(userId: string, caption: string, tagsText = '', draftId\?: string \| null\)/);
   assert.match(compose, /draftUserId = useRef<string \| null>\(null\)/);
-  assert.match(compose, /saveProfilePostDraft\(draftUserId\.current, latestCaption\.current\)/);
+  assert.match(compose, /saveProfilePostDraft\(draftUserId\.current, latestCaption\.current, latestTagsText\.current, activeDraftIdRef\.current\)/);
 });
 
 test('keeps authenticated profile-media uploads on the supported storage search path', () => {

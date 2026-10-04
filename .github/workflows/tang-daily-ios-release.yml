@@ -36,6 +36,27 @@ jobs:
     steps:
       - name: Check out selected Tang Daily ref
         uses: actions/checkout@v5
+        with:
+          fetch-depth: 2
+
+      - name: Determine whether native app sources changed
+        id: release_scope
+        working-directory: .
+        env:
+          BASE_COMMIT: ${{ github.event.before }}
+          EVENT_NAME: ${{ github.event_name }}
+        run: |
+          node - <<'NODE'
+          const fs = require('node:fs');
+          const { execFileSync } = require('node:child_process');
+          let build = true;
+          if (process.env.EVENT_NAME === 'push' && /^[a-f0-9]{40}$/.test(process.env.BASE_COMMIT || '') && !/^0+$/.test(process.env.BASE_COMMIT)) {
+            const paths = execFileSync('git', ['diff', '--name-only', process.env.BASE_COMMIT, process.env.GITHUB_SHA, '--', 'apps/mobile'], { encoding: 'utf8' }).trim().split('\n').filter(Boolean);
+            build = paths.some(path => !/\.test\.(?:ts|tsx|js|mjs)$/.test(path));
+          }
+          fs.appendFileSync(process.env.GITHUB_OUTPUT, `native=${build}\n`);
+          console.log(build ? 'Native app changes: build and upload enabled.' : 'Tests-only change: verify without rebuilding the same iOS binary.');
+          NODE
 
       - name: Require Expo token
         env:
@@ -107,7 +128,7 @@ jobs:
         run: npx expo export --platform ios --output-dir /tmp/tang-daily-ios-preflight --clear
 
       - name: Publish compatible Tang Daily homepage update
-        if: ${{ github.event_name == 'push' || inputs.release_action == 'build-and-upload' }}
+        if: ${{ steps.release_scope.outputs.native == 'true' && (github.event_name == 'push' || inputs.release_action == 'build-and-upload') }}
         run: eas update --channel production --environment production --platform all --message "Sync PC and App homepage $GITHUB_SHA" --non-interactive
 
       - name: Build Tang Daily iOS
@@ -117,7 +138,7 @@ jobs:
 
       - name: Build and upload Tang Daily iOS
         id: eas_release
-        if: ${{ github.event_name == 'push' || inputs.release_action == 'build-and-upload' }}
+        if: ${{ steps.release_scope.outputs.native == 'true' && (github.event_name == 'push' || inputs.release_action == 'build-and-upload') }}
         run: eas build --platform ios --profile production --non-interactive --auto-submit --verbose-logs
 
       - name: Print detailed EAS logs after a cloud build failure

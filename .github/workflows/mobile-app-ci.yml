@@ -213,6 +213,7 @@ jobs:
         run: npm run test:chat
 
       - name: Verify TXT publishing
+        working-directory: apps/mobile
         run: npm run test:txt-publish
       - name: Audit push security and lifecycle contract
         run: node scripts/audit-app-batch2-node7.mjs

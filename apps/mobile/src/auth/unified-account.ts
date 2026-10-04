@@ -42,7 +42,7 @@ function isSession(value: unknown): value is UnifiedAccountResult['session'] {
 export async function loginOrRegister(
   identifierValue: string,
   password: string,
-  options: { fetchImpl?: FetchLike; timeoutMs?: number; loginOnly?: boolean } = {},
+  options: { fetchImpl?: FetchLike; timeoutMs?: number; loginOnly?: boolean; adminAccessToken?: string } = {},
 ): Promise<UnifiedAccountResult> {
   const validationError = validateCredentials(identifierValue, password);
   if (validationError) throw new Error(validationError);
@@ -52,7 +52,7 @@ export async function loginOrRegister(
   try {
     const response = await (options.fetchImpl ?? fetch)(UNIFIED_ACCOUNT_ENDPOINT, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json', ...(options.loginOnly && options.adminAccessToken ? { Authorization: `Bearer ${options.adminAccessToken}` } : {}) },
       body: JSON.stringify({ identifier: normalizeIdentifierInput(identifierValue), password, ...(options.loginOnly ? { login_only: true } : {}) }),
       signal: controller.signal,
     });

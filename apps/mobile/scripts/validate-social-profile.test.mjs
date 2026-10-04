@@ -7,6 +7,18 @@ const migration = read('../../supabase/migrations/20260904012615_mobile_social_p
 const richMessageMigration = read('../../supabase/migrations/20260910120000_mobile_rich_messages_and_profile_update.sql');
 const attachmentPathMigration = read('../../supabase/migrations/20260910143000_harden_direct_message_attachment_paths.sql');
 
+test('media swipes horizontally and tags open an associated two-column feed', () => {
+  const detail = read('app/profile-post/[id].tsx');
+  assert.match(detail, /horizontal pagingEnabled/);
+  assert.match(detail, /normalizeProfilePostTags\(post.caption, post.tags\)/);
+  assert.match(detail, /pathname: '\/profile-topic\/\[tag\]'/);
+  assert.match(read('app/profile-topic/[tag].tsx'), /columns=\{2\}/);
+  const posts = read('src/social/posts.ts');
+  assert.match(posts, /contains\('tags', \[tag\]\)/);
+  assert.match(posts, /ilike\('caption'/);
+  assert.match(posts, /normalizeProfilePostTags\(post.caption, post.tags\).includes\(tag\)/);
+});
+
 test('enforces the one-message request gate in the database', () => {
   assert.match(migration, /for update;/i, 'conversation row must be locked before checking the first message');
   assert.match(migration, /waiting_for_chat_confirmation/);

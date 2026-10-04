@@ -233,6 +233,7 @@ function showPage(page, sourceButton = null) {
     "article-translations": "文章翻译审核",
     "asylumjudge-review": "AsylumJudge内容中心",
     community: "用户与社区",
+    "txt-publish": "TXT 导入发布",
     "account-recovery": "账号找回",
     "property-admin": "纽约房产管理",
     rankings: "24小时热榜"

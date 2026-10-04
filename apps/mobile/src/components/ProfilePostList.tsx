@@ -6,7 +6,7 @@ import type { ProfilePost } from '../social/types';
 import { localeDateTag } from '../i18n/i18n-core';
 import { useI18n } from '../i18n/I18nProvider';
 
-type Props = { posts: ProfilePost[]; own?: boolean };
+type Props = { posts: ProfilePost[]; own?: boolean; columns?: number };
 
 function PostTile({ post, own, width }: { post: ProfilePost; own?: boolean; width: number }) {
   const [imageFailed, setImageFailed] = useState(false);
@@ -29,11 +29,11 @@ function PostTile({ post, own, width }: { post: ProfilePost; own?: boolean; widt
   </Pressable>;
 }
 
-export function ProfilePostList({ posts, own }: Props) {
+export function ProfilePostList({ posts, own, columns = 3 }: Props) {
   const { t } = useI18n();
   const [gridWidth, setGridWidth] = useState(0);
   if (!posts.length) return <View style={styles.empty}><Text style={styles.emptyIcon}>▧</Text><Text style={styles.emptyTitle}>{t('userProfile.noPosts')}</Text><Text style={styles.emptyText}>{own ? t('userProfile.noOwnPostsBody') : t('userProfile.noPublicPostsBody')}</Text></View>;
-  return <View style={styles.grid} onLayout={(event) => setGridWidth(event.nativeEvent.layout.width)}>{gridWidth > 0 ? posts.map((post) => <PostTile key={post.id} post={post} own={own} width={Math.max(1, (gridWidth - 8) / 3)} />) : null}</View>;
+  return <View style={styles.grid} onLayout={(event) => setGridWidth(event.nativeEvent.layout.width)}>{gridWidth > 0 ? posts.map((post) => <PostTile key={post.id} post={post} own={own} width={Math.max(1, (gridWidth - 4 * (columns - 1)) / columns)} />) : null}</View>;
 }
 
 const styles = StyleSheet.create({

@@ -25,3 +25,10 @@ test('profile text posts do not require a community category or title', () => {
   assert.equal(post.identifier, '3475550123');
   assert.throws(() => parseTxtPost('账号：a@example.com\n密码：12345678\n目标：个人主页动态\n正文：' + '文'.repeat(2001)), /最多 2000/);
 });
+import { normalizeProfilePostTags } from './profile-tags-core.ts';
+
+test('older inline hashtags become associated tags without duplicate labels', () => {
+  assert.deepEqual(normalizeProfilePostTags('正文\n#一人食 #中秋节 #刘欢去世', ['中秋节']), ['中秋节', '一人食', '刘欢去世']);
+  assert.deepEqual(normalizeProfilePostTags('正文没有标签'), []);
+  assert.deepEqual(normalizeProfilePostTags('#纽约客 #纽约客 #美食'), ['纽约客', '美食']);
+});

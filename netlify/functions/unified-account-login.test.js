@@ -10,6 +10,7 @@ test('TXT login-only rejects bad credentials without creating a new account', as
     require(name) {
       if (name === 'node:crypto') return require(name);
       return { SUPABASE_URL: 'https://auth.test', SERVICE_KEY: 'test-key', safeText: value => String(value || ''),
+        authenticateAdmin: async () => ({ user: { id: 'admin' } }),
         rest: async () => [], requestJson: async url => { requests.push(url); throw Error('invalid credentials'); } };
     },
   };

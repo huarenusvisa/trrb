@@ -39,6 +39,8 @@ export default function ProfilePostDetailScreen() {
   const [busy, setBusy] = useState(false);
   const [loadError, setLoadError] = useState('');
   const [commentError, setCommentError] = useState('');
+  const [mediaWidth, setMediaWidth] = useState(0);
+  const [mediaIndex, setMediaIndex] = useState(0);
   const request = useRef(0);
 
   const load = useCallback(async () => {
@@ -132,10 +134,14 @@ export default function ProfilePostDetailScreen() {
         </View> : null}
       </View>
 
-      {post.profile_post_media?.length ? <View style={styles.mediaWrap}>
-        {post.profile_post_media.map((media) => media.media_type === 'video'
-          ? <VideoMedia key={media.id} media={media} />
-          : <Image key={media.id} source={{ uri: media.signed_url }} contentFit="contain" style={styles.image} />)}
+      {post.profile_post_media?.length ? <View style={styles.mediaWrap} onLayout={event => setMediaWidth(event.nativeEvent.layout.width)}>
+        {mediaWidth > 0 ? <ScrollView key={`${post.id}:${mediaWidth}`} horizontal pagingEnabled directionalLockEnabled showsHorizontalScrollIndicator={false}
+          onMomentumScrollEnd={event => setMediaIndex(Math.round(event.nativeEvent.contentOffset.x / mediaWidth))}>
+          {post.profile_post_media.map(media => <View key={media.id} style={{ width: mediaWidth, height: Math.min(mediaWidth / 1.05, 420) }}>
+            {media.media_type === 'video' ? <VideoMedia media={media} /> : <Image source={{ uri: media.signed_url }} contentFit="contain" style={styles.image} />}
+          </View>)}
+        </ScrollView> : null}
+        {post.profile_post_media.length > 1 ? <Text style={styles.mediaCount}>{Math.min(mediaIndex + 1, post.profile_post_media.length)} / {post.profile_post_media.length} · 左右滑动</Text> : null}
       </View> : null}
 
       {editing ? <View style={styles.editor}>
@@ -147,7 +153,9 @@ export default function ProfilePostDetailScreen() {
         <Pressable disabled={busy} onPress={() => void save()} style={styles.save}><Text style={styles.saveText}>{busy ? '保存中…' : '保存修改'}</Text></Pressable>
       </View> : <>
         {post.caption ? <Text style={styles.caption}>{post.caption}</Text> : null}
-        {post.tags?.length ? <View style={styles.tags}>{post.tags.slice(0,5).map((tag) => <Text key={tag} style={styles.tag}>#{tag}</Text>)}</View> : null}
+        {normalizeProfilePostTags(post.caption, post.tags).length ? <View style={styles.tags}>{normalizeProfilePostTags(post.caption, post.tags).map(tag =>
+          <Pressable key={tag} accessibilityRole="link" accessibilityLabel={`查看话题 ${tag} 的关联动态`} style={styles.tagButton}
+            onPress={() => router.push({ pathname: '/profile-topic/[tag]', params: { tag } })}><Text style={styles.tag}>#{tag}</Text></Pressable>)}</View> : null}
       </>}
 
       <View style={styles.commentSection}>
@@ -176,8 +184,8 @@ export default function ProfilePostDetailScreen() {
 const styles = StyleSheet.create({
   page:{flex:1,backgroundColor:'#f5f6f8'},content:{padding:14,paddingBottom:60,gap:14},center:{flex:1,alignItems:'center',justifyContent:'center',backgroundColor:'#f5f6f8'},muted:{color:'#98a2b3'},
   topRow:{flexDirection:'row',justifyContent:'space-between',alignItems:'center'},time:{fontSize:12,color:'#98a2b3'},actions:{flexDirection:'row',gap:16},edit:{color:'#175cd3',fontWeight:'900'},delete:{color:'#b42318',fontWeight:'900'},
-  mediaWrap:{gap:8,backgroundColor:'#fff',borderRadius:14,overflow:'hidden'},image:{width:'100%',aspectRatio:1.05,backgroundColor:'#eef2f6'},video:{width:'100%',aspectRatio:16/10,backgroundColor:'#000'},
-  caption:{backgroundColor:'#fff',borderRadius:14,padding:15,fontSize:17,lineHeight:26,color:'#1d2939'},tags:{flexDirection:'row',flexWrap:'wrap',gap:7},tag:{color:'#175cd3',fontWeight:'900'},
+  mediaWrap:{backgroundColor:'#fff',borderRadius:14,overflow:'hidden'},image:{width:'100%',height:'100%',backgroundColor:'#eef2f6'},video:{width:'100%',height:'100%',backgroundColor:'#000'},mediaCount:{textAlign:'center',padding:8,color:'#667085',fontSize:12},
+  caption:{backgroundColor:'#fff',borderRadius:14,padding:15,fontSize:17,lineHeight:26,color:'#1d2939'},tags:{flexDirection:'row',flexWrap:'wrap',gap:7},tagButton:{backgroundColor:'#eff8ff',borderRadius:18,paddingHorizontal:13,minHeight:44,justifyContent:'center'},tag:{color:'#175cd3',fontWeight:'900'},
   editor:{backgroundColor:'#fff',borderRadius:14,padding:14,gap:8},label:{fontWeight:'900',color:'#344054'},input:{minHeight:150,borderWidth:1,borderColor:'#d0d5dd',borderRadius:10,padding:12,fontSize:16,color:'#101828'},tagsInput:{borderWidth:1,borderColor:'#d0d5dd',borderRadius:10,padding:12,fontSize:16,color:'#101828'},helper:{fontSize:12,lineHeight:18,color:'#667085'},save:{backgroundColor:'#c8211e',borderRadius:10,padding:13,alignItems:'center'},saveText:{color:'#fff',fontWeight:'900'},
   commentSection:{backgroundColor:'#fff',borderRadius:16,padding:14},commentHead:{flexDirection:'row',alignItems:'center',gap:8,marginBottom:12},commentTitle:{fontSize:20,fontWeight:'900',color:'#101828'},commentCount:{color:'#98a2b3',fontWeight:'800'},
   commentComposer:{gap:8},commentInput:{minHeight:90,borderWidth:1,borderColor:'#d0d5dd',borderRadius:10,padding:11,textAlignVertical:'top'},commentButton:{alignSelf:'flex-end',backgroundColor:'#c8211e',borderRadius:9,paddingVertical:10,paddingHorizontal:16},commentButtonText:{color:'#fff',fontWeight:'900'},disabled:{opacity:.4},loginHint:{color:'#667085',paddingVertical:8},

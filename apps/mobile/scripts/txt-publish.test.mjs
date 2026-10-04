@@ -3,37 +3,52 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
 import ts from 'typescript';
-const source = fs.readFileSync(new URL('../src/social/txt-publish.ts', import.meta.url), 'utf8');
-function harness({ fail = false, prior = false, pending = false } = {}) {
-  const calls = [], receipts = new Map(prior ? [['receipt', 'already-sent']] : []);
-  const client = { auth: { setSession: async () => ({ error: null }), getUser: async () => ({ data: { user: { id: 'txt-user' } } }), signOut: async options => calls.push(['signout', options.scope]), stopAutoRefresh: () => {} } };
-  const context = { Error, JSON, Date, isAuthConfigured: true, publicConfig: { url: 'test', key: 'public' },
-    AsyncStorage: { getItem: async () => receipts.get('receipt'), setItem: async (_key, value) => receipts.set('receipt', value) },
-    Crypto: { CryptoDigestAlgorithm: { SHA256: 'sha256' }, digestStringAsync: async () => 'digest' },
-    txtReceiptInput: () => 'content-without-password',
-    createClient: (_url, _key, options) => { calls.push(['client', options]); return client; },
-    loginOrRegister: async (_identifier, _password, options) => { calls.push(['login', options]); return { session: { access_token: 'token', refresh_token: 'refresh' } }; },
-    createCommunityApi: ({ getAccessToken }) => ({ createPost: async () => { calls.push(['publish', await getAccessToken()]); if (fail) throw new Error('timeout'); return { post: { id: 'post-1', user_id: 'txt-user', status: pending ? 'pending' : 'published' } }; } }),
+import { createHash } from 'node:crypto';
+const source = fs.readFileSync(new URL('../../../netlify/functions/admin-txt-publish.mts', import.meta.url), 'utf8');
+function harness({ denied = false, success = false, target = 'profile' } = {}) {
+  const calls = [];
+  const context = { Response, JSON, Error, Number, createHash, txtReceiptInput: post => JSON.stringify([post.identifier, post.content]),
+    Netlify: { env: { get: () => 'public-key' } },
+    admin: { SUPABASE_URL: 'https://auth.test', authenticateAdmin: async () => { calls.push('authorize'); if (denied) throw Object.assign(Error('denied'), { statusCode: 403 }); }, requestJson: async (url, options) => {
+      if (url.endsWith('/user')) return { id: 'target-user' };
+      calls.push(['insert', options]); return [{ id: 'new-post', status: 'published' }];
+    } },
+    parseTxtPost: () => ({ identifier: 'target@example.com', password: 'secret', target, category: 'hot_discussion', title: '', content: '正文 #纽约客' }),
+    normalizeProfilePostTags: () => ['纽约客'],
+    login: { handler: async () => { calls.push('login'); return success ? { statusCode: 200, body: JSON.stringify({ session: { access_token: 'target-token' } }) } : { statusCode: 401 }; } },
+    community: { handler: async () => { calls.push('community'); return { statusCode: 201, body: JSON.stringify({ post: { id: 'community-post', status: 'pending' } }) }; } },
   };
   vm.createContext(context);
-  const body = source.replace(/^import .*;\n/gm, '').replace('export async function', 'async function');
-  vm.runInContext(ts.transpileModule(body, { compilerOptions: { target: ts.ScriptTarget.ES2022 } }).outputText + '\nthis.publish = publishTxtPost;', context);
-  return { calls, receipts, publish: () => context.publish({ identifier: 'a@example.com', password: 'secret-password', target: 'community', title: '标题', category: 'hot_discussion', content: '正文' }, () => {}) };
+  const body = source.replace(/^import .*;\n/gm, '').replace('export default async', 'this.handler = async');
+  vm.runInContext(ts.transpileModule(body, { compilerOptions: { target: ts.ScriptTarget.ES2022 } }).outputText, context);
+  return { calls, run: action => context.handler({ method: 'POST', headers: new Headers(), json: async () => ({ action, txt: 'txt' }) }) };
 }
-test('uses isolated nonpersistent auth, existing login and local-only cleanup', async () => {
-  const h = harness({ pending: true }); const result = await h.publish();
-  assert.equal(result.pending, true);
-  assert.equal(h.calls.find(c => c[0] === 'client')[1].auth.persistSession, false);
-  assert.equal(h.calls.find(c => c[0] === 'login')[1].loginOnly, true);
-  assert.equal(h.calls.at(-1)[1], 'local');
-  assert.ok(!h.receipts.get('receipt').includes('secret-password'));
+test('non-admin stops before target login', async () => {
+  const h = harness({ denied: true }); const response = await h.run('publish');
+  assert.equal(response.status, 403); assert.deepEqual(h.calls, ['authorize']);
 });
-test('repeat import never logs in or writes again', async () => {
-  const h = harness({ prior: true }); await assert.rejects(h.publish(), /已有发送记录/); assert.equal(h.calls.length, 0);
+test('preview excludes credentials and never publishes', async () => {
+  const h = harness(); const response = await h.run('preview'); const body = await response.text();
+  assert.equal(response.status, 200); assert.ok(!body.includes('secret')); assert.ok(!body.includes('target@example.com')); assert.deepEqual(h.calls, ['authorize']);
 });
-test('uncertain network result keeps marker and refuses duplicate send', async () => {
-  const h = harness({ fail: true }); await assert.rejects(h.publish(), /不会自动重复发送/);
-  assert.equal(JSON.parse(h.receipts.get('receipt')).state, 'sending');
-  await assert.rejects(h.publish(), /已有发送记录/);
-  assert.equal(h.calls.filter(c => c[0] === 'publish').length, 1);
+test('bad target password never submits content', async () => {
+  const h = harness(); const response = await h.run('publish');
+  assert.equal(response.status, 401); assert.deepEqual(h.calls, ['authorize', 'login']);
+});
+test('profile insert uses target token and extracted tags, never staff privileges', async () => {
+  const h = harness({ success: true }); const response = await h.run('publish');
+  assert.equal(response.status, 200);
+  const options = h.calls.find(call => Array.isArray(call))[1];
+  assert.equal(options.headers.Authorization, 'Bearer target-token');
+  assert.deepEqual(JSON.parse(options.body).tags, ['纽约客']);
+  assert.equal(JSON.parse(options.body).user_id, 'target-user');
+});
+test('community publishing retains the existing moderation flow', async () => {
+  const h = harness({ success: true, target: 'community' }); const response = await h.run('publish');
+  assert.equal((await response.json()).pending, true);
+  assert.deepEqual(h.calls, ['authorize', 'login', 'community']);
+});
+test('TXT has no mobile screen or public entry', () => {
+  assert.equal(fs.existsSync(new URL('../app/txt-publish.tsx', import.meta.url)), false);
+  assert.doesNotMatch(fs.readFileSync(new URL('../app/(tabs)/profile.tsx', import.meta.url), 'utf8'), /txt-publish|TXT 导入/);
 });

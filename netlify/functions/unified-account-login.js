@@ -4,7 +4,8 @@ const {
   SERVICE_KEY,
   safeText,
   requestJson,
-  rest
+  rest,
+  authenticateAdmin
 } = require('./_shared/supabase-admin');
 
 const AUTH_API_KEY = process.env.SUPABASE_ANON_KEY || SERVICE_KEY;
@@ -26,7 +27,7 @@ function json(statusCode, body, event) {
       'Content-Type': 'application/json; charset=utf-8',
       'Cache-Control': 'no-store',
       ...(origin ? { 'Access-Control-Allow-Origin': origin, Vary: 'Origin' } : {}),
-      'Access-Control-Allow-Headers': 'content-type',
+      'Access-Control-Allow-Headers': 'content-type, authorization',
       'Access-Control-Allow-Methods': 'POST, OPTIONS'
     },
     body: JSON.stringify(body)
@@ -148,6 +149,11 @@ exports.handler = async (event) => {
   try {
     if (!SUPABASE_URL || !SERVICE_KEY || !AUTH_API_KEY) return json(503, { error: '统一账号服务暂不可用' }, event);
     const body = JSON.parse(event.body || '{}');
+    // Internal TXT import is a staff-only flow, checked before target credentials.
+    if (body.login_only === true) {
+      try { await authenticateAdmin(event); }
+      catch (error) { return json(Number(error.statusCode) || 403, { error: '仅限已授权管理员使用' }, event); }
+    }
     const account = normalizeIdentifier(body.identifier);
     const password = String(body.password || '');
     if (password.length < 8 || password.length > 128) return json(400, { error: '密码需要 8–128 位' }, event);

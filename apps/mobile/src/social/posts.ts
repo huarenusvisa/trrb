@@ -3,18 +3,13 @@ import { supabase } from '../auth/supabase';
 import { currentUserId } from './profiles';
 import { mediaStoragePath, mimeFor, PROFILE_POST_MEDIA_BUCKET, signedPostMediaUrl, uploadPickedAsset } from './media';
 import type { ProfilePost, ProfilePostMedia } from './types';
+import { normalizeProfilePostTags } from './profile-tags-core';
+export { normalizeProfilePostTags } from './profile-tags-core';
 
 export type ProfilePostUploadProgress = {
   completed: number;
   total: number;
 };
-
-export function normalizeProfilePostTags(caption: string, tags: string[] = []) {
-  const inline = Array.from(String(caption || '').matchAll(/(?:^|\s)#([^#\s，,]{1,24})/gu)).map((match) => match[1]);
-  return Array.from(new Set([...tags, ...inline].map((tag) => tag.replace(/^#+/, '').trim()).filter(Boolean)))
-    .filter((tag) => tag.length <= 24)
-    .slice(0, 5);
-}
 
 export async function updateProfilePost(postId: string, caption: string, tags: string[] = []) {
   const normalizedTags = normalizeProfilePostTags(caption, tags);
@@ -48,6 +43,23 @@ export async function listProfilePosts(userId: string) {
   const { data, error } = await supabase.from('profile_posts').select(POST_SELECT).eq('user_id', userId).eq('status', 'published').order('created_at', { ascending: false }).limit(60);
   if (error) throw error;
   return withSignedUrls(data || []);
+}
+
+export async function listProfilePostsByTag(tag: string) {
+  if (!tag || tag.length > 24) return [];
+  // Both requests use the viewer's client/RLS, including private-profile rules.
+  // Caption fallback associates older posts that predate structured tags.
+  const escaped = tag.replace(/[\\%_]/g, char => `\\${char}`);
+  const results = await Promise.all([
+    supabase.from('profile_posts').select(POST_SELECT).eq('status', 'published').contains('tags', [tag]).order('created_at', { ascending: false }).limit(60),
+    supabase.from('profile_posts').select(POST_SELECT).eq('status', 'published').ilike('caption', `%#${escaped}%`).order('created_at', { ascending: false }).limit(60),
+  ]);
+  for (const result of results) if (result.error) throw result.error;
+  const unique = new Map<string, ProfilePost>();
+  for (const result of results) for (const post of (result.data || []) as unknown as ProfilePost[]) {
+    if (normalizeProfilePostTags(post.caption, post.tags).includes(tag)) unique.set(post.id, post);
+  }
+  return withSignedUrls([...unique.values()].sort((a, b) => b.created_at.localeCompare(a.created_at)).slice(0, 60));
 }
 
 export async function createProfilePost(caption: string, assets: ImagePickerAsset[], tags: string[] = [], onProgress?: (progress: ProfilePostUploadProgress) => void) {

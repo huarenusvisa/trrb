@@ -7,6 +7,7 @@ import {compareNewsPriority} from './news-priority.mjs';
 import {articleUpdateBody,automationMayUpdate,verifyArticleUpdate} from './news-article-updates.mjs';
 import {isBudgetDeferred} from './news-cost-model.mjs';
 import {readAllPages} from './paged-read.mjs';
+import {DEPTH_PLANNING_VERSION} from './news-forward-policy.mjs';
 
 export const DAILY_DEEP_TARGET=10;
 export const DAILY_DEEP_MIN=3500;
@@ -23,7 +24,7 @@ export function eligibleCandidate(row,date) {
   const p=row.ai_payload || {}, tweet=tweetFromCandidate(row);
   return sourceWithinCollectionWindow(tweet.created_at) && tweet.topic_key!=='ren-zhengfei'
     && !p.manual_editor_lock && !p.manual_override && !['rejected','duplicate','deleted','legacy_archived'].includes(row.decision)
-    && !(p.daily_depth_attempt?.date===date && p.daily_depth_attempt.attempts>=3);
+    && !(p.daily_depth_attempt?.date===date && p.daily_depth_attempt.planning_version===DEPTH_PLANNING_VERSION && p.daily_depth_attempt.attempts>=3);
 }
 async function dailyRows(date) {
   const rows=await readAllPages(page=>supabase('articles',{query:{select:'id,title,content,status,visibility,published_at,metadata',status:'eq.published',visibility:'eq.public',published_at:`gte.${new Date(Date.now()-48*3600000).toISOString()}`,order:'published_at.desc,id.desc',...page}}),{pageSize:100,maxRows:3000});
@@ -53,7 +54,7 @@ export async function depthCandidates(date) {
 async function recordDepthAttempt(row,date,attempts,outcome) {
  if(!row.ice_story_id)return;
  const current=(await supabase('ice_stories',{query:{select:'ai_payload,updated_at,human_review_status,reviewed_by',id:`eq.${row.ice_story_id}`,limit:'1'}}))?.[0];
- if(current && !current.reviewed_by && !['editing','approved','rejected'].includes(current.human_review_status) && !current.ai_payload?.manual_override)await supabase('ice_stories',{method:'PATCH',query:{id:`eq.${row.ice_story_id}`,updated_at:`eq.${current.updated_at}`},body:{ai_payload:{...current.ai_payload,daily_depth_attempt:{date,attempts,...outcome}}}});
+ if(current && !current.reviewed_by && !['editing','approved','rejected'].includes(current.human_review_status) && !current.ai_payload?.manual_override)await supabase('ice_stories',{method:'PATCH',query:{id:`eq.${row.ice_story_id}`,updated_at:`eq.${current.updated_at}`},body:{ai_payload:{...current.ai_payload,daily_depth_attempt:{date,planning_version:DEPTH_PLANNING_VERSION,attempts,...outcome}}}});
 }
 export async function runDailyDepth() {
   if(!await enabled())return {status:'disabled'};
@@ -72,7 +73,8 @@ export async function runDailyDepth() {
     const prior=row.ice_story_id ? (await supabase('articles',{query:{select:'*',id:`eq.${row.article_id}`,limit:'1'}}))?.[0] : await existingArticle(tweet);
     if(prior && (prior.metadata?.manual_editor_lock || prior.metadata?.manual_override))continue;
     if(prior?.status==='published' && (nyDate(prior.published_at)!==date || !automationMayUpdate(prior) || countsTowardDailyDepth(prior,date)))continue;
-    const attempts=(row.ai_payload?.daily_depth_attempt?.date===date?row.ai_payload.daily_depth_attempt.attempts:0)+1;
+    const previousAttempt=row.ai_payload?.daily_depth_attempt;
+    const attempts=(previousAttempt?.date===date && previousAttempt.planning_version===DEPTH_PLANNING_VERSION ? previousAttempt.attempts : 0)+1;
     const outcome={candidate_id:row.id || row.ice_story_id,status:'started'};
     try {
       console.log(JSON.stringify({event:'daily-depth-start',date,candidate_id:row.id,title:qualified.title,remaining:10-report.completed}));
@@ -96,7 +98,7 @@ export async function runDailyDepth() {
       if(!saved?.id || !countsTowardDailyDepth(saved,date))throw new Error('发布回读未满足每日深度验收');
       recent.unshift(saved);Object.assign(outcome,{status:prior?.status==='published'?'expanded-existing':'published',article_id:saved.id,body_chinese_chars:bodyCharacterCount(saved.content),path:saved.publication_path});
       const current=row.id ? (await supabase('news_candidates',{query:{select:'ai_payload,updated_at',id:`eq.${row.id}`,limit:'1'}}))?.[0] : null;
-      if(current && !current.ai_payload?.manual_editor_lock)await supabase('news_candidates',{method:'PATCH',query:{id:`eq.${row.id}`,updated_at:`eq.${current.updated_at}`},body:{decision:'published',article_id:saved.id,proposed_section:saved.category_name,decision_reason:'每日3500字深度稿已发布并回读验收',processed_at:new Date().toISOString(),ai_payload:{...current.ai_payload,daily_depth_attempt:{date,attempts,status:outcome.status},daily_depth_article_id:saved.id}}});
+      if(current && !current.ai_payload?.manual_editor_lock)await supabase('news_candidates',{method:'PATCH',query:{id:`eq.${row.id}`,updated_at:`eq.${current.updated_at}`},body:{decision:'published',article_id:saved.id,proposed_section:saved.category_name,decision_reason:'每日3500字深度稿已发布并回读验收',processed_at:new Date().toISOString(),ai_payload:{...current.ai_payload,daily_depth_attempt:{date,planning_version:DEPTH_PLANNING_VERSION,attempts,status:outcome.status},daily_depth_article_id:saved.id}}});
     } catch(error) {
       Object.assign(outcome,{status:isBudgetDeferred(error)?'budget-deferred':'not-published',reason:String(error.message).slice(0,700)});
       // Standing publisher instruction: insufficient depth evidence is reviewed
@@ -119,7 +121,7 @@ export async function runDailyDepth() {
         } catch(fallbackError) {outcome.fallback_error=String(fallbackError.message).slice(0,700);}
       }
       const current=row.id ? (await supabase('news_candidates',{query:{select:'ai_payload,updated_at',id:`eq.${row.id}`,limit:'1'}}))?.[0] : null;
-      if(current && !current.ai_payload?.manual_editor_lock)await supabase('news_candidates',{method:'PATCH',query:{id:`eq.${row.id}`,updated_at:`eq.${current.updated_at}`},body:{...(outcome.article_id?{decision:'published',article_id:outcome.article_id,decision_reason:'已发布，资料不足留待人工后续核查',processed_at:new Date().toISOString()}:{}),ai_payload:{...current.ai_payload,...(outcome.article_id?{manual_review_required:true,post_publication_review_status:'pending'}:{}),daily_depth_attempt:{date,attempts,...outcome}}}});
+      if(current && !current.ai_payload?.manual_editor_lock)await supabase('news_candidates',{method:'PATCH',query:{id:`eq.${row.id}`,updated_at:`eq.${current.updated_at}`},body:{...(outcome.article_id?{decision:'published',article_id:outcome.article_id,decision_reason:'已发布，资料不足留待人工后续核查',processed_at:new Date().toISOString()}:{}),ai_payload:{...current.ai_payload,...(outcome.article_id?{manual_review_required:true,post_publication_review_status:'pending'}:{}),daily_depth_attempt:{date,planning_version:DEPTH_PLANNING_VERSION,attempts,...outcome}}}});
     }
     await recordDepthAttempt(row,date,attempts,outcome);
     report.results.push(outcome);console.log(JSON.stringify({event:'daily-depth-result',...outcome}));

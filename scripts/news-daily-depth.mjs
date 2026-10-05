@@ -10,7 +10,7 @@ import {readAllPages} from './paged-read.mjs';
 import {DEPTH_PLANNING_VERSION} from './news-forward-policy.mjs';
 
 export const DAILY_DEEP_TARGET=10;
-export const DAILY_DEEP_MIN=3500;
+export const DAILY_DEEP_MIN=2000;
 export const nyDate=(now=new Date())=>new Intl.DateTimeFormat('en-CA',{timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date(now));
 export function countsTowardDailyDepth(row,date) {
   const m=row.metadata || {};
@@ -59,7 +59,7 @@ async function recordDepthAttempt(row,date,attempts,outcome) {
 export async function runDailyDepth() {
   if(!await enabled())return {status:'disabled'};
   const date=nyDate(), before=await dailyRows(date);
-  const report={date,timezone:'America/New_York',target:10,minimum_chinese_chars:3500,before:before.length,completed:before.length,results:[],run_id:process.env.GITHUB_RUN_ID || ''};
+  const report={date,timezone:'America/New_York',target:10,minimum_chinese_chars:DAILY_DEEP_MIN,before:before.length,completed:before.length,results:[],run_id:process.env.GITHUB_RUN_ID || ''};
   if(before.length>=10){console.log(JSON.stringify({...report,status:'target-met'}));return report;}
   const candidates=await depthCandidates(date);
   report.eligible_candidates=candidates.length;report.skipped=[];
@@ -98,7 +98,7 @@ export async function runDailyDepth() {
       if(!saved?.id || !countsTowardDailyDepth(saved,date))throw new Error('发布回读未满足每日深度验收');
       recent.unshift(saved);Object.assign(outcome,{status:prior?.status==='published'?'expanded-existing':'published',article_id:saved.id,body_chinese_chars:bodyCharacterCount(saved.content),path:saved.publication_path});
       const current=row.id ? (await supabase('news_candidates',{query:{select:'ai_payload,updated_at',id:`eq.${row.id}`,limit:'1'}}))?.[0] : null;
-      if(current && !current.ai_payload?.manual_editor_lock)await supabase('news_candidates',{method:'PATCH',query:{id:`eq.${row.id}`,updated_at:`eq.${current.updated_at}`},body:{decision:'published',article_id:saved.id,proposed_section:saved.category_name,decision_reason:'每日3500字深度稿已发布并回读验收',processed_at:new Date().toISOString(),ai_payload:{...current.ai_payload,daily_depth_attempt:{date,planning_version:DEPTH_PLANNING_VERSION,attempts,status:outcome.status},daily_depth_article_id:saved.id}}});
+      if(current && !current.ai_payload?.manual_editor_lock)await supabase('news_candidates',{method:'PATCH',query:{id:`eq.${row.id}`,updated_at:`eq.${current.updated_at}`},body:{decision:'published',article_id:saved.id,proposed_section:saved.category_name,decision_reason:'每日2000–3500字深度稿已发布并回读验收',processed_at:new Date().toISOString(),ai_payload:{...current.ai_payload,daily_depth_attempt:{date,planning_version:DEPTH_PLANNING_VERSION,attempts,status:outcome.status},daily_depth_article_id:saved.id}}});
     } catch(error) {
       Object.assign(outcome,{status:isBudgetDeferred(error)?'budget-deferred':'not-published',reason:String(error.message).slice(0,700)});
       // Standing publisher instruction: insufficient depth evidence is reviewed
@@ -130,9 +130,9 @@ export async function runDailyDepth() {
   report.completed=(await dailyRows(date)).length;report.remaining=Math.max(0,10-report.completed);
   report.status=report.remaining?'shortfall':'target-met';
   console.log(JSON.stringify({event:'daily-depth-report',...report},null,2));
-  if(process.env.GITHUB_STEP_SUMMARY)appendFileSync(process.env.GITHUB_STEP_SUMMARY,`\n每日深度稿（纽约 ${date}）：${report.completed}/10，正文至少3500汉字；缺额${report.remaining}。\n\n`+report.results.map(r=>`- ${r.candidate_id}: ${r.status} ${r.reason || r.article_id || ''}`).join('\n')+'\n');
-  await supabase('automation_notifications',{method:'POST',body:{control_key:'china_hot',severity:report.remaining?'warning':'success',title:`每日深度稿 ${report.completed}/10（纽约 ${date}）`,message:`已验收${report.completed}篇3500字以上深度稿，尚缺${report.remaining}篇。${report.remaining?'现有总控下一轮继续补选；资料不足可按来源消息发布并留待人工处理，普通稿不计入深度数量。':'今日目标已完成。'}`,details:report}});
-  if(report.remaining) {console.error(`::error title=每日深度稿未完成::${report.completed}/10，缺${report.remaining}篇；候选${report.eligible_candidates}篇，请查看逐题资料缺口`);if(process.env.GITHUB_ACTIONS==='true')process.exitCode=1;}
+  if(process.env.GITHUB_STEP_SUMMARY)appendFileSync(process.env.GITHUB_STEP_SUMMARY,`\n每日深度稿（纽约 ${date}）：${report.completed}/10，正文2000–3500汉字；缺额${report.remaining}。\n\n`+report.results.map(r=>`- ${r.candidate_id}: ${r.status} ${r.reason || r.article_id || ''}`).join('\n')+'\n');
+  await supabase('automation_notifications',{method:'POST',body:{control_key:'china_hot',severity:report.remaining?'warning':'success',title:`每日深度稿 ${report.completed}/10（纽约 ${date}）`,message:`已验收${report.completed}篇2000–3500字深度稿，尚缺${report.remaining}篇。${report.remaining?'现有总控下一轮继续补选；资料不足可按来源消息发布并留待人工处理，普通稿不计入深度数量。':'今日目标已完成。'}`,details:report}});
+  if(report.remaining) {console.warn(`::warning title=每日深度稿未完成::${report.completed}/10，缺${report.remaining}篇；候选${report.eligible_candidates}篇，请查看逐题资料缺口`);}
   return report;
 }
 if(process.argv[1] && import.meta.url===pathToFileURL(process.argv[1]).href)runDailyDepth().catch(e=>{console.error(e);process.exitCode=1;});

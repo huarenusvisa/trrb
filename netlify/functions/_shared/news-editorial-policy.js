@@ -31,8 +31,8 @@ function deepQualityErrors(article, research, review = article.editorial_review)
   if (article.editorial_depth !== 'deep') return [];
   const errors = officeTitleErrors(article);
   const count = countChinese(article.content);
-  const min=article.daily_deep_commission === true ? 3500 : DEEP_MIN;
-  const max=article.daily_deep_commission === true ? 5000 : DEEP_MAX;
+  const min=DEEP_MIN;
+  const max=DEEP_MAX;
   if (count < min || count > max) errors.push(`深度稿正文必须为${min}–${max}个中文字符（实际${count}）`);
   if (independentSourceCount(research) < 2) errors.push('深度稿至少需要两家独立来源的实际检索引文，评论及循环转载不计数');
   for (const field of DEEP_REVIEW_FIELDS) if (review?.[field] !== true) errors.push(`深度资料复核缺失：${field}`);
@@ -83,4 +83,3 @@ function sourceWithinCollectionWindow(value,now=Date.now()) {
   return Number.isFinite(time) && now-time>=0 && now-time<=12*3600000;
 }
 module.exports = {officeTitleErrors, OFFICE_TITLE_INSTRUCTIONS, EDITORIAL_POLICY_VERSION, ICE_TRANSLATION_VERSION, DEEP_MIN, DEEP_MAX, DEEP_REVIEW_FIELDS, countChinese, contentDigest, sourcePublisher, factualSources, independentSourceCount, deepQualityErrors, reviewedStoryReady, DEEP_RESEARCH_INSTRUCTIONS, manualEditorialMetadata,sourceWithinCollectionWindow};
-

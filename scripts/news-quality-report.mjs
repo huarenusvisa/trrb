@@ -20,7 +20,7 @@ export function publicationQualityReport(rows,{now=Date.now(),windowDays=7}={}) 
   }
   const total=Object.values(groups).reduce((a,g)=>({published:a.published+g.published,deep:a.deep+g.deep,over_2000:a.over_2000+g.over_2000}),{published:0,deep:0,over_2000:0});
   for(const g of [...Object.values(groups),total])g.deep_share=g.published?Number((g.deep/g.published).toFixed(4)):null;
-  return {event:'news-quality-seven-day',as_of:new Date(now).toISOString(),window_days:windowDays,deep_min:2000,deep_max:3500,daily_deep_min:3500,daily_deep_max:5000,deep_share_target:DEEP_SHARE_TARGET,target_is_publication_gate:false,daily_volume_goal:[100,200],groups,total};
+  return {event:'news-quality-seven-day',as_of:new Date(now).toISOString(),window_days:windowDays,deep_min:2000,deep_max:3500,daily_deep_min:2000,daily_deep_max:3500,deep_share_target:DEEP_SHARE_TARGET,target_is_publication_gate:false,daily_volume_goal:[100,200],groups,total};
 }
 export async function runQualityReport(){
   const now=Date.now(),base=String(process.env.SUPABASE_URL||'').replace(/\/$/,''),secret=process.env.SUPABASE_SERVICE_ROLE_KEY;

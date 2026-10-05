@@ -64,6 +64,16 @@ test('unpublished information is recorded as a limit, not a veto of fully source
  assert.equal(depthAssignment(research,{...limitPlan,missing_material:['The identity claim has no source']}).requested_depth,'standard');
  assert.equal(depthAssignment(research,{...limitPlan,sections:plan.sections.slice(0,5)}).requested_depth,'standard');
 });
+
+test('missing evidence only blocks retained questions and omitted limits remain visible',()=>{
+ const omitted={...plan,missing_material:['企业尚未公开回应全文'],blocking_questions:['企业将在何时回应'],known_limits:[]};
+ const ready=depthAssignment(research,omitted);
+ assert.equal(ready.requested_depth,'deep');
+ assert.deepEqual(ready.known_limits,['企业尚未公开回应全文']);
+ assert.equal(depthAssignment(research,{...omitted,blocking_questions:[plan.sections[0].question]}).requested_depth,'standard');
+ assert.equal(depthAssignment(research,{...omitted,sections:plan.sections.slice(0,4)}).requested_depth,'standard');
+ assert.equal(depthAssignment({...research,sources:sources.slice(0,1)},omitted).requested_depth,'standard');
+});
 test('planner gets one bounded opportunity to redesign an overly ambitious evidence plan',async()=>{
  let calls=0;
  const options={model:'test',key:'test',readJson:r=>r.json(),request:async(url,init)=>{

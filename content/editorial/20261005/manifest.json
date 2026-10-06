@@ -1,0 +1,211 @@
+{
+  "batch": "chat-depth-20261005-ten",
+  "publication_method": "manual-chat-editorial",
+  "independent_review_performed": false,
+  "dedup_exclusions": [
+    {
+      "topic": "EB-5 fee final rule",
+      "existing_article_id": "678bc7e7-be54-4533-82aa-a7179fbd959a",
+      "action": "preserve existing manual article, replace topic"
+    },
+    {
+      "topic": "Resolution Copper rehearing",
+      "existing_article_id": "1464e02b-94f5-46d6-9df4-c616e1b904c8",
+      "action": "preserve existing article, replace topic"
+    }
+  ],
+  "articles": [
+    {
+      "number": 1,
+      "file": "content/editorial/20261005/01.txt",
+      "title": "美国司法部对40人提起撤销入籍诉讼，刑事定罪与国籍撤销不能画等号",
+      "section": "us-politics",
+      "cover_asset": "assets/editorial/20261004/justice.webp",
+      "source_date": "2026-10-05",
+      "source_date_precision": "day",
+      "sources": [
+        {
+          "url": "https://www.justice.gov/opa/pr/justice-department-moves-strip-citizenship-40-criminals-largest-single-period",
+          "description": "美国司法部撤销入籍诉讼公告"
+        }
+      ],
+      "body_chinese_chars": 2037,
+      "body_sha256": "2430aebc91f9d5b14a9d8eaf08843e3ff4d8710b3a2a35768ad935cf41569b85"
+    },
+    {
+      "number": 2,
+      "file": "content/editorial/20261005/02.txt",
+      "title": "布鲁克林成人日间照护经营者承认6500万美元医保欺诈，虚假服务如何进入付款链条",
+      "section": "iceandpolice",
+      "cover_asset": "assets/editorial/20261004/justice.webp",
+      "source_date": "2026-10-02",
+      "source_date_precision": "day",
+      "sources": [
+        {
+          "url": "https://www.justice.gov/opa/pr/social-adult-day-care-owner-pleads-guilty-65m-medicaid-fraud",
+          "description": "美国司法部医保欺诈认罪公告"
+        }
+      ],
+      "body_chinese_chars": 2038,
+      "body_sha256": "baf1e42eced4b87732d48b5150550706c714dc8f73d6678f18e3d2421e12fbc6"
+    },
+    {
+      "number": 3,
+      "file": "content/editorial/20261005/03.txt",
+      "title": "USCIS公布2027财年部分费用调整，10月16日邮戳成为新旧标准分界",
+      "section": "us-politics",
+      "cover_asset": "assets/editorial/20261004/justice.webp",
+      "source_date": "2026-10-01",
+      "source_date_precision": "day",
+      "sources": [
+        {
+          "url": "https://www.govinfo.gov/content/pkg/FR-2026-10-01/html/2026-20187.htm",
+          "description": "2027财年特定移民费用通胀调整通知"
+        }
+      ],
+      "body_chinese_chars": 2033,
+      "body_sha256": "a427b062a27ea9d3a8b9311ed3a97c71fdccf24a965564e6ff9d69b7d3570388"
+    },
+    {
+      "number": 4,
+      "file": "content/editorial/20261005/04.txt",
+      "title": "波士顿联邦法院暂停移民罚款新程序，个案判断与申辩机会成为争议核心",
+      "section": "us-politics",
+      "cover_asset": "assets/editorial/20261004/justice.webp",
+      "source_date": "2026-09-30",
+      "source_date_precision": "day",
+      "sources": [
+        {
+          "url": "https://fingfx.thomsonreuters.com/gfx/legaldocs/xmvjwbkwlpr/10052026fines.pdf",
+          "description": "马萨诸塞州联邦地区法院25-13471号案意见与命令，文书日期9月30日"
+        }
+      ],
+      "body_chinese_chars": 2023,
+      "body_sha256": "810e5100e8d109fbb08b058437f28969d507fcc02fbc8158dfba4dd419b87d8b"
+    },
+    {
+      "number": 5,
+      "file": "content/editorial/20261005/05.txt",
+      "title": "得州护理机构以一万五千美元和解军人就业歧视案，排班压力不能替代用工规则",
+      "section": "us-politics",
+      "cover_asset": "assets/editorial/20261004/justice.webp",
+      "source_date": "2026-10-05",
+      "source_date_precision": "day",
+      "sources": [
+        {
+          "url": "https://www.justice.gov/opa/pr/us-department-justice-obtains-settlement-behalf-national-guard-medic-alleged-employment",
+          "description": "美国司法部军人就业歧视和解公告"
+        }
+      ],
+      "body_chinese_chars": 2014,
+      "body_sha256": "cbb5ab742b3ee3f0a8cb0c1f421675a62a03a0d9ec8da3df088ee3cfae51d66a"
+    },
+    {
+      "number": 6,
+      "file": "content/editorial/20261005/06.txt",
+      "title": "美国天然气禁令诉讼出现新进展，联邦能效标准与地方建筑规则争夺适用边界",
+      "section": "us-politics",
+      "cover_asset": "assets/editorial/20261004/fuel.webp",
+      "source_date": "2026-10-05",
+      "source_date_precision": "day",
+      "sources": [
+        {
+          "url": "https://www.justice.gov/opa/pr/justice-department-announces-actions-advancing-two-challenges-state-and-local-natural-gas",
+          "description": "美国司法部天然气限制诉讼进展公告"
+        }
+      ],
+      "body_chinese_chars": 2021,
+      "body_sha256": "a2017866c9624a78f56f4b6ff9c21965348983045ae662ad4a716e9bf88e6b9c"
+    },
+    {
+      "number": 7,
+      "file": "content/editorial/20261005/07.txt",
+      "title": "施耐德拟以226亿美元收购PTC，工业软件整合的考验在交割之后",
+      "section": "important-news",
+      "cover_asset": "assets/editorial/20261004/industry.webp",
+      "source_date": "2026-10-05",
+      "source_date_precision": "day",
+      "sources": [
+        {
+          "url": "https://www.ptc.com/en/news/2026/schneider-electric-to-acquire-ptc",
+          "description": "PTC及施耐德收购协议公告"
+        },
+        {
+          "url": "https://www.sec.gov/Archives/edgar/data/857005/000119312526413124/d174191d8k.htm",
+          "description": "PTC并购8-K披露"
+        }
+      ],
+      "body_chinese_chars": 2035,
+      "body_sha256": "2bb98cf78b997baed6caf7c549470b5110c91501eb081ecde56e975c2ded327c"
+    },
+    {
+      "number": 8,
+      "file": "content/editorial/20261005/08.txt",
+      "title": "中国中小银行整合再受关注，机构减少之后还要看资产质量与服务承接",
+      "section": "hot-headlines",
+      "cover_asset": "assets/editorial/20261005/bank.webp",
+      "source_date": "2026-10-04",
+      "source_date_precision": "day",
+      "sources": [
+        {
+          "url": "https://www.semafor.com/article/10/04/2026/china-consolidates-banking-sector",
+          "description": "中国银行体系整合报道，统计年份2025"
+        },
+        {
+          "url": "https://xzfg.moj.gov.cn/front/law/detail?LawID=419",
+          "description": "现行存款保险条例"
+        }
+      ],
+      "body_chinese_chars": 2018,
+      "body_sha256": "390f82ed3dd848372f09925d9c289a5f6b94ae2efe49f7fb7ed6c1f3341d979d"
+    },
+    {
+      "number": 9,
+      "file": "content/editorial/20261005/09.txt",
+      "title": "法德推动欧盟加快贸易反制，新增工具提议尚未成为生效措施",
+      "section": "important-news",
+      "cover_asset": "assets/editorial/20261004/industry.webp",
+      "source_date": "2026-10-05",
+      "source_date_precision": "day",
+      "sources": [
+        {
+          "url": "https://www.reuters.com/world/china/france-germany-propose-new-rapid-eu-trade-response-tool-2026-10-05/",
+          "description": "法德新增贸易工具倡议报道"
+        },
+        {
+          "url": "https://policy.trade.ec.europa.eu/enforcement-and-protection/protecting-against-coercion_en",
+          "description": "欧盟委员会现有反胁迫制度说明"
+        }
+      ],
+      "body_chinese_chars": 2014,
+      "body_sha256": "d4be6b7b54da17ff6c472ba47178ba7cca2f8f992cb898d826a1cef1667f11c8"
+    },
+    {
+      "number": 10,
+      "file": "content/editorial/20261005/10.txt",
+      "title": "美国FTC致函24家大型医疗服务企业，医院标价公开后仍须说明患者实际面对的费用",
+      "section": "us-politics",
+      "cover_asset": "assets/editorial/20261004/justice.webp",
+      "source_date": "2026-10-05",
+      "source_date_precision": "day",
+      "sources": [
+        {
+          "url": "https://www.ftc.gov/news-events/news/press-releases/2026/10/ftc-issues-letters-warning-hospitals-against-deceptive-pricing-practices",
+          "description": "FTC医院价格披露信函公告"
+        },
+        {
+          "url": "https://www.cms.gov/priorities/key-initiatives/hospital-price-transparency",
+          "description": "CMS医院价格透明度规则说明"
+        }
+      ],
+      "body_chinese_chars": 2002,
+      "body_sha256": "d59cf8265f144098be20c64fb1f386c0a0f0a8285cff10ac19e6f099edfac388"
+    }
+  ],
+  "new_cover": {
+    "path": "assets/editorial/20261005/bank.webp",
+    "kind": "ai_generated_editorial_illustration",
+    "tool": "built-in image_gen",
+    "prompt": "Conceptual rural bank consolidation; generic teller hall, account ledgers, calculator, small institutional buildings combining into a central bank building; editorial illustration; no bank identity, people, flags or readable text."
+  }
+}

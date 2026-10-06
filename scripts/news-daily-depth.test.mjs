@@ -6,7 +6,7 @@ import {DEPTH_PLANNING_VERSION} from './news-forward-policy.mjs';
 import {qualifyTweet,resolvePublicationRoute,generateArticle,buildPublishedArticle} from './china-hot-li-teacher-ingest.mjs';
 const review=Object.fromEntries([...DEEP_REVIEW_FIELDS,'grounded','single_event','sufficient','analysis_grounded','depth_appropriate','court_status_correct','fresh_hot_event','source_chain_complete'].map(k=>[k,true]));
 const research={web_search_completed:true,sources:['https://www.justice.gov/opa/report','https://www.reuters.com/world/report'].map(url=>({url,kind:'web_evidence',tool_cited:true})),depth_assignment:{requested_depth:'deep',sections:[]}};
-function row(n=3500){const r={title:'纽约检察官公布调查进展',content:'文'.repeat(n),status:'published',visibility:'public',published_at:'2026-10-01T04:00:00Z',metadata:{editorial_depth:'deep',context_research:research,editorial_review:{...review}}};r.metadata.reviewed_content_sha256=contentDigest(r.title,r.content);return r;}
+function row(n=3500){const r={cover_image:'https://example.com/news.jpg',title:'纽约检察官公布调查进展',content:'文'.repeat(n),status:'published',visibility:'public',published_at:'2026-10-01T04:00:00Z',metadata:{editorial_depth:'deep',context_research:research,editorial_review:{...review}}};r.metadata.reviewed_content_sha256=contentDigest(r.title,r.content);return r;}
 test('daily acceptance uses New York midnight, including winter offset',()=>{
  assert.equal(nyDate('2026-10-01T03:59:59Z'),'2026-09-30');
  assert.equal(nyDate('2026-10-01T04:00:00Z'),'2026-10-01');
@@ -50,7 +50,7 @@ test('daily writer and independent reviewer receive the same target and publish 
  });
  const q=qualifyTweet(tweet),article=await generateArticle(q,tweet,0,null,'daily-deep');
  const saved={id:1,...buildPublishedArticle(tweet,q,article)};
- assert.equal(countsTowardDailyDepth(saved,nyDate()),true);assert.equal(writes,1);assert.ok(reviews>=1);
+ assert.equal(countsTowardDailyDepth(saved,nyDate()),false); // Text-only publication is not part of the illustrated depth quota.assert.equal(writes,1);assert.ok(reviews>=1);
 });
 test('controller stops at ten accepted public articles without spending on another candidate',async(t)=>{
  const old=process.env.SUPABASE_URL;process.env.SUPABASE_URL='https://database.test';t.after(()=>{if(old===undefined)delete process.env.SUPABASE_URL;else process.env.SUPABASE_URL=old;});

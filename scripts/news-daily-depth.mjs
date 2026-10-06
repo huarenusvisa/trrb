@@ -14,7 +14,7 @@ export const DAILY_DEEP_MIN=2000;
 export const nyDate=(now=new Date())=>new Intl.DateTimeFormat('en-CA',{timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date(now));
 export function countsTowardDailyDepth(row,date) {
   const m=row.metadata || {};
-  return row.status==='published' && row.visibility==='public' && row.published_at && nyDate(row.published_at)===date
+  return row.status==='published' && row.visibility==='public' && /^https:\/\//.test(row.cover_image || '') && row.published_at && nyDate(row.published_at)===date
     && m.editorial_depth==='deep' && bodyCharacterCount(row.content)>=DAILY_DEEP_MIN
     && [...DEEP_REVIEW_FIELDS,'grounded','single_event','sufficient','analysis_grounded','depth_appropriate','court_status_correct','fresh_hot_event','source_chain_complete'].every(k=>m.editorial_review?.[k]===true)
     && m.reviewed_content_sha256===contentDigest(row.title,row.content)
@@ -27,7 +27,7 @@ export function eligibleCandidate(row,date) {
     && !(p.daily_depth_attempt?.date===date && p.daily_depth_attempt.planning_version===DEPTH_PLANNING_VERSION && p.daily_depth_attempt.attempts>=3);
 }
 async function dailyRows(date) {
-  const rows=await readAllPages(page=>supabase('articles',{query:{select:'id,title,content,status,visibility,published_at,metadata',status:'eq.published',visibility:'eq.public',published_at:`gte.${new Date(Date.now()-48*3600000).toISOString()}`,order:'published_at.desc,id.desc',...page}}),{pageSize:100,maxRows:3000});
+  const rows=await readAllPages(page=>supabase('articles',{query:{select:'id,title,content,cover_image,status,visibility,published_at,metadata',status:'eq.published',visibility:'eq.public',published_at:`gte.${new Date(Date.now()-48*3600000).toISOString()}`,order:'published_at.desc,id.desc',...page}}),{pageSize:100,maxRows:3000});
   return rows.filter(row=>countsTowardDailyDepth(row,date));
 }
 async function enabled() {
@@ -70,7 +70,7 @@ export async function runDailyDepth() {
     if(report.completed>=10)break;
     const tweet=tweetFromCandidate(row),qualified=qualifyTweet(tweet);
     if(!qualified.accepted){report.skipped.push({candidate_id:row.id || row.ice_story_id,reason:qualified.reason});continue;}
-    const prior=row.ice_story_id ? (await supabase('articles',{query:{select:'*',id:`eq.${row.article_id}`,limit:'1'}}))?.[0] : await existingArticle(tweet);
+    let prior=row.ice_story_id ? (await supabase('articles',{query:{select:'*',id:`eq.${row.article_id}`,limit:'1'}}))?.[0] : await existingArticle(tweet);
     if(prior && (prior.metadata?.manual_editor_lock || prior.metadata?.manual_override))continue;
     if(prior?.status==='published' && (nyDate(prior.published_at)!==date || !automationMayUpdate(prior) || countsTowardDailyDepth(prior,date)))continue;
     const previousAttempt=row.ai_payload?.daily_depth_attempt;
@@ -82,7 +82,12 @@ export async function runDailyDepth() {
       if(article.appears_old_news)throw new Error('未核实近期新进展');
       const next=buildPublishedArticle(tweet,qualified,article);
       const duplicate=await eventDuplicate(article,recent.filter(r=>r.id!==prior?.id),true);
-      if(duplicate)throw new Error(`同一事件已有文章 ${duplicate.id}，不新增重复长稿`);
+      if(duplicate) {
+        const canonical=(await supabase('articles',{query:{select:'*',id:`eq.${duplicate.id}`,limit:'1'}}))?.[0];
+        if(!canonical || nyDate(canonical.published_at)!==date || !automationMayUpdate(canonical) || canonical.metadata?.manual_editor_lock || countsTowardDailyDepth(canonical,date))throw new Error(`同一事件已有受保护或已达标文章 ${duplicate.id}，不新增重复长稿`);
+        prior=canonical;
+      }
+      if(!/^https:\/\//.test(next.cover_image || ''))throw new Error('深度正文已完成，尚缺通过相关性审核的配图');
       if(nyDate()!==date || !await enabled() || (await dailyRows(date)).length>=10)break;
       let saved;
       if(prior?.status==='published') {
@@ -91,7 +96,7 @@ export async function runDailyDepth() {
         }});
         if(!reason)throw new Error('深度扩展未通过原网址更新复核');
         if(nyDate()!==date || !sourceWithinCollectionWindow(tweet.created_at) || !await enabled() || (await dailyRows(date)).length>=10)break;
-        const body=articleUpdateBody(prior,next,reason);
+        const body={...articleUpdateBody(prior,next,reason),cover_image:next.cover_image,image_alt:next.image_alt};
         const result=await supabase('articles',{method:'PATCH',query:{id:`eq.${prior.id}`,updated_at:`eq.${prior.updated_at}`,status:'eq.published',visibility:'eq.public'},body,prefer:'return=representation'});
         if(!result?.length)throw new Error('稿件已被其他编辑修改');saved=result[0];
       } else saved=await publishArticle(next,prior);
@@ -121,7 +126,7 @@ export async function runDailyDepth() {
         } catch(fallbackError) {outcome.fallback_error=String(fallbackError.message).slice(0,700);}
       }
       const current=row.id ? (await supabase('news_candidates',{query:{select:'ai_payload,updated_at',id:`eq.${row.id}`,limit:'1'}}))?.[0] : null;
-      if(current && !current.ai_payload?.manual_editor_lock)await supabase('news_candidates',{method:'PATCH',query:{id:`eq.${row.id}`,updated_at:`eq.${current.updated_at}`},body:{...(outcome.article_id?{decision:'published',article_id:outcome.article_id,decision_reason:'已发布，资料不足留待人工后续核查',processed_at:new Date().toISOString()}:{}),ai_payload:{...current.ai_payload,...(outcome.article_id?{manual_review_required:true,post_publication_review_status:'pending'}:{}),daily_depth_attempt:{date,planning_version:DEPTH_PLANNING_VERSION,attempts,...outcome}}}});
+      if(current && !current.ai_payload?.manual_editor_lock)await supabase('news_candidates',{method:'PATCH',query:{id:`eq.${row.id}`,updated_at:`eq.${current.updated_at}`},body:{...(outcome.article_id?{decision:'published',article_id:outcome.article_id,decision_reason:'已发布，资料不足留待人工后续核查',processed_at:new Date().toISOString()}:{}),ai_payload:{...current.ai_payload,...(outcome.article_id?{manual_review_required:true,post_publication_review_status:'pending'}:{}),daily_depth_draft:tweet.generated_draft || null,daily_depth_research:tweet.context_research || null,daily_depth_attempt:{date,planning_version:DEPTH_PLANNING_VERSION,attempts,...outcome}}}});
     }
     await recordDepthAttempt(row,date,attempts,outcome);
     report.results.push(outcome);console.log(JSON.stringify({event:'daily-depth-result',...outcome}));

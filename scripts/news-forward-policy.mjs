@@ -1,7 +1,7 @@
 import './news-budget-preload.mjs';
 import {createHash} from 'node:crypto';
 import {factualSources,independentSourceCount} from './news-editorial-policy.mjs';
-export const DEPTH_PLANNING_VERSION='depth-commission-v3';
+export const DEPTH_PLANNING_VERSION='depth-commission-v4';
 
 // Fixed at installation, not reset each run. Historical rows are comparison-only.
 export function forwardQuery() {

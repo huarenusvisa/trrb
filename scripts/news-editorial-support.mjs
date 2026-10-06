@@ -16,7 +16,7 @@ export async function verifyFreshDevelopment({source, sourceDate, research, prev
   return { ...result, fresh:result?.fresh===true && Boolean(result.evidence?.trim()) && Number.isFinite(day) && day <= now.getTime() && now.getTime()-day <= 72*3600000 };
 }
 
-const PUBLISHERS = /(^|\.)(?:justice\.gov|ice\.gov|dhs\.gov|cbp\.gov|uscis\.gov|whitehouse\.gov|uscourts\.gov|reuters\.com|apnews\.com|cna\.com\.tw|zaobao\.com\.sg|rfa\.org|voachinese\.com|bbc\.com|bbc\.co\.uk|npr\.org|cnn\.com)$/i;
+const PUBLISHERS = /(^|\.)(?:justice\.gov|ice\.gov|dhs\.gov|cbp\.gov|uscis\.gov|whitehouse\.gov|uscourts\.gov|reuters\.com|apnews\.com|cna\.com\.tw|zaobao\.com\.sg|rfa\.org|voachinese\.com|bbc\.com|bbc\.co\.uk|npr\.org|cnn\.com|cnbc\.com)$/i;
 export function allowedMediaPage(value) {
   try {const u=new URL(value);return u.protocol==='https:'&&!u.username&&!u.password&&!u.port&&PUBLISHERS.test(u.hostname);}catch{return false;}
 }
@@ -25,17 +25,26 @@ export async function findSourceImages(links,{fetcher=fetch}={}) {
   for(const page of [...new Set(links || [])].filter(allowedMediaPage).slice(0,3)) {
     try {
       // No redirects to unvalidated hosts, credentials, or internal destinations.
-      const res=await fetcher(page,{redirect:'error',signal:AbortSignal.timeout(12000),headers:{Accept:'text/html'}});
+      let target=page,res;
+      for(let hop=0;hop<4;hop++) {
+        res=await fetcher(target,{redirect:'manual',signal:AbortSignal.timeout(12000),headers:{Accept:'text/html'}});
+        if(res.status<300 || res.status>=400)break;
+        const location=res.headers.get('location');
+        if(!location)break;
+        const next=new URL(location,target).href;
+        if(!allowedMediaPage(next))throw new Error('Unapproved image source redirect');
+        target=next;
+      }
       if(!res.ok || !/text\/html/i.test(res.headers.get('content-type')||''))continue;
       const reader=res.body.getReader(); let size=0,html='';const decoder=new TextDecoder();
       while(true){const {value,done}=await reader.read();if(done)break;size+=value.length;if(size>500000){await reader.cancel();break;}html+=decoder.decode(value,{stream:true});}
       for(const tag of html.match(/<meta\b[^>]*>/gi)||[]) {
         const attrs=Object.fromEntries([...tag.matchAll(/([\w:-]+)\s*=\s*["']([^"']*)["']/g)].map(m=>[m[1].toLowerCase(),m[2]]));
         if(!['og:image','twitter:image','twitter:image:src'].includes(attrs.property||attrs.name))continue;
-        const url=new URL((attrs.content||'').replaceAll('&amp;','&'),page);
+        const url=new URL((attrs.content||'').replaceAll('&amp;','&'),target);
         if(url.protocol!=='https:'||url.username||url.password||url.port||/^(?:localhost|\d[\d.]*)$|:/.test(url.hostname))continue;
         // These are only candidates; the independent visual reviewer must select one.
-        found.push({type:'photo',url:url.href,source_page:page,discovered_from:'source_page_metadata'});
+        found.push({type:'photo',url:url.href,source_page:target,discovered_from:'source_page_metadata'});
         break;
       }
     }catch{/* No photo is a text-only candidate, not a factual rejection. */}

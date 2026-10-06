@@ -30,11 +30,11 @@ test('freshness recheck requires evidence, valid recent dates and timezone conte
   }
 });
 
-test('photo lookup only visits bounded publisher pages and does not follow redirects',async()=>{
+test('photo lookup only visits bounded publisher pages and validates redirects',async()=>{
   for(const url of ['http://ice.gov/a','https://ice.gov.evil.test/a','https://127.0.0.1/a','https://user@ice.gov/a','https://ice.gov:444/a'])assert.equal(allowedMediaPage(url),false);
   const calls=[];
   const photos=await findSourceImages(['https://ice.gov/a','https://ice.gov/a','https://justice.gov/b','https://reuters.com/c','https://apnews.com/d','https://localhost/a'],{fetcher:async(url,options)=>{
-    calls.push(url);assert.equal(options.redirect,'error');
+    calls.push(url);assert.equal(options.redirect,'manual');
     return new Response('<meta content="https://cdn.example.org/news.jpg?a=1&amp;b=2" property="og:image">',{headers:{'content-type':'text/html'}});
   }});
   assert.equal(calls.length,3);assert.equal(photos.length,3);
@@ -74,4 +74,12 @@ test('confirmed duplicates discard their draft, keep the published original and 
       assert.equal(removal.query.id,'eq.private-duplicate');assert.equal(removal.query.status,'neq.published');
     }
   }
+});
+
+test('source image redirects remain inside approved HTTPS publisher hosts',async()=>{
+ const visited=[];
+ const images=await findSourceImages(['https://cnbc.com/story'],{fetcher:async url=>{visited.push(url);return url==='https://cnbc.com/story'?new Response(null,{status:301,headers:{location:'https://www.cnbc.com/story'}}):new Response('<meta property="og:image" content="https://cdn.example.org/pic.jpg">',{headers:{'content-type':'text/html'}});}});
+ assert.equal(visited.length,2);assert.equal(images.length,1);
+ let requests=0;const blocked=await findSourceImages(['https://ice.gov/a'],{fetcher:async()=>{requests++;return new Response(null,{status:302,headers:{location:'https://127.0.0.1/private'}});}});
+ assert.equal(requests,1);assert.deepEqual(blocked,[]);
 });

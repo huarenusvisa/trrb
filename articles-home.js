@@ -62,8 +62,8 @@ async function fetchHomepageFocus() {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), 7500);
   try {
-    const response = await fetch(`/.netlify/functions/public-home-focus?_=${Date.now()}`, {
-      cache: "no-store",
+    const response = await fetch("/.netlify/functions/public-home-focus", {
+      cache: "default",
       headers: { Accept: "application/json" },
       signal: controller.signal
     });
@@ -83,9 +83,9 @@ async function fetchUnifiedHomeBundle() {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), 7500);
   try {
-    const params = new URLSearchParams({ limit: "200", per_category: "12", _: String(Date.now()) });
+    const params = new URLSearchParams({ limit: "200", per_category: "12" });
     const response = await fetch(`/.netlify/functions/public-home-bundle?${params.toString()}`, {
-      cache: "no-store",
+      cache: "default",
       headers: { Accept: "application/json" },
       signal: controller.signal
     });
@@ -245,23 +245,28 @@ function renderHome(articles, focusArticles = null) {
 }
 
 async function loadHome() {
+  // Own both feeds, but do not let a slow focus request block the news cards.
+  document.documentElement.dataset.homePrimaryPending = "true";
+  document.documentElement.dataset.homeFocusAtomic = "true";
+  const focusTask = fetchHomepageFocus().then(focus => {
+    renderHeroCarousel(focus.slice(0, 5));
+  }).catch(error => {
+    document.documentElement.dataset.homeFocusAtomic = "false";
+    console.warn("今日要闻接口暂不可用：", error);
+  });
   try {
-    const [live, focusResult] = await Promise.allSettled([
-      fetchUnifiedHomeBundle(),
-      fetchHomepageFocus()
-    ]);
-    if (live.status !== "fulfilled" || !live.value.length) {
-      throw live.status === "rejected" ? live.reason : new Error("首页统一实时接口没有返回已发布新闻");
-    }
-    const focus = focusResult.status === "fulfilled" ? focusResult.value : [];
-    if (focusResult.status === "rejected") console.warn("今日要闻接口暂不可用：", focusResult.reason);
-    renderHome(live.value, focus);
+    const live = await fetchUnifiedHomeBundle();
+    if (!live.length) throw new Error("首页统一实时接口没有返回已发布新闻");
+    renderHome(live);
     document.documentElement.dataset.homePrimaryRendered = "true";
   } catch (error) {
     console.error("首页实时新闻加载失败：", error);
     const root = document.querySelector("#sections-grid");
     if (root) root.innerHTML = '<div class="empty-state">实时新闻暂时不可用，请稍后刷新。</div>';
+  } finally {
+    document.documentElement.dataset.homePrimaryPending = "false";
   }
+  await focusTask;
 }
 
 function shortDate(value) {

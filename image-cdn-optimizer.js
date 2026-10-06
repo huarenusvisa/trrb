@@ -50,8 +50,8 @@
   const CDN_ORIGINS = new Set([
     "images.openai.com", "i.abcnewsfe.com", "pbs.twimg.com", "media.cnn.com",
     "a57.foxnews.com", "static01.nyt.com", "dims.apnews.com", "media-cldnry.s-nbcnews.com",
-    "www.ice.gov", "www.dhs.gov", "upload.wikimedia.org", "www.supremecourt.gov",
-    "gdb.voanews.com", "fwiznbpsqkfgkvyznebz.supabase.co"
+    "www.ice.gov", "www.dhs.gov", "upload.wikimedia.org",
+    "fwiznbpsqkfgkvyznebz.supabase.co"
   ]);
   function responsiveImage(raw, width = 640) {
     const original = normalizeUrl(raw);

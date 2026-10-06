@@ -97,7 +97,11 @@ export default async (event: Request) => {
         return true;
       })
       .sort((a, b) => timeOf(b) - timeOf(a))
-      .map(row => ({ ...row, body_character_count: policy.bodyCharacterCount(row.content), editorial_policy_version: policy.VERSION, editorial_topics: editorialTopics(row) }));
+      .map(row => {
+        // Classification and eligibility use the full server-side body; cards only need a summary.
+        const { content, ...card } = row;
+        return { ...card, summary: row.summary || String(content || "").replace(/\s+/g, " ").slice(0, 160), body_character_count: policy.bodyCharacterCount(row.content), editorial_policy_version: policy.VERSION, editorial_topics: editorialTopics(row) };
+      });
 
     return response(200, {
       mode: "homepage",

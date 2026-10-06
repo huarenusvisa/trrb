@@ -127,7 +127,7 @@
 
   function bindImageRecovery(root = document) {
     root.querySelectorAll?.("img").forEach((img) => {
-      if (!(img instanceof HTMLImageElement) || img.dataset.trrbRecoveryBound === "true") return;
+      if (!(img instanceof HTMLImageElement) || img.dataset.trrbRecoveryBound === "true" || img.dataset.trrbOriginal) return;
       img.dataset.trrbRecoveryBound = "true";
       const original = String(img.getAttribute("src") || "");
       img.addEventListener("error", () => {
@@ -221,7 +221,7 @@
         return;
       }
       refreshHome({ forceRender: true });
-    }, 1800);
+    }, 8500);
 
     window.setTimeout(() => {
       if (document.documentElement.dataset.homeFinalized !== "true") finalizeHome("watchdog-visible");

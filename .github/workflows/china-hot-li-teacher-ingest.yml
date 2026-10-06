@@ -55,6 +55,10 @@ jobs:
       - name: Read China headlines category switches
         id: category
         run: node scripts/category-pipeline-gate.mjs hot-headlines
+      - name: Prioritize daily depth recovery after an editorial fix
+        if: github.event_name == 'push' && steps.category.outputs.auto_fetch == 'true' && steps.category.outputs.ai_rewrite == 'true' && steps.category.outputs.auto_publish == 'true'
+        run: node scripts/news-daily-depth.mjs
+
       - name: Collect China headlines and publish automatically
         if: steps.category.outputs.auto_fetch == 'true' && steps.category.outputs.ai_rewrite == 'true' && steps.category.outputs.auto_publish == 'true'
         shell: bash

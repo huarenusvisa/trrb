@@ -100,7 +100,7 @@ export async function runDailyDepth() {
       const current=row.id ? (await supabase('news_candidates',{query:{select:'ai_payload,updated_at',id:`eq.${row.id}`,limit:'1'}}))?.[0] : null;
       if(current && !current.ai_payload?.manual_editor_lock)await supabase('news_candidates',{method:'PATCH',query:{id:`eq.${row.id}`,updated_at:`eq.${current.updated_at}`},body:{decision:'published',article_id:saved.id,proposed_section:saved.category_name,decision_reason:'每日2000–3500字深度稿已发布并回读验收',processed_at:new Date().toISOString(),ai_payload:{...current.ai_payload,daily_depth_attempt:{date,planning_version:DEPTH_PLANNING_VERSION,attempts,status:outcome.status},daily_depth_article_id:saved.id}}});
     } catch(error) {
-      Object.assign(outcome,{status:isBudgetDeferred(error)?'budget-deferred':'not-published',reason:String(error.message).slice(0,700)});
+      Object.assign(outcome,{status:isBudgetDeferred(error)?'budget-deferred':'not-published',reason:String(error.message).slice(0,700),body_chinese_chars:bodyCharacterCount(tweet.generated_draft?.content),writer_reason:tweet.generated_draft?.rejection_reason || tweet.context_research_error || ''});
       // Standing publisher instruction: insufficient depth evidence is reviewed
       // after publication; it does not turn a source report into a deep article.
       if (!isBudgetDeferred(error) && /每日深度选题资料不足|每日深度稿证据|每日深度稿独立背景资料不足/.test(String(error.message))) {

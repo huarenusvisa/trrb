@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import {composeDepthDraft} from './news-depth-compose.mjs';
 import writingStandard from '../netlify/functions/_shared/news-writing-standard.js';
 import publisherReview from '../netlify/functions/_shared/publisher-review-policy.js';
 import {inForwardScope,depthInstruction,logDepthOutcome} from './news-forward-policy.mjs';
@@ -858,7 +859,10 @@ export async function generateArticle(qualified, tweet, attempt = 0, previous = 
       ] }],
       text: { format: { type: "json_schema", name: "china_hot_article", strict: true, schema } },
   });
-  const article = response;
+  let article = response;
+  if (dailyDeep && article.source_sufficient === true && bodyCharacterCount(article.content)<2000) {
+    article=await composeDepthDraft({draft:article,research:tweet.context_research,source:qualified.text,invoke:structuredModel,model:OPENAI_MODEL});
+  }
   article.daily_deep_commission = dailyDeep;
   tweet.generated_draft = article;
   article.title = cleanText(article.title, Infinity); article.summary = cleanText(article.summary, Infinity); article.content = cleanText(article.content, Infinity).replace(/\\r\\n|\\n/g,"\n").replace(/\*/g,""); article.old_news_reason = cleanText(article.old_news_reason, 800);
@@ -882,7 +886,7 @@ export async function generateArticle(qualified, tweet, attempt = 0, previous = 
   if (dailyDeep && article.source_sufficient === true && bodyCharacterCount(article.content) < 2000 && attempt < 2) {
     return generateArticle(qualified,tweet,attempt+1,{...article,rewrite_reason:`每日深度稿正文仅${bodyCharacterCount(article.content)}字，须依已给材料写到2000至3500字；资料不足就明确拒绝，禁止凑字。`},mode);
   }
-  if (dailyDeep && (article.source_sufficient !== true || bodyCharacterCount(article.content) < 2000)) throw qualityError("每日深度稿证据或2000字下限未达标，保留原稿，补选下一题");
+  if (dailyDeep && (article.source_sufficient !== true || bodyCharacterCount(article.content) < 2000)) throw qualityError(`每日深度稿证据或2000字下限未达标：正文${bodyCharacterCount(article.content)}字；${article.rejection_reason || "生成正文未达到目标"}`);
   // A completed lookup may yield no second source. Review the original material
   // and its attribution instead of rejecting all single-source reports here.
   if (dailyDeep && independentSourceCount(tweet.context_research) < 2) throw qualityError("每日深度稿独立背景资料不足");

@@ -21,6 +21,7 @@ on:
       - 'scripts/news-cost-model.mjs'
       - 'scripts/news-priority.mjs'
       - 'scripts/news-daily-depth*.mjs'
+      - 'scripts/news-depth-compose*.mjs'
       - 'scripts/news-forward-policy.mjs'
       - 'scripts/news-forward-policy.test.mjs'
       - 'scripts/news-repair-short-published.mjs'
@@ -72,7 +73,7 @@ on:
     # immediately and must never be blocked by an internal cadence lock.
     # Changes here also wake enabled collectors so production coverage fixes are verified immediately.
     # ICE switch-on synchronizes category fetch/rewrite/publish flags before immediate dispatch.
-    - cron: "7 * * * *"
+    - cron: "7,37 * * * *"
     - cron: "37 4 * * *"
     - cron: "7 7 * * *"
     - cron: "23 7 * * *"

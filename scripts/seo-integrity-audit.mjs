@@ -52,6 +52,15 @@ function isExternal(value) {
   return /^(?:https?:|mailto:|tel:|data:|javascript:|blob:|\/\/)/i.test(value);
 }
 function localTarget(fromFile, raw) {
+  // Netlify Image CDN is a runtime endpoint, not a file in the publish directory.
+  // Keep validating its local source so a missing original still fails the gate.
+  if (cleanUrl(raw) === "/.netlify/images") {
+    const source = new URL(String(raw).replace(/&amp;/g, "&"), "https://trrb.net").searchParams.get("url");
+    if (!source || cleanUrl(source) === "/.netlify/images") return ".netlify/invalid-image-source";
+    if (/^https:\/\//i.test(source)) return null;
+    if (!source.startsWith("/") || source.startsWith("//")) return ".netlify/invalid-image-source";
+    return localTarget(fromFile, source);
+  }
   const clean = cleanUrl(raw);
   if (!clean || isExternal(clean)) return null;
   if (clean === "/") return "index.html";

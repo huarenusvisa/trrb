@@ -46,6 +46,29 @@
     return value;
   }
 
+  // Only transform known public image origins; unknown sources keep their original URL.
+  const CDN_ORIGINS = new Set([
+    "images.openai.com", "i.abcnewsfe.com", "pbs.twimg.com", "media.cnn.com",
+    "a57.foxnews.com", "static01.nyt.com", "dims.apnews.com", "media-cldnry.s-nbcnews.com",
+    "www.ice.gov", "www.dhs.gov", "upload.wikimedia.org", "www.supremecourt.gov",
+    "gdb.voanews.com", "fwiznbpsqkfgkvyznebz.supabase.co"
+  ]);
+  function responsiveImage(raw, width = 640) {
+    const original = normalizeUrl(raw);
+    try {
+      const url = new URL(original, location.origin);
+      const local = url.origin === location.origin;
+      const repo = url.hostname === "raw.githubusercontent.com" && url.pathname.startsWith("/huarenusvisa/trrb/");
+      if (url.protocol !== "https:" || /\.svg$/i.test(url.pathname) || url.pathname.startsWith("/.netlify/images") || (!local && !repo && !CDN_ORIGINS.has(url.hostname))) return null;
+      const source = local ? url.pathname + url.search : url.href;
+      const widths = width <= 208 ? [160, 240, 320, 480] : [320, 480, 640, 960, 1280];
+      const imageUrl = w => `/.netlify/images?url=${encodeURIComponent(source)}&w=${w}&q=75&fm=webp`;
+      const sizes = width <= 208 ? "112px" : width >= 1000 ? "(max-width: 767px) calc(100vw - 32px), (max-width: 1100px) 65vw, 760px" : "(max-width: 767px) calc(100vw - 32px), 320px";
+      return { original, src: imageUrl(width <= 208 ? 240 : 640), srcset: widths.map(w => `${imageUrl(w)} ${w}w`).join(", "), sizes };
+    } catch { return null; }
+  }
+  window.TRRB_responsiveImage = responsiveImage;
+
   function hideUnavailableImage(img) {
     if (img.dataset.trrbUnavailableHidden === "1") return;
     img.dataset.trrbUnavailableHidden = "1";
@@ -75,6 +98,13 @@
   }
 
   function useFallback(img) {
+    if (img.dataset.trrbOriginal && img.dataset.trrbOriginalRetry !== "1") {
+      img.dataset.trrbOriginalRetry = "1";
+      img.removeAttribute("srcset");
+      img.removeAttribute("sizes");
+      img.src = img.dataset.trrbOriginal;
+      return;
+    }
     if (img.dataset.trrbFallbackDone === "1") return;
     img.dataset.trrbFallbackDone = "1";
     hideUnavailableImage(img);

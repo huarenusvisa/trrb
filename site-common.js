@@ -86,13 +86,15 @@
     window.__TRRB_IMAGE_FALLBACK_INSTALLED__ = true;
     document.addEventListener("error", (event) => {
       if (!(event.target instanceof HTMLImageElement)) return;
+      // The responsive-image loader retries the original before hiding a failed image.
+      if (event.target.dataset.trrbOriginal) return;
       if (hideUnavailableImage(event.target)) {
         event.preventDefault();
         event.stopImmediatePropagation();
       }
     }, true);
     document.querySelectorAll("img").forEach((img) => {
-      if (img.complete && img.naturalWidth === 0) hideUnavailableImage(img);
+      if (img.complete && img.naturalWidth === 0 && !img.dataset.trrbOriginal) hideUnavailableImage(img);
     });
   }
 
@@ -197,6 +199,7 @@
     function setExpanded(expanded) {
       menuButton.setAttribute("aria-expanded", String(expanded));
       nav.setAttribute("aria-hidden", mobileQuery.matches ? String(!expanded) : "false");
+      nav.inert = mobileQuery.matches && !expanded;
     }
 
     function openMenu(focusSearch) {

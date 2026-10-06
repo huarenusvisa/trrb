@@ -49,7 +49,7 @@
   excludedPath = ["/*.css", "/*.js", "/*.mjs", "/*.json", "/*.xml", "/*.txt", "/*.webmanifest", "/*.webp", "/*.png", "/*.jpg", "/*.jpeg", "/*.svg", "/*.ico", "/*.woff", "/*.woff2", "/assets/*", "/config/*", "/data/*", "/community", "/community/*", "/user", "/user/*", "/reset-password", "/reset-password/*"]
 
 [images]
-  remote_images = ["https:\\/\\/images\\.openai\\.com\\/.*", "https:\\/\\/i\\.abcnewsfe\\.com\\/.*", "https:\\/\\/pbs\\.twimg\\.com\\/.*", "https:\\/\\/media\\.cnn\\.com\\/.*", "https:\\/\\/a57\\.foxnews\\.com\\/.*", "https:\\/\\/static01\\.nyt\\.com\\/.*", "https:\\/\\/dims\\.apnews\\.com\\/.*", "https:\\/\\/media-cldnry\\.s-nbcnews\\.com\\/.*", "https:\\/\\/www\\.ice\\.gov\\/.*", "https:\\/\\/www\\.dhs\\.gov\\/.*"]
+  remote_images = ["https:\\/\\/images\\.openai\\.com\\/.*", "https:\\/\\/i\\.abcnewsfe\\.com\\/.*", "https:\\/\\/pbs\\.twimg\\.com\\/.*", "https:\\/\\/media\\.cnn\\.com\\/.*", "https:\\/\\/a57\\.foxnews\\.com\\/.*", "https:\\/\\/static01\\.nyt\\.com\\/.*", "https:\\/\\/dims\\.apnews\\.com\\/.*", "https:\\/\\/media-cldnry\\.s-nbcnews\\.com\\/.*", "https:\\/\\/www\\.ice\\.gov\\/.*", "https:\\/\\/www\\.dhs\\.gov\\/.*", "https://raw\\.githubusercontent\\.com/huarenusvisa/trrb/.*", "https://upload\\.wikimedia\\.org/.*", "https://www\\.supremecourt\\.gov/.*", "https://gdb\\.voanews\\.com/.*", "https://fwiznbpsqkfgkvyznebz\\.supabase\\.co/storage/v1/object/public/article-images/.*"]
 
 [[headers]]
   for = "/sitemap.xml"
@@ -78,11 +78,11 @@
 [[headers]]
   for = "/*.js"
   [headers.values]
-    Cache-Control = "no-cache, no-store, must-revalidate"
+    Cache-Control = "public, max-age=0, must-revalidate"
 [[headers]]
   for = "/*.css"
   [headers.values]
-    Cache-Control = "no-cache, no-store, must-revalidate"
+    Cache-Control = "public, max-age=0, must-revalidate"
 [[headers]]
   for = "/*.html"
   [headers.values]

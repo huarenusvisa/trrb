@@ -287,6 +287,8 @@ function imageAttrs(article, options = {}) {
   const eager = Boolean(options.eager);
   const width = Number(options.width || 512);
   const height = Number(options.height || 288);
+  const responsive = window.TRRB_responsiveImage?.(improved, width);
+  if (responsive) return `src="${escapeAttribute(responsive.src)}" srcset="${escapeAttribute(responsive.srcset)}" sizes="${escapeAttribute(responsive.sizes)}" data-trrb-original="${escapeAttribute(responsive.original)}" width="${width}" height="${height}" loading="${eager ? "eager" : "lazy"}" decoding="async"${eager ? ' fetchpriority="high"' : ""} referrerpolicy="no-referrer"`;
   return `src="${escapeAttribute(improved)}" width="${width}" height="${height}" loading="${eager ? "eager" : "lazy"}" decoding="async"${eager ? ' fetchpriority="high"' : ""} referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='${escapeAttribute(fallback)}'"`;
 }
 
@@ -307,7 +309,7 @@ function renderHeroCarousel(articles) {
 }
 function renderHeroSlide(article, index) {
   const activeClass = index === 0 ? " is-active" : "";
-  return `<a class="hero-link hero-slide${activeClass}" href="${articleUrl(article)}" aria-label="${escapeAttribute(article.title)}"><img ${imageAttrs(article, { eager: index === 0, width: 1200, height: 675 })} alt="${escapeAttribute(article.title)}" /><div class="hero-overlay"><span class="tag">${escapeHtml(article.category)}</span><h1>${escapeHtml(article.title)}</h1></div></a>`;
+  return `<a class="hero-link hero-slide${activeClass}"${index === 0 ? "" : ' inert aria-hidden="true"'} href="${articleUrl(article)}" aria-label="${escapeAttribute(article.title)}"><img ${imageAttrs(article, { eager: index === 0, width: 1200, height: 675 })} alt="${escapeAttribute(article.title)}" /><div class="hero-overlay"><span class="tag">${escapeHtml(article.category)}</span><h1>${escapeHtml(article.title)}</h1></div></a>`;
 }
 function renderHeroDots(count) {
   return `<div class="hero-dots" aria-hidden="true">${Array.from({ length: count }, (_, index) => `<span class="${index === 0 ? "is-active" : ""}"></span>`).join("")}</div>`;
@@ -321,9 +323,13 @@ function startHeroCarousel(hero) {
   let timer = null;
   const advance = () => {
     slides[current].classList.remove("is-active");
+    slides[current].inert = true;
+    slides[current].setAttribute("aria-hidden", "true");
     dots[current]?.classList.remove("is-active");
     current = (current + 1) % slides.length;
     slides[current].classList.add("is-active");
+    slides[current].inert = false;
+    slides[current].removeAttribute("aria-hidden");
     dots[current]?.classList.add("is-active");
   };
   const start = () => { if (!timer && !document.hidden) timer = window.setInterval(advance, 5200); };

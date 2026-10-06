@@ -860,6 +860,7 @@ export async function generateArticle(qualified, tweet, attempt = 0, previous = 
       text: { format: { type: "json_schema", name: "china_hot_article", strict: true, schema } },
   });
   let article = response;
+  tweet.generated_draft = article;
   if (dailyDeep && article.source_sufficient === true && bodyCharacterCount(article.content)<2000) {
     article=await composeDepthDraft({draft:article,research:tweet.context_research,source:qualified.text,invoke:structuredModel,model:OPENAI_MODEL});
   }

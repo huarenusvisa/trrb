@@ -97,7 +97,7 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          curl -fsS -X POST \
+          curl --retry 3 --retry-delay 2 --retry-max-time 30 -fsS -X POST \
             -H "Authorization: Bearer $GITHUB_TOKEN" \
             -H 'Accept: application/vnd.github+json' \
             -H 'Content-Type: application/json' \
@@ -235,7 +235,7 @@ jobs:
             description='Production trigger failed before acceptance'
           fi
           payload=$(node -e 'process.stdout.write(JSON.stringify({state:process.argv[1],context:"trrb/production-trigger",description:process.argv[2]}))' "$state" "$description")
-          curl -fsS -X POST \
+          curl --retry 3 --retry-delay 2 --retry-max-time 30 -fsS -X POST \
             -H "Authorization: Bearer $GITHUB_TOKEN" \
             -H 'Accept: application/vnd.github+json' \
             -H 'Content-Type: application/json' \
@@ -288,7 +288,7 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          curl -fsS -X POST \
+          curl --retry 3 --retry-delay 2 --retry-max-time 30 -fsS -X POST \
             -H "Authorization: Bearer $GITHUB_TOKEN" \
             -H 'Accept: application/vnd.github+json' \
             -H 'Content-Type: application/json' \
@@ -302,7 +302,7 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          curl -fsS -X POST \
+          curl --retry 3 --retry-delay 2 --retry-max-time 30 -fsS -X POST \
             -H "Authorization: Bearer $GITHUB_TOKEN" \
             -H 'Accept: application/vnd.github+json' \
             -H 'Content-Type: application/json' \

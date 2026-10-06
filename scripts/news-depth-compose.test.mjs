@@ -9,3 +9,8 @@ test('assembles evidence sections and supplies prior paragraphs to prevent repet
 test('refusal stops composition and never converts missing facts into success',async()=>{
  let calls=0;await assert.rejects(composeDepthDraft({draft:{},research,invoke:async()=>{calls++;return{content:'',sufficient:false,missing_evidence:'没有原始文件'};}}),/没有原始文件/);assert.equal(calls,1);
 });
+
+test('short factual section is revised once without being mislabeled insufficient evidence',async()=>{
+ let calls=0;const r=await composeDepthDraft({draft:{},research,invoke:async p=>{calls++;const input=JSON.parse(p.input);return{content:'实'.repeat(input.revision?410:200),sufficient:true,missing_evidence:''};}});
+ assert.equal(calls,12);assert.equal(r.content.replace(/\s/g,'').length,2460);
+});

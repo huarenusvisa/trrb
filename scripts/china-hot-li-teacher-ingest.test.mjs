@@ -254,7 +254,7 @@ test("自动失败草稿可有界重试，人工复核决定不会被自动覆�
   }, qualified), false);
 });
 
-test("中国热门头条打开开关立即采集，并由每小时唤醒器回看最多12小时内容", () => {
+test("中国热门头条打开开关立即采集，并由每半小时唤醒器回看最多12小时内容", () => {
   const workflow = fs.readFileSync(new URL("../.github/workflows/china-hot-li-teacher-ingest.yml", import.meta.url), "utf8");
   const control = fs.readFileSync(new URL("../.github/workflows/operations-control-plane.yml", import.meta.url), "utf8");
   assert.match(workflow, /OPENAI_API_KEY/);
@@ -267,7 +267,7 @@ test("中国热门头条打开开关立即采集，并由每小时唤醒器回�
   assert.doesNotMatch(workflow, /schedule:/);
   assert.doesNotMatch(workflow, /collection-cadence-gate/);
   assert.doesNotMatch(workflow, /COLLECTION_CADENCE_MINUTES/);
-  assert.match(control, /cron: "7 \* \* \* \*"/);
+  assert.match(control, /cron: "7,37 \* \* \* \*"/);
   assert.match(control, /netlify\/functions\/_shared\/china-hot-headlines\.js/);
   assert.match(control, /scripts\/china-hot-li-teacher-ingest\.mjs/);
   assert.match(control, /must never be blocked by an internal cadence lock/);

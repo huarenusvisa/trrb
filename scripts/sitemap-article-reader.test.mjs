@@ -42,3 +42,14 @@ test('malformed, repeating, truncated or unauthorized results fail closed', asyn
   await assert.rejects(fetchPublishedArticles(async () => { calls++; throw Object.assign(new Error('unauthorized'), { status: 401 }); }), /unauthorized/);
   assert.equal(calls, 1);
 });
+
+test('reader reduces page size after repeated transient timeouts', async () => {
+  const limits = [];
+  const rows = await fetchPublishedArticles(async (_table, params) => {
+    limits.push(Number(params.limit));
+    if (Number(params.limit) > 25) throw Object.assign(new Error('statement timeout'), { code: '57014' });
+    return [{ id: '01', published_at: '2026-10-09T00:00:00Z' }];
+  }, { pageSize: 100, minPageSize: 25, pause: async () => {} });
+  assert.deepEqual(limits, [100, 100, 100, 50, 50, 50, 25]);
+  assert.equal(rows.length, 1);
+});

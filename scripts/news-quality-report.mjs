@@ -26,11 +26,11 @@ export async function runQualityReport(){
   const now=Date.now(),base=String(process.env.SUPABASE_URL||'').replace(/\/$/,''),secret=process.env.SUPABASE_SERVICE_ROLE_KEY;
   if(!base||!secret)throw new Error('缺少新闻统计数据库配置');
   const rows=[];
-  for(let offset=0;;offset+=500){
+  for(let offset=0;;offset+=100){
     if(offset>=20000)throw new Error('统计超过分页安全范围，禁止输出不完整占比');
-    const query=new URLSearchParams({select:'id,title,content,status,visibility,created_at,published_at,automation_source,metadata',status:'eq.published',visibility:'eq.public',published_at:`gte.${new Date(now-7*86400000).toISOString()}`,order:'published_at.asc,id.asc',offset:String(offset),limit:'500'});
+    const query=new URLSearchParams({select:'id,title,content,status,visibility,created_at,published_at,automation_source,metadata',status:'eq.published',visibility:'eq.public',published_at:`gte.${new Date(now-7*86400000).toISOString()}`,order:'published_at.asc,id.asc',offset:String(offset),limit:'100'});
     const r=await fetch(`${base}/rest/v1/articles?${query}`,{headers:{apikey:secret,Authorization:`Bearer ${secret}`},signal:AbortSignal.timeout(30000)});
-    if(!r.ok)throw new Error(`新闻质量统计读取失败 ${r.status}`);const page=await r.json();rows.push(...page);if(page.length<500)break;
+    if(!r.ok)throw new Error(`新闻质量统计读取失败 ${r.status}`);const page=await r.json();rows.push(...page);if(page.length<100)break;
   }
   const report=publicationQualityReport(rows,{now});
   if(process.env.NEWS_FORWARD_ONLY_FROM)report.forward_only={since:process.env.NEWS_FORWARD_ONLY_FROM,...publicationQualityReport(rows.filter(inForwardScope),{now})};

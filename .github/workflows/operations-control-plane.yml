@@ -95,6 +95,9 @@ concurrency:
 jobs:
   automation-gate:
     name: 读取机器人硬开关
+    # Emergency database recovery: scheduled and push wakeups stay paused.
+    # workflow_dispatch remains available for one explicitly selected module.
+    if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-24.04
     permissions:
       contents: read

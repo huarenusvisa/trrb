@@ -24,6 +24,18 @@
       return result;
     }finally{if(timer)clearTimeout(timer);}
   }
+  const wait=ms=>new Promise(resolve=>setTimeout(resolve,ms));
+  async function confirmPublication(options,requestId){
+    const delays=Array.isArray(root.__TRRB_PUBLISH_CONFIRM_DELAYS__)?root.__TRRB_PUBLISH_CONFIRM_DELAYS__:[0,1200,2500];
+    for(const delay of delays){
+      if(delay>0)await wait(delay);
+      try{
+        const checked=await raw({...options,action:'publication_status',payload:{request_id:requestId}});
+        if(checked.confirmed&&checked.article?.id)return checked;
+      }catch{}
+    }
+    return null;
+  }
   async function call(options){
     const {action,token}=options;
     const payload={...options.payload};
@@ -35,10 +47,8 @@
     }catch(error){
       const ambiguous=action==='save_article'&&(!error.status||error.status>=500)&&error.code!=='PUBLISH_LOOKUP_UNAVAILABLE';
       if(ambiguous){
-        try{
-          const checked=await raw({...options,action:'publication_status',payload:{request_id:payload.request_id}});
-          if(checked.confirmed&&checked.article?.id)return checked;
-        }catch{}
+        const checked=await confirmPublication(options,payload.request_id);
+        if(checked)return checked;
         throw new Error('文章保存响应超时，发布结果尚未确认。正文和封面选择已保留；重试同一内容不会重复建稿。');
       }
       if(action==='upload_cover'&&(!error.status||error.status>=500))throw new Error('封面上传超时，尚未进入文章保存。正文和文件选择已保留，请稍后重试。');

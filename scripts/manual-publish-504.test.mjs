@@ -40,7 +40,7 @@ test('not found is explicitly unconfirmed; successful status checks enforce acto
  const foreign=async()=>[{...db.row,metadata:{...db.row.metadata,manual_actor_id:'other'}}];await assert.rejects(lookupManualPublication(input,actor,foreign),e=>e.code==='PUBLISH_RECORD_CONFLICT');
 });
 function client(fetch){
- const storage=new Map();const context={crypto:webcrypto,TextEncoder,Uint8Array,AbortController,setTimeout,clearTimeout,atob,fetch,sessionStorage:{getItem:k=>storage.get(k)||null,setItem:(k,v)=>storage.set(k,v),removeItem:k=>storage.delete(k)}};context.window=context;vm.runInNewContext(readFileSync('admin/manual-publish-request.js','utf8'),context);return context.TrrbManualPublish;
+ const storage=new Map();const context={crypto:webcrypto,TextEncoder,Uint8Array,AbortController,setTimeout,clearTimeout,atob,fetch,__TRRB_PUBLISH_CONFIRM_DELAYS__:[0,0,0],sessionStorage:{getItem:k=>storage.get(k)||null,setItem:(k,v)=>storage.set(k,v),removeItem:k=>storage.delete(k)}};context.window=context;vm.runInNewContext(readFileSync('admin/manual-publish-request.js','utf8'),context);return context.TrrbManualPublish;
 }
 const token='test.'+Buffer.from(JSON.stringify({sub:actor.user.id})).toString('base64url')+'.signature';
 test('browser uses same request identity after ambiguous failure and reports uncertainty',async()=>{
@@ -54,9 +54,13 @@ test('browser distinguishes cover timeout and does not start publication status 
 test('browser recognizes confirmed lost response as success',async()=>{
  const api=client(async(url,init)=>JSON.parse(init.body).action==='publication_status'?Response.json({confirmed:true,article:{id:'saved',status:'published'}}):new Response('',{status:504}));const result=await api.call({api:'/test',token,action:'save_article',payload});assert.equal(result.confirmed,true);
 });
+test('browser keeps checking the deterministic publication ID while the database commit becomes visible',async()=>{
+ let checks=0;const api=client(async(url,init)=>{const action=JSON.parse(init.body).action;if(action==='save_article')return new Response('',{status:504});checks++;return Response.json(checks===3?{confirmed:true,article:{id:'saved-late',status:'published'}}:{confirmed:false});});
+ const result=await api.call({api:'/test',token,action:'save_article',payload});assert.equal(checks,3);assert.equal(result.article.id,'saved-late');
+});
 test('installed save path no longer reads 500 unrelated rows, keeps authentication and confirmation',()=>{
  const source=readFileSync('netlify/functions/admin-articles.js','utf8'),save=source.slice(source.indexOf('async function saveArticle'),source.indexOf('exports.handler'));
  assert.doesNotMatch(save,/assertNoPublishedDuplicate/);assert.match(save,/saveManualArticle\(payload,input,actor,rest\)/);assert.match(source,/await authenticateAdmin/);assert.match(source,/action === "publication_status"/);
  assert.match(readFileSync('netlify/functions/_shared/supabase-admin.js','utf8'),/signal:AbortSignal.timeout\(timeoutMs\)/);
- const html=readFileSync('admin/index.html','utf8'),ui=readFileSync('admin/admin-publisher-v2.js','utf8');assert.match(html,/manual-publish-request.js\?v=20260930-publish-504-v1/);assert.match(ui,/uploadedCovers.get\(file\)/);assert.match(ui,/尚未提交/);
+ const html=readFileSync('admin/index.html','utf8'),ui=readFileSync('admin/admin-publisher-v2.js','utf8');assert.match(html,/manual-publish-request.js\?v=20261009-publish-confirm-v2/);assert.match(ui,/uploadedCovers.get\(file\)/);assert.match(ui,/尚未提交/);
 });

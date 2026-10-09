@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", init);
 async function init() {
   bindEvents();
   const { data } = await supabaseClient.auth.getSession();
-  if (data.session?.user) await enterAdmin(data.session.user);
+  if (data.session?.user) await enterAdmin(data.session.user, data.session.access_token);
 }
 
 function bindEvents() {
@@ -111,14 +111,37 @@ async function handleLogin(event) {
     setLoginMessage("登录失败：" + error.message);
     return;
   }
-  await enterAdmin(data.user);
+  await enterAdmin(data.user, data.session?.access_token);
 }
 
-async function enterAdmin(user) {
-  currentUser = user;
-  setLoginMessage("正在验证后台权限...");
+async function fetchAdminBootstrap(accessToken) {
+  const token = accessToken || await window.getAdminAccessToken();
+  if (!token) throw new Error("登录状态已失效，请重新登录。");
+  const response = await fetch("/.netlify/functions/admin-articles", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+    body: JSON.stringify({ action: "bootstrap" }),
+    signal: AbortSignal.timeout(10000)
+  });
+  const result = await response.json().catch(() => ({}));
+  if (!response.ok) throw new Error(result.error || `后台初始化失败（${response.status}）`);
+  return result;
+}
 
-  const admin = await getAdminRecord(user);
+async function enterAdmin(user, accessToken = "") {
+  currentUser = user;
+  setLoginMessage("正在验证后台权限并加载栏目...");
+
+  let admin = null;
+  let bootstrapCategories = [];
+  try {
+    const bootstrap = await fetchAdminBootstrap(accessToken);
+    admin = bootstrap.admin || null;
+    bootstrapCategories = Array.isArray(bootstrap.categories) ? bootstrap.categories : [];
+  } catch (error) {
+    console.warn("后台快速初始化失败，正在使用兼容验证：", error);
+    admin = await getAdminRecord(user);
+  }
   if (!admin) {
     await supabaseClient.auth.signOut();
     setLoginMessage(
@@ -130,13 +153,14 @@ async function enterAdmin(user) {
   }
 
   currentAdmin = admin;
+  if (bootstrapCategories.length) renderCategoryOptions(bootstrapCategories);
   el("login-view").classList.add("hidden");
   el("admin-view").classList.remove("hidden");
   el("admin-info").textContent = `${user.email} · ${admin.role}`;
 
   showPage("dashboard");
   Promise.allSettled([
-    loadCategories(),
+    bootstrapCategories.length ? Promise.resolve(bootstrapCategories) : loadCategories(),
     loadArticles(),
     loadRankings(),
     loadReviewQueue(),
@@ -250,21 +274,52 @@ window.getAdminAccessToken = async function () {
 };
 
 async function loadCategories() {
-  const { data, error } = await supabaseClient
-    .from("categories")
-    .select("id,name,slug,sort_order")
-    .eq("is_active", true)
-    .order("sort_order", { ascending: true });
-
-  if (error) {
-    console.error(error);
-    return;
+  let lastError = null;
+  for (let attempt = 0; attempt < 3; attempt += 1) {
+    if (attempt) await new Promise((resolve) => setTimeout(resolve, 400 * attempt));
+    const query = supabaseClient
+      .from("categories")
+      .select("id,name,slug,sort_order")
+      .eq("is_active", true)
+      .order("sort_order", { ascending: true });
+    const { data, error } = await query.abortSignal(AbortSignal.timeout(6000));
+    if (!error && Array.isArray(data) && data.length) {
+      renderCategoryOptions(data);
+      return data;
+    }
+    lastError = error || new Error("数据库没有返回栏目");
   }
 
-  categories = data || [];
-  el("article-category").innerHTML = categories
+  try {
+    const bootstrap = await fetchAdminBootstrap();
+    if (Array.isArray(bootstrap.categories) && bootstrap.categories.length) {
+      renderCategoryOptions(bootstrap.categories);
+      return bootstrap.categories;
+    }
+  } catch (error) {
+    lastError = error;
+  }
+
+  console.error("栏目加载失败：", lastError);
+  const select = el("article-category");
+  if (!categories.length && select) select.innerHTML = '<option value="" disabled selected>栏目加载失败，请刷新后重试</option>';
+  const message = el("article-message");
+  if (message) message.textContent = "栏目暂时未加载，已停止发布以防选错类别。请刷新后台后重试。";
+  throw lastError || new Error("栏目加载失败");
+}
+
+function renderCategoryOptions(rows) {
+  const select = el("article-category");
+  if (!select) return;
+  const previous = select.value;
+  categories = rows || [];
+  window.categories = categories;
+  select.innerHTML = categories
     .map((item) => `<option value="${item.id}">${escapeHtml(item.name)}</option>`)
     .join("");
+  if (previous && categories.some((item) => String(item.id) === String(previous))) select.value = previous;
+  const politics = categories.find((item) => item.name === "美国时政");
+  if (!select.value && politics) select.value = politics.id;
 }
 
 async function loadArticles() {

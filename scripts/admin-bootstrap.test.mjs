@@ -24,6 +24,16 @@ test("category loading retries, exposes shared rows, and shows an actionable fai
   assert.match(controller, /window\.categories = categories/);
   assert.match(controller, /栏目加载失败，请刷新后重试/);
   assert.match(controller, /renderCategoryOptions\(bootstrapCategories\)/);
+  assert.match(controller, /CATEGORY_CACHE_KEY/);
+  assert.match(controller, /readCachedCategories\(\)/);
+  assert.match(html, /正在加载栏目…/);
+});
+
+test("authenticated owner reaches the dashboard without waiting on an unhealthy database", () => {
+  assert.match(controller, /function ownerAdminRecord\(user\)/);
+  assert.match(controller, /let admin = ownerAdminRecord\(user\)/);
+  assert.match(controller, /deferredBootstrap = fetchAdminBootstrap/);
+  assert.match(controller, /privileged server action still re-authenticates/);
 });
 
 test("publisher refuses to save when no real or virtual category is selected", () => {

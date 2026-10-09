@@ -30,6 +30,7 @@ let reviewFilter = "pending_review";
 let activeReview = null;
 let reviewPipeline = {};
 let reviewDedupe = {};
+const CATEGORY_CACHE_KEY = "trrb:admin:categories:v1";
 
 document.addEventListener("DOMContentLoaded", init);
 
@@ -128,19 +129,48 @@ async function fetchAdminBootstrap(accessToken) {
   return result;
 }
 
+function ownerAdminRecord(user) {
+  if (user?.id === OWNER_UID && String(user?.email || "").trim().toLowerCase() === OWNER_EMAIL) {
+    return { user_id: OWNER_UID, email: OWNER_EMAIL, role: "owner", is_active: true };
+  }
+  return null;
+}
+
+function readCachedCategories() {
+  try {
+    const cached = JSON.parse(localStorage.getItem(CATEGORY_CACHE_KEY) || "null");
+    if (!Array.isArray(cached?.rows) || !cached.rows.length) return [];
+    return cached.rows.filter((item) => item?.id && item?.name).slice(0, 100);
+  } catch {
+    return [];
+  }
+}
+
 async function enterAdmin(user, accessToken = "") {
   currentUser = user;
   setLoginMessage("正在验证后台权限并加载栏目...");
 
-  let admin = null;
-  let bootstrapCategories = [];
-  try {
-    const bootstrap = await fetchAdminBootstrap(accessToken);
-    admin = bootstrap.admin || null;
-    bootstrapCategories = Array.isArray(bootstrap.categories) ? bootstrap.categories : [];
-  } catch (error) {
-    console.warn("后台快速初始化失败，正在使用兼容验证：", error);
-    admin = await getAdminRecord(user);
+  let admin = ownerAdminRecord(user);
+  let bootstrapCategories = readCachedCategories();
+  let deferredBootstrap = null;
+  if (admin) {
+    // The authenticated owner identity was already an explicit compatibility
+    // path. Use it before a struggling database so the login screen never
+    // waits on PostgREST; every privileged server action still re-authenticates.
+    deferredBootstrap = fetchAdminBootstrap(accessToken).then((bootstrap) => {
+      currentAdmin = bootstrap.admin || currentAdmin;
+      if (Array.isArray(bootstrap.categories) && bootstrap.categories.length) renderCategoryOptions(bootstrap.categories);
+      return bootstrap.categories || [];
+    });
+  } else {
+    try {
+      const bootstrap = await fetchAdminBootstrap(accessToken);
+      admin = bootstrap.admin || null;
+      bootstrapCategories = Array.isArray(bootstrap.categories) ? bootstrap.categories : [];
+    } catch (error) {
+      console.warn("后台快速初始化失败，正在使用兼容验证：", error);
+      admin = await getAdminRecord(user);
+    }
   }
   if (!admin) {
     await supabaseClient.auth.signOut();
@@ -160,7 +190,7 @@ async function enterAdmin(user, accessToken = "") {
 
   showPage("dashboard");
   Promise.allSettled([
-    bootstrapCategories.length ? Promise.resolve(bootstrapCategories) : loadCategories(),
+    deferredBootstrap || (bootstrapCategories.length ? Promise.resolve(bootstrapCategories) : loadCategories()),
     loadArticles(),
     loadRankings(),
     loadReviewQueue(),
@@ -314,6 +344,9 @@ function renderCategoryOptions(rows) {
   const previous = select.value;
   categories = rows || [];
   window.categories = categories;
+  try {
+    localStorage.setItem(CATEGORY_CACHE_KEY, JSON.stringify({ saved_at: Date.now(), rows: categories }));
+  } catch {}
   select.innerHTML = categories
     .map((item) => `<option value="${item.id}">${escapeHtml(item.name)}</option>`)
     .join("");

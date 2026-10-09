@@ -458,7 +458,12 @@ export default async (request: Request, context: any) => {
       return redirect(canonical, "pretty-path-normalize");
     }
 
-    const [upstream, stories, currentSection] = await Promise.all([templateResponse(request), sectionStories(article, canonical), getCategorySlug(article).catch(() => null)]);
+    // The per-request same-category query became the largest source of live
+    // statement timeouts and delayed unrelated login/publish traffic. The
+    // client already supplies bounded related-reading links after render, so
+    // do not duplicate that database read in the edge prerender path.
+    const stories: any[] = [];
+    const [upstream, currentSection] = await Promise.all([templateResponse(request), getCategorySlug(article).catch(() => null)]);
     if (!upstream.ok) throw new Error(`Article template unavailable: ${upstream.status}`);
     let html = await upstream.text();
     html = injectHead(html, article, canonical, true);

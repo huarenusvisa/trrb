@@ -2,7 +2,7 @@ import { readWithRetry } from './paged-read.mjs';
 
 const SELECT = 'publication_path,publication_updated_at,id,title,slug,summary,content,category_id,category_name,topic_key,status,visibility,published_at,created_at,source_url,cover_image,knowledge_migration_batch:metadata->>knowledge_migration_batch,knowledge_path:metadata->>knowledge_path,knowledge_topic:metadata->>knowledge_topic';
 
-const timestamp = (value, fallback) => value ? Date.parse(value) : fallback;
+const timestamp = (value, fallback) => value ? Date.parse(value) : fallback;\nconst isTransientReadError = (error) => /\\b(?:408|429|500|502|503|504|57014|PGRST002)\\b|statement timeout|fetch failed|network|ECONNRESET|AbortError|TimeoutError/i.test(`${error?.status || ''} ${error?.code || ''} ${error?.name || ''}: ${error?.message || error}`);
 
 // Read small batches through the existing primary-key index. Fetching complete
 // bodies with a large sorted OFFSET query can exhaust the Data API timeout.
@@ -20,7 +20,7 @@ export async function fetchPublishedArticles(rest, { pageSize = 200, maxRows = 1
       all.push(row);
     }
     if (all.length > maxRows) throw new Error('Article safety limit exceeded; refusing truncated sitemap');
-    if (rows.length < pageSize) break;
+    if (rows.length < currentPageSize) break;
   }
   // Preserve the original newest-first duplicate selection and News ordering.
   return all.sort((a, b) => {

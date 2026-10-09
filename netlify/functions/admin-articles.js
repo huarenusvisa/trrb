@@ -62,6 +62,21 @@ function nowIso() {
   return new Date().toISOString();
 }
 
+async function loadAdminBootstrap(actor) {
+  const rows = await rest("categories", {
+    query: {
+      select: "id,name,slug,sort_order",
+      is_active: "eq.true",
+      order: "sort_order.asc,name.asc"
+    },
+    timeoutMs: 8000
+  });
+  return {
+    admin: actor.admin,
+    categories: Array.isArray(rows) ? rows : []
+  };
+}
+
 function normalizeTitle(value) {
   return String(value || "")
     .normalize("NFKC")
@@ -282,6 +297,7 @@ exports.handler = async (event) => {
     const input = JSON.parse(event.body || "{}");
     const action = safeText(input.action, 60);
 
+    if (action === "bootstrap") return json(200, await loadAdminBootstrap(actor));
     if (action === "list") return json(200, await listArticles(input));
     if (action === "pin") return json(200, await setManagedArticlePin(input,actor,rest));
     if (action === "status") return json(200, { article: await updateStatus(input) });

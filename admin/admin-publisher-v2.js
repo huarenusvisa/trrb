@@ -329,9 +329,15 @@
     const status = el("article-status").value;
     const autoAiCover = el("auto-ai-cover").checked;
     const submitButton = el("article-submit");
+    const selectedOption = selected?.selectedOptions?.[0];
 
     if (!title || !contentMeetsPublishMinimum(content)) {
       el("article-message").textContent = "请填写标题和正文。";
+      return;
+    }
+    if (!selectedOption || (!selected.value && !selectedOption.dataset.virtualCategory)) {
+      el("article-message").textContent = "栏目尚未加载，已停止发布以防选错类别。请刷新后台后重试。";
+      loadCategories().catch(() => {});
       return;
     }
 

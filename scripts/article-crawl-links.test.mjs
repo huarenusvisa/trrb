@@ -28,7 +28,7 @@ function fixture(t, { source = article.source_url, outage = false } = {}) {
   });
 }
 const render = () => articlePage(new Request('https://trrb.net/hot-headlines/current'), { next: () => new Response('', { status: 404 }) });
-test('raw HTML hides source and boilerplate while keeping branded title and crawlable same-section links', async t => {
+test('raw HTML stays indexable without issuing the expensive per-request same-section query', async t => {
   fixture(t);
   const response = await render();
   const html = await response.text();
@@ -40,11 +40,7 @@ test('raw HTML hides source and boilerplate while keeping branded title and craw
   assert.match(html, /<title>当前报道｜唐人日报<\/title>/);
   assert.match(html, /property="og:title" content="当前报道｜唐人日报"/);
   assert.match(html, /name="twitter:title" content="当前报道｜唐人日报"/);
-  assert.equal((html.match(/href="https:\/\/trrb.net\/hot-headlines\/other"/g) || []).length, 1);
-  assert.match(html, /同栏目报道 &lt;标题&gt;/);
-  assert.match(html, /href="https:\/\/trrb.net\/hot-headlines\/fresh"/);
-  assert.match(html, /href="https:\/\/trrb.net\/ice\/ice-report"/);
-  assert.doesNotMatch(html, /href="https:\/\/(?:outside.test|trrb.net\/hot-headlines\/(?:private|future|hidden))/);
+  assert.doesNotMatch(html, /article-section-stories|同栏目报道 &lt;标题&gt;/);
 });
 test('recommendation failure leaves the article indexable and readable', async t => {
   fixture(t, { outage: true });

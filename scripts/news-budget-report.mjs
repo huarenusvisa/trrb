@@ -1,6 +1,15 @@
 import {appendFileSync} from 'node:fs';
 import {budgetDatabase} from './news-budget-preload.mjs';
-const report=await budgetDatabase().rpc('news_budget_report');
+const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms));
+async function loadReport(){
+ const database=budgetDatabase();let lastError;
+ for(let attempt=1;attempt<=3;attempt+=1){
+  try{return await database.rpc('news_budget_report');}
+  catch(error){lastError=error;if(attempt<3){console.warn(`[budget] report database timeout; retry ${attempt}/2`);await sleep(attempt*2000);}}
+ }
+ throw lastError;
+}
+const report=await loadReport();
 console.log(JSON.stringify({event:'shared-news-budget',...report},null,2));
 if (process.env.GITHUB_STEP_SUMMARY) {
   const usd=n=>`$${(Number(n || 0)/1e6).toFixed(2)}`;

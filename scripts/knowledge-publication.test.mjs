@@ -7,3 +7,8 @@ test('concurrent duplicate title does not abort other knowledge articles or infl
 test('other database errors and ambiguous write replies remain fatal',async()=>{
  for(const insert of [async()=>{throw new Error('Supabase 500: failed');},async()=>[],async()=>{throw new Error('Supabase 409: {"code":"23505","message":"other unique constraint"}');}])await assert.rejects(()=>insertUniqueKnowledge([{title:'new'}],insert));
 });
+test('database statement timeout retries the same deterministic row without regenerating content',async()=>{
+ let calls=0;const pauses=[];const row={id:'fixed-id',title:'庇护知识'};
+ const saved=await insertUniqueKnowledge([row],async input=>{calls++;assert.equal(input,row);if(calls<3)throw new Error('Supabase 500: {"code":"57014","message":"canceling statement due to statement timeout"}');return [{...input,saved:true}];},()=>{}, {sleep:async ms=>pauses.push(ms)});
+ assert.equal(calls,3);assert.deepEqual(pauses,[1500,3000]);assert.equal(saved[0].id,'fixed-id');
+});

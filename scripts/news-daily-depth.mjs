@@ -45,8 +45,8 @@ export function iceDepthCandidate(story,post) {
 export async function depthCandidates(date) {
   const cutoff=new Date(Date.now()-12*3600000).toISOString();
   const rows=await readAllPages(page=>supabase('news_candidates',{query:{select:'*',pipeline:'like.china-hot-li-teacher-v*',collected_at:`gte.${cutoff}`,order:'collected_at.desc,id.desc',...page}}),{pageSize:100,maxRows:1000});
-  const posts=await supabase('ice_posts',{query:{select:'*',source_created_at:`gte.${cutoff}`,order:'source_created_at.desc',limit:'100'}});
-  const stories=await supabase('ice_stories',{query:{select:'*',status:'eq.published',published_at:`gte.${new Date(Date.now()-24*3600000).toISOString()}`,order:'published_at.desc',limit:'100'}});
+  const posts=await supabase('ice_posts',{query:{select:'x_post_id,event_fingerprint,source_created_at,source_text,x_url,source_display_name,source_username,media',source_created_at:`gte.${cutoff}`,order:'source_created_at.desc',limit:'100'}});
+  const stories=await supabase('ice_stories',{query:{select:'id,event_fingerprint,article_id,ai_payload,human_review_status,reviewed_by,privacy_risk,fabrication_risk,conflict_detected,published_at',status:'eq.published',published_at:`gte.${new Date(Date.now()-24*3600000).toISOString()}`,order:'published_at.desc',limit:'100'}});
   const seen=new Set();
   for(const story of stories){const post=posts.find(p=>p.x_post_id===story.ai_payload?.lead_source_post_id || p.event_fingerprint===story.event_fingerprint);if(!post || seen.has(story.article_id))continue;const row=iceDepthCandidate(story,post);if(row){rows.push(row);seen.add(story.article_id);}}
   return rows.filter(r=>eligibleCandidate(r,date)).sort((a,b)=>compareNewsPriority(tweetFromCandidate(a),tweetFromCandidate(b))).slice(0,60);

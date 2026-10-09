@@ -33,23 +33,7 @@ let reviewDedupe = {};
 
 document.addEventListener("DOMContentLoaded", init);
 
-async function clearLegacyBrowserCaches() {
-  try {
-    if ("serviceWorker" in navigator) {
-      const registrations = await navigator.serviceWorker.getRegistrations();
-      await Promise.all(registrations.map((registration) => registration.unregister()));
-    }
-    if ("caches" in window) {
-      const keys = await caches.keys();
-      await Promise.all(keys.map((key) => caches.delete(key)));
-    }
-  } catch (error) {
-    console.warn("清理旧缓存失败，不影响继续登录：", error);
-  }
-}
-
 async function init() {
-  await clearLegacyBrowserCaches();
   bindEvents();
   const { data } = await supabaseClient.auth.getSession();
   if (data.session?.user) await enterAdmin(data.session.user);
@@ -150,14 +134,17 @@ async function enterAdmin(user) {
   el("admin-view").classList.remove("hidden");
   el("admin-info").textContent = `${user.email} · ${admin.role}`;
 
-  await Promise.allSettled([
+  showPage("dashboard");
+  Promise.allSettled([
     loadCategories(),
     loadArticles(),
     loadRankings(),
     loadReviewQueue(),
     window.loadFinanceHealth?.()
-  ]);
-  showPage("dashboard");
+  ]).then((results) => {
+    const failed = results.filter((result) => result.status === "rejected");
+    if (failed.length) console.warn(`后台有 ${failed.length} 个模块仍在后台重试或等待刷新。`);
+  });
 }
 
 async function getAdminRecord(user) {

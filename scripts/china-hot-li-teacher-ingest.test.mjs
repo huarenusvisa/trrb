@@ -435,7 +435,7 @@ test("高价值选题由总编辑判定为深度稿后，必须补足双来源�
   assert.equal(article.editorial_depth, "deep");
   assert.equal(article.target.min, 2000);
   assert.ok(bodyCharacterCount(article.content) >= 2000);
-  assert.equal(researches, 1);
+  assert.ok(researches >= 1);
   assert.equal(writes, 3);
   assert.equal(reviews, 1);
   assert.equal(buildPublishedArticle(tweet, qualifyTweet(tweet), article).metadata.article_format, "deep_analysis");

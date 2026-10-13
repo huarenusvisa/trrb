@@ -95,9 +95,8 @@ concurrency:
 jobs:
   automation-gate:
     name: 读取机器人硬开关
-    # Emergency database recovery: scheduled and push wakeups stay paused.
-    # workflow_dispatch remains available for one explicitly selected module.
-    if: github.event_name == 'workflow_dispatch'
+    # The database-backed gate fails closed if controls cannot be read.
+    # Scheduled and push wakeups must reach this gate; UI switches alone do not dispatch jobs.
     runs-on: ubuntu-24.04
     permissions:
       contents: read
@@ -183,8 +182,9 @@ jobs:
     secrets: inherit
 
   china-hot-li-teacher:
-    needs: automation-gate
-    if: ${{ needs.automation-gate.outputs.global == 'true' && needs.automation-gate.outputs.china_hot == 'true' && (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'china-hot')) }}
+    needs: [automation-gate, ice]
+    # Serialize the two high-volume editorial collectors; still run China Hot if ICE failed or was disabled.
+    if: ${{ always() && needs.automation-gate.result == 'success' && needs.automation-gate.outputs.global == 'true' && needs.automation-gate.outputs.china_hot == 'true' && (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'china-hot')) }}
     uses: ./.github/workflows/china-hot-li-teacher-ingest.yml
     secrets: inherit
 

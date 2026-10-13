@@ -61,8 +61,7 @@ test('official feed rejects foreign hosts, old items, missing dates and future t
  assert.equal(parseOfficialFeed(xml,now).length,1);assert.equal(allowedOfficialUrl('https://user@justice.gov/a'),false);
  assert.equal(officialArticleText('<main><p>Original statement</p><script>invented</script></main>'),'Original statement');
 });
-test('ICE deep writer research is reused when missing data requires a factual downgrade',async(t)=>{
- const previousCommission=process.env.NEWS_DEPTH_COMMISSION;process.env.NEWS_DEPTH_COMMISSION='1';t.after(()=>{if(previousCommission===undefined)delete process.env.NEWS_DEPTH_COMMISSION;else process.env.NEWS_DEPTH_COMMISSION=previousCommission;});
+test('ICE standard writer downgrades an unsupported deep model proposal',async(t)=>{
  let searches=0,writes=0,reviews=0;
  t.mock.method(globalThis,'fetch',async(_url,options)=>{
   const body=JSON.parse(options.body);
@@ -71,10 +70,9 @@ test('ICE deep writer research is reused when missing data requires a factual do
   writes++;return Response.json({output_text:JSON.stringify({title:'联邦法院裁定新政策暂缓执行',content:'文'.repeat(writes===1?2600:900),summary:'法院发布裁定',editorial_depth:writes===1?'deep':'standard',source_sufficient:true,depth_reason:'材料决定稿型',source_language:'en',image_observations:'',appears_old_news:false,old_news_reason:''})});
  });
  const result=await translate({},[{source_text:'A federal court issued an injunction on new immigration rules today.',x_url:'https://www.justice.gov/opa/primary'}]);
- assert.equal(searches,1);assert.equal(writes,2);assert.equal(reviews,2);assert.equal(result.editorial_depth,'standard');assert.equal(result.targetMax,1999);
+ assert.equal(searches,1);assert.equal(writes,2);assert.equal(reviews,1);assert.equal(result.editorial_depth,'standard');assert.equal(result.targetMax,1999);
 });
 test('undersized drafts are reviewed under their actual lower tier and still require grounded facts',async(t)=>{
- const previousCommission=process.env.NEWS_DEPTH_COMMISSION;process.env.NEWS_DEPTH_COMMISSION='1';t.after(()=>{if(previousCommission===undefined)delete process.env.NEWS_DEPTH_COMMISSION;else process.env.NEWS_DEPTH_COMMISSION=previousCommission;});
  let length=500,requested='standard',grounded=true,writes=0,reviewedDepth='';
  t.mock.method(globalThis,'fetch',async(_url,options)=>{
   const body=JSON.parse(options.body);
@@ -87,7 +85,7 @@ test('undersized drafts are reviewed under their actual lower tier and still req
  });
  const posts=[{source_text:'A federal court issued an injunction on new immigration rules today.',x_url:'https://www.justice.gov/opa/primary'}];
  await assert.rejects(()=>translate({},posts),/不足800/);assert.equal(writes,3);writes=0;
- length=1700;requested='deep';const standard=await translate({},posts);assert.equal(standard.editorial_depth,'standard');assert.equal(reviewedDepth,'standard');assert.equal(writes,2);
+ length=1700;requested='deep';const standard=await translate({},posts);assert.equal(standard.editorial_depth,'standard');assert.equal(reviewedDepth,'standard');assert.equal(writes,1);
  length=900;grounded=false;await assert.rejects(()=>translate({},posts),/独立复核未通过/);
 });
 

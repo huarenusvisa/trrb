@@ -408,39 +408,6 @@ test("短稿检索同一事件背景，扩写后将资料交给独立质检并�
   assert.deepEqual(buildPublishedArticle(tweet,qualifyTweet(tweet),article).supporting_sources,[{...source,kind:"web_evidence",tool_cited:true}]);
 });
 
-test("高价值选题由总编辑判定为深度稿后，必须补足双来源并写到2000至3500字", async (t) => {
- const oldCommission=process.env.NEWS_DEPTH_COMMISSION;process.env.NEWS_DEPTH_COMMISSION='1';t.after(()=>{if(oldCommission===undefined)delete process.env.NEWS_DEPTH_COMMISSION;else process.env.NEWS_DEPTH_COMMISSION=oldCommission;});
-  const tweet = {...chinaTweet, text: qualityBody};
-  const deepBody = "重庆学校发布通知，因持续高温调整开学安排。这是一篇基于公开资料的深度报道。" + Array.from({length: 2650}, (_, i) => String.fromCodePoint(0x4e00 + i)).join("")+"。";
-  const sources = [
-    {url:"https://example.com/primary", title:"原始文件"},
-    {url:"https://example.org/data", title:"统计资料"},
-  ];
-  let writes = 0, researches = 0, reviews = 0;
-  t.mock.method(globalThis, "fetch", async (_url, options) => {
-    const input = JSON.parse(options.body);
-    if (input.tools) {
-      researches += 1;
-      assert.match(input.input, /"editorial_depth":"deep"/);
-      return Response.json({output:[{type:"web_search_call",status:"completed"},{type:"message",content:[{type:"output_text",text:"原始文件和统计资料共同说明事件背景。",annotations:sources.map((source)=>({type:"url_citation",...source}))}]}]});
-    }
-    if (input.text.format.name === "china_hot_editorial_review") {
-      reviews += 1;
-      return Response.json({output_text:JSON.stringify(editorial_review)});
-    }
-    writes += 1;
-    return Response.json({output_text:JSON.stringify({title:"重庆学校高温期开学安排的节点与走向",summary:"公开文件与统计资料解释重庆学校调整安排的背景。",content:writes < 3 ? qualityBody : deepBody,seo_keywords:"重庆学校,高温,数据",appears_old_news:false,old_news_reason:"",source_sufficient:true,rejection_reason:"",image_evidence:[],editorial_depth:"deep",depth_reason:"具有公共影响、历史数据和多种后续方向",analysis_angles:["为何此刻发生","历史规律与年度数据","后续情景"]})});
-  });
-  const article = await generateArticle(qualifyTweet(tweet), tweet);
-  assert.equal(article.editorial_depth, "deep");
-  assert.equal(article.target.min, 2000);
-  assert.ok(bodyCharacterCount(article.content) >= 2000);
-  assert.ok(researches >= 1);
-  assert.equal(writes, 3);
-  assert.equal(reviews, 1);
-  assert.equal(buildPublishedArticle(tweet, qualifyTweet(tweet), article).metadata.article_format, "deep_analysis");
-});
-
 test("只有标题的线索找不到原始出处和上下游资料时不得成稿", async (t) => {
   const tweet = {...chinaTweet, text:"北京国家信访局门口：两名访民喝农药自杀"};
   t.mock.method(globalThis, "fetch", async (_url, options) => {

@@ -40,6 +40,7 @@ test('source-led routing accepts Cornell, Tibet and Tennessee without foreign ba
  assert.equal(resolvePublicationRoute({accepted:false,route:'china'},{title:'中国新闻',content:''}),'');
 });
 test('daily writer and independent reviewer receive the same target and publish a reviewed long body',async(t)=>{
+ const oldCommission=process.env.NEWS_DEPTH_COMMISSION;process.env.NEWS_DEPTH_COMMISSION='1';t.after(()=>{if(oldCommission===undefined)delete process.env.NEWS_DEPTH_COMMISSION;else process.env.NEWS_DEPTH_COMMISSION=oldCommission;});
  const tweet={id:'123',created_at:new Date().toISOString(),text:'中国教育部门公布学校招生政策并回应学生意见。',media:[],image_lookup_attempted:true,context_research_attempted:true,context_research:research};
  const content='中国教育部门公布招生政策。'+Array.from({length:2600},(_,i)=>String.fromCharCode(0x4e00+i)).join('');
  let writes=0,reviews=0;
@@ -53,6 +54,7 @@ test('daily writer and independent reviewer receive the same target and publish 
  assert.equal(countsTowardDailyDepth(saved,nyDate()),false); // Text-only publication is not part of the illustrated depth quota.assert.equal(writes,1);assert.ok(reviews>=1);
 });
 test('controller stops at ten accepted public articles without spending on another candidate',async(t)=>{
+ const oldCommission=process.env.NEWS_DEPTH_COMMISSION;process.env.NEWS_DEPTH_COMMISSION='1';t.after(()=>{if(oldCommission===undefined)delete process.env.NEWS_DEPTH_COMMISSION;else process.env.NEWS_DEPTH_COMMISSION=oldCommission;});
  const old=process.env.SUPABASE_URL;process.env.SUPABASE_URL='https://database.test';t.after(()=>{if(old===undefined)delete process.env.SUPABASE_URL;else process.env.SUPABASE_URL=old;});
  const rows=Array.from({length:10},(_,i)=>({...row(),id:i,published_at:new Date().toISOString()}));
  t.mock.method(globalThis,'fetch',async(url,options)=>{assert.equal(options.method,'GET');const path=new URL(url).pathname;if(path.endsWith('/automation_controls'))return Response.json([{control_key:'global',enabled:true},{control_key:'china_hot',enabled:true}]);assert.ok(path.endsWith('/articles'));return Response.json(rows);});
@@ -60,6 +62,7 @@ test('controller stops at ten accepted public articles without spending on anoth
 });
 
 test('insufficient qualified material reports a real shortfall without marking a healthy collector crashed',async(t)=>{
+ const oldCommission=process.env.NEWS_DEPTH_COMMISSION;process.env.NEWS_DEPTH_COMMISSION='1';t.after(()=>{if(oldCommission===undefined)delete process.env.NEWS_DEPTH_COMMISSION;else process.env.NEWS_DEPTH_COMMISSION=oldCommission;});
  const oldUrl=process.env.SUPABASE_URL,oldActions=process.env.GITHUB_ACTIONS,oldExit=process.exitCode;
  process.env.SUPABASE_URL='https://database.test';process.env.GITHUB_ACTIONS='true';
  t.after(()=>{if(oldUrl===undefined)delete process.env.SUPABASE_URL;else process.env.SUPABASE_URL=oldUrl;if(oldActions===undefined)delete process.env.GITHUB_ACTIONS;else process.env.GITHUB_ACTIONS=oldActions;process.exitCode=oldExit;});
@@ -76,7 +79,14 @@ test('insufficient qualified material reports a real shortfall without marking a
 });
 
 test('database failures still reject instead of becoming healthy shortfalls',async(t)=>{
+ const oldCommission=process.env.NEWS_DEPTH_COMMISSION;process.env.NEWS_DEPTH_COMMISSION='1';t.after(()=>{if(oldCommission===undefined)delete process.env.NEWS_DEPTH_COMMISSION;else process.env.NEWS_DEPTH_COMMISSION=oldCommission;});
  const old=process.env.SUPABASE_URL;process.env.SUPABASE_URL='https://database.test';t.after(()=>{if(old===undefined)delete process.env.SUPABASE_URL;else process.env.SUPABASE_URL=old;});
  t.mock.method(globalThis,'fetch',async()=>Response.json({message:'database unavailable'},{status:503}));
  await assert.rejects(runDailyDepth(),/database unavailable|503/);
+});
+
+test('production automation leaves depth commissions to human editors',async()=>{
+ const previous=process.env.NEWS_DEPTH_COMMISSION;process.env.NEWS_DEPTH_COMMISSION='0';
+ try {assert.deepEqual(await runDailyDepth(),{status:'manual-only'});}
+ finally {if(previous===undefined)delete process.env.NEWS_DEPTH_COMMISSION;else process.env.NEWS_DEPTH_COMMISSION=previous;}
 });

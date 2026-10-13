@@ -409,6 +409,7 @@ test("短稿检索同一事件背景，扩写后将资料交给独立质检并�
 });
 
 test("高价值选题由总编辑判定为深度稿后，必须补足双来源并写到2000至3500字", async (t) => {
+ const oldCommission=process.env.NEWS_DEPTH_COMMISSION;process.env.NEWS_DEPTH_COMMISSION='1';t.after(()=>{if(oldCommission===undefined)delete process.env.NEWS_DEPTH_COMMISSION;else process.env.NEWS_DEPTH_COMMISSION=oldCommission;});
   const tweet = {...chinaTweet, text: qualityBody};
   const deepBody = "重庆学校发布通知，因持续高温调整开学安排。这是一篇基于公开资料的深度报道。" + Array.from({length: 2650}, (_, i) => String.fromCodePoint(0x4e00 + i)).join("")+"。";
   const sources = [

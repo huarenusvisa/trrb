@@ -62,6 +62,7 @@ test('official feed rejects foreign hosts, old items, missing dates and future t
  assert.equal(officialArticleText('<main><p>Original statement</p><script>invented</script></main>'),'Original statement');
 });
 test('ICE deep writer research is reused when missing data requires a factual downgrade',async(t)=>{
+ const previousCommission=process.env.NEWS_DEPTH_COMMISSION;process.env.NEWS_DEPTH_COMMISSION='1';t.after(()=>{if(previousCommission===undefined)delete process.env.NEWS_DEPTH_COMMISSION;else process.env.NEWS_DEPTH_COMMISSION=previousCommission;});
  let searches=0,writes=0,reviews=0;
  t.mock.method(globalThis,'fetch',async(_url,options)=>{
   const body=JSON.parse(options.body);
@@ -73,6 +74,7 @@ test('ICE deep writer research is reused when missing data requires a factual do
  assert.equal(searches,1);assert.equal(writes,2);assert.equal(reviews,2);assert.equal(result.editorial_depth,'standard');assert.equal(result.targetMax,1999);
 });
 test('undersized drafts are reviewed under their actual lower tier and still require grounded facts',async(t)=>{
+ const previousCommission=process.env.NEWS_DEPTH_COMMISSION;process.env.NEWS_DEPTH_COMMISSION='1';t.after(()=>{if(previousCommission===undefined)delete process.env.NEWS_DEPTH_COMMISSION;else process.env.NEWS_DEPTH_COMMISSION=previousCommission;});
  let length=500,requested='standard',grounded=true,writes=0,reviewedDepth='';
  t.mock.method(globalThis,'fetch',async(_url,options)=>{
   const body=JSON.parse(options.body);

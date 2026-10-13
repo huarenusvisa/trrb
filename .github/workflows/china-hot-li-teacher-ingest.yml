@@ -17,7 +17,7 @@ jobs:
     timeout-minutes: 120
     env:
       NEWS_BUDGET_ENFORCE: "1"
-      NEWS_DEPTH_COMMISSION: "1"
+      NEWS_DEPTH_COMMISSION: "0"
       NEWS_FORWARD_ONLY_FROM: "2026-09-26T19:16:05.375Z"
       NEWS_BUDGET_PIPELINE: "china-hot"
       SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
@@ -55,10 +55,6 @@ jobs:
       - name: Read China headlines category switches
         id: category
         run: node scripts/category-pipeline-gate.mjs hot-headlines
-      - name: Prioritize daily depth recovery after an editorial fix
-        if: github.event_name == 'push' && steps.category.outputs.auto_fetch == 'true' && steps.category.outputs.ai_rewrite == 'true' && steps.category.outputs.auto_publish == 'true'
-        run: node scripts/news-daily-depth.mjs
-
       - name: Collect China headlines and publish automatically
         if: steps.category.outputs.auto_fetch == 'true' && steps.category.outputs.ai_rewrite == 'true' && steps.category.outputs.auto_publish == 'true'
         shell: bash
@@ -74,10 +70,6 @@ jobs:
       - name: Repair today's short automatic reports at their existing URLs
         if: ${{ !cancelled() && steps.category.outputs.auto_fetch == 'true' && steps.category.outputs.ai_rewrite == 'true' && steps.category.outputs.auto_publish == 'true' }}
         run: node scripts/news-repair-short-published.mjs
-
-      - name: Produce ten evidence-backed daily depth articles
-        if: ${{ !cancelled() && steps.category.outputs.auto_fetch == 'true' && steps.category.outputs.ai_rewrite == 'true' && steps.category.outputs.auto_publish == 'true' }}
-        run: node scripts/news-daily-depth.mjs
 
       - name: Report shared news budget
         if: always()

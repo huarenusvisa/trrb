@@ -57,6 +57,7 @@ async function recordDepthAttempt(row,date,attempts,outcome) {
  if(current && !current.reviewed_by && !['editing','approved','rejected'].includes(current.human_review_status) && !current.ai_payload?.manual_override)await supabase('ice_stories',{method:'PATCH',query:{id:`eq.${row.ice_story_id}`,updated_at:`eq.${current.updated_at}`},body:{ai_payload:{...current.ai_payload,daily_depth_attempt:{date,planning_version:DEPTH_PLANNING_VERSION,attempts,...outcome}}}});
 }
 export async function runDailyDepth() {
+  if(process.env.NEWS_DEPTH_COMMISSION !== "1") return {status:"manual-only"};
   if(!await enabled())return {status:'disabled'};
   const date=nyDate(), before=await dailyRows(date);
   const report={date,timezone:'America/New_York',target:10,minimum_chinese_chars:DAILY_DEEP_MIN,before:before.length,completed:before.length,results:[],run_id:process.env.GITHUB_RUN_ID || ''};

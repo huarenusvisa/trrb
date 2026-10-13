@@ -143,9 +143,9 @@ async function translate(story, posts, attempt = 0, context = null) {
       try { research = await researchForStory(story,posts); }
       catch (error) { if(isBudgetDeferred(error)) throw error; researchError = String(error.message || error).slice(0,500); }
     }
-    context = {research,research_attempted:priority,research_error:researchError,force_standard:false};
+    context = {research,research_attempted:priority,research_error:researchError,force_standard:process.env.NEWS_DEPTH_COMMISSION !== '1'};
   }
-  const canDeep = !context.force_standard && independentSourceCount(context.research) >= 2 && (!context.research?.depth_assignment || context.research.depth_assignment.requested_depth === 'deep');
+  const canDeep = process.env.NEWS_DEPTH_COMMISSION === '1' && !context.force_standard && independentSourceCount(context.research) >= 2 && (!context.research?.depth_assignment || context.research.depth_assignment.requested_depth === 'deep');
   const response = await request('https://api.openai.com/v1/responses', {
     method:'POST',headers:{Authorization:`Bearer ${process.env.OPENAI_API_KEY}`,'Content-Type':'application/json'},
     body:JSON.stringify({model:process.env.OPENAI_MODEL,store:false,max_output_tokens:canDeep ? 14000 : 8500,

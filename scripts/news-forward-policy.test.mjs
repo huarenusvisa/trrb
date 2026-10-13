@@ -87,13 +87,13 @@ test('planner gets one bounded opportunity to redesign an overly ambitious evide
  assert.equal((await commissionDepth(research,options)).depth_assignment.requested_depth,'standard');assert.equal(calls,2);
 });
 test('a commissioned deep task cannot silently complete as a brief: writer retries once, then independently reviews',async()=>{
- const previous=globalThis.fetch;let writes=0,reviews=0;
+ const previous=globalThis.fetch,previousCommission=process.env.NEWS_DEPTH_COMMISSION;process.env.NEWS_DEPTH_COMMISSION='1';let writes=0,reviews=0;
  const completeReview=Object.fromEntries([...DEEP_REVIEW_FIELDS,'single_event','grounded','sufficient','source_chain_complete','analysis_grounded','depth_appropriate','court_status_correct','fresh_event','image_grounded'].map(k=>[k,true]));completeReview.reason='Synthetic review fixture only';
  globalThis.fetch=async(url,init)=>{const body=JSON.parse(init.body);if(body.text?.format?.name==='ice_chinese_title_body'){writes++;assert.match(body.instructions,/独立深度采编任务/);return jsonResponse({title:'测试用合成稿件不得发布',summary:'测试',content:'测试事实'.repeat(writes===1?100:550),source_language:'English',image_observations:'',appears_old_news:false,old_news_reason:'',editorial_depth:writes===1?'brief':'deep',depth_reason:'Synthetic fixture',source_sufficient:true});}reviews++;return jsonResponse(completeReview);};
  try {const result=await translate({id:'synthetic',title:'测试'},[post('95001','Alex Vega-Ruiz')],0,{research:{...research,depth_assignment:depthAssignment(research,plan)},research_attempted:true,research_error:'',force_standard:false});assert.equal(writes,2);assert.equal(reviews,1);assert.equal(result.editorial_depth,'deep');assert.equal(result.targetMin,2000);}
- finally{globalThis.fetch=previous;}
+ finally{globalThis.fetch=previous;if(previousCommission===undefined)delete process.env.NEWS_DEPTH_COMMISSION;else process.env.NEWS_DEPTH_COMMISSION=previousCommission;}
 });
 test('installed production uses the same final review and publisher; legacy rewriting and cleanup are absent',()=>{
- const workflow=readFileSync('.github/workflows/ice-unified-pipeline.yml','utf8');assert.match(workflow,/NEWS_DEPTH_COMMISSION: "1"/);assert.match(workflow,/NEWS_FORWARD_ONLY_FROM:/);assert.match(workflow,/node scripts\/ice-translate-title-body.mjs/);assert.match(workflow,/node scripts\/ice-trusted-source-promote.mjs/);assert.match(workflow,/node scripts\/ice-publish-due.mjs/);assert.doesNotMatch(workflow,/node scripts\/ice-(editorial-normalize|clean-existing-review-duplicates|ai-process-only)\.mjs/);
+ const workflow=readFileSync('.github/workflows/ice-unified-pipeline.yml','utf8');assert.match(workflow,/NEWS_DEPTH_COMMISSION: "0"/);assert.match(workflow,/NEWS_FORWARD_ONLY_FROM:/);assert.match(workflow,/node scripts\/ice-translate-title-body.mjs/);assert.match(workflow,/node scripts\/ice-trusted-source-promote.mjs/);assert.match(workflow,/node scripts\/ice-publish-due.mjs/);assert.doesNotMatch(workflow,/node scripts\/ice-(editorial-normalize|clean-existing-review-duplicates|ai-process-only)\.mjs/);
  const chinese=readFileSync('scripts/china-hot-li-teacher-ingest.mjs','utf8');assert.match(chinese,/depthInstruction\(tweet.context_research\)/);assert.match(chinese,/historical-not-reprocessed/);
 });

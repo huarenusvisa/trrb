@@ -441,7 +441,7 @@ test('short source reports cannot downgrade into a published brief after bounded
  let writes=0;
  const tweet={...chinaTweet,created_at:new Date().toISOString(),context_research_attempted:true,image_lookup_attempted:true};
  t.mock.method(globalThis,'fetch',async(_url,options)=>{const input=JSON.parse(options.body);assert.notEqual(input.text?.format?.name,'china_hot_editorial_review','short drafts never reach publication review');writes++;return Response.json({output_text:JSON.stringify({title:'重庆学校调整开学安排',content:chinaTweet.text,summary:'安排更新',source_sufficient:true,appears_old_news:false,editorial_depth:'standard'})});});
- await assert.rejects(()=>generateArticle(qualifyTweet(tweet),tweet),/不足800/);assert.equal(writes,3);
+ await assert.rejects(()=>generateArticle(qualifyTweet(tweet),tweet),/不足800/);assert.equal(writes,4,'one extra bounded research attempt still cannot publish a short draft');
  assert.throws(()=>buildPublishedArticle(tweet,qualifyTweet(tweet),{title:'重庆学校调整开学安排',content:chinaTweet.text,editorial_depth:'brief',publication_scope:'topic_only',editorial_review}),/800/);
 });
 

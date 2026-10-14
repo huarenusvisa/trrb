@@ -3,7 +3,7 @@ import {makeAttributionExplicit,preferredPublicationSource} from './news-attribu
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import test from "node:test";
-import { assertPublicationQuality, bodyCharacterCount, isHeadlineDigest, buildCandidate, buildChrtRecord, buildPublishedArticle, buildReviewDraft, containsBoilerplate, deriveDraftTitle, editorialTarget, formatNewsParagraphs, generateArticle, isThinSourceMaterial, qualifyTweet, requiresBackgroundResearch, shouldRetryCandidate, similarity, targetLength } from "./china-hot-li-teacher-ingest.mjs";
+import { assertPublicationQuality, bodyCharacterCount, isHeadlineDigest, buildCandidate, buildChrtRecord, buildPublishedArticle, buildReviewDraft, containsBoilerplate, deriveDraftTitle, editorialTarget, formatNewsParagraphs, generateArticle, isThinSourceMaterial, isPureCommercialPromotion, qualifyTweet, requiresBackgroundResearch, shouldRetryCandidate, similarity, targetLength } from "./china-hot-li-teacher-ingest.mjs";
 
 // Distinct characters isolate length/transport tests from the repetition gate.
 const qualityBody = "重庆学校公布开学时间与后续教学安排。" + Array.from({ length: 9 }, (_, j) => Array.from({length:92},(_,i)=>String.fromCharCode(0x4e00+j*92+i)).join("")+"。").join("\n\n");
@@ -228,6 +228,14 @@ test("中国平台、城市、教育软件和国产汽车线索不会被错误�
   assert.equal(qualifyTweet({ id: "ningbo", text: "9月11日晚，宁波大学新生开学典礼突遇大雨，校长临时缩短讲稿并提前结束致辞。" }).accepted, true);
   assert.equal(qualifyTweet({ id: "li-auto", text: "9月12日，有博主直播测试理想智驾，从小路汇入主路时未预留足够安全反应时间，随后紧急刹车。" }).accepted, true);
   assert.equal(qualifyTweet({ id: "ai", text: "9月12日，Anthropic与OpenAI首席执行官就人工智能发展速度发表意见，并讨论第三方评估机制和安全实践。" }).accepted, false);
+});
+
+test("商业产品宣传不进入中国头条，公共利益事件仍可采编", () => {
+  const advertisement = "这款以20世纪为背景的时间旅行策略游戏，由中国广州开发商深蓝互动出品。该公司表示，威尔士文化与游戏世界观产生共鸣。";
+  assert.equal(isPureCommercialPromotion(advertisement),true);
+  assert.equal(qualifyTweet({id:'commercial',text:advertisement}).accepted,false);
+  assert.equal(isPureCommercialPromotion("《尘白禁区》制作组发布正式停运声明，玩家权益安排引关注"),false);
+  assert.equal(isPureCommercialPromotion("美国四州起诉TP-Link，指控其智能家居产品安全与产地信息误导消费者"),false);
 });
 
 test("自动失败草稿可有界重试，人工复核决定不会被自动覆盖", () => {

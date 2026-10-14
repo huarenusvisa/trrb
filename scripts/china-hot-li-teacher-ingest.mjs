@@ -32,6 +32,7 @@ const REN_ZHENGFEI_QUERY = '("任正非" OR "Ren Zhengfei") -is:retweet -is:repl
 const REN_ZHENGFEI_COLLECTION_ENABLED = false;
 const PIPELINE = "china-hot-li-teacher-v2";
 const PROCESSING_VERSION = EDITORIAL_POLICY_VERSION;
+const SHORT_COPY_RESEARCH_VERSION = 'same-event-800-v1';
 const WARNING = "真实性提示：本文所述信息可能尚未获得独立核实，部分细节可能存在偏差，请以权威部门后续通报为准。";
 const DRY_RUN = process.argv.includes("--dry-run");
 const RECOVER_ARCHIVED = process.argv.includes("--recover-archived");
@@ -501,6 +502,11 @@ export function shouldRetryCandidate(candidate, qualified, now = Date.now()) {
       && isFreshBriefSource({created_at:candidate.raw_payload?.source_created_at || candidate.collected_at}, now);
   }
   if (candidate.ai_payload?.quality_hold === true) {
+    // One fresh, source-backed expansion pass for sub-800 copy; never reopen an editor lock.
+    if (candidate.decision === 'review_required' && /正文不足800字/.test(candidate.decision_reason || '')
+      && candidate.ai_payload?.short_copy_research_retry_version !== SHORT_COPY_RESEARCH_VERSION
+      && candidate.ai_payload?.manual_editor_lock !== true
+      && sourceWithinCollectionWindow(candidate.raw_payload?.source_created_at || candidate.collected_at, now)) return true;
     // Enrich recent automated political holds once with source research; this is not publication approval.
     if (candidate.decision === "review_required" && cleanText(candidate.decision_reason, 1000).startsWith("政治线索待核查:")
       && candidate.ai_payload.processing_version !== PROCESSING_VERSION
@@ -611,7 +617,7 @@ async function reprocessableCandidates() {
   const rows = await supabase("news_candidates", { query: {
     select: "id,external_id,raw_text,raw_payload,decision,decision_reason,article_id,ai_payload,collected_at,updated_at",
     pipeline: "like.china-hot-li-teacher-v*", decision: "in.(failed,review_required,processing)",
-    and: `(or(raw_payload->>topic_key.is.null,raw_payload->>topic_key.neq.ren-zhengfei),or(ai_payload->>quality_hold.is.null,ai_payload->>quality_hold.eq.false,ai_payload->>processing_version.neq.${PROCESSING_VERSION}))`,
+    and: `(or(raw_payload->>topic_key.is.null,raw_payload->>topic_key.neq.ren-zhengfei))`,
     updated_at: `gte.${since}`, order: "collected_at.desc,id.desc", limit: String(Math.min(1000, MAX_FETCH * 10)),
   } });
   const filtered = await supabase("news_candidates", { query: {
@@ -900,6 +906,16 @@ export async function generateArticle(qualified, tweet, attempt = 0, previous = 
     return generateArticle(qualified, tweet, attempt + 1, {...article, rewrite_reason: `已判定为深度选题，但正文仅${bodyCharacterCount(article.content)}个中文字符。请用已给来源回答analysis_angles中的问题，补充可核对的时间线、数据口径、因果与情景分析，写至2000–3500字；不得重复或虚构`});
   }
   if (article.editorial_depth === "deep" && bodyCharacterCount(article.content) < 2000) return generateArticle(qualified, tweet, 0, {...article,rewrite_reason:"有据扩写后仍不足2000字，改为普通稿，保留已核实核心事实"}, "standard");
+  if (!brief && article.source_sufficient === true && bodyCharacterCount(article.content) < ordinaryMinimum && !tweet.short_copy_research_attempted) {
+    tweet.short_copy_research_attempted = true;
+    try {
+      const supplemented = await researchEvent(qualified, tweet, {request, readJson, model: OPENAI_MODEL, key: process.env.OPENAI_API_KEY, bearer: bearerToken(), editorialDepth: 'standard', researchRound: 1, priorResearch: tweet.context_research});
+      if (supplemented && (supplemented.sources?.some(source => !tweet.context_research?.sources?.some(prior => prior.url === source.url)) || !tweet.context_research?.web_search_completed)) {
+        tweet.context_research = supplemented;
+        return generateArticle(qualified, tweet, 0, {...article, rewrite_reason: '补采取得同一事件的新证据。只根据原帖及新增引文完整改写为800至1999字，不得重复、虚构或借用其他事件。'}, 'standard');
+      }
+    } catch(error) {if(isBudgetDeferred(error)) throw error;tweet.context_research_error = '不足800字补采暂未完成：'+String(error.message).slice(0,300);}
+  }
   if (!brief && tweet.context_research && article.source_sufficient === true && bodyCharacterCount(article.content) < ordinaryMinimum && attempt < 1) {
     return generateArticle(qualified, tweet, attempt + 1, {...article, rewrite_reason: `正文仅${bodyCharacterCount(article.content)}个中文字符，数字、标点与链接不计数。请依据已给资料补齐同一事件背景、当事人回应及明确归因的观点，目标800至1999个中文字符。不得重复或虚构；事实不足则source_sufficient=false`});
   }
@@ -1146,6 +1162,7 @@ async function requireManualReview(candidate, tweet, reason, retry = null) {
       ...(candidate?.ai_payload || {}), last_generated_draft:tweet.generated_draft || null, status: "review_required", processing_version: PROCESSING_VERSION,
       proposed_title: draft?.title || deriveDraftTitle(tweet.text), summary: draft?.summary || "",
       editable: true, manual_publish_allowed: true, manual_review_required: true, reason, context_research: tweet.context_research || null, ...(retry || {}),
+      ...(tweet.short_copy_research_attempted ? {short_copy_research_retry_version:SHORT_COPY_RESEARCH_VERSION} : {}),
       ...(/采编质量拦截/.test(reason) ? { quality_hold: true, automatic_retry_exhausted: true } : {}),
     },
   });

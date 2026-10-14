@@ -208,8 +208,20 @@ export function resolvePublicationRoute(qualified, article) {
   return ""; // A genuine change of subject still requires editorial correction.
 }
 
+export function isPureCommercialPromotion(value) {
+  const text = cleanText(value, 4_000);
+  // A launch/brand feature is not a public-affairs story merely because a
+  // large outlet shared it. Consumer harm, enforcement and material company
+  // changes remain eligible for independent reporting.
+  if (/监管|调查|調查|起诉|起訴|召回|质量问题|質量問題|安全隐患|安全隱患|数据泄露|數據洩露|侵权|侵權|停运|停運|裁员|裁員|破产|破產|罚款|罰款|处罚|處罰|欺诈|欺詐|投诉|投訴|禁令|禁止|罢工|罷工|事故/.test(text)) return false;
+  const item = /游戏|遊戲|手游|手遊|新品|新款|品牌|手机|手機|汽车|汽車|电动车|電動車|旅游套餐|旅遊套餐|楼盘|樓盤|餐厅|餐廳|(?:^|\W)app(?:$|\W)/i;
+  const marketing = /发布新作|發佈新作|推出新作|新作《|出品|首发|首發|发售|發售|开售|開售|预售|預售|限时优惠|限時優惠|促销|促銷|折扣|欢迎购买|歡迎購買|立即下载|立即下載|全新体验|全新體驗|推出.{0,25}(?:游戏|遊戲|手游|手遊|产品|產品|新品|品牌|手机|手機|汽车|汽車)|发布.{0,25}(?:游戏|遊戲|手游|手遊|产品|產品|新品|品牌|手机|手機|汽车|汽車)/i;
+  return item.test(text) && marketing.test(text);
+}
+
 export function qualifyTweet(tweet) {
   if (writingStandard.sourceBlocked(tweet)) return {accepted:false,reason:"source-withdrawn-by-publisher"};
+  if (isPureCommercialPromotion(tweet?.text)) return {accepted:false,reason:"commercial-promotion"};
   const text = textWithoutLinks(tweet?.text);
   if (!tweet?.id || !text || !isOriginalPost(tweet)) return { accepted: false, reason: "not-original" };
   if (/^RT\s+@/i.test(text)) return { accepted: false, reason: "retweet" };

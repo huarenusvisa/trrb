@@ -254,6 +254,17 @@ test("自动失败草稿可有界重试，人工复核决定不会被自动覆�
   }, qualified), false);
 });
 
+test("不足800字的近期质量暂存只补采一次，人工锁定和过期线索不自动重试", () => {
+  const now = Date.now();
+  const row = {decision:'review_required',decision_reason:'自动扩写或发布失败：采编质量拦截:正文不足800字；保留原始材料及草稿待复核',
+    collected_at:new Date(now-3600000).toISOString(),raw_payload:{source_created_at:new Date(now-3600000).toISOString()},
+    ai_payload:{quality_hold:true,manual_review_required:true,automatic_retry_exhausted:true}};
+  assert.equal(shouldRetryCandidate(row,{accepted:true},now),true);
+  assert.equal(shouldRetryCandidate({...row,ai_payload:{...row.ai_payload,short_copy_research_retry_version:'same-event-800-v1'}},{accepted:true},now),false);
+  assert.equal(shouldRetryCandidate({...row,ai_payload:{...row.ai_payload,manual_editor_lock:true}},{accepted:true},now),false);
+  assert.equal(shouldRetryCandidate({...row,raw_payload:{source_created_at:new Date(now-13*3600000).toISOString()}},{accepted:true},now),false);
+});
+
 test("中国热门头条打开开关立即采集，并由每半小时唤醒器回看最多12小时内容", () => {
   const workflow = fs.readFileSync(new URL("../.github/workflows/china-hot-li-teacher-ingest.yml", import.meta.url), "utf8");
   const control = fs.readFileSync(new URL("../.github/workflows/operations-control-plane.yml", import.meta.url), "utf8");

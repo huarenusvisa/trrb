@@ -2574,3 +2574,8 @@ svg {
   #site-navigation .nav-search{min-width:140px;flex:1;margin-left:auto}
   #site-navigation .nav-search input{min-width:0;width:100%}
 }
+
+/* Taiwan Strait original-map feature: override shared two-column topic card rules. */
+.topic-focus-list > a.topic-focus-card.topic-taiwan{display:block!important;grid-template-columns:none!important;padding:0!important;min-height:0!important;background:#fff!important;border:1px solid #dce4ee!important;color:#172c49!important;border-radius:18px!important}
+.topic-focus-list > a.topic-focus-card.topic-taiwan:after{content:none!important;display:none!important}
+.topic-focus-list > a.topic-focus-card.topic-taiwan img{display:block!important;position:static!important;width:100%!important;max-width:none!important;height:auto!important;max-height:none!important;object-fit:contain!important;border-radius:0!important;opacity:1!important}

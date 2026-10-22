@@ -363,7 +363,7 @@ function hasRealImage(item) {
 function normalizeCategory(value) {
   const category = String(value || "").trim();
   if (["美国执法与警情", "ICE执法与警情", "美国警情", "ICE", "ICE执法动态", "ICE执法", "ICE执法追踪", "ICE新闻", "驱逐快报"].includes(category)) return "ICE执法与警情";
-  return category === "中国热门头条" ? "热门头条" : category;
+  return category === "中国热门头条" ? "中国热门头条" : category;
 }
 window.TRRB_homeCategoryName = normalizeCategory;
 function findLeadArticle(categoryArticles) { return categoryArticles.find(hasRealImage) || categoryArticles[0] || null; }
@@ -394,11 +394,11 @@ function renderExposureWallCard() {
 function renderChinaHotSection(articles) {
   const projected = (Array.isArray(articles) ? articles : []).map((item) => {
     const category = normalizeCategory(item?.category || item?.category_name);
-    return category === "热门头条"
-      ? { ...item, category: "热门头条", category_name: "热门头条" }
+    return category === "中国热门头条"
+      ? { ...item, category: "中国热门头条", category_name: "中国热门头条" }
       : item;
   });
-  return renderCategorySection("热门头条", projected);
+  return renderCategorySection("中国热门头条", projected);
 }
 function renderSections(articles) {
   // 中国热门头条必须由主渲染器直接拥有，不能依赖后加载的兼容脚本

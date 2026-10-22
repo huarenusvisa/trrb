@@ -1,4 +1,4 @@
-const CHINA_HOT_CATEGORY = "热门头条";
+const CHINA_HOT_CATEGORY = "中国热门头条";
 const CHINA_HOT_DISPLAY_NAME = "中国热门头条";
 
 const CHINA_SIGNALS = [
@@ -58,7 +58,7 @@ function displayCategoryName(category) {
 
 function isChinaHotCategory(category) {
   const value = normalize(category);
-  return value === normalize(CHINA_HOT_CATEGORY) || value === normalize(CHINA_HOT_DISPLAY_NAME);
+  return value === normalize(CHINA_HOT_CATEGORY) || value === normalize("热门头条");
 }
 
 module.exports = {

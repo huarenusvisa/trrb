@@ -5,7 +5,7 @@ import { rest } from "./_shared/supabase-admin.js";
 import { isChinaHotCategory, isChinaHotHeadline } from "./_shared/china-hot-headlines.js";
 import { ENFORCEMENT_FILTER } from "../shared/editorial-topics.mjs";
 
-const CORE_CATEGORIES = ["热门头条", "美国时政", "美国警情", "ICE执法与警情"];
+const CORE_CATEGORIES = ["中国热门头条", "美国时政", "美国警情", "ICE执法与警情"];
 const ENFORCEMENT_CATEGORIES = new Set(["美国执法与警情", "ICE执法与警情", "美国警情", "ICE", "ICE执法动态", "ICE执法", "ICE执法追踪", "ICE新闻", "驱逐快报"]);
 const RETIRED_HOME_CATEGORIES = new Set(["重要新闻", "中国官场", "庇护百科", "移民美国"]);
 const HOME_MAX_AGE_MS = 4 * 24 * 60 * 60 * 1000;

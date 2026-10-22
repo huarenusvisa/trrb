@@ -6,7 +6,7 @@ let currentCategoryPath = "";
 
 const PUBLIC_CATEGORY_ROUTES = {
   "/important-news": { name: "重要新闻", slug: "important-news" },
-  "/hot-headlines": { name: "热门头条", displayName: "中国热门头条", slug: "hot-headlines" },
+  "/hot-headlines": { name: "中国热门头条", displayName: "中国热门头条", slug: "hot-headlines" },
   "/us-politics": { name: "美国时政", slug: "us-politics" },
   "/us-crime": { name: "美国警情", slug: "us-crime" },
   "/china-officialdom": { name: "中国官场", slug: "china-officialdom" },
@@ -296,6 +296,7 @@ function articleUrl(article) {
   const topic = String(article?.topicKey || article?.topic_key || "").trim().toLowerCase();
   const sections = {
     "重要新闻": "important-news",
+    "中国热门头条": "hot-headlines",
     "热门头条": "hot-headlines",
     "美国时政": "us-politics",
     "美国警情": "us-crime",

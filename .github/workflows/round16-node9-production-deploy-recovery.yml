@@ -18,6 +18,8 @@ on:
       - '*.js'
       - '*.css'
       - 'admin/**'
+      # User-uploaded newsroom photos and topic covers must deploy independently.
+      - 'assets/**'
       - 'asylumjudge/**'
       - 'huarengongzuo/**'
       - 'seo/**'

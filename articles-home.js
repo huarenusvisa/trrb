@@ -226,7 +226,7 @@ function renderHome(articles, focusArticles = null) {
   const sorted = articles.slice().sort((a, b) => articleTimestamp(b) - articleTimestamp(a));
   window.TRRB_LAST_HOME_ARTICLES = sorted;
   const general = sorted.filter(article => !window.TRRBEditorialPolicy.topicOnly(article));
-  const hotArticles = general.filter((article) => normalizeCategory(article.category) === "热门头条");
+  const hotArticles = general.filter((article) => normalizeCategory(article.category) === "中国热门头条");
   renderTicker((hotArticles.length ? hotArticles : general).slice(0, 12));
   const visualArticles = general.filter(hasRealImage);
   if (Array.isArray(focusArticles)) {
@@ -363,7 +363,7 @@ function hasRealImage(item) {
 function normalizeCategory(value) {
   const category = String(value || "").trim();
   if (["美国执法与警情", "ICE执法与警情", "美国警情", "ICE", "ICE执法动态", "ICE执法", "ICE执法追踪", "ICE新闻", "驱逐快报"].includes(category)) return "ICE执法与警情";
-  return category === "中国热门头条" ? "中国热门头条" : category;
+  return category === "热门头条" ? "中国热门头条" : category;
 }
 window.TRRB_homeCategoryName = normalizeCategory;
 function findLeadArticle(categoryArticles) { return categoryArticles.find(hasRealImage) || categoryArticles[0] || null; }
@@ -414,9 +414,9 @@ const RANK_MAX_AGE_MS = 24 * 60 * 60 * 1000;
 function fallback24hRank(articles, limit = 40) {
   const now = Date.now();
   const seen = new Set();
-  const allowedCategories = new Set(["热门头条", "美国时政", "美国警情", "ICE执法动态"]);
+  const allowedCategories = new Set(["中国热门头条", "美国时政", "美国警情", "ICE执法动态"]);
   const categoryAliases = new Map([
-    ["中国热门头条", "热门头条"],
+    ["热门头条", "中国热门头条"],
     ["驱逐快报", "ICE执法动态"],
     ["ICE执法", "ICE执法动态"],
     ["ICE执法追踪", "ICE执法动态"],

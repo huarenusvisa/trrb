@@ -3,14 +3,14 @@
 
   const RANK_MAX_AGE_MS = 24 * 60 * 60 * 1000;
   const RANK_ALLOWED_CATEGORIES = Object.freeze([
-    "热门头条",
+    "中国热门头条",
     "美国时政",
     "美国警情",
     "ICE执法动态"
   ]);
   const RANK_ALLOWED_CATEGORY_SET = new Set(RANK_ALLOWED_CATEGORIES);
   const RANK_CATEGORY_ALIASES = new Map([
-    ["中国热门头条", "热门头条"],
+    ["热门头条", "中国热门头条"],
     ["驱逐快报", "ICE执法动态"],
     ["ICE执法", "ICE执法动态"],
     ["ICE执法追踪", "ICE执法动态"],

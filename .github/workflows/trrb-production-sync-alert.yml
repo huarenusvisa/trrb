@@ -1,0 +1,22 @@
+name: TRRB 生产发布同步警报
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "*/15 * * * *"
+permissions:
+  contents: read
+concurrency:
+  group: trrb-production-sync-monitor
+  cancel-in-progress: false
+jobs:
+  parity-check:
+    name: 核查 Netlify、新闻栏目及台海专题
+    runs-on: ubuntu-24.04
+    timeout-minutes: 6
+    env:
+      GITHUB_TOKEN: ${{ github.token }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: 检查发布同步与图片
+        run: node scripts/monitor-production-sync.mjs

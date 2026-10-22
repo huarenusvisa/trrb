@@ -29,6 +29,7 @@ on:
       - 'immigration-judge-approval-rate/**'
       - 'trump/**'
       - 'topic/**'
+      - 'taiwan-strait-2026/**'
       - 'netlify/functions/**'
       - 'netlify/edge-functions/**'
       - 'scripts/generate-sitemaps.mjs'

@@ -52,7 +52,7 @@ test("任正非发布稿带稳定主题标记并留在中国热门头条", () =>
     seo_keywords: "任正非,华为,研发,人才",
     target: targetLength(),
   }, "2026-09-15T00:00:00.000Z");
-  assert.equal(article.category_name, "热门头条");
+  assert.equal(article.category_name, "中国热门头条");
   assert.equal(article.topic_key, "ren-zhengfei");
   assert.equal(article.slug, "ren-zhengfei-x-2099504575149642078");
   assert.equal(article.metadata.person_topic, "任正非");

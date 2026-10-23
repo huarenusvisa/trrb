@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import {composeDepthDraft} from './news-depth-compose.mjs';
+import {expandShortCopy} from './news-short-copy-expand.mjs';
 import writingStandard from '../netlify/functions/_shared/news-writing-standard.js';
 import publisherReview from '../netlify/functions/_shared/publisher-review-policy.js';
 import {inForwardScope,depthInstruction,logDepthOutcome} from './news-forward-policy.mjs';
@@ -32,7 +33,7 @@ const REN_ZHENGFEI_QUERY = '("任正非" OR "Ren Zhengfei") -is:retweet -is:repl
 const REN_ZHENGFEI_COLLECTION_ENABLED = false;
 const PIPELINE = "china-hot-li-teacher-v2";
 const PROCESSING_VERSION = EDITORIAL_POLICY_VERSION;
-const SHORT_COPY_RESEARCH_VERSION = 'same-event-800-v1';
+const SHORT_COPY_RESEARCH_VERSION = 'same-event-800-v2';
 const WARNING = "真实性提示：本文所述信息可能尚未获得独立核实，部分细节可能存在偏差，请以权威部门后续通报为准。";
 const DRY_RUN = process.argv.includes("--dry-run");
 const RECOVER_ARCHIVED = process.argv.includes("--recover-archived");
@@ -928,6 +929,14 @@ export async function generateArticle(qualified, tweet, attempt = 0, previous = 
       }
     } catch(error) {if(isBudgetDeferred(error)) throw error;tweet.context_research_error = '不足800字补采暂未完成：'+String(error.message).slice(0,300);}
   }
+  if (!dailyDeep && article.source_sufficient === true && bodyCharacterCount(article.content) < ordinaryMinimum && !tweet.short_copy_expansion_attempted) {
+    tweet.short_copy_expansion_attempted = true;
+    const before = bodyCharacterCount(article.content);
+    article = await expandShortCopy({draft:article,source:qualified.text,research:tweet.context_research,invoke:structuredModel,model:OPENAI_MODEL,countBody:bodyCharacterCount,minimum:ordinaryMinimum,maximum:target.max});
+    article.content = formatNewsParagraphs(article.content, 'standard');
+    tweet.generated_draft = article;
+    console.log(JSON.stringify({event:'short-copy-expanded',tweetId:tweet.id,before,after:bodyCharacterCount(article.content),minimum:ordinaryMinimum}));
+  }
   if (!brief && tweet.context_research && article.source_sufficient === true && bodyCharacterCount(article.content) < ordinaryMinimum && attempt < 1) {
     return generateArticle(qualified, tweet, attempt + 1, {...article, rewrite_reason: `正文仅${bodyCharacterCount(article.content)}个中文字符，数字、标点与链接不计数。请依据已给资料补齐同一事件背景、当事人回应及明确归因的观点，目标800至1999个中文字符。不得重复或虚构；事实不足则source_sufficient=false`});
   }
@@ -1539,3 +1548,4 @@ export async function run() {
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) run().catch((error) => { console.error("中国热门头条采集发布失败：", error); process.exitCode = 1; });
+

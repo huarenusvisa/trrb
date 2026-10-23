@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import {makeAttributionExplicit,preferredPublicationSource} from './news-attributed-report-policy.mjs';
+import {expandShortCopy} from './news-short-copy-expand.mjs';
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import test from "node:test";
@@ -7,6 +8,56 @@ import { assertPublicationQuality, bodyCharacterCount, isHeadlineDigest, buildCa
 
 // Distinct characters isolate length/transport tests from the repetition gate.
 const qualityBody = "重庆学校公布开学时间与后续教学安排。" + Array.from({ length: 9 }, (_, j) => Array.from({length:92},(_,i)=>String.fromCharCode(0x4e00+j*92+i)).join("")+"。").join("\n\n");
+
+test('不足800字按实际差额补写，合稿后交给独立质检再发布', async t => {
+  const short = qualityBody.slice(0, 500);
+  const addition = Array.from({length: 400}, (_, i) => String.fromCharCode(0x6500 + i)).join('') + '。';
+  const source = {url:'https://example.com/school-notice',title:'同一学校的完整公告'};
+  const tweet = {...chinaTweet, context_research_attempted:true, short_copy_research_attempted:true,
+    context_research:{text:'同一事件的安排、时间线与具体措施。',sources:[source]}};
+  let writes=0, expansions=0, reviews=0;
+  t.mock.method(globalThis,'fetch', async (_url, options) => {
+    const input=JSON.parse(options.body);
+    const kind=input.text?.format?.name;
+    if(kind==='news_short_copy_expansion') {
+      expansions++;
+      const evidence=JSON.parse(input.input);
+      assert.equal(evidence.body_chinese_characters,bodyCharacterCount(short));
+      assert.equal(evidence.requested_additional_chinese_characters,1000-bodyCharacterCount(short));
+      assert.match(input.input,/school-notice/);
+      return Response.json({output_text:JSON.stringify({content:addition,sufficient:true,missing_evidence:''})});
+    }
+    if(kind==='china_hot_editorial_review') {
+      reviews++;
+      assert.match(JSON.stringify(input.input),new RegExp(addition.slice(0,20)));
+      return Response.json({output_text:JSON.stringify(editorial_review)});
+    }
+    writes++;
+    return Response.json({output_text:JSON.stringify({title:'重庆学校公布开学安排',summary:'校方公布具体安排。',content:short,source_sufficient:true,appears_old_news:false,editorial_depth:'standard'})});
+  });
+  const article=await generateArticle(qualifyTweet(tweet),tweet);
+  assert.equal(writes,1);assert.equal(expansions,1);assert.equal(reviews,1);
+  assert.ok(bodyCharacterCount(article.content)>=800);
+  const published=buildPublishedArticle(tweet,qualifyTweet(tweet),article);
+  assert.equal(published.status,'published');
+  assert.equal(published.metadata.body_character_count,bodyCharacterCount(article.content));
+  assert.deepEqual(published.supporting_sources,[source]);
+});
+
+test('补写不足可以继续补齐，不能靠重复段落或素材不足标志绕过质量检查',async()=>{
+  const draft={title:'学校安排',content:'甲'.repeat(500),source_sufficient:true};
+  let calls=0;
+  const expanded=await expandShortCopy({draft,source:'公告',invoke:async()=>({content:(++calls===1?'乙':'丙').repeat(160),sufficient:true}),countBody:bodyCharacterCount});
+  assert.equal(calls,2);assert.equal(bodyCharacterCount(expanded.content),820);
+  calls=0;
+  const repeated=await expandShortCopy({draft,source:'公告',invoke:async()=>{calls++;return {content:draft.content,sufficient:true};},countBody:bodyCharacterCount});
+  assert.equal(repeated.content,draft.content);assert.equal(calls,1);
+  const unsupported=await expandShortCopy({draft,source:'公告',invoke:async()=>({content:'乙'.repeat(500),sufficient:false,missing_evidence:'没有材料支持'}),countBody:bodyCharacterCount});
+  assert.equal(unsupported.content,draft.content);
+  assert.throws(()=>assertPublicationQuality(chinaTweet,{...unsupported,editorial_review}),/800/);
+  const ungrounded={...draft,content:qualityBody,editorial_review:{...editorial_review,grounded:false}};
+  assert.throws(()=>assertPublicationQuality(chinaTweet,ungrounded),/采编质量拦截/);
+});
 const editorial_review = { fresh_hot_event:true,freshness_evidence:"原文与原始公告支持本次新进展", independent_sources:true,data_verified:true,data_context:true,news_upstream:true,news_downstream:true,event_upstream:true,event_downstream:true,reader_impact_examined:true, single_event: true, grounded: true, sufficient: true, image_relevant: true, court_status_correct: true, depth_appropriate: true, analysis_grounded: true, source_chain_complete: true, cover_index: 0, image_description: "校方公布的开学安排通知", reason: "输入材料支持成稿" };
 
 const chinaTweet = {
@@ -268,7 +319,8 @@ test("不足800字的近期质量暂存只补采一次，人工锁定和过期�
     collected_at:new Date(now-3600000).toISOString(),raw_payload:{source_created_at:new Date(now-3600000).toISOString()},
     ai_payload:{quality_hold:true,manual_review_required:true,automatic_retry_exhausted:true}};
   assert.equal(shouldRetryCandidate(row,{accepted:true},now),true);
-  assert.equal(shouldRetryCandidate({...row,ai_payload:{...row.ai_payload,short_copy_research_retry_version:'same-event-800-v1'}},{accepted:true},now),false);
+  assert.equal(shouldRetryCandidate({...row,ai_payload:{...row.ai_payload,short_copy_research_retry_version:'same-event-800-v1'}},{accepted:true},now),true);
+  assert.equal(shouldRetryCandidate({...row,ai_payload:{...row.ai_payload,short_copy_research_retry_version:'same-event-800-v2'}},{accepted:true},now),false);
   assert.equal(shouldRetryCandidate({...row,ai_payload:{...row.ai_payload,manual_editor_lock:true}},{accepted:true},now),false);
   assert.equal(shouldRetryCandidate({...row,raw_payload:{source_created_at:new Date(now-13*3600000).toISOString()}},{accepted:true},now),false);
 });
@@ -441,7 +493,7 @@ test('short source reports cannot downgrade into a published brief after bounded
  let writes=0;
  const tweet={...chinaTweet,created_at:new Date().toISOString(),context_research_attempted:true,image_lookup_attempted:true};
  t.mock.method(globalThis,'fetch',async(_url,options)=>{const input=JSON.parse(options.body);assert.notEqual(input.text?.format?.name,'china_hot_editorial_review','short drafts never reach publication review');writes++;return Response.json({output_text:JSON.stringify({title:'重庆学校调整开学安排',content:chinaTweet.text,summary:'安排更新',source_sufficient:true,appears_old_news:false,editorial_depth:'standard'})});});
- await assert.rejects(()=>generateArticle(qualifyTweet(tweet),tweet),/不足800/);assert.equal(writes,4,'one extra bounded research attempt still cannot publish a short draft');
+ await assert.rejects(()=>generateArticle(qualifyTweet(tweet),tweet),/不足800/);assert.equal(writes,5,'bounded research and deficit expansion still cannot publish an unexpanded short draft');
  assert.throws(()=>buildPublishedArticle(tweet,qualifyTweet(tweet),{title:'重庆学校调整开学安排',content:chinaTweet.text,editorial_depth:'brief',publication_scope:'topic_only',editorial_review}),/800/);
 });
 
@@ -528,3 +580,4 @@ test('单源声明不能只存在后台布尔值，标题和导语展示明确�
   assert.equal(preferredPublicationSource({...article,editorial_review:{...review,primary_source_url:'https://www.cnbc.com/invented.html'}},research),null);
   assert.equal(preferredPublicationSource(article,{...research,web_search_completed:false}),null);
  });
+

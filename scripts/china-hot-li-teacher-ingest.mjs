@@ -6,7 +6,7 @@ import publisherReview from '../netlify/functions/_shared/publisher-review-polic
 import {inForwardScope,depthInstruction,logDepthOutcome} from './news-forward-policy.mjs';
 import './news-budget-preload.mjs';
 import {compareNewsPriority,newsPriority} from './news-priority.mjs';
-import {ATTRIBUTED_REPORT_INSTRUCTIONS, sourceReviewPassed, publicationReviewFields, makeAttributionExplicit, primarySourceReviewSchema, preferredPublicationSource} from './news-attributed-report-policy.mjs';
+import {ATTRIBUTED_REPORT_INSTRUCTIONS, sourceReviewPassed, publicationReviewFields, makeAttributionExplicit, publicAttributionText, primarySourceReviewSchema, preferredPublicationSource} from './news-attributed-report-policy.mjs';
 import {TIER_REVIEW_INSTRUCTIONS,needsReviewRecheck,verifyFreshDevelopment,findSourceImages} from './news-editorial-support.mjs';
 import {isBudgetDeferred} from './news-cost-model.mjs';
 import { readAllPages, readWithRetry } from "./paged-read.mjs";
@@ -853,7 +853,7 @@ export async function generateArticle(qualified, tweet, attempt = 0, previous = 
         brief ? "已尝试寻找上下文但不足以可靠扩写为600字。现只写一篇事实完整的新热点短讯，不设最低字数，不得凑字，不能用无关背景填充。仅保留这个事件已取得的事实和明确归因的说法；editorial_depth必须为brief。" : mode === "standard" ? "深度稿由人工撰写。本次仅依据可核查来源写800至1999字的普通新闻，editorial_depth必须为standard，不得扩写成深度稿。" : "先以总编辑判断选题价值：若事件具有显著公共影响、政策或权力节点、可解释的因果链、可比较的历史规律、可核对的数据，或可能产生多条现实走向，editorial_depth选deep，目标2000至3500个中文字符（每日深度任务以2000至3500字为准）；孤立、例行或资料只足以说明事实的事件选standard，目标800至1999个中文字符，通常1200至1999字，正常稿至少800字。深度不是把摘要拉长；全文不得拼接不同事件，不得重复或用空泛背景凑字。depth_reason写选择依据，analysis_angles列出实际采用的因果、时点、当事人压力、历史规律、数据或后续方向。",
         brief ? "source_sufficient表示素材能支持这篇短讯的核心事实。缺少具体事件或仅有标题、预告、评论时必须为false并留空正文。不可把新转发的旧事件当新热点。" : "先判断原帖、图片文字及关联资料是否足以支持所选深度。节目预告、视频标题、话题串烧、零碎评论不能充当正文。如果只有标题，必须从补充资料确认标题从哪里来并取得原始报道、官方文件或上下游文字；找不到则source_sufficient=false、rejection_reason说明缺什么、content留空。不得靠模型记忆填补事实。",
         "image_evidence逐张记录可辨认的原图文字及从0开始的图片序号；模糊文字不要补全；该字段留作复核依据，不计入正文字数。",
-        "只从图片中提取与同一新闻事件直接相关的可辨认文字、通知、时间、地点和行为；不要用服装、构图、色彩等无关细节扩充篇幅。图片信息必须用“截图文字显示”“画面可见”等方式明确归因；看不清就不写。",
+        "图片中能确认的文字、通知、时间、地点和行为，文章上下文及直接相关背景，都可以用于扩写到800字以上。基于已有事实解释事件背后的因果、政策或程序逻辑时，须明确区分已知事实与分析，不把推断写成事实；不要用服装、构图、色彩等无关细节扩充篇幅，看不清就不写。公开稿件不出现截图、推特或X账号来源、账号名及原帖链接。",
         "允许依据补充资料中的可核查来源交代同一事件背景、时间线和后续，注明媒体或文件及日期。深度稿要回答资料能够支持的具体问题：这个节点为何发生、各方公开利益与压力、此前同类事件的规律、可比数据及统计口径、发生后可能出现的几种方向；未来方向必须明确写成情景分析而非既成事实。实际取得的评论仅可归因为该账号观点，不得据此证实事实或概括公众态度。没有补充来源时只允许补充确定的基础行政地理关系，例如城市所属省份、区县与城市的关系，以及画面直接显示的场所类型。不要补充企业性质、人物履历、统计数字、历史细节、行业评价或其他模型记忆中的背景。",
         "涉及上访、自伤、自杀、疾病或个人困境时，不得臆测当事人的个人动机或作心理诊断；只能整理有来源的制度流程、公开陈述、同类事件数据及已证实背景，并避免呈现可模仿的行为细节。",
         "不得根据长相推断人物性格、职业、身份、族群、健康状况、犯罪倾向或动机；只描述画面中直接可见的表情、姿态、衣着和行为。",
@@ -888,6 +888,9 @@ export async function generateArticle(qualified, tweet, attempt = 0, previous = 
   article.daily_deep_commission = dailyDeep;
   tweet.generated_draft = article;
   article.title = cleanText(article.title, Infinity); article.summary = cleanText(article.summary, Infinity); article.content = cleanText(article.content, Infinity).replace(/\\r\\n|\\n/g,"\n").replace(/\*/g,""); article.old_news_reason = cleanText(article.old_news_reason, 800);
+  article.title = publicAttributionText(article.title);
+  article.summary = publicAttributionText(article.summary);
+  article.content = publicAttributionText(article.content);
   article.editorial_depth = dailyDeep ? "deep" : brief ? "brief" : mode === "standard" ? "standard" : article.editorial_depth === "deep" ? "deep" : "standard";
   article.content = formatNewsParagraphs(article.content, article.editorial_depth);
   article.depth_reason = cleanText(article.depth_reason, 1000);
@@ -932,7 +935,7 @@ export async function generateArticle(qualified, tweet, attempt = 0, previous = 
   if (!dailyDeep && article.source_sufficient === true && bodyCharacterCount(article.content) < ordinaryMinimum && !tweet.short_copy_expansion_attempted) {
     tweet.short_copy_expansion_attempted = true;
     const before = bodyCharacterCount(article.content);
-    article = await expandShortCopy({draft:article,source:qualified.text,research:tweet.context_research,invoke:structuredModel,model:OPENAI_MODEL,countBody:bodyCharacterCount,minimum:ordinaryMinimum,maximum:target.max});
+    article = await expandShortCopy({draft:article,source:qualified.text,research:tweet.context_research,images:visualInputs(tweet),imageEvidence:article.image_evidence,invoke:structuredModel,model:OPENAI_MODEL,countBody:bodyCharacterCount,minimum:ordinaryMinimum,maximum:target.max});
     article.content = formatNewsParagraphs(article.content, 'standard');
     tweet.generated_draft = article;
     console.log(JSON.stringify({event:'short-copy-expanded',tweetId:tweet.id,before,after:bodyCharacterCount(article.content),minimum:ordinaryMinimum}));
@@ -1057,6 +1060,7 @@ export function buildPublishedArticle(tweet, qualified, article, publishedAt = n
       daily_deep_commission:article.daily_deep_commission === true,
       collection_source:{name:source.name,url:sourceUrl}, preferred_publication_source:primarySource,
       collector: PIPELINE, automatic_publish: true, manual_review_required: false, review_status: "auto_published",
+      public_source_display: false,
       publication_scope: article.publication_scope || "standard", article_format: article.editorial_depth === "deep" ? "deep_analysis" : article.publication_scope === "topic_only" ? "hot_brief" : "report",
       reviewed_content_sha256:contentDigest(article.title,article.content), editorial_policy_version: EDITORIAL_POLICY_VERSION, editorial_depth: article.editorial_depth || "standard", editorial_depth_reason: article.depth_reason || "", analysis_angles: article.analysis_angles || [],
       publication_mode: isReviewedRegular(article) ? 'reviewed_regular' : 'current_news',

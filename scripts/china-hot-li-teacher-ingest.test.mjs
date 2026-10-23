@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import {makeAttributionExplicit,preferredPublicationSource} from './news-attributed-report-policy.mjs';
+import {makeAttributionExplicit,preferredPublicationSource,publicAttributionText} from './news-attributed-report-policy.mjs';
 import {expandShortCopy} from './news-short-copy-expand.mjs';
 import assert from "node:assert/strict";
 import fs from "node:fs";
@@ -21,10 +21,12 @@ test('不足800字按实际差额补写，合稿后交给独立质检再发布',
     const kind=input.text?.format?.name;
     if(kind==='news_short_copy_expansion') {
       expansions++;
-      const evidence=JSON.parse(input.input);
+      const evidence=JSON.parse(input.input[0].content[0].text);
+      assert.equal(input.input[0].content[1].type,'input_image');
+      assert.equal(input.input[0].content[1].image_url,chinaTweet.media[0].url);
       assert.equal(evidence.body_chinese_characters,bodyCharacterCount(short));
       assert.equal(evidence.requested_additional_chinese_characters,1000-bodyCharacterCount(short));
-      assert.match(input.input,/school-notice/);
+      assert.match(JSON.stringify(input.input),/school-notice/);
       return Response.json({output_text:JSON.stringify({content:addition,sufficient:true,missing_evidence:''})});
     }
     if(kind==='china_hot_editorial_review') {
@@ -556,8 +558,16 @@ test('单源普通报道归因通过即可发布，多源与后续项保持真�
 test('单源声明不能只存在后台布尔值，标题和导语展示明确归因',()=>{
  const article={title:'学校管理引发争议',content:'学校发生相关事件。',editorial_depth:'standard',editorial_review:{attributed_source:true,source_chain_complete:false}};
  assert.equal(makeAttributionExplicit(article,'原帖账号'),true);
- assert.doesNotMatch(article.title,/^网帖称/);assert.match(article.content,/^据X账号“原帖账号”/);
+ assert.doesNotMatch(article.title,/^网帖称/);assert.match(article.content,/^网传消息称，/);
+ assert.doesNotMatch(article.content,/X账号|原帖账号|推特|twitter/i);
  assert.equal(makeAttributionExplicit(article,'原帖账号'),false);
+});
+
+test('公开稿件移除推特来源、账号和原帖链接，保留传闻性质及事件中的平台事实',()=>{
+ const raw='据X账号“某账号”发布的消息，某学校被指拖欠工资。https://x.com/example/status/123';
+ assert.equal(publicAttributionText(raw),'网传消息称，某学校被指拖欠工资。');
+ assert.equal(publicAttributionText('据推特账号“某账号”发文称，学校尚未回应。'),'网传消息称，学校尚未回应。');
+ assert.equal(publicAttributionText('马斯克收购推特后调整业务。'),'马斯克收购推特后调整业务。');
 });
 
  test('机械归因前缀在各稿型去除，但保留指控的不确定性并重新复核',()=>{

@@ -75,8 +75,17 @@ assert.match(hardening, /pathForLocale/, 'language hardening must canonicalize e
 assert.match(hardening, /stopImmediatePropagation/, 'language hardening must prevent the legacy handler from racing a canonical route change');
 assert.match(hardening, /\/en\/asylum-judge-rating\//, 'language hardening must map the English keyword page');
 
+// The AsylumJudge community is served by its own branded HTML rewrite.
+// The TRRB community/index.html is not a valid standalone page and must not
+// introduce missing /user links or TRRB-only social stylesheet references.
+assert.ok(!existsSync(join(OUT, 'community', 'index.html')), 'AsylumJudge must not publish the unused TRRB community index');
+assert.ok(existsSync(join(OUT, 'community', 'community.js')), 'AsylumJudge must retain its shared community runtime');
+assert.ok(existsSync(join(OUT, 'community', 'community.css')), 'AsylumJudge must retain its shared community stylesheet');
 const redirects = read('_redirects');
 assert.match(redirects, /^\/api\/uscis-asylum-data \/\.netlify\/functions\/uscis-asylum-data 200!$/m, 'USCIS public API route must proxy internally to its Netlify function');
+assert.match(redirects, /^\/community\/ \/asylumjudge-community\.html 200!$/m, 'AsylumJudge must serve the branded community page');
+assert.match(redirects, /^\/user https:\/\/trrb\.net\/user\/ 301!$/m, 'Standalone profile entry must reach the active TRRB profile');
+assert.match(redirects, /^\/user\/\* https:\/\/trrb\.net\/user\/:splat 301!$/m, 'Standalone profile details must reach the active TRRB profile');
 for (const line of redirects.split('\n')) {
   const [from, to, status] = line.trim().split(/\s+/);
   if (/^30[1278]!?$/.test(status || '')) {

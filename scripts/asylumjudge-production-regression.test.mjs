@@ -16,6 +16,16 @@ for (const locale of locales) {
 const zhKeyword = read('asylum-judge-approval-rate/index.html');
 const enKeyword = read('en/asylum-judge-rating/index.html');
 assert.match(zhKeyword, /<h1>美国庇护法官通过率查询<\/h1>/, 'Chinese keyword landing page must target 庇护法官通过率');
+assert.match(zhKeyword, /data-indexing-guide="approval-rates"/, 'Chinese approval-rate page must have substantive, crawlable methodology guidance');
+assert.match(enKeyword, /data-indexing-guide="approval-rates"/, 'English asylum-judge rating page must explain methodology and interpretation');
+assert.match(zhKeyword, /href="\/states\/new-york\/"/, 'Chinese guide must link directly to a real state data page');
+assert.match(enKeyword, /href="\/en\/states\/california\/"/, 'English guide must link directly to localized state data');
+assert.match(zhKeyword, /href="\/uscis-asylum-data\/"/, 'Chinese guide must explain and link to distinct USCIS data');
+assert.match(enKeyword, /href="\/methodology\/"/, 'English guide must link to data methodology');
+const eoirCaseGuide = read('eoir-case-status/index.html');
+assert.match(eoirCaseGuide, /data-indexing-guide="eoir-case-status"/, 'EOIR case-status page must contain official-lookup usage guidance');
+assert.match(eoirCaseGuide, /href="\/courts\/"/, 'EOIR case-status page must link to the immigration court directory');
+
 assert.match(zhKeyword, /canonical" href="https:\/\/asylumjudge\.com\/asylum-judge-approval-rate\//, 'Chinese keyword page canonical must be stable');
 assert.match(enKeyword, /<h1>Asylum Judge Rating and Approval Rate Lookup<\/h1>/, 'English keyword landing page must target asylum judge rating');
 assert.match(enKeyword, /canonical" href="https:\/\/asylumjudge\.com\/en\/asylum-judge-rating\//, 'English keyword page canonical must be stable');
@@ -24,6 +34,17 @@ assert.match(zhKeyword, /FAQPage/, 'Chinese keyword page must contain explanator
 
 const rootHome = read('index.html');
 const enHome = read('en/index.html');
+for (const [label, home, target] of [
+  ['zh', rootHome, '/asylum-judge-approval-rate/'],
+  ['en', enHome, '/en/asylum-judge-rating/']
+]) {
+  assert.equal((home.match(/data-home-discovery="true"/g) || []).length, 1, label + ' home must expose one discovery section');
+  assert.ok(home.indexOf('data-home-discovery="true"') < home.indexOf('<section id="all-judges"'), label + ' home links must appear before large judge directory');
+  assert.ok(home.includes('href="' + target + '"'), label + ' home must link to its canonical approval-rate guide');
+}
+assert.match(rootHome, /href="\/eoir-case-status\/"/, 'Chinese homepage must expose the official hearing lookup guide');
+assert.match(enHome, /href="\/en\/eoir-case-status\/"/, 'English homepage must expose the official hearing lookup guide');
+
 const runtimeNavigation = readFileSync('asylumjudge/domain-brand.js', 'utf8');
 const uscisClient = readFileSync('asylumjudge/uscis-data.js', 'utf8');
 const uscisPageSource = readFileSync('asylumjudge/uscis-data.html', 'utf8');

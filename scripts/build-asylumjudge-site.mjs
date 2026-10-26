@@ -37,10 +37,10 @@ await cp(join(root, 'asylumjudge', 'uscis-asylum-data-proxy.js'), join(functions
 await cp(join(root, 'data', 'uscis-asylum-snapshot.json'), join(functions, 'uscis-asylum-snapshot.json'));
 await cp(join(root, 'asylumjudge-community.html'), join(output, 'asylumjudge-community.html'));
 await cp(join(root, 'community'), join(output, 'community'), { recursive: true });
-// /community/ is served by the dedicated AsylumJudge community page via _redirects.
-// Do not ship the unrelated TRRB community HTML: it references TRRB-only
-// profile routes and social styles that are not part of this standalone site.
-await rm(join(output, 'community', 'index.html'), { force: true });
+// Keep a real, crawlable /community/ page for sitemap validation while
+// replacing the unrelated TRRB community HTML (with TRRB-only assets/routes)
+// with the dedicated AsylumJudge community page also used by _redirects.
+await cp(join(root, 'asylumjudge-community.html'), join(output, 'community', 'index.html'));
 await mkdir(join(output, 'assets'), { recursive: true });
 await cp(join(root, 'assets', 'supabase-client.js'), join(output, 'assets', 'supabase-client.js'));
 

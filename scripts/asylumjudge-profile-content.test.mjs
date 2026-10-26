@@ -11,7 +11,11 @@ assert.match(carman, /href="\/en\/courts\/denver-den--den\/"/);
 assert.match(carman, /rel="canonical" href="https:\/\/asylumjudge.com\/en\/judges\/andre-carman--44c7f8efd844\/"/);
 for (const [locale, court] of [['en','newark-new--new'],['en','portland-poo--poo'],['fr','detroit-det--det'],['es','seattle-sea--sea']]) {
   const html = await readFile(output + `${locale}/courts/${court}/index.html`, 'utf8');
-  assert.match(html, /id="court-source"[^>]*>FY 2026 · 2025-10-01 – 2026-07-01/);
+  // The source snapshot advances over time; assert a valid FY 2026 EOIR
+  // reporting period rather than pinning CI to the July 2026 extract.
+  const match = html.match(/id="court-source"[^>]*>FY 2026 · 2025-10-01 – (2026-\d{2}-\d{2}) · EOIR/);
+  assert.ok(match, 'Court profile must expose a verifiable FY 2026 EOIR reporting period');
+  assert.ok(match[1] >= '2026-01-01' && match[1] <= '2026-09-30', 'Court reporting period must remain within FY 2026');
   assert.match(html, new RegExp(`id="judge-list"[^>]*>[\\s\\S]*?href="/${locale}/judges/`));
   assert.match(html, new RegExp(`rel="canonical" href="https://asylumjudge.com/${locale}/courts/${court}/"`));
 }

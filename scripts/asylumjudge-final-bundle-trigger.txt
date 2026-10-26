@@ -45,3 +45,4 @@
 2026-10-26: deploy AsylumJudge homepage brand-search title and bilingual Immigration Judge Approval Rates description; validate prerendered SEO sitemap and canonical URLs.
 2026-10-26: repair AsylumJudge standalone build by excluding redundant TRRB community HTML, preserving shared community assets, routing user profiles to active TRRB pages, and enforcing production regression checks.
 2026-10-26: finalize standalone community fix: canonical sitemap route /community/ now contains the branded AsylumJudge HTML; fixes secondary SEO sitemap regression after broken href guard.
+2026-10-26: unblock production validation by making FY2026 EOIR court and state regression tests validate the current source snapshot instead of hardcoded 2026-07-01.

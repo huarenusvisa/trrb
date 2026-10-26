@@ -305,7 +305,8 @@ jobs:
             assets/topic-focus/taiwan-strait-2026-map.jpg \
             assets/news/hawkeye-low-flight-2113227057832554993.jpg \
             assets/news/ccg-incidents-taiwan-sept-oct-2026.jpg \
-            assets/news/taiwan-armored-convoy-2113233187078037885.jpg; do
+            assets/news/taiwan-armored-convoy-2113233187078037885.jpg \
+            assets/news/fujian-zhejiang-okinawa-flight-map-2114498966486180192.jpg; do
             output="$(mktemp --suffix=.jpg)"
             code="$(curl -fsSL --retry 4 --retry-delay 2 --connect-timeout 10 --max-time 30 \
               -H 'Cache-Control: no-cache' -o "$output" -w '%{http_code}' \

@@ -75,10 +75,12 @@ assert.match(hardening, /pathForLocale/, 'language hardening must canonicalize e
 assert.match(hardening, /stopImmediatePropagation/, 'language hardening must prevent the legacy handler from racing a canonical route change');
 assert.match(hardening, /\/en\/asylum-judge-rating\//, 'language hardening must map the English keyword page');
 
-// The AsylumJudge community is served by its own branded HTML rewrite.
-// The TRRB community/index.html is not a valid standalone page and must not
-// introduce missing /user links or TRRB-only social stylesheet references.
-assert.ok(!existsSync(join(OUT, 'community', 'index.html')), 'AsylumJudge must not publish the unused TRRB community index');
+// Sitemap routes must resolve to real HTML, not only CDN rewrites.
+// AsylumJudge's own community HTML replaces the unrelated TRRB community
+// page, which references profiles and styles absent from this standalone site.
+const brandedCommunity = read('community/index.html');
+assert.match(brandedCommunity, /<link rel="canonical" href="https:\/\/asylumjudge\.com\/community\/"/, 'Community directory must publish the canonical AsylumJudge page');
+assert.doesNotMatch(brandedCommunity, /href="\/assets\/(?:social-discovery|social-detail|community-composer)\.css/, 'Community must not carry TRRB-only stylesheet links');
 assert.ok(existsSync(join(OUT, 'community', 'community.js')), 'AsylumJudge must retain its shared community runtime');
 assert.ok(existsSync(join(OUT, 'community', 'community.css')), 'AsylumJudge must retain its shared community stylesheet');
 const redirects = read('_redirects');

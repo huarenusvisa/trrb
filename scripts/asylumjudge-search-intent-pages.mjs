@@ -227,6 +227,74 @@ async function ensureParent(path) {
   await mkdir(dirname(path), { recursive: true });
 }
 
+
+function indexingGuide(page) {
+  // Hand-written, helpful explanations on the three Search Console priority
+  // pages. Do not use keyword-only boilerplate or claim to predict a case.
+  if (page.relative === 'asylum-judge-approval-rate') return [
+    '<section class="keyword-guide" data-indexing-guide="approval-rates">',
+    '<h2>怎样查询美国移民法官的庇护通过率？</h2>',
+    '<p>从法官数据库按英文姓名、法院或城市查找法官，然后打开个人资料页，查看批准、拒绝、其他结案、样本量及数据覆盖期间。如果法官更换了法院，应注意历史记录与现任法院之间的区别。</p>',
+    '<h3>批准率与全部案件结果不是同一个数字</h3>',
+    '<p>本站的裁决批准率通常按批准数除以批准数加拒绝数计算。暂缓递解、CAT保护、撤回和行政结案等其他可识别结果会分别展示，不宜混入这个分母。查看统计时应同时阅读样本量、年度和资料更新时间。</p>',
+    '<h3>比较法官时应看哪些条件？</h3>',
+    '<p>不同法官的案件构成、年份、申请人国籍与法院安排可能不同。一个较高或较低的历史比率并不能说明某位法官会如何裁定你的案件。可以先比较同一期间的数据，再查看相关法院和国籍分布。</p>',
+    '<h3>移民法庭与USCIS面谈通过率有什么区别？</h3>',
+    '<p>EOIR移民法庭由移民法官审理案件，USCIS庇护办公室处理另一种庇护审查程序。两者案件群体和统计口径不同，不能直接把两个机构的百分比视为同一种通过率。</p>',
+    '<nav class="keyword-related" aria-label="继续查询庇护数据">',
+    '<a href="/states/new-york/">纽约州庇护通过率</a><a href="/states/california/">加利福尼亚州庇护通过率</a><a href="/courts/">移民法院目录</a><a href="/judge-approval-rates/">法官年度通过率比较</a><a href="/uscis-asylum-data/">USCIS庇护办公室数据</a><a href="/methodology/">数据来源与计算方法</a>',
+    '</nav></section>'
+  ].join('\n');
+  if (page.relative === 'en/asylum-judge-rating') return [
+    '<section class="keyword-guide" data-indexing-guide="approval-rates">',
+    '<h2>How to read U.S. immigration judge asylum approval rates</h2>',
+    '<p>Start with a judge name, immigration court, or city. Open the individual profile to examine grants, denials, other outcomes, sample size, data coverage, and annual patterns. Court assignment can change, so a current court listing should not be treated as the location of every past decision.</p>',
+    '<h3>An approval rate is not the share of every case that ended in a grant</h3>',
+    '<p>The adjudicated approval rate is calculated as grants divided by grants plus denials. Other outcomes, such as certain protection or procedural dispositions, are shown separately. Read the reporting period and decision count with the percentage; very small samples are less informative.</p>',
+    '<h3>How to make a fairer comparison</h3>',
+    '<p>Different judges may hear different case types, nationalities, and time periods. Compare similar years and inspect court and nationality context before drawing conclusions. These historical figures do not score judges and cannot predict an individual asylum case.</p>',
+    '<h3>Immigration courts and USCIS asylum offices are different</h3>',
+    '<p>EOIR immigration judges decide cases in immigration court, whereas USCIS asylum offices handle a distinct asylum process. Their approval-rate populations and definitions differ, and the resulting percentages are not directly interchangeable.</p>',
+    '<nav class="keyword-related" aria-label="Explore related immigration judge data">',
+    '<a href="/en/states/new-york/">New York approval rates</a><a href="/en/states/california/">California approval rates</a><a href="/en/courts/">Immigration court directory</a><a href="/en/judge-approval-rates/">Annual judge comparison</a><a href="/uscis-asylum-data/">USCIS asylum office data</a><a href="/methodology/">Sources and methodology</a>',
+    '</nav></section>'
+  ].join('\n');
+  if (page.relative === 'eoir-case-status') return [
+    '<section class="keyword-guide" data-indexing-guide="eoir-case-status">',
+    '<h2>使用EOIR官方系统查询上庭日期的步骤</h2>',
+    '<p>首先确认案件目前由EOIR移民法庭处理，而不是仍停留在USCIS办理阶段。进入美国司法部官方案件查询网站，根据页面说明输入案件号码；AsylumJudge本身不要求、收集或储存A-Number。</p>',
+    '<h3>查询结果与开庭通知不一致怎么办？</h3>',
+    '<p>在线系统记录可能存在更新延迟，应核对法院正式送达的通知和最新案件文件。临近开庭或结果异常时，应通过官方法院联系方式或律师核实，不能仅凭网页没有显示日期就认定不需要出庭。</p>',
+    '<nav class="keyword-related" aria-label="相关EOIR查询"><a href="/courts/">移民法院及地址</a><a href="/tools/">移民官方工具入口</a><a href="/asylum-judge-approval-rate/">移民法官通过率</a></nav>',
+    '</section>'
+  ].join('\n');
+  return '';
+}
+
+function homeDiscoveryLinks(html, locale) {
+  if (!['zh-Hans', 'en'].includes(locale) || html.includes('data-home-discovery="true"')) return html;
+  const english = locale === 'en';
+  const links = english ? [
+    ['/en/asylum-judge-rating/', 'Immigration judge approval rates', 'Understand historical outcomes and how to compare judges'],
+    ['/en/eoir-case-status/', 'EOIR court case status', 'Find official hearing and case-status lookup guidance'],
+    ['/uscis-asylum-data/', 'USCIS asylum offices', 'View office-level data separately from immigration courts']
+  ] : [
+    ['/asylum-judge-approval-rate/', '美国庇护法官通过率', '了解法官批准率、拒绝率、样本量及年度趋势'],
+    ['/eoir-case-status/', '移民法庭案件和上庭日期查询', '查找EOIR官方开庭信息和查询步骤'],
+    ['/uscis-asylum-data/', 'USCIS庇护办公室通过率', '区分移民局面谈与移民法庭统计']
+  ];
+  const heading = english ? 'Popular immigration data and official lookup guides' : '热门庇护数据与官方查询入口';
+  const items = links.map(([href, title, desc]) =>
+    '<a href="' + href + '" style="display:block;flex:1 1 210px;min-width:0;padding:14px 16px;border:1px solid #dce5df;border-radius:13px;background:#fff;color:#17212c;text-decoration:none">' +
+    '<strong style="display:block;margin-bottom:5px;font-size:15px">' + title + '</strong><span style="font-size:13px;line-height:1.5;color:#53645b">' + desc + '</span></a>'
+  ).join('');
+  const block = '<section class="shell" data-home-discovery="true" aria-label="' + heading +
+    '" style="padding:16px 0 22px"><h2 style="font-size:clamp(18px,2vw,23px);margin:0 0 12px">' +
+    heading + '</h2><div style="display:flex;gap:12px;flex-wrap:wrap">' + items + '</div></section>';
+  if (!html.includes('<section id="all-judges"')) throw new Error('Missing judge directory anchor for homepage discovery links');
+  return html.replace('<section id="all-judges"', block + '\n    <section id="all-judges"');
+}
+
 function pageHtml(page) {
   const english = page.locale === 'en';
   const faqSchema = page.faq.map(([name, text]) => ({ '@type': 'Question', name, acceptedAnswer: { '@type': 'Answer', text } }));
@@ -260,6 +328,7 @@ function pageHtml(page) {
   <link rel="stylesheet" href="/asylumjudge/site.css?v=40">
   <style>
     .keyword-shell{max-width:1040px;margin:0 auto;padding:44px 24px 72px}.keyword-hero{padding:38px 0 28px}.keyword-hero .eyebrow{font-weight:800;letter-spacing:.08em}.keyword-hero h1{font-size:clamp(2rem,5vw,3.6rem);line-height:1.08;margin:.5rem 0 1rem}.keyword-hero .lead{font-size:1.08rem;line-height:1.8;max-width:850px}.keyword-cta{display:inline-flex;margin-top:18px;padding:12px 18px;border-radius:10px;background:#111;color:#fff;text-decoration:none;font-weight:800}.keyword-nav{display:flex;flex-wrap:wrap;gap:10px;margin:20px 0 32px}.keyword-nav a{padding:9px 12px;border:1px solid #d9dde3;border-radius:999px;text-decoration:none;color:inherit}.keyword-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.keyword-card{border:1px solid #e2e5e9;border-radius:16px;padding:20px;background:#fff}.keyword-card h2{margin:.1rem 0 .65rem;font-size:1.1rem}.keyword-card p{margin:0;line-height:1.7;color:#424850}@media(max-width:760px){.keyword-grid{grid-template-columns:1fr}.keyword-shell{padding:28px 18px 54px}}
+    .keyword-guide{margin:4px 0 28px;padding:28px;border:1px solid #e2e5e9;border-radius:16px;background:#fff}.keyword-guide h2{font-size:1.5rem;margin:0 0 18px}.keyword-guide h3{font-size:1.08rem;margin:20px 0 7px}.keyword-guide p{line-height:1.8;color:#424850;margin:0 0 11px}.keyword-related{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}.keyword-related a{display:inline-flex;padding:9px 12px;border:1px solid #cfdcd2;border-radius:9px;color:#174b35;text-decoration:none;font-size:.92rem}@media(max-width:760px){.keyword-guide{padding:20px}}
   </style>
   <script type="application/ld+json">${JSON.stringify(schema).replace(/</g, '\\u003c')}</script>
 </head>
@@ -278,6 +347,7 @@ function pageHtml(page) {
       <a class="keyword-cta" href="${page.ctaHref || `${page.home}#judge-search`}"${page.ctaExternal ? ' target="_blank" rel="noopener noreferrer"' : ''}>${escapeHtml(page.cta)} →</a>
       <div class="keyword-nav">${page.nav.map(([label, href]) => `<a href="${href}">${escapeHtml(label)}</a>`).join('')}</div>
     </section>
+    ${indexingGuide(page)}
     <section class="keyword-grid" aria-label="${english ? 'Frequently asked questions' : '常见问题'}">
       ${page.faq.map(([q, a]) => `<article class="keyword-card"><h2>${escapeHtml(q)}</h2><p>${escapeHtml(a)}</p></article>`).join('\n      ')}
     </section>
@@ -369,6 +439,7 @@ export async function applyAsylumJudgeSearchIntent({ output }) {
   for (const [path, locale] of [[join(output, 'index.html'), 'zh-Hans'], [join(output, 'en', 'index.html'), 'en']]) {
     let html = await readFile(path, 'utf8');
     html = brandAsylumJudgeHtml(html);
+    html = homeDiscoveryLinks(html, locale);
     html = insertBeforeMainEnd(html, homeIntentBlock(locale));
     await writeFile(path, html);
   }

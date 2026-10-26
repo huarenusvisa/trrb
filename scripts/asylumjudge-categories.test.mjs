@@ -57,7 +57,7 @@ for(const prefix of ['', 'en/']){
 }
 const en=await read('en/states/california/index.html');
 assert.match(en,/<h1>California Immigration Judge Approval Rates<\/h1>/);
-assert.match(en,/2025-10-01 – 2026-07-01/);
+assert.ok(en.includes('2025-10-01 – '+source.scope_end), 'Latest FY page must render the actual snapshot end date');
 assert.match(en,/2024-10-01 – 2025-09-30/);
 
 // Exercise progressive controls with a small DOM fixture: filtering, sample limits,

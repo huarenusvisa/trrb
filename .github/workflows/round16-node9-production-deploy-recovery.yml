@@ -33,6 +33,7 @@ on:
       - 'topic/**'
       - 'taiwan-strait-2026/**'
       - 'netlify/functions/**'
+      - 'netlify/shared/**'
       - 'netlify/edge-functions/**'
       - 'scripts/generate-sitemaps.mjs'
       - 'scripts/split-sitemap-index.mjs'

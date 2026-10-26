@@ -44,3 +44,4 @@
 2026-09-23: restore indexing eligibility for 8,700 localized public detail pages, reciprocal hreflang, all-language sitemaps and localized hierarchy; verify all 14,650 canonical sitemap URLs and prevent language-based deletion tasks.
 2026-10-26: deploy AsylumJudge homepage brand-search title and bilingual Immigration Judge Approval Rates description; validate prerendered SEO sitemap and canonical URLs.
 2026-10-26: repair AsylumJudge standalone build by excluding redundant TRRB community HTML, preserving shared community assets, routing user profiles to active TRRB pages, and enforcing production regression checks.
+2026-10-26: finalize standalone community fix: canonical sitemap route /community/ now contains the branded AsylumJudge HTML; fixes secondary SEO sitemap regression after broken href guard.

@@ -1,0 +1,52 @@
+name: Niulai verified deployment
+on:
+  workflow_dispatch:
+    inputs:
+      deploy:
+        description: Publish the verified bundle to the existing niulai.us Netlify project
+        type: boolean
+        default: false
+  push:
+    branches: [main]
+    paths:
+      - 'niulai/**'
+      - 'scripts/build-niulai-site.mjs'
+      - '.github/workflows/niulai-production-deploy.yml'
+permissions:
+  contents: read
+concurrency:
+  group: niulai-production
+  cancel-in-progress: true
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Build from the single maintained source
+        run: node scripts/build-niulai-site.mjs
+      - name: Verify standalone bundle
+        run: |
+          test -s .netlify/niulai-bundle/public/index.html
+          test -s .netlify/niulai-bundle/public/stock.html
+          test -s .netlify/niulai-bundle/public/fund.html
+          grep -q 'https://niulai.us/sitemap.xml' .netlify/niulai-bundle/public/robots.txt
+          grep -q 'https://trrb.net/api/finance/' .netlify/niulai-bundle/public/_redirects
+      - name: Publish to the existing Netlify project
+        if: github.event_name == 'push' || inputs.deploy == true
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: 84fc4308-5e59-4960-9f00-99c7b9c303cd
+        run: |
+          test -n "$NETLIFY_AUTH_TOKEN"
+          cd .netlify/niulai-bundle
+          npx --yes netlify-cli@latest deploy --no-build --prod --site "$NETLIFY_SITE_ID" --dir public --message "Niulai verified GitHub source ${GITHUB_SHA}"
+      - name: Verify live pages
+        if: github.event_name == 'push' || inputs.deploy == true
+        run: |
+          curl --fail --silent --show-error --location --retry 3 https://niulai.us/ -o /tmp/niulai-home.html
+          grep -q '牛来' /tmp/niulai-home.html
+          curl --fail --silent --show-error --location --retry 3 https://niulai.us/stock.html -o /dev/null
+          curl --fail --silent --show-error --location --retry 3 https://niulai.us/fund.html -o /dev/null

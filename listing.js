@@ -127,6 +127,7 @@ function mapLiveArticle(row) {
     topicKey: row.topic_key || "",
     categoryId: row.category_id || "",
     category: row.category_name || "新闻",
+    relatedSections: Array.isArray(row.related_sections) ? row.related_sections : [],
     excerpt: row.summary || content.replace(/\s+/g, " ").slice(0, 120),
     image: row.cover_image || "",
     author: row.author || "Tang Ren Daily",
@@ -259,7 +260,7 @@ function filterArticles(articles, category, query) {
     const topic = String(article?.topicKey || article?.topic_key || "").trim().toLowerCase();
     const articleCategory = String(article?.category || article?.category_name || "").trim();
     const iceCategoryMatch = category === "ICE执法动态" && (topic === "ice" || ["ICE执法动态", "ICE执法", "驱逐快报"].includes(articleCategory));
-    const categoryMatch = !category || articleCategory === category || iceCategoryMatch;
+    const categoryMatch = !category || articleCategory === category || iceCategoryMatch || (article.relatedSections || []).includes(category === "热门头条" ? "中国热门头条" : category);
     const queryMatch = !normalizedQuery || article.matchedSearch === normalizedQuery || [article.title, article.excerpt, articleCategory, article.date].filter(Boolean).join(" ").toLowerCase().includes(normalizedQuery);
     return categoryMatch && queryMatch;
   }).sort((a,b) => articleTimestamp(b)-articleTimestamp(a));

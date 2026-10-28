@@ -9,6 +9,7 @@ const CATEGORY_DEFINITIONS = new Map([
   ["美国时政", { path: "/us-politics" }],
   ["美国警情", { path: "/us-crime" }],
   ["中国官场", { path: "/china-officialdom" }],
+  ["中国政治", { path: "/china-politics" }],
   ["庇护百科", { path: "/asylum", mode: "asylum" }],
   ["ICE执法动态", { path: "/ice/news", mode: "ice" }]
 ]);
@@ -49,7 +50,7 @@ function asylumOrFilter() {
 
 function applyCategoryFilter(url, name, definition) {
   if (definition.mode === "china-hot") {
-    url.searchParams.set("or", "(category_name.eq.热门头条,category_name.eq.中国热门头条)");
+    url.searchParams.set("or", '(category_name.eq.热门头条,category_name.eq.中国热门头条,related_sections.cs.["中国热门头条"])');
     return;
   }
   if (definition.mode === "ice") {
@@ -60,7 +61,7 @@ function applyCategoryFilter(url, name, definition) {
     url.searchParams.set("or", asylumOrFilter());
     return;
   }
-  url.searchParams.set("category_name", `eq.${name}`);
+  url.searchParams.set("or", `(category_name.eq.${name},related_sections.cs.${JSON.stringify([name])})`);
 }
 
 exports.handler = async (event) => {
@@ -79,7 +80,7 @@ exports.handler = async (event) => {
   try {
     const url = new URL(`${SUPABASE_URL}/rest/v1/articles`);
     const includeContent = ["ice", "china-hot"].includes(definition.mode);
-    const select = "id,title,slug,publication_path,summary,category_id,category_name,topic_key,cover_image,author,status,visibility,published_at,created_at"
+    const select = "id,title,slug,publication_path,summary,category_id,category_name,related_sections,topic_key,cover_image,author,status,visibility,published_at,created_at"
       + (includeContent ? ",content" : "");
     url.searchParams.set("select", select);
     url.searchParams.set("status", "eq.published");

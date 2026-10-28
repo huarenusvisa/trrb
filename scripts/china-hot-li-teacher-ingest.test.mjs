@@ -4,7 +4,7 @@ import {expandShortCopy} from './news-short-copy-expand.mjs';
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import test from "node:test";
-import { assertPublicationQuality, bodyCharacterCount, isHeadlineDigest, buildCandidate, buildChrtRecord, buildPublishedArticle, buildReviewDraft, containsBoilerplate, deriveDraftTitle, editorialTarget, formatNewsParagraphs, generateArticle, isThinSourceMaterial, isPureCommercialPromotion, qualifyTweet, requiresBackgroundResearch, shouldRetryCandidate, similarity, targetLength } from "./china-hot-li-teacher-ingest.mjs";
+import { recentPublishedArticlesForChrt, syncPublishedArticlesToChrt, isProviderCreditFailure, assertPublicationQuality, bodyCharacterCount, isHeadlineDigest, buildCandidate, buildChrtRecord, buildPublishedArticle, buildReviewDraft, containsBoilerplate, deriveDraftTitle, editorialTarget, formatNewsParagraphs, generateArticle, isThinSourceMaterial, isPureCommercialPromotion, qualifyTweet, requiresBackgroundResearch, shouldRetryCandidate, similarity, targetLength } from "./china-hot-li-teacher-ingest.mjs";
 
 // Distinct characters isolate length/transport tests from the repetition gate.
 const qualityBody = "重庆学校公布开学时间与后续教学安排。" + Array.from({ length: 9 }, (_, j) => Array.from({length:92},(_,i)=>String.fromCharCode(0x4e00+j*92+i)).join("")+"。").join("\n\n");
@@ -591,3 +591,46 @@ test('公开稿件移除推特来源、账号和原帖链接，保留传闻性�
   assert.equal(preferredPublicationSource(article,{...research,web_search_completed:false}),null);
  });
 
+
+
+test('CHRT读取包括网页来源，使用稳定ID并按增量更新避免删除旧记录', async t => {
+  const previous=process.env.SUPABASE_URL;process.env.SUPABASE_URL='https://example.supabase.co';
+  t.after(()=>{if(previous===undefined)delete process.env.SUPABASE_URL;else process.env.SUPABASE_URL=previous;});
+  const web={id:'article-uuid',source_platform:'web',source_url:'https://example.com/news',title:'中国工人讨薪',category_name:'中国热门头条'};
+  t.mock.method(globalThis,'fetch',async url=>{
+    const query=new URL(url).searchParams;
+    assert.equal(query.has('source_platform'),false);
+    assert.equal(query.get('status'),'eq.published');assert.equal(query.get('visibility'),'eq.public');
+    return Response.json([web]);
+  });
+  assert.deepEqual(await recentPublishedArticlesForChrt(),[web]);
+  assert.equal(buildChrtRecord(web).sourcePostId,'article-uuid');
+  assert.equal(buildChrtRecord(web).sourcePlatform,'web');
+});
+
+test('充值后可重试仍新鲜的额度失败材料，不解除编辑锁或重抓过期新闻',()=>{
+  const now=Date.now();
+  const row={decision:'review_required',decision_reason:'自动扩写或发布失败：credit_balance_exhausted',collected_at:new Date(now-60000).toISOString(),ai_payload:{quality_hold:true,automatic_retry_attempts:3,automatic_retry_exhausted:true}};
+  assert.equal(isProviderCreditFailure(row.decision_reason),true);
+  assert.equal(shouldRetryCandidate(row,{accepted:true},now),true);
+  assert.equal(shouldRetryCandidate({...row,ai_payload:{...row.ai_payload,manual_editor_lock:true}},{accepted:true},now),false);
+  assert.equal(shouldRetryCandidate({...row,collected_at:new Date(now-13*3600000).toISOString()},{accepted:true},now),false);
+});
+
+
+test('CHRT必须确认接收；批次采用非破坏性upsert',async t=>{
+  const names=['SUPABASE_URL','ACTIONS_ID_TOKEN_REQUEST_URL','ACTIONS_ID_TOKEN_REQUEST_TOKEN'];
+  const previous=names.map(name=>process.env[name]);
+  t.after(()=>names.forEach((name,i)=>{if(previous[i]===undefined)delete process.env[name];else process.env[name]=previous[i];}));
+  process.env.SUPABASE_URL='https://example.supabase.co';
+  process.env.ACTIONS_ID_TOKEN_REQUEST_URL='https://oidc.example/token';process.env.ACTIONS_ID_TOKEN_REQUEST_TOKEN='request-token';
+  let valid=true;
+  t.mock.method(globalThis,'fetch',async (url,options)=>{
+    if(String(url).includes('example.supabase.co'))return Response.json([{id:'uuid',source_platform:'web',category_name:'中国热门头条'}]);
+    if(String(url).includes('oidc.example'))return Response.json({value:'oidc-token'});
+    const body=JSON.parse(options.body);assert.equal(body.syncMode,'upsert');assert.equal('replaceWindowHours' in body,false);
+    return Response.json(valid?{ok:true,received:1,inserted:1}:{ok:true});
+  });
+  assert.equal((await syncPublishedArticlesToChrt()).inserted,1);
+  valid=false;await assert.rejects(()=>syncPublishedArticlesToChrt(),/有效接收确认/);
+});

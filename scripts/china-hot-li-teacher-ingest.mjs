@@ -38,6 +38,7 @@ const WARNING = "真实性提示：本文所述信息可能尚未获得独立核
 const DRY_RUN = process.argv.includes("--dry-run");
 const RECOVER_ARCHIVED = process.argv.includes("--recover-archived");
 const REPAIR_TODAY = process.argv.includes("--repair-today");
+const SYNC_ONLY = process.argv.includes("--sync-only");
 const REPAIR_SINCE = cleanText(process.env.CHINA_HOT_REPAIR_SINCE || "2026-08-24T00:00:00Z", 100);
 const EXPANSION_VERSION = EDITORIAL_POLICY_VERSION;
 const LOOKBACK_HOURS = intEnv("LI_TEACHER_LOOKBACK_HOURS", 12, 3, 12);
@@ -501,8 +502,16 @@ async function markFilteredCandidate(candidate, tweet, qualified) {
   return reason;
 }
 
+export function isProviderCreditFailure(error) {
+  return /credit_balance_exhausted|insufficient_quota|You have no credits remaining/i.test(String(error?.message || error || ""));
+}
+
 export function shouldRetryCandidate(candidate, qualified, now = Date.now()) {
-  if (!candidate || !qualified?.accepted) return false;
+  if (!candidate || !qualified?.accepted || candidate.ai_payload?.manual_editor_lock === true) return false;
+  // Provider billing failures are technical holds, never exhausted editorial reviews.
+  if (["failed", "review_required"].includes(candidate.decision) && isProviderCreditFailure(candidate.decision_reason)) {
+    return sourceWithinCollectionWindow(candidate.raw_payload?.source_created_at || candidate.collected_at, now);
+  }
   if (candidate.decision==='review_required' && candidate.ai_payload?.budget_deferred===true && candidate.ai_payload?.manual_review_required!==true) {
     return sourceWithinCollectionWindow(candidate.raw_payload?.source_created_at || candidate.collected_at,now);
   }
@@ -1280,7 +1289,7 @@ function tweetFromArticle(row) {
 export function buildChrtRecord(row) {
   return {
     sourcePlatform: cleanText(row?.source_platform, 30),
-    sourcePostId: cleanText(row?.source_post_id, 100),
+    sourcePostId: cleanText(row?.source_post_id || row?.external_id || row?.id, 100),
     sourceCreatedAt: row?.source_created_at || row?.created_at || null,
     sourceUrl: cleanText(row?.source_url, 2_000),
     sourceHandle: cleanText(row?.source_account, 200),
@@ -1292,18 +1301,18 @@ export function buildChrtRecord(row) {
   };
 }
 
-async function recentPublishedArticlesForChrt() {
+export async function recentPublishedArticlesForChrt() {
   const since = new Date(Date.now() - CHRT_SYNC_LOOKBACK_HOURS * 3_600_000).toISOString();
   const rows = await supabase("articles", { query: {
     select: "id,title,summary,content,category_name,source_url,source_account,source_platform,source_post_id,source_created_at,created_at,primary_section,topic_key,metadata",
-    automation_source: `eq.${PIPELINE}`, source_platform: "eq.x",
+    automation_source: `eq.${PIPELINE}`,
     status: "eq.published", visibility: "eq.public", created_at: `gte.${since}`,
     order: "created_at.asc", limit: "500",
   } });
   return (Array.isArray(rows) ? rows : []).filter((row) => row.topic_key !== REN_ZHENGFEI_TOPIC);
 }
 
-async function syncPublishedArticlesToChrt() {
+export async function syncPublishedArticlesToChrt() {
   if (DRY_RUN) return { received: 0, inserted: 0, duplicates: 0, rejected: 0, removed: 0, dryRun: true };
   const rows = await recentPublishedArticlesForChrt();
   if (!rows.length) return { received: 0, inserted: 0, duplicates: 0, rejected: 0, removed: 0 };
@@ -1312,8 +1321,9 @@ async function syncPublishedArticlesToChrt() {
   const payload = await readJson(await request(CHRT_ENDPOINT, {
     method: "POST",
     headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json", Accept: "application/json" },
-    body: JSON.stringify({ records, replaceWindowHours: CHRT_SYNC_LOOKBACK_HOURS, syncMode: "reconcile" }),
+    body: JSON.stringify({ records, syncMode: "upsert" }),
   }, 45_000));
+  if (payload?.ok !== true || payload?.received !== records.length) throw new Error("CHRT同步未返回有效接收确认");
   const totals = {
     received: Number(payload?.received) || 0,
     inserted: Number(payload?.inserted) || 0,
@@ -1381,6 +1391,7 @@ async function repairTodayBatch() {
 
 export async function run() {
   requiredEnvironment();
+  if (SYNC_ONLY) return syncPublishedArticlesToChrt();
   await loadChinaPeople(()=>supabase("china_political_people",{query:CHINA_PEOPLE_QUERY}),{force:true});
   const deletedUnusableBacklog = process.env.NEWS_FORWARD_ONLY_FROM ? 0 : await cleanupUnusableBacklog();
   const deletedDuplicateBacklog = process.env.NEWS_FORWARD_ONLY_FROM ? 0 : await cleanupDuplicateBacklog();
@@ -1409,6 +1420,7 @@ export async function run() {
   const results = [];
   const counters = { fetched: collectedTweets.length, queuedRetries: Math.max(0, tweets.length - collectedTweets.length), qualified: 0, published: 0, duplicate: 0, filtered: 0, review_required: 0, retry_scheduled: 0, deleted_unusable: deletedUnusableBacklog, deleted_duplicate: deletedDuplicateBacklog, failed: 0 };
   const filteredReasons = {};
+  let providerCreditFailure = null;
   let processingAttempts = 0;
   const processingDeadline = Date.now() + 40 * 60_000;
   for (const tweet of tweets.sort((a, b) => Number(Boolean(b.editorial_processing_requested)) - Number(Boolean(a.editorial_processing_requested)) || compareNewsPriority(a,b) || Number(Boolean(b.candidateId)) - Number(Boolean(a.candidateId)))) {
@@ -1509,6 +1521,12 @@ export async function run() {
       console.log(JSON.stringify({event:"published",tweetId:tweet.id,articleId:saved?.id,bodyChars:bodyCharacterCount(generated.content),contextSources:tweet.context_research?.sources?.length||0}));
       counters.published += 1; results.push({ tweetId: tweet.id, status: DRY_RUN ? "dry-run" : "published", articleId: saved?.id || null, title: generated.title });
     } catch (error) {
+      if (isProviderCreditFailure(error)) {
+        providerCreditFailure = error;
+        await patchCandidate(candidate?.id, {decision:"failed",decision_reason:`服务商额度不足，充值后自动重试：${cleanText(error.message,600)}`,processed_at:new Date().toISOString(),ai_payload:{...(candidate?.ai_payload || {}),status:"provider_credit_deferred",quality_hold:false,automatic_retry_exhausted:false,automatic_retry_attempts:0}});
+        results.push({tweetId:tweet.id,status:"provider-credit-deferred"});
+        break;
+      }
       if (isBudgetDeferred(error)) {
         await patchCandidate(candidate?.id, {decision:'review_required',decision_reason:'预算保护：等待下一可用额度，未视为质量失败',ai_payload:{...(candidate?.ai_payload || {}),quality_hold:true,automatic_retry_exhausted:false,automatic_retry_attempts:Number(candidate?.ai_payload?.automatic_retry_attempts || 0),budget_deferred:true},updated_at:new Date().toISOString()});
         results.push({tweetId:tweet.id,status:'budget-deferred'});
@@ -1547,6 +1565,7 @@ export async function run() {
   const chrt = await syncPublishedArticlesToChrt();
   const report = { pipeline: PIPELINE, processingVersion: PROCESSING_VERSION, renZhengfeiCollection: "paused_by_editor", mode: DRY_RUN ? "dry-run" : "auto-publish", checkedAt: new Date().toISOString(), lookbackHours: LOOKBACK_HOURS, ...counters, filteredReasons, chrt, results };
   console.log(JSON.stringify(report, null, 2));
+  if (providerCreditFailure) throw providerCreditFailure;
   if (counters.failed) throw new Error("本轮仍有中国热门头条未能发布或保留为可编辑草稿");
   return report;
 }

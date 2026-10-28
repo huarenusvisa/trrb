@@ -55,6 +55,9 @@ jobs:
       - name: Read China headlines category switches
         id: category
         run: node scripts/category-pipeline-gate.mjs hot-headlines
+      - name: Sync published China headlines to CHRT
+        if: steps.category.outputs.auto_fetch == 'true' && steps.category.outputs.ai_rewrite == 'true' && steps.category.outputs.auto_publish == 'true'
+        run: node scripts/china-hot-li-teacher-ingest.mjs --sync-only
       - name: Collect China headlines and publish automatically
         if: steps.category.outputs.auto_fetch == 'true' && steps.category.outputs.ai_rewrite == 'true' && steps.category.outputs.auto_publish == 'true'
         shell: bash

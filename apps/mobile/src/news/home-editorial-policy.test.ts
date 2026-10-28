@@ -15,3 +15,10 @@ test('topic-only briefs remain available in corresponding sections and ICE is me
  assert.equal(homepageSectionMatches({...row,category_name:'美国警情'},'us-enforcement',['美国警情']),true);
  assert.equal(homepageSectionMatches(row,'china-politics',[]),false);
 });
+
+test('explicit China politics categories remain visible when editorial tags are absent', () => {
+ for (const editorial_topics of [undefined, [], ['other']]) {
+  assert.equal(homepageSectionMatches({...row, title:'你好，我叫刘延东', category_name:'中国政治', editorial_topics}, 'china-politics', []), true);
+ }
+ assert.equal(homepageSectionMatches({...row, category_name:'美国时政'}, 'china-politics', []), false);
+});

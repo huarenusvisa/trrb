@@ -256,7 +256,7 @@ export default function ArticleDetailScreen() {
     if (!article) return;
     const category = article.category_name || '新闻';
     if (category === '移民美国') {
-      router.push('/immigration');
+      router.push({ pathname: '/knowledge', params: { kind: 'immigration' } });
       return;
     }
     if (category === 'ICE执法动态' || category === 'ICE执法' || category === '驱逐快报') {

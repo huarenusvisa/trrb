@@ -1,3 +1,4 @@
+import { knowledgePortals } from '../../src/navigation/knowledge-portals';
 import { ReaderServices } from '../../src/components/ReaderServices';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { AccessibilityInfo, ActivityIndicator, InteractionManager, Linking, Pressable, RefreshControl, ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
@@ -18,11 +19,11 @@ const HOME_NAV_ITEMS = [
   { category: '美国时政', labelKey: 'home.navUsPolitics' },
   { category: '中国政治', labelKey: 'home.navChinaPolitics' },
   { category: '移民法官通过率', labelKey: 'home.portalJudgesTitle', route: '/(tabs)/legal' },
-  { category: '移民美国', labelKey: 'home.portalImmigrationTitle', route: '/immigration' },
+  { category: '移民美国', labelKey: 'home.portalImmigrationTitle', route: '/knowledge', params: { kind: 'immigration' } },
   { category: '移民社区', labelKey: 'home.portalCommunityTitle', route: '/community' },
   { category: '招聘求职', labelKey: 'home.navJobs', route: '/(tabs)/immigration' },
   { category: '美国执法与警情', labelKey: 'home.navEnforcement' },
-] as const satisfies ReadonlyArray<{ category: string; labelKey: MessageKey; route?: '/(tabs)/legal' | '/(tabs)/immigration' | '/immigration' | '/community'; url?: string }>;
+] as const satisfies ReadonlyArray<{ category: string; labelKey: MessageKey; route?: '/(tabs)/legal' | '/(tabs)/immigration' | '/knowledge' | '/community'; params?: { kind: 'immigration' | 'legal' }; url?: string }>;
 const ONBOARDING_LANGUAGES: { locale: SupportedLocale; label: string }[] = [
   { locale: 'zh-CN', label: '简体' },
   { locale: 'zh-TW', label: '繁體' },
@@ -38,6 +39,7 @@ const newsSections = [
 ] as const satisfies ReadonlyArray<{ key: string; titleKey: MessageKey; category: string; aliases: readonly string[] }>;
 
 const topicCards = [
+  { key: 'taiwan', titleKey: 'home.topicTaiwanTitle', subtitleKey: 'home.topicTaiwanSubtitle', statusKey: 'home.topicLiveTracking', image: 'https://trrb.net/assets/topic-focus/taiwan-strait-2026-map.jpg?v=20261022', url: 'https://trrb.net/taiwan-strait-2026/' },
   {
     key: 'trump',
     titleKey: 'home.topicTrumpTitle',
@@ -63,7 +65,7 @@ const topicCards = [
     url: 'https://trrb.net/midterm-elections',
   },
 
-] as const satisfies ReadonlyArray<{ key: 'trump' | 'xi' | 'election'; titleKey: MessageKey; subtitleKey: MessageKey; statusKey: MessageKey; image: string; url: string }>;
+] as const satisfies ReadonlyArray<{ key: 'taiwan' | 'trump' | 'xi' | 'election'; titleKey: MessageKey; subtitleKey: MessageKey; statusKey: MessageKey; image: string; url: string }>;
 
 const portalSections = [
   {
@@ -80,7 +82,7 @@ const portalSections = [
     actionKey: 'home.portalImmigrationAction',
     bannerKey: 'home.portalImmigrationBanner',
     itemKeys: ['home.portalImmigrationStudy', 'home.portalImmigrationWork', 'home.portalImmigrationEmployment', 'home.portalImmigrationFamily', 'home.portalImmigrationHumanitarian', 'home.portalImmigrationStatus', 'home.portalImmigrationCitizenship'],
-    route: '/immigration',
+    route: '/knowledge', params: { kind: 'immigration' },
   },
   {
     key: 'legal',
@@ -88,7 +90,7 @@ const portalSections = [
     actionKey: 'home.portalLegalAction',
     bannerKey: 'home.portalLegalBanner',
     itemKeys: ['home.portalLegalSupremeCourt', 'home.portalLegalCircuitCourts', 'home.portalLegalBia', 'home.portalLegalExecutiveOrders', 'home.portalLegalFederalRules'],
-    route: '/legal',
+    route: '/knowledge', params: { kind: 'legal' },
   },
   {
     key: 'jobs',
@@ -324,6 +326,7 @@ export default function HomeScreen() {
   }, [imagePrefetchQueue]);
 
   const topicLatest = useMemo(() => ({
+    taiwan: articles.find((item) => item.topic_key === 'taiwan-strait-2026'),
     trump: articles.find((item) => item.title.includes('特朗普')),
     xi: articles.find((item) => item.editorial_topics?.includes('xi')), 
     election: articles.find((item) => item.title.includes('中期选举') || item.title.includes('选举')),
@@ -351,10 +354,14 @@ export default function HomeScreen() {
     }
   };
   const openTopic = (url: string, label: string) => { void openExternal(url, label); };
-  const openPortal = (section: (typeof portalSections)[number]) => {
+  const openPortal = (section: (typeof portalSections)[number], index?: number) => {
+    if (section.key === 'immigration' || section.key === 'legal') {
+      router.push({ pathname: '/knowledge', params: { kind: section.key, ...(index === undefined ? {} : { item: knowledgePortals[section.key].paths[index] }) } });
+      return;
+    }
     if (section.key === 'jobs') router.navigate('/(tabs)/immigration');
     else if (section.key === 'judges') router.navigate('/(tabs)/legal');
-    else router.push(section.route as '/immigration' | '/legal' | '/jobs' | '/community');
+    else router.push(section.route as '/knowledge' | '/jobs' | '/community');
   };
 
   const retryHome = () => {
@@ -425,7 +432,8 @@ export default function HomeScreen() {
               testID={item.category === '重要新闻' ? 'home-nav-important' : undefined}
               style={styles.navItem}
               onPress={() => {
-                if ('route' in item) router.navigate(item.route);
+                if ('params' in item) router.push({ pathname: item.route, params: item.params });
+                else if ('route' in item) router.navigate(item.route);
                 else openCategory(item.category);
               }}
             >
@@ -545,7 +553,7 @@ export default function HomeScreen() {
                   <Text style={styles.focusTitle}>{t(topic.titleKey)}</Text>
                   <Text style={styles.focusSub}>{t(topic.subtitleKey)}</Text>
                   <View style={styles.focusStatusRow}><View style={styles.focusStatusDot} /><Text style={styles.focusStatus}>{t(topic.statusKey)}</Text></View>
-                  <Text style={styles.focusLatest} numberOfLines={1}>{latest ? titleFor(latest) : t('home.topicLoading')}</Text>
+                  <Text style={styles.focusLatest} numberOfLines={1}>{latest ? titleFor(latest) : t(topic.key === 'taiwan' ? topic.subtitleKey : 'home.topicLoading')}</Text>
                 </View>
                 <Text style={styles.focusArrow}>›</Text>
               </Pressable>
@@ -590,7 +598,7 @@ export default function HomeScreen() {
                 <Pressable accessibilityRole="link" accessibilityLabel={t('home.openPortalA11y', { title: t(section.titleKey) })} accessibilityState={{ disabled: externalBusy }} disabled={externalBusy} style={[styles.portalBanner, ['judges', 'jobs'].includes(section.key) && styles.judgeBanner]} onPress={() => openPortal(section)}><Text style={[styles.portalBannerText, ['judges', 'jobs'].includes(section.key) && styles.judgeBannerText]}>{t(section.bannerKey)}</Text></Pressable>
                 <View style={styles.portalGrid}>
                   {section.itemKeys.map((itemKey, index) => (
-                    <Pressable key={itemKey} accessibilityRole="link" accessibilityLabel={t('home.openPortalItemA11y', { item: t(itemKey) })} accessibilityState={{ disabled: externalBusy }} disabled={externalBusy} style={[styles.portalItem, ['judges', 'jobs'].includes(section.key) && styles.judgeItem, section.itemKeys.length % 2 === 1 && index === section.itemKeys.length - 1 && styles.portalItemWide]} onPress={() => openPortal(section)}>
+                    <Pressable key={itemKey} accessibilityRole="link" accessibilityLabel={t('home.openPortalItemA11y', { item: t(itemKey) })} accessibilityState={{ disabled: externalBusy }} disabled={externalBusy} style={[styles.portalItem, ['judges', 'jobs'].includes(section.key) && styles.judgeItem, section.itemKeys.length % 2 === 1 && index === section.itemKeys.length - 1 && styles.portalItemWide]} onPress={() => openPortal(section, index)}>
                       <Text style={styles.portalItemText}>{t(itemKey)}</Text><Text style={[styles.portalArrow, ['judges', 'jobs'].includes(section.key) && styles.judgeLink]}>›</Text>
                     </Pressable>
                   ))}

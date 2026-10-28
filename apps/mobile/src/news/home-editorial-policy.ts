@@ -13,7 +13,7 @@ export function importantHomepageEligible(item: NewsArticle, now = Date.now()): 
 }
 
 export function homepageSectionMatches(item: NewsArticle, key: string, aliases: readonly string[]): boolean {
-  if (key === 'china-politics') return item.editorial_topics?.includes('china-politics') === true;
+  if (key === 'china-politics') return String(item.category_name || '').trim() === '中国政治' || item.editorial_topics?.includes('china-politics') === true;
   if (key === 'us-enforcement' && item.topic_key === 'ice') return true;
   return aliases.includes(String(item.category_name || '').trim());
 }

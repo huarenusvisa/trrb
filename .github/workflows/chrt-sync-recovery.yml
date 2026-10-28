@@ -1,0 +1,37 @@
+name: CHRT 已发布内容同步恢复
+
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/chrt-sync-recovery.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: chrt-published-sync-recovery
+  cancel-in-progress: false
+
+jobs:
+  sync-published:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      NEWS_BUDGET_ENFORCE: "0"
+      # Repair only records already published; do not collect or rewrite old news.
+      CHRT_SYNC_LOOKBACK_HOURS: "672"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Read database automation switches
+        id: gate
+        run: node scripts/automation-gate.mjs
+      - name: Reconcile missing published records without deleting existing CHRT records
+        if: steps.gate.outputs.global == 'true' && steps.gate.outputs.china_hot == 'true'
+        run: node scripts/chrt-sync-published.mjs

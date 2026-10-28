@@ -2,6 +2,7 @@
 import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import ranking from "../homepage-ranking.js";
+import { publicationUrl } from "../netlify/shared/publication.mjs";
 
 const ROOT = process.cwd();
 const SITE = "https://trrb.net";
@@ -97,9 +98,12 @@ async function latestDatabaseRows(limit = 120) {
   const [categories, articles] = await Promise.all([
     rest("categories", { select: "id,name,slug", is_active: "eq.true", limit: "500" }),
     rest("articles", {
-      select: "id,title,slug,category_id,category_name,topic_key,published_at,created_at,status,visibility,is_breaking,rank_score",
+      select: "id,title,slug,publication_path,category_id,category_name,topic_key,published_at,created_at,status,visibility,is_breaking,rank_score,metadata",
       status: "eq.published",
       visibility: "eq.public",
+      hidden_at: "is.null",
+      archived_at: "is.null",
+      published_at: `lte.${new Date().toISOString()}`,
       order: "published_at.desc.nullslast,created_at.desc",
       limit: String(limit)
     })
@@ -118,7 +122,7 @@ async function latestDatabaseRows(limit = 120) {
     }
     const date = article.published_at || article.created_at || "";
     return {
-      loc: `/${encodeURIComponent(section)}/${encodeURIComponent(slug)}`,
+      loc: publicationUrl(article) ? new URL(publicationUrl(article)).pathname : `/${encodeURIComponent(section)}/${encodeURIComponent(slug)}`,
       title: clean(article.title),
       date,
       ts: Date.parse(date) || 0,
@@ -126,6 +130,7 @@ async function latestDatabaseRows(limit = 120) {
       status: article.status,
       visibility: article.visibility,
       category_name: clean(article.category_name),
+      metadata: article.metadata,
       is_breaking: article.is_breaking === true,
       rank_score: Number(article.rank_score || 0)
     };
@@ -186,7 +191,23 @@ function homeTopSnapshot(rows) {
 
 function homeRankSnapshot(rows) {
   const rankRows = ranking.select24hRank(rows, { limit: 10 });
-  return `<ol id="rank-list" data-seo-static-snapshot="build">${rankRows.map((row) => `<li><a href="${attr(row.loc)}">${escapeHtml(row.title)}</a></li>`).join("")}</ol>`;
+  return `<ol id="rank-list" data-seo-static-snapshot="build">${rankRows.map((row, i) => `<li><b>${i + 1}</b><a href="${attr(row.loc)}">${escapeHtml(row.title)}</a><span class="rank-heat">${escapeHtml(ranking.canonicalRankCategory(row))}</span></li>`).join("")}</ol>`;
+}
+
+async function homeHeroSnapshot() {
+  // Reuse the editorial focus API instead of inventing a second selection policy.
+  // A bounded, optional snapshot must never turn a focus outage into a failed build.
+  try {
+    const response = await fetch(`${SITE}/.netlify/functions/public-home-focus`, { signal: AbortSignal.timeout(8000) });
+    if (!response.ok) return "";
+    const payload = await response.json();
+    const row = Array.isArray(payload?.articles) ? payload.articles[0] : null;
+    const canonical = publicationUrl(row);
+    if (!row?.title || !canonical) return "";
+    const image = clean(row.cover_image);
+    const validImage = /^https:\/\//i.test(image) || /^\/(?!\/)/.test(image);
+    return `<article class="hero-card" id="hero" data-seo-static-snapshot="build"><a class="hero-link hero-slide is-active${validImage ? "" : " no-cover"}" href="${attr(new URL(canonical).pathname)}" aria-label="${attr(row.title)}">${validImage ? `<img src="${attr(image)}" width="1200" height="675" loading="eager" fetchpriority="high" alt="${attr(row.title)}" />` : ""}<div class="hero-overlay"><span class="tag">${escapeHtml(row.category_name || "今日要闻")}</span><h1>${escapeHtml(row.title)}</h1></div></a></article>`;
+  } catch { return ""; }
 }
 
 function homeTickerSnapshot(rows) {
@@ -223,6 +244,8 @@ async function updateHome(rows, rankRows = rows) {
   html = replaceElementById(html, 'ticker', homeTickerSnapshot(rows), "index.html");
   html = replaceElementById(html, 'top-list', homeTopSnapshot(rows), "index.html");
   html = replaceElementById(html, 'rank-list', homeRankSnapshot(rankRows), "index.html");
+  const hero = await homeHeroSnapshot();
+  if (hero) html = replaceElementById(html, 'hero', hero, "index.html");
   const count = countArticleLinks(html);
   if (count < 10) throw new Error(`index.html: 构建后可抓取新闻链接不足，只有 ${count}`);
   await writeFile(file, html);

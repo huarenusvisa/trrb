@@ -37,7 +37,10 @@
 
   function makeCategoryTagClickable(tag, category) {
     if (!tag) return null;
-    const href = categoryHref(category);
+    // Preserve the canonical section already resolved by the server. Inferring
+    // from a label used to turn newer sections (including /trump) into "/".
+    const href = root.dataset.prerendered === "true" && tag.getAttribute("href")
+      ? tag.getAttribute("href") : categoryHref(category);
     let link = tag;
     if (String(tag.tagName || "").toLowerCase() !== "a") {
       link = document.createElement("a");

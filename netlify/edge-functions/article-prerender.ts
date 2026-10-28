@@ -183,12 +183,37 @@ async function canonicalFor(article: any): Promise<string> {
   return `${SITE}/${encodeURIComponent(section)}/${encodeURIComponent(slug)}`;
 }
 
+function sectionPresentation(article: any, canonical: string) {
+  // A publication path is pinned independently of later CMS category edits.
+  // Keep the visible link and both schemas anchored to that same section.
+  const slug = decodeURIComponent(new URL(canonical).pathname.split("/").filter(Boolean)[0] || "news");
+  const labels: Record<string, string> = {
+    "hot-headlines": "中国热门头条", "us-politics": "美国时政",
+    "iceandpolice": "ICE执法与警情", "china-politics": "中国政治",
+    "trump": "特朗普实时动态", "ice": "ICE执法动态",
+    "important-news": "重要新闻", "us-crime": "美国警情",
+    "china-officialdom": "中国官场", "immigration": "移民美国",
+    "asylum": "庇护百科", "deport": "驱逐快报", "news": "新闻"
+  };
+  const category = clean(article.category_name) || "新闻";
+  return { href: `/${encodeURIComponent(slug)}`, label: labels[slug] || (category === "热门头条" ? "中国热门头条" : category) };
+}
+
+function authorSchema(value: unknown) {
+  const name = clean(value) || "唐人日报编辑部";
+  const editorial = /^(?:唐人日报(?:编辑部)?|编辑部|Tang Ren Daily)$/i.test(name);
+  const organization = editorial || /编辑部|日报|新闻社|通讯社|工作室|团队|美国之音|路透社|新华社|央视|\b(?:news|daily|Reuters|Associated Press|VOA|AFP|CNN|BBC)\b/i.test(name);
+  // Do not invent an author biography URL for a contributor without one.
+  return editorial ? { "@type": "Organization", name, url: `${SITE}/#about` }
+    : { "@type": organization ? "Organization" : "Person", name };
+}
+
 function injectHead(html: string, article: any, canonical: string, prettyRoute: boolean) {
   const title = clean(article.title) || "唐人日报新闻";
   const summary = buildDescription(article);
-  const category = clean(article.category_name) || "新闻";
-  const displayCategory = category === "热门头条" ? "中国热门头条" : category;
-  const author = clean(article.author) || "Tang Ren Daily";
+  const section = sectionPresentation(article, canonical);
+  const category = section.label;
+  const displayCategory = section.label;
   const published = isoDate(article.published_at || article.created_at);
   const image = clean(article.cover_image) || `${SITE}/trrb-logo-cropped.webp`;
   const keywords = clean(article.seo_keywords) || [category, title, "唐人日报", "美国华人"].join(",");
@@ -207,7 +232,7 @@ function injectHead(html: string, article: any, canonical: string, prettyRoute: 
     articleSection: category,
     inLanguage: "zh-CN",
     mainEntityOfPage: { "@type": "WebPage", "@id": canonical },
-    author: { "@type": "Organization", name: author },
+    author: authorSchema(article.author),
     publisher: {
       "@type": "NewsMediaOrganization",
       name: "唐人日报",
@@ -215,7 +240,7 @@ function injectHead(html: string, article: any, canonical: string, prettyRoute: 
       logo: { "@type": "ImageObject", url: `${SITE}/trrb-logo-cropped.webp` }
     }
   };
-  const sectionUrl = canonical.replace(/\/[^/]+$/, "");
+  const sectionUrl = `${SITE}${section.href}`;
   const breadcrumb = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -302,13 +327,14 @@ async function sectionStories(article: any, canonical: string): Promise<any[]> {
   } catch { return []; } // Recommendations must never make the article unavailable.
 }
 
-function injectBody(html: string, article: any, canonical: string, stories: any[] = [], currentSection: string | null = null) {
+function injectBody(html: string, article: any, canonical: string, stories: any[] = []) {
   const title = clean(article.title) || "唐人日报新闻";
-  const category = clean(article.category_name) || "新闻";
-  const displayCategory = category === "热门头条" ? "中国热门头条" : category;
-  const author = clean(article.author) || "Tang Ren Daily";
-  const sectionHref = `/${currentSection ? encodeURIComponent(currentSection) : new URL(canonical).pathname.split("/").filter(Boolean)[0]}`;
-  const published = isoDate(article.published_at || article.created_at).slice(0, 10);
+  const section = sectionPresentation(article, canonical);
+  const displayCategory = section.label;
+  const author = clean(article.author) || "唐人日报编辑部";
+  const sectionHref = section.href;
+  const published = isoDate(article.published_at || article.created_at);
+  const publishedLabel = new Intl.DateTimeFormat("zh-CN", { timeZone: "America/New_York", year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", hour12: false }).format(new Date(published));
   const content = String(visibleArticleText(article.content) ? article.content : article.summary || "").trim();
   const paragraphs = content.split(/\n{2,}|\r?\n/).map((p) => clean(p)).filter(Boolean);
   const image = clean(article.cover_image);
@@ -320,7 +346,7 @@ function injectBody(html: string, article: any, canonical: string, stories: any[
       <header class="article-header">
         <a class="tag" href="${esc(sectionHref)}">${esc(displayCategory)}</a>
         <h1>${esc(title)}</h1>
-        <div class="story-meta">${esc(author)} · ${esc(published)}</div>
+        <div class="story-meta">${esc(author)} · <time datetime="${published}">${esc(publishedLabel)}（纽约时间）</time></div>
       </header>
       ${topicTimeline}
       ${image ? `<img class="article-image" src="${esc(image)}" loading="eager" fetchpriority="high" alt="${esc(title)}" />` : ""}
@@ -463,11 +489,11 @@ export default async (request: Request, context: any) => {
     // client already supplies bounded related-reading links after render, so
     // do not duplicate that database read in the edge prerender path.
     const stories: any[] = [];
-    const [upstream, currentSection] = await Promise.all([templateResponse(request), getCategorySlug(article).catch(() => null)]);
+    const upstream = await templateResponse(request);
     if (!upstream.ok) throw new Error(`Article template unavailable: ${upstream.status}`);
     let html = await upstream.text();
     html = injectHead(html, article, canonical, true);
-    html = injectBody(html, article, canonical, stories, currentSection);
+    html = injectBody(html, article, canonical, stories);
     html = disableLegacyClientLoaders(html);
 
     const headers = new Headers(upstream.headers);

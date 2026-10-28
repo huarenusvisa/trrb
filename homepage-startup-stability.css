@@ -13,6 +13,20 @@ html:not([data-home-final-ui="true"]) #rank-list > *{
   visibility:hidden!important;
 }
 
+/* Build-time HTML is already readable. Do not hide the LCP candidate while
+   unrelated client enhancements are loading. Existing empty states keep their skeleton. */
+html:not([data-home-final-ui="true"]) #hero[data-seo-static-snapshot="build"] > *,
+html:not([data-home-final-ui="true"]) #top-list[data-seo-static-snapshot="build"] > *,
+html:not([data-home-final-ui="true"]) #rank-list[data-seo-static-snapshot="build"] > *{
+  opacity:1!important;
+  visibility:visible!important;
+}
+html:not([data-home-final-ui="true"]) #hero[data-seo-static-snapshot="build"]::after,
+html:not([data-home-final-ui="true"]) #top-list[data-seo-static-snapshot="build"]::after,
+html:not([data-home-final-ui="true"]) #rank-list[data-seo-static-snapshot="build"]::after{
+  display:none!important;
+}
+
 html:not([data-home-final-ui="true"]) #hero,
 html:not([data-home-final-ui="true"]) #top-list,
 html:not([data-home-final-ui="true"]) #rank-list{
@@ -86,6 +100,9 @@ html[data-home-final-ui="true"] #rank-list{
 
 @media(max-width:767px){
   #rank-list{min-height:260px!important}
+  #rank-list > li:not(.rank-empty){height:64px;min-height:64px;box-sizing:border-box;overflow:hidden}
+  #rank-list > li:not(.rank-empty) > a{display:-webkit-box!important;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;line-height:1.45}
+  #rank-list .rank-heat{max-width:88px;overflow:hidden;text-overflow:ellipsis}
   #rank-list .rank-empty{min-height:260px}
   /* top-list is not a mobile surface; never let its loading state reserve a visible block. */
   #top-list{display:none!important;min-height:0!important}

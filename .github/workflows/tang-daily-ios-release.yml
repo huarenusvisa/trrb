@@ -139,7 +139,7 @@ jobs:
 
       - name: Build and upload Tang Daily iOS
         id: eas_release
-        if: ${{ steps.release_scope.outputs.native == 'true' && (github.event_name == 'push' || inputs.release_action == 'build-and-upload') }}
+        if: ${{ steps.release_scope.outputs.native == 'true' && (github.event_name == 'push' || inputs.release_action == 'build-and-upload') && !contains(github.event.head_commit.message, '[ota-only]') }}
         run: eas build --platform ios --profile production --non-interactive --auto-submit --verbose-logs
 
       - name: Print detailed EAS logs after a cloud build failure

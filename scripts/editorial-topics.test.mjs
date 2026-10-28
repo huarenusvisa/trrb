@@ -28,7 +28,7 @@ test('homepage combines enforcement, separates politics, and preserves original 
     {id:'c',slug:'case',title:'纽约警方案件进展',category:'美国警情'},
     {id:'i',slug:'detention',title:'ICE拘留案件',category:'ICE执法动态',topic_key:'ice'}
   ].map(row => ({...row,published_at:now}));
-  const politics = sandbox.window.renderCategorySection('美国警情', rows);
+  const politics = sandbox.window.renderCategorySection('中国政治', rows);
   assert.match(politics, /中国政治/);
   assert.match(politics, /href="\/hot-headlines\/party"/);
   assert.doesNotMatch(politics, /纽约警方案件|ICE拘留案件/);
@@ -63,4 +63,13 @@ test('collection filters retain privacy constraints, canonical pagination and or
   assert.doesNotMatch(fetched.searchParams.get('or'),/美国警情/);
   response = await collection(new Request('https://trrb.net/iceandpolice?view=bad'),context);
   assert.equal(response.status,404);
+});
+
+
+test('explicit China politics classification includes biographies without inferred event tags', () => {
+ const row = {id:'biography',category_name:'中国政治',title:'你好，我叫刘延东',summary:'以第一人称传记形式回望刘延东的共青团、统战、全国政协与国务院经历'};
+ const before = JSON.stringify(row);
+ assert.deepEqual(editorialTopics(row), ['china-politics']);
+ assert.equal(JSON.stringify(row), before);
+ assert.deepEqual(editorialTopics({...row,category_name:'文化'}), []);
 });

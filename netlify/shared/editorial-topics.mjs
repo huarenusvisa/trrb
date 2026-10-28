@@ -11,6 +11,9 @@ export function hasChinaSeniorSubject(text) {
  return findChinaPeople(text).length > 0 || SENIOR_ROLES.test(text) || MINISTRY_HEAD.test(text) || /(?:中国|中國)(?:原|前任|现任|現任)?(?:国防|國防|外交|公安|财政|財政)?(?:部长|部長)/.test(text);
 }
 export function isChinaPolitical(row) {
+  // An explicit editorial category is authoritative, including biographies
+  // whose subject is absent from the current-office registry or event keywords.
+  if (String(row?.category_name || '').trim() === '中国政治') return true;
   const title = String(row?.title || '');
   const summary = String(row?.summary || row?.excerpt || '');
   const text = `${title} ${summary}`;

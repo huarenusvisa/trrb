@@ -30,3 +30,16 @@ test('enforcement listing retains police and ICE membership; unknown sections fa
  assert.equal((await response.json()).has_more,false);
  assert.equal((await handler(new Request('https://trrb.net/api?category=未知'))).status,400);
 });
+
+
+test('explicitly categorized political biographies reach the App listing without registry matches', async t => {
+ const article = {id:'biography',title:'你好，我叫刘延东',category_name:'中国政治',summary:'以第一人称传记形式回望刘延东的共青团、统战、全国政协与国务院经历',content:'中文'.repeat(800)};
+ t.mock.method(globalThis,'fetch',async url => new Response(JSON.stringify(new URL(url).pathname.includes('china_political_people') ? [] : [article])));
+ const response = await handler(new Request('https://trrb.net/api?category=中国政治&q=刘延东'));
+ assert.equal(response.status, 200);
+ const payload = await response.json();
+ assert.equal(payload.articles.length, 1);
+ assert.equal(payload.articles[0].id, article.id);
+ assert.deepEqual(payload.articles[0].editorial_topics, ['china-politics']);
+ assert.equal(payload.articles[0].content, undefined);
+});

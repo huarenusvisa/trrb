@@ -111,3 +111,13 @@ test('renders continuous previous and next official-news navigation', () => {
   assert.match(detail, /testID="article-previous"/);
   assert.match(detail, /testID="article-next"/);
 });
+
+
+test('Taiwan Strait topic opens its canonical webpage inside the App', () => {
+ const home = read('app/(tabs)/index.tsx');
+ const screen = read('app/knowledge.tsx');
+ assert.ok(home.includes("key: 'taiwan', titleKey: 'home.topicTaiwanTitle'"));
+ assert.ok(home.includes("topic.key === 'taiwan' ? router.push({ pathname: '/knowledge', params: { kind: 'taiwan' } })"));
+ assert.ok(screen.includes("kind === 'taiwan' ? 'taiwan'"));
+ assert.ok(screen.includes('knowledgePortalUrl(portal, item)'));
+});

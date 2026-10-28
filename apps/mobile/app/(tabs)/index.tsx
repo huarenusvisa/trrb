@@ -39,6 +39,7 @@ const newsSections = [
 ] as const satisfies ReadonlyArray<{ key: string; titleKey: MessageKey; category: string; aliases: readonly string[] }>;
 
 const topicCards = [
+  { key: 'taiwan', titleKey: 'home.topicTaiwanTitle', subtitleKey: 'home.topicTaiwanSubtitle', statusKey: 'home.topicLiveTracking', image: 'https://trrb.net/assets/topic-focus/taiwan-strait-2026-map.jpg?v=20261022', url: 'https://trrb.net/taiwan-strait-2026/' },
   {
     key: 'trump',
     titleKey: 'home.topicTrumpTitle',
@@ -64,7 +65,7 @@ const topicCards = [
     url: 'https://trrb.net/midterm-elections',
   },
 
-] as const satisfies ReadonlyArray<{ key: 'trump' | 'xi' | 'election'; titleKey: MessageKey; subtitleKey: MessageKey; statusKey: MessageKey; image: string; url: string }>;
+] as const satisfies ReadonlyArray<{ key: 'taiwan' | 'trump' | 'xi' | 'election'; titleKey: MessageKey; subtitleKey: MessageKey; statusKey: MessageKey; image: string; url: string }>;
 
 const portalSections = [
   {
@@ -325,6 +326,7 @@ export default function HomeScreen() {
   }, [imagePrefetchQueue]);
 
   const topicLatest = useMemo(() => ({
+    taiwan: articles.find((item) => item.topic_key === 'taiwan-strait-2026'),
     trump: articles.find((item) => item.title.includes('特朗普')),
     xi: articles.find((item) => item.editorial_topics?.includes('xi')), 
     election: articles.find((item) => item.title.includes('中期选举') || item.title.includes('选举')),
@@ -545,13 +547,13 @@ export default function HomeScreen() {
           {topicCards.map((topic) => {
             const latest = topicLatest[topic.key];
             return (
-              <Pressable key={topic.key} accessibilityRole="link" accessibilityLabel={t('home.openTopicA11y', { title: t(topic.titleKey) })} accessibilityState={{ disabled: externalBusy }} disabled={externalBusy} style={[styles.focusCard, topic.key === 'trump' ? styles.focusTrump : topic.key === 'xi' ? styles.focusXi : styles.focusElection]} onPress={() => openTopic(topic.url, t(topic.titleKey))}>
+              <Pressable key={topic.key} accessibilityRole="link" accessibilityLabel={t('home.openTopicA11y', { title: t(topic.titleKey) })} accessibilityState={{ disabled: externalBusy }} disabled={externalBusy} style={[styles.focusCard, topic.key === 'trump' ? styles.focusTrump : topic.key === 'xi' ? styles.focusXi : styles.focusElection]} onPress={() => topic.key === 'taiwan' ? router.push({ pathname: '/knowledge', params: { kind: 'taiwan' } }) : openTopic(topic.url, t(topic.titleKey))}>
                 <NewsImage uri={showDeferredImages ? topic.image : undefined} style={styles.focusImage} testID={`home-topic-image-${topic.key}`} priority="low" />
                 <View style={styles.focusBody}>
                   <Text style={styles.focusTitle}>{t(topic.titleKey)}</Text>
                   <Text style={styles.focusSub}>{t(topic.subtitleKey)}</Text>
                   <View style={styles.focusStatusRow}><View style={styles.focusStatusDot} /><Text style={styles.focusStatus}>{t(topic.statusKey)}</Text></View>
-                  <Text style={styles.focusLatest} numberOfLines={1}>{latest ? titleFor(latest) : t('home.topicLoading')}</Text>
+                  <Text style={styles.focusLatest} numberOfLines={1}>{latest ? titleFor(latest) : t(topic.key === 'taiwan' ? topic.subtitleKey : 'home.topicLoading')}</Text>
                 </View>
                 <Text style={styles.focusArrow}>›</Text>
               </Pressable>

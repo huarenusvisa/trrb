@@ -2,6 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { knowledgePortalUrl, knowledgePortals } from './knowledge-portals.ts';
 test('knowledge landing pages and every subcategory resolve to the canonical PC destination', () => {
+  assert.equal(knowledgePortalUrl('taiwan'), 'https://trrb.net/taiwan-strait-2026/');
+  assert.equal(knowledgePortalUrl('taiwan', 'https://example.com'), 'https://trrb.net/taiwan-strait-2026/');
   assert.equal(knowledgePortalUrl('immigration'), 'https://trrb.net/immigrate/');
   assert.equal(knowledgePortalUrl('legal'), 'https://trrb.net/legal/');
   for (const path of knowledgePortals.immigration.paths) assert.equal(knowledgePortalUrl('immigration', path), `https://trrb.net/immigrate/center?path=${path}`);

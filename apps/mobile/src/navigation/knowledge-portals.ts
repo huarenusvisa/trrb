@@ -1,4 +1,5 @@
 export const knowledgePortals = {
+  taiwan: { url: 'https://trrb.net/taiwan-strait-2026/', paths: [] },
   immigration: { url: 'https://trrb.net/immigrate/', paths: ['study', 'work', 'employment', 'family', 'humanitarian', 'change-status', 'citizenship'] },
   legal: { url: 'https://trrb.net/legal/', paths: ['SCOTUS', 'US_CIRCUIT', 'BIA', 'WHITE_HOUSE', 'FEDERAL_REGISTER'] },
 } as const;

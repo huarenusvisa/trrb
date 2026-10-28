@@ -370,13 +370,13 @@ test('localizes homepage topic entries and legal detail chrome while preserving 
   const home = read('app/(tabs)/index.tsx');
   const legal = read('app/legal/[id].tsx');
   for (const source of [home, legal]) assert.match(source, /useI18n\(\)/);
-  for (const key of ['home.topicsHeading', 'home.topicTrumpTitle', 'home.topicXiSubtitle', 'home.topicXiTitle', 'home.topicLoading', 'home.openTopicA11y']) {
+  for (const key of ['home.topicsHeading', 'home.topicTaiwanTitle', 'home.topicTaiwanSubtitle', 'home.topicTrumpTitle', 'home.topicXiSubtitle', 'home.topicXiTitle', 'home.topicLoading', 'home.openTopicA11y']) {
     assert.ok(home.includes(`'${key}'`), `homepage topics must translate ${key}`);
   }
   for (const key of ['legal.detailLoading', 'legal.detailDocket', 'legal.detailChineseAnalysis', 'legal.detailAnalysisUnavailable', 'legal.detailOpenOfficial', 'legal.detailShare']) {
     assert.ok(legal.includes(`t('${key}'`), `legal detail must translate ${key}`);
   }
-  assert.match(home, /latest \? titleFor\(latest\) : t\('home\.topicLoading'\)/);
+  assert.match(home, /latest \? titleFor\(latest\) : t\(topic\.key === 'taiwan' \? topic\.subtitleKey : 'home\.topicLoading'\)/);
   assert.match(legal, /record\.title \|\| record\.citation/);
   assert.match(legal, /analysis\.summary/);
   assert.match(legal, /analysis\.disclaimer/);

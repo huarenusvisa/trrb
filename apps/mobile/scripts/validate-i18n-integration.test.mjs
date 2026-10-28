@@ -395,9 +395,11 @@ test('localizes homepage portals, reader services and footer without changing de
   assert.match(home, /t\(itemKey\)/);
   assert.match(home, /<ReaderServices \/>/);
   assert.match(home, /accessibilityLabel=\{t\('home\.openPortalItemA11y'/);
-  for (const destination of ["route: '/(tabs)/legal'", "route: '/immigration'", "route: '/legal'", "route: '/(tabs)/immigration'", "route: '/community'"]) {
+  for (const destination of ["route: '/(tabs)/legal'", "route: '/knowledge', params: { kind: 'immigration' }", "route: '/knowledge', params: { kind: 'legal' }", "route: '/(tabs)/immigration'", "route: '/community'"]) {
     assert.ok(home.includes(destination), `homepage destination must remain ${destination}`);
   }
+  assert.ok(home.includes('openPortal(section, index)'), 'knowledge subcategories must pass their index');
+  assert.ok(read('app/knowledge.tsx').includes('knowledgePortalUrl(portal, item)'), 'knowledge screen must resolve canonical destinations');
   assert.doesNotMatch(home, /styles\.footerText}>立足美国 · 服务华人/);
 });
 

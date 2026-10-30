@@ -1,0 +1,33 @@
+name: Wake China headlines recovery
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/china-hot-recovery-wakeup.yml'
+permissions:
+  actions: write
+  contents: read
+concurrency:
+  group: china-hot-recovery-wakeup
+  cancel-in-progress: false
+jobs:
+  wake-canonical-pipeline:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPOSITORY: ${{ github.repository }}
+    steps:
+      - name: Dispatch existing China headlines pipeline with its normal database gates
+        run: |
+          node --input-type=module <<'JS'
+          const url = 'https://api.github.com/repos/' + process.env.GH_REPOSITORY + '/actions/workflows/operations-control-plane.yml/dispatches';
+          const response = await fetch(url, {
+            method: 'POST',
+            headers: {Authorization:'Bearer '+process.env.GH_TOKEN, Accept:'application/vnd.github+json', 'Content-Type':'application/json', 'X-GitHub-Api-Version':'2022-11-28'},
+            body: JSON.stringify({ref:'main',inputs:{module:'china-hot'}})
+          });
+          if (response.status !== 204) throw new Error('China headlines dispatch failed: HTTP '+response.status);
+          console.log('Requested canonical China headlines recovery; normal global, category and editorial gates remain active.');
+          JS

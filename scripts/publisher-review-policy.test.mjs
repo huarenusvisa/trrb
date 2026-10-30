@@ -14,12 +14,12 @@ test('pending evidence publishes edited complete report, preserving internal raw
  assert.equal(body.metadata.editorial_depth,'standard');assert.equal(body.metadata.daily_deep_commission,false);
  assert.equal(body.metadata.publisher_authorized_release.content_sha256,createHash('sha256').update(body.title+'\n'+body.content).digest('hex'));
 });
-test('raw, truncated, duplicated and withdrawn-source reports cannot use pending-evidence escape',()=>{
+test('raw, truncated and duplicated reports cannot use pending-evidence escape',()=>{
  const raw='台湾对美军购六十六架新战机，首批两架抵达台湾。';
  assert.throws(()=>policy.evidencePendingArticle(draft,raw,'证据不足'));
  assert.throws(()=>policy.evidencePendingArticle(draft,raw,'证据不足',undefined,{...edited,content:'台湾对美军购66架F-16V(Block'}));
  assert.throws(()=>standard.assertEditedContent({...edited,content:'同一项活动出现了需要进一步处理的公开情况。'.repeat(90)}),/重复/);
- assert.throws(()=>policy.evidencePendingArticle({...draft,source_name:'李老师不是你老师'},raw,'证据不足',undefined,edited),/停用/);
+ assert.equal(policy.evidencePendingArticle({...draft,source_name:'李老师不是你老师'},raw,'证据不足',undefined,edited).status,'published');
  assert.throws(()=>standard.assertEditedContent({...edited,content:content+'F-16V(Block'}),/截断/);
 });
 test('US politics needs verified concrete US role/background even for pending publication',()=>{
@@ -29,8 +29,8 @@ test('US politics needs verified concrete US role/background even for pending pu
  assert.equal(body.status,'published');
  assert.throws(()=>standard.assertEditedContent({...edited,editorial_depth:'brief',content:'美国提供的首批战机抵达台湾，后续交付仍须协调。',editorial_review:{us_context_adequate:true,us_context_evidence:'这段简单文本不能满足完整采写的最低字数要求。'}},{usPolitics:true}),/800/);
 });
-test('withdrawn source is blocked in live collection and legacy queue identities',()=>{
- for(const row of [{source_username:'whyyoutouzhele'},{source_account:'@WhyYouTouZheLe'},{source_name:'李老师不是你老师'},{source_url:'https://x.com/whyyoutouzhele/status/123'}])assert.equal(standard.sourceBlocked(row),true);
+test('restored source is enabled in live collection and legacy queue identities',()=>{
+ for(const row of [{source_username:'whyyoutouzhele'},{source_account:'@WhyYouTouZheLe'},{source_name:'李老师不是你老师'},{source_url:'https://x.com/whyyoutouzhele/status/123'}])assert.equal(standard.sourceBlocked(row),false);
  assert.equal(standard.sourceBlocked({source_username:'Focus_Taiwan',source_name:'中央社'}),false);
 });
 test('old news, unrelated stories and office errors remain separate from missing evidence',()=>{

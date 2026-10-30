@@ -370,7 +370,7 @@ function mediaFor(tweet, mediaMap) {
   }));
 }
 
-async function collectLiTeacherPosts() {
+export async function collectLiTeacherPosts() {
   const url = new URL("https://api.x.com/2/tweets/search/recent");
   url.searchParams.set("query", `from:${SOURCE_HANDLE} -is:retweet -is:reply`);
   url.searchParams.set("max_results", "100");
@@ -439,8 +439,8 @@ async function collectRenZhengfeiPosts() {
 }
 
 async function collectXPosts() {
-  // Publisher explicitly withdrew this account on 2026-10-02.
-  const liTeacher = [];
+  // Restored by the publisher on 2026-10-30; the usual freshness and editorial gates still apply.
+  const liTeacher = await collectLiTeacherPosts();
   const renZhengfei = REN_ZHENGFEI_COLLECTION_ENABLED ? await collectRenZhengfeiPosts() : [];
   const seen = new Set();
   const publishers = await collectChinaMediaPosts({request,readJson,bearer:bearerToken(),lookbackHours:LOOKBACK_HOURS,mediaFor,includeMonitors:true});

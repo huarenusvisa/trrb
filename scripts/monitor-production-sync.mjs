@@ -4,6 +4,7 @@
  * existing GitHub Actions failure email (subject: Run failed).
  * Source of truth: GitHub main, Supabase published articles, Netlify live.
  */
+import {isWorkflowOnlyDifference} from './production-parity-policy.mjs';
 const SITE = 'https://trrb.net';
 const PROJECT = 'https://fwiznbpsqkfgkvyznebz.supabase.co';
 const MAX_LAG = 20 * 60_000;
@@ -55,7 +56,14 @@ async function verifyDeployment() {
   const live = (await request(SITE+'/deploy-version.txt?monitor='+NOW,{expectText:true})).trim();
   outcomes.push('GitHub='+sha.slice(0,12)+'; Netlify='+live.slice(0,12));
   if (sha && Number.isFinite(commitDate) && NOW-commitDate > MAX_LAG && live !== sha) {
-    failures.push('GitHub main 已更新超过20分钟，但Netlify版本号不一致');
+    let workflowOnly = false;
+    if (/^[a-f0-9]{40}$/.test(live) && /^[a-f0-9]{40}$/.test(sha)) {
+      const comparison = await request('https://api.github.com/repos/'+repo+'/compare/'+live+'...'+sha,
+        {headers:{Accept:'application/vnd.github+json',...(token?{Authorization:'Bearer '+token}:{})}});
+      workflowOnly = isWorkflowOnlyDifference(comparison, live);
+    }
+    if (workflowOnly) outcomes.push('版本差异仅为无需网站部署的 GitHub 工作流；网站代码已同步');
+    else failures.push('GitHub main 已更新超过20分钟，但Netlify版本号不一致（存在网站变更或无法确认差异）');
   }
 }
 
@@ -108,3 +116,4 @@ if(failures.length){
 } else {
  console.log('通过：没有发现超时部署、新闻不同步或指定专题图片缺失。');
 }
+

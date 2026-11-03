@@ -59,7 +59,7 @@ export type ArticleHeadlineTranslation = Pick<ArticleTranslation,
 >;
 
 const HOMEPAGE_SUPPLEMENT_RULES = [
-  { category: '热门头条', minimum: 8, aliases: ['热门头条', '中国热门头条'] },
+  { category: '中国热门头条', minimum: 8, aliases: ['中国热门头条'] },
   { category: '美国时政', minimum: 6, aliases: ['美国时政'] },
   { category: '美国警情', minimum: 6, aliases: ['美国警情'] },
   { category: 'ICE执法动态', minimum: 6, aliases: ['ICE执法动态', 'ICE执法', 'ICE执法追踪', 'ICE新闻', '驱逐快报'] },

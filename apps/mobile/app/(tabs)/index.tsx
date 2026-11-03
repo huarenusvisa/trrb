@@ -15,7 +15,7 @@ import { isNewsFeedCacheStale } from '../../src/storage/news-feed-cache-core';
 
 const HOME_NAV_ITEMS = [
   { category: '重要新闻', labelKey: 'home.navImportant' },
-  { category: '热门头条', labelKey: 'home.navHot' },
+  { category: '中国热门头条', labelKey: 'home.navHot' },
   { category: '美国时政', labelKey: 'home.navUsPolitics' },
   { category: '中国政治', labelKey: 'home.navChinaPolitics' },
   { category: '移民法官通过率', labelKey: 'home.portalJudgesTitle', route: '/(tabs)/legal' },
@@ -29,10 +29,10 @@ const ONBOARDING_LANGUAGES: { locale: SupportedLocale; label: string }[] = [
   { locale: 'zh-TW', label: '繁體' },
   { locale: 'en', label: 'EN' },
 ];
-const rankCategories = new Set(['热门头条', '中国热门头条', '美国时政', '美国警情', 'ICE执法动态', 'ICE执法', 'ICE执法追踪', 'ICE新闻', '驱逐快报']);
+const rankCategories = new Set(['中国热门头条', '美国时政', '美国警情', 'ICE执法动态', 'ICE执法', 'ICE执法追踪', 'ICE新闻', '驱逐快报']);
 
 const newsSections = [
-  { key: 'china-hot', titleKey: 'home.sectionChinaHot', category: '热门头条', aliases: ['热门头条', '中国热门头条'] },
+  { key: 'china-hot', titleKey: 'home.sectionChinaHot', category: '中国热门头条', aliases: ['中国热门头条'] },
   { key: 'us-politics', titleKey: 'home.sectionUsPolitics', category: '美国时政', aliases: ['美国时政'] },
   { key: 'us-enforcement', titleKey: 'home.navEnforcement', category: '美国执法与警情', aliases: ['美国警情', 'ICE执法动态', 'ICE执法', 'ICE执法追踪', 'ICE新闻', '驱逐快报'] },
   { key: 'china-politics', titleKey: 'home.navChinaPolitics', category: '中国政治', aliases: ['中国政治'] },
@@ -263,7 +263,7 @@ export default function HomeScreen() {
     return () => task.cancel();
   }, []);
 
-  const hotHeadlines = useMemo(() => articles.filter((item) => globalHomepageEligible(item)).filter((item) => ['热门头条', '中国热门头条'].includes(String(item.category_name || ''))).slice(0, 12), [articles]);
+  const hotHeadlines = useMemo(() => articles.filter((item) => globalHomepageEligible(item)).filter((item) => ['中国热门头条'].includes(String(item.category_name || ''))).slice(0, 12), [articles]);
   const activeHot = hotHeadlines.length ? hotHeadlines[hotIndex % hotHeadlines.length] : null;
 
   useEffect(() => {
@@ -529,7 +529,7 @@ export default function HomeScreen() {
         <View testID="home-rankings" style={styles.sectionCard}>
           <View style={styles.sectionHead}>
             <Text style={styles.sectionTitle}>{t('home.ranking24h')}</Text>
-            <Pressable onPress={() => openCategory('热门头条')}><Text style={styles.more}>{t('home.more')} ›</Text></Pressable>
+            <Pressable onPress={() => openCategory('中国热门头条')}><Text style={styles.more}>{t('home.more')} ›</Text></Pressable>
           </View>
           {rankItems.map((item, index) => (
             <Pressable key={String(item.id)} style={styles.rankRow} onPress={() => openArticle(item)}>

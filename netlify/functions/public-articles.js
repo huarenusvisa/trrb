@@ -51,6 +51,8 @@ exports.handler = async (event) => {
     };
     if (isIceCategory) {
       query.or = "(topic_key.eq.ice,category_name.eq.ICE执法动态,category_name.eq.ICE执法,category_name.eq.驱逐快报)";
+    } else if (["热门头条", "中国热门头条"].includes(category)) {
+      query.category_name = "in.(热门头条,中国热门头条)";
     } else if (category) query.category_name = "eq." + category;
     if (q) query.or = `(title.ilike.*${q}*,summary.ilike.*${q}*)`;
 

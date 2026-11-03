@@ -292,10 +292,22 @@ exports.handler = async (event) => {
   if (event.httpMethod === "OPTIONS") return json(204, {});
   if (event.httpMethod !== "POST") return json(405, { error: "Method not allowed" });
 
+  let operation = "authenticate";
   try {
     const actor = await authenticateAdmin(event);
-    const input = JSON.parse(event.body || "{}");
+    let input;
+    try {
+      input = JSON.parse(event.body || "{}");
+    } catch {
+      return json(400, { error: "请求内容不是有效的 JSON" });
+    }
+    if (!input || typeof input !== "object" || Array.isArray(input)) {
+      return json(400, { error: "请求内容必须是 JSON 对象" });
+    }
     const action = safeText(input.action, 60);
+    operation = /^(bootstrap|list|pin|status|suggest_titles|upload_cover|generate_cover|save_article|publication_status)$/.test(action)
+      ? action
+      : "unknown";
 
     if (action === "bootstrap") return json(200, await loadAdminBootstrap(actor));
     if (action === "list") return json(200, await listArticles(input));
@@ -308,7 +320,14 @@ exports.handler = async (event) => {
     if (action === "publication_status") return json(200, await lookupManualPublication(input,actor,rest));
     return json(400, { error: "未知操作" });
   } catch (error) {
-    console.error("Admin article API error:", error);
+    console.error("Admin article API error:", {
+      operation,
+      requestId: event.headers?.["x-nf-request-id"],
+      upstreamRequestId: error.requestId,
+      status: error.statusCode || 500,
+      code: error.code,
+      name: error.name
+    });
     const databaseError=publicDatabaseError(error);
     if(databaseError)return json(databaseError.status,{error:databaseError.message,code:databaseError.code});
     const payload = { error: error.message || String(error), code:error.code || undefined, request_id:error.requestId || undefined };

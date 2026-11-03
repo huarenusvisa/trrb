@@ -19,7 +19,7 @@ test('keeps the App homepage on the PC mobile content structure', () => {
   }
   assert.match(home, /titleKey: 'home\.topicXiTitle'/);
   assert.doesNotMatch(home, /topicFinanceTitle|trrb\.net\/niulai/);
-  assert.match(home, /newsSections = \[\s*\{ key: 'china-hot', titleKey: 'home\.sectionChinaHot', category: '热门头条'/);
+  assert.match(home, /newsSections = \[\s*\{ key: 'china-hot', titleKey: 'home\.sectionChinaHot', category: '中国热门头条'/);
   for (const section of ['移民法官通过率', '移民美国', '美国判例与新规', '招聘求职', '移民社区', '订阅每日快报', '加入读者群', '投稿爆料']) {
     assert.ok(i18n.includes(section), `${section} must stay in the localized App homepage content`);
   }
@@ -79,7 +79,7 @@ test('keeps category labels at the page level and rotates important news on the 
   assert.match(categoryFlow, /id: "home-nav-important"/);
   assert.match(categoryFlow, /id: "category-screen-title"/);
   assert.doesNotMatch(categoryFlow, /visible: "重要新闻"|text: "重要新闻"/);
-  for (const category of ['重要新闻', '热门头条', '美国时政', '中国政治', '招聘求职', '美国执法与警情']) {
+  for (const category of ['重要新闻', '中国热门头条', '美国时政', '中国政治', '招聘求职', '美国执法与警情']) {
     assert.match(home, new RegExp(`category: '${category}'`));
   }
 });

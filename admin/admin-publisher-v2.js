@@ -204,6 +204,10 @@
   }
 
   function renderArticleRowWithAiState(article) {
+    const articlePath = window.TrrbArticleLinks?.publicPath(article);
+    const articleTitle = articlePath
+      ? `<a class="admin-article-title-link" href="${escapeAttr(articlePath)}" target="_blank" rel="noopener" title="打开文章页面"><b>${escapeHtml(article.title)}</b></a>`
+      : `<b>${escapeHtml(article.title)}</b>`;
     const metadata = article.metadata && typeof article.metadata === "object" ? article.metadata : {};
     const processing = Boolean(metadata.ai_cover_processing);
     const failed = Boolean(metadata.ai_cover_error);
@@ -217,7 +221,7 @@
     const statusClass = processing ? "status-draft" : failed ? "status-hidden" : `status-${escapeHtml(article.status)}`;
     return `
       <tr data-article-row="${escapeAttr(article.id)}">
-        <td><b>${escapeHtml(article.title)}</b><br><small>${escapeHtml(article.id)}</small></td>
+        <td>${articleTitle}<br><small>${escapeHtml(article.id)}</small></td>
         <td>${escapeHtml(article.category_label || article.category_name || "-")}<br><small>${escapeHtml(focusModeLabel(focusMode))}</small>${pin.active?`<br><small>到期：${escapeHtml(formatDate(pin.expires_at))}（48小时）</small>`:""}</td>
         <td><span class="status-pill ${statusClass}">${escapeHtml(statusText)}</span>${failed ? `<br><small>${escapeHtml(metadata.ai_cover_error)}</small>` : ""}</td>
         <td>${escapeHtml(formatDate(article.published_at || article.created_at))}</td>

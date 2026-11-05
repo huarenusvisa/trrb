@@ -380,9 +380,13 @@ async function loadArticles() {
 }
 
 function renderArticleRow(article) {
+  const articlePath = window.TrrbArticleLinks?.publicPath(article);
+  const articleTitle = articlePath
+    ? `<a class="admin-article-title-link" href="${escapeAttr(articlePath)}" target="_blank" rel="noopener" title="打开文章页面"><b>${escapeHtml(article.title)}</b></a>`
+    : `<b>${escapeHtml(article.title)}</b>`;
   return `
     <tr>
-      <td><b>${escapeHtml(article.title)}</b><br><small>${escapeHtml(article.id)}</small></td>
+      <td>${articleTitle}<br><small>${escapeHtml(article.id)}</small></td>
       <td>${escapeHtml(article.category_name || "-")}</td>
       <td><span class="status-pill status-${escapeHtml(article.status)}">${statusLabel(article.status)}</span></td>
       <td>${escapeHtml(formatDate(article.published_at || article.created_at))}</td>

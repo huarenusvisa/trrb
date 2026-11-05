@@ -169,9 +169,11 @@
     const open = document.createElement("a"); open.href = story.canonical; open.textContent = "单独打开这篇报道";
     const share = document.createElement("button"); share.type = "button"; share.textContent = "分享这篇";
     share.addEventListener("click", async () => {
+      const sharePath = window.TrrbArticleLinks?.shortPath(story.doc.querySelector('#article-root')?.dataset.articleId);
+      const shareUrl = sharePath ? location.origin + sharePath : story.canonical;
       try {
-        if (navigator.share) await navigator.share({ title, url: story.canonical });
-        else if (navigator.clipboard) { await navigator.clipboard.writeText(story.canonical); share.textContent = "链接已复制"; }
+        if (navigator.share) await navigator.share({ title, url: shareUrl });
+        else if (navigator.clipboard) { await navigator.clipboard.writeText(shareUrl); share.textContent = "链接已复制"; }
         else share.textContent = "请打开报道后分享";
       } catch (error) { if (error.name !== "AbortError") share.textContent = "请打开报道后分享"; }
     });

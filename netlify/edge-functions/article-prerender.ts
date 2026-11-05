@@ -469,18 +469,25 @@ export default async (request: Request, context: any) => {
     const parts = routeParts(url.pathname);
     if (!parts) return context.next();
 
-    let article = await getArticleBySlug(parts.slug);
-    if (!article && /^[0-9a-f]{8}-[0-9a-f-]{27,}$/i.test(parts.slug)) article = await getArticleById(parts.slug);
+    const shortRoute = parts.section === 'a';
+    if (shortRoute && !/^[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}$/i.test(parts.slug)) {
+      return new Response(notFoundHtml(), {status: 404, headers: {'content-type':'text/html; charset=UTF-8', 'cache-control':'no-store', 'x-robots-tag':'noindex'}});
+    }
+    let article = shortRoute ? await getArticleById(parts.slug.toLowerCase()) : await getArticleBySlug(parts.slug);
+    if (!article && !shortRoute && /^[0-9a-f]{8}-[0-9a-f-]{27,}$/i.test(parts.slug)) article = await getArticleById(parts.slug);
     if (!article && /^(?:wp-)?\d+$/i.test(parts.slug)) {
       const legacy = new URL('/article.html', url.origin);
       legacy.searchParams.set('id', parts.slug);
       return redirect(legacy.toString(), 'archived-id-to-legacy-validator');
     }
-    if (!article) return context.next();
+    if (!article) {
+      if (shortRoute) return new Response(notFoundHtml(), {status: 404, headers: {'content-type':'text/html; charset=UTF-8', 'cache-control':'no-store', 'x-robots-tag':'noindex'}});
+      return context.next();
+    }
 
     const canonical = await canonicalFor(article);
     const canonicalPath = new URL(canonical).pathname;
-    if (url.pathname.replace(/\/$/, "") !== canonicalPath.replace(/\/$/, "")) {
+    if (!shortRoute && url.pathname.replace(/\/$/, "") !== canonicalPath.replace(/\/$/, "")) {
       return redirect(canonical, "pretty-path-normalize");
     }
 

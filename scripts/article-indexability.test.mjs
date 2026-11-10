@@ -148,7 +148,7 @@ test('production sitemap build includes short articles and only public published
 });
 
 
-for (const unavailable of ['/rest/v1/articles','/rest/v1/categories','/article.html']) {
+for (const unavailable of ['/rest/v1/articles','/rest/v1/categories']) {
   test(`temporary ${unavailable} failure never becomes an article 404 or permanent noindex`,async t=>{
     useFixture(t,[article()]);
     const original=globalThis.fetch;
@@ -160,6 +160,18 @@ for (const unavailable of ['/rest/v1/articles','/rest/v1/categories','/article.h
     assert.equal(response.headers.get('x-robots-tag'),null);
   });
 }
+
+test('template HTTP outages do not affect rendering; template is bundled with the deploy',async t=>{
+  useFixture(t,[article()]);
+  const original=globalThis.fetch;
+  t.mock.method(globalThis,'fetch',async input=>{
+    assert.notEqual(new URL(String(input)).pathname,'/article.html','must not re-enter the site to load a template');
+    return original(input);
+  });
+  const response=await articlePage(new Request('https://trrb.net/hot-headlines/short-news'),context);
+  assert.equal(response.status,200);
+  assert.match(await response.text(),/<h1>/);
+});
 
 
 test('WordPress query IDs reach their dedicated resolver without a malformed UUID query',async t=>{

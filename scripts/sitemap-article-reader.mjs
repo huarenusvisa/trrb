@@ -7,12 +7,12 @@ const isTransientReadError = (error) => /\b(?:408|429|500|502|503|504|57014|PGRS
 
 // Read small batches through the existing primary-key index. Fetching complete
 // bodies with a large sorted OFFSET query can exhaust the Data API timeout.
-export async function fetchPublishedArticles(rest, { pageSize = 200, minPageSize = 10, maxRows = 100000, pause = ms => new Promise(resolve => setTimeout(resolve, ms)) } = {}) {
+export async function fetchPublishedArticles(rest, { publishedThrough = new Date().toISOString(), pageSize = 200, minPageSize = 10, maxRows = 100000, pause = ms => new Promise(resolve => setTimeout(resolve, ms)) } = {}) {
   const all = [];
   let cursor = '';
   let currentPageSize = pageSize;
   for (;;) {
-    const params = { select: SELECT, status: 'eq.published', visibility: 'eq.public', hidden_at: 'is.null', archived_at: 'is.null', published_at: `lte.${new Date().toISOString()}`, order: 'id.asc', limit: String(currentPageSize) };
+    const params = { select: SELECT, status: 'eq.published', visibility: 'eq.public', hidden_at: 'is.null', archived_at: 'is.null', published_at: `lte.${publishedThrough}`, order: 'id.asc', limit: String(currentPageSize) };
     if (cursor) params.id = `gt.${cursor}`;
     let rows;
     try {

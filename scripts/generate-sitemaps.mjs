@@ -167,7 +167,7 @@ async function fetchCategories() {
 }
 
 async function fetchAllPublishedArticles() {
-  return fetchPublishedArticles(rest);
+  return fetchPublishedArticles(rest, { publishedThrough: NOW.toISOString() });
 }
 
 const categories = await fetchCategories();
@@ -303,6 +303,9 @@ articleEntries
 const entries = [...byUrl.values()].sort((a, b) => b.lastmod.localeCompare(a.lastmod));
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${entries.map(({ loc, lastmod, changefreq, priority }) => `  <url>\n    <loc>${escapeXml(loc)}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>${changefreq}</changefreq>\n    <priority>${priority}</priority>\n  </url>`).join('\n')}\n</urlset>\n`;
 fs.writeFileSync(path.join(ROOT, 'sitemap.xml'), sitemap);
+const watermarkDir = path.join(ROOT, 'netlify/shared');
+fs.mkdirSync(watermarkDir, { recursive: true });
+fs.writeFileSync(path.join(watermarkDir, 'sitemap-snapshot.mjs'), `export const sitemapPublishedThrough = ${JSON.stringify(NOW.toISOString())};\n`);
 fs.mkdirSync(path.join(ROOT,'seo'),{recursive:true});
 fs.writeFileSync(path.join(ROOT,'seo/sitemap-exclusions.json'),JSON.stringify({version:1,generatedAt:NOW.toISOString(),exclusions:decisions.exclusions})+'\n');
 

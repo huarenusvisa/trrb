@@ -1,4 +1,5 @@
 import { publicationUrl, publicArticleData } from "../shared/publication.mjs";
+import articleTemplate from "../shared/article-template.mjs";
 import { articleIndexability, visibleArticleText, ARTICLE_INDEXABILITY_POLICY } from "../shared/article-indexability.mjs";
 const SITE = "https://trrb.net";
 
@@ -412,11 +413,6 @@ function routeParts(pathname: string) {
   return { section, slug };
 }
 
-async function templateResponse(request: Request) {
-  const templateUrl = new URL("/article.html?__trrb_article_template=1", request.url);
-  return fetch(templateUrl, { headers: { "X-TRRB-Template": "1" } });
-}
-
 function temporaryArticleFailure(request: Request): Response {
   return new Response(request.method === "HEAD" ? null : "Article temporarily unavailable. Please retry.", {
     status: 503,
@@ -496,14 +492,12 @@ export default async (request: Request, context: any) => {
     // client already supplies bounded related-reading links after render, so
     // do not duplicate that database read in the edge prerender path.
     const stories: any[] = [];
-    const upstream = await templateResponse(request);
-    if (!upstream.ok) throw new Error(`Article template unavailable: ${upstream.status}`);
-    let html = await upstream.text();
+    let html = articleTemplate;
     html = injectHead(html, article, canonical, true);
     html = injectBody(html, article, canonical, stories);
     html = disableLegacyClientLoaders(html);
 
-    const headers = new Headers(upstream.headers);
+    const headers = new Headers();
     headers.set("content-type", "text/html; charset=UTF-8");
     headers.delete("content-length");
     headers.delete("etag");

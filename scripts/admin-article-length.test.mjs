@@ -8,34 +8,43 @@ const endpoint = new URL("../netlify/functions/admin-articles.js", import.meta.u
 const require = createRequire(endpoint);
 const code = fs.readFileSync(endpoint, "utf8");
 
-function publisher({ authorized = true, existing = [] } = {}) {
+function publisher({ authorized = true, existing = [], readError } = {}) {
   const writes = [];
+  const logs = [];
+  const actor = { user: { id: "10000000-0000-4000-8000-000000000001", email: "editor@example.test" }, admin: {} };
   const exports = {};
   vm.runInNewContext(code, {
     exports, URL,
-    console: { error() {} },
+    console: { error(_message, details) { logs.push(details); } },
     require(path) {
       if (path !== "./_shared/supabase-admin") return require(path);
       return {
         safeText: (value, max) => String(value ?? "").trim().slice(0, max),
         async authenticateAdmin() {
           if (!authorized) throw Object.assign(new Error("Unauthorized"), { statusCode: 401 });
-          return { user: { email: "editor@example.test" }, admin: {} };
+          return actor;
         },
         async rest(_table, options) {
           if (options.method === "POST") {
+            if (options.body.status === "published" && existing.some(row => row.title === options.body.title)) {
+              throw Object.assign(new Error("duplicate published article title"), { statusCode: 409 });
+            }
             writes.push(options.body);
-            return [{ id: "saved-article", ...options.body }];
+            return [options.body];
           }
-          return existing;
+          if (readError) throw readError;
+          return writes.filter(row => `eq.${row.id}` === options.query?.id);
         }
       };
     }
   }, { filename: endpoint.pathname });
+  const request = body => exports.handler({ httpMethod: "POST", headers: { "x-nf-request-id": "test-request" }, body });
   return {
     writes,
+    logs,
+    request,
     save(input) {
-      return exports.handler({ httpMethod: "POST", body: JSON.stringify({ action: "save_article", category_name: "美国时政", status: "published", ...input }) });
+      return request(JSON.stringify({ action: "save_article", category_name: "美国时政", status: "published", ...input }));
     }
   };
 }
@@ -51,6 +60,27 @@ test("manual publisher accepts short titles and bodies while preserving requeste
     assert.equal(article.visibility, status === "published" ? "public" : "private");
   }
   assert.equal(api.writes.length, 3);
+});
+
+test("malformed request bodies return 400 after authentication with no article writes", async () => {
+  const api = publisher();
+  for (const body of ["{", "null", "[]", '"text"', '{"action":{"toString":null}}', '{"action":"invalid"}']) {
+    assert.equal((await api.request(body)).statusCode, 400);
+  }
+  assert.equal(api.writes.length, 0);
+  assert.equal(api.logs.length, 0);
+  assert.equal((await publisher({ authorized: false }).request("{")).statusCode, 401);
+});
+
+test("unexpected request failures are correlated by operation without logging the request body", async () => {
+  const api = publisher({ readError: new Error("synthetic upstream failure") });
+  const response = await api.request(JSON.stringify({ action: "bootstrap", content: "do not log me" }));
+  assert.equal(response.statusCode, 500);
+  assert.equal(api.logs.length, 1);
+  assert.equal(api.logs[0].operation, "bootstrap");
+  assert.equal(api.logs[0].requestId, "test-request");
+  assert.equal(api.logs[0].status, 500);
+  assert.doesNotMatch(JSON.stringify(api.logs), /do not log me/);
 });
 
 test("removing length gates does not bypass empty, authorization, category or duplicate checks", async () => {

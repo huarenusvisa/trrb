@@ -3,6 +3,7 @@ name: 全站SEO与404完整性检查
 on:
   workflow_call:
   pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
     branches: [main]
     paths:
       - "**/*.html"
@@ -83,6 +84,8 @@ jobs:
           scripts/article-indexability.test.mjs
           scripts/article-indexability-audits.test.mjs
           scripts/admin-article-length.test.mjs
+          scripts/article-template.test.mjs
+          scripts/sitemap-articles-live.test.mjs
           scripts/legacy-restore-short-article.test.mjs
           scripts/ice-original-posts.test.mjs
           scripts/production-seo-diagnostic.test.mjs

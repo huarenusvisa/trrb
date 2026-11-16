@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {isChinaPolitical,editorialTopics,POLITICS_FILTER} from '../netlify/shared/editorial-topics.mjs';
 import {buildCandidate,generateArticle,qualifyTweet,buildPublishedArticle,sourceFor,parseModelJson,eventDuplicate} from './china-hot-li-teacher-ingest.mjs';
-import {collectChinaMediaPosts,CHINA_X_SOURCES,CHINA_X_MONITORS,chinaMediaQuery,politicalReviewReason} from './china-x-sources.mjs';
+import {collectChinaMediaPosts,CHINA_X_SOURCES,US_POLITICS_X_SOURCES,CHINA_X_MONITORS,chinaMediaQuery,politicalReviewReason} from './china-x-sources.mjs';
 const body='重庆学校发布开学通知。'+Array.from({length:900},(_,i)=>String.fromCharCode(0x4e00+i)).join('');
 const source={id:'12345',text:'重庆学校今日公布开学安排，通知说明报到时间及校方调整安排。',created_at:new Date().toISOString(),media:[{type:'photo',url:'https://pbs.twimg.com/media/test.jpg'}]};
 const draft={title:'重庆学校公布开学安排',summary:'学校通知载明报到时间与调整安排。',content:body,source_sufficient:true,appears_old_news:false,old_news_reason:'',rejection_reason:'',seo_keywords:'重庆,开学',image_evidence:[{image_index:0,visible_text:'开学通知'}]};
@@ -44,7 +44,14 @@ test('X media lookup verifies returned author and preserves images, source and o
  const handle=new URL(url).searchParams.get('query').match(/^from:(\w+)/)[1];
  return Response.json({data:[{id:handle,author_id:'yes',text:'China report',entities:{urls:[{expanded_url:'https://example.com/report',images:[{url:'https://pbs.twimg.com/original.jpg'}]}]}},{id:'impersonator',author_id:'no',text:'China report'}],includes:{users:[{id:'yes',username:handle},{id:'no',username:'unrelated'}]}});
  }});
- assert.equal(tweets.length,CHINA_X_SOURCES.length);assert.ok(tweets.every(t=>t.source_level==='publisher_account'&&t.media.length===1));
+ const publishers=[...CHINA_X_SOURCES,...US_POLITICS_X_SOURCES].map(s=>s.handle).sort();
+ assert.deepEqual(tweets.map(t=>t.source_username).sort(),publishers);
+ for(const tweet of tweets) {
+  assert.equal(tweet.id,tweet.source_username);
+  assert.equal(tweet.source_level,'publisher_account');
+  assert.deepEqual(tweet.media,[{url:'https://pbs.twimg.com/original.jpg',type:'photo'}]);
+  assert.deepEqual(tweet.source_links,['https://example.com/report']);
+ }
  assert.equal(sourceFor({...source,source_username:'BBCChinese',source_name:'BBC News 中文'}).externalId,'x:bbcchinese:12345');
  assert.equal(sourceFor(source).externalId,'x:unknown:12345');
 });

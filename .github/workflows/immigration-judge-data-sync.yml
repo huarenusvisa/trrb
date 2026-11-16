@@ -24,13 +24,13 @@ jobs:
       SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
       SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
       EOIR_PARQUET_PATH: /tmp/eoir-cases.parquet
-      EOIR_JUDGE_SOURCE_NAME: EOIR FOIA Case Data (August 2026; official authority, normalized derivative input)
+      EOIR_JUDGE_SOURCE_NAME: EOIR FOIA Case Data (September 2026; official authority, normalized derivative input)
       EOIR_JUDGE_SOURCE_URL: https://fileshare.eoir.justice.gov/EOIR%20Case%20Data.zip
-      EOIR_JUDGE_SOURCE_DATE: "2026-09-01"
+      EOIR_JUDGE_SOURCE_DATE: "2026-10-01"
       EOIR_JUDGE_PROCESSOR_NAME: Deportation Data Project
       EOIR_JUDGE_PROCESSOR_URL: https://deportationdata.org/data/processed/eoir.html
       EOIR_JUDGE_SCOPE_START: "2020-01-01"
-      EOIR_JUDGE_SCOPE_END: "2026-09-01"
+      EOIR_JUDGE_SCOPE_END: "2026-09-30"
       ASYLUMTRACKER_MANIFEST_URL: https://asylumtracker.com/data/dataset-manifest.json
     steps:
       - uses: actions/checkout@v4
@@ -71,6 +71,30 @@ jobs:
             test "$(stat -c%s "$EOIR_PARQUET_PATH")" -gt 50000000
             sha256sum "$EOIR_PARQUET_PATH"
           } 2>&1 | tee -a /tmp/immigration-judge-sync.log
+
+      - name: Verify newly downloaded EOIR content includes September cases before any database write
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import duckdb, os
+          path=os.environ['EOIR_PARQUET_PATH']
+          con=duckdb.connect()
+          cols={x[0] for x in con.execute("DESCRIBE SELECT * FROM read_parquet(?)",[path]).fetchall()}
+          required={'judge_last','court_last','ij_completion_date_last','asylum_decision_last'}
+          if not required.issubset(cols):
+              raise SystemExit('Downloaded EOIR file does not contain the required verified column schema')
+          recent=con.execute("""
+              select count(*) from read_parquet(?)
+              where try_cast(ij_completion_date_last as date)
+                    between date '2026-09-01' and date '2026-09-30'
+                and judge_last is not null
+                and upper(trim(asylum_decision_last)) in ('GRANT','FULL GRANT','CONDITIONAL GRANT','IN COURT STIPULATED GRANT','PAPER STIPULATED GRANT','DENY')
+          """,[path]).fetchone()[0]
+          print({'september_2026_merits_rows':recent})
+          if recent < 100:
+              raise SystemExit('No credible September 2026 merits increment; refuse stale snapshot import')
+          PY
 
       - name: Aggregate and import judge asylum statistics
         shell: bash

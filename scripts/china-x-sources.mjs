@@ -26,6 +26,11 @@ export function chinaMediaQuery(source) {
  const general=source.reviewOnly?'': 'China OR Chinese OR Beijing OR "Xi Jinping" OR 中国 OR 中國 OR 中共 OR 香港 OR ';
  return `from:${source.handle} (${general}${subjects}) -is:retweet -is:reply`;
 }
+export function usChinaCommunityQuery(source) {
+ const people='"Chinese American" OR "Chinese Americans" OR "Chinese national" OR "Chinese nationals" OR "Chinese immigrant" OR "Chinese student" OR "Chinese students" OR "Chinese community" OR 华裔 OR 華裔 OR 华人 OR 華人 OR 中国公民 OR 中國公民';
+ const location='"United States" OR U.S. OR American OR California OR "New York" OR Texas OR Florida OR Washington OR Massachusetts OR Illinois OR "New Jersey" OR Chinatown OR 美国 OR 美國';
+ return `from:${source.handle} (${people}) (${location}) -is:retweet -is:reply`;
+}
 export function chinaMediaQueries(source) {
  if(source.usPolitics) return [`from:${source.handle} (Congress OR Senate OR "White House" OR Trump OR "Supreme Court" OR "federal judge" OR "executive order" OR "House Republicans" OR "House Democrats" OR "federal budget") -is:retweet -is:reply`];
  const queries=[chinaMediaQuery(source)];
@@ -51,9 +56,14 @@ export async function collectChinaMediaPosts({request,readJson,bearer,lookbackHo
  const collected=[];
  const offset=Math.floor(Date.now()/3600000)%CHINA_X_SOURCES.length;
  const publishers=[...CHINA_X_SOURCES.slice(offset),...CHINA_X_SOURCES.slice(0,offset)];
- const sources=[...publishers,...US_POLITICS_X_SOURCES,...(includeMonitors?CHINA_X_MONITORS:[])];
+ const sources=[...US_POLITICS_X_SOURCES,...publishers,...(includeMonitors?CHINA_X_MONITORS:[])];
  // One primary topic query per publisher before spending on extended keyword lists.
+ // Prioritize direct political feeds, then one focused community query per run.
+ const focusedOffset=Math.floor(Date.now()/3600000)%(US_POLITICS_X_SOURCES.length+publishers.length);
+ const communitySources=[...US_POLITICS_X_SOURCES,...publishers];
+ const focused=communitySources[focusedOffset];
  const queries=sources.map(source=>({source,queries:chinaMediaQueries(source)}));
+ queries.unshift({source:focused,queries:[usChinaCommunityQuery(focused)]});
  for(let round=0;round<Math.max(...queries.map(x=>x.queries.length));round++) {
   for (const item of queries) {
   const source=item.source, query=item.queries[round];

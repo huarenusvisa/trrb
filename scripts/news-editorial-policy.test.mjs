@@ -90,16 +90,15 @@ test('undersized drafts are reviewed under their actual lower tier and still req
 });
 
 import {articleUpdateBody,automationMayUpdate,verifyArticleUpdate} from './news-article-updates.mjs';
-test('same-URL updates preserve publication identity and cannot overwrite human edits',async()=>{
+test('published articles cannot be rewritten by any automated news pipeline',async()=>{
  const old={id:'fixed-id',slug:'fixed-slug',publication_path:'/news/fixed-slug',published_at:'2026-09-24T12:00:00Z',updated_at:'2026-09-24T12:00:00Z',status:'published',visibility:'public',title:'旧标题',content:'旧事实',review_status:'official_source_auto_published',metadata:{reviewed_content_sha256:contentDigest('旧标题','旧事实')}};
- assert.equal(automationMayUpdate(old),true);
+ assert.equal(automationMayUpdate(old),false);
  for(const extra of [{manual_override:true},{editorial_lock:true},{human_category_override:'美国时政'},{reviewed_by:'editor'}])assert.equal(automationMayUpdate({...old,metadata:{...old.metadata,...extra}}),false);
- assert.equal(automationMayUpdate({...old,content:'编辑修改'}),false);
  const next={title:'新标题',summary:'新进展',content:'旧事实和有来源的新事实',source_url:'https://www.justice.gov/new',metadata:{editorial_depth:'brief'}};
- const patch=articleUpdateBody(old,next,'新法院裁定','2026-09-25T12:00:00Z');
- for(const field of ['id','slug','publication_path','published_at','source_url','category_name'])assert.equal(Object.hasOwn(patch,field),false,field);
- assert.equal(patch.metadata.original_published_at,old.published_at);assert.equal(patch.metadata.content_updated_at,'2026-09-25T12:00:00Z');
- assert.equal(await verifyArticleUpdate(old,next,{request:async()=>({output_text:'{"approve":false,"reason":"只有改写"}'})}),false);
+ assert.throws(()=>articleUpdateBody(old,next,'新法院裁定'),/不能自动覆盖/);
+ let requests=0;
+ assert.equal(await verifyArticleUpdate(old,next,{request:async()=>{requests++;return {output_text:'{"approve":true,"reason":"same event"}'};}}),false);
+ assert.equal(requests,0,'blocked updates must not incur AI review calls');
 });
 test('human approval of an edited policy story remains publishable but loses unchecked depth label',()=>{
  const s=story();s.human_review_status='approved';s.reviewed_by='editor';s.ai_payload.manual_old_news_confirmation=true;s.content='编辑核验后的短讯';

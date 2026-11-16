@@ -33,6 +33,7 @@ on:
       - 'netlify/functions/_shared/news-editorial-policy.js'
       - 'netlify/functions/_shared/news-collection-scope.js'
       - 'scripts/china-hot-li-teacher-ingest.test.mjs'
+      - 'scripts/china-editorial-update.test.mjs'
       - 'scripts/ren-zhengfei-news.test.mjs'
       - 'ren-zhengfei/**'
       # ICE production coverage fixes must wake the collector immediately.

@@ -122,7 +122,7 @@ if (compare(prior)===compare(output)) {
   output.generatedAt=prior.generatedAt || output.generatedAt;
   console.log('No semantic BIA precedent changes; keep existing checked data and original generatedAt');
 } else if (failures===0) {
-  writeFileSync(outputPath, JSON.stringify(output,null,2)+'\\n');
+  writeFileSync(outputPath, JSON.stringify(output,null,2)+'\n');
 } else {
   console.log('BIA collector is fail-closed: source changes require manual verification; do not overwrite verified catalog');
 }

@@ -1,9 +1,9 @@
-name: Immigration Judge EOIR Data Sync (Manual Backup Only)
+name: Immigration Judge EOIR Data Sync (verified single-batch run)
 
 on:
   workflow_dispatch:
   push:
-    branches: [main]
+    branches: [main, fix/consolidated-eoir-bia-intake-20261116]
     paths:
       - '.github/workflows/immigration-judge-data-sync.yml'
       - 'scripts/generate-eoir-state-and-judge-periods.py'

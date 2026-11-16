@@ -1,0 +1,192 @@
+{
+  "source": "https://www.justice.gov/eoir/media/1467501/dl?inline",
+  "announcementDate": "2026-10-22",
+  "appointmentMonth": "2026-10",
+  "verification": "official EOIR biography notice; judge outcome rates not inferred",
+  "permanentCount": 22,
+  "temporaryCount": 4,
+  "judges": [
+    {
+      "name": "Kathy A. Aguiar",
+      "court": "Baltimore Immigration Court",
+      "type": "immigration_judge",
+      "asylumGrantRate": null,
+      "rateStatus": "insufficient_verified_sample"
+    },
+    {
+      "name": "Jeremy R. Arn",
+      "court": "Chicago Immigration Court",
+      "type": "immigration_judge",
+      "asylumGrantRate": null,
+      "rateStatus": "insufficient_verified_sample"
+    },
+    {
+      "name": "Anthony Bailey",
+      "court": "New York – Broadway Immigration Court",
+      "type": "immigration_judge",
+      "asylumGrantRate": null,
+      "rateStatus": "insufficient_verified_sample"
+    },
+    {
+      "name": "John M. Batchelor",
+      "court": "Richmond Immigration Adjudication Center",
+      "type": "immigration_judge",
+      "asylumGrantRate": null,
+      "rateStatus": "insufficient_verified_sample"
+    },
+    {
+      "name": "Matthew A. Braden",
+      "court": "Concord Immigration Court",
+      "type": "immigration_judge",
+      "asylumGrantRate": null,
+      "rateStatus": "insufficient_verified_sample"
+    },
+    {
+      "name": "Jeffrey N. Burger",
+      "court": "Los Angeles – West Los Angeles Immigration Court",
+      "type": "immigration_judge",
+      "asylumGrantRate": null,
+      "rateStatus": "insufficient_verified_sample"
+    },
+    {
+      "name": "Jackie G. Grau",
+      "court": "Aurora Immigration Court",
+      "type": "immigration_judge",
+      "asylumGrantRate": null,
+      "rateStatus": "insufficient_verified_sample"
+    },
+    {
+      "name": "Alexander R. Hallman",
+      "court": "Falls Church Immigration Adjudication Center",
+      "type": "immigration_judge",
+      "asylumGrantRate": null,
+      "rateStatus": "insufficient_verified_sample"
+    },
+    {
+      "name": "Cortney N. Hellard",
+      "court": "Falls Church Immigration Adjudication Center",
+      "type": "immigration_judge",
+      "asylumGrantRate": null,
+      "rateStatus": "insufficient_verified_sample"
+    },
+    {
+      "name": "William Irvine",
+      "court": "New York – Federal Plaza Immigration Court",
+      "type": "immigration_judge",
+      "asylumGrantRate": null,
+      "rateStatus": "insufficient_verified_sample"
+    },
+    {
+      "name": "Michael A. Jones",
+      "court": "Santa Ana Immigration Court",
+      "type": "immigration_judge",
+      "asylumGrantRate": null,
+      "rateStatus": "insufficient_verified_sample"
+    },
+    {
+      "name": "Priscilla M. Lewis",
+      "court": "Falls Church Immigration Adjudication Center",
+      "type": "immigration_judge",
+      "asylumGrantRate": null,
+      "rateStatus": "insufficient_verified_sample"
+    },
+    {
+      "name": "Julie Huffman McCarver",
+      "court": "Kansas City Immigration Court",
+      "type": "immigration_judge",
+      "asylumGrantRate": null,
+      "rateStatus": "insufficient_verified_sample"
+    },
+    {
+      "name": "Matt D. McConnell",
+      "court": "New Orleans Immigration Court",
+      "type": "immigration_judge",
+      "asylumGrantRate": null,
+      "rateStatus": "insufficient_verified_sample"
+    },
+    {
+      "name": "Jeffrey W. McCray",
+      "court": "Fort Snelling Immigration Court",
+      "type": "immigration_judge",
+      "asylumGrantRate": null,
+      "rateStatus": "insufficient_verified_sample"
+    },
+    {
+      "name": "David Nichoff",
+      "court": "Fort Worth Immigration Adjudication Center",
+      "type": "immigration_judge",
+      "asylumGrantRate": null,
+      "rateStatus": "insufficient_verified_sample"
+    },
+    {
+      "name": "Kathy W. Parrino",
+      "court": "New York – Federal Plaza Immigration Court",
+      "type": "immigration_judge",
+      "asylumGrantRate": null,
+      "rateStatus": "insufficient_verified_sample"
+    },
+    {
+      "name": "Clark Petschek",
+      "court": "New York – Broadway Immigration Court",
+      "type": "immigration_judge",
+      "asylumGrantRate": null,
+      "rateStatus": "insufficient_verified_sample"
+    },
+    {
+      "name": "Tracy C. Riley",
+      "court": "Adelanto Immigration Court",
+      "type": "immigration_judge",
+      "asylumGrantRate": null,
+      "rateStatus": "insufficient_verified_sample"
+    },
+    {
+      "name": "Brett J. Rogers",
+      "court": "Los Angeles – West Los Angeles Immigration Court",
+      "type": "immigration_judge",
+      "asylumGrantRate": null,
+      "rateStatus": "insufficient_verified_sample"
+    },
+    {
+      "name": "Timothy L. Strange",
+      "court": "Philadelphia Immigration Court",
+      "type": "immigration_judge",
+      "asylumGrantRate": null,
+      "rateStatus": "insufficient_verified_sample"
+    },
+    {
+      "name": "David D. Vandenberg",
+      "court": "Sterling Immigration Court",
+      "type": "immigration_judge",
+      "asylumGrantRate": null,
+      "rateStatus": "insufficient_verified_sample"
+    },
+    {
+      "name": "Jason K. Kaneyuki",
+      "court": "San Diego Immigration Court",
+      "type": "temporary_immigration_judge",
+      "asylumGrantRate": null,
+      "rateStatus": "insufficient_verified_sample"
+    },
+    {
+      "name": "Courtney E. Lewis",
+      "court": "Oakdale Immigration Court",
+      "type": "temporary_immigration_judge",
+      "asylumGrantRate": null,
+      "rateStatus": "insufficient_verified_sample"
+    },
+    {
+      "name": "Lauren Mayo",
+      "court": "Miami Krome (Detained) Immigration Court",
+      "type": "temporary_immigration_judge",
+      "asylumGrantRate": null,
+      "rateStatus": "insufficient_verified_sample"
+    },
+    {
+      "name": "Jacob E. Meusch",
+      "court": "Tacoma Immigration Court",
+      "type": "temporary_immigration_judge",
+      "asylumGrantRate": null,
+      "rateStatus": "insufficient_verified_sample"
+    }
+  ]
+}

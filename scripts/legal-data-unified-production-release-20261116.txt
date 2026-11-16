@@ -1,0 +1,4 @@
+Production release marker for consolidated BIA precedents (177), EOIR September 2026 adjudications (564615 merits), and 2026-10-22 immigration judge appointments.
+Source PR: https://github.com/huarenusvisa/trrb/pull/721
+EOIR verified import: https://github.com/huarenusvisa/trrb/actions/runs/43811268390
+Production deployment must use the existing single main production workflow.

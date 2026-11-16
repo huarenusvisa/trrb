@@ -1,4 +1,4 @@
-import { writeFileSync } from 'node:fs';
+import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 
 const SOURCES = [
   { volume: 29, url: 'https://www.justice.gov/eoir/volume-29' },
@@ -75,7 +75,22 @@ for (const entry of entries) {
   const prior = byCitation.get(key);
   if (!prior || (/\.pdf(?:$|[?#])/i.test(entry.officialPdfUrl) && !/\.pdf(?:$|[?#])/i.test(prior.officialPdfUrl))) byCitation.set(key, entry);
 }
-const decisions = [...byCitation.values()].sort((a, b) => b.volume - a.volume || b.reporterPage - a.reporterPage);
+const outputPath = 'data/legal/bia-precedent-latest.json';
+const prior = existsSync(outputPath) ? JSON.parse(readFileSync(outputPath,'utf8')) : {decisions:[]};
+const existingByCitation = new Map((prior.decisions || []).map(row => [`${row.volume}:${row.reporterPage}`,row]));
+const protectedFields = ['decisionDate','coreRuleEnglish','subsequentEffectStatus','precedentDesignationDate','precedentDesignationNote'];
+const newUnverified = [];
+const decisions = [...byCitation.values()].map(item => {
+  const old = existingByCitation.get(`${item.volume}:${item.reporterPage}`);
+  if (!old) {newUnverified.push(item.citation);return item;}
+  if (old.officialPdfUrl && old.officialPdfUrl !== item.officialPdfUrl) {
+    newUnverified.push(item.citation+' (official PDF URL changed)');
+    return item;
+  }
+  for (const field of protectedFields) if(old[field]!==undefined)item[field]=old[field];
+  return item;
+}).sort((a, b) => b.volume - a.volume || b.reporterPage - a.reporterPage);
+check(newUnverified.length===0, 'new or materially changed BIA precedent requires PDF/date/rule review before publication',newUnverified.join('; ').slice(0,400));
 for (const source of SOURCES) {
   const count = decisions.filter((decision) => decision.volume === source.volume).length;
   check(count >= 10, `BIA Volume ${source.volume} precedent decisions parsed`, `count=${count}`);
@@ -102,7 +117,15 @@ const output = {
   count: decisions.length,
   decisions
 };
-writeFileSync('data/legal/bia-precedent-latest.json', JSON.stringify(output, null, 2) + '\n');
+const compare = (value) => JSON.stringify({...value,generatedAt:null});
+if (compare(prior)===compare(output)) {
+  output.generatedAt=prior.generatedAt || output.generatedAt;
+  console.log('No semantic BIA precedent changes; keep existing checked data and original generatedAt');
+} else if (failures===0) {
+  writeFileSync(outputPath, JSON.stringify(output,null,2)+'\\n');
+} else {
+  console.log('BIA collector is fail-closed: source changes require manual verification; do not overwrite verified catalog');
+}
 writeFileSync('round15-node3-bia-precedent-audit.json', JSON.stringify({ generatedAt: new Date().toISOString(), sources: SOURCES, checks, failures, count: decisions.length }, null, 2) + '\n');
 console.log(`ROUND15 NODE3 audit: decisions=${decisions.length}; checks=${checks.length}; failures=${failures}`);
 if (failures === 0) console.log('ROUND15 NODE3 PASS: BIA precedent decision collection verified');

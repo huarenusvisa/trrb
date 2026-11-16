@@ -13,6 +13,7 @@ on:
       - '.github/workflows/china-hot-li-teacher-ingest.yml'
       - 'netlify/functions/_shared/china-hot-headlines.js'
       - 'scripts/china-hot-li-teacher-ingest.mjs'
+      - 'scripts/china-x-sources.mjs'
       - 'scripts/news-short-copy-expand.mjs'
       - 'scripts/china-context-research.mjs'
       - 'scripts/news-editorial-policy.mjs'
@@ -183,8 +184,8 @@ jobs:
     secrets: inherit
 
   china-hot-li-teacher:
-    needs: [automation-gate, ice]
-    # Serialize the two high-volume editorial collectors; still run China Hot if ICE failed or was disabled.
+    needs: automation-gate
+    # This intake also serves U.S. politics; let it start without waiting for ICE editing.
     if: ${{ always() && needs.automation-gate.result == 'success' && needs.automation-gate.outputs.global == 'true' && needs.automation-gate.outputs.china_hot == 'true' && (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' && (inputs.module == 'all' || inputs.module == 'china-hot')) }}
     uses: ./.github/workflows/china-hot-li-teacher-ingest.yml
     secrets: inherit

@@ -10,7 +10,12 @@ export const CHINA_X_SOURCES = [
   {handle:'VOAChinese',name:'美国之音中文网',reference:'https://www.voachinese.com/a/7438368.html'},
   {handle:'Focus_Taiwan',name:'中央社 Focus Taiwan',reference:'https://focustaiwan.tw/'},
 ];
-export function chinaMediaSource(handle) { return CHINA_X_SOURCES.find(source=>source.handle.toLowerCase()===String(handle||'').toLowerCase()) || null; }
+export const US_POLITICS_X_SOURCES = [
+ {handle:'AP_Politics',name:'Associated Press Politics',reference:'https://apnews.com/politics',usPolitics:true},
+ {handle:'NBCPolitics',name:'NBC News Politics',reference:'https://www.nbcnews.com/politics',usPolitics:true},
+ {handle:'thehill',name:'The Hill',reference:'https://thehill.com/',usPolitics:true},
+];
+export function chinaMediaSource(handle) { return [...CHINA_X_SOURCES,...US_POLITICS_X_SOURCES].find(source=>source.handle.toLowerCase()===String(handle||'').toLowerCase()) || null; }
 // These user-specified accounts are leads only; a blue badge does not verify a claim.
 export const CHINA_X_MONITORS = [
  {handle:'chinesehotnews',name:'CNC热点（社交线索）',reference:'https://x.com/chinesehotnews',reviewOnly:true},
@@ -22,6 +27,7 @@ export function chinaMediaQuery(source) {
  return `from:${source.handle} (${general}${subjects}) -is:retweet -is:reply`;
 }
 export function chinaMediaQueries(source) {
+ if(source.usPolitics) return [`from:${source.handle} (Congress OR Senate OR "White House" OR Trump OR "Supreme Court" OR "federal judge" OR "executive order" OR "House Republicans" OR "House Democrats" OR "federal budget") -is:retweet -is:reply`];
  const queries=[chinaMediaQuery(source)];
  if (!source.reviewOnly) queries.push(`from:${source.handle} (美国 OR 美國 OR 美方 OR 白宫 OR 白宮 OR 五角大楼 OR 五角大樓 OR 特朗普 OR 川普 OR 台海 OR 军售 OR 軍售 OR 美军 OR ICE OR FBI OR CBP OR Pentagon OR Hegseth OR "United States" OR "White House") -is:retweet -is:reply`);
  if (!source.reviewOnly) queries.push(`from:${source.handle} (法院 OR 判例 OR 裁定 OR 上诉 OR 留学生 OR 华人 OR 签证 OR 关税 OR 制裁 OR 反腐 OR 任免 OR 国务院 OR SupremeCourt OR USCIS OR DHS OR HSI OR DOJ) -is:retweet -is:reply`);
@@ -45,7 +51,7 @@ export async function collectChinaMediaPosts({request,readJson,bearer,lookbackHo
  const collected=[];
  const offset=Math.floor(Date.now()/3600000)%CHINA_X_SOURCES.length;
  const publishers=[...CHINA_X_SOURCES.slice(offset),...CHINA_X_SOURCES.slice(0,offset)];
- const sources=[...publishers,...(includeMonitors?CHINA_X_MONITORS:[])];
+ const sources=[...publishers,...US_POLITICS_X_SOURCES,...(includeMonitors?CHINA_X_MONITORS:[])];
  // One primary topic query per publisher before spending on extended keyword lists.
  const queries=sources.map(source=>({source,queries:chinaMediaQueries(source)}));
  for(let round=0;round<Math.max(...queries.map(x=>x.queries.length));round++) {

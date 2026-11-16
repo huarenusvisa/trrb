@@ -53,10 +53,12 @@
       "caseName": "Matter of PIERRE-LOUIS",
       "citation": "Matter of PIERRE-LOUIS, 30 I&N Dec. 212 (BIA 2026)",
       "reporterPage": 212,
-      "decisionDate": null,
+      "decisionDate": "2026-10-30",
       "officialPdfUrl": "https://www.justice.gov/eoir/media/1469491/dl?inline=",
-      "status": "official_index_verified_pdf_fetch_failed",
-      "sourceVerification": "Index official; PDF request failed, date/holding need verification"
+      "status": "verified_primary_pdf_pending_effect_check",
+      "sourceVerification": "EOIR official PDF first page reviewed 2026-11-16",
+      "coreRuleEnglish": "BIA generally declines sua sponte reopening for arriving alien to pursue USCIS adjustment; Matter of Yauri followed.",
+      "subsequentEffectStatus": "not_independently_checked"
     },
     {
       "caseName": "Matter of S-N-K-C-",
@@ -212,9 +214,9 @@
       "subsequentEffectStatus": "not_independently_checked"
     }
   ],
-  "status": "17-official-pdfs-verified; NOT publication-ready until effect/status and EOIR data batch",
+  "status": "18-official-PDFs-verified; awaiting subsequent effect and combined EOIR dataset integration",
   "required": "verify each PDF, ruling date, legal holding, subsequent status, exact dedup and downstream public readback before commit to production catalog",
-  "verifiedPdfCount": 17,
-  "pendingPdfCount": 1,
+  "verifiedPdfCount": 18,
+  "pendingPdfCount": 0,
   "verificationNote": "Separate original decision date from later AG designation as precedent for pages 191,195,199,203,207. No unverified subsequent effect asserted."
 }

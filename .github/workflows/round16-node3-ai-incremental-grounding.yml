@@ -74,3 +74,5 @@ jobs:
 
 # Round17 strict restart requests completion of the current missing Chinese analyses without changing legal facts.
 # Round17 node1 repair trigger: 2026-08-16T22:41Z.
+
+# 2026-11-16: trigger the existing verified AI legal-analysis incremental sync after official BIA index grew from 159 to 177.

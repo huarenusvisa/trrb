@@ -29,7 +29,8 @@ jobs:
       LI_TEACHER_LOOKBACK_HOURS: "12"
       LI_TEACHER_MAX_FETCH: ${{ inputs.recover_archived && '200' || '100' }}
       # 任正非专题按编辑要求暂停；即使本工作流手动开启，也不再搜索或更新该专题。
-      LI_TEACHER_MAX_PUBLISH: ${{ inputs.recover_archived && '150' || '20' }}
+      # Each slot is an editorial attempt, including duplicate and review outcomes.
+      LI_TEACHER_MAX_PUBLISH: ${{ inputs.recover_archived && '150' || '32' }}
       LI_TEACHER_PUBLISH_CONCURRENCY: "8"
       CHINA_HOT_REPAIR_SINCE: "2026-08-24T00:00:00Z"
       CHRT_INGEST_URL: "https://chinahumanrightstracker.org/api/ingest/trrb"

@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {isChinaPolitical,editorialTopics,POLITICS_FILTER} from '../netlify/shared/editorial-topics.mjs';
 import {buildCandidate,generateArticle,qualifyTweet,buildPublishedArticle,sourceFor,parseModelJson,eventDuplicate} from './china-hot-li-teacher-ingest.mjs';
-import {collectChinaMediaPosts,CHINA_X_SOURCES,US_POLITICS_X_SOURCES,CHINA_X_MONITORS,chinaMediaQuery,politicalReviewReason} from './china-x-sources.mjs';
+import {collectChinaMediaPosts,CHINA_X_SOURCES,US_POLITICS_X_SOURCES,CHINA_X_MONITORS,chinaMediaQuery,chinaMediaQueries,politicalReviewReason} from './china-x-sources.mjs';
 const body='重庆学校发布开学通知。'+Array.from({length:900},(_,i)=>String.fromCharCode(0x4e00+i)).join('');
 const source={id:'12345',text:'重庆学校今日公布开学安排，通知说明报到时间及校方调整安排。',created_at:new Date().toISOString(),media:[{type:'photo',url:'https://pbs.twimg.com/media/test.jpg'}]};
 const draft={title:'重庆学校公布开学安排',summary:'学校通知载明报到时间与调整安排。',content:body,source_sufficient:true,appears_old_news:false,old_news_reason:'',rejection_reason:'',seo_keywords:'重庆,开学',image_evidence:[{image_index:0,visible_text:'开学通知'}]};
@@ -62,6 +62,17 @@ test('cross-source dedupe checks facts and allows substantive follow-up',async t
  assert.equal(await eventDuplicate(current,[prior]),null);duplicate='prior';assert.equal((await eventDuplicate(current,[prior])).id,'prior');
 });
 
+test('China political developments get a separate early query on editorial publishers',()=>{
+ for(const source of CHINA_X_SOURCES) {
+  const query=chinaMediaQueries(source)[1];
+  assert.ok(query.startsWith(`from:${source.handle} (`));
+  assert.match(query,/政治局.*中纪委.*任免.*调查/);
+  assert.ok(query.length<512);
+ }
+ for(const source of [...US_POLITICS_X_SOURCES,...CHINA_X_MONITORS]) {
+  assert.ok(chinaMediaQueries(source).every(q=>!q.includes('Central Commission for Discipline Inspection')));
+ }
+});
 test('targeted source search covers named leaders and holds social/health/coup leads for review',async()=>{
  for(const source of [...CHINA_X_SOURCES,...CHINA_X_MONITORS]) {const q=chinaMediaQuery(source);assert.ok(q.length<512);assert.match(q,/李强/);assert.match(q,/省委书记/);}
  assert.ok(CHINA_X_SOURCES.some(s=>s.handle==='VOAChinese'));

@@ -189,16 +189,40 @@
     };
     if ('tags' in activeArticle) patch.tags = tags;
     else patch.seo_keywords = tags;
-    if ('updated_at' in activeArticle) patch.updated_at = new Date().toISOString();
-    if (status === 'published' && activeArticle.status !== 'published') patch.published_at = new Date().toISOString();
-
+    const article = activeArticle;
     save.disabled = true;
-    message.textContent = status === 'published' ? '正在保存并发布到新栏目...' : '正在保存...';
-    const { error } = await supabaseClient.from('articles').update(patch).eq('id', activeArticle.id);
-    save.disabled = false;
-    if (error) {
-      message.textContent = `保存失败：${error.message}`;
+    message.textContent = status === 'published' ? '正在保存并发布新版...' : '正在保存...';
+    try {
+      if (status === 'published') {
+        const token = await window.getAdminAccessToken();
+        if (!token) throw new Error('登录已失效，请重新登录。');
+        const response = await fetch('/.netlify/functions/admin-articles', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+          body: JSON.stringify({
+            action: 'republish_article', article_id: article.id,
+            expected_updated_at: article.updated_at, title, content,
+            cover_image: cover, category_id: patch.category_id, tags
+          }),
+          signal: AbortSignal.timeout(25000)
+        });
+        const result = await response.json().catch(() => ({}));
+        if (!response.ok || result.article?.id !== article.id || result.article?.status !== 'published' || result.article?.visibility !== 'public') {
+          throw new Error(result.error || '未收到发布确认，请先核对文章列表。');
+        }
+      } else {
+        patch.visibility = 'private';
+        if ('updated_at' in article) patch.updated_at = new Date().toISOString();
+        const { error } = await supabaseClient.from('articles').update(patch).eq('id', article.id);
+        if (error) throw error;
+      }
+    } catch (error) {
+      message.textContent = error.name === 'TimeoutError'
+        ? '未收到保存确认，请先核对文章列表；当前修改仍在编辑框中。'
+        : `保存失败：${error.message}`;
       return;
+    } finally {
+      save.disabled = false;
     }
     message.textContent = status === 'published' ? '修改已保存，并按当前所选栏目发布。' : '修改已保存。';
     if (typeof loadArticles === 'function') await loadArticles();

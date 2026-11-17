@@ -20,8 +20,9 @@ const { listManagedArticles, setManagedArticlePin } = require("./_shared/article
 const { publicDatabaseError } = require("./_shared/article-list-reader");
 
 const {saveManualArticle,lookupManualPublication}=require('./_shared/manual-article-save');
+const { republishArticle } = require("./_shared/republish-article");
 const ALLOWED_STATUS = new Set(["draft", "published", "hidden"]);
-const ADMIN_ACTIONS = new Set(["bootstrap", "list", "pin", "status", "suggest_titles", "upload_cover", "generate_cover", "save_article", "publication_status"]);
+const ADMIN_ACTIONS = new Set(["bootstrap", "list", "pin", "status", "suggest_titles", "upload_cover", "generate_cover", "save_article", "republish_article", "publication_status"]);
 const ICE_CATEGORIES = new Set(["ICE执法动态", "ICE执法", "驱逐快报"]);
 const IMMIGRATION_CATEGORY = "移民美国";
 
@@ -317,6 +318,7 @@ exports.handler = async (event) => {
     if (action === "suggest_titles") return json(200, { titles: await suggestTitles(input) });
     if (action === "upload_cover") return json(200, { url: await uploadManualCover(input) });
     if (action === "generate_cover") return json(200, { url: await generateCover(input), ai_generated: true });
+    if (action === "republish_article") return json(200, { article: await republishArticle(input, actor, rest, { validateExternalCover, assertNoPublishedDuplicate }) });
     if (action === "save_article") return json(200, await saveArticle(input, actor));
     if (action === "publication_status") return json(200, await lookupManualPublication(input,actor,rest));
     return json(400, { error: "未知操作" });

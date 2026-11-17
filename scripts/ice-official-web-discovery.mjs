@@ -13,7 +13,7 @@ const DISTRICT_FEEDS = [
   ['usao-edny','美国联邦检察署（纽约东区）',1971,186041],
   ['usao-sdtx','美国联邦检察署（得州南区）',2091,186171],
 ].map(([account,name,component,organization])=>{
-  const url=new URL('https://www.justice.gov/feeds/justice-news.xml');
+  const url=new URL('https://www.justice.gov/news/rss');
   url.search=new URLSearchParams({[`component[${component}]`]:String(component),organization:String(organization),'type[press_release]':'press_release'}).toString();
   return {url:url.href,account,name};
 });
@@ -32,6 +32,9 @@ async function officialText(url) {
   if(!res.ok) throw new Error(`官方来源HTTP ${res.status}`);
   const value=await res.text();if(value.length>3000000)throw new Error('官方页面超过读取上限');return value;
 }
+export function districtReleaseLead(value) {
+  return /immigrat|deport|removal order|illegal re.?entry|removable alien|homeland security|\bICE\b|\bERO\b|shooting|firearm|homicide|murder|trafficking|hate crime|kidnapping|fraud|money laundering|extortion|assault/i.test(String(value||''));
+}
 export function officialArticleText(html) {
   const main=html.match(/<article\b[^>]*>([\s\S]*?)<\/article>/i)?.[1] || html.match(/<main\b[^>]*>([\s\S]*?)<\/main>/i)?.[1];
   return main ? text(main).slice(0,24000) : '';
@@ -47,7 +50,7 @@ async function main() {
     }
     const {source,items}=result.value;
     for(const item of items){
-      if(source.url!==OFFICIAL_FEED && !/immigrat|deport|immigration detainer|removal order|illegal re.?entry|removable alien|homeland security|\bICE\b|\bERO\b/i.test(item.title+' '+item.description)) continue;
+      if(source.url!==OFFICIAL_FEED && !districtReleaseLead(item.title+' '+item.description)) continue;
       if(!unique.has(item.url)) unique.set(item.url,{...item,source});
     }
   }
@@ -60,11 +63,12 @@ async function main() {
       const exists=new URL(base+'/rest/v1/ice_posts');exists.searchParams.set('select','id');exists.searchParams.set('x_post_id','eq.'+id);
       const res=await fetch(exists,{headers,signal:AbortSignal.timeout(25000)});if(!res.ok)throw new Error(`来源去重HTTP ${res.status}`);if((await res.json()).length)continue;
       const body=officialArticleText(await officialText(item.url));if(body.length<120)throw new Error('未取得完整官方正文，保留到下一轮');
-      const source_text=`${item.title}\n${item.date}\n${body}`;
+      const source_text=`${item.title}\n${item.date}\nU.S. Department of Justice\n${body}`;
       const route=scope.collectionScope(source_text,{source_type:'official',trust_tier:1});
       const iceAction=/\b(?:ICE|ERO)\b|Immigration and Customs Enforcement|immigration detention|immigration detainer|deportation|illegal re.?entry|removal order/i.test(item.title+' '+body)
         && /arrest|detain|custody|deport|remov|charge|sentenc|enforce|re.?entry/i.test(item.title+' '+body);
-      if(!route || (item.source.url!==OFFICIAL_FEED && !iceAction))continue;
+      const criminalAction=districtReleaseLead(item.title+' '+item.description) && /arrest|charg|indict|sentenc|convict|seiz|plead|investigat/i.test(item.title+' '+body);
+      if(!route || (item.source.url!==OFFICIAL_FEED && !iceAction && !criminalAction))continue;
       const row={x_post_id:id,x_url:item.url,source_type:'official',source_username:item.source.account,source_display_name:item.source.name,trust_tier:1,independence_key:'official:justice.gov',source_created_at:new Date(item.date).toISOString(),source_text,media:[],raw_payload:{source_platform:'official_web',source_links:[item.url],feed:item.source.url,discovery:{collector:'unified-official-web-v1'}},relevant:null,processing_status:'collected',attempts:0};
       const saved=await fetch(base+'/rest/v1/ice_posts?on_conflict=x_post_id',{method:'POST',headers:{...headers,Prefer:'resolution=ignore-duplicates,return=representation'},body:JSON.stringify(row),signal:AbortSignal.timeout(25000)});
       if(!saved.ok)throw new Error(`官方线索入库HTTP ${saved.status}: ${(await saved.text()).slice(0,300)}`);inserted+=(await saved.json()).length;

@@ -37,7 +37,8 @@ export function usChinaCommunityQuery(source) {
  return `from:${source.handle} (${people}) (${location}) -is:retweet -is:reply`;
 }
 export function chinaMediaQueries(source) {
- if(source.usPolitics) return [`from:${source.handle} (Congress OR Senate OR "White House" OR Trump OR "Supreme Court" OR "federal judge" OR "executive order" OR "House Republicans" OR "House Democrats" OR "federal budget") -is:retweet -is:reply`];
+ if(source.usPolitics) return [`from:${source.handle} (Congress OR Senate OR "White House" OR Trump OR "Supreme Court" OR "federal judge" OR "executive order" OR "House Republicans" OR "House Democrats" OR "federal budget") -is:retweet -is:reply`,
+  `from:${source.handle} (immigration OR asylum OR deportation OR hearing OR subpoena OR oversight OR injunction OR shutdown OR appropriation OR "Department of Justice" OR "Homeland Security") -is:retweet -is:reply`];
  const queries=[chinaMediaQuery(source)];
  if (!source.reviewOnly) queries.push(chinaPoliticsIntakeQuery(source));
  if (!source.reviewOnly) queries.push(`from:${source.handle} (美国 OR 美國 OR 美方 OR 白宫 OR 白宮 OR 五角大楼 OR 五角大樓 OR 特朗普 OR 川普 OR 台海 OR 军售 OR 軍售 OR 美军 OR ICE OR FBI OR CBP OR Pentagon OR Hegseth OR "United States" OR "White House") -is:retweet -is:reply`);

@@ -7,7 +7,7 @@ import {editorialReady as promoteReady} from './ice-trusted-source-promote.mjs';
 import {isCandidate} from './ice-candidate-gate.mjs';
 import {classifyNewsQuality} from './ice-news-quality-gate.mjs';
 import routing from '../netlify/functions/_shared/official-content-routing.js';
-import {parseOfficialFeed,allowedOfficialUrl,officialArticleText} from './ice-official-web-discovery.mjs';
+import {parseOfficialFeed,allowedOfficialUrl,officialArticleText,OFFICIAL_SOURCES,districtReleaseLead} from './ice-official-web-discovery.mjs';
 import {researchEvent} from './china-context-research.mjs';
 import {translate} from './ice-translate-title-body.mjs';
 const source=url=>({url,kind:'web_evidence',tool_cited:true});
@@ -54,6 +54,18 @@ for(const [label,text,route] of [
 ]) test(`expanded ${label} survives collection gates and routes correctly`,()=>{const row={source_text:text,source_type:'major_media'};assert.equal(isCandidate(row),true);assert.equal(classifyNewsQuality(row).keep,true);assert.equal(routing.routeOfficialContent('', '',text).key,route);});
 test('unrelated, opinion-only and old uploads remain ineligible',()=>{
  for(const text of ['I hope Congress would change immigration policy.','We love ice cream.','A holiday greeting from the FBI.'])assert.equal(classifyNewsQuality({source_text:text,source_type:'official'}).keep,false,text);
+});
+test('district sources use canonical feeds and retain immigration and US crime leads',()=>{
+ const district=OFFICIAL_SOURCES.filter(source=>source.account.startsWith('usao-'));
+ assert.equal(district.length,6);
+ for(const source of district) {
+  const url=new URL(source.url);
+  assert.equal(url.pathname,'/news/rss');
+  assert.ok(url.searchParams.get('organization'));
+ }
+ assert.equal(districtReleaseLead('Defendant was sentenced for illegal reentry'),true);
+ assert.equal(districtReleaseLead('U.S. Attorney announces firearms trafficking charges'),true);
+ assert.equal(districtReleaseLead('United States Attorney announces office holiday hours'),false);
 });
 test('official feed rejects foreign hosts, old items, missing dates and future timestamps',()=>{
  const now=Date.parse('2026-09-25T10:00:00Z');const item=(url,date)=>`<item><title>DOJ issued charges</title><link>${url}</link><pubDate>${date}</pubDate><description>Facts</description></item>`;

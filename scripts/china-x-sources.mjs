@@ -26,6 +26,11 @@ export function chinaMediaQuery(source) {
  const general=source.reviewOnly?'': 'China OR Chinese OR Beijing OR "Xi Jinping" OR 中国 OR 中國 OR 中共 OR 香港 OR ';
  return `from:${source.handle} (${general}${subjects}) -is:retweet -is:reply`;
 }
+export function chinaPoliticsIntakeQuery(source) {
+ const bodies='政治局 OR 中央委员会 OR 中央委員會 OR 全国人大 OR 全國人大 OR 中纪委 OR 中紀委 OR 省委 OR 国务院 OR 國務院 OR 中央军委 OR 中央軍委 OR Politburo OR "Central Commission for Discipline Inspection"';
+ const developments='会议 OR 會議 OR 决定 OR 決定 OR 任免 OR 任命 OR 免职 OR 免職 OR 通报 OR 通報 OR 调查 OR 調查 OR 审查 OR 審查 OR 判决 OR 判決 OR appoint OR resign OR investigation';
+ return `from:${source.handle} (${bodies}) (${developments}) -is:retweet -is:reply`;
+}
 export function usChinaCommunityQuery(source) {
  const people='"Chinese American" OR "Chinese Americans" OR "Chinese national" OR "Chinese nationals" OR "Chinese immigrant" OR "Chinese student" OR "Chinese students" OR "Chinese community" OR 华裔 OR 華裔 OR 华人 OR 華人 OR 中国公民 OR 中國公民';
  const location='"United States" OR U.S. OR American OR California OR "New York" OR Texas OR Florida OR Washington OR Massachusetts OR Illinois OR "New Jersey" OR Chinatown OR 美国 OR 美國';
@@ -34,6 +39,7 @@ export function usChinaCommunityQuery(source) {
 export function chinaMediaQueries(source) {
  if(source.usPolitics) return [`from:${source.handle} (Congress OR Senate OR "White House" OR Trump OR "Supreme Court" OR "federal judge" OR "executive order" OR "House Republicans" OR "House Democrats" OR "federal budget") -is:retweet -is:reply`];
  const queries=[chinaMediaQuery(source)];
+ if (!source.reviewOnly) queries.push(chinaPoliticsIntakeQuery(source));
  if (!source.reviewOnly) queries.push(`from:${source.handle} (美国 OR 美國 OR 美方 OR 白宫 OR 白宮 OR 五角大楼 OR 五角大樓 OR 特朗普 OR 川普 OR 台海 OR 军售 OR 軍售 OR 美军 OR ICE OR FBI OR CBP OR Pentagon OR Hegseth OR "United States" OR "White House") -is:retweet -is:reply`);
  if (!source.reviewOnly) queries.push(`from:${source.handle} (法院 OR 判例 OR 裁定 OR 上诉 OR 留学生 OR 华人 OR 签证 OR 关税 OR 制裁 OR 反腐 OR 任免 OR 国务院 OR SupremeCourt OR USCIS OR DHS OR HSI OR DOJ) -is:retweet -is:reply`);
  const prefix=`from:${source.handle} (`; const suffix=') -is:retweet -is:reply';

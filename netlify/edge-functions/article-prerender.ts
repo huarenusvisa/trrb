@@ -92,6 +92,34 @@ function dbHeaders(key: string) {
   return { apikey: key, Authorization: `Bearer ${key}`, Accept: "application/json" };
 }
 
+const RETRYABLE_UPSTREAM_STATUS = new Set([408, 429, 500, 502, 503, 504]);
+
+async function fetchSupabaseRows(url: URL, key: string, label: string) {
+  let lastError: unknown = null;
+  for (let attempt = 0; attempt < 2; attempt += 1) {
+    let response: Response;
+    try {
+      response = await fetch(url, { headers: dbHeaders(key), cache: "no-store" });
+    } catch (error) {
+      lastError = error;
+      if (attempt === 0) {
+        await new Promise((resolve) => setTimeout(resolve, 120));
+        continue;
+      }
+      throw error;
+    }
+    if (response.ok) return await response.json();
+    const error = new Error(`${label} ${response.status}`);
+    lastError = error;
+    if (attempt === 0 && RETRYABLE_UPSTREAM_STATUS.has(response.status)) {
+      await new Promise((resolve) => setTimeout(resolve, 120));
+      continue;
+    }
+    throw error;
+  }
+  throw lastError || new Error(`${label} unavailable`);
+}
+
 const ARTICLE_SELECT = "publication_path,publication_html,publication_revision,publication_updated_at,id,title,slug,summary,content,category_id,category_name,topic_key,cover_image,source_url,seo_keywords,author,status,visibility,published_at,created_at,metadata";
 
 async function getArticleById(id: string) {
@@ -106,9 +134,7 @@ async function getArticleById(id: string) {
   url.searchParams.set("archived_at", "is.null");
   url.searchParams.set("published_at", `lte.${new Date().toISOString()}`);
   url.searchParams.set("limit", "1");
-  const response = await fetch(url, { headers: dbHeaders(key), cache: "no-store" });
-  if (!response.ok) throw new Error(`Supabase article id ${response.status}`);
-  const rows = await response.json();
+  const rows = await fetchSupabaseRows(url, key, "Supabase article id");
   return Array.isArray(rows) && rows[0] ? rows[0] : null;
 }
 
@@ -125,9 +151,7 @@ async function getArticleBySlug(slug: string) {
   url.searchParams.set("published_at", `lte.${new Date().toISOString()}`);
   url.searchParams.set("order", "published_at.desc.nullslast,created_at.desc");
   url.searchParams.set("limit", "1");
-  const response = await fetch(url, { headers: dbHeaders(key), cache: "no-store" });
-  if (!response.ok) throw new Error(`Supabase article slug ${response.status}`);
-  const rows = await response.json();
+  const rows = await fetchSupabaseRows(url, key, "Supabase article slug");
   return Array.isArray(rows) && rows[0] ? rows[0] : null;
 }
 
@@ -166,9 +190,7 @@ async function getCategorySlug(article: any): Promise<string> {
   url.searchParams.set("limit", "1");
 
   try {
-    const response = await fetch(url, { headers: dbHeaders(key), cache: "no-store" });
-    if (!response.ok) throw new Error(`Article category unavailable: ${response.status}`);
-    const rows = await response.json();
+    const rows = await fetchSupabaseRows(url, key, "Article category unavailable:");
     const slug = clean(Array.isArray(rows) && rows[0] ? rows[0].slug : "");
     return canonicalSection(slug || fallback || "news");
   } catch (error) {

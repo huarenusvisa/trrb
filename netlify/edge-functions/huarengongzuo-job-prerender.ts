@@ -113,9 +113,7 @@ function schemaFor(job: any, canonical: string) {
     directApply: true,
     hiringOrganization: {
       "@type": "Organization",
-      name: clean(job.company_name),
-      sameAs: SITE,
-      logo: `${SITE}/icon-512.png`
+      name: clean(job.company_name)
     },
     jobLocation: {
       "@type": "Place",

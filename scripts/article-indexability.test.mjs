@@ -161,6 +161,22 @@ for (const unavailable of ['/rest/v1/articles','/rest/v1/categories']) {
   });
 }
 
+test('a single article database connection reset is retried before returning 503',async t=>{
+  useFixture(t,[article()]);
+  const original=globalThis.fetch;
+  let articleCalls=0;
+  t.mock.method(globalThis,'fetch',async input=>{
+    if(new URL(String(input)).pathname==='/rest/v1/articles' && ++articleCalls===1) {
+      throw new TypeError('connection reset');
+    }
+    return original(input);
+  });
+  const response=await articlePage(new Request('https://trrb.net/hot-headlines/short-news'),context);
+  assert.equal(response.status,200);
+  assert.equal(articleCalls,2);
+  assert.match(await response.text(),/<h1>快讯<\/h1>/);
+});
+
 test('template HTTP outages do not affect rendering; template is bundled with the deploy',async t=>{
   useFixture(t,[article()]);
   const original=globalThis.fetch;

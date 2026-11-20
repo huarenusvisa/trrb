@@ -87,6 +87,29 @@ test('empty, nonexistent and unavailable categories retain nonindexable errors',
   assert.match(response.headers.get('x-robots-tag'), /noindex/);
 });
 
+test('category data retries one transient network failure before rendering', async t => {
+  const originalDeno = globalThis.Deno;
+  globalThis.Deno = { env: { get: key => key === 'SUPABASE_URL' ? 'https://database.test' : 'fixture-key' } };
+  t.after(() => { globalThis.Deno = originalDeno; });
+  let categoryPageAttempts = 0;
+  t.mock.method(globalThis, 'fetch', async input => {
+    const url = new URL(String(input));
+    if (url.pathname === '/rest/v1/categories') return Response.json([]);
+    if (url.pathname === '/.netlify/functions/public-category-page') {
+      categoryPageAttempts += 1;
+      if (categoryPageAttempts === 1) throw new TypeError('connection reset');
+      return Response.json({ total: 1, total_pages: 1, articles: [
+        { id: '1', slug: 'recovered', title: '重试后恢复的新闻', summary: '新闻事实。', category_name: '热门头条' }
+      ] });
+    }
+    return new Response(template);
+  });
+  const response = await categoryPage(new Request('https://trrb.net/hot-headlines'), context);
+  assert.equal(response.status, 200);
+  assert.equal(categoryPageAttempts, 2);
+  assert.match(await response.text(), /重试后恢复的新闻/);
+});
+
 test('redirect finalization removes normalized ICE self-loops, including stale generated rules', () => {
   const dir = mkdtempSync(path.join(tmpdir(), 'trrb-ice-redirects-'));
   try {

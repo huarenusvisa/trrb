@@ -9,7 +9,7 @@ function load(name, fetch) {
   let source = readFileSync(new URL(`../netlify/edge-functions/${name}.ts`, import.meta.url), 'utf8');
   source = source.replace(/^import .*;\n/gm, '').replace('export const config', 'const config')
     .replace('export default async', 'globalThis.handler = async');
-  const context = vm.createContext({ URL, Request, Response, console, fetch,
+  const context = vm.createContext({ URL, Request, Response, AbortController, setTimeout, clearTimeout, console, fetch,
     Deno: { env: { get: () => undefined } }, finalHotCanonicalForLegacyId: () => '' });
   vm.runInContext(stripTypeScriptTypes(source), context);
   return context;
@@ -51,4 +51,17 @@ test('database outage remains retryable, never retires an article', async () => 
   const response = await context.handler(new Request('https://trrb.net/旧文章标题/'), {});
   assert.equal(response.status, 503);
   assert.equal(response.headers.get('retry-after'), '300');
+});
+
+test('a transient database connection reset is retried before returning a legacy redirect', async () => {
+  let attempts = 0;
+  const context = load('legacy-url-redirect', async () => {
+    attempts += 1;
+    if (attempts === 1) throw new TypeError('connection reset');
+    return Response.json([{ new_path: destination }]);
+  });
+  const response = await context.handler(new Request('https://trrb.net/旧文章标题/'), {});
+  assert.equal(response.status, 301);
+  assert.equal(response.headers.get('location'), new URL(destination).href);
+  assert.equal(attempts, 2);
 });

@@ -1,6 +1,8 @@
 import { publicationUrl } from "../shared/publication.mjs";
 const SITE = "https://trrb.net";
 const PAGE_SIZE = 24;
+const READ_TIMEOUT_MS = 10_000;
+const TRANSIENT_READ_STATUS = new Set([408, 425, 429, 500, 502, 503, 504]);
 
 const ROUTES: Record<string, { name: string; displayName?: string; description: string }> = {
   "/important-news": { name: "重要新闻", description: "唐人日报重要新闻，聚焦美国、中国及全球重大事件与突发动态。" },
@@ -58,12 +60,31 @@ function supabaseConfig() {
 function headers(key: string) {
   return { apikey: key, Authorization: `Bearer ${key}`, Accept: "application/json" };
 }
+async function fetchRead(input: URL | RequestInfo, init: RequestInit = {}) {
+  let lastError: unknown;
+  for (let attempt = 1; attempt <= 2; attempt += 1) {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), READ_TIMEOUT_MS);
+    try {
+      const response = await fetch(input, { ...init, signal: controller.signal });
+      if (!TRANSIENT_READ_STATUS.has(response.status) || attempt === 2) return response;
+      lastError = new Error(`transient read ${response.status}`);
+    } catch (error) {
+      lastError = error;
+      if (attempt === 2) throw error;
+    } finally {
+      clearTimeout(timeout);
+    }
+    await new Promise((resolve) => setTimeout(resolve, 150));
+  }
+  throw lastError instanceof Error ? lastError : new Error("transient read failed");
+}
 async function fetchJson(path: string, params: Record<string, string>) {
   const { base, key } = supabaseConfig();
   if (!base || !key) throw new Error("Supabase config missing");
   const url = new URL(`${base}/rest/v1/${path}`);
   Object.entries(params).forEach(([k, v]) => url.searchParams.set(k, v));
-  const res = await fetch(url, { cache: "no-store", headers: headers(key) });
+  const res = await fetchRead(url, { cache: "no-store", headers: headers(key) });
   if (!res.ok) throw new Error(`${path} ${res.status}`);
   const data = await res.json();
   return Array.isArray(data) ? data : [];
@@ -82,7 +103,7 @@ async function fetchCategoryPage(request: Request, category: string, page: numbe
   url.searchParams.set("category", category);
   url.searchParams.set("page", String(page));
   url.searchParams.set("page_size", String(PAGE_SIZE));
-  const response = await fetch(url, {
+  const response = await fetchRead(url, {
     cache: "no-store",
     headers: { Accept: "application/json", "Cache-Control": "no-cache" }
   });
@@ -136,7 +157,7 @@ function pagination(path: string, page: number, totalPages: number): string {
 }
 async function template(request: Request) {
   const url = new URL("/listing.html?__trrb_category_template=1", request.url);
-  return fetch(url, { headers: { "X-TRRB-Category-Template": "1" } });
+  return fetchRead(url, { headers: { "X-TRRB-Category-Template": "1" } });
 }
 function fail(status: number, message: string, marker: string): Response {
   const body = `<!doctype html><html lang="zh-Hans"><head><meta charset="utf-8"><meta name="robots" content="noindex,follow,noarchive"><title>${esc(message)} - 唐人日报</title></head><body><main><h1>${esc(message)}</h1><p><a href="/">返回唐人日报首页</a></p></main></body></html>`;

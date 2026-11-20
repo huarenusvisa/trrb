@@ -35,6 +35,9 @@ assert.match(page, /clean\(job\.description\)\.length\s*>=\s*MIN_DESCRIPTION/, "
 assert.match(page, /expires\s*>\s*Date\.now\(\)/, "future-expiry gate missing");
 assert.match(page, /publicAction\(job\)/, "public apply/contact gate missing");
 assert.match(page, /validCompany\(job\.company_name\)/, "placeholder employer gate missing from job page");
+assert.doesNotMatch(page, /sameAs:\s*SITE/, "job board must not be listed as employer sameAs");
+assert.doesNotMatch(page, /logo:\s*`\$\{SITE\}\/icon-512\.png`/, "job board logo must not be attributed to the employer");
+assert.match(page, /name:\s*clean\(job\.company_name\)/, "employer identity must come from actual listing");
 for (const placeholder of ["未公开雇主", "招聘方未公开名称", "unknown", "confidential"]) {
   assert.ok(page.includes(placeholder), `job page does not reject placeholder employer: ${placeholder}`);
 }

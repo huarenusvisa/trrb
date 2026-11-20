@@ -3,6 +3,8 @@ import { finalHotCanonicalForLegacyId } from "../shared/legacy-final-hot-redirec
 const SITE_ORIGIN = "https://trrb.net";
 const FALLBACK_SUPABASE_URL = "https://fwiznbpsqkfgkvyznebz.supabase.co";
 const FALLBACK_SUPABASE_KEY = "sb_publishable_hSmKJghvQoJKg0m5loDQ2g_f1gu8qak";
+const READ_TIMEOUT_MS = 8_000;
+const TRANSIENT_READ_STATUS = new Set([408, 425, 429, 500, 502, 503, 504]);
 
 export const config = { path: "/*" };
 
@@ -86,6 +88,26 @@ function supabaseConfig() {
   return { base, key };
 }
 
+async function fetchRead(input: URL | RequestInfo, init: RequestInit = {}): Promise<Response> {
+  let lastError: unknown;
+  for (let attempt = 1; attempt <= 2; attempt += 1) {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), READ_TIMEOUT_MS);
+    try {
+      const response = await fetch(input, { ...init, signal: controller.signal });
+      if (!TRANSIENT_READ_STATUS.has(response.status) || attempt === 2) return response;
+      lastError = new Error(`transient read ${response.status}`);
+    } catch (error) {
+      lastError = error;
+      if (attempt === 2) throw error;
+    } finally {
+      clearTimeout(timeout);
+    }
+    await new Promise((resolve) => setTimeout(resolve, 150));
+  }
+  throw lastError instanceof Error ? lastError : new Error("transient read failed");
+}
+
 function safeCanonical(value: unknown): string {
   const canonical = String(value || "").trim();
   if (!canonical.startsWith(`${SITE_ORIGIN}/`)) return "";
@@ -117,7 +139,7 @@ async function resolveStoredRedirect(url: URL): Promise<Response | null> {
     lookup.searchParams.set("select", "new_path");
     lookup.searchParams.set("old_path", `eq.${oldPath}`);
     lookup.searchParams.set("limit", "1");
-    const response = await fetch(lookup, { headers });
+    const response = await fetchRead(lookup, { headers });
     if (!response.ok) throw new Error(`stored redirect lookup failed ${response.status}`);
     const rows = await response.json();
     const destination = Array.isArray(rows) ? String(rows[0]?.new_path || "") : "";
@@ -146,7 +168,7 @@ async function resolveLegacyWpArticle(url: URL): Promise<Response | null> {
     lookup.searchParams.set("legacy_id", `eq.${legacyId}`);
     lookup.searchParams.set("status", "eq.published");
     lookup.searchParams.set("limit", "1");
-    const response = await fetch(lookup, {
+    const response = await fetchRead(lookup, {
       headers: { apikey: key, Authorization: `Bearer ${key}`, Accept: "application/json" }
     });
     if (!response.ok) throw new Error(`legacy id lookup failed ${response.status}`);
@@ -158,7 +180,7 @@ async function resolveLegacyWpArticle(url: URL): Promise<Response | null> {
       aliasLookup.searchParams.set("metadata->legacy_alias_ids", `cs.["${legacyId.toLowerCase()}"]`);
       aliasLookup.searchParams.set("status", "eq.published");
       aliasLookup.searchParams.set("limit", "1");
-      const aliasResponse = await fetch(aliasLookup, {
+      const aliasResponse = await fetchRead(aliasLookup, {
         headers: { apikey: key, Authorization: `Bearer ${key}`, Accept: "application/json" }
       });
       if (!aliasResponse.ok) throw new Error(`legacy alias lookup failed ${aliasResponse.status}`);
@@ -186,7 +208,7 @@ async function isActiveCategorySlug(slug: string): Promise<boolean> {
   url.searchParams.set("slug", `eq.${slug}`);
   url.searchParams.set("is_active", "eq.true");
   url.searchParams.set("limit", "1");
-  const response = await fetch(url, {
+  const response = await fetchRead(url, {
     headers: { apikey: key, Authorization: `Bearer ${key}`, Accept: "application/json" }
   });
   if (!response.ok) throw new Error(`category lookup failed ${response.status}`);
@@ -206,7 +228,7 @@ async function fetchCandidates(title: string): Promise<ArticleCandidate[]> {
   exact.searchParams.set("status", "eq.published");
   exact.searchParams.set("title", `eq.${title}`);
   exact.searchParams.set("limit", "2");
-  const exactResponse = await fetch(exact, { headers });
+  const exactResponse = await fetchRead(exact, { headers });
   if (!exactResponse.ok) throw new Error(`exact article lookup failed ${exactResponse.status}`);
   const exactRows = await exactResponse.json();
   if (Array.isArray(exactRows) && exactRows.length) return exactRows;
@@ -228,7 +250,7 @@ async function fetchCandidates(title: string): Promise<ArticleCandidate[]> {
     fuzzy.searchParams.set("title", `ilike.*${probe}*`);
     fuzzy.searchParams.set("order", "published_at.desc.nullslast,created_at.desc");
     fuzzy.searchParams.set("limit", "20");
-    const response = await fetch(fuzzy, { headers });
+    const response = await fetchRead(fuzzy, { headers });
     if (!response.ok) continue;
     successfulProbe = true;
     const rows = await response.json();

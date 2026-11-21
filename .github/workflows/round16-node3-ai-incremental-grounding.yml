@@ -58,7 +58,7 @@ jobs:
           const expected=process.argv[2]; const count=Number(process.argv[3]);
           const url='https://trrb.net/data/legal/legal-ai-analysis-latest.json';
           let last='';
-          for(let i=0;i<20;i++){
+          // The single production gate can legitimately take more than five minutes\n          // to rebuild, upload, and complete exact-SHA acceptance.\n          for(let i=0;i<40;i++){
             try{
               const r=await fetch(`${url}?round16node3=${Date.now()}`,{headers:{'cache-control':'no-cache'}});
               last=`HTTP ${r.status}`;

@@ -12,9 +12,9 @@ function isTimestampOnlyAudit(file) {
   if (file.filename !== NON_RUNTIME_AUDIT || file.previous_filename
     || file.status !== 'modified' || file.additions !== 1 || file.deletions !== 1
     || file.changes !== 2 || typeof file.patch !== 'string') return false;
-  const lines = file.patch.split(/\\r?\\n/).filter(line => /^[+-](?![+-])/.test(line));
+  const lines = file.patch.split(/\r?\n/).filter(line => /^[+-](?![+-])/.test(line));
   return lines.length === 2 && lines[0][0] !== lines[1][0]
-    && lines.every(line => /^[+-]\\s*"generatedAt":\\s*"\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z",?\\s*$/.test(line));
+    && lines.every(line => /^[+-]\s*"generatedAt":\s*"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z",?\s*$/.test(line));
 }
 export function isWorkflowOnlyDifference(compare, liveSha) {
   const files = compare?.files;

@@ -58,13 +58,15 @@ jobs:
           const expected=process.argv[2]; const count=Number(process.argv[3]);
           const url='https://trrb.net/data/legal/legal-ai-analysis-latest.json';
           let last='';
-          // The single production gate can legitimately take more than five minutes\n          // to rebuild, upload, and complete exact-SHA acceptance.\n          for(let i=0;i<40;i++){
+          // The single production gate can legitimately take more than five minutes
+          // to rebuild, upload, and complete exact-SHA acceptance.
+          for(let i=0;i<40;i++){
             try{
               const r=await fetch(`${url}?round16node3=${Date.now()}`,{headers:{'cache-control':'no-cache'}});
               last=`HTTP ${r.status}`;
               if(r.ok){const d=await r.json();last=`version=${d.datasetVersion} count=${d.count}`;if(d.datasetVersion===expected&&Number(d.count)===count){console.log(`PASS production AI legal analysis synchronized — ${last}`);console.log('ROUND16 NODE3 PRODUCTION PASS');process.exit(0)}}
             }catch(e){last=e.message}
-            console.log(`Production not synchronized yet (${i+1}/20): ${last}`);await new Promise(r=>setTimeout(r,15000));
+            console.log(`Production not synchronized yet (${i+1}/40): ${last}`);await new Promise(r=>setTimeout(r,15000));
           }
           console.error(`FAIL production AI legal analysis mismatch: ${last}`);process.exit(1);
           NODE

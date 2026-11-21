@@ -1,6 +1,9 @@
 import { finalHotCanonicalForLegacyId } from "../shared/legacy-final-hot-redirects.js";
 
 const SITE = "https://trrb.net";
+const READ_TIMEOUT_MS = 2_500;
+const ARCHIVE_TIMEOUT_MS = 3_000;
+const TRANSIENT_READ_STATUS = new Set([408, 425, 429, 500, 502, 503, 504]);
 
 // Runs before article-prerender. It retires truly missing WordPress/numeric
 // query URLs, preserves valid numeric archives, and prevents deleted/invalid
@@ -49,6 +52,26 @@ function dbHeaders(key: string) {
   return { apikey: key, Authorization: `Bearer ${key}`, Accept: "application/json" };
 }
 
+async function fetchRead(input: URL | RequestInfo, init: RequestInit = {}, timeoutMs = READ_TIMEOUT_MS): Promise<Response> {
+  let lastError: unknown;
+  for (let attempt = 1; attempt <= 2; attempt += 1) {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), timeoutMs);
+    try {
+      const response = await fetch(input, { ...init, signal: controller.signal });
+      if (!TRANSIENT_READ_STATUS.has(response.status) || attempt === 2) return response;
+      lastError = new Error(`transient read ${response.status}`);
+    } catch (error) {
+      lastError = error;
+      if (attempt === 2) throw error;
+    } finally {
+      clearTimeout(timeout);
+    }
+    await new Promise((resolve) => setTimeout(resolve, 150));
+  }
+  throw lastError instanceof Error ? lastError : new Error("transient read failed");
+}
+
 async function fetchLegacyArticle(id: string) {
   const { base, key } = supabaseConfig();
   if (!base || !key) return { available: false, article: null };
@@ -60,7 +83,7 @@ async function fetchLegacyArticle(id: string) {
     url.searchParams.set("legacy_id", `eq.${legacyId}`);
     url.searchParams.set("status", "eq.published");
     url.searchParams.set("limit", "1");
-    const response = await fetch(url, { cache: "no-store", headers: dbHeaders(key) });
+    const response = await fetchRead(url, { cache: "no-store", headers: dbHeaders(key) });
     // Schema/network failure must never turn every historical article into a 410.
     if (!response.ok) return { available: false, article: null };
     const rows = await response.json();
@@ -72,7 +95,7 @@ async function fetchLegacyArticle(id: string) {
   aliasUrl.searchParams.set("metadata->legacy_alias_ids", `cs.["${aliasId}"]`);
   aliasUrl.searchParams.set("status", "eq.published");
   aliasUrl.searchParams.set("limit", "1");
-  const aliasResponse = await fetch(aliasUrl, { cache: "no-store", headers: dbHeaders(key) });
+  const aliasResponse = await fetchRead(aliasUrl, { cache: "no-store", headers: dbHeaders(key) });
   if (!aliasResponse.ok) return { available: false, article: null };
   const aliasRows = await aliasResponse.json();
   if (Array.isArray(aliasRows) && aliasRows[0]) return { available: true, article: aliasRows[0] };
@@ -88,7 +111,7 @@ async function fetchPublishedArticleById(id: string) {
   url.searchParams.set("status", "eq.published");
   url.searchParams.set("limit", "1");
   try {
-    const response = await fetch(url, { cache: "no-store", headers: dbHeaders(key) });
+    const response = await fetchRead(url, { cache: "no-store", headers: dbHeaders(key) });
     if (!response.ok) return { available: false, article: null };
     const rows = await response.json();
     return { available: true, article: Array.isArray(rows) && rows[0] ? rows[0] : null };
@@ -100,12 +123,14 @@ async function fetchPublishedArticleById(id: string) {
 let archivePromise: Promise<string | null> | null = null;
 async function archiveSource(request: Request): Promise<string | null> {
   if (!archivePromise) {
-    archivePromise = fetch(new URL("/articles-home-index.js", request.url), {
+    archivePromise = fetchRead(new URL("/articles-home-index.js", request.url), {
       cache: "force-cache",
       headers: { Accept: "application/javascript,text/plain,*/*" }
-    }).then(async (response) => response.ok ? await response.text() : null).catch(() => null);
+    }, ARCHIVE_TIMEOUT_MS).then(async (response) => response.ok ? await response.text() : null).catch(() => null);
   }
-  return archivePromise;
+  const source = await archivePromise;
+  if (source == null) archivePromise = null;
+  return source;
 }
 async function archiveHasId(request: Request, numericId: string): Promise<boolean | null> {
   if (!/^\d+$/.test(numericId)) return false;
@@ -130,7 +155,7 @@ async function categorySlug(article: any): Promise<string> {
   url.searchParams.set("is_active", "eq.true");
   url.searchParams.set("limit", "1");
   try {
-    const response = await fetch(url, { cache: "no-store", headers: dbHeaders(key) });
+    const response = await fetchRead(url, { cache: "no-store", headers: dbHeaders(key) });
     if (!response.ok) return fallback;
     const rows = await response.json();
     return canonicalSection(Array.isArray(rows) && rows[0]?.slug ? rows[0].slug : fallback);

@@ -76,3 +76,4 @@ jobs:
 # Round17 node1 repair trigger: 2026-08-16T22:41Z.
 
 # 2026-11-16: trigger the existing verified AI legal-analysis incremental sync after official BIA index grew from 159 to 177.
+# 2026-11-21: trigger the same fingerprint-aware sync after verified Matter of K-L-S- increased BIA precedent count from 177 to 178.

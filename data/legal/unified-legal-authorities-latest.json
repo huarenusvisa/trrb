@@ -1,16 +1,16 @@
 {
   "schemaVersion": 1,
-  "datasetVersion": "1dbe7029b571c2789d087fab3dec5e47aa0159bcea4a2ad32cd6ae52e8114094",
+  "datasetVersion": "e6916bd520b2316968ecde6f090835e67cc2fff1abf765ee187a4fd3666de533",
   "versionStrategy": "SHA-256 over normalized deduplicated records; identical legal content produces identical version.",
   "scope": "TRRB U.S. judiciary and regulatory database. Database records remain separate from ordinary news articles.",
   "sourceCounts": {
     "SCOTUS": 68,
     "US_CIRCUIT": 412,
-    "BIA": 177,
+    "BIA": 178,
     "WHITE_HOUSE": 10,
     "FEDERAL_REGISTER": 50
   },
-  "count": 717,
+  "count": 718,
   "records": [
     {
       "id": "6d71998164d7fa814946b7a3",
@@ -2531,6 +2531,21 @@
       "officialUrl": "https://www.justice.gov/eoir/media/1471516/dl?inline=",
       "officialPdfUrl": "https://www.justice.gov/eoir/media/1471516/dl?inline=",
       "sourceKey": "BIA:30:236"
+    },
+    {
+      "id": "5e789e70a8b0bdea79114e17",
+      "sourceSystem": "BIA",
+      "authorityType": "BIA Precedent Decision",
+      "issuingBody": "Board of Immigration Appeals",
+      "jurisdiction": "United States",
+      "publicationDate": null,
+      "docket": null,
+      "title": "Matter of K-L-S-",
+      "citation": "Matter of K-L-S-, 30 I&N Dec. 241 (BIA 2026)",
+      "precedentialStatus": "precedential",
+      "officialUrl": "https://www.justice.gov/eoir/media/1472791/dl?inline=",
+      "officialPdfUrl": "https://www.justice.gov/eoir/media/1472791/dl?inline=",
+      "sourceKey": "BIA:30:241"
     },
     {
       "id": "6218c8702e456e252734a397",

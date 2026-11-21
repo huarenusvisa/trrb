@@ -65,3 +65,40 @@ test('a transient database connection reset is retried before returning a legacy
   assert.equal(response.headers.get('location'), new URL(destination).href);
   assert.equal(attempts, 2);
 });
+
+test('legacy query guard retries a transient migration lookup before redirecting', async () => {
+  let attempts = 0;
+  const context = load('00-legacy-article-query-guard', async (input) => {
+    const url = new URL(String(input));
+    if (url.hostname !== 'database.test') throw new Error(`unexpected fetch ${url}`);
+    attempts += 1;
+    if (attempts === 1) throw new TypeError('connection reset');
+    return Response.json([{ id: 'article-1', canonical_url: destination }]);
+  });
+  context.Deno.env.get = key => key === 'SUPABASE_URL' ? 'https://database.test' : 'fixture-key';
+  const response = await context.handler(new Request('https://trrb.net/article.html?id=989'), {
+    next() { throw new Error('Recovered migration lookup must redirect'); }
+  });
+  assert.equal(response.status, 301);
+  assert.equal(response.headers.get('location'), new URL(destination).href);
+  assert.equal(attempts, 2);
+});
+
+test('legacy query guard retries the static archive and fails open after exhaustion', async () => {
+  let archiveAttempts = 0;
+  const context = load('00-legacy-article-query-guard', async (input) => {
+    const url = new URL(String(input));
+    if (url.hostname === 'database.test') return Response.json([]);
+    if (url.pathname === '/articles-home-index.js') {
+      archiveAttempts += 1;
+      throw new TypeError('static origin reset');
+    }
+    throw new Error(`unexpected fetch ${url}`);
+  });
+  context.Deno.env.get = key => key === 'SUPABASE_URL' ? 'https://database.test' : 'fixture-key';
+  const response = await context.handler(new Request('https://trrb.net/article.html?id=989'), {
+    next() { return new Response('', { status: 200 }); }
+  });
+  assert.equal(response.status, 200);
+  assert.equal(archiveAttempts, 2);
+});

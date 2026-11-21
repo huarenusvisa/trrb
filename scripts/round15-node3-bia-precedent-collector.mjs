@@ -17,6 +17,15 @@ function clean(s = '') {
   return s.replace(/<script[\s\S]*?<\/script>/gi, ' ').replace(/<style[\s\S]*?<\/style>/gi, ' ').replace(/<[^>]+>/g, ' ').replace(/&nbsp;/gi, ' ').replace(/&amp;/gi, '&').replace(/&#39;/g, "'").replace(/&quot;/g, '"').replace(/\s+/g, ' ').trim();
 }
 function abs(base, href) { try { return new URL(href, base).toString(); } catch { return ''; } }
+function officialDocumentIdentity(value = '') {
+  try {
+    const url = new URL(value);
+    if (!/(^|\.)justice\.gov$/i.test(url.hostname)) return value;
+    return `${url.protocol}//${url.hostname}${url.pathname.replace(/\/+$/, '')}`;
+  } catch {
+    return value;
+  }
+}
 async function get(url, accept = 'text/html,application/xhtml+xml,*/*;q=0.8', timeout = 20000) {
   const ac = new AbortController();
   const timer = setTimeout(() => ac.abort(), timeout);
@@ -83,10 +92,11 @@ const newUnverified = [];
 const decisions = [...byCitation.values()].map(item => {
   const old = existingByCitation.get(`${item.volume}:${item.reporterPage}`);
   if (!old) {newUnverified.push(item.citation);return item;}
-  if (old.officialPdfUrl && old.officialPdfUrl !== item.officialPdfUrl) {
+  if (old.officialPdfUrl && officialDocumentIdentity(old.officialPdfUrl) !== officialDocumentIdentity(item.officialPdfUrl)) {
     newUnverified.push(item.citation+' (official PDF URL changed)');
     return item;
   }
+  if (old.officialPdfUrl) item.officialPdfUrl=old.officialPdfUrl;
   for (const field of protectedFields) if(old[field]!==undefined)item[field]=old[field];
   return item;
 }).sort((a, b) => b.volume - a.volume || b.reporterPage - a.reporterPage);

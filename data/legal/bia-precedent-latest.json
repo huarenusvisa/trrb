@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-11-16T05:45:36.606Z",
+  "generatedAt": "2026-11-21T13:24:00.000Z",
   "scope": "Published/precedential BIA decisions in the current EOIR reporter volumes; unpublished BIA decisions are intentionally excluded.",
   "sources": [
     "https://www.justice.gov/eoir/volume-29",
@@ -8,10 +8,25 @@
   ],
   "sourceCounts": {
     "29": 143,
-    "30": 34
+    "30": 35
   },
-  "count": 177,
+  "count": 178,
   "decisions": [
+    {
+      "court": "Board of Immigration Appeals",
+      "authorityType": "BIA precedent decision",
+      "precedential": true,
+      "volume": 30,
+      "reporterPage": 241,
+      "year": 2026,
+      "caseName": "Matter of K-L-S-",
+      "citation": "Matter of K-L-S-, 30 I&N Dec. 241 (BIA 2026)",
+      "officialPdfUrl": "https://www.justice.gov/eoir/media/1472791/dl?inline=",
+      "officialSourceUrl": "https://www.justice.gov/eoir/volume-30",
+      "decisionDate": "2026-11-18",
+      "coreRuleEnglish": "Hypothetical arguments or alternative views of the evidence do not establish clear error; an appeal based only on conjecture and speculation lacks an arguable factual or legal basis and is legally inappropriate.",
+      "subsequentEffectStatus": "not_independently_checked"
+    },
     {
       "court": "Board of Immigration Appeals",
       "authorityType": "BIA precedent decision",

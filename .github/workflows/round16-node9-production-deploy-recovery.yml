@@ -24,6 +24,9 @@ on:
       - 'huarengongzuo/**'
       - 'seo/**'
       - 'scripts/**'
+      # Legal datasets are generated and versioned in-repo; every accepted update
+      # must pass the same single production deployment and exact-SHA gate.
+      - 'data/legal/**'
       - '.github/workflows/seo-search-engine-ops.yml'
       - 'jobs/**'
       - 'niulai/**'

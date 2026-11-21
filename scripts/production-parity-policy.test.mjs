@@ -19,7 +19,7 @@ test('renames, divergence, missing or potentially truncated evidence cannot sile
 const audit='round16-node3-ai-incremental-grounding-audit.json';
 const timestampAudit={
   filename:audit,status:'modified',additions:1,deletions:1,changes:2,
-  patch:'@@ -1,5 +1,5 @@\\n {\\n-  "generatedAt": "2026-11-21T13:51:11.567Z",\\n+  "generatedAt": "2026-11-21T13:53:51.695Z",\\n   "node": "3"'
+  patch:'@@ -1,5 +1,5 @@\n {\n-  "generatedAt": "2026-11-21T13:51:11.567Z",\n+  "generatedAt": "2026-11-21T13:53:51.695Z",\n   "node": "3"'
 };
 test('known audit generatedAt refresh plus workflow change does not require deployment',()=>{
   const data=compare(['.github/workflows/round16-node3-ai-incremental-grounding.yml',audit]);
@@ -29,8 +29,8 @@ test('known audit generatedAt refresh plus workflow change does not require depl
 test('audit edits affecting substance, unknown reports and missing patch remain alerts',()=>{
   const data=compare(['.github/workflows/a.yml',audit]);
   for (const change of [
-    {...timestampAudit,patch:'@@ -1 +1 @@\\n-  "count": 717,\\n+  "count": 718,'},
-    {...timestampAudit,patch:'@@ -1 +1 @@\\n-  "generatedAt": "2026-11-21T13:51:11.567Z",\\n+  "generatedAt": "2026-11-21T13:53:51.695Z",\\n+  "count": 718,'},
+    {...timestampAudit,patch:'@@ -1 +1 @@\n-  "count": 717,\n+  "count": 718,'},
+    {...timestampAudit,patch:'@@ -1 +1 @@\n-  "generatedAt": "2026-11-21T13:51:11.567Z",\n+  "generatedAt": "2026-11-21T13:53:51.695Z",\n+  "count": 718,'},
     {...timestampAudit,patch:undefined},
     {...timestampAudit,changes:4},
     {...timestampAudit,previous_filename:'other.json'},

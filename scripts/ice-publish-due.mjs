@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import {sameCoveredIncident} from './news-covered-incidents.mjs';
 import {preferredPublicationSource} from './news-attributed-report-policy.mjs';
 import { reviewedSourceReady } from './ice-reviewed-publication.mjs';
 import {forwardQuery} from './news-forward-policy.mjs';
@@ -139,11 +140,11 @@ async function existingArticle(postId, eventFingerprint, routeKey = "ice") {
 }
 async function recentSimilarArticle(story, route) {
   const cutoff = new Date(Date.now() - 730 * 86400_000).toISOString();
-  const routeFilter = route?.key === "ice" ? { topic_key: "eq.ice" } : { category_name: `eq.${route.categoryName}` };
-  const rows = await sb("articles", { query: { select: "id,title,summary,content", ...routeFilter, status: "eq.published", published_at: `gte.${cutoff}`, order: "published_at.desc", limit: "5000" } });
+  const routeFilter = route?.key === "ice" ? { or: "(topic_key.eq.ice,category_name.in.(ICE,ICE执法与警情,美国警情,美国时政))" } : { category_name: `eq.${route.categoryName}` };
+  const rows = await sb("articles", { query: { select: "id,title,summary,content", ...routeFilter, status: "eq.published", visibility: "eq.public", published_at: `gte.${cutoff}`, order: "published_at.desc", limit: "5000" } });
   const source = `${story.title || ""}${story.summary || ""}${story.content || ""}`;
   const articles=Array.isArray(rows)?rows:[];
-  return {duplicate:articles.find(article=>similarity(source,`${article.title || ""}${article.summary || ""}${article.content || ""}`)>=.72)||null,
+  return {duplicate:articles.find(article=>sameCoveredIncident(story,article)||similarity(source,`${article.title || ""}${article.summary || ""}${article.content || ""}`)>=.72)||null,
     related:articles.map(article=>({article,score:similarity(`${story.title} ${story.summary}`,`${article.title} ${article.summary}`)})).filter(x=>x.score>=.18).sort((a,b)=>b.score-a.score).slice(0,3).map(x=>x.article)};
 }
 async function updateStory(id, patch) {

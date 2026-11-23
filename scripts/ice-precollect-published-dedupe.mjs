@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import {sameCoveredIncident} from './news-covered-incidents.mjs';
 import {forwardQuery,officialEventRelation} from './news-forward-policy.mjs';
 import { readAllPages } from "./paged-read.mjs";
 import process from "node:process";
@@ -54,18 +55,11 @@ function eventFingerprintOfArticle(article){return safeJson(article.metadata,{})
 function postTime(post){return new Date(post.source_created_at||post.created_at||0).getTime();}
 function isSimilar(a,b){const left=normalize(a),right=normalize(b);if(!left||!right)return false;if(left===right)return true;if(Math.min(left.length,right.length)>=35&&(left.includes(right)||right.includes(left)))return true;const score=similarity(left,right);const sharedActions=overlap(actionKeys(a),actionKeys(b));const sharedProper=overlap(properKeys(a),properKeys(b));const sharedNumbers=overlap(numberKeys(a),numberKeys(b));return score>=SIMILARITY_THRESHOLD||(sharedActions>0&&sharedProper>0&&score>=0.23)||(sharedProper>0&&sharedNumbers>0&&score>=0.26);}
 
-// Only automatically-produced ICE articles participate in hard duplicate suppression.
-// Human/editorial long-form articles are deliberately excluded and must never be killed by this collector rule.
-function isAutoIceArticle(article){
-  const metadata=safeJson(article.metadata,{});
-  const platform=safeText(article.source_platform,100).toLowerCase();
-  const review=safeText(article.review_status,100).toLowerCase();
-  return platform==="x" || platform==="manual_ice_review" || review==="human_published_override" || Boolean(metadata?.event_fingerprint && (metadata?.manual_override || metadata?.automation || metadata?.ice_auto));
-}
+// Compare public master articles, including editor-reviewed coverage across related desks.
 async function markSkipped(post,reason,duplicateId=null){const payload=safeJson(post.extraction_payload,{});await sb("ice_posts",{method:"PATCH",query:{id:`eq.${post.id}`},body:{relevant:false,processing_status:"irrelevant",last_error:reason,extraction_payload:{...payload,precollect_dedupe:true,duplicate_reason:reason,duplicate_reference_id:duplicateId,checked_at:nowIso()}},prefer:"return=minimal"});}
 async function pendingPosts(){const rows=await sb("ice_posts",{query:{select:"id,x_post_id,source_text,source_type,trust_tier,x_url,source_username,source_created_at,created_at,event_fingerprint,event_type,city,state_code,location_text,extraction_payload",...forwardQuery(),processing_status:"in.(collected,processing,extracted,failed)",or:"(relevant.is.null,relevant.eq.true)",order:"source_created_at.desc.nullslast,created_at.desc",limit:String(Number(process.env.ICE_PRECOLLECT_MAX||1200))}});return Array.isArray(rows)?rows:[];}
 async function recentStories(){const rows=await sb("ice_stories",{query:{select:"id,event_fingerprint,title,summary,content,ai_payload,last_seen_at,created_at,status",status:"in.(collecting,pending_review,pending_corroboration,approved,published)",last_seen_at:`gte.${cutoffMinutes(RECENT_WINDOW_MINUTES)}`,order:"last_seen_at.desc",limit:"1200"}});return Array.isArray(rows)?rows:[];}
-async function publishedArticles(){const rows=await sb("articles",{query:{select:"id,title,summary,content,published_at,source_created_at,metadata,source_post_id,source_platform,review_status",topic_key:"eq.ice",status:"eq.published",published_at:`gte.${cutoffDays(PUBLISHED_LOOKBACK_DAYS)}`,order:"published_at.desc",limit:"2000"}});return (Array.isArray(rows)?rows:[]).filter(isAutoIceArticle);}
+async function publishedArticles(){const rows=await sb("articles",{query:{select:"id,title,summary,content,published_at,source_created_at,metadata,source_post_id,source_platform,review_status",or:"(topic_key.eq.ice,category_name.in.(ICE,ICE执法与警情,美国警情,美国时政))",visibility:"eq.public",status:"eq.published",published_at:`gte.${cutoffDays(PUBLISHED_LOOKBACK_DAYS)}`,order:"published_at.desc",limit:"2000"}});return (Array.isArray(rows)?rows:[]);}
 
 async function main(){
   requireEnv();
@@ -76,17 +70,17 @@ async function main(){
     const raw=safeText(post.source_text);const time=postTime(post);
     if(isKnownOldEvent(raw)){await markSkipped(post,"known_old_event_repost");stale+=1;continue;}
     if(!Number.isFinite(time)||time<oldestAllowed){await markSkipped(post,"precollect_source_older_than_one_hour");stale+=1;continue;}
-    const recent=stories.find((story)=>officialEventRelation(post,story) ?? ((post.event_fingerprint&&story.event_fingerprint===post.event_fingerprint)||isSimilar(raw,combinedStoryText(story))));
+    const recent=stories.find((story)=>sameCoveredIncident(post,story) || (officialEventRelation(post,story) ?? ((post.event_fingerprint&&story.event_fingerprint===post.event_fingerprint)||isSimilar(raw,combinedStoryText(story)))));
     if(recent && !hasMaterialUpdate(post,recent)){await markSkipped(post,"precollect_duplicate_of_recent_one_hour_story",recent.id);recentDuplicate+=1;continue;}
-    const published=articles.find((article)=>officialEventRelation(post,article) ?? ((post.event_fingerprint&&eventFingerprintOfArticle(article)===post.event_fingerprint)||isSimilar(raw,combinedArticleText(article))));
+    const published=articles.find((article)=>sameCoveredIncident(post,article) || (officialEventRelation(post,article) ?? ((post.event_fingerprint&&eventFingerprintOfArticle(article)===post.event_fingerprint)||isSimilar(raw,combinedArticleText(article)))));
     if(published && !hasMaterialUpdate(post,published)){
       // Repeated facts are skipped; substantive leads continue to reviewed same-URL updates.
-      await markSkipped(post,"precollect_duplicate_of_published_auto_ice_hard_kill",published.id);
+      await markSkipped(post,"precollect_duplicate_of_published_master",published.id);
       publishedDuplicate+=1;continue;
     }
     passed+=1;
   }
-  console.log(JSON.stringify({stage:"ice-precollect-published-dedupe-v2",policy:"same_event_updates_require_review",scanned:posts.length,auto_published_comparison_set:articles.length,skipped_stale_over_one_hour:stale,skipped_recent_one_hour_duplicates:recentDuplicate,skipped_published_auto_ice_related:publishedDuplicate,passed_to_intake:passed},null,2));
+  console.log(JSON.stringify({stage:"ice-precollect-published-dedupe-v3",policy:"same_event_updates_require_review",scanned:posts.length,public_master_comparison_set:articles.length,skipped_stale_over_one_hour:stale,skipped_recent_one_hour_duplicates:recentDuplicate,skipped_published_event_duplicates:publishedDuplicate,passed_to_intake:passed},null,2));
 }
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   main().catch((error)=>{console.error("ICE采集前已发布内容去重失败：",error);process.exitCode=1;});

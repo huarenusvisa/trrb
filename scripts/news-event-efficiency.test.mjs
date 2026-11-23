@@ -1,4 +1,5 @@
 import test from 'node:test';
+import {createHash} from 'node:crypto';
 import assert from 'node:assert/strict';
 import {hasMaterialUpdate,findDuplicateStory} from './ice-fast-intake.mjs';
 import {sourceFingerprint,editorialRetryAllowed} from './news-priority.mjs';
@@ -32,4 +33,11 @@ test('repost transport IDs, times, URLs and duplicate evidence cannot reset the 
   assert.equal(sourceFingerprint([a]),sourceFingerprint([b,b]));
   const story={ai_payload:{editorial_attempt:{policy_version:EDITORIAL_POLICY_VERSION,fingerprint:sourceFingerprint([a]),count:2,at:'2026-11-23T10:00:00Z'}}};
   assert.equal(editorialRetryAllowed(story,[b],Date.parse('2026-11-23T12:00:00Z')),false);
+});
+
+test('deployment preserves existing exhausted attempts using legacy fingerprints',()=>{
+  const posts=[{x_post_id:'42',source_created_at:'2026-11-23T10:00:00Z',source_text:'ICE detained a student.'}];
+  const fingerprint=createHash('sha256').update(JSON.stringify(posts.map(p=>[p.x_post_id,p.source_created_at,p.source_text]))).digest('hex');
+  const story={ai_payload:{editorial_attempt:{policy_version:EDITORIAL_POLICY_VERSION,fingerprint,count:2,at:'2026-11-23T10:00:00Z'}}};
+  assert.equal(editorialRetryAllowed(story,posts,Date.parse('2026-11-23T15:00:00Z')),false);
 });

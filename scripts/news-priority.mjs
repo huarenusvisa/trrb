@@ -29,7 +29,14 @@ export function sourceFingerprint(posts) {
     .replace(/\s+/g,' ').trim()).filter(Boolean))].sort();
   return createHash('sha256').update(JSON.stringify(evidence)).digest('hex');
 }
+// Preserve existing attempt records during the content-fingerprint rollout.
+export function editorialEvidenceUnchanged(attempt,posts) {
+  if (!attempt) return false;
+  if (attempt.fingerprint===sourceFingerprint(posts)) return true;
+  const legacy=createHash('sha256').update(JSON.stringify(posts.map(p=>[p.x_post_id,p.source_created_at,p.source_text]).sort((a,b)=>String(a[0]).localeCompare(String(b[0]))))).digest('hex');
+  return attempt.fingerprint===legacy;
+}
 export function editorialRetryAllowed(story,posts,now=Date.now()) {
   const old=story.ai_payload?.editorial_attempt;
-  return !old || old.policy_version!==EDITORIAL_POLICY_VERSION || old.fingerprint!==sourceFingerprint(posts) || (old.count<2 && now-Date.parse(old.at)>=3600000);
+  return !old || old.policy_version!==EDITORIAL_POLICY_VERSION || !editorialEvidenceUnchanged(old,posts) || (old.count<2 && now-Date.parse(old.at)>=3600000);
 }

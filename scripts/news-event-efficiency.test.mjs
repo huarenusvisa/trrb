@@ -12,6 +12,10 @@ test('biography, counts, bylines and locations do not reopen an arrest',()=>{
     assert.equal(hasMaterialUpdate({source_text,city:'New York'},original),false);
   assert.equal(hasMaterialUpdate({source_text:'Eva Yi Xie was released from detention.'},original),true);
   assert.equal(hasMaterialUpdate({source_text:'Eva Yi Xie may be released tomorrow.'},original),false);
+  assert.equal(hasMaterialUpdate({source_text:'Eva Yi Xie was transferred to another detention center.'},original),true);
+  assert.equal(hasMaterialUpdate({source_text:'Eva Yi Xie died in custody.'},original),true);
+  assert.equal(hasMaterialUpdate({source_text:'The court denied bond.'},{content:'The court granted bond.'}),true);
+  assert.equal(hasMaterialUpdate({source_text:'The court granted a stay.'},{content:'The court granted bond.'}),true);
 });
 test('cross-language reposts match the covered incident but distinct people and dates do not',()=>{
   const post={source_text:'Princeton student Eva Yi Xie detained by ICE; supporters comment.'};

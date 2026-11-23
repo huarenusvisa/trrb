@@ -7,7 +7,7 @@ import {appendFileSync} from 'node:fs';
 import {TIER_REVIEW_INSTRUCTIONS,needsReviewRecheck,verifyFreshDevelopment} from './news-editorial-support.mjs';
 import { readDatabaseQuery } from "./paged-read.mjs";
 import process from "node:process";
-import {newsPriority,sourceFingerprint,editorialRetryAllowed} from './news-priority.mjs';
+import {newsPriority,sourceFingerprint,editorialRetryAllowed,editorialEvidenceUnchanged} from './news-priority.mjs';
 import {isBudgetDeferred} from './news-cost-model.mjs';
 import {researchEvent} from "./china-context-research.mjs";
 import newsScope from "../netlify/functions/_shared/news-collection-scope.js";
@@ -262,7 +262,7 @@ async function main() {
         if (!editorialRetryAllowed(story,posts)) {skipped++;continue;}
         const fingerprint=sourceFingerprint(posts);
         const previous=story.ai_payload?.editorial_attempt;
-        const editorial_attempt={policy_version:EDITORIAL_POLICY_VERSION,fingerprint,count:previous?.policy_version===EDITORIAL_POLICY_VERSION && previous?.fingerprint===fingerprint?previous.count+1:1,at:nowIso()};
+        const editorial_attempt={policy_version:EDITORIAL_POLICY_VERSION,fingerprint,count:previous?.policy_version===EDITORIAL_POLICY_VERSION && editorialEvidenceUnchanged(previous,posts)?previous.count+1:1,at:nowIso()};
         const at=nowIso();
         const saved=await sb('ice_stories',{method:'PATCH',query:{id:`eq.${story.id}`,updated_at:`eq.${story.updated_at}`,human_review_status:'not.in.(editing,approved,rejected)'},body:{ai_payload:{...story.ai_payload,editorial_attempt},updated_at:at},prefer:'return=representation'});
         if (!saved?.length) {skipped++;continue;}

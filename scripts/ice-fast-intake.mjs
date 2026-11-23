@@ -331,13 +331,17 @@ function hasMaterialUpdate(post, story) {
   const incoming = safeText(post.source_text, 30000);
   const existing = storyText(story);
   // A changed byline, count, biography or location is not a new development.
-  // Only newly asserted procedural outcomes can reopen an existing event.
+  // Only newly asserted custody or procedural outcomes can reopen an existing event.
   const outcomes = [
     /\b(?:was|has been|is|were) released\b|获释|已释放|获得保释/iu,
     /\b(?:was|has been|were) deported\b|已遣返|已递解/iu,
     /\b(?:was|has been|were) (?:charged|indicted)\b|被起诉|已起诉|新增指控/iu,
     /\b(?:was|has been|were) sentenced\b|被判处|已判刑/iu,
-    /(?:court|judge).{0,80}(?:issued|granted|denied|ordered).{0,80}(?:injunction|release|bond|stay|reopening)|法院.{0,40}(?:裁定|命令|批准|驳回).{0,40}(?:释放|保释|暂缓|重开)/iu
+    /\b(?:died|was killed|has died)\b|已死亡|已身亡|在押期间死亡/iu,
+    /\b(?:was|has been|were) transferred\b|已转押|被转押|已转至.{0,30}(?:拘留|监狱)/iu,
+    ...["injunction|禁令", "release|释放", "bond|保释", "stay|暂缓", "reopening|重开"].flatMap(remedy =>
+      ["issued|granted|ordered|批准|命令|裁定", "denied|驳回", "vacated|撤销"].map(action =>
+        new RegExp(`(?:court|judge|法院|法官).{0,80}(?:${action}).{0,80}(?:${remedy})`, "iu")))
   ];
   const asserted = text => text.split(/[.!?。！？\n]+/).filter(sentence =>
     !/\b(?:may|might|could|would|will|not|denied that)\b|可能|或将|尚未|未获|要求|请求|呼吁|否认/iu.test(sentence));

@@ -3,7 +3,9 @@ import { finalHotCanonicalForLegacyId } from "../shared/legacy-final-hot-redirec
 const SITE = "https://trrb.net";
 const READ_TIMEOUT_MS = 2_500;
 const ARCHIVE_TIMEOUT_MS = 3_000;
-const TRANSIENT_READ_STATUS = new Set([408, 425, 429, 500, 502, 503, 504]);
+function isTransientReadStatus(status: number): boolean {
+  return status === 408 || status === 425 || status === 429 || (status >= 500 && status <= 599);
+}
 
 // Runs before article-prerender. It retires truly missing WordPress/numeric
 // query URLs, preserves valid numeric archives, and prevents deleted/invalid
@@ -59,7 +61,7 @@ async function fetchRead(input: URL | RequestInfo, init: RequestInit = {}, timeo
     const timeout = setTimeout(() => controller.abort(), timeoutMs);
     try {
       const response = await fetch(input, { ...init, signal: controller.signal });
-      if (!TRANSIENT_READ_STATUS.has(response.status) || attempt === 2) return response;
+      if (!isTransientReadStatus(response.status) || attempt === 2) return response;
       lastError = new Error(`transient read ${response.status}`);
     } catch (error) {
       lastError = error;

@@ -1,4 +1,6 @@
-let cached: { expires: number; value: any } | null = null;
+let cached: { expires: number; staleUntil: number; value: any } | null = null;
+const REQUEST_TIMEOUT_MS = 8_000;
+const STALE_CACHE_MS = 30 * 60_000;
 
 function clean(value: unknown, max = 500) {
   return String(value || "").replace(/[\u0000-\u001f]/g, " ").trim().slice(0, max);
@@ -57,36 +59,39 @@ function relativeTime(value: string) {
   return `${Math.round(hours / 24)}天前`;
 }
 
+async function fetchArticles(url: URL, label: string) {
+  let lastError: unknown;
+  for (let attempt = 1; attempt <= 2; attempt += 1) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+    try {
+      const response = await fetch(url, { signal: controller.signal, headers: { Accept: "application/json" } });
+      if (!response.ok) throw new Error(`${label} ${response.status}`);
+      const body = await response.json();
+      return Array.isArray(body?.articles) ? body.articles : [];
+    } catch (error) {
+      lastError = error;
+      if (attempt === 2) throw error;
+      await new Promise((resolve) => setTimeout(resolve, 150));
+    } finally {
+      clearTimeout(timer);
+    }
+  }
+  throw lastError instanceof Error ? lastError : new Error(`${label} failed`);
+}
+
 async function fetchTerm(req: Request, term: string) {
   const url = new URL("/.netlify/functions/public-articles", req.url);
   url.searchParams.set("limit", "20");
   url.searchParams.set("q", term);
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), 8_000);
-  try {
-    const response = await fetch(url, { signal: controller.signal, headers: { Accept: "application/json" } });
-    if (!response.ok) throw new Error(`public-articles ${response.status}`);
-    const body = await response.json();
-    return Array.isArray(body?.articles) ? body.articles : [];
-  } finally {
-    clearTimeout(timer);
-  }
+  return fetchArticles(url, `public-articles q=${term}`);
 }
 
 async function fetchCategory(req: Request, category: string) {
   const url = new URL("/.netlify/functions/public-articles", req.url);
   url.searchParams.set("limit", "30");
   url.searchParams.set("category", category);
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), 8_000);
-  try {
-    const response = await fetch(url, { signal: controller.signal, headers: { Accept: "application/json" } });
-    if (!response.ok) throw new Error(`public-articles ${response.status}`);
-    const body = await response.json();
-    return Array.isArray(body?.articles) ? body.articles : [];
-  } finally {
-    clearTimeout(timer);
-  }
+  return fetchArticles(url, `public-articles category=${category}`);
 }
 
 export default async (req: Request) => {
@@ -96,10 +101,15 @@ export default async (req: Request) => {
   const limit = Math.min(Math.max(Number(url.searchParams.get("limit") || 12), 1), 30);
   if (cached && cached.expires > Date.now()) return json({ ...cached.value, limit, articles: cached.value.articles.slice(0, limit), cached: true });
   try {
-    const batches = await Promise.all([
+    const results = await Promise.allSettled([
       fetchCategory(req, "牛来财经"),
       ...["美股", "股票", "ETF", "美联储"].map((term) => fetchTerm(req, term))
     ]);
+    const batches = results.flatMap((result) => result.status === "fulfilled" ? [result.value] : []);
+    const failedSources = results.flatMap((result, index) => result.status === "rejected"
+      ? [clean(result.reason?.message || result.reason || `source ${index + 1}`, 240)]
+      : []);
+    if (!batches.length) throw new Error(`all finance sources failed: ${failedSources.join("; ")}`);
     const seen = new Set<string>();
     const articles = batches.flat()
       .filter(isFinanceArticle)
@@ -126,11 +136,29 @@ export default async (req: Request) => {
         image: clean(article.cover_image, 1200),
         url: articleUrl(article)
       }));
-    const value = { ok: true, source: "唐人日报公开文章库", generatedAt: new Date().toISOString(), count: articles.length, articles };
-    cached = { expires: Date.now() + 120_000, value };
+    const value = {
+      ok: true,
+      source: "唐人日报公开文章库",
+      generatedAt: new Date().toISOString(),
+      count: articles.length,
+      partial: failedSources.length > 0,
+      failedSources,
+      articles
+    };
+    cached = { expires: Date.now() + 120_000, staleUntil: Date.now() + STALE_CACHE_MS, value };
     return json({ ...value, limit, articles: articles.slice(0, limit), cached: false });
   } catch (error: any) {
     console.error("Finance news sync error:", error);
+    if (cached && cached.staleUntil > Date.now()) {
+      return json({
+        ...cached.value,
+        limit,
+        articles: cached.value.articles.slice(0, limit),
+        cached: true,
+        stale: true,
+        refreshError: clean(error?.message || error, 240)
+      });
+    }
     return json({ ok: false, error: clean(error?.message || error, 240), articles: [] }, 502);
   }
 };

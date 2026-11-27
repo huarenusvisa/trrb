@@ -5,6 +5,7 @@ on:
   push:
     branches: [main]
     paths:
+      - 'data/legal/unified-legal-authorities-latest.json'
       - '.github/workflows/round16-node3-ai-incremental-grounding.yml'
 
 permissions:

@@ -62,12 +62,13 @@ test("ICE保留官方及人工发布，并允许已完成内容审核的稿件�
 
 test("ERO地区官方补抓使用可配置时间窗并支持分页去重", () => {
   const ero = read("scripts/ice-ero-official-discovery.mjs");
+  const paginatedState = read("scripts/ice-paginated-query-state.mjs");
   const launcher = read("scripts/ice-enable-first-backfill.mjs");
   syntaxCheck("scripts/ice-ero-official-discovery.mjs");
   syntaxCheck("scripts/ice-enable-first-backfill.mjs");
   assert.match(ero, /const LOOKBACK_HOURS = Math\.min\(12, Number\(process\.env\.ICE_ERO_LOOKBACK_HOURS \|\| 12\)\)/);
   assert.match(ero, /max_results", "100"/);
-  assert.match(ero, /start_time", lookbackStart\(\)/);
+  assert.match(ero, /start_time", windowStart/);
   assert.match(ero, /last_seen_id/);
   assert.match(ero, /next_token/);
   assert.match(ero, /MAX_PAGES_PER_QUERY/);
@@ -80,6 +81,9 @@ test("ERO地区官方补抓使用可配置时间窗并支持分页去重", () =>
   assert.match(ero, /source_type: "official"/);
   assert.match(ero, /resolution=ignore-duplicates/);
   assert.match(ero, /existingIds/);
+  assert.match(ero, /persistBeforeState/);
+  assert.match(paginatedState, /continuation_token/);
+  assert.match(paginatedState, /persistRows\(rows\)/);
   assert.match(launcher, /ice-ero-official-discovery\.mjs/);
   assert.match(launcher, /ERO补抓被硬限制为过去2小时/);
   assert.match(launcher, /!String\(row\.query_key \|\| ""\)\.startsWith\("ero-official-2h-"\)/);

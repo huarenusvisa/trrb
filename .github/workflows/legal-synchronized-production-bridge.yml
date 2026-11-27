@@ -2,6 +2,11 @@ name: Legal Synchronized Production Bridge
 
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'data/legal/legal-ai-analysis-latest.json'
+      - '.github/workflows/legal-synchronized-production-bridge.yml'
 
 permissions:
   contents: read

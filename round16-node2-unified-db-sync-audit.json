@@ -1,17 +1,17 @@
 {
-  "generatedAt": "2026-11-21T13:32:47.502Z",
+  "generatedAt": "2026-11-27T13:18:30.716Z",
   "node": "2 统一法律数据库自动重建与版本同步",
-  "datasetVersion": "e6916bd520b2316968ecde6f090835e67cc2fff1abf765ee187a4fd3666de533",
-  "count": 718,
+  "datasetVersion": "469c5a7a32567e9894ac3d429694bcb9047d2baa0627fa6eac26c711a2b68a3a",
+  "count": 720,
   "expectedCounts": {
     "SCOTUS": 68,
     "US_CIRCUIT": 412,
-    "BIA": 178,
+    "BIA": 180,
     "WHITE_HOUSE": 10,
     "FEDERAL_REGISTER": 50
   },
   "actualCounts": {
-    "BIA": 178,
+    "BIA": 180,
     "FEDERAL_REGISTER": 50,
     "SCOTUS": 68,
     "US_CIRCUIT": 412,
@@ -26,7 +26,7 @@
     {
       "ok": true,
       "label": "all five legal source systems represented",
-      "detail": "{\"BIA\":178,\"FEDERAL_REGISTER\":50,\"SCOTUS\":68,\"US_CIRCUIT\":412,\"WHITE_HOUSE\":10}"
+      "detail": "{\"BIA\":180,\"FEDERAL_REGISTER\":50,\"SCOTUS\":68,\"US_CIRCUIT\":412,\"WHITE_HOUSE\":10}"
     },
     {
       "ok": true,
@@ -41,7 +41,7 @@
     {
       "ok": true,
       "label": "BIA synchronized into unified database",
-      "detail": "source=178; unified=178"
+      "detail": "source=180; unified=180"
     },
     {
       "ok": true,
@@ -56,27 +56,27 @@
     {
       "ok": true,
       "label": "unified count metadata matches records",
-      "detail": "metadata=718; records=718"
+      "detail": "metadata=720; records=720"
     },
     {
       "ok": true,
       "label": "unified database rebuilt from current source snapshots",
-      "detail": "expected=718; actual=718"
+      "detail": "expected=720; actual=720"
     },
     {
       "ok": true,
       "label": "source keys remain unique",
-      "detail": "unique=718; records=718"
+      "detail": "unique=720; records=720"
     },
     {
       "ok": true,
       "label": "record IDs remain unique",
-      "detail": "unique=718; records=718"
+      "detail": "unique=720; records=720"
     },
     {
       "ok": true,
       "label": "dataset version matches normalized current records",
-      "detail": "e6916bd520b2316968ecde6f090835e67cc2fff1abf765ee187a4fd3666de533"
+      "detail": "469c5a7a32567e9894ac3d429694bcb9047d2baa0627fa6eac26c711a2b68a3a"
     },
     {
       "ok": true,

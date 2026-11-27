@@ -52,12 +52,12 @@ assert.deepEqual(
     code: china.nationality_code,
     chineseName: china.nationality_zh
   },
-  { total: 38607, grants: 16222, denials: 7063, other: 15322, approvalRate: 69.6672, code: 'CH', chineseName: '中国' },
-  'the published China aggregate must remain tied to the verified July 2026 EOIR snapshot'
+  { total: 41381, grants: 16465, denials: 8220, other: 16696, approvalRate: 66.7004, code: 'CH', chineseName: '中国' },
+  'the published China aggregate must remain tied to the verified September 2026 EOIR snapshot'
 );
 for (const year of ['2024', '2025', '2026']) assert.ok(cuba.yearly.some((row) => row.label === year), `Cuba must include real ${year} data`);
 assert.ok(cuba.monthly.length > 2 && cuba.quarterly.length > 2 && cuba.yearly.length > 2, 'country trends must support month, quarter, and year views');
-assert.equal(cuba.yearly.find((row) => row.label === '2025').approval_rate, 22.6253, 'trend data must be generated from the EOIR snapshot, not a placeholder');
+assert.equal(cuba.yearly.find((row) => row.label === '2025').approval_rate, 22.6194, 'trend data must be generated from the EOIR snapshot, not a placeholder');
 assert.ok(backgroundData.profiles.length >= 560, 'historical DOJ/EOIR appointment biographies must be parsed across all configured releases');
 assert.equal(backgroundData.diagnostics.find((row) => row.url.includes('/1441406/'))?.profiles, 82, 'all 77 judges and 5 temporary judges in the May 2026 release must be parsed');
 for (const profile of backgroundData.profiles) {

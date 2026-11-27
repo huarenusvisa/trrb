@@ -1,16 +1,16 @@
 {
   "schemaVersion": 1,
-  "datasetVersion": "e6916bd520b2316968ecde6f090835e67cc2fff1abf765ee187a4fd3666de533",
+  "datasetVersion": "469c5a7a32567e9894ac3d429694bcb9047d2baa0627fa6eac26c711a2b68a3a",
   "versionStrategy": "SHA-256 over normalized deduplicated records; identical legal content produces identical version.",
   "scope": "TRRB U.S. judiciary and regulatory database. Database records remain separate from ordinary news articles.",
   "sourceCounts": {
     "SCOTUS": 68,
     "US_CIRCUIT": 412,
-    "BIA": 178,
+    "BIA": 180,
     "WHITE_HOUSE": 10,
     "FEDERAL_REGISTER": 50
   },
-  "count": 718,
+  "count": 720,
   "records": [
     {
       "id": "6d71998164d7fa814946b7a3",
@@ -2546,6 +2546,36 @@
       "officialUrl": "https://www.justice.gov/eoir/media/1472791/dl?inline=",
       "officialPdfUrl": "https://www.justice.gov/eoir/media/1472791/dl?inline=",
       "sourceKey": "BIA:30:241"
+    },
+    {
+      "id": "bbc176d326eada67b2235be2",
+      "sourceSystem": "BIA",
+      "authorityType": "BIA Precedent Decision",
+      "issuingBody": "Board of Immigration Appeals",
+      "jurisdiction": "United States",
+      "publicationDate": null,
+      "docket": null,
+      "title": "Matter of GOMEZ PACHECO",
+      "citation": "Matter of GOMEZ PACHECO, 30 I&N Dec. 249 (BIA 2026)",
+      "precedentialStatus": "precedential",
+      "officialUrl": "https://www.justice.gov/eoir/media/1473971/dl?inline=",
+      "officialPdfUrl": "https://www.justice.gov/eoir/media/1473971/dl?inline=",
+      "sourceKey": "BIA:30:249"
+    },
+    {
+      "id": "fad41656b30008f588991cc5",
+      "sourceSystem": "BIA",
+      "authorityType": "BIA Precedent Decision",
+      "issuingBody": "Board of Immigration Appeals",
+      "jurisdiction": "United States",
+      "publicationDate": null,
+      "docket": null,
+      "title": "Matter of AGUILAR CEBALLOS",
+      "citation": "Matter of AGUILAR CEBALLOS, 30 I&N Dec. 259 (BIA 2026)",
+      "precedentialStatus": "precedential",
+      "officialUrl": "https://www.justice.gov/eoir/media/1474116/dl?inline=",
+      "officialPdfUrl": "https://www.justice.gov/eoir/media/1474116/dl?inline=",
+      "sourceKey": "BIA:30:259"
     },
     {
       "id": "6218c8702e456e252734a397",

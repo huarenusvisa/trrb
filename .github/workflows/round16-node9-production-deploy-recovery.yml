@@ -24,9 +24,9 @@ on:
       - 'huarengongzuo/**'
       - 'seo/**'
       - 'scripts/**'
-      # Legal datasets are generated and versioned in-repo; every accepted update
-      # must pass the same single production deployment and exact-SHA gate.
-      - 'data/legal/**'
+      # Legal source, unified-DB and AI commits are intentionally excluded here.
+      # The legal synchronization bridge dispatches this one production gate only
+      # after exact N/N version and fingerprint alignment.
       - '.github/workflows/seo-search-engine-ops.yml'
       - 'jobs/**'
       - 'niulai/**'
@@ -90,8 +90,26 @@ jobs:
             already_accepted=false
             echo "Forced redeploy requested for production configuration refresh."
           fi
-          echo "SKIP_DEPLOY=$already_accepted" >> "$GITHUB_ENV"
-          echo "already_accepted=$already_accepted"
+          legal_ready=$(node <<'NODE'
+          const db=require('./data/legal/unified-legal-authorities-latest.json');
+          const ai=require('./data/legal/legal-ai-analysis-latest.json');
+          const dbCount=Array.isArray(db.records)?db.records.length:0;
+          const aiCount=Array.isArray(ai.analyses)?ai.analyses.length:0;
+          const ready=Boolean(db.datasetVersion)
+            && String(db.datasetVersion)===String(ai.datasetVersion||'')
+            && Number(db.count)===dbCount
+            && Number(ai.count)===aiCount
+            && dbCount===aiCount;
+          process.stdout.write(ready?'true':'false');
+          NODE
+          )
+          skip_deploy=$already_accepted
+          if [ "$legal_ready" != "true" ] && [ "${{ inputs.force_redeploy }}" != "true" ]; then
+            skip_deploy=true
+            echo 'Legal DB and AI are in an expected intermediate state; the synchronized legal bridge will dispatch the single production deployment.'
+          fi
+          echo "SKIP_DEPLOY=$skip_deploy" >> "$GITHUB_ENV"
+          echo "already_accepted=$already_accepted legal_ready=$legal_ready skip_deploy=$skip_deploy"
 
       - name: 验证固定网址、发布快照和全量台账
         if: env.SKIP_DEPLOY != 'true'

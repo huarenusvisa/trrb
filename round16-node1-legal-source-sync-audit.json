@@ -1,0 +1,60 @@
+{
+  "generatedAt": "2026-11-27T13:18:30.446Z",
+  "node": 1,
+  "title": "五大官方法律源自动采集触发链闭环",
+  "counts": {
+    "SCOTUS": 68,
+    "US_CIRCUIT": 50,
+    "BIA": 180,
+    "WHITE_HOUSE": 10,
+    "FEDERAL_REGISTER": 50
+  },
+  "checks": [
+    {
+      "ok": true,
+      "label": "支持人工立即触发",
+      "detail": ""
+    },
+    {
+      "ok": true,
+      "label": "具备持续定时触发",
+      "detail": ""
+    },
+    {
+      "ok": true,
+      "label": "五大官方源均纳入同一同步编排",
+      "detail": ""
+    },
+    {
+      "ok": true,
+      "label": "SCOTUS 同步数据可解析且非空",
+      "detail": "records>=68"
+    },
+    {
+      "ok": true,
+      "label": "US_CIRCUIT 同步数据可解析且非空",
+      "detail": "records>=50"
+    },
+    {
+      "ok": true,
+      "label": "BIA 同步数据可解析且非空",
+      "detail": "records>=180"
+    },
+    {
+      "ok": true,
+      "label": "WHITE_HOUSE 同步数据可解析且非空",
+      "detail": "records>=10"
+    },
+    {
+      "ok": true,
+      "label": "FEDERAL_REGISTER 同步数据可解析且非空",
+      "detail": "records>=50"
+    },
+    {
+      "ok": true,
+      "label": "五大官方源同步链没有空源",
+      "detail": ""
+    }
+  ],
+  "failures": 0
+}

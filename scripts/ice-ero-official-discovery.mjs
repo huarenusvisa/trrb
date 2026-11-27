@@ -2,6 +2,7 @@
 import './news-budget-preload.mjs';
 import crypto from "node:crypto";
 import process from "node:process";
+import { collectPaginatedPages, persistBeforeState, resumableWindow } from "./ice-paginated-query-state.mjs";
 
 const X_API = "https://api.x.com/2";
 const LOOKBACK_HOURS = Math.min(12, Number(process.env.ICE_ERO_LOOKBACK_HOURS || 12));
@@ -84,26 +85,26 @@ async function queryState(key) {
 async function saveState(row) {
   await sb("ice_query_state", { method: "POST", query: { on_conflict: "query_key" }, body: row, prefer: "resolution=merge-duplicates,return=minimal" });
 }
-async function searchX(query) {
-  const pages = [];
-  let next = "";
-  for (let page = 0; page < MAX_PAGES_PER_QUERY; page += 1) {
+async function searchX(query, state) {
+  const { windowStart, startToken, resumed } = resumableWindow(state, lookbackStart());
+  const result = await collectPaginatedPages({
+    maxPages: MAX_PAGES_PER_QUERY,
+    startToken,
+    fetchPage: async (next) => {
     const url = new URL(`${X_API}/tweets/search/recent`);
     url.searchParams.set("query", query);
     url.searchParams.set("max_results", "100");
-    url.searchParams.set("start_time", lookbackStart());
+    url.searchParams.set("start_time", windowStart);
     url.searchParams.set("sort_order", "recency");
     if (next) url.searchParams.set("next_token", next);
     url.searchParams.set("tweet.fields", "id,text,author_id,created_at,lang,public_metrics,possibly_sensitive,attachments,geo");
     url.searchParams.set("expansions", "author_id,attachments.media_keys,geo.place_id");
     url.searchParams.set("user.fields", "id,name,username,description,verified,public_metrics");
     url.searchParams.set("media.fields", "media_key,type,url,preview_image_url,width,height,duration_ms,variants");
-    const payload = await request(url, { headers: { Authorization: `Bearer ${process.env.X_BEARER_TOKEN}` } });
-    pages.push(payload);
-    next = payload?.meta?.next_token || "";
-    if (!next) break;
-  }
-  return pages;
+      return request(url, { headers: { Authorization: `Bearer ${process.env.X_BEARER_TOKEN}` } });
+    }
+  });
+  return { ...result, windowStart, resumed };
 }
 function relevant(text) { return /arrest|apprehend|detain|custody|raid|operation|deport|remov|final order|fugitive|gang|criminal|shoot|shot|gunfire|death|fatal|use of force|vehicle stop|surveillance|seiz|intercept|rescu|traffick|smuggl|fraud|court|policy/i.test(String(text || "")); }
 function officialAuthor(author) {
@@ -139,15 +140,18 @@ async function main() {
   const collected = new Map();
   let requests = 0;
   let failedQueries = 0;
+  let incompleteQueries = 0;
   const failedHandles = [];
   for (const item of queryItems) {
     const { handle, query } = item;
     const key = `regional-official-${LOOKBACK_HOURS}h-${digest(query).slice(0, 28)}`;
     const state = await queryState(key);
     try {
-      const pages = await searchX(query);
+      const result = await searchX(query, state);
+      const pages = result.pages;
       requests += pages.length;
       const seen = [];
+      const queryRows = new Map();
       for (const payload of pages) {
         const users = new Map((payload?.includes?.users || []).map((u) => [u.id, u]));
         for (const tweet of payload?.data || []) {
@@ -156,29 +160,49 @@ async function main() {
           if (!officialAuthor(author)) continue;
           if (handle.startsWith("discovery-") && !relevant(tweet.text)) continue;
           const username = String(author.username || "");
-          collected.set(String(tweet.id), {
+          const row = {
             x_post_id: String(tweet.id), x_url: xUrl(username, tweet.id), source_registry_id: null,
             source_username: username, source_display_name: author.name || username, source_type: "official", trust_tier: 1,
             independence_key: `official:${username.toLowerCase()}`, source_created_at: tweet.created_at || null, source_text: tweet.text || "",
             media: media(tweet, payload?.includes), raw_payload: { tweet, author, discovery: { collector: `ice-regional-official-${LOOKBACK_HOURS}h-v5`, lookback_hours: LOOKBACK_HOURS, handle, query, rotation_slot: slot } },
             relevant: null, event_fingerprint: null, event_type: null, event_date: null, city: null, state_code: null, location_text: null,
             people_count: null, claims: [], entities: [], extraction_confidence: null, extraction_payload: {}, processing_status: "collected", attempts: 0, last_error: null
-          });
+          };
+          collected.set(String(tweet.id), row);
+          queryRows.set(String(tweet.id), row);
         }
       }
-      await saveState({ query_key: key, query_text: query, last_seen_id: maxSnowflake(seen) || state?.last_seen_id || null, last_run_at: nowIso(), last_success_at: nowIso(), last_error: null, last_result: { handle, found: seen.length, rotation_slot: slot }, updated_at: nowIso() });
+      const rows = [...queryRows.values()];
+      const exists = await existingIds(rows.map((row) => row.x_post_id));
+      const fresh = rows.filter((row) => !exists.has(row.x_post_id));
+      const time = nowIso();
+      const persisted = await persistBeforeState({
+        rows: fresh,
+        persistRows: async (pending) => {
+          if (pending.length) await sb("ice_posts", { method: "POST", query: { on_conflict: "x_post_id" }, body: pending, prefer: "resolution=ignore-duplicates,return=minimal" });
+          return pending.length;
+        },
+        saveState,
+        previousState: state,
+        stateBase: { query_key: key, query_text: query, last_result: { handle, rotation_slot: slot } },
+        latestSeenId: maxSnowflake([state?.last_seen_id, ...seen].filter(Boolean)),
+        windowStart: result.windowStart,
+        nextToken: result.nextToken,
+        pages: pages.length,
+        found: seen.length,
+        resumed: result.resumed,
+        now: time
+      });
+      if (!persisted.completed) incompleteQueries += 1;
     } catch (error) {
       failedQueries += 1;
       failedHandles.push({ handle, status: error.status || null, error: String(error.message || error).slice(0, 300) });
-      await saveState({ query_key: key, query_text: query, last_seen_id: state?.last_seen_id || null, last_run_at: nowIso(), last_error: String(error.message || error).slice(0, 1500), last_result: { handle, failed: true, rotation_slot: slot }, updated_at: nowIso() });
+      await saveState({ query_key: key, query_text: query, last_seen_id: state?.last_seen_id || null, last_run_at: nowIso(), last_success_at: state?.last_success_at || null, last_error: String(error.message || error).slice(0, 1500), last_result: state?.last_result || { handle, failed: true, rotation_slot: slot }, updated_at: nowIso() });
       console.error(`地区官方账号查询失败：${handle}\n${error.message}`);
       await sleep(error.status === 429 ? 5000 : 300);
     }
   }
   const rows = [...collected.values()];
-  const exists = await existingIds(rows.map((row) => row.x_post_id));
-  const fresh = rows.filter((row) => !exists.has(row.x_post_id));
-  if (fresh.length) await sb("ice_posts", { method: "POST", query: { on_conflict: "x_post_id" }, body: fresh, prefer: "resolution=ignore-duplicates,return=minimal" });
   console.log(JSON.stringify({
     collector: "ice-regional-official-v5",
     lookback_hours: LOOKBACK_HOURS,
@@ -190,9 +214,10 @@ async function main() {
     selected_discovery_queries: selectedDiscovery.map((x) => x.handle),
     requests,
     failed_queries: failedQueries,
+    incomplete_queries: incompleteQueries,
     failed_handles: failedHandles,
     found: rows.length,
-    inserted: fresh.length
+    inserted: "persisted per query before state advancement"
   }, null, 2));
 }
 main().catch((error) => { console.error("地区官方抓取失败：", error); process.exitCode = 1; });

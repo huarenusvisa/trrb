@@ -1,0 +1,82 @@
+{
+  "generatedAt": "2026-11-27T13:08:53.014Z",
+  "sources": [
+    {
+      "volume": 29,
+      "url": "https://www.justice.gov/eoir/volume-29"
+    },
+    {
+      "volume": 30,
+      "url": "https://www.justice.gov/eoir/volume-30"
+    }
+  ],
+  "checks": [
+    {
+      "ok": true,
+      "label": "EOIR Volume 29 official page reachable",
+      "detail": "status=200"
+    },
+    {
+      "ok": true,
+      "label": "Volume 29 remains on official justice.gov",
+      "detail": "https://www.justice.gov/eoir/volume-29"
+    },
+    {
+      "ok": true,
+      "label": "EOIR Volume 30 official page reachable",
+      "detail": "status=200"
+    },
+    {
+      "ok": true,
+      "label": "Volume 30 remains on official justice.gov",
+      "detail": "https://www.justice.gov/eoir/volume-30"
+    },
+    {
+      "ok": true,
+      "label": "new or materially changed BIA precedent requires PDF/date/rule review before publication",
+      "detail": ""
+    },
+    {
+      "ok": true,
+      "label": "BIA Volume 29 precedent decisions parsed",
+      "detail": "count=143"
+    },
+    {
+      "ok": true,
+      "label": "BIA Volume 30 precedent decisions parsed",
+      "detail": "count=37"
+    },
+    {
+      "ok": true,
+      "label": "latest published Volume 30 reporter page is present",
+      "detail": ""
+    },
+    {
+      "ok": true,
+      "label": "dataset contains BIA precedent decisions only",
+      "detail": ""
+    },
+    {
+      "ok": true,
+      "label": "volume/reporter-page identities are unique",
+      "detail": "unique=180"
+    },
+    {
+      "ok": true,
+      "label": "case names use official Matter of titles",
+      "detail": ""
+    },
+    {
+      "ok": true,
+      "label": "all decision documents are first-party DOJ/EOIR links",
+      "detail": ""
+    },
+    {
+      "ok": true,
+      "label": "latest official BIA decision documents reachable",
+      "detail": "checked=5; bad=0"
+    }
+  ],
+  "failures": 0,
+  "count": 180
+}

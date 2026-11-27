@@ -4,7 +4,9 @@ const SITE_ORIGIN = "https://trrb.net";
 const FALLBACK_SUPABASE_URL = "https://fwiznbpsqkfgkvyznebz.supabase.co";
 const FALLBACK_SUPABASE_KEY = "sb_publishable_hSmKJghvQoJKg0m5loDQ2g_f1gu8qak";
 const READ_TIMEOUT_MS = 8_000;
-const TRANSIENT_READ_STATUS = new Set([408, 425, 429, 500, 502, 503, 504]);
+function isTransientReadStatus(status: number): boolean {
+  return status === 408 || status === 425 || status === 429 || (status >= 500 && status <= 599);
+}
 
 export const config = { path: "/*" };
 
@@ -95,7 +97,7 @@ async function fetchRead(input: URL | RequestInfo, init: RequestInit = {}): Prom
     const timeout = setTimeout(() => controller.abort(), READ_TIMEOUT_MS);
     try {
       const response = await fetch(input, { ...init, signal: controller.signal });
-      if (!TRANSIENT_READ_STATUS.has(response.status) || attempt === 2) return response;
+      if (!isTransientReadStatus(response.status) || attempt === 2) return response;
       lastError = new Error(`transient read ${response.status}`);
     } catch (error) {
       lastError = error;

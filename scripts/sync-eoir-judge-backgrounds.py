@@ -60,12 +60,40 @@ def html_text(value):
     return html.unescape("".join(parser.parts))
 
 
+def join_wrapped_headings(raw_text):
+    """Rejoin EOIR PDF headings whose court name wraps onto the next line."""
+    lines = raw_text.splitlines()
+    output = []
+    index = 0
+    heading_start = re.compile(
+        r",\s+(?:(?:Temporary|Assistant Chief|Unit Chief|Regional Deputy Chief)\s+)?Immigration Judge,\s+",
+        re.I,
+    )
+    court_continuation = re.compile(
+        r"^(?:[A-Za-zÀ-ÖØ-öø-ÿ().'-]+\s+){0,8}(?:Immigration Court|Immigration Adjudication Center|Hearing Location|Adjudication Center)\s*$",
+        re.I,
+    )
+    while index < len(lines):
+        line = lines[index]
+        if heading_start.search(line) and index + 1 < len(lines):
+            continuation = lines[index + 1].strip()
+            if continuation and court_continuation.match(continuation):
+                output.append(f"{line.rstrip()} {continuation}")
+                index += 2
+                continue
+        output.append(line)
+        index += 1
+    return "\n".join(output)
+
+
 def parse_text(source, raw_text):
     heading = re.compile(
         r"(?mi)^\s*([A-ZÀ-ÖØ-Þ][^\n,]{2,100}),\s+((?:(?:Temporary|Assistant Chief|Unit Chief|Regional Deputy Chief)\s+)?Immigration Judge),?\s+([^\n]{2,180})\s*$"
     )
     profiles = {}
-    text = raw_text.replace("\u00a0", " ").replace("\u2019", "'").replace("\u2013", "-")
+    text = join_wrapped_headings(
+        raw_text.replace("\u00a0", " ").replace("\u2019", "'").replace("\u2013", "-")
+    )
     matches = list(heading.finditer(text))
     for index, match in enumerate(matches):
         end = matches[index + 1].start() if index + 1 < len(matches) else len(text)
@@ -106,6 +134,10 @@ def parse_text(source, raw_text):
         biography_name = re.match(r"^([A-ZÀ-ÖØ-Þ].{2,90}?)\s+was appointed\b", biography, flags=re.I)
         if biography_name and len(clean(biography_name.group(1)).split()) <= 8:
             name = clean(biography_name.group(1))
+        # pypdf layout extraction occasionally separates the first glyph of a
+        # surname ("B uruncenco", "M oscowitz"). Normalize that artifact before
+        # deriving the identity key so layout/plain modes cannot create clones.
+        name = re.sub(r"\b([A-ZÀ-ÖØ-Þ])\s+(?=[a-zà-öø-ÿ])", r"\1", name)
         name = re.sub(r"\s*-\s*", "-", name)
         appointment = re.search(
             r"appointed.*?(?:begin hearing cases\s+)?(?:in|on)\s+((?:January|February|March|April|May|June|July|August|September|October|November|December)(?:\s+of)?\s+\d{4})",
@@ -135,7 +167,7 @@ def parse_text(source, raw_text):
             "judge_name": name,
             "name_key": key,
             "appointment_type": clean(match.group(2)),
-            "appointment_court": clean(match.group(3)),
+            "appointment_court": re.sub(r"\b([A-ZÀ-ÖØ-Þ])\s+(?=[a-zà-öø-ÿ])", r"\1", clean(match.group(3))),
             "appointment_date": clean(appointment.group(1)) if appointment else None,
             "appointed_by": appointed_by,
             "education": education,
@@ -158,12 +190,18 @@ def parse_pdf(source, content):
         "\n".join(page.extract_text(extraction_mode="layout") or "" for page in reader.pages),
         "\n".join(page.extract_text() or "" for page in reader.pages),
     ]
-    profiles = {}
-    for text in texts:
-        for profile in parse_text(source, text):
-            key = profile["name_key"]
-            if key not in profiles or len(profile["biography"]) > len(profiles[key]["biography"]):
-                profiles[key] = profile
+    candidates = [parse_text(source, text) for text in texts]
+    # Layout extraction can split individual glyphs ("B uruncenco") and
+    # manufacture duplicate people. Use the mode with the best coverage as
+    # the canonical roster instead of unioning two incompatible extractions.
+    preferred = max(candidates, key=len, default=[])
+    profiles = {profile["name_key"]: profile for profile in preferred}
+    # Retain a real judge visible only in the alternate extraction mode, but do
+    # not replace the canonical mode's cleaner record or union glyph-split
+    # clones. Identity normalization above makes the two modes converge.
+    for candidate_set in candidates:
+        for profile in candidate_set:
+            profiles.setdefault(profile["name_key"], profile)
     return list(profiles.values())
 
 

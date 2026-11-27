@@ -73,13 +73,25 @@ function blocksAutomaticPublish(story, payload, isOfficial) {
   return Boolean(story.conflict_detected || story.privacy_risk || story.fabrication_risk || hasUnconfirmedClaims);
 }
 
+// Prefetch only read operations in bounded batches. Decisions and conditional
+// writes still run in the original story order, with all review gates intact.
+export async function* promotionEvidenceBatches(rows, loadEvidence = evidenceFor) {
+  for (let offset = 0; offset < rows.length; offset += 8) {
+    const batch = await Promise.all(rows.slice(offset, offset + 8).map(async (story) => ({
+      story,
+      evidence: ["editing", "approved", "rejected"].includes(story.human_review_status) || story.reviewed_by
+        ? null : await loadEvidence(story)
+    })));
+    for (const item of batch) yield item;
+  }
+}
+
 async function main() {
   requireEnv();
   const rows = await sb("ice_stories", { query: { select: "*", status: "in.(collecting,pending_review,pending_corroboration,approved)", order: "updated_at.desc", limit: "1000" } });
   let reviewedApproved = 0, autoApproved = 0, trustedMediaApproved = 0, manual = 0, incomplete = 0, stale = 0, riskBlocked = 0, rejectedNonIce = 0;
-  for (const story of Array.isArray(rows) ? rows : []) {
+  for await (const {story, evidence} of promotionEvidenceBatches(Array.isArray(rows) ? rows : [])) {
     if (["editing","approved","rejected"].includes(story.human_review_status) || story.reviewed_by) { manual += 1; continue; }
-    const evidence = await evidenceFor(story);
     const reviewedPost = evidence.find(post => reviewedSourceReady(story, post));
     if (!reviewedPost && !recentEnough(story)) {
       if (story.status === "approved" && story.human_review_status !== "approved") {
